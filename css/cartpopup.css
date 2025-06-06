@@ -45,14 +45,17 @@
 /* ========== NÚT ĐÓNG ========== */
 .cart-popup-close {
   position: absolute;
-  top: 12px;
-  right: 12px;
-  font-size: 40px;
+  top: 0;
+  right: 0;
+  font-size: 48px;
   background: none;
   border: none;
   color: #666;
   cursor: pointer;
+  line-height: 1;
+  padding: 4px 10px; /* canh đều và tránh bấm nhầm */
 }
+
 
 /* ========== ẢNH TO + THÔNG TIN ========== */
 .product-header {
