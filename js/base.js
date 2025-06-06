@@ -10,24 +10,36 @@ function scrollToTop() {
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-// ✅ Toggle sticky footer khi popup mở
+// ✅ Toggle sticky footer
 function toggleFooter(show) {
   const footer = document.querySelector(".sticky-footer");
   if (footer) footer.style.display = show ? "flex" : "none";
 }
 
-// ✅ Đóng popup form
-document.querySelectorAll(".close-popup").forEach(btn => {
-  btn.addEventListener("click", () => {
-    const popup = document.getElementById("popup-checkout");
-    if (popup) popup.classList.add("hidden");
+// ✅ Toggle slideForm (giỏ hàng)
+function toggleForm(show = true) {
+  const form = document.getElementById("slideForm");
+  if (!form) return;
+
+  if (show) {
+    form.classList.remove("hidden");
+    toggleFooter(false);
+  } else {
+    form.classList.add("hidden");
     toggleFooter(true);
+  }
+}
+
+// ✅ Gắn nút đóng popup (dùng class .close-popup)
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll(".close-popup").forEach((btn) => {
+    btn.addEventListener("click", () => toggleForm(false));
   });
 });
 
 // ✅ Auto hide mascot khi popup mở
 const observer = new MutationObserver(() => {
-  const isPopupVisible = !document.getElementById("popup-checkout")?.classList.contains("hidden");
+  const isPopupVisible = !document.getElementById("slideForm")?.classList.contains("hidden");
   const mascot = document.getElementById("mascot-container");
   if (mascot) mascot.style.display = isPopupVisible ? "none" : "block";
 });
