@@ -22,11 +22,22 @@ color: #000; text-decoration: none;
 width: 20px; height: 20px; margin-bottom: 4px;
 }
 .footer-btn {
-flex: 1; margin-left: 10px; margin-bottom: 4px; height: 38px;
-background: #e53935; color: #fff; font-weight: bold;
-font-size: 14px; border: none; padding: 10px 0;
-cursor: pointer; border-radius: 8px;
+  flex: 1;
+  margin-left: 10px;
+  margin-bottom: 6px;
+  height: 38px;
+  background: #e53935;
+  color: #fff;
+  font-weight: bold;
+  font-size: 14px;
+  border: none;
+  padding: 0 12px;
+  cursor: pointer;
+  border-radius: 8px; /* ✅ Bo góc như cũ */
+  align-self: center; /* ✅ Căn giữa theo chiều cao */
+  max-width: calc(100% - 140px); /* ✅ Giới hạn chiều rộng để không đè nút icon */
 }
+
 /* === Slide Form === */
 #slideForm {
   position: fixed;
