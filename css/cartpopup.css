@@ -90,18 +90,32 @@
   margin-bottom: 16px;
 }
 
-.variant-list .variant-thumb img {
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  object-fit: cover;
-  border-radius: 8px;
+.variant-thumb {
   border: 1.5px solid #ccc;
-  cursor: pointer;
+  border-radius: 8px;
+  padding: 4px;
+  text-align: center;
+  background: #fff;
   transition: border-color 0.2s;
 }
 
-.variant-list .variant-thumb.selected img {
-  border-color: #e53935;
+.variant-thumb img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.variant-title {
+  font-size: 12px;
+  font-weight: bold;
+  margin-top: 4px;
+  color: #333;
+  line-height: 1.3;
+}
+
+.variant-thumb.selected {
+  border: 2px solid #e53935;
 }
 
 /* ========== FORM THÔNG TIN ========== */
