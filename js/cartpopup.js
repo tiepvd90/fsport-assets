@@ -17,7 +17,11 @@ function renderVariants(list) {
   list.forEach((item, index) => {
     const thumb = document.createElement("div");
     thumb.className = "variant-thumb";
-    thumb.innerHTML = `<img src="${item.Ảnh}" alt="${item.Tên}">`;
+    thumb.innerHTML = `
+  <img src="${item.Ảnh}" alt="${item.Tên}">
+  <div class="variant-title">${item.Tên}</div>
+`;
+
     thumb.addEventListener("click", () => selectVariant(index, item));
     container.appendChild(thumb);
   });
