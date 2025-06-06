@@ -8,13 +8,6 @@ fetch("https://friendly-kitten-d760ff.netlify.app/json/chair.json")
   .catch(err => console.warn("Không thể tải chair.json", err));
 
 // ✅ Hiển thị danh sách phân loại vào popup
-type Variant = {
-  Ảnh: string;
-  Tên: string;
-  Giá: number;
-  "Giá gốc": number;
-};
-
 function renderVariants(list) {
   const container = document.getElementById("variantList");
   if (!container || !Array.isArray(list)) return;
@@ -45,6 +38,25 @@ function selectVariant(index, data) {
   });
 }
 
+// ✅ Mở / đóng popup
+function toggleCartPopup(show = true) {
+  const popup = document.getElementById("cartPopup");
+  console.log("📦 toggleCartPopup() được gọi với giá trị:", show);
+  console.log("🔍 Phần tử #cartPopup:", popup);
+
+  if (popup) {
+    if (show) {
+      popup.classList.remove("hidden");
+      popup.style.display = "flex";
+    } else {
+      popup.classList.add("hidden");
+      popup.style.display = "none";
+    }
+  } else {
+    console.error("❌ Không tìm thấy phần tử #cartPopup");
+  }
+}
+
 // ✅ Bắt sự kiện sau khi DOM sẵn sàng
 document.addEventListener("DOMContentLoaded", () => {
   const orderBtn = document.getElementById("cartSubmitBtn");
@@ -72,25 +84,10 @@ document.addEventListener("DOMContentLoaded", () => {
   closeBtns.forEach((btn) => {
     btn.addEventListener("click", () => toggleCartPopup(false));
   });
+
+  // ✅ Gọi từ ngoài (sau khi đã có toggleCartPopup)
+  window.toggleForm = function () {
+    console.log("Gọi toggleForm()");
+    toggleCartPopup(true);
+  };
 });
-
-// ✅ Mở / đóng popup
-function toggleCartPopup(show = true) {
-  const popup = document.getElementById("cartPopup");
-  if (popup) {
-    if (show) {
-      popup.classList.remove("hidden");
-      popup.style.display = "flex";
-    } else {
-      popup.classList.add("hidden");
-      popup.style.display = "none";
-    }
-  } else {
-    console.error("❌ Không tìm thấy phần tử #cartPopup");
-  }
-}
-
-// ✅ Gọi từ ngoài
-window.toggleForm = function () {
-  toggleCartPopup(true);
-};
