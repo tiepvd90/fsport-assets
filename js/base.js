@@ -21,20 +21,22 @@ function toggleForm(show = true) {
   const form = document.getElementById("slideForm");
   const footer = document.querySelector(".sticky-footer");
 
-  if (form && footer) {
-    if (show) {
-      form.classList.add("show");
-      form.classList.remove("hidden");
-      footer.style.display = "none";
-      scrollToTop();
-    } else {
-      form.classList.remove("show");
-      form.classList.add("hidden");
-      footer.style.display = "flex";
-    }
+  if (!form || !footer) {
+    console.error("Không tìm thấy popup hoặc footer");
+    return;
+  }
+
+  if (show) {
+    form.classList.remove("hidden");
+    form.style.display = "block";  // 👈 đảm bảo hiển thị
+    footer.style.display = "none";
+    scrollToTop();
+  } else {
+    form.classList.add("hidden");
+    form.style.display = "none";
+    footer.style.display = "flex";
   }
 }
-
 
 
 
