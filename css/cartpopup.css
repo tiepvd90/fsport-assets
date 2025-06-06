@@ -103,6 +103,13 @@
 }
 
 .variant-thumb img {
+  width: 66%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: 6px;
+  margin: 0 auto; /* căn giữa ảnh trong box */
+}
+
 
 .variant-title {
   font-size: 12px;
