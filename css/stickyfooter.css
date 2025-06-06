@@ -1,0 +1,45 @@
+/* === Sticky Footer Style === */
+.sticky-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  border-top: 1px solid #ddd;
+  z-index: 9999;
+  padding: 6px 8px;
+  font-family: Arial, sans-serif;
+}
+
+.footer-icon {
+  width: 60px;
+  text-align: center;
+  font-size: 12px;
+  color: #000;
+  text-decoration: none;
+}
+
+.footer-icon img {
+  width: 20px;
+  height: 20px;
+  margin-bottom: 4px;
+}
+
+.footer-btn {
+  flex: 1;
+  margin-left: 10px;
+  margin-bottom: 6px;
+  height: 38px;
+  background: #e53935;
+  color: #fff;
+  font-weight: bold;
+  font-size: 14px;
+  border: none;
+  padding: 0 12px;
+  cursor: pointer;
+  border-radius: 8px;
+  align-self: center;
+  max-width: calc(100% - 140px);
+}
