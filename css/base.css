@@ -52,15 +52,6 @@ width: 20px; height: 20px; margin-bottom: 4px;
   border-radius: 16px 16px 0 0;
 }
 
-#slideForm.show {
-  transform: translateY(0%);
-}
-
-#slideForm.hidden {
-  display: block; /* override display:none */
-  transform: translateY(100%);
-}
-
 
 
 #closeBtn {
