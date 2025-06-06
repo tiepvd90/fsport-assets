@@ -19,16 +19,20 @@ function toggleFooter(show) {
 // ✅ Hiện/ẩn popup form (giỏ hàng)
 function toggleForm(show = true) {
   const form = document.getElementById("slideForm");
-  if (!form) return;
+  const footer = document.querySelector(".sticky-footer");
 
-  if (show) {
-    form.classList.remove("hidden");
-    toggleFooter(false);
-  } else {
-    form.classList.add("hidden");
-    toggleFooter(true);
+  if (form && footer) {
+    if (show) {
+      form.classList.remove("hidden");
+      footer.style.display = "none";
+      scrollToTop();
+    } else {
+      form.classList.add("hidden");
+      footer.style.display = "flex";
+    }
   }
 }
+
 
 // ✅ Gắn sự kiện đóng popup cho nút có class "close-popup"
 document.addEventListener("DOMContentLoaded", () => {
