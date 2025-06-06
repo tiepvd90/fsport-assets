@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ghế Công Thái Học - Funsport</title>
+
+  <!-- ✅ Gọi CSS -->
+  <link rel="stylesheet" href="https://friendly-kitten-d760ff.netlify.app/css/base.css">
+  <link rel="stylesheet" href="https://friendly-kitten-d760ff.netlify.app/css/stickyfooter.css">
+</head>
+<body>
+
+  <!-- ✅ Sticky Footer -->
+  <div class="sticky-footer">
+    <a class="footer-icon" id="footer-tel" href="#">
+      <img src="https://img.icons8.com/ios-filled/24/000000/phone.png" alt=""><br>Gọi
+    </a>
+    <a class="footer-icon" id="footer-fb" href="#">
+      <img src="https://img.icons8.com/ios-filled/24/000000/facebook-messenger.png" alt=""><br>Chat
+    </a>
+    <button id="btn-atc" class="footer-btn">THÊM VÀO GIỎ HÀNG</button>
+  </div>
+
+  <!-- ✅ Popup Form (hiển thị sau khi ấn nút) -->
+  <div id="slideForm" class="hidden">
+    <button id="closeBtn" class="close-popup">&times;</button>
+    <div style="padding-top: 20px;">
+      <p style="text-align:center; font-weight: bold;">Đây là popup form – nội dung sẽ thêm sau</p>
+    </div>
+  </div>
+
+  <!-- ✅ Gọi JS -->
+  <script src="https://friendly-kitten-d760ff.netlify.app/js/base.js"></script>
+  <script src="https://friendly-kitten-d760ff.netlify.app/js/stickyfooter.js"></script>
+  <script src="https://friendly-kitten-d760ff.netlify.app/js/tracking.js"></script>
+
+  <!-- ✅ Đọc dữ liệu settings từ JSON -->
+  <script>
+    fetch('https://friendly-kitten-d760ff.netlify.app/json/settings.json')
+      .then(res => res.json())
+      .then(data => {
+        if (data.tel) {
+          document.getElementById('footer-tel').href = `tel:${data.tel}`;
+        }
+        if (data["fb-page"]) {
+          document.getElementById('footer-fb').href = data["fb-page"];
+        }
+      })
+      .catch(err => console.error('Lỗi tải settings.json:', err));
+  </script>
+</body>
+</html>
