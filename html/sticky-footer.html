@@ -1,0 +1,28 @@
+<!-- ✅ Sticky Footer -->
+<div class="sticky-footer">
+  <a class="footer-icon" id="phone-link" href="#">
+    <img src="https://img.icons8.com/ios-filled/24/000000/phone.png" alt=""><br>Gọi
+  </a>
+  <a class="footer-icon" id="fb-link" href="#">
+    <img src="https://img.icons8.com/ios-filled/24/000000/facebook-messenger.png" alt=""><br>Chat
+  </a>
+  <button id="btn-atc" class="footer-btn">THÊM VÀO GIỎ HÀNG</button>
+</div>
+
+<!-- ✅ Popup Form trượt lên -->
+<div id="slideForm" class="hidden">
+  <button id="closeBtn" class="close-popup">&times;</button>
+  <div style="padding-top: 20px;">
+    <p style="text-align:center; font-weight: bold;">Đây là popup form – nội dung sẽ thêm sau</p>
+  </div>
+</div>
+
+<script>
+  // ✅ Load dữ liệu từ setting.json nếu cần
+  fetch('https://friendly-kitten-d760ff.netlify.app/settings/chair.json')
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('phone-link').href = 'tel:' + data.tel;
+      document.getElementById('fb-link').href = data['fb-page'];
+    });
+</script>
