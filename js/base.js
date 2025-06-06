@@ -47,19 +47,4 @@ observer.observe(document.body, { childList: true, subtree: true });
 function formatPrice(vnd) {
   return vnd.toLocaleString("vi-VN") + "đ";
 }
-fetch('https://friendly-kitten-d760ff.netlify.app/settings.json')
-  .then(response => response.json())
-  .then(config => {
-    // Gán số điện thoại
-    const phoneLink = document.querySelector('.footer-icon[href^="tel:"]');
-    if (phoneLink) {
-      phoneLink.href = `tel:${config.tel}`;
-    }
-
-    // Gán link Facebook Messenger
-    const messengerLink = document.querySelector('.footer-icon[href*="m.me"]');
-    if (messengerLink) {
-      messengerLink.href = config["fb-page"];
-    }
-  });
 
