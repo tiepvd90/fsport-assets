@@ -1,52 +1,48 @@
 // ✅ Gọi API json sản phẩm từ Google Sheets hoặc file tĩnh
 fetch("https://friendly-kitten-d760ff.netlify.app/json/chair.json")
   .then(res => res.json())
-  .then(data => renderVariants(data))
+  .then(data => {
+    renderVariants(data);
+    if (data.length > 0) selectVariant(0, data[0]);
+  })
   .catch(err => console.warn("Không thể tải chair.json", err));
 
-// ✅ Hiển thị danh sách biến thể vào popup
+// ✅ Hiển thị danh sách phân loại vào popup
+type Variant = {
+  Ảnh: string;
+  Tên: string;
+  Giá: number;
+  "Giá gốc": number;
+};
+
 function renderVariants(list) {
-  const container = document.querySelector("#cartPopup .cart-variant-info");
+  const container = document.getElementById("variantList");
   if (!container || !Array.isArray(list)) return;
 
-  const variantList = document.createElement("div");
-  variantList.className = "variant-list";
+  container.innerHTML = "";
 
   list.forEach((item, index) => {
-    const box = document.createElement("div");
-    box.className = "variant-box";
-    box.dataset.index = index;
-
-    box.innerHTML = `
-      <img src="${item.Ảnh}" alt="${item.Tên}">
-      <div class="variant-info">
-        <div class="variant-name">${item.Tên}</div>
-        <div>
-          <span class="variant-price">${item.Giá.toLocaleString()}đ</span>
-          <span class="variant-original-price">${item["Giá gốc"].toLocaleString()}đ</span>
-        </div>
-      </div>
-    `;
-
-    box.addEventListener("click", () => selectVariant(box, item));
-    variantList.appendChild(box);
+    const thumb = document.createElement("div");
+    thumb.className = "variant-thumb";
+    thumb.innerHTML = `<img src="${item.Ảnh}" alt="${item.Tên}">`;
+    thumb.addEventListener("click", () => selectVariant(index, item));
+    container.appendChild(thumb);
   });
-
-  container.appendChild(variantList);
 }
 
 let selectedVariant = null;
 
-function selectVariant(box, data) {
-  document.querySelectorAll(".variant-box").forEach(b => b.classList.remove("selected"));
-  box.classList.add("selected");
+function selectVariant(index, data) {
   selectedVariant = data;
 
-  // Cập nhật ảnh và tên trong form
-  document.getElementById("variantImage").src = data.Ảnh;
-  document.getElementById("variantName").textContent = data.Tên;
-  document.getElementById("variantPrice").textContent = data.Giá.toLocaleString() + "đ";
-  document.getElementById("variantOriginalPrice").textContent = data["Giá gốc"].toLocaleString() + "đ";
+  document.getElementById("mainImage").src = data.Ảnh;
+  document.getElementById("productName").textContent = data.Tên;
+  document.getElementById("productPrice").textContent = data.Giá.toLocaleString() + "đ";
+  document.getElementById("productOriginalPrice").textContent = data["Giá gốc"].toLocaleString() + "đ";
+
+  document.querySelectorAll(".variant-thumb").forEach((el, i) => {
+    el.classList.toggle("selected", i === index);
+  });
 }
 
 // ✅ Bắt sự kiện sau khi DOM sẵn sàng
@@ -62,9 +58,9 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       if (typeof trackBothPixels === "function") {
-        trackBothPixels('Subscribe', {
+        trackBothPixels("Subscribe", {
           content_name: selectedVariant.Tên,
-          content_category: "chair"
+          content_category: "chair",
         });
       }
 
@@ -73,7 +69,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  closeBtns.forEach(btn => {
+  closeBtns.forEach((btn) => {
     btn.addEventListener("click", () => toggleCartPopup(false));
   });
 });
@@ -81,23 +77,18 @@ document.addEventListener("DOMContentLoaded", () => {
 // ✅ Mở / đóng popup
 function toggleCartPopup(show = true) {
   const popup = document.getElementById("cartPopup");
-  console.log("📦 toggleCartPopup() được gọi với giá trị:", show);
-  console.log("🔍 Phần tử #cartPopup:", popup);
-
   if (popup) {
     if (show) {
-      popup.classList.remove("hidden"); // ✅ gỡ class ẩn
+      popup.classList.remove("hidden");
       popup.style.display = "flex";
     } else {
-      popup.classList.add("hidden"); // ✅ thêm lại khi đóng
+      popup.classList.add("hidden");
       popup.style.display = "none";
     }
   } else {
     console.error("❌ Không tìm thấy phần tử #cartPopup");
   }
 }
-
-
 
 // ✅ Gọi từ ngoài
 window.toggleForm = function () {
