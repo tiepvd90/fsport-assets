@@ -15,7 +15,13 @@
   max-height: 90vh;
   overflow: hidden;
 }
-
+.cart-popup-content {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 400px;
+}
 /* ✅ Slide-up animation */
 @keyframes slideUp {
   from { transform: translateY(100%); }
