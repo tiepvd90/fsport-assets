@@ -80,9 +80,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // ✅ Mở / đóng popup
 function toggleCartPopup(show = true) {
+  console.log("📦 toggleCartPopup() được gọi với giá trị:", show);
   const popup = document.getElementById("cartPopup");
-  if (popup) popup.style.display = show ? "flex" : "none";
+  console.log("🔍 Phần tử #cartPopup:", popup);
+
+  if (popup) {
+    popup.style.display = show ? "flex" : "none";
+  } else {
+    console.error("❌ Không tìm thấy phần tử #cartPopup");
+  }
 }
+
 
 // ✅ Gọi từ ngoài
 window.toggleForm = function () {
