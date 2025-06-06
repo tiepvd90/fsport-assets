@@ -40,30 +40,38 @@ function selectVariant(box, data) {
   selectedVariant = data;
 }
 
-// ✅ Nút Gửi Đơn Hàng
-document.querySelector("#cartPopup .popup-footer button").addEventListener("click", () => {
-  if (!selectedVariant) {
-    alert("Vui lòng chọn sản phẩm trước khi đặt hàng.");
-    return;
-  }
+// ✅ Đợi DOM sẵn sàng rồi mới gắn sự kiện
+document.addEventListener("DOMContentLoaded", () => {
+  const orderBtn = document.querySelector("#cartPopup .popup-footer button");
+  const closeBtn = document.querySelector("#cartPopup .popup-close");
 
-  // 👉 Tracking
-  if (typeof trackBothPixels === "function") {
-    trackBothPixels('Subscribe', {
-      content_name: selectedVariant.Tên,
-      content_category: "chair"
+  if (orderBtn) {
+    orderBtn.addEventListener("click", () => {
+      if (!selectedVariant) {
+        alert("Vui lòng chọn sản phẩm trước khi đặt hàng.");
+        return;
+      }
+
+      // 👉 Tracking Facebook / TikTok Pixel nếu có
+      if (typeof trackBothPixels === "function") {
+        trackBothPixels('Subscribe', {
+          content_name: selectedVariant.Tên,
+          content_category: "chair"
+        });
+      }
+
+      // 👉 Gửi đơn về webhook / Google Sheet (có thể sửa sau)
+      alert("Đơn hàng đã được ghi nhận: " + selectedVariant.Tên);
+
+      // 👉 Đóng popup
+      toggleCartPopup(false);
     });
   }
 
-  // 👉 Gửi đơn về webhook / Google Sheet (tùy setup sau)
-  alert("Đơn hàng đã được ghi nhận: " + selectedVariant.Tên);
-
-  // 👉 Đóng popup
-  toggleCartPopup(false);
+  if (closeBtn) {
+    closeBtn.addEventListener("click", () => toggleCartPopup(false));
+  }
 });
-
-// ✅ Nút Đóng Popup
-document.querySelector("#cartPopup .popup-close").addEventListener("click", () => toggleCartPopup(false));
 
 // ✅ Hiển thị / Ẩn popup
 function toggleCartPopup(show = true) {
