@@ -67,23 +67,51 @@ document.addEventListener("DOMContentLoaded", () => {
   const closeBtns = document.querySelectorAll(".cart-popup-close, .cart-popup-overlay");
 
   if (orderBtn) {
-    orderBtn.addEventListener("click", () => {
-      if (!selectedVariant) {
-        alert("Vui lòng chọn sản phẩm trước khi đặt hàng.");
-        return;
-      }
+  orderBtn.addEventListener("click", () => {
+    const fullname = document.getElementById("cartName").value.trim();
+    const phone = document.getElementById("cartPhone").value.trim();
+    const address = document.getElementById("cartAddress").value.trim();
 
-      if (typeof trackBothPixels === "function") {
-        trackBothPixels("Subscribe", {
-          content_name: selectedVariant.Tên,
-          content_category: "chair",
-        });
-      }
+    if (!selectedVariant) {
+      alert("Vui lòng chọn sản phẩm.");
+      return;
+    }
 
-      alert("Đơn hàng đã được ghi nhận: " + selectedVariant.Tên);
-      toggleCartPopup(false);
+    if (!fullname || !phone || !address) {
+      alert("Vui lòng nhập đầy đủ họ tên, số điện thoại và địa chỉ.");
+      return;
+    }
+
+    const loai = "chair";
+    const product = selectedVariant.Tên;
+    const codprice = selectedVariant.Giá;
+
+    // Gửi về Make trước
+    fetch("https://hook.eu2.make.com/m9o7boye6fl1hstehst7waysmt38b2ul", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ loai, sanpham: product, phone, fullname, address, codprice })
     });
-  }
+
+    // Gửi tracking
+    if (typeof trackBothPixels === "function") {
+      trackBothPixels("Subscribe", {
+        content_name: product,
+        content_category: loai,
+      });
+      trackBothPixels("Purchase", {
+        content_name: product,
+        content_category: loai,
+        value: codprice,
+        currency: "VND"
+      });
+    }
+
+    alert("Funsport đã nhận được đơn hàng và sẽ sớm liên hệ lại.");
+    toggleCartPopup(false);
+  });
+}
+
 
   closeBtns.forEach((btn) => {
     btn.addEventListener("click", () => toggleCartPopup(false));
