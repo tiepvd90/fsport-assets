@@ -67,7 +67,7 @@
 }
 
 .product-price {
-  font-size: 14px;
+  font-size: 21px;
 }
 
 .price-sale {
@@ -79,7 +79,7 @@
 .price-original {
   color: #aaa;
   text-decoration: line-through;
-  font-size: 13px;
+  font-size: 19.5px; /* 13 * 1.5 */
 }
 
 /* ========== PHÂN LOẠI SẢN PHẨM ========== */
