@@ -50,8 +50,8 @@
 }
 
 #mainImage {
-  width: 100px;
-  height: 100px;
+  width: 150px;
+  height: 150px;
   object-fit: cover;
   border-radius: 8px;
 }
@@ -103,11 +103,6 @@
 }
 
 .variant-thumb img {
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  object-fit: cover;
-  border-radius: 6px;
-}
 
 .variant-title {
   font-size: 12px;
@@ -124,6 +119,12 @@
   -webkit-box-orient: vertical;
 }
 
+.product-header {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+  align-items: center;
+}
 
 .variant-thumb.selected {
   border: 2px solid #e53935;
