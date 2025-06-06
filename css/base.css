@@ -6,7 +6,9 @@ html, body, input, textarea {
 input, textarea, select {
   font-size: 16px !important;
 }
-
+.hidden {
+  display: none !important;
+}
 /* === Sticky Footer === */
 .sticky-footer {
 position: fixed; bottom: 0; left: 0; width: 100%;
