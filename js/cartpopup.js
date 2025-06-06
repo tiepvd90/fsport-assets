@@ -80,16 +80,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // ✅ Mở / đóng popup
 function toggleCartPopup(show = true) {
-  console.log("📦 toggleCartPopup() được gọi với giá trị:", show);
   const popup = document.getElementById("cartPopup");
+  console.log("📦 toggleCartPopup() được gọi với giá trị:", show);
   console.log("🔍 Phần tử #cartPopup:", popup);
 
   if (popup) {
-    popup.style.display = show ? "flex" : "none";
+    if (show) {
+      popup.classList.remove("hidden"); // ✅ gỡ class ẩn
+      popup.style.display = "flex";
+    } else {
+      popup.classList.add("hidden"); // ✅ thêm lại khi đóng
+      popup.style.display = "none";
+    }
   } else {
     console.error("❌ Không tìm thấy phần tử #cartPopup");
   }
 }
+
 
 
 // ✅ Gọi từ ngoài
