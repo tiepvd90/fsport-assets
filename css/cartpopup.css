@@ -1,0 +1,137 @@
+/* ✅ Cart Popup Container */
+#cartPopup {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: #fff;
+  border-radius: 16px 16px 0 0;
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.15);
+  z-index: 9999;
+  display: none;
+  flex-direction: column;
+  font-family: Arial, sans-serif;
+  animation: slideUp 0.3s ease-out;
+  max-height: 90vh;
+  overflow: hidden;
+}
+
+/* ✅ Slide-up animation */
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+/* ✅ Popup Header */
+#cartPopup .popup-header {
+  padding: 12px 16px;
+  font-weight: bold;
+  font-size: 16px;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* ✅ Close Button */
+#cartPopup .popup-close {
+  font-size: 22px;
+  font-weight: normal;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: #666;
+}
+
+/* ✅ Variant List Container */
+#cartPopup .variant-list {
+  overflow-y: auto;
+  padding: 12px 16px;
+  flex: 1;
+}
+
+/* ✅ Each Variant Box */
+.variant-box {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  padding: 10px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+}
+
+.variant-box:hover {
+  border-color: #aaa;
+}
+
+.variant-box.selected {
+  border-color: #007bff;
+  background: #f0f8ff;
+}
+
+/* ✅ Variant Image */
+.variant-box img {
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+/* ✅ Variant Info */
+.variant-info {
+  flex: 1;
+}
+
+.variant-name {
+  font-size: 15px;
+  font-weight: 500;
+  margin-bottom: 4px;
+  color: #333;
+}
+
+.variant-price {
+  font-size: 14px;
+  color: #d32f2f;
+  font-weight: bold;
+}
+
+.variant-original-price {
+  font-size: 13px;
+  text-decoration: line-through;
+  color: #888;
+  margin-left: 6px;
+}
+
+/* ✅ Footer */
+#cartPopup .popup-footer {
+  padding: 12px 16px;
+  border-top: 1px solid #eee;
+}
+
+#cartPopup .popup-footer button {
+  width: 100%;
+  padding: 12px;
+  background-color: #ff2c55;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+#cartPopup .popup-footer button:hover {
+  background-color: #e3224a;
+}
+
+/* ✅ Scroll Styling */
+#cartPopup .variant-list::-webkit-scrollbar {
+  width: 4px;
+}
+#cartPopup .variant-list::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 4px;
+}
