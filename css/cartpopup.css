@@ -61,6 +61,12 @@
   margin-bottom: 16px;
   align-items: flex-start;
 }
+.product-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
 
 #mainImage {
   width: 150px;
