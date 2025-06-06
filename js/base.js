@@ -5,18 +5,18 @@ document.querySelectorAll("input, select, textarea").forEach((el) => {
   });
 });
 
-// ✅ Scroll to top khi mở popup (tuỳ lúc gọi)
+// ✅ Scroll to top khi mở popup (tuỳ lúc gọi thêm)
 function scrollToTop() {
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-// ✅ Toggle sticky footer
+// ✅ Hiện/ẩn sticky footer
 function toggleFooter(show) {
   const footer = document.querySelector(".sticky-footer");
   if (footer) footer.style.display = show ? "flex" : "none";
 }
 
-// ✅ Toggle slideForm (giỏ hàng)
+// ✅ Hiện/ẩn popup form (giỏ hàng)
 function toggleForm(show = true) {
   const form = document.getElementById("slideForm");
   if (!form) return;
@@ -30,22 +30,25 @@ function toggleForm(show = true) {
   }
 }
 
-// ✅ Gắn nút đóng popup (dùng class .close-popup)
+// ✅ Gắn sự kiện đóng popup cho nút có class "close-popup"
 document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll(".close-popup").forEach((btn) => {
     btn.addEventListener("click", () => toggleForm(false));
   });
 });
 
-// ✅ Auto hide mascot khi popup mở
+// ✅ Theo dõi popup để ẩn mascot nếu đang hiển thị popup
 const observer = new MutationObserver(() => {
-  const isPopupVisible = !document.getElementById("slideForm")?.classList.contains("hidden");
+  const popup = document.getElementById("slideForm");
   const mascot = document.getElementById("mascot-container");
-  if (mascot) mascot.style.display = isPopupVisible ? "none" : "block";
+  if (popup && mascot) {
+    const isVisible = !popup.classList.contains("hidden");
+    mascot.style.display = isVisible ? "none" : "block";
+  }
 });
 observer.observe(document.body, { childList: true, subtree: true });
 
-// ✅ Format tiền
+// ✅ Format tiền VND
 function formatPrice(vnd) {
   return vnd.toLocaleString("vi-VN") + "đ";
 }
