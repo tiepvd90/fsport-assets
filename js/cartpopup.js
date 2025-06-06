@@ -6,10 +6,12 @@ fetch("https://friendly-kitten-d760ff.netlify.app/json/chair.json")
 
 // ✅ Hiển thị danh sách biến thể vào popup
 function renderVariants(list) {
-  const container = document.querySelector("#cartPopup .variant-list");
+  const container = document.querySelector("#cartPopup .cart-variant-info");
   if (!container || !Array.isArray(list)) return;
 
-  container.innerHTML = "";
+  const variantList = document.createElement("div");
+  variantList.className = "variant-list";
+
   list.forEach((item, index) => {
     const box = document.createElement("div");
     box.className = "variant-box";
@@ -27,23 +29,30 @@ function renderVariants(list) {
     `;
 
     box.addEventListener("click", () => selectVariant(box, item));
-    container.appendChild(box);
+    variantList.appendChild(box);
   });
+
+  container.appendChild(variantList);
 }
 
-// ✅ Xử lý chọn variant
 let selectedVariant = null;
 
 function selectVariant(box, data) {
   document.querySelectorAll(".variant-box").forEach(b => b.classList.remove("selected"));
   box.classList.add("selected");
   selectedVariant = data;
+
+  // Cập nhật ảnh và tên trong form
+  document.getElementById("variantImage").src = data.Ảnh;
+  document.getElementById("variantName").textContent = data.Tên;
+  document.getElementById("variantPrice").textContent = data.Giá.toLocaleString() + "đ";
+  document.getElementById("variantOriginalPrice").textContent = data["Giá gốc"].toLocaleString() + "đ";
 }
 
-// ✅ Đợi DOM sẵn sàng rồi mới gắn sự kiện
+// ✅ Bắt sự kiện sau khi DOM sẵn sàng
 document.addEventListener("DOMContentLoaded", () => {
-  const orderBtn = document.querySelector("#cartPopup .popup-footer button");
-  const closeBtn = document.querySelector("#cartPopup .popup-close");
+  const orderBtn = document.getElementById("cartSubmitBtn");
+  const closeBtns = document.querySelectorAll(".cart-popup-close, .cart-popup-overlay");
 
   if (orderBtn) {
     orderBtn.addEventListener("click", () => {
@@ -52,7 +61,6 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      // 👉 Tracking Facebook / TikTok Pixel nếu có
       if (typeof trackBothPixels === "function") {
         trackBothPixels('Subscribe', {
           content_name: selectedVariant.Tên,
@@ -60,26 +68,23 @@ document.addEventListener("DOMContentLoaded", () => {
         });
       }
 
-      // 👉 Gửi đơn về webhook / Google Sheet (có thể sửa sau)
       alert("Đơn hàng đã được ghi nhận: " + selectedVariant.Tên);
-
-      // 👉 Đóng popup
       toggleCartPopup(false);
     });
   }
 
-  if (closeBtn) {
-    closeBtn.addEventListener("click", () => toggleCartPopup(false));
-  }
+  closeBtns.forEach(btn => {
+    btn.addEventListener("click", () => toggleCartPopup(false));
+  });
 });
 
-// ✅ Hiển thị / Ẩn popup
+// ✅ Mở / đóng popup
 function toggleCartPopup(show = true) {
   const popup = document.getElementById("cartPopup");
   if (popup) popup.style.display = show ? "flex" : "none";
 }
 
-// ✅ Gọi từ ngoài khi ấn nút "Thêm vào giỏ hàng"
+// ✅ Gọi từ ngoài
 window.toggleForm = function () {
   toggleCartPopup(true);
 };
