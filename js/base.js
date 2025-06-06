@@ -10,32 +10,20 @@ function scrollToTop() {
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-// ✅ Hiện/ẩn sticky footer
-function toggleFooter(show) {
-  const footer = document.querySelector(".sticky-footer");
-  if (footer) footer.style.display = show ? "flex" : "none";
-}
-
 // ✅ Hiện/ẩn popup form (giỏ hàng)
 function toggleForm(show = true) {
   const form = document.getElementById("slideForm");
-  const footer = document.querySelector(".sticky-footer");
+  if (!form) return;
 
-  if (form && footer) {
-    if (show) {
-      form.classList.remove("hidden");
-      form.style.bottom = "0"; // ✅ Hiệu ứng trượt lên
-      footer.style.display = "none";
-      scrollToTop();
-    } else {
-      form.style.bottom = "-100%"; // ✅ Trượt xuống
-      setTimeout(() => form.classList.add("hidden"), 400); // Delay để ẩn sau animation
-      footer.style.display = "flex";
-    }
+  if (show) {
+    form.classList.remove("hidden");
+    form.style.bottom = "0"; // ✅ Trượt lên
+    scrollToTop();
+  } else {
+    form.style.bottom = "-100%"; // ✅ Trượt xuống
+    setTimeout(() => form.classList.add("hidden"), 400); // Delay để ẩn sau animation
   }
 }
-
-
 
 // ✅ Gắn sự kiện đóng popup cho nút có class "close-popup"
 document.addEventListener("DOMContentLoaded", () => {
