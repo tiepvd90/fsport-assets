@@ -18,17 +18,29 @@
 }
 
 .cart-popup-content {
-  position: relative;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  max-width: 100%;
   background: #fff;
-  width: 92%;
-  max-width: 420px;
   padding: 16px;
-  border-radius: 16px;
+  border-radius: 16px 16px 0 0;
   z-index: 10000;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.2);
   max-height: 90vh;
   overflow-y: auto;
+
+  /* Hiệu ứng trượt lên */
+  transform: translateY(100%);
+  animation: slideUp 0.3s ease forwards;
 }
+@keyframes slideUp {
+  to {
+    transform: translateY(0);
+  }
+}
+
 
 /* ========== NÚT ĐÓNG ========== */
 .cart-popup-close {
@@ -47,6 +59,7 @@
   display: flex;
   gap: 12px;
   margin-bottom: 16px;
+  align-items: flex-start;
 }
 
 #mainImage {
@@ -67,7 +80,7 @@
 }
 
 .product-price {
-  font-size: 21px;
+  font-size: 18px;
 }
 
 .price-sale {
@@ -79,7 +92,7 @@
 .price-original {
   color: #aaa;
   text-decoration: line-through;
-  font-size: 19.5px; /* 13 * 1.5 */
+  font-size: 16px; 
 }
 
 /* ========== PHÂN LOẠI SẢN PHẨM ========== */
