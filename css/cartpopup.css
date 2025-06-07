@@ -256,5 +256,30 @@
 .quantity-control button:last-child {
   border-left: 1px solid #ddd;
 }
+/* ========== NHÓM PHÂN LOẠI DẠNG BUTTON (NẾU KHÔNG CÓ ẢNH) ========== */
+.variant-group {
+  margin-bottom: 12px;
+}
+.variant-label {
+  font-weight: bold;
+  font-size: 14px;
+  margin-bottom: 6px;
+}
+.variant-list .variant-thumb:not(:has(img)) {
+  padding: 6px 12px;
+  font-size: 14px;
+  border: 1.5px solid #ccc;
+  border-radius: 8px;
+  background: #fff;
+  display: inline-block;
+  cursor: pointer;
+  margin: 4px 6px 4px 0;
+}
+.variant-list .variant-thumb.selected:not(:has(img)) {
+  border-color: #e53935;
+  background: #fff0f0;
+  font-weight: bold;
+  color: #d32f2f;
+}
 
 
