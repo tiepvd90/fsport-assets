@@ -82,9 +82,11 @@ function selectVariant(data) {
   selectedVariant = data;
 
   document.getElementById("mainImage").src = data.Ảnh;
+  document.getElementById("productName").textContent = data["Phân loại"]; // ✅ Dòng in đậm tên sản phẩm
   document.getElementById("productPrice").textContent = data.Giá.toLocaleString() + "đ";
   document.getElementById("productOriginalPrice").textContent = data["Giá gốc"].toLocaleString() + "đ";
 
+  // Dòng nhỏ dưới ảnh chính
   const selectedText = [];
   for (let key in data) {
     if (["Ảnh", "Giá", "Giá gốc"].includes(key)) continue;
@@ -92,6 +94,7 @@ function selectVariant(data) {
   }
   document.getElementById("productVariantText").textContent = selectedText.join(", ");
 }
+
 
 function changeQuantity(delta) {
   const input = document.getElementById("quantityInput");
