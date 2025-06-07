@@ -1,46 +1,45 @@
 <!-- ✅ POPUP GIỎ HÀNG - PHIÊN BẢN HOÀN CHỈNH THEO BỐ CỤC TIKTOK SHOP -->
-<div id="cartPopup" class="cart-popup" style="display: none;">
-<div class="cart-popup-overlay" onclick="toggleCartPopup(false)"></div>
-<div class="cart-popup-content">
-<!-- Nút đóng -->
-<button class="cart-popup-close" onclick="toggleCartPopup(false)">&times;</button>
+<div id="cartPopup" class="cart-popup hidden" style="display: none;">
+  <div class="cart-popup-overlay" onclick="toggleCartPopup(false)"></div>
+  <div class="cart-popup-content">
+    <!-- ❌ Nút đóng -->
+    <button class="cart-popup-close" onclick="toggleCartPopup(false)">&times;</button>
 
-<!-- Ảnh lớn + thông tin sản phẩm -->
-<div class="product-header">
-<img id="mainImage" src="" alt="Ảnh sản phẩm" />
-<div class="product-info">
-<div class="product-name" id="productName">Đang tải...</div>
-<div class="product-price">
-<span class="price-sale" id="productPrice">0đ</span>
-<span class="price-original" id="productOriginalPrice">0đ</span>
-</div>
-</div>
-</div>
+    <!-- 🖼 Ảnh + Tên + Giá -->
+    <div class="product-header">
+      <img id="mainImage" src="" alt="Ảnh sản phẩm" />
+      <div class="product-info">
+        <div class="product-name" id="productName">Đang tải...</div>
+        <div class="product-price">
+          <span class="price-sale" id="productPrice">0đ</span>
+          <span class="price-original" id="productOriginalPrice">0đ</span>
+        </div>
+      </div>
+    </div>
 
-<!-- Danh sách phân loại sản phẩm (ảnh vuông) -->
-<div class="variant-list" id="variantList">
-<!-- Render bằng JS -->
-</div>
-<!-- Số lượng -->
-<div class="quantity-wrapper">
-  <label for="quantityInput" style="margin-right: 8px;">Số lượng:</label>
-  <div class="quantity-control">
-    <button type="button" onclick="changeQuantity(-1)">−</button>
-    <input type="number" id="quantityInput" min="1" value="1" />
-    <button type="button" onclick="changeQuantity(1)">+</button>
+    <!-- 🔘 Danh sách phân loại (render bằng JS từ thuộc_tính) -->
+    <div class="variant-list" id="variantList"></div>
+
+    <!-- 🔢 Số lượng -->
+    <div class="quantity-wrapper">
+      <label for="quantityInput" style="margin-right: 8px;">Số lượng:</label>
+      <div class="quantity-control">
+        <button type="button" onclick="changeQuantity(-1)">−</button>
+        <input type="number" id="quantityInput" min="1" value="1" />
+        <button type="button" onclick="changeQuantity(1)">+</button>
+      </div>
+    </div>
+
+    <!-- 📝 Form thông tin người nhận -->
+    <div class="cart-form">
+      <div class="row-inputs">
+        <input type="text" id="cartName" placeholder="Họ và Tên" required />
+        <input type="tel" id="cartPhone" placeholder="Số điện thoại" required />
+      </div>
+      <textarea id="cartAddress" placeholder="Địa chỉ giao hàng" rows="2" required></textarea>
+    </div>
+
+    <!-- 🚀 Nút đặt hàng -->
+    <button id="cartSubmitBtn" class="cart-submit-btn">ĐẶT HÀNG NGAY</button>
   </div>
-</div>
-
-<!-- Form nhập tên, sđt cùng hàng -->
-<div class="cart-form">
-<div class="row-inputs">
-<input type="text" id="cartName" placeholder="Họ và Tên" required />
-<input type="tel" id="cartPhone" placeholder="Số điện thoại" required />
-</div>
-<textarea id="cartAddress" placeholder="Địa chỉ giao hàng" rows="2" required></textarea>
-</div>
-
-<!-- Nút đặt hàng -->
-<button id="cartSubmitBtn" class="cart-submit-btn">ĐẶT HÀNG NGAY</button>
-</div>
 </div>
