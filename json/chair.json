@@ -4,6 +4,7 @@
       "label": "Phân loại",
       "key": "Phân loại",
       "type": "option",
+      "display": "thumbnail",
       "values": [
         "Ghế Cao Cấp - Đen",
         "Ghế Cao Cấp - Xanh Ngọc",
