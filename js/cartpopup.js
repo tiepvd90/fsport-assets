@@ -60,6 +60,12 @@ function toggleCartPopup(show = true) {
     console.error("❌ Không tìm thấy phần tử #cartPopup");
   }
 }
+function changeQuantity(delta) {
+  const input = document.getElementById("quantityInput");
+  let value = parseInt(input.value || "1");
+  value = Math.max(1, value + delta);
+  input.value = value;
+}
 
 // ✅ Bắt sự kiện sau khi DOM sẵn sàng
 document.addEventListener("DOMContentLoaded", () => {
