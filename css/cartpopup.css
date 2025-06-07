@@ -125,11 +125,10 @@
 }
 
 .variant-thumb img {
-  width: 66%;
+  width: 100%;
   aspect-ratio: 1 / 1;
   object-fit: cover;
   border-radius: 6px;
-  margin: 0 auto; /* căn giữa ảnh trong box */
 }
 
 
@@ -140,11 +139,11 @@
   text-align: center;
   margin-top: 4px;
   line-height: 1.3;
-  height: 2.6em;         /* giới hạn tối đa 2 dòng */
+  height: 2.6em;
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
-  -webkit-line-clamp: 2; /* max 2 dòng */
+  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
 }
 
@@ -259,17 +258,20 @@
 /* ========== NHÓM PHÂN LOẠI DẠNG BUTTON (NẾU KHÔNG CÓ ẢNH) ========== */
 /* Biến thể thumbnail sắp xếp kiểu lưới 5 cột */
 .variant-group {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);  /* ✅ 5 biến thể mỗi hàng */
-  gap: 10px;
   margin-bottom: 16px;
 }
 
 .variant-label {
   font-weight: bold;
   font-size: 14px;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
 }
+.variant-group:has(.variant-thumb img) {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+}
+
 .variant-list .variant-thumb:not(:has(img)) {
   padding: 6px 12px;
   font-size: 14px;
