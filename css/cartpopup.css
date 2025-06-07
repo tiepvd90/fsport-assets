@@ -236,3 +236,10 @@
   -webkit-user-select: none;
   user-select: none;
 }
+.product-variant-text {
+  font-size: 13px;
+  color: #444;
+  margin-top: auto;
+  margin-bottom: 0;
+  font-weight: normal;
+}
