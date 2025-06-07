@@ -1,10 +1,69 @@
-[
-  { "Tên": "Ghế Cao Cấp- Đen", "Ảnh": "https://i.imgur.com/mU3rxJJ.jpeg", "Giá": 439000, "Giá gốc": 500000 },
-  { "Tên": "Ghế Cao Cấp- Xanh Ngọc", "Ảnh": "https://i.imgur.com/ccY64fp.jpeg", "Giá": 439000, "Giá gốc": 500000 },
-  { "Tên": "Ghế Cao Cấp- Xám", "Ảnh": "https://i.imgur.com/fIFwbhh.jpeg", "Giá": 439000, "Giá gốc": 500000 },
-  { "Tên": "Ghế Cao Cấp- Xanh Navy", "Ảnh": "https://i.imgur.com/X1Hqtgu.jpeg", "Giá": 439000, "Giá gốc": 500000 },
-  { "Tên": "Ghế Đặc Biệt- Đen", "Ảnh": "https://i.imgur.com/RvrRllm.jpeg", "Giá": 489000, "Giá gốc": 600000 },
-  { "Tên": "Ghế Đặc Biệt- Xám", "Ảnh": "https://i.imgur.com/HTGiIfH.jpeg", "Giá": 489000, "Giá gốc": 600000 },
-  { "Tên": "Ghế Đặc Biệt- Xanh Navy", "Ảnh": "https://i.imgur.com/KZ98VL3.jpeg", "Giá": 489000, "Giá gốc": 600000 },
-  { "Tên": "Ghế Đặc Biệt- Nâu", "Ảnh": "https://i.imgur.com/7SDNxow.jpeg", "Giá": 489000, "Giá gốc": 600000 }
-]
+{
+  "thuộc_tính": [
+    {
+      "label": "Phân loại",
+      "key": "Phân loại",
+      "type": "option",
+      "values": [
+        "Ghế Cao Cấp - Đen",
+        "Ghế Cao Cấp - Xanh Ngọc",
+        "Ghế Cao Cấp - Xám",
+        "Ghế Cao Cấp - Xanh Navy",
+        "Ghế Đặc Biệt - Đen",
+        "Ghế Đặc Biệt - Xám",
+        "Ghế Đặc Biệt - Xanh Navy",
+        "Ghế Đặc Biệt - Nâu"
+      ]
+    }
+  ],
+  "biến_thể": [
+    {
+      "Phân loại": "Ghế Cao Cấp - Đen",
+      "Giá": 439000,
+      "Giá gốc": 500000,
+      "Ảnh": "https://i.imgur.com/mU3rxJJ.jpeg"
+    },
+    {
+      "Phân loại": "Ghế Cao Cấp - Xanh Ngọc",
+      "Giá": 439000,
+      "Giá gốc": 500000,
+      "Ảnh": "https://i.imgur.com/ccY64fp.jpeg"
+    },
+    {
+      "Phân loại": "Ghế Cao Cấp - Xám",
+      "Giá": 439000,
+      "Giá gốc": 500000,
+      "Ảnh": "https://i.imgur.com/fIFwbhh.jpeg"
+    },
+    {
+      "Phân loại": "Ghế Cao Cấp - Xanh Navy",
+      "Giá": 439000,
+      "Giá gốc": 500000,
+      "Ảnh": "https://i.imgur.com/X1Hqtgu.jpeg"
+    },
+    {
+      "Phân loại": "Ghế Đặc Biệt - Đen",
+      "Giá": 489000,
+      "Giá gốc": 600000,
+      "Ảnh": "https://i.imgur.com/RvrRllm.jpeg"
+    },
+    {
+      "Phân loại": "Ghế Đặc Biệt - Xám",
+      "Giá": 489000,
+      "Giá gốc": 600000,
+      "Ảnh": "https://i.imgur.com/HTGiIfH.jpeg"
+    },
+    {
+      "Phân loại": "Ghế Đặc Biệt - Xanh Navy",
+      "Giá": 489000,
+      "Giá gốc": 600000,
+      "Ảnh": "https://i.imgur.com/KZ98VL3.jpeg"
+    },
+    {
+      "Phân loại": "Ghế Đặc Biệt - Nâu",
+      "Giá": 489000,
+      "Giá gốc": 600000,
+      "Ảnh": "https://i.imgur.com/7SDNxow.jpeg"
+    }
+  ]
+}
