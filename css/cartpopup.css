@@ -226,16 +226,26 @@
 
 .quantity-control input {
   width: 40px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   text-align: center;
   border: none;
   background: transparent;
   color: #111;
   font-size: 18px;
   font-weight: bold;
-  height: 100%;
-  line-height: 36px; /* ⬅ Cùng với .quantity-control height */
   padding: 0;
+  appearance: textfield;
 }
+/* Ẩn nút tăng/giảm mặc định trên Chrome, Safari */
+.quantity-control input::-webkit-outer-spin-button,
+.quantity-control input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
 
 
 /* Đường phân cách giữa các nút */
