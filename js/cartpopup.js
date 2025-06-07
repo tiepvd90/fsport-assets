@@ -1,11 +1,15 @@
-// ✅ Gọi API json sản phẩm từ Google Sheets hoặc file tĩnh
-fetch("https://friendly-kitten-d760ff.netlify.app/json/chair.json")
-  .then(res => res.json())
-  .then(data => {
-    renderVariants(data);
-    if (data.length > 0) selectVariant(0, data[0]);
-  })
-  .catch(err => console.warn("Không thể tải chair.json", err));
+function initCartPopup() {
+  const container = document.getElementById("cartContainer");
+  const jsonUrl = container?.getAttribute("data-json") || "https://friendly-kitten-d760ff.netlify.app/json/chair.json";
+
+  fetch(jsonUrl)
+    .then(res => res.json())
+    .then(data => {
+      renderVariants(data);
+      if (data.length > 0) selectVariant(0, data[0]);
+    })
+    .catch(err => console.warn("Không thể tải JSON:", err));
+}
 
 // ✅ Hiển thị danh sách phân loại vào popup
 function renderVariants(list) {
