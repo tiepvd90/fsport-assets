@@ -181,6 +181,10 @@
 .quantity-control button:last-child {
   border-left: 1px solid #ddd;
 }
+.quantity-control button {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
 
 /* ========== FORM KHÁCH HÀNG ========== */
 .cart-form {
@@ -226,4 +230,9 @@
 }
 .cart-submit-btn:hover {
   background: #d32f2f;
+}
+.cart-popup-content {
+  touch-action: manipulation; /* ✅ Ngăn double-tap zoom trên iOS */
+  -webkit-user-select: none;
+  user-select: none;
 }
