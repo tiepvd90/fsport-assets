@@ -1,4 +1,4 @@
-let selectedVariant = null;
+window.selectedVariant = null;
 
 function initCartPopup() {
   const container = document.getElementById("cartContainer");
@@ -19,6 +19,7 @@ function initCartPopup() {
 
 function renderOptions(attributes) {
   const container = document.getElementById("variantList");
+  if (!container) return;
   container.innerHTML = "";
 
   attributes.forEach(attr => {
@@ -79,27 +80,31 @@ function updateSelectedVariant() {
 }
 
 function selectVariant(data) {
-  selectedVariant = data;
+  window.selectedVariant = data;
 
-  document.getElementById("mainImage").src = data.Ảnh;
-  document.getElementById("productName").textContent = data["Phân loại"]; // ✅ Dòng in đậm tên sản phẩm
-  document.getElementById("productPrice").textContent = data.Giá.toLocaleString() + "đ";
-  document.getElementById("productOriginalPrice").textContent = data["Giá gốc"].toLocaleString() + "đ";
+  const mainImage = document.getElementById("mainImage");
+  const productName = document.getElementById("productName");
+  const productPrice = document.getElementById("productPrice");
+  const productOriginalPrice = document.getElementById("productOriginalPrice");
+  const productVariantText = document.getElementById("productVariantText");
 
-  // Dòng nhỏ dưới ảnh chính
+  if (mainImage) mainImage.src = data.Ảnh;
+  if (productName) productName.textContent = data["Phân loại"];
+  if (productPrice) productPrice.textContent = data.Giá.toLocaleString() + "đ";
+  if (productOriginalPrice) productOriginalPrice.textContent = data["Giá gốc"].toLocaleString() + "đ";
+
   const selectedText = [];
   for (let key in data) {
     if (["Ảnh", "Giá", "Giá gốc"].includes(key)) continue;
     selectedText.push(data[key]);
   }
-  document.getElementById("productVariantText").textContent = selectedText.join(", ");
+  if (productVariantText) productVariantText.textContent = selectedText.join(", ");
 }
-
 
 function changeQuantity(delta) {
   const input = document.getElementById("quantityInput");
-  let value = parseInt(input.value || "1");
-  input.value = Math.max(1, value + delta);
+  let value = parseInt(input?.value || "1");
+  if (input) input.value = Math.max(1, value + delta);
 }
 
 function toggleCartPopup(show = true) {
@@ -117,17 +122,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (orderBtn) {
     orderBtn.addEventListener("click", () => {
-      const fullname = document.getElementById("cartName").value.trim();
-      const phone = document.getElementById("cartPhone").value.trim();
-      const address = document.getElementById("cartAddress").value.trim();
-      const quantity = parseInt(document.getElementById("quantityInput").value) || 1;
+      const fullname = document.getElementById("cartName")?.value.trim();
+      const phone = document.getElementById("cartPhone")?.value.trim();
+      const address = document.getElementById("cartAddress")?.value.trim();
+      const quantity = parseInt(document.getElementById("quantityInput")?.value) || 1;
 
-      if (!selectedVariant) return alert("Vui lòng chọn phân loại sản phẩm.");
+      if (!window.selectedVariant) return alert("Vui lòng chọn phân loại sản phẩm.");
       if (!fullname || !phone || !address) return alert("Vui lòng nhập đủ họ tên, sđt và địa chỉ.");
 
       const loai = "chair";
-      const product = selectedVariant["Phân loại"];
-      const codprice = selectedVariant.Giá;
+      const product = window.selectedVariant["Phân loại"];
+      const codprice = window.selectedVariant.Giá;
 
       fetch("https://hook.eu2.make.com/m9o7boye6fl1hstehst7waysmt38b2ul", {
         method: "POST",
@@ -148,6 +153,7 @@ document.addEventListener("DOMContentLoaded", () => {
         trackBothPixels("Purchase", {
           content_name: product,
           content_category: loai,
+          content_id: product,
           value: codprice,
           currency: "VND"
         });
