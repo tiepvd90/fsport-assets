@@ -21,6 +21,15 @@
 <div class="variant-list" id="variantList">
 <!-- Render bằng JS -->
 </div>
+<!-- Số lượng -->
+<div class="quantity-wrapper">
+  <label for="quantityInput">Số lượng:</label>
+  <div class="quantity-control">
+    <button type="button" onclick="changeQuantity(-1)">−</button>
+    <input type="number" id="quantityInput" min="1" value="1" />
+    <button type="button" onclick="changeQuantity(1)">+</button>
+  </div>
+</div>
 
 <!-- Form nhập tên, sđt cùng hàng -->
 <div class="cart-form">
