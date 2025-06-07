@@ -1,4 +1,4 @@
-<!-- ✅ POPUP GIỎ HÀNG - PHIÊN BẢN HOÀN CHỈNH THEO BỐ CỤC TIKTOK SHOP -->
+<!-- ✅ POPUP GIỎ HÀNG - PHIÊN BẢN CHUẨN TIKTOK SHOP -->
 <div id="cartPopup" class="cart-popup hidden" style="display: none;">
   <div class="cart-popup-overlay" onclick="toggleCartPopup(false)"></div>
   <div class="cart-popup-content">
@@ -7,18 +7,18 @@
 
     <!-- 🖼 Ảnh + Tên + Giá -->
     <div class="product-header">
-  <img id="mainImage" src="" alt="Ảnh sản phẩm" />
-  <div class="product-info">
-    <div class="product-price">
-      <span class="price-sale" id="productPrice">0đ</span>
-      <span class="price-original" id="productOriginalPrice">0đ</span>
+      <img id="mainImage" src="" alt="Ảnh sản phẩm" />
+      <div class="product-info">
+        <div class="product-name" id="productName">Tên sản phẩm</div>
+        <div class="product-price">
+          <span class="price-sale" id="productPrice">0đ</span>
+          <span class="price-original" id="productOriginalPrice">0đ</span>
+        </div>
+      </div>
     </div>
 
-    <!-- CHUYỂN PHẦN NÀY XUỐNG CUỐI -->
-    <div class="product-variant-text" id="productVariantText">Phân Loại</div>
-  </div>
-</div>
-
+    <!-- ✅ Dòng mô tả biến thể ngay dưới ảnh, căn trái -->
+    <div class="product-variant-text" id="productVariantText" style="margin: 4px 0 12px 0; font-size: 13px; color: #555;"></div>
 
     <!-- 🔘 Danh sách phân loại (render bằng JS từ thuộc_tính) -->
     <div class="variant-list" id="variantList"></div>
