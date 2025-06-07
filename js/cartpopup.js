@@ -61,7 +61,6 @@ function renderOptions(attributes) {
     container.appendChild(group);
   });
 
-  // ✅ Auto chọn cái đầu tiên
   const first = container.querySelector(".variant-thumb");
   if (first) first.click();
 }
@@ -83,11 +82,9 @@ function selectVariant(data) {
   selectedVariant = data;
 
   document.getElementById("mainImage").src = data.Ảnh;
-  document.getElementById("productName").textContent = data["Phân loại"];
   document.getElementById("productPrice").textContent = data.Giá.toLocaleString() + "đ";
   document.getElementById("productOriginalPrice").textContent = data["Giá gốc"].toLocaleString() + "đ";
 
-  // ✅ Thêm đoạn này ngay bên dưới
   const selectedText = [];
   for (let key in data) {
     if (["Ảnh", "Giá", "Giá gốc"].includes(key)) continue;
@@ -96,15 +93,12 @@ function selectVariant(data) {
   document.getElementById("productVariantText").textContent = selectedText.join(", ");
 }
 
-
-// ✅ Số lượng
 function changeQuantity(delta) {
   const input = document.getElementById("quantityInput");
   let value = parseInt(input.value || "1");
   input.value = Math.max(1, value + delta);
 }
 
-// ✅ Mở / đóng popup
 function toggleCartPopup(show = true) {
   const popup = document.getElementById("cartPopup");
   if (!popup) return;
@@ -112,8 +106,9 @@ function toggleCartPopup(show = true) {
   popup.style.display = show ? "flex" : "none";
 }
 
-// ✅ Gửi đơn hàng
 document.addEventListener("DOMContentLoaded", () => {
+  initCartPopup();
+
   const orderBtn = document.getElementById("cartSubmitBtn");
   const closeBtns = document.querySelectorAll(".cart-popup-close, .cart-popup-overlay");
 
