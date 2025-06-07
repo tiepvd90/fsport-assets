@@ -86,7 +86,16 @@ function selectVariant(data) {
   document.getElementById("productName").textContent = data["Phân loại"];
   document.getElementById("productPrice").textContent = data.Giá.toLocaleString() + "đ";
   document.getElementById("productOriginalPrice").textContent = data["Giá gốc"].toLocaleString() + "đ";
+
+  // ✅ Thêm đoạn này ngay bên dưới
+  const selectedText = [];
+  for (let key in data) {
+    if (["Ảnh", "Giá", "Giá gốc"].includes(key)) continue;
+    selectedText.push(data[key]);
+  }
+  document.getElementById("productVariantText").textContent = selectedText.join(", ");
 }
+
 
 // ✅ Số lượng
 function changeQuantity(delta) {
