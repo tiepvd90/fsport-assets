@@ -164,7 +164,7 @@
   border: none;
   background: transparent;
   color: #111;
-  font-size: 16px;
+  font-size: 19px;
   font-weight: bold;
   line-height: 30px;         /* ✅ canh giữa số */
   padding: 0;
@@ -186,8 +186,8 @@
 .cart-form {
   display: flex;
   flex-direction: column;
-  gap: 8px; /* ✅ sát nhau */
-  margin-bottom: 16px;
+  gap: 4px; /* ✅ cực sát */
+  margin-bottom: 12px;
 }
 .row-inputs {
   display: flex;
@@ -198,12 +198,17 @@
 }
 .cart-form input,
 .cart-form textarea {
-  padding: 8px;
-  font-size: 14px;
+  padding: 6px 8px;
+  font-size: 13px;
   border: 1px solid #ccc;
   border-radius: 6px;
   width: 100%;
+  line-height: 1.3;
   box-sizing: border-box;
+}
+.cart-form textarea {
+  height: 48px; /* ✅ thấp hơn 1 dòng rưỡi */
+  resize: none;
 }
 
 /* ========== NÚT ĐẶT HÀNG ========== */
