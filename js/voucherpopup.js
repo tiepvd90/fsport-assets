@@ -1,15 +1,19 @@
-// 🔁 Fetch file JSON voucher theo loại sản phẩm
-function fetchVoucherMap(jsonUrl = "/json/voucherpopup.json") {
+// 🔁 Fetch JSON voucher theo loại sản phẩm từ Netlify (dùng tuyệt đối để tránh lỗi trên Carrd)
+function fetchVoucherMap() {
+  const jsonUrl = "https://friendly-kitten-d760ff.netlify.app/json/voucherpopup.json";
+  
   return fetch(jsonUrl)
     .then(res => {
-      if (!res.ok) throw new Error("Không load được JSON: " + res.status);
+      if (!res.ok) throw new Error(`Không load được JSON: ${res.status}`);
       return res.json();
     })
     .catch(err => {
-      console.warn("Không thể tải voucher JSON:", err);
+      console.warn("❌ Không thể tải voucher JSON:", err);
       return {};
     });
 }
+
+
 
 // 🎆 Pháo hoa
 function createFirework(x, y) {
