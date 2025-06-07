@@ -1,22 +1,14 @@
+// 🔁 Fetch file JSON voucher theo loại sản phẩm
 function fetchVoucherMap(jsonUrl = "/json/voucherpopup.json") {
   return fetch(jsonUrl)
     .then(res => {
-      if (!res.ok) {
-        throw new Error(`HTTP ${res.status} - ${res.statusText}`);
-      }
+      if (!res.ok) throw new Error("Không load được JSON: " + res.status);
       return res.json();
     })
     .catch(err => {
       console.warn("Không thể tải voucher JSON:", err);
       return {};
     });
-}
-
-
-// 🔍 Lấy mã voucher từ URL
-function getVoucherCodeFromURL() {
-  const params = new URLSearchParams(window.location.search);
-  return params.get("ref");
 }
 
 // 🎆 Pháo hoa
@@ -28,17 +20,17 @@ function createFirework(x, y) {
   document.body.appendChild(fw);
   setTimeout(() => fw.remove(), 1000);
 }
-function launchFireworks(centerX, centerY) {
+function launchFireworks(cx, cy) {
   for (let i = 0; i < 10; i++) {
     const angle = Math.random() * 2 * Math.PI;
     const radius = 50 + Math.random() * 50;
-    const x = centerX + radius * Math.cos(angle);
-    const y = centerY + radius * Math.sin(angle);
+    const x = cx + radius * Math.cos(angle);
+    const y = cy + radius * Math.sin(angle);
     createFirework(x, y);
   }
 }
 
-// 🎁 Hiển thị popup
+// 🧨 Hiển thị popup
 function showVoucherPopup(refCode, amount) {
   if (document.getElementById("voucherPopup")) return;
 
@@ -54,9 +46,7 @@ function showVoucherPopup(refCode, amount) {
   document.body.appendChild(popup);
 
   const rect = popup.getBoundingClientRect();
-  const centerX = rect.left + rect.width / 2;
-  const centerY = rect.top + rect.height / 2;
-  launchFireworks(centerX, centerY);
+  launchFireworks(rect.left + rect.width / 2, rect.top + rect.height / 2);
 
   document.getElementById("closeVoucherBtn")?.addEventListener("click", () => popup.remove());
 
@@ -64,22 +54,21 @@ function showVoucherPopup(refCode, amount) {
     localStorage.setItem("useVoucherCode", refCode);
     localStorage.setItem("useVoucherAmount", amount);
     popup.remove();
-    document.querySelector("#btn-atc")?.click(); // Giả lập mở giỏ hàng
+    document.querySelector("#btn-atc")?.click();
   });
 }
 
-// 🚀 Tự động bật nếu đúng mã
+// 🚀 Gọi sau DOM load
 window.addEventListener("DOMContentLoaded", async () => {
-  if (typeof loai === "undefined") {
-    console.warn("⚠ Không tìm thấy biến 'loai'. Không thể kiểm tra voucher.");
-    return;
-  }
+  const loai = window.loai;
+  const refCode = new URLSearchParams(window.location.search).get("ref");
+
+  if (!loai || !refCode) return;
 
   const voucherData = await fetchVoucherMap();
-  const refCode = getVoucherCodeFromURL();
+  const matchedAmount = voucherData?.[loai]?.[refCode];
 
-  if (refCode && voucherData[loai] && voucherData[loai][refCode]) {
-    const amount = voucherData[loai][refCode];
-    showVoucherPopup(refCode, amount);
+  if (matchedAmount) {
+    showVoucherPopup(refCode, matchedAmount);
   }
 });
