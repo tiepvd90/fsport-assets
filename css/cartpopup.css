@@ -243,3 +243,10 @@
   margin-bottom: 0;
   font-weight: normal;
 }
+.product-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* ✅ đẩy phần phân loại xuống dưới */
+}
+
