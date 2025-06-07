@@ -199,31 +199,47 @@
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  gap: 8px;
   margin-bottom: 16px;
-  font-size: 14px;
 }
 
 .quantity-control {
   display: flex;
   align-items: center;
-  border: 1px solid #ccc;
+  background: #f2f2f2;
   border-radius: 8px;
   overflow: hidden;
+  height: 36px;              /* ⬅ nhỏ lại còn 2/3 */
+  font-size: 18px;
 }
 
 .quantity-control button {
-  padding: 6px 10px;
-  font-size: 16px;
-  background: #eee;
+  background: transparent;
   border: none;
-  cursor: pointer;
+  color: #111;
+  width: 36px;
+  height: 100%;
+  font-size: 20px;
   font-weight: bold;
+  cursor: pointer;
 }
 
 .quantity-control input {
   width: 40px;
   text-align: center;
   border: none;
-  font-size: 14px;
+  background: transparent;
+  color: #111;
+  font-size: 18px;
+  font-weight: bold;
+  height: 100%;
 }
+
+/* Tạo đường kẻ chia giữa nút */
+.quantity-control button:first-child {
+  border-right: 1px solid #ddd;
+}
+
+.quantity-control button:last-child {
+  border-left: 1px solid #ddd;
+}
+
