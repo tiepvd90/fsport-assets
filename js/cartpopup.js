@@ -118,12 +118,22 @@ document.addEventListener("DOMContentLoaded", () => {
       const loai = "chair";
       const product = selectedVariant["Phân loại"];
       const codprice = selectedVariant.Giá;
+const quantity = parseInt(document.getElementById("quantityInput").value) || 1;
 
-      fetch("https://hook.eu2.make.com/m9o7boye6fl1hstehst7waysmt38b2ul", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ loai, sanpham: product, phone, fullname, address, codprice })
-      });
+     fetch("https://hook.eu2.make.com/m9o7boye6fl1hstehst7waysmt38b2ul", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    loai,
+    sanpham: product,
+    phone,
+    fullname,
+    address,
+    codprice,
+    quantity  // ✅ Gửi về Make
+  })
+});
+
 
       if (typeof trackBothPixels === "function") {
         trackBothPixels("Subscribe", { content_name: product, content_category: loai });
