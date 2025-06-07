@@ -200,7 +200,7 @@
   justify-content: flex-end;
   align-items: center;
   margin-bottom: 16px;
-  transform: scale(0.66); /* Giảm toàn bộ còn 2/3 */
+  transform: scale(0.8); /* Giảm toàn bộ còn 2/3 */
   transform-origin: right top;
 }
 .quantity-control {
@@ -233,7 +233,10 @@
   font-size: 18px;
   font-weight: bold;
   height: 100%;
+  line-height: 36px; /* ⬅ Cùng với .quantity-control height */
+  padding: 0;
 }
+
 
 /* Đường phân cách giữa các nút */
 .quantity-control button:first-child {
