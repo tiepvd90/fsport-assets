@@ -200,15 +200,16 @@
   justify-content: flex-end;
   align-items: center;
   margin-bottom: 16px;
+  transform: scale(0.66); /* Giảm toàn bộ còn 2/3 */
+  transform-origin: right top;
 }
-
 .quantity-control {
   display: flex;
   align-items: center;
   background: #f2f2f2;
   border-radius: 8px;
   overflow: hidden;
-  height: 36px;              /* ⬅ nhỏ lại còn 2/3 */
+  height: 36px;
   font-size: 18px;
 }
 
@@ -234,7 +235,7 @@
   height: 100%;
 }
 
-/* Tạo đường kẻ chia giữa nút */
+/* Đường phân cách giữa các nút */
 .quantity-control button:first-child {
   border-right: 1px solid #ddd;
 }
@@ -242,4 +243,5 @@
 .quantity-control button:last-child {
   border-left: 1px solid #ddd;
 }
+
 
