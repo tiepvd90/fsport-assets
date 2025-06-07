@@ -1,12 +1,17 @@
-// 🔁 Hàm fetch file JSON chứa danh sách voucher theo loại sản phẩm
 function fetchVoucherMap(jsonUrl = "/json/voucherpopup.json") {
   return fetch(jsonUrl)
-    .then(res => res.json())
+    .then(res => {
+      if (!res.ok) {
+        throw new Error(`HTTP ${res.status} - ${res.statusText}`);
+      }
+      return res.json();
+    })
     .catch(err => {
       console.warn("Không thể tải voucher JSON:", err);
       return {};
     });
 }
+
 
 // 🔍 Lấy mã voucher từ URL
 function getVoucherCodeFromURL() {
