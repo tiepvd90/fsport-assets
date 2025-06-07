@@ -257,9 +257,14 @@
   border-left: 1px solid #ddd;
 }
 /* ========== NHÓM PHÂN LOẠI DẠNG BUTTON (NẾU KHÔNG CÓ ẢNH) ========== */
+/* Biến thể thumbnail sắp xếp kiểu lưới 5 cột */
 .variant-group {
-  margin-bottom: 12px;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);  /* ✅ 5 biến thể mỗi hàng */
+  gap: 10px;
+  margin-bottom: 16px;
 }
+
 .variant-label {
   font-weight: bold;
   font-size: 14px;
