@@ -16,6 +16,37 @@ function initCartPopup() {
     })
     .catch(err => console.warn("Không thể tải JSON:", err));
 }
+const thumbWrapper = document.createElement("div");
+thumbWrapper.className = "variant-thumbnails"; // ✅ grid 5 cột ở đây
+
+attr.values.forEach(value => {
+  const thumb = document.createElement("div");
+  thumb.className = "variant-thumb";
+  thumb.dataset.key = attr.key;
+  thumb.dataset.value = value;
+
+  if (displayMode === "thumbnail") {
+    const matched = window.allVariants.find(v => v[attr.key] === value && v["Ảnh"]);
+    thumb.innerHTML = `
+      <img src="${matched?.Ảnh || ''}" alt="${value}" />
+      <div class="variant-title">${value}</div>
+    `;
+  } else {
+    thumb.textContent = value;
+  }
+
+  thumb.addEventListener("click", () => {
+    document.querySelectorAll(`.variant-thumb[data-key="${attr.key}"]`).forEach(el => {
+      el.classList.remove("selected");
+    });
+    thumb.classList.add("selected");
+    updateSelectedVariant();
+  });
+
+  thumbWrapper.appendChild(thumb); // ✅ thêm vào wrapper chứ không phải group
+});
+
+group.appendChild(thumbWrapper);
 
 function renderOptions(attributes) {
   const container = document.getElementById("variantList");
@@ -27,6 +58,8 @@ function renderOptions(attributes) {
     group.innerHTML = `<div class="variant-label">${attr.label}:</div>`;
 
     const displayMode = attr.display || "button";
+    const thumbWrapper = document.createElement("div");
+    thumbWrapper.className = displayMode === "thumbnail" ? "variant-thumbnails" : "variant-buttons";
 
     attr.values.forEach(value => {
       const thumb = document.createElement("div");
@@ -52,16 +85,19 @@ function renderOptions(attributes) {
         updateSelectedVariant();
       });
 
-      group.appendChild(thumb);
+      thumbWrapper.appendChild(thumb);
     });
 
+    group.appendChild(thumbWrapper);
     container.appendChild(group);
   });
 
-  // Chọn mặc định nếu có
-  const firstBtns = container.querySelectorAll(".variant-thumb");
-  if (firstBtns.length > 0) firstBtns[0].click();
+  // ✅ Auto chọn cái đầu tiên
+  const first = container.querySelector(".variant-thumb");
+  if (first) first.click();
 }
+
+
 
 function updateSelectedVariant() {
   const selected = {};
