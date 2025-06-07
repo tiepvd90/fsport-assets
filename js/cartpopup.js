@@ -1,4 +1,5 @@
 window.selectedVariant = null;
+let isCartEventBound = false;
 
 function initCartPopup() {
   const container = document.getElementById("cartContainer");
@@ -120,7 +121,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const orderBtn = document.getElementById("cartSubmitBtn");
   const closeBtns = document.querySelectorAll(".cart-popup-close, .cart-popup-overlay");
 
-  if (orderBtn) {
+  if (orderBtn && !isCartEventBound) {
+    isCartEventBound = true;
     orderBtn.addEventListener("click", () => {
       const fullname = document.getElementById("cartName")?.value.trim();
       const phone = document.getElementById("cartPhone")?.value.trim();
