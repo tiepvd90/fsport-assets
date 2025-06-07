@@ -8,16 +8,15 @@ function initCartPopup() {
     .then(res => res.json())
     .then(data => {
       if (data["thuộc_tính"] && data["biến_thể"]) {
+        window.allVariants = data["biến_thể"];
         renderOptions(data["thuộc_tính"]);
-        renderVariants(data["biến_thể"], data["thuộc_tính"]);
       } else {
-        console.error("❌ JSON không đúng định dạng mở rộng.");
+        console.error("❌ Dữ liệu JSON thiếu thuộc_tính hoặc biến_thể.");
       }
     })
     .catch(err => console.warn("Không thể tải JSON:", err));
 }
 
-// ✅ Dựng nút chọn phân loại
 function renderOptions(attributes) {
   const container = document.getElementById("variantList");
   container.innerHTML = "";
@@ -27,54 +26,54 @@ function renderOptions(attributes) {
     group.className = "variant-group";
     group.innerHTML = `<div class="variant-label">${attr.label}:</div>`;
 
-    attr.values.forEach((value, i) => {
-      const btn = document.createElement("button");
-      btn.className = "variant-thumb";
-      btn.textContent = value;
-      btn.dataset.key = attr.key;
-      btn.dataset.value = value;
+    const displayMode = attr.display || "button";
 
-      btn.addEventListener("click", () => {
+    attr.values.forEach(value => {
+      const thumb = document.createElement("div");
+      thumb.className = "variant-thumb";
+      thumb.dataset.key = attr.key;
+      thumb.dataset.value = value;
+
+      if (displayMode === "thumbnail") {
+        const matched = window.allVariants.find(v => v[attr.key] === value && v["Ảnh"]);
+        thumb.innerHTML = `
+          <img src="${matched?.Ảnh || ''}" alt="${value}" />
+          <div class="variant-title">${value}</div>
+        `;
+      } else {
+        thumb.textContent = value;
+      }
+
+      thumb.addEventListener("click", () => {
         document.querySelectorAll(`.variant-thumb[data-key="${attr.key}"]`).forEach(el => {
           el.classList.remove("selected");
         });
-        btn.classList.add("selected");
+        thumb.classList.add("selected");
         updateSelectedVariant();
       });
 
-      group.appendChild(btn);
+      group.appendChild(thumb);
     });
 
     container.appendChild(group);
   });
+
+  // Chọn mặc định nếu có
+  const firstBtns = container.querySelectorAll(".variant-thumb");
+  if (firstBtns.length > 0) firstBtns[0].click();
 }
 
-// ✅ Khi user chọn biến thể → tìm đúng combo trong danh sách
 function updateSelectedVariant() {
   const selected = {};
   document.querySelectorAll(".variant-thumb.selected").forEach(btn => {
-    const key = btn.dataset.key;
-    const value = btn.dataset.value;
-    selected[key] = value;
+    selected[btn.dataset.key] = btn.dataset.value;
   });
 
-  const allVariants = window.allVariants || [];
-  const found = allVariants.find(v => {
-    return Object.keys(selected).every(key => v[key] === selected[key]);
-  });
+  const matched = window.allVariants.find(variant =>
+    Object.keys(selected).every(key => variant[key] === selected[key])
+  );
 
-  if (found) selectVariant(found);
-}
-
-function renderVariants(variants, attributes) {
-  window.allVariants = variants; // dùng để tra sau
-
-  // Tự động chọn cái đầu tiên
-  if (variants.length > 0) {
-    const firstVal = variants[0][attributes[0].key];
-    const btn = [...document.querySelectorAll(`.variant-thumb[data-value="${firstVal}"]`)][0];
-    if (btn) btn.click();
-  }
+  if (matched) selectVariant(matched);
 }
 
 function selectVariant(data) {
@@ -86,19 +85,19 @@ function selectVariant(data) {
   document.getElementById("productOriginalPrice").textContent = data["Giá gốc"].toLocaleString() + "đ";
 }
 
-// ✅ Mở / đóng popup
-function toggleCartPopup(show = true) {
-  const popup = document.getElementById("cartPopup");
-  if (!popup) return;
-
-  popup.classList.toggle("hidden", !show);
-  popup.style.display = show ? "flex" : "none";
-}
-
+// ✅ Số lượng
 function changeQuantity(delta) {
   const input = document.getElementById("quantityInput");
   let value = parseInt(input.value || "1");
   input.value = Math.max(1, value + delta);
+}
+
+// ✅ Mở / đóng popup
+function toggleCartPopup(show = true) {
+  const popup = document.getElementById("cartPopup");
+  if (!popup) return;
+  popup.classList.toggle("hidden", !show);
+  popup.style.display = show ? "flex" : "none";
 }
 
 // ✅ Gửi đơn hàng
@@ -111,6 +110,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const fullname = document.getElementById("cartName").value.trim();
       const phone = document.getElementById("cartPhone").value.trim();
       const address = document.getElementById("cartAddress").value.trim();
+      const quantity = parseInt(document.getElementById("quantityInput").value) || 1;
 
       if (!selectedVariant) return alert("Vui lòng chọn phân loại sản phẩm.");
       if (!fullname || !phone || !address) return alert("Vui lòng nhập đủ họ tên, sđt và địa chỉ.");
@@ -118,22 +118,20 @@ document.addEventListener("DOMContentLoaded", () => {
       const loai = "chair";
       const product = selectedVariant["Phân loại"];
       const codprice = selectedVariant.Giá;
-const quantity = parseInt(document.getElementById("quantityInput").value) || 1;
 
-     fetch("https://hook.eu2.make.com/m9o7boye6fl1hstehst7waysmt38b2ul", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({
-    loai,
-    sanpham: product,
-    phone,
-    fullname,
-    address,
-    codprice,
-    quantity  // ✅ Gửi về Make
-  })
-});
-
+      fetch("https://hook.eu2.make.com/m9o7boye6fl1hstehst7waysmt38b2ul", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          loai,
+          sanpham: product,
+          phone,
+          fullname,
+          address,
+          codprice,
+          quantity
+        })
+      });
 
       if (typeof trackBothPixels === "function") {
         trackBothPixels("Subscribe", { content_name: product, content_category: loai });
