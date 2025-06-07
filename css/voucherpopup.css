@@ -1,0 +1,67 @@
+@keyframes fireworks {
+  0% { transform: scale(0.5); opacity: 0; }
+  50% { transform: scale(1.2); opacity: 1; }
+  100% { transform: scale(0); opacity: 0; }
+}
+
+.firework {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: gold;
+  border-radius: 50%;
+  animation: fireworks 1s ease-out forwards;
+}
+
+.voucher-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: linear-gradient(to bottom right, #ffffff, #fef3ec);
+  padding: 48px 36px;
+  border-radius: 16px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.2);
+  z-index: 9999;
+  text-align: center;
+  width: 400px;
+  max-width: 90%;
+  border: 1px solid #f5c0b0;
+}
+
+.voucher-popup h2 {
+  color: #d93025;
+  font-size: 24px;
+  margin-bottom: 14px;
+}
+
+.voucher-popup p {
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+.voucher-popup button {
+  background: #d93025;
+  color: white;
+  border: none;
+  padding: 12px 28px;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  text-transform: uppercase;
+  font-size: 16px;
+}
+
+.voucher-close {
+  position: absolute;
+  top: 10px;
+  right: 16px;
+  font-size: 30px;
+  cursor: pointer;
+  color: #999;
+  font-weight: bold;
+}
+
+.voucher-close:hover {
+  color: #000;
+}
