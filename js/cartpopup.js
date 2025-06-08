@@ -14,6 +14,7 @@ function initCartPopup() {
         window.allVariants = data["biến_thể"];
         window.productCategory = data["category"] || loai;
 
+        // Nếu đang đợi voucher áp dụng toàn bộ
         if (window.__voucherWaiting?.amount) {
           data["biến_thể"].forEach(sp => {
             if (sp.id) window.voucherByProduct[sp.id] = window.__voucherWaiting.amount;
@@ -59,7 +60,9 @@ function renderOptions(attributes) {
       }
 
       thumb.addEventListener("click", () => {
-        document.querySelectorAll(`.variant-thumb[data-key="${attr.key}"]`).forEach(el => el.classList.remove("selected"));
+        document.querySelectorAll(`.variant-thumb[data-key="${attr.key}"]`).forEach(el => {
+          el.classList.remove("selected");
+        });
         thumb.classList.add("selected");
         updateSelectedVariant();
       });
@@ -102,43 +105,56 @@ function selectVariant(data) {
   const voucherAmount = window.voucherByProduct?.[data.id] || 0;
   const finalPrice = Math.max(0, data.Giá - voucherAmount);
 
-  if (voucherAmount > 0) {
-    productPrice.textContent = data.Giá.toLocaleString() + "đ";
-    productPrice.style.color = "black";
-    productPrice.style.textDecoration = "line-through";
-    if (productOriginalPrice) productOriginalPrice.style.display = "none";
+  // Xoá dòng giá sau giảm cũ nếu có
+  const oldFinal = document.getElementById("finalPriceLine");
+  if (oldFinal) oldFinal.remove();
 
+  if (voucherAmount > 0) {
+    // Giá có voucher: gạch giữa, màu đen
+    if (productPrice) {
+      productPrice.textContent = data.Giá.toLocaleString() + "đ";
+      productPrice.style.color = "black";
+      productPrice.style.textDecoration = "line-through";
+    }
+
+    // Ẩn giá gốc
+    if (productOriginalPrice) {
+      productOriginalPrice.style.display = "none";
+    }
+
+    // Hiển thị dòng voucher
     if (voucherLabel) {
       voucherLabel.textContent = `Voucher: ${voucherAmount.toLocaleString()}đ`;
       voucherLabel.style.display = "inline-block";
     }
 
-    let finalLine = document.getElementById("finalPriceLine");
-    if (!finalLine) {
-      finalLine = document.createElement("div");
-      finalLine.id = "finalPriceLine";
-    }
+    // Thêm dòng giá sau giảm
+    const finalLine = document.createElement("div");
+    finalLine.id = "finalPriceLine";
     finalLine.textContent = finalPrice.toLocaleString() + "đ";
     finalLine.style.color = "#d0021b";
     finalLine.style.fontWeight = "bold";
     finalLine.style.marginTop = "4px";
     finalLine.style.fontSize = "16px";
 
-    voucherLabel.insertAdjacentElement("afterend", finalLine);
+    productPrice.parentElement?.appendChild(finalLine);
   } else {
-    productPrice.textContent = data.Giá.toLocaleString() + "đ";
-    productPrice.style.color = "#d0021b";
-    productPrice.style.textDecoration = "none";
+    // Không có voucher
+    if (productPrice) {
+      productPrice.textContent = data.Giá.toLocaleString() + "đ";
+      productPrice.style.color = "#d0021b";
+      productPrice.style.textDecoration = "none";
+    }
+
     if (productOriginalPrice) {
       productOriginalPrice.textContent = data["Giá gốc"].toLocaleString() + "đ";
       productOriginalPrice.style.display = "inline";
     }
-    if (voucherLabel) voucherLabel.style.display = "none";
 
-    const finalLine = document.getElementById("finalPriceLine");
-    if (finalLine) finalLine.remove();
+    if (voucherLabel) voucherLabel.style.display = "none";
   }
 
+  // Tên biến thể
   if (productVariantText) {
     const selectedText = [];
     for (let key in data) {
