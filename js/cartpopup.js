@@ -10,6 +10,7 @@ function initCartPopup() {
     .then(data => {
       if (data["thuộc_tính"] && data["biến_thể"]) {
         window.allVariants = data["biến_thể"];
+        window.productCategory = data.category || "unknown";
         renderOptions(data["thuộc_tính"]);
       } else {
         console.error("❌ Dữ liệu JSON thiếu thuộc_tính hoặc biến_thể.");
@@ -128,7 +129,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (!window.selectedVariant) return alert("Vui lòng chọn phân loại sản phẩm.");
 
-      const loai = "chair"; // có thể lấy động nếu cần
+      const loai = window.productCategory || "chair";
 
       window.cart = window.cart || [];
       window.cart.push({
@@ -136,6 +137,18 @@ document.addEventListener("DOMContentLoaded", () => {
         quantity,
         loai
       });
+
+      // ✅ Tracking AddToCart
+      if (typeof trackBothPixels === "function") {
+        trackBothPixels("AddToCart", {
+          content_id: window.selectedVariant["product_id"] || window.selectedVariant["Phân loại"],
+          content_name: window.selectedVariant["Phân loại"],
+          content_category: loai,
+          quantity,
+          value: window.selectedVariant["Giá"] * quantity,
+          currency: "VND"
+        });
+      }
 
       if (typeof showCheckoutPopup === "function") {
         showCheckoutPopup();
