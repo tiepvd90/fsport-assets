@@ -59,9 +59,7 @@ function renderOptions(attributes) {
       }
 
       thumb.addEventListener("click", () => {
-        document.querySelectorAll(`.variant-thumb[data-key="${attr.key}"]`).forEach(el => {
-          el.classList.remove("selected");
-        });
+        document.querySelectorAll(`.variant-thumb[data-key="${attr.key}"]`).forEach(el => el.classList.remove("selected"));
         thumb.classList.add("selected");
         updateSelectedVariant();
       });
@@ -100,48 +98,62 @@ function selectVariant(data) {
   const voucherLabel = document.getElementById("voucherLabel");
 
   if (mainImage) mainImage.src = data.Ảnh;
-  if (productPrice) productPrice.textContent = data.Giá.toLocaleString() + "đ";
-  if (productOriginalPrice) productOriginalPrice.textContent = data["Giá gốc"].toLocaleString() + "đ";
 
   const voucherAmount = window.voucherByProduct?.[data.id] || 0;
+  const finalPrice = Math.max(0, data.Giá - voucherAmount);
 
-  if (voucherLabel) {
-    const finalPriceLine = document.getElementById("finalPriceLine");
-    if (finalPriceLine) finalPriceLine.remove();
-
-    if (voucherAmount > 0) {
+  if (voucherAmount > 0) {
+    if (voucherLabel) {
       voucherLabel.textContent = `Voucher: ${voucherAmount.toLocaleString()}đ`;
       voucherLabel.style.display = "inline-block";
+    }
 
-      // Giá bị gạch
-      productPrice.style.color = "#111";
+    if (productPrice) {
+      productPrice.textContent = data.Giá.toLocaleString() + "đ";
+      productPrice.style.color = "#000";
       productPrice.style.textDecoration = "line-through";
+    }
 
-      if (productOriginalPrice) productOriginalPrice.style.display = "none";
+    if (productOriginalPrice) {
+      productOriginalPrice.style.display = "none";
+    }
 
-      const finalPrice = data.Giá - voucherAmount;
-      const newFinal = document.createElement("div");
-      newFinal.id = "finalPriceLine";
-      newFinal.textContent = `${finalPrice.toLocaleString()}đ`;
-      newFinal.style.color = "#d0021b";
-      newFinal.style.fontWeight = "bold";
-      newFinal.style.marginTop = "4px";
-
-      voucherLabel.parentNode?.insertBefore(newFinal, voucherLabel.nextSibling);
-    } else {
-      voucherLabel.style.display = "none";
+    let finalLine = document.getElementById("finalPriceLine");
+    if (!finalLine) {
+      finalLine = document.createElement("div");
+      finalLine.id = "finalPriceLine";
+      productPrice.parentElement.appendChild(finalLine);
+    }
+    finalLine.textContent = finalPrice.toLocaleString() + "đ";
+    finalLine.style.color = "#d0021b";
+    finalLine.style.fontWeight = "bold";
+    finalLine.style.marginTop = "4px";
+    finalLine.style.fontSize = "16px";
+  } else {
+    if (voucherLabel) voucherLabel.style.display = "none";
+    if (productPrice) {
+      productPrice.textContent = data.Giá.toLocaleString() + "đ";
       productPrice.style.color = "#d0021b";
       productPrice.style.textDecoration = "none";
-      if (productOriginalPrice) productOriginalPrice.style.display = "inline";
     }
+    if (productOriginalPrice) {
+      productOriginalPrice.textContent = data["Giá gốc"].toLocaleString() + "đ";
+      productOriginalPrice.style.display = "inline";
+    }
+
+    const finalLine = document.getElementById("finalPriceLine");
+    if (finalLine) finalLine.remove();
   }
 
-  const selectedText = [];
-  for (let key in data) {
-    if (["Ảnh", "Giá", "Giá gốc", "id", "category"].includes(key)) continue;
-    selectedText.push(data[key]);
+  if (productVariantText) {
+    const selectedText = [];
+    for (let key in data) {
+      if (["Ảnh", "Giá", "Giá gốc", "id", "category"].includes(key)) continue;
+      selectedText.push(data[key]);
+    }
+    productVariantText.textContent = selectedText.join(", ");
+    productVariantText.style.marginTop = "16px";
   }
-  if (productVariantText) productVariantText.textContent = selectedText.join(", ");
 }
 
 function changeQuantity(delta) {
