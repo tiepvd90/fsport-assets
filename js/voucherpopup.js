@@ -1,4 +1,4 @@
-// 🔁 Fetch JSON voucher theo loại sản phẩm từ Netlify (dùng tuyệt đối để tránh lỗi trên Carrd)
+// 🔁 Fetch JSON voucher theo loại sản phẩm từ Netlify
 function fetchVoucherMap() {
   const jsonUrl = "https://friendly-kitten-d760ff.netlify.app/json/voucherpopup.json";
 
@@ -72,10 +72,20 @@ window.addEventListener("DOMContentLoaded", async () => {
   const voucherData = await fetchVoucherMap();
   const vouchers = voucherData?.[loai] || {};
 
+  // ✅ Bước 1: Gán window.voucherByProduct theo từng sản phẩm
+  window.voucherByProduct = {};
+  for (let code in vouchers) {
+    const { appliesTo = [], amount = 0 } = vouchers[code];
+    appliesTo.forEach(sp => {
+      window.voucherByProduct[sp] = amount;
+    });
+  }
+
+  // ✅ Bước 2: Kiểm tra ref khớp để hiện popup
   for (let code in vouchers) {
     if (search.includes(code)) {
-      const amount = vouchers[code];
-      window.currentVoucherValue = amount; // ✅ Gắn global
+      const amount = vouchers[code]?.amount || 0;
+      window.currentVoucherValue = amount;
       showVoucherPopup(code, amount);
       break;
     }
