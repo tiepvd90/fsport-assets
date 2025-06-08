@@ -135,3 +135,15 @@
 #checkoutSubmitBtn:hover {
   background: #d32f2f;
 }
+#cartIcon {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  font-size: 24px;
+  background: #fff;
+  padding: 10px;
+  border-radius: 50%;
+  box-shadow: 0 0 8px rgba(0,0,0,0.2);
+  cursor: pointer;
+  z-index: 10002;
+}
