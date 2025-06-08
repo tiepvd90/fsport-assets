@@ -213,3 +213,13 @@
 .cart-submit-btn:hover {
   background: #d32f2f;
 }
+.voucher-tag {
+  display: inline-block;
+  background-color: rgba(0, 160, 230, 0.6);
+  color: white;
+  font-size: 9px;
+  padding: 2px 6px;
+  margin-left: 6px;
+  border-radius: 4px;
+  vertical-align: middle;
+}
