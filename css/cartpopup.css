@@ -18,7 +18,7 @@
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 66vh; /* ✅ 2/3 màn hình */
+  height: 66vh;
   background: #fff;
   padding: 16px;
   border-radius: 16px 16px 0 0;
@@ -27,6 +27,9 @@
   overflow-y: auto;
   transform: translateY(100%);
   animation: slideUp 0.3s ease forwards;
+  touch-action: manipulation;
+  -webkit-user-select: none;
+  user-select: none;
 }
 @keyframes slideUp {
   to { transform: translateY(0); }
@@ -61,6 +64,9 @@
 }
 .product-info {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 .product-name {
   font-size: 15px;
@@ -80,6 +86,13 @@
   text-decoration: line-through;
   font-size: 16px;
 }
+.product-variant-text {
+  font-size: 13px;
+  color: #444;
+  font-weight: normal;
+  margin-top: auto;
+  margin-bottom: 0;
+}
 
 /* ========== PHÂN LOẠI ========== */
 .variant-group {
@@ -92,7 +105,7 @@
 }
 .variant-thumbnails {
   display: grid;
-  grid-template-columns: repeat(4, 1fr); /* ✅ 4 x 2 */
+  grid-template-columns: repeat(4, 1fr);
   gap: 10px;
 }
 .variant-thumb {
@@ -116,8 +129,8 @@
   border-radius: 6px;
 }
 .variant-title {
-  font-size: 12px;              /* ✅ nhỏ hơn */
-  font-weight: normal;          /* ✅ không in đậm */
+  font-size: 12px;
+  font-weight: normal;
   color: #333;
   text-align: center;
   margin-top: 4px;
@@ -133,7 +146,7 @@
 /* ========== SỐ LƯỢNG ========== */
 .quantity-wrapper {
   display: flex;
-  justify-content: space-between; /* ✅ căn trái - phải */
+  justify-content: space-between;
   align-items: center;
   margin-bottom: 12px;
   font-size: 14px;
@@ -144,18 +157,20 @@
   background: #f2f2f2;
   border-radius: 8px;
   overflow: hidden;
-  height: 30px;              /* ✅ nhỏ hơn */
+  height: 30px;
   font-size: 16px;
 }
 .quantity-control button {
   background: transparent;
   border: none;
-  color: #000;               /* ✅ màu đen */
+  color: #000;
   width: 30px;
   height: 100%;
   font-size: 18px;
   font-weight: bold;
   cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 .quantity-control input {
   width: 36px;
@@ -166,7 +181,7 @@
   color: #111;
   font-size: 19px;
   font-weight: bold;
-  line-height: 30px;         /* ✅ canh giữa số */
+  line-height: 30px;
   padding: 0;
   appearance: textfield;
 }
@@ -181,41 +196,8 @@
 .quantity-control button:last-child {
   border-left: 1px solid #ddd;
 }
-.quantity-control button {
-  touch-action: manipulation;
-  -webkit-tap-highlight-color: transparent;
-}
 
-/* ========== FORM KHÁCH HÀNG ========== */
-.cart-form {
-  display: flex;
-  flex-direction: column;
-  gap: 4px; /* ✅ cực sát */
-  margin-bottom: 12px;
-}
-.row-inputs {
-  display: flex;
-  gap: 8px;
-}
-.row-inputs input {
-  flex: 1;
-}
-.cart-form input,
-.cart-form textarea {
-  padding: 6px 8px;
-  font-size: 13px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  width: 100%;
-  line-height: 1.3;
-  box-sizing: border-box;
-}
-.cart-form textarea {
-  height: 48px; /* ✅ thấp hơn 1 dòng rưỡi */
-  resize: none;
-}
-
-/* ========== NÚT ĐẶT HÀNG ========== */
+/* ========== NÚT THÊM VÀO GIỎ HÀNG ========== */
 .cart-submit-btn {
   width: 100%;
   padding: 14px;
@@ -231,22 +213,3 @@
 .cart-submit-btn:hover {
   background: #d32f2f;
 }
-.cart-popup-content {
-  touch-action: manipulation; /* ✅ Ngăn double-tap zoom trên iOS */
-  -webkit-user-select: none;
-  user-select: none;
-}
-.product-variant-text {
-  font-size: 13px;
-  color: #444;
-  margin-top: auto;
-  margin-bottom: 0;
-  font-weight: normal;
-}
-.product-info {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between; /* ✅ đẩy phần phân loại xuống dưới */
-}
-
