@@ -1,35 +1,39 @@
-// === CHECKOUT POPUP JS ===
-
-// Biến giỏ hàng toàn cục
+// ✅ BIẾN TOÀN CỤC
 window.cart = window.cart || [];
+let shippingFee = 0;
+let voucherValue = 0;
 
+// ✅ HIỆN CHECKOUT POPUP
 function showCheckoutPopup() {
+  loadShippingFee();
   renderCheckoutCart();
   document.getElementById("checkoutPopup").classList.remove("hidden");
   document.getElementById("checkoutPopup").style.display = "flex";
+  document.body.style.overflow = "hidden";
 }
 
+// ✅ ẨN CHECKOUT POPUP
 function hideCheckoutPopup() {
   document.getElementById("checkoutPopup").classList.add("hidden");
   document.getElementById("checkoutPopup").style.display = "none";
+  document.body.style.overflow = "auto";
 }
 
+// ✅ RENDER DANH SÁCH SẢN PHẨM
 function renderCheckoutCart() {
   const list = document.getElementById("checkoutCartList");
-  list.innerHTML = '';
+  list.innerHTML = "";
 
-  let subtotal = 0;
-  let totalQuantity = 0;
-  let maxShipping = 0;
-  const shippingFeeMap = window.shippingFeeMap || {};
+  if (!window.cart.length) {
+    list.innerHTML = '<div class="cart-empty">Giỏ hàng của bạn hiện đang trống</div>';
+  }
 
   window.cart.forEach((item, index) => {
-    const itemDiv = document.createElement("div");
-    itemDiv.className = "cart-item";
-    
-    const itemHtml = `
-      <button class="remove-btn" onclick="removeCartItem(${index})">×</button>
-      <img src="${item.Ảnh}" alt="">
+    const el = document.createElement("div");
+    el.className = "cart-item";
+    el.innerHTML = `
+      <button class="remove-btn" onclick="removeItem(${index})">&times;</button>
+      <img src="${item.Ảnh}" alt="img" />
       <div class="cart-item-details">
         <div class="cart-item-name">${item["Phân loại"]}</div>
         <div class="cart-item-price-qty">
@@ -42,63 +46,95 @@ function renderCheckoutCart() {
         </div>
       </div>
     `;
-    itemDiv.innerHTML = itemHtml;
-    list.appendChild(itemDiv);
-
-    subtotal += item.Giá * item.quantity;
-    totalQuantity += item.quantity;
-
-    if (shippingFeeMap[item.loai] && shippingFeeMap[item.loai] > maxShipping) {
-      maxShipping = shippingFeeMap[item.loai];
-    }
+    list.appendChild(el);
   });
 
-  const voucher = window.currentVoucherValue || 0;
-  const total = subtotal + maxShipping - voucher;
-
-  document.getElementById("subtotalText").textContent = subtotal.toLocaleString() + "₫";
-  document.getElementById("shippingFeeText").textContent = maxShipping.toLocaleString() + "₫";
-  document.getElementById("voucherText").textContent = "-" + voucher.toLocaleString() + "₫";
-  document.getElementById("totalText").textContent = total.toLocaleString() + "₫";
+  updateCheckoutSummary();
 }
 
-function removeCartItem(index) {
-  window.cart.splice(index, 1);
-  renderCheckoutCart();
+// ✅ TÍNH TỔNG GIÁ & CẬP NHẬT SUMMARY
+function updateCheckoutSummary() {
+  const subtotal = window.cart.reduce((sum, item) => sum + item.Giá * item.quantity, 0);
+  const totalQty = window.cart.reduce((sum, item) => sum + item.quantity, 0);
+
+  const shipping = shippingFee;
+  const total = subtotal + shipping - voucherValue;
+
+  document.getElementById("subtotalText").innerText = `${totalQty} sản phẩm - ${subtotal.toLocaleString()}₫`;
+  document.getElementById("shippingFeeText").innerText = `${shipping.toLocaleString()}₫`;
+  document.getElementById("voucherText").innerText = `-${voucherValue.toLocaleString()}₫`;
+  document.getElementById("totalText").innerText = `${total.toLocaleString()}₫`;
 }
 
+// ✅ THÊM / BỚT SỐ LƯỢNG
 function changeItemQty(index, delta) {
   const item = window.cart[index];
   item.quantity = Math.max(1, item.quantity + delta);
+  saveCart();
   renderCheckoutCart();
 }
 
-document.addEventListener("DOMContentLoaded", () => {
+// ✅ XOÁ ITEM
+function removeItem(index) {
+  window.cart.splice(index, 1);
+  saveCart();
+  renderCheckoutCart();
+}
+
+// ✅ LƯU GIỎ HÀNG VÀO localStorage
+function saveCart() {
+  localStorage.setItem("cart", JSON.stringify(window.cart));
+}
+
+// ✅ LOAD GIỎ HÀNG KHI MỞ TRANG
+function loadCart() {
+  try {
+    const data = JSON.parse(localStorage.getItem("cart"));
+    if (Array.isArray(data)) window.cart = data;
+  } catch (e) {
+    console.warn("Không thể load cart từ localStorage");
+  }
+}
+
+// ✅ TẢI PHÍ VẬN CHUYỂN
+function loadShippingFee() {
   fetch("/json/shippingfee.json")
     .then(res => res.json())
-    .then(data => window.shippingFeeMap = data)
-    .catch(() => window.shippingFeeMap = {});
-
-  const submitBtn = document.getElementById("checkoutSubmitBtn");
-  if (submitBtn) {
-    submitBtn.addEventListener("click", () => {
-      const fullname = document.getElementById("checkoutName")?.value.trim();
-      const phone = document.getElementById("checkoutPhone")?.value.trim();
-      const address = document.getElementById("checkoutAddress")?.value.trim();
-      if (!fullname || !phone || !address) return alert("Vui lòng nhập đủ thông tin.");
-
-      const dataToSend = {
-        fullname,
-        phone,
-        address,
-        cart: window.cart,
-        voucher: window.currentVoucherValue || 0
-      };
-
-      // TODO: fetch gửi dữ liệu về make.com ở đây
-      console.log("🛒 Gửi đơn hàng:", dataToSend);
-      alert("Funsport đã nhận đơn, sẽ sớm liên hệ lại.");
-      hideCheckoutPopup();
+    .then(data => {
+      const fees = window.cart.map(i => data[i.loai] || 0);
+      shippingFee = Math.max(...fees, 0);
+      updateCheckoutSummary();
     });
-  }
+}
+
+// ✅ GỬI ĐƠN HÀNG
+function submitOrder() {
+  const name = document.getElementById("checkoutName")?.value.trim();
+  const phone = document.getElementById("checkoutPhone")?.value.trim();
+  const address = document.getElementById("checkoutAddress")?.value.trim();
+  if (!name || !phone || !address) return alert("Vui lòng nhập đầy đủ thông tin.");
+
+  const orderData = {
+    name,
+    phone,
+    address,
+    items: window.cart,
+    shippingFee,
+    voucherValue,
+    total: window.cart.reduce((sum, i) => sum + i.Giá * i.quantity, 0) + shippingFee - voucherValue
+  };
+
+  // 🚧 Gửi đến Make.com hoặc nơi xử lý
+  // fetch('...', { method: 'POST', headers: {...}, body: JSON.stringify(orderData) });
+
+  alert("Cảm ơn bạn đã đặt hàng! Funsport sẽ sớm liên hệ.");
+  window.cart = [];
+  saveCart();
+  hideCheckoutPopup();
+}
+
+// ✅ BIND SỰ KIỆN KHI LOAD
+window.addEventListener("DOMContentLoaded", () => {
+  loadCart();
+  document.getElementById("checkoutSubmitBtn")?.addEventListener("click", submitOrder);
 });
