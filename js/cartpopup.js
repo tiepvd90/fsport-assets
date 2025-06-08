@@ -124,44 +124,23 @@ document.addEventListener("DOMContentLoaded", () => {
   if (orderBtn && !isCartEventBound) {
     isCartEventBound = true;
     orderBtn.addEventListener("click", () => {
-      const fullname = document.getElementById("cartName")?.value.trim();
-      const phone = document.getElementById("cartPhone")?.value.trim();
-      const address = document.getElementById("cartAddress")?.value.trim();
       const quantity = parseInt(document.getElementById("quantityInput")?.value) || 1;
 
       if (!window.selectedVariant) return alert("Vui lòng chọn phân loại sản phẩm.");
-      if (!fullname || !phone || !address) return alert("Vui lòng nhập đủ họ tên, sđt và địa chỉ.");
 
-      const loai = "chair";
-      const product = window.selectedVariant["Phân loại"];
-      const codprice = window.selectedVariant.Giá;
+      const loai = "chair"; // có thể lấy động nếu cần
 
-      fetch("https://hook.eu2.make.com/m9o7boye6fl1hstehst7waysmt38b2ul", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          loai,
-          sanpham: product,
-          phone,
-          fullname,
-          address,
-          codprice,
-          quantity
-        })
+      window.cart = window.cart || [];
+      window.cart.push({
+        ...window.selectedVariant,
+        quantity,
+        loai
       });
 
-      if (typeof trackBothPixels === "function") {
-        trackBothPixels("Subscribe", { content_name: product, content_category: loai });
-        trackBothPixels("Purchase", {
-          content_name: product,
-          content_category: loai,
-          content_id: product,
-          value: codprice,
-          currency: "VND"
-        });
+      if (typeof showCheckoutPopup === "function") {
+        showCheckoutPopup();
       }
 
-      alert("Funsport đã nhận đơn, sẽ sớm liên hệ lại.");
       toggleCartPopup(false);
     });
   }
