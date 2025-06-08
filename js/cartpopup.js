@@ -1,3 +1,4 @@
+// ✅ Biến toàn cục
 window.selectedVariant = null;
 window.cart = window.cart || [];
 let isCartEventBound = false;
@@ -14,7 +15,6 @@ function initCartPopup() {
         window.allVariants = data["biến_thể"];
         window.productCategory = data["category"] || loai;
 
-        // Nếu đang đợi voucher cho tất cả
         if (window.__voucherWaiting?.amount) {
           data["biến_thể"].forEach(sp => {
             if (sp.id) window.voucherByProduct[sp.id] = window.__voucherWaiting.amount;
@@ -60,9 +60,7 @@ function renderOptions(attributes) {
       }
 
       thumb.addEventListener("click", () => {
-        document.querySelectorAll(`.variant-thumb[data-key="${attr.key}"]`).forEach(el => {
-          el.classList.remove("selected");
-        });
+        document.querySelectorAll(`.variant-thumb[data-key="${attr.key}"]`).forEach(el => el.classList.remove("selected"));
         thumb.classList.add("selected");
         updateSelectedVariant();
       });
@@ -100,10 +98,17 @@ function selectVariant(data) {
   const productVariantText = document.getElementById("productVariantText");
   const voucherLabel = document.getElementById("voucherLabel");
 
+  // Reset hiển thị
+  productPrice.style.color = "#d0021b";
+  productPrice.style.textDecoration = "none";
+  if (productOriginalPrice) productOriginalPrice.style.display = "inline";
+  const oldFinal = document.getElementById("finalPriceLine");
+  if (oldFinal) oldFinal.remove();
+
   // Ảnh
   if (mainImage) mainImage.src = data.Ảnh;
 
-  // Giá
+  // Giá gốc
   if (productPrice) productPrice.textContent = data.Giá.toLocaleString() + "đ";
   if (productOriginalPrice) productOriginalPrice.textContent = data["Giá gốc"].toLocaleString() + "đ";
 
@@ -113,12 +118,27 @@ function selectVariant(data) {
     if (voucherAmount > 0) {
       voucherLabel.textContent = `Voucher: ${voucherAmount.toLocaleString()}đ`;
       voucherLabel.style.display = "inline-block";
+
+      // Gạch ngang giá, chuyển màu
+      productPrice.style.color = "#111";
+      productPrice.style.textDecoration = "line-through";
+      if (productOriginalPrice) productOriginalPrice.style.display = "none";
+
+      // Thêm dòng giá sau giảm
+      const finalPrice = data.Giá - voucherAmount;
+      const finalLine = document.createElement("div");
+      finalLine.id = "finalPriceLine";
+      finalLine.textContent = `Giá sau giảm: ${finalPrice.toLocaleString()}đ`;
+      finalLine.style.color = "#d0021b";
+      finalLine.style.fontWeight = "bold";
+      finalLine.style.marginTop = "4px";
+      productPrice.parentNode?.appendChild(finalLine);
     } else {
       voucherLabel.style.display = "none";
     }
   }
 
-  // Tên biến thể xuống dòng cuối
+  // Tên biến thể
   const selectedText = [];
   for (let key in data) {
     if (["Ảnh", "Giá", "Giá gốc", "id", "category"].includes(key)) continue;
@@ -156,7 +176,6 @@ document.addEventListener("DOMContentLoaded", () => {
       const contentName = product["Phân loại"];
       const voucherAmount = window.voucherByProduct?.[contentId] || 0;
 
-      // Thêm vào giỏ
       window.cart.push({
         ...product,
         quantity,
