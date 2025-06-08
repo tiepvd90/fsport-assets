@@ -9,10 +9,10 @@ function fetchVoucherMap() {
     });
 }
 
-// 🎆 Pháo hoa
+// 🎆 Tạo hiệu ứng pháo hoa
 function createFirework(x, y) {
-  const fw = document.createElement('div');
-  fw.className = 'firework';
+  const fw = document.createElement("div");
+  fw.className = "firework";
   fw.style.left = `${x}px`;
   fw.style.top = `${y}px`;
   document.body.appendChild(fw);
@@ -29,7 +29,7 @@ function launchFireworks(cx, cy) {
   }
 }
 
-// 🧨 Popup voucher
+// 🧨 Hiển thị popup voucher
 function showVoucherPopup(refCode, amount) {
   if (document.getElementById("voucherPopup")) return;
 
@@ -58,7 +58,7 @@ function showVoucherPopup(refCode, amount) {
   });
 }
 
-// 🚀 Main
+// 🚀 Khi DOM ready
 window.addEventListener("DOMContentLoaded", async () => {
   const loai = window.loai;
   const search = window.location.search;
@@ -67,12 +67,11 @@ window.addEventListener("DOMContentLoaded", async () => {
   const voucherData = await fetchVoucherMap();
   const vouchers = voucherData?.[loai] || {};
 
-  // ✅ Gán window.voucherByProduct theo product.id
+  // ✅ Gán window.voucherByProduct từ appliesTo (theo id)
   window.voucherByProduct = {};
   if (Array.isArray(window.allVariants)) {
     for (let code in vouchers) {
       const { appliesTo = [], amount = 0 } = vouchers[code];
-
       if (appliesTo.includes("*")) {
         window.allVariants.forEach(sp => {
           if (sp.id) window.voucherByProduct[sp.id] = amount;
@@ -85,7 +84,7 @@ window.addEventListener("DOMContentLoaded", async () => {
     }
   }
 
-  // ✅ Hiển thị popup nếu mã ref có trong URL
+  // ✅ Hiển thị popup nếu URL chứa mã ref tương ứng
   for (let code in vouchers) {
     if (search.includes(code)) {
       const amount = vouchers[code]?.amount || 0;
