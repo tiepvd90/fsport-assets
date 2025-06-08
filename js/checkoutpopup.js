@@ -26,14 +26,17 @@ function renderCheckoutCart() {
 
   if (!window.cart.length) {
     list.innerHTML = '<div class="cart-empty">Giỏ hàng của bạn hiện đang trống</div>';
+    return;
   }
 
   window.cart.forEach((item, index) => {
     const el = document.createElement("div");
     el.className = "cart-item";
 
-    const voucherText = item.voucher?.amount
-      ? `<span class="item-voucher-label" style="background: rgba(0,160,230,0.6); color: white; font-size: 12px; padding: 2px 6px; margin-left: 8px;">Voucher: -${item.voucher.amount.toLocaleString()}₫</span>`
+    const hasVoucher = item.voucher?.amount;
+    const priceText = item.Giá.toLocaleString() + "₫";
+    const voucherHtml = hasVoucher
+      ? `<span class="voucher-tag" style="background: rgba(0,160,230,0.6); color: white; font-size: 9px; padding: 2px 6px; margin-left: 6px; border-radius: 4px; vertical-align: middle;">Voucher: -${item.voucher.amount.toLocaleString()}₫</span>`
       : "";
 
     el.innerHTML = `
@@ -43,10 +46,8 @@ function renderCheckoutCart() {
         <div class="cart-item-name">${item["Phân loại"]}</div>
         <div class="cart-item-price-qty">
           <div class="cart-item-price">
-  ${item.Giá.toLocaleString()}₫
-  ${item.voucher?.amount ? `<span class="voucher-tag">Voucher: -${item.voucher.amount.toLocaleString()}₫</span>` : ""}
-</div>
-
+            ${priceText} ${voucherHtml}
+          </div>
           <div class="cart-item-qty">
             <button onclick="changeItemQty(${index}, -1)">−</button>
             <span>${item.quantity}</span>
