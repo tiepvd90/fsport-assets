@@ -14,7 +14,6 @@ function initCartPopup() {
         window.allVariants = data["biến_thể"];
         window.productCategory = data["category"] || loai;
 
-        // Nếu đang đợi voucher áp dụng toàn bộ
         if (window.__voucherWaiting?.amount) {
           data["biến_thể"].forEach(sp => {
             if (sp.id) window.voucherByProduct[sp.id] = window.__voucherWaiting.amount;
@@ -110,36 +109,33 @@ function selectVariant(data) {
   if (oldFinal) oldFinal.remove();
 
   if (voucherAmount > 0) {
-    // Giá có voucher: gạch giữa, màu đen
+    // Giá chính gạch và màu đen
     if (productPrice) {
       productPrice.textContent = data.Giá.toLocaleString() + "đ";
       productPrice.style.color = "black";
       productPrice.style.textDecoration = "line-through";
     }
 
-    // Ẩn giá gốc
     if (productOriginalPrice) {
       productOriginalPrice.style.display = "none";
     }
 
-    // Hiển thị dòng voucher
     if (voucherLabel) {
       voucherLabel.textContent = `Voucher: ${voucherAmount.toLocaleString()}đ`;
-      voucherLabel.style.display = "inline-block";
+      voucherLabel.style.display = "block";
+      voucherLabel.style.borderRadius = "0px";
     }
 
-    // Thêm dòng giá sau giảm
     const finalLine = document.createElement("div");
     finalLine.id = "finalPriceLine";
     finalLine.textContent = finalPrice.toLocaleString() + "đ";
     finalLine.style.color = "#d0021b";
     finalLine.style.fontWeight = "bold";
-    finalLine.style.marginTop = "4px";
+    finalLine.style.marginTop = "6px";
     finalLine.style.fontSize = "16px";
 
-    productPrice.parentElement?.appendChild(finalLine);
+    voucherLabel?.parentElement?.appendChild(finalLine);
   } else {
-    // Không có voucher
     if (productPrice) {
       productPrice.textContent = data.Giá.toLocaleString() + "đ";
       productPrice.style.color = "#d0021b";
@@ -151,10 +147,11 @@ function selectVariant(data) {
       productOriginalPrice.style.display = "inline";
     }
 
-    if (voucherLabel) voucherLabel.style.display = "none";
+    if (voucherLabel) {
+      voucherLabel.style.display = "none";
+    }
   }
 
-  // Tên biến thể
   if (productVariantText) {
     const selectedText = [];
     for (let key in data) {
