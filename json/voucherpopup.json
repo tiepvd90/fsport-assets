@@ -1,6 +1,8 @@
 {
   "chair": {
-    "giam20k": 20000,
-    "giam50k": 50000
+    "giam20k": {
+      "appliesTo": ["*"],
+      "amount": 20000
+    }
   }
 }
