@@ -132,7 +132,7 @@ function selectVariant(data) {
     finalLine.style.color = "#d0021b";
     finalLine.style.fontWeight = "bold";
     finalLine.style.marginTop = "6px";
-    finalLine.style.fontSize = "16px";
+    finalLine.style.fontSize = "19px";
 
     voucherLabel?.parentElement?.appendChild(finalLine);
   } else {
