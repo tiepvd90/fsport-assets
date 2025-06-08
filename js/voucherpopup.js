@@ -1,12 +1,8 @@
 // 🔁 Fetch JSON voucher theo loại sản phẩm từ Netlify
 function fetchVoucherMap() {
   const jsonUrl = "https://friendly-kitten-d760ff.netlify.app/json/voucherpopup.json";
-
   return fetch(jsonUrl)
-    .then(res => {
-      if (!res.ok) throw new Error(`Không load được JSON: ${res.status}`);
-      return res.json();
-    })
+    .then(res => res.ok ? res.json() : {})
     .catch(err => {
       console.warn("❌ Không thể tải voucher JSON:", err);
       return {};
@@ -33,7 +29,7 @@ function launchFireworks(cx, cy) {
   }
 }
 
-// 🧨 Hiển thị popup
+// 🧨 Popup voucher
 function showVoucherPopup(refCode, amount) {
   if (document.getElementById("voucherPopup")) return;
 
@@ -62,26 +58,34 @@ function showVoucherPopup(refCode, amount) {
   });
 }
 
-// 🚀 Gọi sau DOM load
+// 🚀 Main
 window.addEventListener("DOMContentLoaded", async () => {
   const loai = window.loai;
   const search = window.location.search;
-
   if (!loai || !search.includes("ref")) return;
 
   const voucherData = await fetchVoucherMap();
   const vouchers = voucherData?.[loai] || {};
 
-  // ✅ Bước 1: Gán window.voucherByProduct theo từng sản phẩm
+  // ✅ Gán window.voucherByProduct theo product.id
   window.voucherByProduct = {};
-  for (let code in vouchers) {
-    const { appliesTo = [], amount = 0 } = vouchers[code];
-    appliesTo.forEach(sp => {
-      window.voucherByProduct[sp] = amount;
-    });
+  if (Array.isArray(window.allVariants)) {
+    for (let code in vouchers) {
+      const { appliesTo = [], amount = 0 } = vouchers[code];
+
+      if (appliesTo.includes("*")) {
+        window.allVariants.forEach(sp => {
+          if (sp.id) window.voucherByProduct[sp.id] = amount;
+        });
+      } else {
+        appliesTo.forEach(productId => {
+          window.voucherByProduct[productId] = amount;
+        });
+      }
+    }
   }
 
-  // ✅ Bước 2: Kiểm tra ref khớp để hiện popup
+  // ✅ Hiển thị popup nếu mã ref có trong URL
   for (let code in vouchers) {
     if (search.includes(code)) {
       const amount = vouchers[code]?.amount || 0;
