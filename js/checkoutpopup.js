@@ -52,7 +52,6 @@ function renderCheckoutCart() {
   updateCheckoutSummary();
 }
 
-// ✅ TÍNH TỔNG GIÁ & CẬP NHẬT SUMMARY
 function updateCheckoutSummary() {
   const subtotal = window.cart.reduce((sum, item) => sum + item.Giá * item.quantity, 0);
   const totalQty = window.cart.reduce((sum, item) => sum + item.quantity, 0);
@@ -60,11 +59,17 @@ function updateCheckoutSummary() {
   const shipping = shippingFee;
   const total = subtotal + shipping - voucherValue;
 
-  document.getElementById("subtotalText").innerText = `${totalQty} sản phẩm - ${subtotal.toLocaleString()}₫`;
-  document.getElementById("shippingFeeText").innerText = `${shipping.toLocaleString()}₫`;
-  document.getElementById("voucherText").innerText = `-${voucherValue.toLocaleString()}₫`;
-  document.getElementById("totalText").innerText = `${total.toLocaleString()}₫`;
+  // 👇 Cập nhật đúng 2 phần riêng biệt
+  const qtyEl = document.getElementById("itemQuantityText");
+  const subtotalEl = document.getElementById("subtotalText");
+  if (qtyEl) qtyEl.textContent = `(${totalQty} sản phẩm)`;
+  if (subtotalEl) subtotalEl.textContent = `${subtotal.toLocaleString()}₫`;
+
+  document.getElementById("shippingFeeText").textContent = `${shipping.toLocaleString()}₫`;
+  document.getElementById("voucherText").textContent = `-${voucherValue.toLocaleString()}₫`;
+  document.getElementById("totalText").textContent = `${total.toLocaleString()}₫`;
 }
+
 
 // ✅ THÊM / BỚT SỐ LƯỢNG
 function changeItemQty(index, delta) {
