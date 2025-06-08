@@ -1,48 +1,5 @@
-// ✅ Tự động render giỏ hàng từ window.cart
-function renderCheckoutCart() {
-  const list = document.getElementById("checkoutCartList");
-  list.innerHTML = "";
-
-  let subtotal = 0;
-  let highestShippingFee = 0;
-  const typeSet = new Set();
-
-  window.cart.forEach((item, index) => {
-    const row = document.createElement("div");
-    row.className = "item";
-
-    row.innerHTML = `
-      <img src="${item.Ảnh}" alt="Ảnh">
-      <div class="info">
-        <div>${item["Phân loại"]}</div>
-        <div>${item.Giá.toLocaleString()}đ x ${item.quantity}</div>
-      </div>
-      <div class="remove-btn" onclick="removeCartItem(${index})">×</div>
-    `;
-
-    list.appendChild(row);
-
-    subtotal += item.Giá * item.quantity;
-    typeSet.add(item.loai);
-  });
-
-  document.getElementById("subtotalText").textContent = subtotal.toLocaleString() + "đ";
-  loadShippingFee([...typeSet]).then(fee => {
-    document.getElementById("shippingFeeText").textContent = fee.toLocaleString() + "đ";
-    const voucher = window.currentVoucherValue || 0;
-    document.getElementById("voucherText").textContent = "-" + voucher.toLocaleString() + "đ";
-    const total = subtotal + fee - voucher;
-    document.getElementById("totalText").textContent = total.toLocaleString() + "đ";
-  });
-}
-
-function removeCartItem(index) {
-  window.cart.splice(index, 1);
-  renderCheckoutCart();
-}
-
 function showCheckoutPopup() {
-  renderCheckoutCart();
+  renderCheckoutPopup();
   document.getElementById("checkoutPopup").classList.remove("hidden");
   document.getElementById("checkoutPopup").style.display = "flex";
 }
@@ -52,48 +9,103 @@ function hideCheckoutPopup() {
   document.getElementById("checkoutPopup").style.display = "none";
 }
 
-function loadShippingFee(types) {
-  return fetch("/json/shippingfee.json")
-    .then(res => res.json())
-    .then(map => {
-      let max = 0;
-      types.forEach(type => {
-        if (map[type] && map[type] > max) max = map[type];
-      });
-      return max;
-    })
-    .catch(() => 0);
+async function calculateShippingFee() {
+  const res = await fetch("/json/shippingfee.json");
+  const feeData = await res.json();
+  let maxFee = 0;
+  const seenTypes = new Set();
+
+  window.cart.forEach(item => {
+    const loai = item.loai;
+    if (!seenTypes.has(loai)) {
+      seenTypes.add(loai);
+      const fee = feeData[loai] || 0;
+      if (fee > maxFee) maxFee = fee;
+    }
+  });
+
+  return maxFee;
 }
 
-// ✅ Gửi đơn
-function setupCheckoutSubmit() {
-  document.getElementById("checkoutSubmitBtn").addEventListener("click", () => {
-    const fullname = document.getElementById("checkoutName").value.trim();
-    const phone = document.getElementById("checkoutPhone").value.trim();
-    const address = document.getElementById("checkoutAddress").value.trim();
+function updateQuantity(index, delta) {
+  const item = window.cart[index];
+  if (!item) return;
+  item.quantity = Math.max(1, item.quantity + delta);
+  renderCheckoutPopup();
+}
 
-    if (!fullname || !phone || !address) return alert("Vui lòng nhập đầy đủ thông tin.");
+function removeItem(index) {
+  window.cart.splice(index, 1);
+  renderCheckoutPopup();
+}
 
-    window.cart.forEach(item => {
-      fetch("https://hook.eu2.make.com/m9o7boye6fl1hstehst7waysmt38b2ul", {
+async function renderCheckoutPopup() {
+  const list = document.getElementById("checkoutCartList");
+  list.innerHTML = "";
+  let subtotal = 0;
+
+  window.cart.forEach((item, index) => {
+    const row = document.createElement("div");
+    row.className = "checkout-item";
+
+    row.innerHTML = `
+      <button class="remove-btn" onclick="removeItem(${index})">×</button>
+      <img src="${item.Ảnh}" class="item-thumb" alt="Sản phẩm">
+      <div class="item-info">
+        <div class="item-name">${item["Phân loại"]}</div>
+        <div class="item-price">${(item.Giá).toLocaleString()}₫</div>
+        <div class="item-qty">
+          <button onclick="updateQuantity(${index}, -1)">−</button>
+          <span>${item.quantity}</span>
+          <button onclick="updateQuantity(${index}, 1)">+</button>
+        </div>
+      </div>
+    `;
+    list.appendChild(row);
+    subtotal += item.Giá * item.quantity;
+  });
+
+  const voucher = window.currentVoucherValue || 0;
+  const shipping = await calculateShippingFee();
+  const total = subtotal + shipping - voucher;
+
+  document.getElementById("subtotalText").textContent = subtotal.toLocaleString() + "₫";
+  document.getElementById("shippingFeeText").textContent = shipping.toLocaleString() + "₫";
+  document.getElementById("voucherText").textContent = "-"+voucher.toLocaleString() + "₫";
+  document.getElementById("totalText").textContent = total.toLocaleString() + "₫";
+  document.querySelector(".checkout-title").textContent = `Giỏ Hàng Của Bạn (${window.cart.reduce((s, i) => s + i.quantity, 0)} sản phẩm)`;
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const btn = document.getElementById("checkoutSubmitBtn");
+  if (btn) {
+    btn.addEventListener("click", () => {
+      const name = document.getElementById("checkoutName")?.value.trim();
+      const phone = document.getElementById("checkoutPhone")?.value.trim();
+      const address = document.getElementById("checkoutAddress")?.value.trim();
+
+      if (!name || !phone || !address) {
+        alert("Vui lòng nhập đầy đủ họ tên, số điện thoại và địa chỉ.");
+        return;
+      }
+
+      const data = {
+        cart: window.cart,
+        name,
+        phone,
+        address,
+        voucher: window.currentVoucherValue || 0,
+      };
+
+      // 📦 Gửi dữ liệu về Make hoặc nơi khác
+      fetch("URL_CUA_BAN_TAI_DAY", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          loai: item.loai,
-          sanpham: item["Phân loại"],
-          codprice: item.Giá,
-          quantity: item.quantity,
-          fullname,
-          phone,
-          address
-        })
+        body: JSON.stringify(data),
       });
+
+      alert("Đặt hàng thành công. Chúng tôi sẽ sớm liên hệ với bạn!");
+      hideCheckoutPopup();
     });
-
-    alert("Funsport đã nhận đơn hàng, sẽ sớm liên hệ lại!");
-    hideCheckoutPopup();
-    window.cart = [];
-  });
-}
-
-document.addEventListener("DOMContentLoaded", setupCheckoutSubmit);
+  }
+});
