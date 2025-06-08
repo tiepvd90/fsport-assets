@@ -135,24 +135,72 @@ function submitOrder() {
   const address = document.getElementById("checkoutAddress")?.value.trim();
   if (!name || !phone || !address) return alert("Vui lòng nhập đầy đủ thông tin.");
 
+  const firstItem = window.cart[0] || {};
+  const category = firstItem.category || "unknown";
+
   const orderData = {
     name,
     phone,
     address,
-    items: window.cart,
+    category,
+    items: window.cart.map(item => ({
+      id: item.id || null,
+      category: item.category || "unknown",
+      "Phân loại": item["Phân loại"],
+      Giá: item.Giá,
+      Ảnh: item.Ảnh,
+      quantity: item.quantity,
+      voucher: item.voucher || null
+    })),
     shippingFee,
     voucherValue,
     total: window.cart.reduce((sum, i) => sum + i.Giá * i.quantity, 0) + shippingFee - voucherValue
   };
 
-  // 🚧 Gửi đến Make.com hoặc nơi xử lý
-  // fetch('...', { method: 'POST', headers: {...}, body: JSON.stringify(orderData) });
+  // ✅ GỬI ĐƠN HÀNG VỀ MAKE.COM
+  fetch("https://hook.eu2.make.com/m9o7boye6fl1hstehst7waysmt38b2ul", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(orderData)
+  })
+  .then(res => {
+    if (!res.ok) throw new Error("Gửi đơn hàng thất bại");
+    return res.text();
+  })
+  .then(() => {
+    // ✅ TRACKING: Purchase & Subscribe
+    const contentId = firstItem.id || "";
+    const contentName = firstItem["Phân loại"] || "";
 
-  alert("Cảm ơn bạn đã đặt hàng! Funsport sẽ sớm liên hệ.");
-  window.cart = [];
-  saveCart();
-  hideCheckoutPopup();
+    if (typeof trackBothPixels === "function") {
+      trackBothPixels("Purchase", {
+        content_id: contentId,
+        content_name: contentName,
+        content_category: category,
+        value: orderData.total,
+        currency: "VND"
+      });
+
+      trackBothPixels("Subscribe", {
+        content_id: contentId,
+        content_name: contentName,
+        content_category: category,
+        value: orderData.total,
+        currency: "VND"
+      });
+    }
+
+    alert("Cảm ơn bạn đã đặt hàng! Funsport sẽ sớm liên hệ.");
+    window.cart = [];
+    saveCart();
+    hideCheckoutPopup();
+  })
+  .catch(err => {
+    console.error("❌ Lỗi khi gửi về Make.com:", err);
+    alert("Có lỗi xảy ra khi gửi đơn hàng, vui lòng thử lại sau.");
+  });
 }
+
 
 // ✅ BIND SỰ KIỆN KHI LOAD
 window.addEventListener("DOMContentLoaded", () => {
