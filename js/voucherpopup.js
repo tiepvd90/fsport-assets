@@ -1,7 +1,7 @@
 // 🔁 Fetch JSON voucher theo loại sản phẩm từ Netlify (dùng tuyệt đối để tránh lỗi trên Carrd)
 function fetchVoucherMap() {
   const jsonUrl = "https://friendly-kitten-d760ff.netlify.app/json/voucherpopup.json";
-  
+
   return fetch(jsonUrl)
     .then(res => {
       if (!res.ok) throw new Error(`Không load được JSON: ${res.status}`);
@@ -13,8 +13,6 @@ function fetchVoucherMap() {
     });
 }
 
-
-
 // 🎆 Pháo hoa
 function createFirework(x, y) {
   const fw = document.createElement('div');
@@ -24,6 +22,7 @@ function createFirework(x, y) {
   document.body.appendChild(fw);
   setTimeout(() => fw.remove(), 1000);
 }
+
 function launchFireworks(cx, cy) {
   for (let i = 0; i < 10; i++) {
     const angle = Math.random() * 2 * Math.PI;
@@ -57,6 +56,7 @@ function showVoucherPopup(refCode, amount) {
   document.getElementById("applyVoucherBtn")?.addEventListener("click", () => {
     localStorage.setItem("useVoucherCode", refCode);
     localStorage.setItem("useVoucherAmount", amount);
+    window.currentVoucherValue = amount;
     popup.remove();
     document.querySelector("#btn-atc")?.click();
   });
@@ -65,14 +65,19 @@ function showVoucherPopup(refCode, amount) {
 // 🚀 Gọi sau DOM load
 window.addEventListener("DOMContentLoaded", async () => {
   const loai = window.loai;
-  const refCode = new URLSearchParams(window.location.search).get("ref");
+  const search = window.location.search;
 
-  if (!loai || !refCode) return;
+  if (!loai || !search.includes("ref")) return;
 
   const voucherData = await fetchVoucherMap();
-  const matchedAmount = voucherData?.[loai]?.[refCode];
+  const vouchers = voucherData?.[loai] || {};
 
-  if (matchedAmount) {
-    showVoucherPopup(refCode, matchedAmount);
+  for (let code in vouchers) {
+    if (search.includes(code)) {
+      const amount = vouchers[code];
+      window.currentVoucherValue = amount; // ✅ Gắn global
+      showVoucherPopup(code, amount);
+      break;
+    }
   }
 });
