@@ -31,13 +31,20 @@ function renderCheckoutCart() {
   window.cart.forEach((item, index) => {
     const el = document.createElement("div");
     el.className = "cart-item";
+
+    const voucherText = item.voucher?.amount
+      ? `<span class="item-voucher-label" style="background: rgba(0,160,230,0.6); color: white; font-size: 12px; padding: 2px 6px; margin-left: 8px;">Voucher: -${item.voucher.amount.toLocaleString()}₫</span>`
+      : "";
+
     el.innerHTML = `
       <button class="remove-btn" onclick="removeItem(${index})">&times;</button>
       <img src="${item.Ảnh}" alt="img" />
       <div class="cart-item-details">
         <div class="cart-item-name">${item["Phân loại"]}</div>
         <div class="cart-item-price-qty">
-          <div class="cart-item-price">${item.Giá.toLocaleString()}₫</div>
+          <div class="cart-item-price">
+            ${item.Giá.toLocaleString()}₫ ${voucherText}
+          </div>
           <div class="cart-item-qty">
             <button onclick="changeItemQty(${index}, -1)">−</button>
             <span>${item.quantity}</span>
@@ -56,10 +63,12 @@ function updateCheckoutSummary() {
   const subtotal = window.cart.reduce((sum, item) => sum + item.Giá * item.quantity, 0);
   const totalQty = window.cart.reduce((sum, item) => sum + item.quantity, 0);
 
+  // ✅ Tính tổng giảm từ voucher
+  voucherValue = window.cart.reduce((sum, item) => sum + (item.voucher?.amount || 0) * item.quantity, 0);
+
   const shipping = shippingFee;
   const total = subtotal + shipping - voucherValue;
 
-  // 👇 Cập nhật đúng 2 phần riêng biệt
   const qtyEl = document.getElementById("itemQuantityText");
   const subtotalEl = document.getElementById("subtotalText");
   if (qtyEl) qtyEl.textContent = `(${totalQty} sản phẩm)`;
@@ -69,7 +78,6 @@ function updateCheckoutSummary() {
   document.getElementById("voucherText").textContent = `-${voucherValue.toLocaleString()}₫`;
   document.getElementById("totalText").textContent = `${total.toLocaleString()}₫`;
 }
-
 
 // ✅ THÊM / BỚT SỐ LƯỢNG
 function changeItemQty(index, delta) {
@@ -116,7 +124,6 @@ function loadShippingFee() {
       updateCheckoutSummary();
     });
 }
-
 
 // ✅ GỬI ĐƠN HÀNG
 function submitOrder() {
