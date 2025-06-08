@@ -43,8 +43,10 @@ function renderCheckoutCart() {
         <div class="cart-item-name">${item["Phân loại"]}</div>
         <div class="cart-item-price-qty">
           <div class="cart-item-price">
-            ${item.Giá.toLocaleString()}₫ ${voucherText}
-          </div>
+  ${item.Giá.toLocaleString()}₫
+  ${item.voucher?.amount ? `<span class="voucher-tag">Voucher: -${item.voucher.amount.toLocaleString()}₫</span>` : ""}
+</div>
+
           <div class="cart-item-qty">
             <button onclick="changeItemQty(${index}, -1)">−</button>
             <span>${item.quantity}</span>
