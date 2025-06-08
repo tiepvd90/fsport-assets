@@ -14,7 +14,6 @@ function initCartPopup() {
         window.allVariants = data["biến_thể"];
         window.productCategory = data["category"] || loai;
 
-        // Auto-apply voucher if available
         if (window.__voucherWaiting?.amount) {
           data["biến_thể"].forEach(sp => {
             if (sp.id) window.voucherByProduct[sp.id] = window.__voucherWaiting.amount;
@@ -107,7 +106,7 @@ function selectVariant(data) {
     productPrice.textContent = data.Giá.toLocaleString() + "đ";
     productPrice.style.color = "black";
     productPrice.style.textDecoration = "line-through";
-    productOriginalPrice.style.display = "none";
+    if (productOriginalPrice) productOriginalPrice.style.display = "none";
 
     if (voucherLabel) {
       voucherLabel.textContent = `Voucher: ${voucherAmount.toLocaleString()}đ`;
@@ -118,34 +117,36 @@ function selectVariant(data) {
     if (!finalLine) {
       finalLine = document.createElement("div");
       finalLine.id = "finalPriceLine";
-      voucherLabel.parentElement.appendChild(finalLine);
     }
     finalLine.textContent = finalPrice.toLocaleString() + "đ";
     finalLine.style.color = "#d0021b";
     finalLine.style.fontWeight = "bold";
     finalLine.style.marginTop = "4px";
     finalLine.style.fontSize = "16px";
+
+    voucherLabel.insertAdjacentElement("afterend", finalLine);
   } else {
     productPrice.textContent = data.Giá.toLocaleString() + "đ";
     productPrice.style.color = "#d0021b";
     productPrice.style.textDecoration = "none";
-    productOriginalPrice.style.display = "inline";
-    voucherLabel.style.display = "none";
+    if (productOriginalPrice) {
+      productOriginalPrice.textContent = data["Giá gốc"].toLocaleString() + "đ";
+      productOriginalPrice.style.display = "inline";
+    }
+    if (voucherLabel) voucherLabel.style.display = "none";
 
     const finalLine = document.getElementById("finalPriceLine");
     if (finalLine) finalLine.remove();
   }
 
-  if (productOriginalPrice) productOriginalPrice.textContent = data["Giá gốc"].toLocaleString() + "đ";
-
-  const selectedText = [];
-  for (let key in data) {
-    if (["Ảnh", "Giá", "Giá gốc", "id", "category"].includes(key)) continue;
-    selectedText.push(data[key]);
-  }
   if (productVariantText) {
+    const selectedText = [];
+    for (let key in data) {
+      if (["Ảnh", "Giá", "Giá gốc", "id", "category"].includes(key)) continue;
+      selectedText.push(data[key]);
+    }
     productVariantText.textContent = selectedText.join(", ");
-    productVariantText.style.marginTop = "12px";
+    productVariantText.style.marginTop = "16px";
   }
 }
 
