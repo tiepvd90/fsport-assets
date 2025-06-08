@@ -50,41 +50,62 @@ function showVoucherPopup(refCode, amount) {
   document.getElementById("closeVoucherBtn")?.addEventListener("click", () => popup.remove());
 
   document.getElementById("applyVoucherBtn")?.addEventListener("click", () => {
-    localStorage.setItem("useVoucherCode", refCode);
-    localStorage.setItem("useVoucherAmount", amount);
+    localStorage.setItem("savedVoucher", JSON.stringify({ code: refCode, amount }));
     window.currentVoucherValue = amount;
     popup.remove();
     document.querySelector("#btn-atc")?.click();
   });
 }
 
+// ✅ Lấy voucher từ URL hoặc localStorage
+function getVoucherFromUrlOrStorage(vouchers) {
+  const search = window.location.search;
+
+  // Ưu tiên từ URL
+  for (let code in vouchers) {
+    if (search.includes(code)) {
+      const { amount } = vouchers[code];
+      localStorage.setItem("savedVoucher", JSON.stringify({ code, amount }));
+      return { code, amount, from: "url" };
+    }
+  }
+
+  // Nếu không có trong URL → kiểm tra localStorage
+  try {
+    const saved = JSON.parse(localStorage.getItem("savedVoucher"));
+    if (saved && saved.code && vouchers[saved.code]) {
+      return { ...saved, from: "storage" };
+    }
+  } catch (e) {}
+
+  return null;
+}
+
 // 🚀 Khởi động voucher
 window.addEventListener("DOMContentLoaded", async () => {
   const loai = window.loai || "chair";
-  const search = window.location.search;
-  if (!search.includes("ref")) return;
-
   const voucherData = await fetchVoucherMap();
   const vouchers = voucherData?.[loai] || {};
   window.__vouchersRaw = vouchers;
-
-  // Gán voucher theo product.id
   window.voucherByProduct = {};
-  for (let code in vouchers) {
-    const { appliesTo = [], amount = 0 } = vouchers[code];
-    if (appliesTo.includes("*")) {
-      // đợi allVariants sẵn sàng để mapping sau
-      window.__voucherWaiting = { amount };
-    } else {
-      appliesTo.forEach(id => {
-        window.voucherByProduct[id] = amount;
-      });
-    }
 
-    // popup nếu URL có mã này
-    if (search.includes(code)) {
-      window.currentVoucherValue = amount;
-      showVoucherPopup(code, amount);
-    }
+  const voucherInfo = getVoucherFromUrlOrStorage(vouchers);
+  if (!voucherInfo) return;
+
+  const { code, amount, from } = voucherInfo;
+  const appliesTo = vouchers[code]?.appliesTo || [];
+
+  if (appliesTo.includes("*")) {
+    window.__voucherWaiting = { amount };
+  } else {
+    appliesTo.forEach(id => {
+      window.voucherByProduct[id] = amount;
+    });
+  }
+
+  window.currentVoucherValue = amount;
+
+  if (from === "url") {
+    showVoucherPopup(code, amount);
   }
 });
