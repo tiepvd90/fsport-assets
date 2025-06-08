@@ -9,10 +9,10 @@ function fetchVoucherMap() {
     });
 }
 
-// 🎆 Tạo hiệu ứng pháo hoa
+// 🎆 Pháo hoa
 function createFirework(x, y) {
-  const fw = document.createElement("div");
-  fw.className = "firework";
+  const fw = document.createElement('div');
+  fw.className = 'firework';
   fw.style.left = `${x}px`;
   fw.style.top = `${y}px`;
   document.body.appendChild(fw);
@@ -29,7 +29,7 @@ function launchFireworks(cx, cy) {
   }
 }
 
-// 🧨 Hiển thị popup voucher
+// 🧨 Popup voucher
 function showVoucherPopup(refCode, amount) {
   if (document.getElementById("voucherPopup")) return;
 
@@ -58,39 +58,33 @@ function showVoucherPopup(refCode, amount) {
   });
 }
 
-// 🚀 Khi DOM ready
+// 🚀 Khởi động voucher
 window.addEventListener("DOMContentLoaded", async () => {
-  const loai = window.loai;
+  const loai = window.loai || "chair";
   const search = window.location.search;
-  if (!loai || !search.includes("ref")) return;
+  if (!search.includes("ref")) return;
 
   const voucherData = await fetchVoucherMap();
   const vouchers = voucherData?.[loai] || {};
+  window.__vouchersRaw = vouchers;
 
-  // ✅ Gán window.voucherByProduct từ appliesTo (theo id)
+  // Gán voucher theo product.id
   window.voucherByProduct = {};
-  if (Array.isArray(window.allVariants)) {
-    for (let code in vouchers) {
-      const { appliesTo = [], amount = 0 } = vouchers[code];
-      if (appliesTo.includes("*")) {
-        window.allVariants.forEach(sp => {
-          if (sp.id) window.voucherByProduct[sp.id] = amount;
-        });
-      } else {
-        appliesTo.forEach(productId => {
-          window.voucherByProduct[productId] = amount;
-        });
-      }
-    }
-  }
-
-  // ✅ Hiển thị popup nếu URL chứa mã ref tương ứng
   for (let code in vouchers) {
+    const { appliesTo = [], amount = 0 } = vouchers[code];
+    if (appliesTo.includes("*")) {
+      // đợi allVariants sẵn sàng để mapping sau
+      window.__voucherWaiting = { amount };
+    } else {
+      appliesTo.forEach(id => {
+        window.voucherByProduct[id] = amount;
+      });
+    }
+
+    // popup nếu URL có mã này
     if (search.includes(code)) {
-      const amount = vouchers[code]?.amount || 0;
       window.currentVoucherValue = amount;
       showVoucherPopup(code, amount);
-      break;
     }
   }
 });
