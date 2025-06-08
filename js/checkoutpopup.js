@@ -103,14 +103,20 @@ function loadCart() {
 
 // ✅ TẢI PHÍ VẬN CHUYỂN
 function loadShippingFee() {
-  fetch("/json/shippingfee.json")
+  fetch("https://friendly-kitten-d760ff.netlify.app/json/shippingfee.json")
     .then(res => res.json())
     .then(data => {
       const fees = window.cart.map(i => data[i.loai] || 0);
       shippingFee = Math.max(...fees, 0);
       updateCheckoutSummary();
+    })
+    .catch(err => {
+      console.warn("Không thể tải shippingfee.json:", err);
+      shippingFee = 0;
+      updateCheckoutSummary();
     });
 }
+
 
 // ✅ GỬI ĐƠN HÀNG
 function submitOrder() {
