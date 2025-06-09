@@ -47,14 +47,14 @@ function renderFeed(feed) {
   feed.forEach(item => {
     const finalPrice = item.price ? Number(item.price).toLocaleString() + "đ" : "";
     const originalPrice = item.originalPrice && item.originalPrice > item.price
-      ? `<span class="original-price" style="color:#666">${Number(item.originalPrice).toLocaleString()}đ</span>` : "";
+      ? `<span class="original-price" style="color:#555; font-size:13px;">${Number(item.originalPrice).toLocaleString()}đ</span>` : "";
 
     const div = document.createElement("div");
     div.className = "feed-item";
 
     let mediaHtml = "";
     if (item.contentType === "image") {
-      mediaHtml = `<img loading="lazy" src="${item.image}" alt="${item.title}">`;
+      mediaHtml = `<img loading=\"lazy\" src=\"${item.image}\" alt=\"${item.title}\">`;
     } else if (item.contentType === "youtube") {
       mediaHtml = `
         <div class="video-wrapper">
@@ -73,9 +73,9 @@ function renderFeed(feed) {
 
     div.innerHTML = `
       ${mediaHtml}
-      <h4 class="one-line-title" style="margin-bottom:4px;">${item.title}</h4>
-      <div class="price-line">
-        <span class="price">${finalPrice}</span> ${originalPrice}
+      <h4 class="one-line-title" style="margin: 4px 8px 2px; font-size: 13.5px; line-height: 1.3;">${item.title}</h4>
+      <div class="price-line" style="padding: 0 8px 8px; font-size: 14.5px;">
+        <span class="price" style="color: #f53d2d; font-weight: bold;">${finalPrice}</span> ${originalPrice}
       </div>
     `;
 
