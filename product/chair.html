@@ -23,12 +23,10 @@
       .then(html => {
         document.getElementById("base-placeholder").outerHTML = html;
 
-        // ✅ Khởi tạo giỏ hàng sau khi base đã load
         if (typeof initCartPopup === "function") {
           initCartPopup();
         }
 
-        // ✅ Gửi tracking ViewContent
         const product = "chair";
         if (typeof trackBothPixels === "function") {
           trackBothPixels("ViewContent", {
@@ -61,13 +59,33 @@
   </script>
 
   <!-- ✅ FreeFlow: Có thể bạn sẽ thích -->
-  <div id="freeflow-placeholder"></div>
+  <div style="padding: 24px;">
+    <h2 style="font-size: 18px; margin-bottom: 12px;">Có thể bạn sẽ thích</h2>
+    <div id="freeflow-placeholder"></div>
+  </div>
   <script>
     fetch("/html/freeflow.html")
       .then(res => res.text())
       .then(html => {
-        document.getElementById("freeflow-placeholder").outerHTML = html;
-      });
+        const container = document.getElementById("freeflow-placeholder");
+        const temp = document.createElement("div");
+        temp.innerHTML = html;
+
+        Array.from(temp.children).forEach(el => {
+          if (el.tagName === "SCRIPT") {
+            const script = document.createElement("script");
+            if (el.src) {
+              script.src = el.src;
+            } else {
+              script.textContent = el.textContent;
+            }
+            document.body.appendChild(script);
+          } else {
+            container.appendChild(el);
+          }
+        });
+      })
+      .catch(err => console.warn("❌ Không thể load FreeFlow:", err));
   </script>
 
 </body>
