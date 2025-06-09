@@ -64,29 +64,30 @@
     <div id="freeflow-placeholder"></div>
   </div>
   <script>
-    fetch("/html/freeflow.html")
-      .then(res => res.text())
-      .then(html => {
-        const container = document.getElementById("freeflow-placeholder");
-        const temp = document.createElement("div");
-        temp.innerHTML = html;
+  fetch("/html/freeflow.html")
+    .then(res => res.text())
+    .then(html => {
+      const container = document.getElementById("freeflow-placeholder");
+      const temp = document.createElement("div");
+      temp.innerHTML = html;
 
-        Array.from(temp.children).forEach(el => {
-          if (el.tagName === "SCRIPT") {
-            const script = document.createElement("script");
-            if (el.src) {
-              script.src = el.src;
-            } else {
-              script.textContent = el.textContent;
-            }
-            document.body.appendChild(script);
+      Array.from(temp.children).forEach(el => {
+        if (el.tagName === "SCRIPT") {
+          const script = document.createElement("script");
+          if (el.src) {
+            script.src = el.src;
+            script.async = false; // ✅ Đảm bảo chạy theo thứ tự
           } else {
-            container.appendChild(el);
+            script.textContent = el.textContent;
           }
-        });
-      })
-      .catch(err => console.warn("❌ Không thể load FreeFlow:", err));
-  </script>
+          document.body.appendChild(script);
+        } else {
+          container.appendChild(el);
+        }
+      });
+    })
+    .catch(err => console.warn("❌ Không thể load FreeFlow:", err));
+</script>
 
 </body>
 </html>
