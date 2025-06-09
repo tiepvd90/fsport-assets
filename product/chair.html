@@ -6,7 +6,10 @@
   <title>Ghế công thái học tựa lưng chỉnh dáng ngồi đúng chống gù FA</title>
 
   <!-- ✅ Gán loại sản phẩm -->
-  <script>window.loai = "chair"; window.productCategory = "chair";</script>
+  <script>
+    window.loai = "chair";
+    window.productCategory = "chair";
+  </script>
 
   <!-- ✅ Giao diện popup -->
   <link rel="stylesheet" href="https://friendly-kitten-d760ff.netlify.app/css/cartpopup.css" />
@@ -17,20 +20,12 @@
   <!-- ✅ JSON sản phẩm -->
   <div id="cartContainer" data-json="/json/chair.json"></div>
 
-  <!-- ✅ CartPopup -->
+  <!-- ✅ CartPopup + CheckoutPopup -->
   <div id="cartPopup-placeholder"></div>
-
-  <!-- ✅ CheckoutPopup -->
   <div id="checkoutPopup-placeholder"></div>
 
-  <!-- ✅ Inject popup HTML và script -->
+  <!-- ✅ Inject popup + script -->
   <script>
-    async function injectPopup(file, placeholderId) {
-      const res = await fetch(file);
-      const html = await res.text();
-      document.getElementById(placeholderId).outerHTML = html;
-    }
-
     async function loadScript(src) {
       return new Promise(resolve => {
         const s = document.createElement("script");
@@ -38,6 +33,11 @@
         s.onload = resolve;
         document.body.appendChild(s);
       });
+    }
+
+    async function injectPopup(file, placeholderId) {
+      const html = await fetch(file).then(res => res.text());
+      document.getElementById(placeholderId).outerHTML = html;
     }
 
     async function setupPopups() {
@@ -51,7 +51,7 @@
       const map = await fetchVoucherMap();
       window.__vouchersRaw = map["chair"] || {};
       window.voucherByProduct = {};
-      initCartPopup(); // rất quan trọng
+      initCartPopup();
     }
 
     setupPopups();
