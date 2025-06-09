@@ -1,3 +1,4 @@
+// 🌀 FreeFlow v1.0 — Feed với ảnh + video + popup fullscreen
 let freeflowData = [];
 let filteredFeed = [];
 
@@ -16,7 +17,6 @@ async function fetchFreeFlowData(jsonUrl) {
 function updateFeed(searchTerm = "") {
   const currentCategory = window.currentProductCategory || "";
 
-  // Tính finalPriority
   const scored = freeflowData.map(item => {
     const base = item.basePriority || 0;
     const searchModifier = item.tags?.some(tag => tag.includes(searchTerm)) ? 10 : 0;
@@ -26,27 +26,13 @@ function updateFeed(searchTerm = "") {
     return item;
   });
 
-  // Tách và sort riêng
-  const images = scored
-    .filter(item => item.contentType === "image")
-    .sort((a, b) => b.finalPriority - a.finalPriority);
+  const images = scored.filter(i => i.contentType === "image").sort((a, b) => b.finalPriority - a.finalPriority);
+  const videos = scored.filter(i => i.contentType === "youtube").sort((a, b) => b.finalPriority - a.finalPriority);
 
-  const videos = scored
-    .filter(item => item.contentType === "youtube")
-    .sort((a, b) => b.finalPriority - a.finalPriority);
-
-  // Ghép 8 ảnh + 1 video
-  let finalDisplay = [];
-  let imgIndex = 0;
-  let vidIndex = 0;
-
+  let finalDisplay = [], imgIndex = 0, vidIndex = 0;
   while (imgIndex < images.length) {
-    for (let i = 0; i < 8 && imgIndex < images.length; i++) {
-      finalDisplay.push(images[imgIndex++]);
-    }
-    if (vidIndex < videos.length) {
-      finalDisplay.push(videos[vidIndex++]);
-    }
+    for (let i = 0; i < 8 && imgIndex < images.length; i++) finalDisplay.push(images[imgIndex++]);
+    if (vidIndex < videos.length) finalDisplay.push(videos[vidIndex++]);
   }
 
   renderFeed(finalDisplay);
@@ -92,8 +78,11 @@ function renderFeed(feed) {
 
     div.onclick = () => {
       if (item.contentType === "youtube") {
-        // 👉 Mở video YouTube Shorts
-        window.open(`https://www.youtube.com/shorts/${item.youtube}`, '_blank');
+        const overlay = document.getElementById("videoOverlay");
+        const frame = document.getElementById("videoFrame");
+        const id = item.youtube;
+        frame.src = `https://www.youtube.com/embed/${id}?autoplay=1&mute=0&playsinline=1&controls=1`;
+        overlay.style.display = "flex";
       } else {
         window.location.href = item.productPage;
       }
@@ -124,3 +113,18 @@ function observeYouTubeIframes() {
   const iframes = document.querySelectorAll('iframe[data-video-id]');
   iframes.forEach(iframe => observer.observe(iframe));
 }
+
+// ❌ Đóng video popup khi ấn nút X
+function closeVideoPopup() {
+  const frame = document.getElementById("videoFrame");
+  frame.src = "";
+  document.getElementById("videoOverlay").style.display = "none";
+}
+
+// Nút đóng video (đặt ở HTML):
+// <div id="videoOverlay" style="display:none;">
+//   <button onclick="closeVideoPopup()" style="position:absolute;top:12px;right:12px;font-size:28px;color:white;background:none;border:none;cursor:pointer;">×</button>
+//   <div class="video-inner">
+//     <iframe id="videoFrame"></iframe>
+//   </div>
+// </div>
