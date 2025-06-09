@@ -3,48 +3,93 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ghế Công Thái Học F-Sports</title>
+  <title>Ghế công thái học tựa lưng chỉnh dáng ngồi đúng chống gù FA</title>
 
-  <!-- ✅ Gọi base.html -->
-  <div id="base-placeholder"></div>
-  <script>
-    fetch('/html/base.html')
-      .then(res => res.text())
-      .then(html => {
-        document.getElementById('base-placeholder').outerHTML = html;
-      });
-  </script>
-
-  <!-- ✅ Khai báo loại sản phẩm -->
-  <script>
-    window.productCategory = "chair";
-  </script>
+  <!-- ✅ Gán loại sản phẩm -->
+  <script>window.productCategory = "chair";</script>
 </head>
 <body>
 
-  <!-- ✅ Container dùng cho cart popup -->
+  <!-- ✅ Container cho popup -->
   <div id="cartContainer" data-json="/json/chair.json"></div>
   <div id="cartPopup"></div>
   <div id="popup-checkout" class="hidden"></div>
 
-  <!-- ✅ Nội dung mô tả sản phẩm -->
- nội dung ở đây
-
-  <!-- ✅ Gọi sticky footer -->
-  <div id="sticky-footer-placeholder"></div>
+  <!-- ✅ Placeholder gọi base.html -->
+  <div id="base-placeholder"></div>
   <script>
-    fetch('/html/stickyfooter.html')
+    fetch("/html/base.html")
       .then(res => res.text())
       .then(html => {
-        document.getElementById('sticky-footer-placeholder').outerHTML = html;
+        document.getElementById("base-placeholder").outerHTML = html;
+
+        // ✅ Khởi tạo popup sau khi base đã load
+        if (typeof initCartPopup === "function") {
+          initCartPopup();
+        }
+
+        // ✅ Gửi ViewContent tracking
+        const product = "chair";
+        if (typeof trackBothPixels === "function") {
+          trackBothPixels("ViewContent", {
+            content_id: product,
+            content_name: product,
+            content_category: window.productCategory || "unknown",
+            value: 0,
+            currency: "VND"
+          });
+        }
       });
   </script>
 
-  <!-- ✅ Gọi hàm khởi tạo giỏ hàng -->
+  <!-- ✅ Nội dung sản phẩm -->
+  <div id="productImages" style="padding: 16px;">
+    <h1>Ghế công thái học FA</h1>
+    <p style="font-size:14px; color:#444;">Thoải mái, nâng đỡ cột sống, chống gù, phù hợp làm việc văn phòng & học tập lâu dài.</p>
+  </div>
+
+  <!-- ✅ Sticky footer -->
+  <div id="sticky-footer-placeholder"></div>
   <script>
-    window.addEventListener("DOMContentLoaded", () => {
-      initCartPopup();
-    });
+    fetch("/html/stickyfooter.html")
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById("sticky-footer-placeholder").outerHTML = html;
+      });
   </script>
+
+  <!-- ✅ FREEFLOW: You may also like -->
+  <div style="padding: 24px;">
+    <h2 style="font-size: 18px; margin-bottom: 12px;">Bạn có thể sẽ thích</h2>
+    <div id="freeflow-feed"></div>
+  </div>
+  <script>
+    const jsonUrl = "https://script.google.com/macros/s/AKfycbwuEh9sP65vyQL0XzU8gY1Os0QYV_K5egKJgm8OhImAPjvdyrQiU7XCY909N99TnltP/exec";
+
+    let freeflowData = [];
+
+    function renderFreeFlow(items = []) {
+      const container = document.getElementById("freeflow-feed");
+      container.innerHTML = "";
+      items.slice(0, 8).forEach(item => {
+        const div = document.createElement("div");
+        div.style.marginBottom = "12px";
+        div.innerHTML = `
+          <img src="${item.image || ''}" style="width:100%;border-radius:8px;">
+          <div style="font-size:14px;margin-top:4px;">${item.title || ''}</div>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    fetch(jsonUrl)
+      .then(res => res.json())
+      .then(data => {
+        freeflowData = data || [];
+        renderFreeFlow(freeflowData);
+      })
+      .catch(err => console.warn("❌ Không thể load FreeFlow:", err));
+  </script>
+
 </body>
 </html>
