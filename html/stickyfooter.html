@@ -28,11 +28,11 @@ document.addEventListener("DOMContentLoaded", () => {
         });
       }
 
-      if (typeof openCartPopup === "function") {
-        openCartPopup();
-      } else {
-        console.error("❌ openCartPopup chưa load.");
-      }
+     if (typeof toggleCartPopup === "function") {
+  toggleCartPopup(true);
+} else {
+  console.error("❌ toggleCartPopup chưa load.");
+}
     });
   }
 
