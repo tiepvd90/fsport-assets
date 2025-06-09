@@ -1,7 +1,10 @@
 /* === Reset font và fix zoom iOS === */
 html, body, input, textarea {
   -webkit-text-size-adjust: 100%;
-  font-family: Arial, sans-serif;
+  font-family: "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #222;
 }
 input, textarea, select {
   font-size: 16px !important;
@@ -136,4 +139,38 @@ textarea {
 
 .hidden {
   display: none !important;
+}
+/* === Video Overlay Popup === */
+#videoOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+.video-inner {
+  width: 90%;
+  max-width: 480px;
+  aspect-ratio: 9 / 16;
+  background: #000;
+  position: relative;
+}
+#videoOverlay iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+#videoOverlay button {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: none;
+  border: none;
+  font-size: 28px;
+  font-weight: bold;
+  color: white;
+  cursor: pointer;
+  z-index: 10001;
 }
