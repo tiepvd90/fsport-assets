@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Test Sticky Footer</title>
+  <link rel="stylesheet" href="https://friendly-kitten-d760ff.netlify.app/css/cartpopup.css" />
+  <script>window.loai = "chair"; window.productCategory = "chair";</script>
+</head>
+<body>
+
+  <div id="cartContainer" data-json="/json/chair.json"></div>
+  <div id="cartPopup-placeholder"></div>
+  <div id="sticky-footer-placeholder"></div>
+
+  <script>
+    async function loadScript(src) {
+      return new Promise(resolve => {
+        const s = document.createElement("script");
+        s.src = src;
+        s.onload = resolve;
+        document.body.appendChild(s);
+      });
+    }
+
+    async function setupTest() {
+      // Inject cartpopup
+      const popupHtml = await fetch("/html/cartpopup.html").then(r => r.text());
+      document.getElementById("cartPopup-placeholder").outerHTML = popupHtml;
+
+      // Inject sticky footer
+      const footerHtml = await fetch("/html/stickyfooter.html").then(r => r.text());
+      document.getElementById("sticky-footer-placeholder").outerHTML = footerHtml;
+
+      await loadScript("https://friendly-kitten-d760ff.netlify.app/js/voucherpopup.js");
+      await loadScript("https://friendly-kitten-d760ff.netlify.app/js/cartpopup.js");
+
+      const map = await fetchVoucherMap();
+      window.__vouchersRaw = map["chair"] || {};
+      window.voucherByProduct = {};
+      initCartPopup();
+    }
+
+    setupTest();
+  </script>
+
+</body>
+</html>
