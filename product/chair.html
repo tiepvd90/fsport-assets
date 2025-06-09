@@ -11,20 +11,29 @@
     window.productCategory = "chair";
   </script>
 
-  <!-- ✅ Giao diện popup -->
+  <!-- ✅ CSS popup -->
   <link rel="stylesheet" href="https://friendly-kitten-d760ff.netlify.app/css/cartpopup.css" />
   <link rel="stylesheet" href="https://friendly-kitten-d760ff.netlify.app/css/checkoutpopup.css" />
 </head>
 <body>
 
-  <!-- ✅ JSON sản phẩm -->
+  <!-- ✅ Container JSON sản phẩm -->
   <div id="cartContainer" data-json="/json/chair.json"></div>
 
-  <!-- ✅ CartPopup + CheckoutPopup -->
+  <!-- ✅ Placeholders -->
   <div id="cartPopup-placeholder"></div>
   <div id="checkoutPopup-placeholder"></div>
+  <div id="sticky-footer-placeholder"></div>
 
-  <!-- ✅ Inject popup + script -->
+  <!-- ✅ Nội dung mô tả sản phẩm -->
+  <div id="productImages" style="padding: 16px;">
+    <h1>Ghế công thái học FA</h1>
+    <p style="font-size:14px; color:#444;">
+      Thoải mái, nâng đỡ cột sống, chống gù, phù hợp làm việc văn phòng & học tập lâu dài.
+    </p>
+  </div>
+
+  <!-- ✅ Inject popup + footer -->
   <script>
     async function loadScript(src) {
       return new Promise(resolve => {
@@ -35,14 +44,33 @@
       });
     }
 
-    async function injectPopup(file, placeholderId) {
-      const html = await fetch(file).then(res => res.text());
-      document.getElementById(placeholderId).outerHTML = html;
+    async function injectHTML(file, placeholderId) {
+      const res = await fetch(file);
+      const html = await res.text();
+      const container = document.getElementById(placeholderId);
+      const temp = document.createElement("div");
+      temp.innerHTML = html;
+
+      Array.from(temp.children).forEach(el => {
+        if (el.tagName === "SCRIPT") {
+          const script = document.createElement("script");
+          if (el.src) {
+            script.src = el.src;
+            script.async = false;
+          } else {
+            script.textContent = el.textContent;
+          }
+          document.body.appendChild(script);
+        } else {
+          container.appendChild(el);
+        }
+      });
     }
 
-    async function setupPopups() {
-      await injectPopup("/html/cartpopup.html", "cartPopup-placeholder");
-      await injectPopup("/html/checkoutpopup.html", "checkoutPopup-placeholder");
+    async function setupPage() {
+      await injectHTML("/html/cartpopup.html", "cartPopup-placeholder");
+      await injectHTML("/html/checkoutpopup.html", "checkoutPopup-placeholder");
+      await injectHTML("/html/stickyfooter.html", "sticky-footer-placeholder");
 
       await loadScript("https://friendly-kitten-d760ff.netlify.app/js/voucherpopup.js");
       await loadScript("https://friendly-kitten-d760ff.netlify.app/js/cartpopup.js");
@@ -52,12 +80,14 @@
       window.__vouchersRaw = map["chair"] || {};
       window.voucherByProduct = {};
       initCartPopup();
+
+      console.log("✅ Trang ghế đã sẵn sàng");
     }
 
-    setupPopups();
+    setupPage();
   </script>
 
-  <!-- ✅ Gọi base.html -->
+  <!-- ✅ Tracking + base -->
   <div id="base-placeholder"></div>
   <script>
     fetch("/html/base.html")
@@ -65,12 +95,11 @@
       .then(html => {
         document.getElementById("base-placeholder").outerHTML = html;
 
-        // ✅ Tracking ViewContent
         if (typeof trackBothPixels === "function") {
           trackBothPixels("ViewContent", {
             content_id: "chair",
             content_name: "chair",
-            content_category: window.productCategory || "unknown",
+            content_category: window.productCategory,
             value: 0,
             currency: "VND"
           });
@@ -78,25 +107,7 @@
       });
   </script>
 
-  <!-- ✅ Nội dung mô tả sản phẩm -->
-  <div id="productImages" style="padding: 16px;">
-    <h1>Ghế công thái học FA</h1>
-    <p style="font-size:14px; color:#444;">
-      Thoải mái, nâng đỡ cột sống, chống gù, phù hợp làm việc văn phòng & học tập lâu dài.
-    </p>
-  </div>
-
-  <!-- ✅ Sticky Footer -->
-  <div id="sticky-footer-placeholder"></div>
-  <script>
-    fetch("/html/stickyfooter.html")
-      .then(res => res.text())
-      .then(html => {
-        document.getElementById("sticky-footer-placeholder").outerHTML = html;
-      });
-  </script>
-
-  <!-- ✅ FreeFlow (You may also like) -->
+  <!-- ✅ FreeFlow -->
   <h2 style="font-size: 18px; margin: 24px 12px 12px;">Có thể bạn sẽ thích</h2>
   <div id="freeflow-placeholder"></div>
   <script>
