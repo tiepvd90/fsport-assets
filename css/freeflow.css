@@ -1,23 +1,25 @@
-/* ==== FreeFlow Feed Layout (Masonry) ==== */
+/* ==== FreeFlow Feed Layout (Masonry Responsive, Centered) ==== */
 #freeflowFeed {
   column-count: 2;
   column-gap: 12px;
   padding: 12px;
-  max-width: 1200px;
   margin: auto;
+  max-width: 100%;
 }
 
-/* Tablet */
-@media screen and (min-width: 768px) {
+/* Tablet (≥600px) */
+@media screen and (min-width: 600px) {
   #freeflowFeed {
-    column-count: 4;
+    column-count: 3;
+    max-width: 720px;
   }
 }
 
-/* Desktop */
+/* Desktop (≥1024px) */
 @media screen and (min-width: 1024px) {
   #freeflowFeed {
     column-count: 6;
+    max-width: 1080px;
   }
 }
 
@@ -55,7 +57,7 @@
   border-bottom: 1px solid #eee;
 }
 
-/* ==== Tiêu đề 1 dòng ==== */
+/* ==== Tiêu đề ngắn 1 dòng ==== */
 .one-line-title {
   padding: 8px;
   font-size: 14px;
@@ -67,7 +69,7 @@
   text-overflow: ellipsis;
 }
 
-/* ==== Giá tiền ==== */
+/* ==== Dòng giá ==== */
 .price-line {
   padding: 0 8px 8px 8px;
 }
