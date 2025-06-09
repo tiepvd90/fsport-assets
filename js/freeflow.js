@@ -1,7 +1,7 @@
-// ✅ FreeFlow v1 – Thuật toán hiển thị nội dung
 let freeflowData = [];
 let filteredFeed = [];
 
+// 🔁 Fetch JSON từ Google Sheet hoặc URL đầu vào
 async function fetchFreeFlowData(jsonUrl) {
   try {
     const res = await fetch(jsonUrl);
@@ -12,6 +12,7 @@ async function fetchFreeFlowData(jsonUrl) {
   }
 }
 
+// 🔍 Lọc + Tính độ ưu tiên
 function updateFeed(searchTerm = "") {
   filteredFeed = freeflowData.map(item => {
     let searchModifier = item.tags?.some(tag => tag.includes(searchTerm)) ? 10 : 0;
@@ -22,6 +23,7 @@ function updateFeed(searchTerm = "") {
   renderFeed(filteredFeed);
 }
 
+// 🎨 Render giao diện
 function renderFeed(feed) {
   const container = document.getElementById("freeflowFeed");
   if (!container) return;
@@ -35,15 +37,55 @@ function renderFeed(feed) {
 
     const div = document.createElement("div");
     div.className = "feed-item";
+
+    let mediaHtml = "";
+    if (item.contentType === "image") {
+      mediaHtml = `<img loading="lazy" src="${item.image}" alt="${item.title}">`;
+    } else if (item.contentType === "youtube") {
+      mediaHtml = `
+        <iframe 
+          data-video-id="${item.youtube}"
+          frameborder="0"
+          allow="autoplay; encrypted-media"
+          allowfullscreen
+          playsinline
+          muted
+        ></iframe>
+      `;
+    }
+
     div.innerHTML = `
-      ${item.contentType === "image" ? `<img src="${item.image}" alt="${item.title}">` : ""}
-      ${item.contentType === "youtube" ? `<iframe src="https://www.youtube.com/embed/${item.youtube}" frameborder="0" allowfullscreen></iframe>` : ""}
+      ${mediaHtml}
       <h4 class="one-line-title">${item.title}</h4>
       <div class="price-line">
         <span class="price">${finalPrice}</span> ${originalPrice}
       </div>
     `;
+
     div.onclick = () => window.location.href = item.productPage;
     container.appendChild(div);
   });
+
+  // Sau khi render xong → quan sát video
+  observeYouTubeIframes();
+}
+
+// 👁️ Tự động autoplay video trong tầm nhìn
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    const iframe = entry.target;
+    const videoId = iframe.getAttribute("data-video-id");
+    if (entry.isIntersecting) {
+      iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&playsinline=1&controls=0&loop=1&playlist=${videoId}`;
+    } else {
+      iframe.src = ""; // Dừng video khi ra khỏi vùng nhìn
+    }
+  });
+}, {
+  threshold: 0.75
+});
+
+function observeYouTubeIframes() {
+  const iframes = document.querySelectorAll('iframe[data-video-id]');
+  iframes.forEach(iframe => observer.observe(iframe));
 }
