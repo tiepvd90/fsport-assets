@@ -47,7 +47,7 @@ function renderFeed(feed) {
   feed.forEach(item => {
     const finalPrice = item.price ? Number(item.price).toLocaleString() + "đ" : "";
     const originalPrice = item.originalPrice && item.originalPrice > item.price
-      ? `<span class="original-price">${Number(item.originalPrice).toLocaleString()}đ</span>` : "";
+      ? `<span class="original-price" style="color:#666">${Number(item.originalPrice).toLocaleString()}đ</span>` : "";
 
     const div = document.createElement("div");
     div.className = "feed-item";
@@ -73,7 +73,7 @@ function renderFeed(feed) {
 
     div.innerHTML = `
       ${mediaHtml}
-      <h4 class="one-line-title">${item.title}</h4>
+      <h4 class="one-line-title" style="margin-bottom:4px;">${item.title}</h4>
       <div class="price-line">
         <span class="price">${finalPrice}</span> ${originalPrice}
       </div>
