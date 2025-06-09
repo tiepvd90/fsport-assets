@@ -57,14 +57,17 @@ function renderFeed(feed) {
       mediaHtml = `<img loading="lazy" src="${item.image}" alt="${item.title}">`;
     } else if (item.contentType === "youtube") {
       mediaHtml = `
-        <iframe 
-          data-video-id="${item.youtube}"
-          frameborder="0"
-          allow="autoplay; encrypted-media"
-          allowfullscreen
-          playsinline
-          muted
-        ></iframe>
+        <div class="video-wrapper">
+          <iframe 
+            data-video-id="${item.youtube}"
+            frameborder="0"
+            allow="autoplay; encrypted-media"
+            allowfullscreen
+            playsinline
+            muted
+          ></iframe>
+          <div class="video-overlay" data-video="${item.youtube}"></div>
+        </div>
       `;
     }
 
@@ -76,17 +79,22 @@ function renderFeed(feed) {
       </div>
     `;
 
-    div.onclick = () => {
-      if (item.contentType === "youtube") {
-        const overlay = document.getElementById("videoOverlay");
-        const frame = document.getElementById("videoFrame");
-        const id = item.youtube;
-        frame.src = `https://www.youtube.com/embed/${id}?autoplay=1&mute=0&playsinline=1&controls=1`;
-        overlay.style.display = "flex";
-      } else {
+    if (item.contentType === "youtube") {
+      setTimeout(() => {
+        const overlay = div.querySelector(".video-overlay");
+        overlay.onclick = () => {
+          const id = overlay.getAttribute("data-video");
+          const popup = document.getElementById("videoOverlay");
+          const frame = document.getElementById("videoFrame");
+          frame.src = `https://www.youtube.com/embed/${id}?autoplay=1&mute=0&playsinline=1&controls=1`;
+          popup.style.display = "flex";
+        };
+      }, 0);
+    } else {
+      div.onclick = () => {
         window.location.href = item.productPage;
-      }
-    };
+      };
+    }
 
     container.appendChild(div);
   });
@@ -99,9 +107,10 @@ const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     const iframe = entry.target;
     const videoId = iframe.getAttribute("data-video-id");
-    if (entry.isIntersecting) {
+    if (entry.isIntersecting && iframe.src === "") {
       iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&playsinline=1&controls=0&loop=1&playlist=${videoId}`;
-    } else {
+    }
+    if (!entry.isIntersecting && iframe.src !== "") {
       iframe.src = "";
     }
   });
@@ -120,11 +129,3 @@ function closeVideoPopup() {
   frame.src = "";
   document.getElementById("videoOverlay").style.display = "none";
 }
-
-// Nút đóng video (đặt ở HTML):
-// <div id="videoOverlay" style="display:none;">
-//   <button onclick="closeVideoPopup()" style="position:absolute;top:12px;right:12px;font-size:28px;color:white;background:none;border:none;cursor:pointer;">×</button>
-//   <div class="video-inner">
-//     <iframe id="videoFrame"></iframe>
-//   </div>
-// </div>
