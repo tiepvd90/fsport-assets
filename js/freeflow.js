@@ -12,11 +12,18 @@ async function fetchFreeFlowData(jsonUrl) {
   }
 }
 
-// 🔍 Lọc + Tính độ ưu tiên
+// 🔍 Lọc + tính điểm ưu tiên
 function updateFeed(searchTerm = "") {
+  const currentCategory = window.currentProductCategory || "";
+
   filteredFeed = freeflowData.map(item => {
-    let searchModifier = item.tags?.some(tag => tag.includes(searchTerm)) ? 10 : 0;
-    item.finalPriority = item.basePriority + searchModifier;
+    const base = item.basePriority || 0;
+
+    const searchModifier = item.tags?.some(tag => tag.includes(searchTerm)) ? 10 : 0;
+    const categoryBoost = item.tags?.some(tag => tag.includes(currentCategory)) ? 15 : 0;
+    const randomPoint = Math.floor(Math.random() * (base * 0.3));
+
+    item.finalPriority = base + searchModifier + categoryBoost + randomPoint;
     return item;
   }).sort((a, b) => b.finalPriority - a.finalPriority);
 
@@ -66,7 +73,6 @@ function renderFeed(feed) {
     container.appendChild(div);
   });
 
-  // Sau khi render xong → quan sát video
   observeYouTubeIframes();
 }
 
