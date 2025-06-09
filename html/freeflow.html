@@ -1,7 +1,29 @@
-<!-- Giao diện phần FreeFlow -->
+<!-- ✅ FREEFLOW MODULE - Dùng cuối trang sản phẩm -->
+
+<!-- CSS cần thiết -->
+<link rel="stylesheet" href="/css/base.css" />
+<link rel="stylesheet" href="/css/freeflow.css" />
+
+<!-- Khu vực hiển thị feed -->
 <div id="freeflowFeed"></div>
 
-<!-- Gọi dữ liệu và script -->
+<!-- JS xử lý FreeFlow -->
+<script src="/js/freeflow.js"></script>
 <script>
   fetchFreeFlowData("https://script.google.com/macros/s/AKfycbwuEh9sP65vyQL0XzU8gY1Os0QYV_K5egKJgm8OhImAPjvdyrQiU7XCY909N99TnltP/exec");
+
+  function closeVideoPopup() {
+    const overlay = document.getElementById("videoOverlay");
+    const frame = document.getElementById("videoFrame");
+    frame.src = "";
+    overlay.style.display = "none";
+  }
 </script>
+
+<!-- Popup xem video YouTube -->
+<div id="videoOverlay" style="display:none;">
+  <button onclick="closeVideoPopup()" style="position:absolute;top:12px;right:12px;font-size:28px;color:white;background:none;border:none;cursor:pointer;">×</button>
+  <div class="video-inner">
+    <iframe id="videoFrame" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+  </div>
+</div>
