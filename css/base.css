@@ -175,3 +175,12 @@ textarea {
   cursor: pointer;
   z-index: 10001;
 }
+.video-wrapper {
+  position: relative;
+}
+.video-overlay {
+  position: absolute;
+  inset: 0;
+  cursor: pointer;
+  z-index: 10;
+}
