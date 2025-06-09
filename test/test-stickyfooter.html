@@ -29,25 +29,32 @@
       });
     }
 
-    async function setupTest() {
-      const popupHtml = await fetch("/html/cartpopup.html").then(r => r.text());
-      document.getElementById("cartPopup-placeholder").outerHTML = popupHtml;
+    async function injectHTML(file, placeholderId) {
+      const res = await fetch(file);
+      const html = await res.text();
+      const container = document.getElementById(placeholderId);
+      const temp = document.createElement("div");
+      temp.innerHTML = html;
 
-      const footerHtml = await fetch("/html/stickyfooter.html").then(r => r.text());
-      document.getElementById("sticky-footer-placeholder").outerHTML = footerHtml;
-
-      // 🔁 Gán lại sự kiện thủ công sau khi inject
-      setTimeout(() => {
-        const btnAtc = document.getElementById("btn-atc");
-        if (btnAtc) {
-          btnAtc.addEventListener("click", () => {
-            console.log("🛒 [Fallback] Gán lại sự kiện click cho btn-atc");
-            toggleCartPopup(true);
-          });
+      Array.from(temp.children).forEach(el => {
+        if (el.tagName === "SCRIPT") {
+          const script = document.createElement("script");
+          if (el.src) {
+            script.src = el.src;
+            script.async = false;
+          } else {
+            script.textContent = el.textContent;
+          }
+          document.body.appendChild(script);
         } else {
-          console.warn("⚠️ btn-atc không tồn tại sau inject");
+          container.appendChild(el);
         }
-      }, 300);
+      });
+    }
+
+    async function setupTest() {
+      await injectHTML("/html/cartpopup.html", "cartPopup-placeholder");
+      await injectHTML("/html/stickyfooter.html", "sticky-footer-placeholder");
 
       await loadScript("https://friendly-kitten-d760ff.netlify.app/js/voucherpopup.js");
       await loadScript("https://friendly-kitten-d760ff.netlify.app/js/cartpopup.js");
@@ -56,6 +63,8 @@
       window.__vouchersRaw = map["chair"] || {};
       window.voucherByProduct = {};
       initCartPopup();
+
+      console.log("✅ Giỏ hàng và footer đã sẵn sàng");
     }
 
     setupTest();
