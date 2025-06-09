@@ -14,7 +14,7 @@ async function fetchFreeFlowData(jsonUrl) {
 
 function updateFeed(searchTerm = "") {
   filteredFeed = freeflowData.map(item => {
-    let searchModifier = item.tags.some(tag => tag.includes(searchTerm)) ? 10 : 0;
+    let searchModifier = item.tags?.some(tag => tag.includes(searchTerm)) ? 10 : 0;
     item.finalPriority = item.basePriority + searchModifier;
     return item;
   }).sort((a, b) => b.finalPriority - a.finalPriority);
@@ -27,13 +27,21 @@ function renderFeed(feed) {
   if (!container) return;
 
   container.innerHTML = "";
+
   feed.forEach(item => {
+    const finalPrice = item.price ? Number(item.price).toLocaleString() + "đ" : "";
+    const originalPrice = item.originalPrice && item.originalPrice > item.price
+      ? `<span class="original-price">${Number(item.originalPrice).toLocaleString()}đ</span>` : "";
+
     const div = document.createElement("div");
     div.className = "feed-item";
     div.innerHTML = `
       ${item.contentType === "image" ? `<img src="${item.image}" alt="${item.title}">` : ""}
       ${item.contentType === "youtube" ? `<iframe src="https://www.youtube.com/embed/${item.youtube}" frameborder="0" allowfullscreen></iframe>` : ""}
-      <h4>${item.title}</h4>
+      <h4 class="one-line-title">${item.title}</h4>
+      <div class="price-line">
+        <span class="price">${finalPrice}</span> ${originalPrice}
+      </div>
     `;
     div.onclick = () => window.location.href = item.productPage;
     container.appendChild(div);
