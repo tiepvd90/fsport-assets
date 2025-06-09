@@ -1,23 +1,57 @@
-<!-- ✅ POPUP GIỎ HÀNG - PHIÊN BẢN CHUẨN TIKTOK SHOP -->
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <title>Cart Popup - Funsport</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- ✅ Giao diện giỏ hàng -->
+  <link rel="stylesheet" href="https://friendly-kitten-d760ff.netlify.app/css/cartpopup.css" />
+</head>
+<body>
+
+<!-- ✅ Nút gọi giỏ hàng (nên được nhúng từ mainblock) -->
+<button id="btn-atc" class="footer-btn" onclick="toggleCartPopup(true)">THÊM VÀO GIỎ HÀNG</button>
+
+<!-- ✅ Container chứa đường dẫn JSON -->
+<div id="cartContainer" data-json="https://friendly-kitten-d760ff.netlify.app/json/chair.json"></div>
+
+<!-- ✅ POPUP GIỎ HÀNG -->
 <div id="cartPopup" class="cart-popup hidden" style="display: none;">
   <div class="cart-popup-overlay" onclick="toggleCartPopup(false)"></div>
   <div class="cart-popup-content">
+
     <!-- ❌ Nút đóng -->
     <button class="cart-popup-close" onclick="toggleCartPopup(false)">&times;</button>
 
-    <!-- 🖼 Ảnh + Tên + Giá -->
-    <div class="product-header">
-      <img id="mainImage" src="" alt="Ảnh sản phẩm" />
-      <div class="product-info">
-        <div class="product-name" id="productName">Tên sản phẩm</div>
-        <div class="product-price">
-          <span class="price-sale" id="productPrice">0đ</span>
-          <span class="price-original" id="productOriginalPrice">0đ</span>
+    <!-- 🖼️ Header sản phẩm -->
+    <div class="product-header" style="display: flex; gap: 12px;">
+      <img id="mainImage" src="" alt="Ảnh sản phẩm" style="width: 120px; border-radius: 8px; object-fit: cover;" />
+      <div class="product-info" style="display: flex; flex-direction: column; flex: 1;">
+        <div>
+          <div class="product-price">
+            <span class="price-sale" id="productPrice">0đ</span>
+            <span class="price-original" id="productOriginalPrice">0đ</span>
+          </div>
+          <div id="voucherLabel" style="
+            display: none;
+            background-color: rgba(0, 160, 230, 0.6);
+            color: white;
+            font-weight: bold;
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-size: 13px;
+            margin-top: 6px;
+            width: fit-content;"></div>
+          <div id="finalPriceLine" style="display: none; font-weight: bold; color: #d32f2f; margin-top: 4px;"></div>
         </div>
+
+        <div style="flex: 1;"></div>
+
+        <div class="product-variant" id="productVariantText" style="font-size: 14px; color: #333;"></div>
       </div>
     </div>
 
-    <!-- 🔘 Danh sách phân loại (render bằng JS từ thuộc_tính) -->
+    <!-- 🧩 Danh sách phân loại -->
     <div class="variant-list" id="variantList"></div>
 
     <!-- 🔢 Số lượng -->
@@ -30,16 +64,33 @@
       </div>
     </div>
 
-    <!-- 📝 Form thông tin người nhận -->
-    <div class="cart-form">
-      <div class="row-inputs">
-        <input type="text" id="cartName" placeholder="Họ và Tên" required />
-        <input type="tel" id="cartPhone" placeholder="Số điện thoại" required />
-      </div>
-      <textarea id="cartAddress" placeholder="Địa chỉ nhận hàng" rows="2" required></textarea>
-    </div>
-
-    <!-- 🚀 Nút đặt hàng -->
-    <button id="cartSubmitBtn" class="cart-submit-btn">ĐẶT HÀNG NGAY</button>
+    <!-- ✅ Nút submit -->
+    <button id="cartSubmitBtn" class="cart-submit-btn">THÊM VÀO GIỎ HÀNG</button>
   </div>
 </div>
+
+<!-- ✅ Script cần thiết -->
+<script src="https://friendly-kitten-d760ff.netlify.app/js/voucherpopup.js"></script>
+<script src="https://friendly-kitten-d760ff.netlify.app/js/cartpopup.js"></script>
+
+<!-- ✅ Khởi tạo sau DOM -->
+<script>
+document.addEventListener("DOMContentLoaded", async () => {
+  let map = {};
+  if (typeof fetchVoucherMap === "function") {
+    try {
+      map = await fetchVoucherMap();
+    } catch (e) {
+      console.warn("Voucher fetch failed:", e);
+    }
+  }
+
+  window.voucherByProduct = {};
+  window.__vouchersRaw = map?.[window.loai || "chair"] || {};
+
+  initCartPopup(); // luôn gọi sau khi có voucher
+});
+</script>
+
+</body>
+</html>
