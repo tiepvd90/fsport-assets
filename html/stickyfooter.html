@@ -15,7 +15,7 @@ function tryOpenCartPopup(attempt = 1) {
     toggleCartPopup(true);
   } else if (attempt < 5) {
     console.warn(`🔁 Đợi cartpopup.js (lần ${attempt})...`);
-    setTimeout(() => tryOpenCartPopup(attempt + 1), 300);
+    setTimeout(() => tryOpenCartPopup(attempt + 1), 200);
   } else {
     console.error("❌ toggleCartPopup vẫn chưa load sau 5 lần thử.");
   }
@@ -29,11 +29,11 @@ document.addEventListener("DOMContentLoaded", () => {
   if (btnAtc) {
     btnAtc.addEventListener("click", () => {
       const loai = window.productCategory || "unknown";
-      console.log("🛒 Add to cart: ", loai);
+      console.log("🛒 Click btn-atc:", loai);
 
       if (typeof trackBothPixels === "function") {
-        trackBothPixels('AddToCart', {
-          content_name: 'click_btn_atc_' + loai,
+        trackBothPixels("AddToCart", {
+          content_name: "click_btn_atc_" + loai,
           content_category: loai
         });
       }
@@ -42,6 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // Gắn link gọi/chat nếu có trong settings
   fetch("https://friendly-kitten-d760ff.netlify.app/json/settings.json")
     .then(res => res.json())
     .then(data => {
@@ -52,6 +53,6 @@ document.addEventListener("DOMContentLoaded", () => {
         chatLink.href = data["fb-page"];
       }
     })
-    .catch(err => console.warn("Lỗi tải settings.json:", err));
+    .catch(err => console.warn("⚠️ Lỗi tải settings.json:", err));
 });
 </script>
