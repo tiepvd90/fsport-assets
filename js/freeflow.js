@@ -1,45 +1,49 @@
 let freeflowData = [];
 let filteredFeed = [];
 
-// 🔁 Fetch JSON từ Google Sheet hoặc URL đầu vào
+// 🔁 Fetch JSON từ Google Sheet
 async function fetchFreeFlowData(jsonUrl) {
   try {
     const res = await fetch(jsonUrl);
     freeflowData = await res.json();
     updateFeed();
   } catch (err) {
-    console.warn("Không thể tải FreeFlow JSON:", err);
+    console.warn("❌ Không thể tải FreeFlow JSON:", err);
   }
 }
 
-// 🔍 Lọc + tính điểm ưu tiên
+// 🔍 Tính điểm và ghép 8 ảnh → 1 video
 function updateFeed(searchTerm = "") {
   const currentCategory = window.currentProductCategory || "";
 
-  filteredFeed = freeflowData.map(item => {
+  // Tính finalPriority
+  const scored = freeflowData.map(item => {
     const base = item.basePriority || 0;
-
     const searchModifier = item.tags?.some(tag => tag.includes(searchTerm)) ? 10 : 0;
     const categoryBoost = item.tags?.some(tag => tag.includes(currentCategory)) ? 15 : 0;
     const randomPoint = Math.floor(Math.random() * (base * 0.3));
-
     item.finalPriority = base + searchModifier + categoryBoost + randomPoint;
     return item;
-  }).sort((a, b) => b.finalPriority - a.finalPriority);
+  });
 
-  // 📌 Áp dụng tỷ lệ 8 ảnh → 1 video
-  const images = filteredFeed.filter(item => item.contentType === "image");
-  const videos = filteredFeed.filter(item => item.contentType === "youtube");
+  // Tách và sort riêng
+  const images = scored
+    .filter(item => item.contentType === "image")
+    .sort((a, b) => b.finalPriority - a.finalPriority);
 
+  const videos = scored
+    .filter(item => item.contentType === "youtube")
+    .sort((a, b) => b.finalPriority - a.finalPriority);
+
+  // Ghép 8 ảnh + 1 video
   let finalDisplay = [];
-  let imgIndex = 0, vidIndex = 0;
+  let imgIndex = 0;
+  let vidIndex = 0;
 
   while (imgIndex < images.length) {
-    // Thêm 8 ảnh hoặc đến hết
     for (let i = 0; i < 8 && imgIndex < images.length; i++) {
       finalDisplay.push(images[imgIndex++]);
     }
-    // Sau mỗi 8 ảnh thì chèn 1 video nếu còn
     if (vidIndex < videos.length) {
       finalDisplay.push(videos[vidIndex++]);
     }
@@ -48,11 +52,10 @@ function updateFeed(searchTerm = "") {
   renderFeed(finalDisplay);
 }
 
-// 🎨 Render giao diện
+// 🎨 Hiển thị ra HTML
 function renderFeed(feed) {
   const container = document.getElementById("freeflowFeed");
   if (!container) return;
-
   container.innerHTML = "";
 
   feed.forEach(item => {
@@ -88,14 +91,13 @@ function renderFeed(feed) {
     `;
 
     div.onclick = () => {
-  if (item.contentType === "youtube") {
-    // 👉 Mở video Shorts trên YouTube khi click
-    window.open(`https://www.youtube.com/shorts/${item.youtube}`, '_blank');
-  } else {
-    // 👉 Ảnh thì vẫn chuyển đến trang sản phẩm
-    window.location.href = item.productPage;
-  }
-};
+      if (item.contentType === "youtube") {
+        // 👉 Mở video YouTube Shorts
+        window.open(`https://www.youtube.com/shorts/${item.youtube}`, '_blank');
+      } else {
+        window.location.href = item.productPage;
+      }
+    };
 
     container.appendChild(div);
   });
@@ -103,7 +105,7 @@ function renderFeed(feed) {
   observeYouTubeIframes();
 }
 
-// 👁️ Tự động autoplay video trong tầm nhìn
+// 👁️ Auto-play video khi trong tầm nhìn
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     const iframe = entry.target;
@@ -111,7 +113,7 @@ const observer = new IntersectionObserver((entries) => {
     if (entry.isIntersecting) {
       iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&playsinline=1&controls=0&loop=1&playlist=${videoId}`;
     } else {
-      iframe.src = ""; // Dừng video khi ra khỏi vùng nhìn
+      iframe.src = "";
     }
   });
 }, {
