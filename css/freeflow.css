@@ -1,25 +1,4 @@
-#freeflowFeed {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  padding: 12px;
-}
-.feed-item {
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  overflow: hidden;
-  cursor: pointer;
-}
-.feed-item img, .feed-item iframe {
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  object-fit: cover;
-}
-.feed-item h4 {
-  padding: 8px;
-  font-size: 16px;
-}
+/* ==== FreeFlow Feed Layout ==== */
 #freeflowFeed {
   display: grid;
   gap: 12px;
@@ -27,7 +6,7 @@
   max-width: 1200px;
   margin: auto;
 
-  /* Mặc định mobile: 2 cột */
+  /* Mobile mặc định: 2 cột */
   grid-template-columns: repeat(2, 1fr);
 }
 
@@ -38,5 +17,37 @@
   }
 }
 
+/* ==== Feed Item Card ==== */
+.feed-item {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
 
+.feed-item:hover {
+  transform: translateY(-4px);
+}
 
+/* ==== Ảnh hoặc Video ==== */
+.feed-item img,
+.feed-item iframe {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+  border-bottom: 1px solid #eee;
+}
+
+/* ==== Tiêu đề ==== */
+.feed-item h4 {
+  padding: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+  line-height: 1.3;
+  text-align: left;
+  margin: 0;
+}
