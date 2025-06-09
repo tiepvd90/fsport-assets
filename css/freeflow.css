@@ -1,24 +1,30 @@
-/* ==== FreeFlow Feed Layout ==== */
+/* ==== FreeFlow Feed Layout (Masonry) ==== */
 #freeflowFeed {
-  display: grid !important;
-  gap: 12px !important;
-  padding: 12px !important;
-  max-width: 1200px !important;
-  margin: auto !important;
-
-  /* Mặc định: 2 cột mobile */
-  grid-template-columns: repeat(2, 1fr) !important;
+  column-count: 2;
+  column-gap: 12px;
+  padding: 12px;
+  max-width: 1200px;
+  margin: auto;
 }
 
-/* Desktop ≥768px: 6 cột */
+/* Tablet */
 @media screen and (min-width: 768px) {
   #freeflowFeed {
-    grid-template-columns: repeat(6, 1fr) !important;
+    column-count: 4;
+  }
+}
+
+/* Desktop */
+@media screen and (min-width: 1024px) {
+  #freeflowFeed {
+    column-count: 6;
   }
 }
 
 /* ==== Feed Item Card ==== */
 .feed-item {
+  break-inside: avoid;
+  margin-bottom: 12px;
   background: #fff;
   border-radius: 12px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.08);
