@@ -58,12 +58,21 @@
       });
   </script>
 
-  <!-- ✅ FreeFlow "Có thể bạn sẽ thích" -->
-  <div style="padding: 24px;">
-    <h2 style="font-size: 18px; margin-bottom: 12px;">Có thể bạn sẽ thích</h2>
-    <div id="freeflow-placeholder"></div>
-  </div>
+  <!-- ✅ FreeFlow -->
+  <h2 style="font-size: 18px; margin: 24px 12px 12px;">Có thể bạn sẽ thích</h2>
+  <div id="freeflow-placeholder"></div>
+
   <script>
+    function waitForFreeFlow(callback, retries = 20) {
+      if (typeof fetchFreeFlowData === "function") {
+        callback();
+      } else if (retries > 0) {
+        setTimeout(() => waitForFreeFlow(callback, retries - 1), 100);
+      } else {
+        console.warn("❌ fetchFreeFlowData vẫn chưa sẵn sàng sau khi đợi.");
+      }
+    }
+
     fetch("/html/freeflow.html")
       .then(res => res.text())
       .then(html => {
@@ -71,7 +80,6 @@
         const temp = document.createElement("div");
         temp.innerHTML = html;
 
-        // Chèn từng phần tử vào
         Array.from(temp.children).forEach(el => {
           if (el.tagName === "SCRIPT") {
             const script = document.createElement("script");
@@ -88,14 +96,9 @@
           }
         });
 
-        // ✅ Đợi script load rồi gọi fetchFreeFlowData
-        setTimeout(() => {
-          if (typeof fetchFreeFlowData === "function") {
-            fetchFreeFlowData("https://script.google.com/macros/s/AKfycbwuEh9sP65vyQL0XzU8gY1Os0QYV_K5egKJgm8OhImAPjvdyrQiU7XCY909N99TnltP/exec");
-          } else {
-            console.warn("❌ fetchFreeFlowData chưa sẵn sàng");
-          }
-        }, 300);
+        waitForFreeFlow(() => {
+          fetchFreeFlowData("https://script.google.com/macros/s/AKfycbwuEh9sP65vyQL0XzU8gY1Os0QYV_K5egKJgm8OhImAPjvdyrQiU7XCY909N99TnltP/exec");
+        });
       });
   </script>
 
