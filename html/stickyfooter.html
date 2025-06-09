@@ -9,7 +9,7 @@
   <button id="btn-atc" class="footer-btn">THÊM VÀO GIỎ HÀNG</button>
 </div>
 
-<script>
+<script><script>
 function tryOpenCartPopup(attempt = 1) {
   if (typeof toggleCartPopup === "function") {
     toggleCartPopup(true);
@@ -21,36 +21,38 @@ function tryOpenCartPopup(attempt = 1) {
   }
 }
 
-// ✅ Gán sự kiện ngay lập tức (vì file này được inject sau DOM đã sẵn sàng)
-const btnAtc = document.getElementById("btn-atc");
-if (btnAtc) {
-  btnAtc.addEventListener("click", () => {
-    const loai = window.productCategory || "unknown";
-    console.log("🛒 Click btn-atc:", loai);
+document.addEventListener("DOMContentLoaded", () => {
+  const btnAtc = document.getElementById("btn-atc");
+  if (btnAtc) {
+    btnAtc.addEventListener("click", () => {
+      const loai = window.productCategory || "unknown";
+      console.log("🛒 Click btn-atc:", loai);
 
-    if (typeof trackBothPixels === "function") {
-      trackBothPixels("AddToCart", {
-        content_name: "click_btn_atc_" + loai,
-        content_category: loai
-      });
-    }
+      if (typeof trackBothPixels === "function") {
+        trackBothPixels("AddToCart", {
+          content_name: "click_btn_atc_" + loai,
+          content_category: loai
+        });
+      }
 
-    tryOpenCartPopup();
-  });
-}
+      tryOpenCartPopup();
+    });
+  }
 
-// ✅ Gán link gọi/chat nếu có settings
-fetch("https://friendly-kitten-d760ff.netlify.app/json/settings.json")
-  .then(res => res.json())
-  .then(data => {
-    const callLink = document.getElementById("call-link");
-    const chatLink = document.getElementById("chat-link");
-    if (callLink && data.tel) {
-      callLink.href = "tel:" + data.tel;
-    }
-    if (chatLink && data["fb-page"]) {
-      chatLink.href = data["fb-page"];
-    }
-  })
-  .catch(err => console.warn("⚠️ Lỗi tải settings.json:", err));
+  // Gán link gọi/chat nếu có settings
+  fetch("https://friendly-kitten-d760ff.netlify.app/json/settings.json")
+    .then(res => res.json())
+    .then(data => {
+      const callLink = document.getElementById("call-link");
+      const chatLink = document.getElementById("chat-link");
+      if (callLink && data.tel) {
+        callLink.href = "tel:" + data.tel;
+      }
+      if (chatLink && data["fb-page"]) {
+        chatLink.href = data["fb-page"];
+      }
+    })
+    .catch(err => console.warn("⚠️ Lỗi tải settings.json:", err));
+});
 </script>
+
