@@ -5,9 +5,7 @@
   <title>Test Sticky Footer + CartPopup</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="https://friendly-kitten-d760ff.netlify.app/css/cartpopup.css" />
-  <style>
-    body { font-family: Arial, sans-serif; padding-bottom: 80px; }
-  </style>
+  <style>body { font-family: Arial, sans-serif; padding-bottom: 80px; }</style>
   <script>
     window.loai = "chair";
     window.productCategory = "chair";
@@ -17,12 +15,10 @@
 
   <h2 style="padding: 16px;">Test Sticky Footer + Giỏ Hàng</h2>
 
-  <!-- ✅ Container sản phẩm -->
   <div id="cartContainer" data-json="/json/chair.json"></div>
   <div id="cartPopup-placeholder"></div>
   <div id="sticky-footer-placeholder"></div>
 
-  <!-- ✅ JS -->
   <script>
     async function loadScript(src) {
       return new Promise(resolve => {
@@ -34,29 +30,35 @@
     }
 
     async function setupTest() {
-      // Inject popup HTML
       const popupHtml = await fetch("/html/cartpopup.html").then(r => r.text());
       document.getElementById("cartPopup-placeholder").outerHTML = popupHtml;
 
-      // Inject sticky footer HTML
       const footerHtml = await fetch("/html/stickyfooter.html").then(r => r.text());
       document.getElementById("sticky-footer-placeholder").outerHTML = footerHtml;
 
-      // Load JS
+      // 🔁 Gán lại sự kiện thủ công sau khi inject
+      setTimeout(() => {
+        const btnAtc = document.getElementById("btn-atc");
+        if (btnAtc) {
+          btnAtc.addEventListener("click", () => {
+            console.log("🛒 [Fallback] Gán lại sự kiện click cho btn-atc");
+            toggleCartPopup(true);
+          });
+        } else {
+          console.warn("⚠️ btn-atc không tồn tại sau inject");
+        }
+      }, 300);
+
       await loadScript("https://friendly-kitten-d760ff.netlify.app/js/voucherpopup.js");
       await loadScript("https://friendly-kitten-d760ff.netlify.app/js/cartpopup.js");
 
-      // Init popup
       const map = await fetchVoucherMap();
       window.__vouchersRaw = map["chair"] || {};
       window.voucherByProduct = {};
       initCartPopup();
-
-      console.log("✅ Đã sẵn sàng để test giỏ hàng.");
     }
 
     setupTest();
   </script>
-
 </body>
 </html>
