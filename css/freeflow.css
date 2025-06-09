@@ -31,11 +31,19 @@
   transform: translateY(-4px);
 }
 
-/* ==== Ảnh hoặc Video ==== */
-.feed-item img,
-.feed-item iframe {
+/* ==== Ảnh ==== */
+.feed-item img {
   width: 100%;
   aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+  border-bottom: 1px solid #eee;
+}
+
+/* ==== Video ==== */
+.feed-item iframe {
+  width: 100%;
+  aspect-ratio: 9 / 16;
   object-fit: cover;
   display: block;
   border-bottom: 1px solid #eee;
