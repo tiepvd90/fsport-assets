@@ -1,26 +1,12 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-  <meta charset="UTF-8" />
-  <title>Cart Popup - Funsport</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <!-- ✅ Giao diện giỏ hàng -->
-  <link rel="stylesheet" href="https://friendly-kitten-d760ff.netlify.app/css/cartpopup.css" />
-</head>
-<body>
+<!-- ✅ Container chứa JSON -->
+<div id="cartContainer" data-json="/json/chair.json"></div>
 
-<!-- ✅ Container chứa đường dẫn JSON -->
-<div id="cartContainer" data-json="https://friendly-kitten-d760ff.netlify.app/json/chair.json"></div>
-
-<!-- ✅ POPUP GIỎ HÀNG -->
+<!-- ✅ Popup giỏ hàng -->
 <div id="cartPopup" class="cart-popup hidden" style="display: none;">
   <div class="cart-popup-overlay" onclick="toggleCartPopup(false)"></div>
   <div class="cart-popup-content">
-
-    <!-- ❌ Nút đóng -->
     <button class="cart-popup-close" onclick="toggleCartPopup(false)">&times;</button>
 
-    <!-- 🖼️ Header sản phẩm -->
     <div class="product-header" style="display: flex; gap: 12px;">
       <img id="mainImage" src="" alt="Ảnh sản phẩm" style="width: 120px; border-radius: 8px; object-fit: cover;" />
       <div class="product-info" style="display: flex; flex-direction: column; flex: 1;">
@@ -29,29 +15,16 @@
             <span class="price-sale" id="productPrice">0đ</span>
             <span class="price-original" id="productOriginalPrice">0đ</span>
           </div>
-          <div id="voucherLabel" style="
-            display: none;
-            background-color: rgba(0, 160, 230, 0.6);
-            color: white;
-            font-weight: bold;
-            padding: 4px 10px;
-            border-radius: 8px;
-            font-size: 13px;
-            margin-top: 6px;
-            width: fit-content;"></div>
+          <div id="voucherLabel" style="display: none; background-color: rgba(0, 160, 230, 0.6); color: white; font-weight: bold; padding: 4px 10px; border-radius: 8px; font-size: 13px; margin-top: 6px; width: fit-content;"></div>
           <div id="finalPriceLine" style="display: none; font-weight: bold; color: #d32f2f; margin-top: 4px;"></div>
         </div>
-
         <div style="flex: 1;"></div>
-
         <div class="product-variant" id="productVariantText" style="font-size: 14px; color: #333;"></div>
       </div>
     </div>
 
-    <!-- 🧩 Danh sách phân loại -->
     <div class="variant-list" id="variantList"></div>
 
-    <!-- 🔢 Số lượng -->
     <div class="quantity-wrapper">
       <label for="quantityInput" style="margin-right: 8px;">Số lượng:</label>
       <div class="quantity-control">
@@ -61,33 +34,6 @@
       </div>
     </div>
 
-    <!-- ✅ Nút submit -->
     <button id="cartSubmitBtn" class="cart-submit-btn">THÊM VÀO GIỎ HÀNG</button>
   </div>
 </div>
-
-<!-- ✅ Script cần thiết -->
-<script src="https://friendly-kitten-d760ff.netlify.app/js/voucherpopup.js"></script>
-<script src="https://friendly-kitten-d760ff.netlify.app/js/cartpopup.js"></script>
-
-<!-- ✅ Khởi tạo sau DOM -->
-<script>
-document.addEventListener("DOMContentLoaded", async () => {
-  let map = {};
-  if (typeof fetchVoucherMap === "function") {
-    try {
-      map = await fetchVoucherMap();
-    } catch (e) {
-      console.warn("Voucher fetch failed:", e);
-    }
-  }
-
-  window.voucherByProduct = {};
-  window.__vouchersRaw = map?.[window.loai || "chair"] || {};
-
-  initCartPopup(); // luôn gọi sau khi có voucher
-});
-</script>
-
-</body>
-</html>
