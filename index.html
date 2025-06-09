@@ -1,33 +1,42 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- RẤT QUAN TRỌNG cho mobile responsive -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Fun Sport</title>
-<link rel="stylesheet" href="/css/base.css">
-  <!-- Google Font: Be Vietnam Pro -->
-<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;700&display=swap" rel="stylesheet">
 
-  <!-- ✅ Giao diện FreeFlow -->
-  <link rel="stylesheet" href="/css/freeflow.css">
+  <!-- ✅ Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;700&display=swap" rel="stylesheet" />
+
+  <!-- ✅ CSS chính -->
+  <link rel="stylesheet" href="/css/base.css" />
+  <link rel="stylesheet" href="/css/freeflow.css" />
 </head>
 <body>
 
   <!-- 🔥 FREEFLOW FEED -->
   <div id="freeflowFeed"></div>
 
-  <!-- ✅ Script -->
+  <!-- ✅ JS FreeFlow -->
   <script src="/js/freeflow.js"></script>
   <script>
     fetchFreeFlowData("https://script.google.com/macros/s/AKfycbwuEh9sP65vyQL0XzU8gY1Os0QYV_K5egKJgm8OhImAPjvdyrQiU7XCY909N99TnltP/exec");
+
+    function closeVideoPopup() {
+      const overlay = document.getElementById("videoOverlay");
+      const frame = document.getElementById("videoFrame");
+      frame.src = "";
+      overlay.style.display = "none";
+    }
   </script>
-<!-- 🔳 Popup video YouTube -->
-<div id="videoOverlay" style="display:none;">
-  <button onclick="closeVideoPopup()" style="position:absolute;top:12px;right:12px;font-size:28px;color:white;background:none;border:none;cursor:pointer;">×</button>
-  <div class="video-inner">
-    <iframe id="videoFrame" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
+  <!-- 🔳 Popup video YouTube -->
+  <div id="videoOverlay" style="display:none;">
+    <button onclick="closeVideoPopup()" style="position:absolute;top:12px;right:12px;font-size:28px;color:white;background:none;border:none;cursor:pointer;">×</button>
+    <div class="video-inner">
+      <iframe id="videoFrame" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+    </div>
   </div>
-</div>
 
 </body>
 </html>
