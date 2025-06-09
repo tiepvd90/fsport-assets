@@ -27,7 +27,25 @@ function updateFeed(searchTerm = "") {
     return item;
   }).sort((a, b) => b.finalPriority - a.finalPriority);
 
-  renderFeed(filteredFeed);
+  // 📌 Áp dụng tỷ lệ 8 ảnh → 1 video
+  const images = filteredFeed.filter(item => item.contentType === "image");
+  const videos = filteredFeed.filter(item => item.contentType === "youtube");
+
+  let finalDisplay = [];
+  let imgIndex = 0, vidIndex = 0;
+
+  while (imgIndex < images.length) {
+    // Thêm 8 ảnh hoặc đến hết
+    for (let i = 0; i < 8 && imgIndex < images.length; i++) {
+      finalDisplay.push(images[imgIndex++]);
+    }
+    // Sau mỗi 8 ảnh thì chèn 1 video nếu còn
+    if (vidIndex < videos.length) {
+      finalDisplay.push(videos[vidIndex++]);
+    }
+  }
+
+  renderFeed(finalDisplay);
 }
 
 // 🎨 Render giao diện
