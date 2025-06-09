@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Checkout Popup - Funsport</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="https://friendly-kitten-d760ff.netlify.app/css/checkoutpopup.css" />
+</head>
+<body>
+
+<!-- ✅ CHECKOUT POPUP -->
+<div id="checkoutPopup" class="hidden" style="display: none;">
+  <div class="checkout-overlay" onclick="hideCheckoutPopup()"></div>
+
+  <div class="checkout-content">
+    <!-- ❌ Nút đóng cố định -->
+    <button class="checkout-close" onclick="hideCheckoutPopup()">&times;</button>
+
+    <!-- 🔄 Nội dung có thể cuộn -->
+    <div class="checkout-inner-scroll">
+
+      <!-- === MỤC 1: DANH SÁCH SẢN PHẨM === -->
+      <div class="checkout-section-title">1. Danh sách sản phẩm</div>
+      <div id="checkoutCartList"></div>
+      <div id="emptyCartText" style="display: none; color: #888; font-size: 14px; margin-bottom: 12px;">
+        Giỏ hàng của bạn hiện đang trống.
+      </div>
+
+      <!-- === MỤC 2: TỔNG KẾT ĐƠN HÀNG === -->
+      <div class="checkout-section-title">2. Thông tin đơn hàng</div>
+      <div class="checkout-summary">
+        <div class="row">
+          <span>
+            Tạm tính <span id="itemQuantityText"></span>
+          </span>
+          <span id="subtotalText">0₫</span>
+        </div>
+
+        <div class="row">
+          <span>Phí vận chuyển</span>
+          <span id="shippingFeeText">0₫</span>
+        </div>
+
+        <div class="row">
+          <span>Voucher</span>
+          <span id="voucherText" style="color: red;">-0₫</span>
+        </div>
+
+        <div class="row total-row">
+          <span>Tổng</span>
+          <span id="totalText">0₫</span>
+        </div>
+
+        <div class="note">
+          <span class="red-dot-icon">💯</span>
+          <em>kiểm tra hàng trước khi thanh toán</em>
+        </div>
+      </div>
+
+      <!-- === MỤC 3: THÔNG TIN NGƯỜI NHẬN === -->
+      <div class="checkout-section-title">3. Thông tin người nhận</div>
+      <div class="checkout-form">
+        <div class="form-row">
+          <input type="text" id="checkoutName" placeholder="Họ và Tên" />
+          <input type="tel" id="checkoutPhone" placeholder="Số điện thoại" />
+        </div>
+        <input type="text" id="checkoutAddress" placeholder="Địa chỉ nhận hàng" />
+      </div>
+
+      <!-- 🔘 Nút đặt hàng -->
+      <button id="checkoutSubmitBtn">ĐẶT HÀNG NGAY</button>
+    </div>
+  </div>
+</div>
+
+<!-- ✅ ICON GIỎ HÀNG GÓC PHẢI TRÊN -->
+<div id="cartIcon" onclick="showCheckoutPopup()" style="
+  position: fixed;
+  top: 12px;
+  right: 12px;
+  font-size: 22px;
+  background: white;
+  padding: 6px 10px;
+  border-radius: 50%;
+  box-shadow: 0 0 6px rgba(0,0,0,0.2);
+  z-index: 9999;
+  cursor: pointer;
+">🛒</div>
+
+<!-- ✅ JS -->
+<script src="https://friendly-kitten-d760ff.netlify.app/js/checkoutpopup.js"></script>
+
+</body>
+</html>
