@@ -10,10 +10,28 @@
 </head>
 <body>
 
-  <!-- ✅ Container cho popup -->
+  <!-- ✅ JSON sản phẩm -->
   <div id="cartContainer" data-json="/json/chair.json"></div>
-  <div id="cartPopup"></div>
-  <div id="popup-checkout" class="hidden"></div>
+
+  <!-- ✅ CartPopup -->
+  <div id="cartPopup-placeholder"></div>
+  <script>
+    fetch("/html/cartpopup.html")
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById("cartPopup-placeholder").outerHTML = html;
+      });
+  </script>
+
+  <!-- ✅ CheckoutPopup -->
+  <div id="checkoutPopup-placeholder"></div>
+  <script>
+    fetch("/html/checkoutpopup.html")
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById("checkoutPopup-placeholder").outerHTML = html;
+      });
+  </script>
 
   <!-- ✅ Gọi base.html -->
   <div id="base-placeholder"></div>
@@ -23,10 +41,12 @@
       .then(html => {
         document.getElementById("base-placeholder").outerHTML = html;
 
+        // ✅ Khởi tạo giỏ hàng sau khi base đã load
         if (typeof initCartPopup === "function") {
           initCartPopup();
         }
 
+        // ✅ Tracking ViewContent
         const product = "chair";
         if (typeof trackBothPixels === "function") {
           trackBothPixels("ViewContent", {
@@ -40,7 +60,7 @@
       });
   </script>
 
-  <!-- ✅ Mô tả sản phẩm -->
+  <!-- ✅ Nội dung mô tả sản phẩm -->
   <div id="productImages" style="padding: 16px;">
     <h1>Ghế công thái học FA</h1>
     <p style="font-size:14px; color:#444;">
@@ -58,10 +78,9 @@
       });
   </script>
 
-  <!-- ✅ FreeFlow -->
+  <!-- ✅ FreeFlow (You may also like) -->
   <h2 style="font-size: 18px; margin: 24px 12px 12px;">Có thể bạn sẽ thích</h2>
   <div id="freeflow-placeholder"></div>
-
   <script>
     function waitForFreeFlow(callback, retries = 20) {
       if (typeof fetchFreeFlowData === "function") {
@@ -69,7 +88,7 @@
       } else if (retries > 0) {
         setTimeout(() => waitForFreeFlow(callback, retries - 1), 100);
       } else {
-        console.warn("❌ fetchFreeFlowData vẫn chưa sẵn sàng sau khi đợi.");
+        console.warn("❌ fetchFreeFlowData chưa sẵn sàng.");
       }
     }
 
