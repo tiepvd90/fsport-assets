@@ -87,7 +87,16 @@ function renderFeed(feed) {
       </div>
     `;
 
-    div.onclick = () => window.location.href = item.productPage;
+    div.onclick = () => {
+  if (item.contentType === "youtube") {
+    // 👉 Mở video Shorts trên YouTube khi click
+    window.open(`https://www.youtube.com/shorts/${item.youtube}`, '_blank');
+  } else {
+    // 👉 Ảnh thì vẫn chuyển đến trang sản phẩm
+    window.location.href = item.productPage;
+  }
+};
+
     container.appendChild(div);
   });
 
