@@ -22,14 +22,17 @@
 }
 #freeflowFeed {
   display: grid;
-  grid-template-columns: repeat(2, 1fr); /* mobile mặc định 2 cột */
+  grid-template-columns: repeat(2, 1fr); /* Mobile mặc định: 2 cột */
   gap: 12px;
   padding: 12px;
+  max-width: 1200px; /* Shopee-style: giới hạn chiều rộng */
+  margin: auto;       /* Canh giữa toàn bộ block */
 }
 
 @media (min-width: 768px) {
   #freeflowFeed {
-    grid-template-columns: repeat(6, 1fr); /* desktop 6 cột */
+    grid-template-columns: repeat(6, 1fr); /* Desktop: 6 cột */
   }
 }
+
 
