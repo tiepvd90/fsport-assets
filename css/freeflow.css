@@ -1,19 +1,19 @@
 /* ==== FreeFlow Feed Layout ==== */
 #freeflowFeed {
-  display: grid;
-  gap: 12px;
-  padding: 12px;
-  max-width: 1200px;
-  margin: auto;
+  display: grid !important;
+  gap: 12px !important;
+  padding: 12px !important;
+  max-width: 1200px !important;
+  margin: auto !important;
 
-  /* Mobile mặc định: 2 cột */
-  grid-template-columns: repeat(2, 1fr);
+  /* Ép mobile mặc định 2 cột */
+  grid-template-columns: repeat(2, 1fr) !important;
 }
 
 /* Desktop ≥768px: 6 cột */
 @media screen and (min-width: 768px) {
   #freeflowFeed {
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(6, 1fr) !important;
   }
 }
 
@@ -41,7 +41,7 @@
   border-bottom: 1px solid #eee;
 }
 
-/* ==== Tiêu đề ==== */
+/* ==== Tiêu đề sản phẩm ==== */
 .feed-item h4 {
   padding: 8px;
   font-size: 14px;
