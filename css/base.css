@@ -1,11 +1,12 @@
 /* === Reset font và fix zoom iOS === */
 html, body, input, textarea {
   -webkit-text-size-adjust: 100%;
-  font-family: "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif;
+  font-family: 'Be Vietnam Pro', sans-serif;
   font-size: 16px;
   line-height: 1.5;
   color: #222;
 }
+
 input, textarea, select {
   font-size: 16px !important;
 }
