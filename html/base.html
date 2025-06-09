@@ -1,0 +1,32 @@
+<!-- ✅ CSS -->
+<link rel="stylesheet" href="https://friendly-kitten-d760ff.netlify.app/css/base.css">
+<link rel="stylesheet" href="https://friendly-kitten-d760ff.netlify.app/css/stickyfooter.css">
+<link rel="stylesheet" href="https://friendly-kitten-d760ff.netlify.app/css/cartpopup.css">
+<link rel="stylesheet" href="https://friendly-kitten-d760ff.netlify.app/css/voucherpopup.css">
+<link rel="stylesheet" href="https://friendly-kitten-d760ff.netlify.app/css/checkoutpopup.css">
+
+<!-- ✅ JS -->
+<script src="https://friendly-kitten-d760ff.netlify.app/js/base.js"></script>
+<script src="https://friendly-kitten-d760ff.netlify.app/js/stickyfooter.js"></script>
+<script src="https://friendly-kitten-d760ff.netlify.app/js/cartpopup.js"></script>
+<script src="https://friendly-kitten-d760ff.netlify.app/js/checkoutpopup.js"></script>
+<script src="https://friendly-kitten-d760ff.netlify.app/js/voucherpopup.js"></script>
+<script src="https://friendly-kitten-d760ff.netlify.app/js/tracking.js"></script>
+
+<!-- ✅ Biến toàn cục -->
+<script>
+// 💸 Giá trị voucher toàn cục (được cập nhật trong voucherpopup.js)
+window.currentVoucherValue = 0;
+
+// 🚚 Tải bảng phí vận chuyển
+fetch("https://friendly-kitten-d760ff.netlify.app/json/shippingfee.json")
+  .then(res => res.json())
+  .then(data => window.shippingFeeMap = data)
+  .catch(err => console.warn("Không thể load shippingfee.json", err));
+
+// ⚙️ Tải config hệ thống (tùy chọn)
+fetch("https://friendly-kitten-d760ff.netlify.app/json/settings.json")
+  .then(res => res.json())
+  .then(data => window.globalSettings = data)
+  .catch(err => console.warn("Không thể tải settings.json", err));
+</script>
