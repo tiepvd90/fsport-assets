@@ -132,9 +132,23 @@
   fetch("/html/productdescription/chair001.html")
     .then(res => res.text())
     .then(html => {
-      document.getElementById("productdescription-placeholder").innerHTML = html;
+      const container = document.getElementById("productdescription-placeholder");
+      container.innerHTML = html;
+
+      // ✅ Kích hoạt lại script thủ công
+      const scripts = container.querySelectorAll("script");
+      scripts.forEach(script => {
+        const s = document.createElement("script");
+        if (script.src) {
+          s.src = script.src;
+        } else {
+          s.textContent = script.textContent;
+        }
+        document.body.appendChild(s);
+      });
     });
 </script>
+
 
     <!-- ✅ FreeFlow -->
     <h2 style="font-size: 18px; margin: 24px 12px 12px;">CÓ THỂ BẠN SẼ THÍCH</h2>
