@@ -5,7 +5,13 @@
   <title>Test Sticky Footer + CartPopup</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="https://friendly-kitten-d760ff.netlify.app/css/cartpopup.css" />
-  <style>body { font-family: Arial, sans-serif; padding-bottom: 80px; }</style>
+  <link rel="stylesheet" href="https://friendly-kitten-d760ff.netlify.app/css/stickyfooter.css" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding-bottom: 80px;
+    }
+  </style>
   <script>
     window.loai = "chair";
     window.productCategory = "chair";
@@ -15,6 +21,7 @@
 
   <h2 style="padding: 16px;">Test Sticky Footer + Giỏ Hàng</h2>
 
+  <!-- Placeholder cho popup và footer -->
   <div id="cartContainer" data-json="/json/chair.json"></div>
   <div id="cartPopup-placeholder"></div>
   <div id="sticky-footer-placeholder"></div>
@@ -63,6 +70,8 @@
       window.__vouchersRaw = map["chair"] || {};
       window.voucherByProduct = {};
       initCartPopup();
+
+      await loadScript("https://friendly-kitten-d760ff.netlify.app/js/stickyfooter.js");
 
       console.log("✅ Giỏ hàng và footer đã sẵn sàng");
     }
