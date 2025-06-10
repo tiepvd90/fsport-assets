@@ -1,4 +1,11 @@
 <style>
+  .desc-text {
+    font-size: 12px;
+    line-height: 1.6;
+    color: #222;
+    font-family: 'Be Vietnam Pro', sans-serif;
+  }
+
   .desc-toggle-btn {
     margin-top: 16px;
     background: none;
@@ -7,16 +14,17 @@
     color: #000;
     cursor: pointer;
     padding: 10px 0;
-    font-size: 12px;
+    font-size: 16px;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 6px;
     width: 100%;
+    font-family: 'Be Vietnam Pro', sans-serif;
   }
 
   .desc-toggle-btn .arrow {
-    font-size: 18px;
+    font-size: 12px;
     display: inline-block;
     transform: translateY(1px);
   }
@@ -27,9 +35,16 @@
     margin-top: -60px;
     pointer-events: none;
   }
+
+  .hidden {
+    display: none;
+  }
 </style>
 
-<h2 class="desc-title">Mô Tả Sản Phẩm</h2>
+<h2 class="desc-title" style="font-size: 14px; font-weight: bold; margin-bottom: 8px;">
+  Mô Tả Sản Phẩm
+</h2>
+
 <div id="descShort" class="desc-text">
   <p>🔥 Hai phiên bản tối ưu dành cho mọi đối tượng:</p>
   <ul>
