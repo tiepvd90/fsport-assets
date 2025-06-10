@@ -235,3 +235,44 @@
     opacity: 1;
   }
 }
+.quantity-wrapper {
+  display: flex !important;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 8px;
+  margin-top: 12px;
+  font-size: 14px;
+  flex-wrap: nowrap;
+}
+
+.quantity-control {
+  background: #f2f2f2;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  height: 30px;
+}
+
+.quantity-control button {
+  background: transparent;
+  border: none;
+  width: 30px;
+  height: 30px;
+  color: #000;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.quantity-control input {
+  width: 36px;
+  height: 30px;
+  text-align: center;
+  border: none;
+  background: transparent;
+  color: #111;
+  font-size: 18px;
+  font-weight: bold;
+  appearance: textfield;
+}
