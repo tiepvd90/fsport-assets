@@ -218,6 +218,7 @@ function bindAddToCartButton() {
           loai,
           voucher: voucherAmount > 0 ? { amount: voucherAmount } : undefined
         });
+saveCart(); // ⬅️ Thêm dòng này để đảm bảo lưu ngay cả khi quantity = 1
 
         if (typeof trackBothPixels === "function") {
           trackBothPixels("AddToCart", {
@@ -248,3 +249,6 @@ document.addEventListener("DOMContentLoaded", () => {
     toggleCartPopup(true);
   };
 });
+function saveCart() {
+  localStorage.setItem("cart", JSON.stringify(window.cart));
+}
