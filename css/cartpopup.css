@@ -34,15 +34,16 @@
 /* ========== NÚT ĐÓNG ========== */
 .cart-popup-close {
   position: absolute;
-  right: 12px;
   top: 12px;
-  font-size: 24px;
+  right: 12px;
+  font-size: 36px;   /* ✅ To rõ ràng */
+  color: #000;       /* ✅ Màu đen đậm */
   background: none;
   border: none;
   cursor: pointer;
-  z-index: 100;
+  line-height: 1;
+  z-index: 10;
 }
-
 
 /* ========== ẢNH TO + GIÁ ========== */
 .product-header {
