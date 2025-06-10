@@ -90,13 +90,13 @@
   margin-top: 6px;
   box-sizing: border-box;
 }
+
 .review-image {
-  width: calc(25% - 4.5px); /* mỗi ảnh chiếm ~1/4 hàng, trừ gap */
-  height: auto;
+  width: calc(25% - 4.5px);   /* 4 ảnh trên 1 hàng */
+  aspect-ratio: 1 / 1;         /* Tạo ảnh vuông đều nhau */
+  object-fit: cover;           /* Cắt đều ảnh không bị méo */
   border-radius: 6px;
-  object-fit: cover;
   box-sizing: border-box;
-  display: inline-block;
 }
 </style>
 </head>
