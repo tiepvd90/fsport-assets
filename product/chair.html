@@ -126,6 +126,8 @@ setTimeout(async () => {
     }
 <!-- ✅ Load freeflow.js trước -->
 <script src="https://friendly-kitten-d760ff.netlify.app/js/freeflow.js"></script>
+
+<!-- ✅ Inject FreeFlow HTML và gọi fetchFreeFlowData -->
 <script>
   fetch("/html/freeflow.html")
     .then(res => res.text())
@@ -133,28 +135,19 @@ setTimeout(async () => {
       const container = document.getElementById("freeflow-placeholder");
       const temp = document.createElement("div");
       temp.innerHTML = html;
+      Array.from(temp.children).forEach(el => container.appendChild(el));
 
-      Array.from(temp.children).forEach(el => {
-        if (el.tagName === "SCRIPT") {
-          const script = document.createElement("script");
-          if (el.src) {
-            script.src = el.src;
-            script.async = false;
-            document.body.appendChild(script);
-          } else {
-            script.textContent = el.textContent;
-            document.body.appendChild(script);
-          }
+      // ✅ Chờ 200ms để đảm bảo script đã sẵn sàng
+      setTimeout(() => {
+        if (typeof fetchFreeFlowData === "function") {
+          fetchFreeFlowData("https://script.google.com/macros/s/AKfycbwuEh9sP65vyQL0XzU8gY1Os0QYV_K5egKJgm8OhImAPjvdyrQiU7XCY909N99TnltP/exec");
         } else {
-          container.appendChild(el);
+          console.warn("❌ fetchFreeFlowData vẫn chưa sẵn sàng");
         }
-      });
-
-      // ✅ Gọi sau khi đã render xong HTML
-      fetchFreeFlowData("https://script.google.com/macros/s/AKfycbwuEh9sP65vyQL0XzU8gY1Os0QYV_K5egKJgm8OhImAPjvdyrQiU7XCY909N99TnltP/exec");
-    });
+      }, 200);
+    })
+    .catch(err => console.warn("❌ Lỗi khi tải freeflow.html:", err));
 </script>
-
 
 </body>
 </html>
