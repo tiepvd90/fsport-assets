@@ -69,21 +69,24 @@
     }
 
     async function setupPage() {
-      await injectHTML("/html/cartpopup.html", "cartPopup-placeholder");
-      await injectHTML("/html/checkoutpopup.html", "checkoutPopup-placeholder");
-      await injectHTML("/html/stickyfooter.html", "sticky-footer-placeholder");
+  await injectHTML("/html/cartpopup.html", "cartPopup-placeholder");
+  await injectHTML("/html/checkoutpopup.html", "checkoutPopup-placeholder");
+  await injectHTML("/html/stickyfooter.html", "sticky-footer-placeholder");
 
-      await loadScript("https://friendly-kitten-d760ff.netlify.app/js/voucherpopup.js");
-      await loadScript("https://friendly-kitten-d760ff.netlify.app/js/cartpopup.js");
-      await loadScript("https://friendly-kitten-d760ff.netlify.app/js/checkoutpopup.js");
+  await loadScript("https://friendly-kitten-d760ff.netlify.app/js/voucherpopup.js");
+  await loadScript("https://friendly-kitten-d760ff.netlify.app/js/cartpopup.js");
+  await loadScript("https://friendly-kitten-d760ff.netlify.app/js/checkoutpopup.js");
 
-      const map = await fetchVoucherMap();
-      window.__vouchersRaw = map["chair"] || {};
-      window.voucherByProduct = {};
-      initCartPopup();
+  // ⏳ Gọi init sau khi toàn bộ DOM đã được inject
+  setTimeout(async () => {
+    const map = await fetchVoucherMap();
+    window.__vouchersRaw = map["chair"] || {};
+    window.voucherByProduct = {};
+    initCartPopup();
+    console.log("✅ Trang ghế đã sẵn sàng");
+  }, 100);
+}
 
-      console.log("✅ Trang ghế đã sẵn sàng");
-    }
 
     setupPage();
   </script>
