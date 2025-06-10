@@ -59,15 +59,12 @@ function showVoucherPopup(refCode, amount) {
 
 // ✅ Lấy voucher từ URL hoặc localStorage
 function getVoucherFromUrlOrStorage(vouchers) {
-  const search = window.location.search;
+  const refCode = new URLSearchParams(window.location.search).get("ref");
 
-  // Ưu tiên từ URL
-  for (let code in vouchers) {
-    if (search.includes(code)) {
-      const { amount } = vouchers[code];
-      localStorage.setItem("savedVoucher", JSON.stringify({ code, amount }));
-      return { code, amount, from: "url" };
-    }
+  if (refCode && vouchers[refCode]) {
+    const { amount } = vouchers[refCode];
+    localStorage.setItem("savedVoucher", JSON.stringify({ code: refCode, amount }));
+    return { code: refCode, amount, from: "url" };
   }
 
   // Nếu không có trong URL → kiểm tra localStorage
@@ -80,6 +77,7 @@ function getVoucherFromUrlOrStorage(vouchers) {
 
   return null;
 }
+
 
 // 🚀 Khởi động voucher
 window.addEventListener("DOMContentLoaded", async () => {
