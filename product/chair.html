@@ -82,6 +82,11 @@
         const map = await fetchVoucherMap();
         window.__vouchersRaw = map["chair"] || {};
         window.voucherByProduct = {};
+        
+        console.log("Kiểm tra voucher từ URL:");
+console.log("Tham số ref:", new URLSearchParams(window.location.search).get('ref'));
+console.log("Dữ liệu voucher raw:", window.__vouchersRaw);
+        
         initCartPopup(); // ✅ KHÔNG gọi trước khi stickyfooter được inject
         console.log("✅ Trang ghế đã sẵn sàng");
       }, 100);
