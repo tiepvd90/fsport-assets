@@ -126,7 +126,6 @@ setTimeout(async () => {
     }
 <!-- ✅ Load freeflow.js trước -->
 <script src="https://friendly-kitten-d760ff.netlify.app/js/freeflow.js"></script>
-
 <script>
   fetch("/html/freeflow.html")
     .then(res => res.text())
@@ -151,10 +150,11 @@ setTimeout(async () => {
         }
       });
 
-      // ✅ Gọi sau khi đã load xong HTML + JS
+      // ✅ Gọi sau khi đã render xong HTML
       fetchFreeFlowData("https://script.google.com/macros/s/AKfycbwuEh9sP65vyQL0XzU8gY1Os0QYV_K5egKJgm8OhImAPjvdyrQiU7XCY909N99TnltP/exec");
     });
 </script>
+
 
 </body>
 </html>
