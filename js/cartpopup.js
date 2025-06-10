@@ -252,3 +252,21 @@ document.addEventListener("DOMContentLoaded", () => {
 function saveCart() {
   localStorage.setItem("cart", JSON.stringify(window.cart));
 }
+
+// === Tự động hiện popup nếu có ref=giam20k ===
+function triggerVoucherPopup() {
+  const refCode = new URLSearchParams(window.location.search).get('ref');
+  
+  if (refCode === 'giam20k' && window.__vouchersRaw?.giam20k) {
+    console.log("🎯 Kích hoạt popup tự động");
+    showVoucherPopup({
+      code: "GIAM20K",
+      discount: "20,000đ",
+      description: "Tự động áp dụng khi thanh toán",
+      appliesTo: ["chair"] // Khớp với danh mục sản phẩm
+    });
+  }
+}
+
+// Gọi sau khi mọi thứ đã load (3s)
+setTimeout(triggerVoucherPopup, 3000);
