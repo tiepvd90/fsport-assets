@@ -1,5 +1,5 @@
 // slideshow.js
-fetch('slideshow.json')
+fetch('https://friendly-kitten-d760ff.netlify.app/json/slideshow.json')
   .then(res => res.json())
   .then(data => {
     const loai = window.loai || 'chair';
