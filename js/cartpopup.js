@@ -189,10 +189,17 @@ function toggleCartPopup(show = true) {
 }
 
 function bindAddToCartButton() {
-  const orderBtn = document.getElementById("btn-atc"); // từ stickyfooter
-  if (orderBtn && !isCartEventBound) {
+  const atcBtn = document.getElementById("btn-atc"); // stickyfooter
+  if (atcBtn) {
+    atcBtn.addEventListener("click", () => {
+      toggleCartPopup(true); // ✅ chỉ mở popup chọn phân loại
+    });
+  }
+
+  const submitBtn = document.getElementById("cartSubmitBtn"); // nút trong popup
+  if (submitBtn && !isCartEventBound) {
     isCartEventBound = true;
-    orderBtn.addEventListener("click", () => {
+    submitBtn.addEventListener("click", () => {
       const quantity = parseInt(document.getElementById("quantityInput")?.value) || 1;
       if (!window.selectedVariant) return alert("Vui lòng chọn phân loại sản phẩm.");
 
@@ -219,11 +226,12 @@ function bindAddToCartButton() {
         });
       }
 
-      if (typeof showCheckoutPopup === "function") showCheckoutPopup();
       toggleCartPopup(false);
+      if (typeof showCheckoutPopup === "function") showCheckoutPopup();
     });
   }
 }
+
 
 document.addEventListener("DOMContentLoaded", () => {
   const closeBtns = document.querySelectorAll(".cart-popup-close, .cart-popup-overlay");
