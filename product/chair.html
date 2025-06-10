@@ -202,20 +202,6 @@ box-sizing: border-box;
     <img src="https://i.postimg.cc/VNBrRTb3/2.jpg" alt="Ảnh review 1" class="review-image">
   </div>
 </div>
-   <!-- ✅ Khối 3: Mô tả sản phẩm sẽ được chèn vào đây -->
-<div class="product-hero">
-  <div id="product-description-placeholder"></div>
-</div>
-
-<script>
-  fetch('/html/productdescription/chair001.html')
-    .then(res => res.text())
-    .then(html => {
-      document.getElementById('product-description-placeholder').innerHTML = html;
-    })
-    .catch(err => console.warn("❌ Lỗi khi tải mô tả sản phẩm:", err));
-</script>
-<!-- Hết Khối 3: Mô tả sản phẩm -->
   <!-- ✅ Inject popup + footer -->
   <script>
     async function loadScript(src) {
