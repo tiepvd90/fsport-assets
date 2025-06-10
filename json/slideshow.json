@@ -1,0 +1,20 @@
+{
+  "chair": {
+    "chair001": [
+      "https://i.postimg.cc/tC7fRLW9/5.jpg",
+      "https://i.postimg.cc/8c7ksGSx/mk2.jpg",
+      "https://i.postimg.cc/NfVnKpkm/6.jpg"
+    ],
+    "chair002": [
+      "https://i.postimg.cc/vZVNff0j/7.jpg",
+      "https://i.postimg.cc/XJJKm4WR/1.jpg"
+    ]
+  },
+  "ysandal": {
+    "ysandal001": [
+      "https://i.postimg.cc/Y0dMvzp0/sandal1.jpg",
+      "https://i.postimg.cc/gkjTbMS3/sandal2.jpg",
+      "https://i.postimg.cc/j2fCfsWm/sandal3.jpg"
+    ]
+  }
+}
