@@ -220,3 +220,18 @@
   border-radius: 4px;
   vertical-align: middle;
 }
+.cart-popup-content.animate-slideup {
+  animation: slideUp 0.3s ease-out forwards;
+  transform: translateY(100%);
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
