@@ -126,32 +126,35 @@ setTimeout(async () => {
     }
 <!-- ✅ Load freeflow.js trước -->
 <script src="https://friendly-kitten-d760ff.netlify.app/js/freeflow.js"></script>
-    fetch("/html/freeflow.html")
-      .then(res => res.text())
-      .then(html => {
-        const container = document.getElementById("freeflow-placeholder");
-        const temp = document.createElement("div");
-        temp.innerHTML = html;
 
-        Array.from(temp.children).forEach(el => {
-          if (el.tagName === "SCRIPT") {
-            const script = document.createElement("script");
-            if (el.src) {
-              script.src = el.src;
-              script.async = false;
-              document.body.appendChild(script);
-            } else {
-              script.textContent = el.textContent;
-              document.body.appendChild(script);
-            }
+<script>
+  fetch("/html/freeflow.html")
+    .then(res => res.text())
+    .then(html => {
+      const container = document.getElementById("freeflow-placeholder");
+      const temp = document.createElement("div");
+      temp.innerHTML = html;
+
+      Array.from(temp.children).forEach(el => {
+        if (el.tagName === "SCRIPT") {
+          const script = document.createElement("script");
+          if (el.src) {
+            script.src = el.src;
+            script.async = false;
+            document.body.appendChild(script);
           } else {
-            container.appendChild(el);
+            script.textContent = el.textContent;
+            document.body.appendChild(script);
           }
-        });
-
-       fetchFreeFlowData("https://script.google.com/macros/s/AKfycbwuEh9sP65vyQL0XzU8gY1Os0QYV_K5egKJgm8OhImAPjvdyrQiU7XCY909N99TnltP/exec");
+        } else {
+          container.appendChild(el);
+        }
       });
-  </script>
+
+      // ✅ Gọi sau khi đã load xong HTML + JS
+      fetchFreeFlowData("https://script.google.com/macros/s/AKfycbwuEh9sP65vyQL0XzU8gY1Os0QYV_K5egKJgm8OhImAPjvdyrQiU7XCY909N99TnltP/exec");
+    });
+</script>
 
 </body>
 </html>
