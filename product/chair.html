@@ -33,19 +33,27 @@
       box-sizing: border-box;
     }
   }
-  .shipping-info {
+  .shipping-wrapper {
+  border-top: 1px solid #f9f9f9;
+  border-bottom: 1px solid #f9f9f9;
+  padding: 10px 0;
+  margin: 16px 0;
+}
+
+.shipping-info {
   font-size: 14px;
   color: #333;
   font-family: 'Be Vietnam Pro', sans-serif;
-  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 0 12px;
 }
 
 .shipping-line {
   display: flex;
   align-items: center;
   gap: 6px;
-  padding: 8px 0;
-  border-bottom: 1px solid #f9f9f9;
 }
 
 .shipping-line .icon {
@@ -64,7 +72,7 @@
   <div id="cartPopup-placeholder"></div>
   <div id="checkoutPopup-placeholder"></div>
   <div id="sticky-footer-placeholder"></div>
-<div class="product-hero">
+
   <!-- ✅ Slideshow -->
   <div class="lazy-slideshow" id="lazySlideshow">
     <div class="slide-counter" id="slideCounter">1/1</div>
@@ -103,19 +111,26 @@ box-sizing: border-box;
 </div>
 </div>
   <!-- END Flash Sale Banner -->
+   <div class="product-hero">
   <!-- ✅ Title -->
   <h1 style="font-size: 20px; font-weight: bold; margin-top: 16px; font-family: 'Be Vietnam Pro', sans-serif;">
     Ghế Công Thái Học FA – Chỉnh Dáng Ngồi Đúng, Chống Gù Cho Mọi Lứa Tuổi
   </h1>
+  <!-- ✅ Shipping Info -->
+  <div class="shipping-wrapper">
   <div class="shipping-info">
-  <div class="shipping-line">
-    <span class="icon">🚚</span>
-    Ship từ Hà Nội – Nhận Hàng Trong Vòng 3 Ngày
+    <div class="shipping-line">
+      <span class="icon">🚚</span>
+      Ship từ Hà Nội – Nhận Hàng Trong Vòng 3 Ngày
+    </div>
+    <div class="shipping-line">
+      <span class="icon">🔍</span>
+      Kiểm Tra Hàng Trước Khi Thanh Toán
+    </div>
+    <!-- End Shipping Info -->
   </div>
-  <div class="shipping-line">
-    <span class="icon">🔍</span>
-    Kiểm Tra Hàng Trước Khi Thanh Toán
-  </div>
+</div>
+
 </div>
 
 </div>
