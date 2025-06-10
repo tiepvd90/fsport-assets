@@ -1,105 +1,87 @@
-<!-- ✅ Mô tả sản phẩm -->
-<div class="product-description-box">
-  <h2 class="desc-title">Mô Tả Sản Phẩm</h2>
-  <div id="descShort" class="desc-text">
-    <p><strong>GHẾ CHỈNH DÁNG NGỒI CHUẨN CÔNG THÁI HỌC – BẢO VỆ CỘT SỐNG</strong></p>
-    <p>🔥 Hai phiên bản tối ưu dành cho mọi đối tượng:</p>
-    <ul>
-      <li><strong>Ghế Đặc Biệt:</strong> Nâng cấp toàn diện, tối ưu về độ đàn hồi và điều chỉnh tư thế.</li>
-      <li><strong>Ghế Cao Cấp:</strong> Hỗ trợ lưng, phù hợp với đa dạng đối tượng sử dụng.</li>
-    </ul>
-    <p><strong>Ưu điểm nổi bật:</strong></p>
-    <ul>
-      <li>✔ Thiết kế công thái học nâng hông tự nhiên, phân tán lực tác động.</li>
-      <li>✔ Hệ thống lưu thông khí giúp giảm nhiệt, tạo sự thoáng mát khi ngồi lâu.</li>
-    </ul>
-  </div>
-
-  <div id="descFull" class="desc-text hidden">
-    <p><strong>🔹 THÔNG TIN SẢN PHẨM</strong></p>
-    <ul>
-      <li>Kích thước: 320mm x 420mm x 350mm</li>
-      <li>Trọng lượng: 1.110 gram</li>
-      <li>Tải trọng tối đa: 200 kg</li>
-      <li>Chất liệu: Nhựa cao cấp + Vải Polyester thoáng khí</li>
-    </ul>
-    <p><strong>🔹 ĐỐI TƯỢNG KHUYÊN DÙNG</strong></p>
-    <ul>
-      <li>📌 Người bị đau lưng, dân văn phòng, học sinh – sinh viên, tài xế.</li>
-    </ul>
-    <p><strong>🔹 HƯỚNG DẪN SỬ DỤNG</strong></p>
-    <ol>
-      <li>Đặt ghế cách lưng ghế văn phòng từ 10–15 cm.</li>
-      <li>Điều chỉnh hông sát đáy ghế.</li>
-      <li>Trọng lượng cơ thể giúp đẩy phần eo đúng tư thế.</li>
-    </ol>
-    <p>✅ Sản phẩm chính hãng, bảo hành theo quy định, giá cạnh tranh.</p>
-  </div>
-
-  <button id="toggleDesc" class="desc-toggle-btn">
-    Xem Thêm <span class="arrow">▼</span>
-  </button>
-</div>
-
-<!-- ✅ CSS -->
 <style>
-.product-description-box {
-  background-color: #ffffff;
-  border-radius: 12px;
-  padding: 16px;
-  font-family: 'Be Vietnam Pro', sans-serif;
-  font-size: 14px;
-  color: #222;
-  line-height: 1.6;
-  margin-top: 12px;
-}
+  .desc-toggle-btn {
+    margin-top: 16px;
+    background: none;
+    border: none;
+    font-weight: bold;
+    color: #000;
+    cursor: pointer;
+    padding: 10px 0;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    width: 100%;
+  }
 
-.desc-title {
-  font-size: 16px;
-  font-weight: bold;
-  margin-bottom: 8px;
-}
+  .desc-toggle-btn .arrow {
+    font-size: 18px;
+    display: inline-block;
+    transform: translateY(1px);
+  }
 
-.desc-text ul {
-  padding-left: 18px;
-  margin-top: 4px;
-}
-
-.desc-text li {
-  margin-bottom: 4px;
-}
-
-.desc-text.hidden {
-  display: none;
-}
-
-.desc-toggle-btn {
-  margin-top: 10px;
-  background: none;
-  border: none;
-  font-weight: bold;
-  color: #007bff;
-  cursor: pointer;
-  padding: 6px 0;
-  font-size: 14px;
-}
-
-.desc-toggle-btn .arrow {
-  font-size: 12px;
-  margin-left: 4px;
-}
+  .desc-fade {
+    height: 60px;
+    background: linear-gradient(to top, #fff, transparent);
+    margin-top: -60px;
+    pointer-events: none;
+  }
 </style>
 
-<!-- ✅ JS -->
-<script>
-const toggleBtn = document.getElementById('toggleDesc');
-const descFull = document.getElementById('descFull');
+<h2 class="desc-title">Mô Tả Sản Phẩm</h2>
+<div id="descShort" class="desc-text">
+  <p><strong>GHẾ CHỈNH DÁNG NGỒI CHUẨN CÔNG THÁI HỌC – BẢO VỆ CỘT SỐNG</strong></p>
+  <p>🔥 Hai phiên bản tối ưu dành cho mọi đối tượng:</p>
+  <ul>
+    <li><strong>Ghế Đặc Biệt:</strong> Nâng cấp toàn diện, tối ưu về độ đàn hồi và điều chỉnh tư thế.</li>
+    <li><strong>Ghế Cao Cấp:</strong> Hỗ trợ lưng, phù hợp với đa dạng đối tượng sử dụng.</li>
+  </ul>
+  <p><strong>Ưu điểm nổi bật:</strong></p>
+  <ul>
+    <li>✔ Thiết kế công thái học nâng hông tự nhiên, phân tán lực tác động.</li>
+    <li>✔ Hệ thống lưu thông khí giúp giảm nhiệt, tạo sự thoáng mát khi ngồi lâu.</li>
+  </ul>
+</div>
 
-toggleBtn.addEventListener('click', () => {
-  const isHidden = descFull.classList.contains('hidden');
-  descFull.classList.toggle('hidden');
-  toggleBtn.innerHTML = isHidden
-    ? 'Thu Gọn <span class="arrow">▲</span>'
-    : 'Xem Thêm <span class="arrow">▼</span>';
-});
+<div id="descFull" class="desc-text hidden">
+  <p><strong>🔹 THÔNG TIN SẢN PHẨM</strong></p>
+  <ul>
+    <li>Kích thước: 320mm x 420mm x 350mm</li>
+    <li>Trọng lượng: 1.110 gram</li>
+    <li>Tải trọng tối đa: 200 kg</li>
+    <li>Chất liệu: Nhựa cao cấp + Vải Polyester thoáng khí</li>
+  </ul>
+  <p><strong>🔹 ĐỐI TƯỢNG KHUYÊN DÙNG</strong></p>
+  <ul>
+    <li>📌 Người bị đau lưng, dân văn phòng, học sinh – sinh viên, tài xế.</li>
+  </ul>
+  <p><strong>🔹 HƯỚNG DẪN SỬ DỤNG</strong></p>
+  <ol>
+    <li>Đặt ghế cách lưng ghế văn phòng từ 10–15 cm.</li>
+    <li>Điều chỉnh hông sát đáy ghế.</li>
+    <li>Trọng lượng cơ thể giúp đẩy phần eo đúng tư thế.</li>
+  </ol>
+  <p>✅ Sản phẩm chính hãng, bảo hành theo quy định, giá cạnh tranh.</p>
+</div>
+
+<div class="desc-fade" id="descFade"></div>
+
+<button id="toggleDesc" class="desc-toggle-btn">
+  Xem Thêm <span class="arrow">&#x25BC;</span>
+</button>
+
+<script>
+  const toggleBtn = document.getElementById('toggleDesc');
+  const descFull = document.getElementById('descFull');
+  const fade = document.getElementById('descFade');
+
+  toggleBtn.addEventListener('click', () => {
+    const isHidden = descFull.classList.contains('hidden');
+    descFull.classList.toggle('hidden');
+    fade.style.display = isHidden ? 'none' : 'block';
+    toggleBtn.innerHTML = isHidden
+      ? 'Thu Gọn <span class="arrow">&#x25B2;</span>'
+      : 'Xem Thêm <span class="arrow">&#x25BC;</span>';
+  });
 </script>
