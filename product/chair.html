@@ -15,9 +15,17 @@
   <!-- ✅ CSS popup -->
   <link rel="stylesheet" href="https://friendly-kitten-d760ff.netlify.app/css/cartpopup.css" />
   <link rel="stylesheet" href="https://friendly-kitten-d760ff.netlify.app/css/checkoutpopup.css" />
+  <style>
+  .page-container {
+    padding: 0 12px;
+    max-width: 768px;
+    margin: auto;
+    box-sizing: border-box;
+  }
+</style>
 </head>
 <body>
-
+ <div class="page-container">
   <!-- ✅ Container JSON sản phẩm -->
   <div id="cartContainer" data-json="/json/chair.json"></div>
 
@@ -154,7 +162,7 @@ console.log("Dữ liệu voucher raw:", window.__vouchersRaw);
   <!-- ✅ FreeFlow -->
   <h2 style="font-size: 18px; margin: 24px 12px 12px;">Có thể bạn sẽ thích</h2>
   <div id="freeflow-placeholder"></div>
-  
+ </div>  
   <!-- ✅ Load freeflow.js trước -->
   <script src="https://friendly-kitten-d760ff.netlify.app/js/freeflow.js"></script>
 
