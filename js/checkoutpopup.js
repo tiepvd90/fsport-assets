@@ -1,7 +1,18 @@
-// ✅ BIẾN TOÀN CỤC
-window.cart = window.cart || [];
+// ✅ TẢI GIỎ HÀNG TỪ localStorage NGAY LÚC KHỞI TẠO
+function loadCart() {
+  try {
+    const data = JSON.parse(localStorage.getItem("cart"));
+    window.cart = Array.isArray(data) ? data : [];
+  } catch (e) {
+    console.warn("Không thể load cart từ localStorage");
+    window.cart = [];
+  }
+}
+loadCart(); // ⬅️ Gọi ngay lập tức khi file được load
+
 let shippingFee = 0;
 let voucherValue = 0;
+
 
 // ✅ HIỆN CHECKOUT POPUP
 function showCheckoutPopup() {
