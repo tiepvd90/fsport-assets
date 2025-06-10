@@ -90,15 +90,14 @@
   margin-top: 6px;
   box-sizing: border-box;
 }
-
 .review-image {
-  flex: 0 0 calc(25% - 6px);  /* 4 ảnh/row với gap 6px */
-  aspect-ratio: 1 / 1;         /* giữ ảnh vuông */
-  object-fit: cover;
+  width: calc(25% - 4.5px); /* mỗi ảnh chiếm ~1/4 hàng, trừ gap */
+  height: auto;
   border-radius: 6px;
+  object-fit: cover;
   box-sizing: border-box;
+  display: inline-block;
 }
-
 </style>
 </head>
 <body>
