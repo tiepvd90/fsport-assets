@@ -4,182 +4,131 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Ghế công thái học tựa lưng chỉnh dáng ngồi đúng chống gù FA</title>
+  
+  <!-- ✅ CSS -->
   <link rel="stylesheet" href="https://friendly-kitten-d760ff.netlify.app/css/cartpopup.css" />
-<link rel="stylesheet" href="../css/slideshow.css" />
-  <!-- ✅ Gán loại sản phẩm -->
+  <link rel="stylesheet" href="https://friendly-kitten-d760ff.netlify.app/css/checkoutpopup.css" />
+  <link rel="stylesheet" href="../css/slideshow.css" />
+
+  <!-- ✅ JS định nghĩa -->
   <script>
     window.loai = "chair";
     window.productCategory = "chair";
   </script>
 
-  <!-- ✅ CSS popup -->
-  <link rel="stylesheet" href="https://friendly-kitten-d760ff.netlify.app/css/cartpopup.css" />
-  <link rel="stylesheet" href="https://friendly-kitten-d760ff.netlify.app/css/checkoutpopup.css" />
-<style>
-  body {
+  <style>
+    body {
       background-color: #f9f9f9;
     }
-  .product-hero {
-  background-color: #ffffff;
-  padding: 2px 2px;
-  border-radius: 0px;
-  box-sizing: border-box;
-}
-  @media (min-width: 768px) {
-    .page-container {
-      padding: 0 8px;
-      max-width: 1180px;
-      margin: auto;
+
+    .product-hero {
+      background-color: #ffffff;
+      padding: 2px 2px;
+      border-radius: 0px;
       box-sizing: border-box;
     }
-  }
-  .shipping-wrapper {
-  border-top: 1px solid #f9f9f9;
-  border-bottom: 1px solid #f9f9f9;
-  padding: 10px 0;
-  margin: 16px 0;
-}
 
-.shipping-info {
-  font-size: 14px;
-  color: #333;
-  font-family: 'Be Vietnam Pro', sans-serif;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  padding: 0 12px;
-}
+    @media (min-width: 768px) {
+      .page-container {
+        padding: 0 8px;
+        max-width: 1180px;
+        margin: auto;
+        box-sizing: border-box;
+      }
+    }
 
-.shipping-line {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
+    .shipping-wrapper {
+      border-top: 1px solid #f9f9f9;
+      border-bottom: 1px solid #f9f9f9;
+      padding: 10px 0;
+      margin: 16px 0;
+    }
 
-.shipping-line .icon {
-  font-size: 16px;
-  flex-shrink: 0;
-}
-.review-item {
-  margin-top: 16px;
-}
+    .shipping-info {
+      font-size: 14px;
+      color: #333;
+      font-family: 'Be Vietnam Pro', sans-serif;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      padding: 0 12px;
+    }
 
-.review-header {
-  font-size: 13px;
-  font-weight: 500;
-  color: #444;
-  margin-bottom: 4px;
-}
+    .shipping-line {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
 
-.review-stars {
-  color: #FFD700;
-  font-size: 14px;
-  margin-bottom: 4px;
-}
-
-.review-text {
-  font-size: 14px;
-  color: #222;
-  line-height: 1.5;
-  margin-bottom: 6px;
-}
-.review-images {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin-top: 6px;
-  box-sizing: border-box;
-}
-
-.review-image {
-  width: calc(25% - 4.5px);   /* 4 ảnh trên 1 hàng */
-  aspect-ratio: 1 / 1;         /* Tạo ảnh vuông đều nhau */
-  object-fit: cover;           /* Cắt đều ảnh không bị méo */
-  border-radius: 6px;
-  box-sizing: border-box;
-}
-</style>
+    .shipping-line .icon {
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+  </style>
 </head>
 <body>
- <div class="page-container">
-  <!-- ✅ Container JSON sản phẩm -->
-  <div id="cartContainer" data-json="/json/chair.json"></div>
+  <div class="page-container">
+    <!-- ✅ Container JSON sản phẩm -->
+    <div id="cartContainer" data-json="/json/chair.json"></div>
 
-  <!-- ✅ Placeholders -->
-  <div id="cartPopup-placeholder"></div>
-  <div id="checkoutPopup-placeholder"></div>
-  <div id="sticky-footer-placeholder"></div>
+    <!-- ✅ Placeholders -->
+    <div id="cartPopup-placeholder"></div>
+    <div id="checkoutPopup-placeholder"></div>
+    <div id="sticky-footer-placeholder"></div>
 
-  <!-- ✅ Slideshow -->
-  <div class="lazy-slideshow" id="lazySlideshow">
-    <div class="slide-counter" id="slideCounter">1/1</div>
-  </div>
-  <script src="../js/slideshow.js"></script>
-   <!-- END Slideshow -->
-<!-- ✅ Flash Sale Banner -->
-<!-- ✅ Flash Sale Banner -->
-<div id="flashbanner-placeholder"></div>
-<script>
-  fetch("/html/flashsalebanner/chair001.html")
-    .then(res => res.text())
-    .then(html => {
-      document.getElementById("flashbanner-placeholder").innerHTML = html;
-    });
-</script>
- <!-- ✅ KHỐI 1: Tiêu đề + Shipping -->
-<div class="product-hero">
-  <h1 style="font-size: 14px; font-weight: bold; margin-top: 8px; font-family: 'Be Vietnam Pro', sans-serif;">
-    Ghế Công Thái Học FA – Chỉnh Dáng Ngồi Đúng, Chống Gù Cho Mọi Lứa Tuổi
-  </h1>
+    <!-- ✅ Slideshow -->
+    <div class="lazy-slideshow" id="lazySlideshow">
+      <div class="slide-counter" id="slideCounter">1/1</div>
+    </div>
+    <script src="../js/slideshow.js"></script>
 
-  <!-- Shipping Info -->
-  <div class="shipping-wrapper">
-    <div class="shipping-info">
-      <div class="shipping-line">
-        <span class="icon">🚚</span>
-        Ship từ Hà Nội – Giao Hàng Toàn Quốc, Nhận Hàng Trong Vòng 3 Ngày
-      </div>
-      <div class="shipping-line">
-        <span class="icon">🔍</span>
-        Kiểm Tra Hàng Trước Khi Thanh Toán
+    <!-- ✅ Flash Sale Banner -->
+    <div id="flashbanner-placeholder"></div>
+    <script>
+      fetch("/html/flashsalebanner/chair001.html")
+        .then(res => res.text())
+        .then(html => {
+          document.getElementById("flashbanner-placeholder").innerHTML = html;
+        });
+    </script>
+
+    <!-- ✅ KHỐI 1: Tiêu đề + Shipping -->
+    <div class="product-hero">
+      <h1 style="font-size: 14px; font-weight: bold; margin-top: 8px; font-family: 'Be Vietnam Pro', sans-serif;">
+        Ghế Công Thái Học FA – Chỉnh Dáng Ngồi Đúng, Chống Gù Cho Mọi Lứa Tuổi
+      </h1>
+
+      <div class="shipping-wrapper">
+        <div class="shipping-info">
+          <div class="shipping-line">
+            <span class="icon">🚚</span>
+            Ship từ Hà Nội – Giao Hàng Toàn Quốc, Nhận Hàng Trong Vòng 3 Ngày
+          </div>
+          <div class="shipping-line">
+            <span class="icon">🔍</span>
+            Kiểm Tra Hàng Trước Khi Thanh Toán
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-</div>
+
     <!-- ✅ KHỐI 2: Reviews -->
-<div class="product-hero" style="margin-top: 12px;">
-  <h2 style="font-size: 16px; font-weight: bold; margin-bottom: 12px;">
-    Reviews Sản Phẩm
-  </h2>
+    <div class="product-hero" style="margin-top: 12px;">
+      <div id="review-placeholder"></div>
+    </div>
+    <script>
+      fetch("/html/reviewblock/chair001.html")
+        .then(res => res.text())
+        .then(html => {
+          document.getElementById("review-placeholder").innerHTML = html;
+        });
+    </script>
 
-  <!-- Review 1 -->
-  <div class="review-item">
-    <div class="review-header">
-      <span class="review-name">Hà T. (Hà Nội)</span>
-    </div>
-    <div class="review-stars">★★★★★</div>
-    <div class="review-text">
-      Ghế ngồi rất êm, không bị gù lưng. Giao hàng nhanh và đóng gói kỹ!
-    </div>
-    <img src="https://i.postimg.cc/8kLFMX9Y/z6657790766670-89bafc5b53d5841b0887f5c1d9effa9d.jpg" alt="Ảnh review 1" class="review-image">
-    <img src="https://i.postimg.cc/G2D4w4Hs/mk.jpg" alt="Ảnh review 1" class="review-image">
-    <img src="https://i.postimg.cc/DzcwM56p/mk.jpg" alt="Ảnh review 1" class="review-image">
-    <img src="https://i.postimg.cc/7PSSNTnZ/mk1.jpg" alt="Ảnh review 1" class="review-image">
+    <!-- ✅ FreeFlow -->
+    <h2 style="font-size: 18px; margin: 24px 12px 12px;">CÓ THỂ BẠN SẼ THÍCH</h2>
+    <div id="freeflow-placeholder"></div>
   </div>
 
-  <!-- Review 2 -->
-  <div class="review-item">
-    <div class="review-header">
-      <span class="review-name">Dũng N. (HCM)</span>
-    </div>
-    <div class="review-stars">★★★★★</div>
-    <div class="review-text">
-      Mình mua cho con học lớp 6, ngồi đúng tư thế hơn hẳn. Đáng tiền!
-    </div>
-    <img src="https://i.postimg.cc/Gh9vwZkj/Chat-GPT-Image-May-16-2025-01-10-35-AM.jpg" alt="Ảnh review 2" class="review-image">
-    <img src="https://i.postimg.cc/VNBrRTb3/2.jpg" alt="Ảnh review 1" class="review-image">
-  </div>
-</div>
   <!-- ✅ Inject popup + footer -->
   <script>
     async function loadScript(src) {
@@ -223,32 +172,24 @@
       await loadScript("https://friendly-kitten-d760ff.netlify.app/js/cartpopup.js");
       await loadScript("https://friendly-kitten-d760ff.netlify.app/js/checkoutpopup.js");
 
-      // ⏳ Đợi DOM inject xong rồi mới gọi initCartPopup
       setTimeout(async () => {
         const map = await fetchVoucherMap();
         window.__vouchersRaw = map["chair"] || {};
         window.voucherByProduct = {};
-        
-        console.log("Kiểm tra voucher từ URL:");
-console.log("Tham số ref:", new URLSearchParams(window.location.search).get('ref'));
-console.log("Dữ liệu voucher raw:", window.__vouchersRaw);
-        
-        initCartPopup(); // ✅ KHÔNG gọi trước khi stickyfooter được inject
-        console.log("✅ Trang ghế đã sẵn sàng");
+        initCartPopup();
       }, 100);
     }
 
     setupPage();
   </script>
 
-  <!-- ✅ Tracking + base -->
+  <!-- ✅ Tracking -->
   <div id="base-placeholder"></div>
   <script>
     fetch("/html/base.html")
       .then(res => res.text())
       .then(html => {
         document.getElementById("base-placeholder").outerHTML = html;
-
         if (typeof trackBothPixels === "function") {
           trackBothPixels("ViewContent", {
             content_id: "chair",
@@ -261,14 +202,8 @@ console.log("Dữ liệu voucher raw:", window.__vouchersRaw);
       });
   </script>
 
-  <!-- ✅ FreeFlow -->
-  <h2 style="font-size: 18px; margin: 24px 12px 12px;">CÓ THỂ BẠN SẼ THÍCH</h2>
-  <div id="freeflow-placeholder"></div>
- </div>  
-  <!-- ✅ Load freeflow.js trước -->
+  <!-- ✅ Load FreeFlow -->
   <script src="https://friendly-kitten-d760ff.netlify.app/js/freeflow.js"></script>
-
-  <!-- ✅ Inject FreeFlow HTML và gọi fetchFreeFlowData -->
   <script>
     fetch("/html/freeflow.html")
       .then(res => res.text())
@@ -278,18 +213,12 @@ console.log("Dữ liệu voucher raw:", window.__vouchersRaw);
         temp.innerHTML = html;
         Array.from(temp.children).forEach(el => container.appendChild(el));
 
-        // ✅ Chờ 200ms để đảm bảo script đã sẵn sàng
         setTimeout(() => {
           if (typeof fetchFreeFlowData === "function") {
             fetchFreeFlowData("https://script.google.com/macros/s/AKfycbwuEh9sP65vyQL0XzU8gY1Os0QYV_K5egKJgm8OhImAPjvdyrQiU7XCY909N99TnltP/exec");
-          } else {
-            console.warn("❌ fetchFreeFlowData vẫn chưa sẵn sàng");
           }
         }, 200);
-      })
-      .catch(err => console.warn("❌ Lỗi khi tải freeflow.html:", err));
+      });
   </script>
-
-  </div>
 </body>
 </html>
