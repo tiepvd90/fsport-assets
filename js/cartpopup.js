@@ -104,12 +104,10 @@ function selectVariant(data) {
   const voucherAmount = window.voucherByProduct?.[data.id] || 0;
   const finalPrice = Math.max(0, data.Giá - voucherAmount);
 
-  // Xoá dòng giá sau giảm cũ nếu có
   const oldFinal = document.getElementById("finalPriceLine");
   if (oldFinal) oldFinal.remove();
 
   if (voucherAmount > 0) {
-    // Giá chính gạch và màu đen
     if (productPrice) {
       productPrice.textContent = data.Giá.toLocaleString() + "đ";
       productPrice.style.color = "black";
@@ -171,9 +169,22 @@ function changeQuantity(delta) {
 
 function toggleCartPopup(show = true) {
   const popup = document.getElementById("cartPopup");
-  if (!popup) return;
-  popup.classList.toggle("hidden", !show);
-  popup.style.display = show ? "flex" : "none";
+  const content = popup?.querySelector(".cart-popup-content");
+  if (!popup || !content) return;
+
+  if (show) {
+    popup.style.display = "flex";
+    content.classList.remove("animate-slideup");
+    void content.offsetWidth; // reflow để reset animation
+    content.classList.add("animate-slideup");
+    popup.classList.remove("hidden");
+  } else {
+    content.classList.remove("animate-slideup");
+    popup.classList.add("hidden");
+    setTimeout(() => {
+      popup.style.display = "none";
+    }, 300);
+  }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
