@@ -34,8 +34,8 @@
 /* ========== NÚT ĐÓNG ========== */
 .cart-popup-close {
   position: absolute;
-  top: 12px;
-  right: 12px;
+  top: 7px;
+  right: 7px;
   font-size: 36px;   /* ✅ To rõ ràng */
   color: #000;       /* ✅ Màu đen đậm */
   background: none;
