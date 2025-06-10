@@ -1,0 +1,39 @@
+/* slideshow.css */
+.lazy-slideshow {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+  border-radius: 12px;
+  aspect-ratio: 1 / 1;
+  touch-action: pan-y;
+}
+
+.lazy-slideshow .slide {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 1s ease;
+  pointer-events: none;
+}
+
+.lazy-slideshow .show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.slide-counter {
+  position: absolute;
+  bottom: 10px;
+  right: 14px;
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  font-size: 13px;
+  padding: 4px 8px;
+  border-radius: 20px;
+  font-weight: bold;
+  z-index: 2;
+  font-family: Arial, sans-serif;
+}
