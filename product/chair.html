@@ -61,22 +61,18 @@
   flex-shrink: 0;
 }
 .review-item {
-  margin-top: 12px;
-  padding-top: 8px;
-  border-top: 1px solid #f2f2f2;
+  margin-top: 16px;
 }
 
 .review-header {
-  display: flex;
-  justify-content: space-between;
   font-size: 13px;
   font-weight: 500;
   color: #444;
-  margin-bottom: 2px;
+  margin-bottom: 4px;
 }
 
 .review-stars {
-  color: #FFD700; /* vàng */
+  color: #FFD700;
   font-size: 14px;
   margin-bottom: 4px;
 }
@@ -85,6 +81,14 @@
   font-size: 14px;
   color: #222;
   line-height: 1.5;
+  margin-bottom: 6px;
+}
+
+.review-image {
+  width: 100%;
+  max-width: 160px;
+  border-radius: 8px;
+  display: block;
 }
 </style>
 </head>
@@ -138,7 +142,7 @@ box-sizing: border-box;
   <!-- END Flash Sale Banner -->
  <!-- ✅ KHỐI 1: Tiêu đề + Shipping -->
 <div class="product-hero">
-  <h1 style="font-size: 20px; font-weight: bold; margin-top: 8px; font-family: 'Be Vietnam Pro', sans-serif;">
+  <h1 style="font-size: 14px; font-weight: bold; margin-top: 8px; font-family: 'Be Vietnam Pro', sans-serif;">
     Ghế Công Thái Học FA – Chỉnh Dáng Ngồi Đúng, Chống Gù Cho Mọi Lứa Tuổi
   </h1>
 
@@ -156,39 +160,38 @@ box-sizing: border-box;
     </div>
   </div>
 </div>
-<!-- end .product-hero (block 1) -->
-
-<!-- ✅ KHỐI 2: Reviews -->
+    <!-- ✅ KHỐI 1: Reviews -->
 <div class="product-hero" style="margin-top: 12px;">
   <h2 style="font-size: 16px; font-weight: bold; margin-bottom: 12px;">
     Reviews Của Khách Hàng
   </h2>
 
+  <!-- Review 1 -->
   <div class="review-item">
     <div class="review-header">
       <span class="review-name">Hà T. (Hà Nội)</span>
-      <span class="review-time">2 ngày trước</span>
     </div>
     <div class="review-stars">★★★★★</div>
     <div class="review-text">
       Ghế ngồi rất êm, không bị gù lưng. Giao hàng nhanh và đóng gói kỹ!
     </div>
+    <img src="https://i.postimg.cc/MKc6kch9/review1.jpg" alt="Ảnh review 1" class="review-image">
   </div>
 
+  <!-- Review 2 -->
   <div class="review-item">
     <div class="review-header">
       <span class="review-name">Dũng N. (HCM)</span>
-      <span class="review-time">5 ngày trước</span>
     </div>
     <div class="review-stars">★★★★★</div>
     <div class="review-text">
       Mình mua cho con học lớp 6, ngồi đúng tư thế hơn hẳn. Đáng tiền!
     </div>
+    <img src="https://i.postimg.cc/vZVNff0j/7.jpg" alt="Ảnh review 2" class="review-image">
   </div>
 </div>
-<!-- end .product-hero (block 2) -->
-</div>
-  
+ <!-- ✅ Khối 3- freeflow -->
+  <div class="product-hero" style="margin-top: 12px;">
   <!-- ✅ Inject popup + footer -->
   <script>
     async function loadScript(src) {
@@ -298,6 +301,7 @@ console.log("Dữ liệu voucher raw:", window.__vouchersRaw);
       })
       .catch(err => console.warn("❌ Lỗi khi tải freeflow.html:", err));
   </script>
-
+</div> <!-- Hết khối 3 product hero -->
+  </div>
 </body>
 </html>
