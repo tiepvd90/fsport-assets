@@ -6,7 +6,7 @@
   justify-content: center;
   align-items: center;
   z-index: 9999;
-  font-family: Arial, sans-serif;
+  font-family: 'Be Vietnam Pro', sans-serif;
 }
 .cart-popup-overlay {
   position: absolute;
