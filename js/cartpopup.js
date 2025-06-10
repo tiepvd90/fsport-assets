@@ -21,6 +21,7 @@ function initCartPopup() {
         }
 
         renderOptions(data["thuộc_tính"]);
+        bindAddToCartButton(); // ✅ Gắn nút sau khi đã render
       } else {
         console.error("❌ Dữ liệu JSON thiếu thuộc_tính hoặc biến_thể.");
       }
@@ -175,7 +176,7 @@ function toggleCartPopup(show = true) {
   if (show) {
     popup.style.display = "flex";
     content.classList.remove("animate-slideup");
-    void content.offsetWidth; // reflow để reset animation
+    void content.offsetWidth;
     content.classList.add("animate-slideup");
     popup.classList.remove("hidden");
   } else {
@@ -187,10 +188,8 @@ function toggleCartPopup(show = true) {
   }
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  const orderBtn = document.getElementById("cartSubmitBtn");
-  const closeBtns = document.querySelectorAll(".cart-popup-close, .cart-popup-overlay");
-
+function bindAddToCartButton() {
+  const orderBtn = document.getElementById("btn-atc"); // từ stickyfooter
   if (orderBtn && !isCartEventBound) {
     isCartEventBound = true;
     orderBtn.addEventListener("click", () => {
@@ -224,7 +223,10 @@ document.addEventListener("DOMContentLoaded", () => {
       toggleCartPopup(false);
     });
   }
+}
 
+document.addEventListener("DOMContentLoaded", () => {
+  const closeBtns = document.querySelectorAll(".cart-popup-close, .cart-popup-overlay");
   closeBtns.forEach(btn => {
     btn.addEventListener("click", () => toggleCartPopup(false));
   });
