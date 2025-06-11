@@ -2,7 +2,7 @@
 
 // ======= Meta Pixel chính (2551563688514905) =======
 !function(f,b,e,v,n,t,s)
-{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod ?
 n.callMethod.apply(n,arguments):n.queue.push(arguments)};
 if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
 n.queue=[];t=b.createElement(e);t.async=!0;
@@ -13,7 +13,7 @@ s.parentNode.insertBefore(t,s)}(window, document,'script',
 fbq('init', '2551563688514905'); // Pixel chính
 fbq('track', 'PageView');
 
-// ======= Meta Pixel phụ (Funsports - 644988365190821) =======
+// ======= Meta Pixel phụ (644988365190821 - Funsports) =======
 fbq('init', '644988365190821'); // Pixel phụ
 fbq('track', 'PageView');
 
@@ -53,17 +53,17 @@ fbq('track', 'PageView');
   ttq.page();
 }(window, document, 'ttq');
 
-// ======= Hàm gọi cả 3 pixel =======
-function trackBothPixels(eventName) {
-  // Facebook Pixel (gửi event cho cả 2 ID)
+// ======= Hàm gọi cả Meta & TikTok Pixel với tham số =======
+function trackBothPixels(eventName, params = {}) {
+  // Facebook Pixel (2 ID)
   if (typeof fbq !== 'undefined') {
-    fbq('track', eventName);
-    console.log(`[Facebook Pixel] Tracked: ${eventName}`);
+    fbq('track', eventName, params);
+    console.log(`[Facebook Pixel] Tracked: ${eventName}`, params);
   }
 
   // TikTok Pixel
   if (typeof ttq !== 'undefined') {
-    ttq.track(eventName);
-    console.log(`[TikTok Pixel] Tracked: ${eventName}`);
+    ttq.track(eventName, params);
+    console.log(`[TikTok Pixel] Tracked: ${eventName}`, params);
   }
 }
