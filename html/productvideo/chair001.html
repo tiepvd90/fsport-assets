@@ -2,9 +2,12 @@
 <h2 style="font-size:14px; margin-bottom: 8px;">🎥 Video Sản Phẩm</h2>
 
 <div class="video-slider-wrapper">
-  <div class="video-slider" id="videoSlider">
-    <!-- JS sẽ render từng video -->
-  </div>
+  <div class="video-slider" id="videoSlider"></div>
+</div>
+
+<div id="videoPopup">
+  <div class="close-btn" onclick="closeVideoPopup()">×</div>
+  <iframe id="popupIframe" src="" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 </div>
 
 <style>
@@ -22,67 +25,144 @@
   }
 
   .video-item {
-    aspect-ratio: 9 / 16;
     width: calc((100vw - 48px) / 3);
     flex-shrink: 0;
-    border-radius: 8px;
+    border-radius: 12px;
     overflow: hidden;
     background: #f8f8f8;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
   }
 
   .video-thumb {
-    flex: 1;
     position: relative;
+    aspect-ratio: 9 / 16;
+    background: #eee;
     cursor: pointer;
   }
 
-  .video-thumb video {
+  .video-thumb img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    display: block;
     border: none;
+    display: block;
+  }
+
+  .video-thumb::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 40px;
+    height: 40px;
+    transform: translate(-50%, -50%);
+    background: rgba(255, 255, 255, 0.85);
+    border-radius: 50%;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    background-image: url('data:image/svg+xml;utf8,<svg width="24" height="24" fill="black" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8 5v14l11-7z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 16px 16px;
+    pointer-events: none;
   }
 
   .atc-button {
-    font-size: 12px;
-    padding: 6px;
+    font-size: 13px;
+    padding: 8px;
     text-align: center;
-    background: black;
+    background: #e53935;
     color: white;
     border: none;
-    border-radius: 0 0 8px 8px;
+    border-radius: 8px;
+    margin: 6px;
     cursor: pointer;
+  }
+
+  .atc-button:hover {
+    background: #d32f2f;
+  }
+
+  #videoPopup {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.8);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+  }
+
+  #videoPopup iframe {
+    width: 90vw;
+    height: 90vh;
+    border: none;
+    border-radius: 12px;
+  }
+
+  #videoPopup .close-btn {
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    font-size: 56px;
+    color: white;
+    cursor: pointer;
+    z-index: 10000;
   }
 </style>
 
 <script>
-  const videoData = [
-    { src: "https://example.com/video1.mp4" },
-    { src: "https://example.com/video2.mp4" },
-    { src: "https://example.com/video3.mp4" },
-    { src: "https://example.com/video4.mp4" },
-    { src: "https://example.com/video5.mp4" }
+  const videoUrls = [
+    "https://www.youtube.com/shorts/pvI-V4wAGTo",
+    "https://www.youtube.com/shorts/GiJ0PijF7nE",
+    "https://www.youtube.com/shorts/QaljAWTFrXI",
+    "https://www.youtube.com/shorts/oOI0JhK4O64",
+    "https://www.youtube.com/shorts/f5n43c1m1b4",
+    "https://www.youtube.com/shorts/R_MNOwJA1LA",
+    "https://www.youtube.com/shorts/ZrDxoCVZO3U",
+    "https://www.youtube.com/watch?v=BVjEZ0caZLE&t=5s",
+    "https://www.youtube.com/shorts/QaljAWTFrXI"
   ];
+
+  function extractVideoId(url) {
+    const match = url.match(/(?:v=|\/shorts\/)([a-zA-Z0-9_-]{11})/);
+    return match ? match[1] : null;
+  }
 
   const slider = document.getElementById("videoSlider");
 
-  videoData.forEach((vid, index) => {
+  videoUrls.forEach((url, index) => {
+    const id = extractVideoId(url);
+    if (!id) return;
+
+    const thumb = `https://img.youtube.com/vi/${id}/hqdefault.jpg`;
     const item = document.createElement("div");
     item.className = "video-item";
 
     item.innerHTML = `
-      <div class="video-thumb">
-        <video src="${vid.src}" autoplay muted loop playsinline></video>
+      <div class="video-thumb" onclick="openVideoPopup('${id}')">
+        <img src="${thumb}" loading="lazy" alt="Video ${index + 1}">
       </div>
       <button class="atc-button" onclick="addToCart()">Thêm Vào Giỏ Hàng</button>
     `;
 
     slider.appendChild(item);
   });
+
+  function openVideoPopup(id) {
+    const popup = document.getElementById("videoPopup");
+    const iframe = document.getElementById("popupIframe");
+    iframe.src = `https://www.youtube.com/embed/${id}?autoplay=1&rel=0&playsinline=1`;
+    popup.style.display = "flex";
+  }
+
+  function closeVideoPopup() {
+    const popup = document.getElementById("videoPopup");
+    const iframe = document.getElementById("popupIframe");
+    iframe.src = "";
+    popup.style.display = "none";
+  }
 
   function addToCart() {
     const atc = document.getElementById("btn-atc");
