@@ -12,10 +12,10 @@
 
   <!-- ✅ JS định nghĩa -->
   <script>
-    window.loai = "chair";
-    window.productCategory = "chair";
-  </script>
-
+  window.loai = "chair";
+  window.productCategory = "chair";     // Nhóm sản phẩm
+  window.productPage = "chair001";      // Trang cụ thể
+</script>
   <style>
     body {
       background-color: #f9f9f9;
@@ -243,8 +243,8 @@
         document.getElementById("base-placeholder").outerHTML = html;
         if (typeof trackBothPixels === "function") {
           trackBothPixels("ViewContent", {
-            content_id: "chair",
-            content_name: "chair",
+            content_id: window.productPage,
+            content_name: window.productPage,
             content_category: window.productCategory,
             value: 0,
             currency: "VND"
