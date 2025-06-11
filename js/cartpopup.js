@@ -220,16 +220,25 @@ function bindAddToCartButton() {
         });
 saveCart(); // ⬅️ Thêm dòng này để đảm bảo lưu ngay cả khi quantity = 1
 
-        if (typeof trackBothPixels === "function") {
-          trackBothPixels("AddToCart", {
-  content_id: product.id,
-  content_name: product["Phân loại"],
-  content_category: product.category || loai,
-  content_page: window.productPage,
-  value: product.Giá,
-  currency: "VND"
+        console.log("🔥 Gửi ATC:", {
+  content_id: product.id || "unknown",
+  content_name: product["Phân loại"] || "unknown",
+  content_category: product.category || loai || "unknown",
+  content_page: window.productPage || "unknown",
+  value: product.Giá || 0
 });
-        }
+
+        if (typeof trackBothPixels === "function") {
+  trackBothPixels("AddToCart", {
+    content_id: product.id || "unknown",
+    content_name: product["Phân loại"] || "unknown",
+    content_category: product.category || loai || "unknown",
+    content_page: window.productPage || "unknown",
+    value: product.Giá || 0,
+    currency: "VND"
+  });
+}
+
 
         toggleCartPopup(false);
         if (typeof showCheckoutPopup === "function") showCheckoutPopup();
