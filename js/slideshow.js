@@ -1,47 +1,56 @@
 const loai = window.loai || 'chair';
 const productPage = window.productPage || 'chair001';
-const totalImages = 5; // ✅ số lượng ảnh tối đa muốn load, bạn có thể thay đổi
+const totalImages = 20; // để cao hơn số thực tế, không lo ảnh lỗi
 
 const container = document.getElementById('lazySlideshow');
 const counter = document.getElementById('slideCounter');
 
-const images = [];
+let loaded = 0;
 
 for (let i = 1; i <= totalImages; i++) {
   const src = `/assets/images/gallery/${loai}/${productPage}/${i}.jpg`;
   const img = document.createElement('img');
   img.src = src;
-  img.className = 'slide lazy-slide' + (i === 1 ? ' show' : '');
-  img.loading = 'lazy';
-  container.insertBefore(img, counter);
-  images.push(src);
+  img.className = 'slide lazy-slide';
+
+  // ✅ Ảnh đầu load ngay, ảnh sau lazy
+  img.loading = i === 1 ? 'eager' : 'lazy';
+
+  img.onload = () => {
+    if (loaded === 0) img.classList.add('show');
+    container.insertBefore(img, counter);
+    loaded++;
+
+    if (loaded === 1) initSlideshow();
+  };
+
+  img.onerror = () => img.remove();
 }
 
-initSlideshow(images.length);
-
-function initSlideshow(totalSlides) {
+function initSlideshow() {
   let currentSlide = 0;
   const slides = document.querySelectorAll('.lazy-slide');
   const counterEl = document.getElementById('slideCounter');
-  counterEl.textContent = `${currentSlide + 1}/${totalSlides}`;
+  if (!slides.length) return;
 
+  counterEl.textContent = `${currentSlide + 1}/${slides.length}`;
   let slideInterval = setInterval(nextSlide, 4000);
 
   function nextSlide() {
     slides[currentSlide].classList.remove('show');
-    currentSlide = (currentSlide + 1) % totalSlides;
+    currentSlide = (currentSlide + 1) % slides.length;
     slides[currentSlide].classList.add('show');
-    counterEl.textContent = `${currentSlide + 1}/${totalSlides}`;
+    counterEl.textContent = `${currentSlide + 1}/${slides.length}`;
   }
 
   function prevSlide() {
     slides[currentSlide].classList.remove('show');
-    currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+    currentSlide = (currentSlide - 1 + slides.length) % slides.length;
     slides[currentSlide].classList.add('show');
-    counterEl.textContent = `${currentSlide + 1}/${totalSlides}`;
+    counterEl.textContent = `${currentSlide + 1}/${slides.length}`;
   }
 
-  // Touch
+  // 👆 Touch
   let startX = 0;
   const slideshow = document.getElementById('lazySlideshow');
 
@@ -58,7 +67,7 @@ function initSlideshow(totalSlides) {
     }
   });
 
-  // Mouse drag
+  // 🖱 Mouse drag
   let isDragging = false;
   let dragStart = 0;
 
