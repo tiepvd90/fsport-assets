@@ -1,4 +1,4 @@
-// 🌀 FreeFlow v1.1 — Ảnh & Video đồng đều, video có thumbnail nhỏ
+// 🌀 FreeFlow v1.1 — Bình đẳng video & ảnh, video có thumbnail, tiêu đề gọn đẹp
 let freeflowData = [];
 
 async function fetchFreeFlowData(jsonUrl) {
@@ -62,9 +62,9 @@ function renderFeed(feed) {
             <img src="${item.image}" style="width: 36px; height: 36px; object-fit: cover; border-radius: 6px;" />
           </a>
           <div style="flex: 1;">
-            <div class="one-line-title" style="font-size: 13px; font-weight: 500; line-height: 1.3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+            <h4 class="one-line-title" style="font-size: 13px; line-height: 1.3; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
               ${item.title}
-            </div>
+            </h4>
             <div style="font-size: 13px; color: #f53d2d; font-weight: bold;">
               ${finalPrice}${originalPrice}
             </div>
@@ -73,7 +73,6 @@ function renderFeed(feed) {
       `;
     }
 
-    // Nếu là ảnh thì thêm title + price dưới ảnh
     if (item.contentType === "image") {
       mediaHtml += `
         <h4 class="one-line-title" style="margin: 4px 8px 0; font-size: 13px; line-height: 1.3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
