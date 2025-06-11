@@ -1,0 +1,133 @@
+<h2>🎥 Video Sản Phẩm</h2>
+
+<div class="video-slider-wrapper">
+  <div class="video-slider" id="videoSlider">
+    <!-- Video thumbnails sẽ được JS render -->
+  </div>
+</div>
+
+<div id="videoPopup">
+  <div class="close-btn" onclick="closeVideoPopup()">×</div>
+  <iframe id="popupIframe" src="" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+</div>
+
+<style>
+  .video-slider-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+  }
+
+  .video-slider {
+    display: flex;
+    gap: 12px;
+    padding-bottom: 8px;
+    width: max-content;
+  }
+
+  .video-item {
+    min-width: calc((100vw - 48px) / 3);
+    flex-shrink: 0;
+    position: relative;
+    cursor: pointer;
+  }
+
+  .video-item img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    display: block;
+    object-fit: cover;
+  }
+
+  .video-item::after {
+    content: '▶';
+    position: absolute;
+    font-size: 32px;
+    color: white;
+    text-shadow: 0 0 4px black;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+
+  #videoPopup {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.8);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+  }
+
+  #videoPopup iframe {
+    width: 90vw;
+    height: 90vh;
+    border: none;
+    border-radius: 12px;
+  }
+
+  #videoPopup .close-btn {
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    font-size: 28px;
+    color: white;
+    cursor: pointer;
+    z-index: 10000;
+  }
+</style>
+
+<script>
+  const videoUrls = [
+    "https://www.youtube.com/shorts/pvI-V4wAGTo",
+    "https://www.youtube.com/shorts/GiJ0PijF7nE",
+    "https://www.youtube.com/shorts/QaljAWTFrXI",
+    "https://www.youtube.com/shorts/oOI0JhK4O64",
+    "https://www.youtube.com/shorts/f5n43c1m1b4",
+    "https://www.youtube.com/shorts/R_MNOwJA1LA",
+    "https://www.youtube.com/shorts/ZrDxoCVZO3U",
+    "https://www.youtube.com/watch?v=BVjEZ0caZLE&t=5s",
+    "https://www.youtube.com/shorts/QaljAWTFrXI"
+  ];
+
+  function extractVideoId(url) {
+    const match = url.match(/(?:v=|\/shorts\/)([a-zA-Z0-9_-]{11})/);
+    return match ? match[1] : null;
+  }
+
+  const slider = document.getElementById("videoSlider");
+
+  videoUrls.forEach((url, index) => {
+    const id = extractVideoId(url);
+    if (!id) return;
+
+    const thumb = `https://img.youtube.com/vi/${id}/hqdefault.jpg`;
+    const item = document.createElement("div");
+    item.className = "video-item";
+    item.innerHTML = `<img src="${thumb}" loading="lazy" alt="Video ${index + 1}">`;
+    item.onclick = () => openVideoPopup(id);
+    slider.appendChild(item);
+
+    // Autoplay video đầu tiên
+    if (index === 0) {
+      setTimeout(() => openVideoPopup(id), 200);
+    }
+  });
+
+  function openVideoPopup(id) {
+    const popup = document.getElementById("videoPopup");
+    const iframe = document.getElementById("popupIframe");
+    iframe.src = `https://www.youtube.com/embed/${id}?autoplay=1&rel=0&playsinline=1`;
+    popup.style.display = "flex";
+  }
+
+  function closeVideoPopup() {
+    const popup = document.getElementById("videoPopup");
+    const iframe = document.getElementById("popupIframe");
+    iframe.src = "";
+    popup.style.display = "none";
+  }
+</script>
