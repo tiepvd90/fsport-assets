@@ -123,7 +123,19 @@
           document.getElementById("review-placeholder").innerHTML = html;
         });
     </script>
-    <!-- ✅ KHỐI 3: Mô tả sản phẩm -->
+    <!-- ✅ KHỐI 3: Video sản phẩm -->
+<div class="product-hero" style="margin-top: 12px;">
+  <div id="video-placeholder"></div>
+</div>
+<script>
+  fetch("/html/productvideo/chair001.html")
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById("video-placeholder").innerHTML = html;
+    });
+</script>
+<!-- Hết KHỐI 3: Video sản phẩm -->
+    <!-- ✅ KHỐI 4: Mô tả sản phẩm -->
 <div class="product-hero" style="margin-top: 12px;">
   <div id="productdescription-placeholder"></div>
 </div>
@@ -148,19 +160,7 @@
       });
     });
 </script>
-<!-- ✅ KHỐI 4: Video sản phẩm -->
-<div class="product-hero" style="margin-top: 12px;">
-  <div id="video-placeholder"></div>
-</div>
-<script>
-  fetch("/html/productvideo/chair001.html")
-    .then(res => res.text())
-    .then(html => {
-      document.getElementById("video-placeholder").innerHTML = html;
-    });
-</script>
-<!-- Hết KHỐI 4: Video sản phẩm -->
-
+ <!-- HẾT KHỐI 4: Mô tả sản phẩm -->
     <!-- ✅ FreeFlow -->
     <h2 style="font-size: 18px; margin: 24px 12px 12px;">CÓ THỂ BẠN SẼ THÍCH</h2>
     <div id="freeflow-placeholder"></div>
