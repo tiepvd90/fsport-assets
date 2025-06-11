@@ -19,7 +19,7 @@
   ],
   "biến_thể": [
     {
-      "id": "chair001",
+      "id": "caocapden",
       "category": "chair",
       "Phân loại": "Ghế Cao Cấp - Đen",
       "Giá": 419000,
@@ -27,7 +27,7 @@
       "Ảnh": "https://i.imgur.com/mU3rxJJ.jpeg"
     },
     {
-      "id": "chair002",
+      "id": "caocapxanhngoc",
       "category": "chair",
       "Phân loại": "Ghế Cao Cấp - Xanh Ngọc",
       "Giá": 419000,
@@ -35,7 +35,7 @@
       "Ảnh": "https://i.imgur.com/ccY64fp.jpeg"
     },
     {
-      "id": "chair003",
+      "id": "caocapxam",
       "category": "chair",
       "Phân loại": "Ghế Cao Cấp - Xám",
       "Giá": 419000,
@@ -43,7 +43,7 @@
       "Ảnh": "https://i.imgur.com/fIFwbhh.jpeg"
     },
     {
-      "id": "chair004",
+      "id": "caocapnavy",
       "category": "chair",
       "Phân loại": "Ghế Cao Cấp - Xanh Navy",
       "Giá": 419000,
@@ -51,7 +51,7 @@
       "Ảnh": "https://i.imgur.com/X1Hqtgu.jpeg"
     },
     {
-      "id": "chair005",
+      "id": "dacbietden",
       "category": "chair",
       "Phân loại": "Ghế Đặc Biệt - Đen",
       "Giá": 469000,
@@ -59,7 +59,7 @@
       "Ảnh": "https://i.imgur.com/RvrRllm.jpeg"
     },
     {
-      "id": "chair006",
+      "id": "dacbietxam",
       "category": "chair",
       "Phân loại": "Ghế Đặc Biệt - Xám",
       "Giá": 469000,
@@ -67,7 +67,7 @@
       "Ảnh": "https://i.imgur.com/HTGiIfH.jpeg"
     },
     {
-      "id": "chair007",
+      "id": "dacbietnavy",
       "category": "chair",
       "Phân loại": "Ghế Đặc Biệt - Xanh Navy",
       "Giá": 469000,
@@ -75,7 +75,7 @@
       "Ảnh": "https://i.imgur.com/KZ98VL3.jpeg"
     },
     {
-      "id": "chair008",
+      "id": "dacbietnau",
       "category": "chair",
       "Phân loại": "Ghế Đặc Biệt - Nâu",
       "Giá": 469000,
