@@ -131,8 +131,22 @@
   fetch("/html/productvideo/chair001.html")
     .then(res => res.text())
     .then(html => {
-      document.getElementById("video-placeholder").innerHTML = html;
-    });
+      const container = document.getElementById("video-placeholder");
+      container.innerHTML = html;
+
+      // ✅ Tìm tất cả <script> vừa chèn và kích hoạt lại
+      const scripts = container.querySelectorAll("script");
+      scripts.forEach(oldScript => {
+        const newScript = document.createElement("script");
+        if (oldScript.src) {
+          newScript.src = oldScript.src;
+        } else {
+          newScript.textContent = oldScript.textContent;
+        }
+        oldScript.replaceWith(newScript);
+      });
+    })
+    .catch(err => console.warn("❌ Lỗi khi chèn video:", err));
 </script>
 <!-- Hết KHỐI 3: Video sản phẩm -->
     <!-- ✅ KHỐI 4: Mô tả sản phẩm -->
