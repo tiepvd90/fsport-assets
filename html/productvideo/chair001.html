@@ -1,5 +1,5 @@
-<!-- ✅ KHỐI 4: Video Sản Phẩm -->
-<h2 style="font-size:14px; margin-bottom: 8px;">🎥 Video Sản Phẩm</h2>
+<!-- ✅ KHỐI 4: VIDEO SẢN PHẨM -->
+<h2 style="font-size:14px; margin-bottom: 8px;">🎥 VIDEO SẢN PHẨM</h2>
 
 <div class="video-slider-wrapper">
   <div class="video-slider" id="videoSlider"></div>
@@ -8,8 +8,8 @@
 <div id="videoPopup">
   <div class="popup-video-frame">
     <div class="popup-header">
-      <button class="popup-buy" onclick="buyNow()">Mua Ngay</button>
-      <button class="popup-close" onclick="closeVideoPopup()">Đóng</button>
+      <button class="popup-buy" onclick="buyNow()">MUA NGAY</button>
+      <button class="popup-close" onclick="closeVideoPopup()">ĐÓNG</button>
     </div>
     <iframe id="popupIframe" src="" allow="autoplay; encrypted-media" allowfullscreen></iframe>
   </div>
@@ -75,14 +75,17 @@
   .atc-button {
     font-size: 10px;
     font-weight: bold;
-    padding: 6px;
+    padding: 5px 8px;
     text-align: center;
     background: #e53935;
     color: white;
     border: none;
     border-radius: 6px;
-    margin: 6px;
+    margin: 6px auto 8px auto;
     cursor: pointer;
+    width: fit-content;
+    text-transform: uppercase;
+    white-space: nowrap;
   }
 
   .atc-button:hover {
@@ -105,8 +108,8 @@
     width: 100%;
     max-width: 420px;
     aspect-ratio: 9 / 16;
-    background: black;
-    /* ❌ không bo góc */
+    background: white;
+    border: 1px solid #ccc;
     border-radius: 0;
     overflow: hidden;
     display: flex;
@@ -115,29 +118,34 @@
 
   .popup-header {
     display: flex;
+    gap: 6px;
+    padding: 8px;
     z-index: 10;
+    background: #fff;
+    justify-content: space-between;
+  }
+
+  .popup-buy, .popup-close {
+    flex: 1;
+    font-size: 13px;
+    font-weight: bold;
+    border: none;
+    padding: 8px;
+    cursor: pointer;
+    border-radius: 20px;
+    text-transform: uppercase;
   }
 
   .popup-buy {
     flex: 2;
     background: #e53935;
     color: white;
-    font-weight: bold;
-    font-size: 13px;
-    border: none;
-    padding: 10px;
-    cursor: pointer;
   }
 
   .popup-close {
     flex: 1;
     background: black;
     color: white;
-    font-weight: bold;
-    font-size: 13px;
-    border: none;
-    padding: 10px;
-    cursor: pointer;
   }
 
   #popupIframe {
@@ -180,7 +188,7 @@
       <div class="video-thumb" onclick="openVideoPopup('${id}')">
         <img src="${thumb}" loading="lazy" alt="Video ${index + 1}">
       </div>
-      <button class="atc-button" onclick="addToCart()">Thêm Vào Giỏ Hàng</button>
+      <button class="atc-button" onclick="addToCart()">THÊM VÀO GIỎ HÀNG</button>
     `;
 
     slider.appendChild(item);
@@ -191,7 +199,7 @@
     const iframe = document.getElementById("popupIframe");
     iframe.src = `https://www.youtube.com/embed/${id}?autoplay=1&rel=0&playsinline=1`;
     popup.style.display = "flex";
-    document.body.style.overflow = "hidden"; // ✅ chặn cuộn
+    document.body.style.overflow = "hidden"; // chặn cuộn
   }
 
   function closeVideoPopup() {
@@ -199,7 +207,7 @@
     const iframe = document.getElementById("popupIframe");
     iframe.src = "";
     popup.style.display = "none";
-    document.body.style.overflow = ""; // ✅ mở lại cuộn
+    document.body.style.overflow = ""; // khôi phục cuộn
   }
 
   function addToCart() {
