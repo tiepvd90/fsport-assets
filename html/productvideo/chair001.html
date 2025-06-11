@@ -1,4 +1,4 @@
-<h2>Video Sản Phẩm</h2>
+<h2 style="font-size:14px; margin-bottom: 8px;">🎥 Video Sản Phẩm</h2>
 
 <div class="video-slider-wrapper">
   <div class="video-slider" id="videoSlider">
@@ -110,6 +110,11 @@
     item.innerHTML = `<img src="${thumb}" loading="lazy" alt="Video ${index + 1}">`;
     item.onclick = () => openVideoPopup(id);
     slider.appendChild(item);
+
+    // ✅ Tự động mở popup video đầu tiên nếu chạy trực tiếp
+    if (index === 0 && location.pathname.includes("chair001.html")) {
+      setTimeout(() => openVideoPopup(id), 200);
+    }
   });
 
   function openVideoPopup(id) {
