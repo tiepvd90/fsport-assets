@@ -1,24 +1,23 @@
-// slideshow.js
-fetch('https://friendly-kitten-d760ff.netlify.app/json/slideshow.json')
-  .then(res => res.json())
-  .then(data => {
-    const loai = window.loai || 'chair';
-    const productPage = window.productPage || 'chair001';
-    const images = (data[loai] && data[loai][productPage]) || [];
+const loai = window.loai || 'chair';
+const productPage = window.productPage || 'chair001';
+const totalImages = 5; // ✅ số lượng ảnh tối đa muốn load, bạn có thể thay đổi
 
-    const container = document.getElementById('lazySlideshow');
-    const counter = document.getElementById('slideCounter');
+const container = document.getElementById('lazySlideshow');
+const counter = document.getElementById('slideCounter');
 
-    images.forEach((src, i) => {
-      const img = document.createElement('img');
-      img.src = src;
-      img.className = 'slide lazy-slide' + (i === 0 ? ' show' : '');
-      img.loading = 'lazy';
-      container.insertBefore(img, counter);
-    });
+const images = [];
 
-    initSlideshow(images.length);
-  });
+for (let i = 1; i <= totalImages; i++) {
+  const src = `/assets/images/gallery/${loai}/${productPage}/${i}.jpg`;
+  const img = document.createElement('img');
+  img.src = src;
+  img.className = 'slide lazy-slide' + (i === 1 ? ' show' : '');
+  img.loading = 'lazy';
+  container.insertBefore(img, counter);
+  images.push(src);
+}
+
+initSlideshow(images.length);
 
 function initSlideshow(totalSlides) {
   let currentSlide = 0;
