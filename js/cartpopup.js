@@ -222,12 +222,13 @@ saveCart(); // ⬅️ Thêm dòng này để đảm bảo lưu ngay cả khi qua
 
         if (typeof trackBothPixels === "function") {
           trackBothPixels("AddToCart", {
-            content_id: contentId,
-            content_name: contentName,
-            content_category: loai,
-            value: product.Giá,
-            currency: "VND"
-          });
+  content_id: product.id,
+  content_name: product["Phân loại"],
+  content_category: product.category || loai,
+  content_page: window.productPage,
+  value: product.Giá,
+  currency: "VND"
+});
         }
 
         toggleCartPopup(false);
