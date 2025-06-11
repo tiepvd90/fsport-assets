@@ -1,8 +1,8 @@
-<h2>🎥 Video Sản Phẩm</h2>
+<h2>Video Sản Phẩm</h2>
 
 <div class="video-slider-wrapper">
   <div class="video-slider" id="videoSlider">
-    <!-- Video thumbnails sẽ được JS render -->
+    <!-- Video thumbnails sẽ được render bằng JS -->
   </div>
 </div>
 
@@ -110,11 +110,6 @@
     item.innerHTML = `<img src="${thumb}" loading="lazy" alt="Video ${index + 1}">`;
     item.onclick = () => openVideoPopup(id);
     slider.appendChild(item);
-
-    // Autoplay video đầu tiên
-    if (index === 0) {
-      setTimeout(() => openVideoPopup(id), 200);
-    }
   });
 
   function openVideoPopup(id) {
