@@ -180,26 +180,25 @@ function submitOrder() {
   })
   .then(() => {
     // ✅ TRACKING: Purchase & Subscribe
-    const contentId = firstItem.id || "";
-    const contentName = firstItem["Phân loại"] || "";
+    if (typeof trackBothPixels === "function" && firstItem) {
+  trackBothPixels("Purchase", {
+    content_id: firstItem.id || "unknown",
+    content_name: firstItem["Phân loại"] || "unknown",
+    content_category: firstItem.category || "unknown",
+    content_page: window.productPage || "unknown",
+    value: orderData.total,
+    currency: "VND"
+  });
 
-    if (typeof trackBothPixels === "function") {
-      trackBothPixels("Purchase", {
-        content_id: contentId,
-        content_name: contentName,
-        content_category: category,
-        value: orderData.total,
-        currency: "VND"
-      });
-
-      trackBothPixels("Subscribe", {
-        content_id: contentId,
-        content_name: contentName,
-        content_category: category,
-        value: orderData.total,
-        currency: "VND"
-      });
-    }
+  trackBothPixels("Subscribe", {
+    content_id: firstItem.id || "unknown",
+    content_name: firstItem["Phân loại"] || "unknown",
+    content_category: firstItem.category || "unknown",
+    content_page: window.productPage || "unknown",
+    value: orderData.total,
+    currency: "VND"
+  });
+}
 
     alert("Cảm ơn bạn đã đặt hàng! Funsport sẽ sớm liên hệ.");
     window.cart = [];
