@@ -6,8 +6,8 @@
 </div>
 
 <div id="videoPopup">
-  <div class="close-btn" onclick="closeVideoPopup()">×</div>
   <iframe id="popupIframe" src="" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+  <div class="close-btn" onclick="closeVideoPopup()">×</div>
 </div>
 
 <style>
@@ -69,13 +69,14 @@
   }
 
   .atc-button {
-    font-size: 13px;
-    padding: 8px;
+    font-size: 10px;
+    font-weight: bold;
+    padding: 6px;
     text-align: center;
     background: #e53935;
     color: white;
     border: none;
-    border-radius: 8px;
+    border-radius: 6px;
     margin: 6px;
     cursor: pointer;
   }
@@ -92,6 +93,8 @@
     align-items: center;
     justify-content: center;
     z-index: 9999;
+    flex-direction: column;
+    padding: 20px;
   }
 
   #videoPopup iframe {
@@ -99,16 +102,20 @@
     height: 90vh;
     border: none;
     border-radius: 12px;
+    z-index: 10;
   }
 
   #videoPopup .close-btn {
     position: absolute;
-    top: 12px;
-    right: 16px;
-    font-size: 56px;
+    top: 24px;
+    right: 24px;
+    font-size: 48px;
     color: white;
     cursor: pointer;
     z-index: 10000;
+    background: rgba(0, 0, 0, 0.4);
+    padding: 4px 12px;
+    border-radius: 50%;
   }
 </style>
 
