@@ -6,8 +6,13 @@
 </div>
 
 <div id="videoPopup">
-  <iframe id="popupIframe" src="" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-  <div class="close-btn" onclick="closeVideoPopup()">×</div>
+  <div class="popup-video-frame">
+    <div class="popup-header">
+      <button class="popup-close" onclick="closeVideoPopup()">Đóng</button>
+      <button class="popup-buy" onclick="buyNow()">Mua Ngay</button>
+    </div>
+    <iframe id="popupIframe" src="" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+  </div>
 </div>
 
 <style>
@@ -46,7 +51,6 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border: none;
     display: block;
   }
 
@@ -60,7 +64,6 @@
     transform: translate(-50%, -50%);
     background: rgba(255, 255, 255, 0.85);
     border-radius: 50%;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
     background-image: url('data:image/svg+xml;utf8,<svg width="24" height="24" fill="black" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8 5v14l11-7z"/></svg>');
     background-repeat: no-repeat;
     background-position: center;
@@ -85,37 +88,64 @@
     background: #d32f2f;
   }
 
+  /* ========== POPUP VIDEO ========== */
   #videoPopup {
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.8);
+    background: rgba(0,0,0,0.85);
     display: none;
     align-items: center;
     justify-content: center;
     z-index: 9999;
-    flex-direction: column;
     padding: 20px;
   }
 
-  #videoPopup iframe {
-    width: 90vw;
-    height: 90vh;
-    border: none;
+  .popup-video-frame {
+    width: 100%;
+    max-width: 420px;
+    aspect-ratio: 9 / 16;
+    background: black;
     border-radius: 12px;
-    z-index: 10;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: column;
   }
 
-  #videoPopup .close-btn {
-    position: absolute;
-    top: 24px;
-    right: 24px;
-    font-size: 48px;
-    color: white;
-    cursor: pointer;
+  .popup-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 0;
+    padding: 8px;
+    background: #fff;
     z-index: 10000;
-    background: rgba(0, 0, 0, 0.4);
-    padding: 4px 12px;
-    border-radius: 50%;
+  }
+
+  .popup-close, .popup-buy {
+    flex: 1;
+    padding: 8px;
+    font-size: 13px;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+  }
+
+  .popup-close {
+    background: #eee;
+    border-top-left-radius: 12px;
+  }
+
+  .popup-buy {
+    background: #e53935;
+    color: white;
+    border-top-right-radius: 12px;
+  }
+
+  #popupIframe {
+    flex: 1;
+    width: 100%;
+    height: 100%;
+    border: none;
   }
 </style>
 
@@ -175,5 +205,10 @@
     const atc = document.getElementById("btn-atc");
     if (atc) atc.click();
     else alert("❌ Không tìm thấy nút btn-atc");
+  }
+
+  function buyNow() {
+    closeVideoPopup();
+    addToCart();
   }
 </script>
