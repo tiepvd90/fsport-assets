@@ -1,8 +1,6 @@
-// 🌀 FreeFlow v1.0 — Feed với ảnh + video + popup fullscreen
+// 🌀 FreeFlow v1.1 — Feed ảnh + video + popup YouTube
 let freeflowData = [];
-let filteredFeed = [];
 
-// 🔁 Fetch JSON từ Google Sheet
 async function fetchFreeFlowData(jsonUrl) {
   try {
     const res = await fetch(jsonUrl);
@@ -13,7 +11,6 @@ async function fetchFreeFlowData(jsonUrl) {
   }
 }
 
-// 🔍 Tính điểm và ghép 8 ảnh → 1 video
 function updateFeed(searchTerm = "") {
   const currentCategory = window.currentProductCategory || "";
 
@@ -26,19 +23,10 @@ function updateFeed(searchTerm = "") {
     return item;
   });
 
-  const images = scored.filter(i => i.contentType === "image").sort((a, b) => b.finalPriority - a.finalPriority);
-  const videos = scored.filter(i => i.contentType === "youtube").sort((a, b) => b.finalPriority - a.finalPriority);
-
-  let finalDisplay = [], imgIndex = 0, vidIndex = 0;
-  while (imgIndex < images.length) {
-    for (let i = 0; i < 8 && imgIndex < images.length; i++) finalDisplay.push(images[imgIndex++]);
-    if (vidIndex < videos.length) finalDisplay.push(videos[vidIndex++]);
-  }
-
+  const finalDisplay = [...scored].sort((a, b) => b.finalPriority - a.finalPriority);
   renderFeed(finalDisplay);
 }
 
-// 🎨 Hiển thị ra HTML
 function renderFeed(feed) {
   const container = document.getElementById("freeflowFeed");
   if (!container) return;
@@ -47,17 +35,17 @@ function renderFeed(feed) {
   feed.forEach(item => {
     const finalPrice = item.price ? Number(item.price).toLocaleString() + "đ" : "";
     const originalPrice = item.originalPrice && item.originalPrice > item.price
-      ? `<span class="original-price" style="color:#555; font-size:12px;">${Number(item.originalPrice).toLocaleString()}đ</span>` : "";
+      ? `<span class="original-price" style="color:#555; font-size:12px; margin-left:4px; text-decoration: line-through;">${Number(item.originalPrice).toLocaleString()}đ</span>` : "";
 
     const div = document.createElement("div");
     div.className = "feed-item";
 
     let mediaHtml = "";
     if (item.contentType === "image") {
-      mediaHtml = `<img loading=\"lazy\" src=\"${item.image}\" alt=\"${item.title}\">`;
+      mediaHtml = `<img loading="lazy" src="${item.image}" alt="${item.title}" style="width: 100%; border-radius: 8px;" />`;
     } else if (item.contentType === "youtube") {
       mediaHtml = `
-        <div class="video-wrapper">
+        <div class="video-wrapper" style="position: relative;">
           <iframe 
             data-video-id="${item.youtube}"
             frameborder="0"
@@ -65,19 +53,33 @@ function renderFeed(feed) {
             allowfullscreen
             playsinline
             muted
+            style="width: 100%; aspect-ratio: 9/16; border-radius: 8px;"
           ></iframe>
-          <div class="video-overlay" data-video="${item.youtube}"></div>
+          <div class="video-overlay" data-video="${item.youtube}" style="position: absolute; inset: 0; cursor: pointer;"></div>
+        </div>
+        <div class="video-info" style="display: flex; align-items: center; gap: 8px; padding: 4px 8px 0;">
+          <img src="${item.image}" style="width: 36px; height: 36px; object-fit: cover; border-radius: 6px;" />
+          <div style="flex: 1;">
+            <div style="font-size: 13px; font-weight: 500; line-height: 1.3;">${item.title}</div>
+            <div style="font-size: 13px; color: #f53d2d; font-weight: bold;">
+              ${finalPrice}${originalPrice}
+            </div>
+          </div>
         </div>
       `;
     }
 
-    div.innerHTML = `
-      ${mediaHtml}
-      <h4 class="one-line-title" style="margin: 4px 8px 0; font-size: 13px; line-height: 1.3;">${item.title}</h4>
-      <div class="price-line" style="padding: 2px 8px 6px; font-size: 13px;">
-        <span class="price" style="color: #f53d2d; font-weight: bold;">${finalPrice}</span> ${originalPrice}
-      </div>
-    `;
+    // Nếu là ảnh thì thêm title + price dưới ảnh
+    if (item.contentType === "image") {
+      mediaHtml += `
+        <h4 class="one-line-title" style="margin: 4px 8px 0; font-size: 13px; line-height: 1.3;">${item.title}</h4>
+        <div class="price-line" style="padding: 2px 8px 6px; font-size: 13px;">
+          <span class="price" style="color: #f53d2d; font-weight: bold;">${finalPrice}</span> ${originalPrice}
+        </div>
+      `;
+    }
+
+    div.innerHTML = mediaHtml;
 
     if (item.contentType === "youtube") {
       setTimeout(() => {
@@ -102,7 +104,6 @@ function renderFeed(feed) {
   observeYouTubeIframes();
 }
 
-// 👁️ Auto-play video khi trong tầm nhìn
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     const iframe = entry.target;
@@ -123,7 +124,6 @@ function observeYouTubeIframes() {
   iframes.forEach(iframe => observer.observe(iframe));
 }
 
-// ❌ Đóng video popup khi ấn nút X
 function closeVideoPopup() {
   const frame = document.getElementById("videoFrame");
   frame.src = "";
