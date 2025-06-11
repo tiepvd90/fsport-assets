@@ -1,56 +1,71 @@
-const loai = window.loai || 'chair';
-const productPage = window.productPage || 'chair001';
-const totalImages = 20; // để cao hơn số thực tế, không lo ảnh lỗi
+const totalImages = 20;
 
 const container = document.getElementById('lazySlideshow');
 const counter = document.getElementById('slideCounter');
 
-let loaded = 0;
+let loadedCount = 0;
+let triedCount = 0;
+const slides = [];
 
 for (let i = 1; i <= totalImages; i++) {
   const src = `/assets/images/gallery/${loai}/${productPage}/${i}.jpg`;
   const img = document.createElement('img');
   img.src = src;
   img.className = 'slide lazy-slide';
-
-  // ✅ Ảnh đầu load ngay, ảnh sau lazy
   img.loading = i === 1 ? 'eager' : 'lazy';
 
   img.onload = () => {
-    if (loaded === 0) img.classList.add('show');
-    container.insertBefore(img, counter);
-    loaded++;
-
-    if (loaded === 1) initSlideshow();
+    slides.push(img);
+    loadedCount++;
+    triedCount++;
+    checkReady();
   };
 
-  img.onerror = () => img.remove();
+  img.onerror = () => {
+    triedCount++;
+    checkReady();
+  };
 }
 
-function initSlideshow() {
-  let currentSlide = 0;
-  const slides = document.querySelectorAll('.lazy-slide');
-  const counterEl = document.getElementById('slideCounter');
-  if (!slides.length) return;
+function checkReady() {
+  // Khi đã thử đủ số ảnh
+  if (triedCount === totalImages) {
+    // Chèn các ảnh đã load thành công
+    slides.forEach((img, i) => {
+      if (i === 0) img.classList.add('show');
+      container.insertBefore(img, counter);
+    });
 
-  counterEl.textContent = `${currentSlide + 1}/${slides.length}`;
+    if (slides.length > 0) {
+      initSlideshow(slides.length);
+    } else {
+      console.warn("❌ Không có ảnh nào được load.");
+    }
+  }
+}
+
+function initSlideshow(totalSlides) {
+  let currentSlide = 0;
+  const slidesEls = document.querySelectorAll('.lazy-slide');
+  const counterEl = document.getElementById('slideCounter');
+  counterEl.textContent = `${currentSlide + 1}/${totalSlides}`;
   let slideInterval = setInterval(nextSlide, 4000);
 
   function nextSlide() {
-    slides[currentSlide].classList.remove('show');
-    currentSlide = (currentSlide + 1) % slides.length;
-    slides[currentSlide].classList.add('show');
-    counterEl.textContent = `${currentSlide + 1}/${slides.length}`;
+    slidesEls[currentSlide].classList.remove('show');
+    currentSlide = (currentSlide + 1) % totalSlides;
+    slidesEls[currentSlide].classList.add('show');
+    counterEl.textContent = `${currentSlide + 1}/${totalSlides}`;
   }
 
   function prevSlide() {
-    slides[currentSlide].classList.remove('show');
-    currentSlide = (currentSlide - 1 + slides.length) % slides.length;
-    slides[currentSlide].classList.add('show');
-    counterEl.textContent = `${currentSlide + 1}/${slides.length}`;
+    slidesEls[currentSlide].classList.remove('show');
+    currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+    slidesEls[currentSlide].classList.add('show');
+    counterEl.textContent = `${currentSlide + 1}/${totalSlides}`;
   }
 
-  // 👆 Touch
+  // Touch
   let startX = 0;
   const slideshow = document.getElementById('lazySlideshow');
 
@@ -67,7 +82,7 @@ function initSlideshow() {
     }
   });
 
-  // 🖱 Mouse drag
+  // Mouse drag
   let isDragging = false;
   let dragStart = 0;
 
