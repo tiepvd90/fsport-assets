@@ -45,32 +45,38 @@ function renderFeed(feed) {
       mediaHtml = `<img loading="lazy" src="${item.image}" alt="${item.title}" style="width: 100%; border-radius: 8px;" />`;
     } else if (item.contentType === "youtube") {
       mediaHtml = `
-        <div class="video-wrapper" style="position: relative;">
-          <iframe 
-            data-video-id="${item.youtube}"
-            frameborder="0"
-            allow="autoplay; encrypted-media"
-            allowfullscreen
-            playsinline
-            muted
-            style="width: 100%; aspect-ratio: 9/16; border-radius: 8px;"
-          ></iframe>
-          <div class="video-overlay" data-video="${item.youtube}" style="position: absolute; inset: 0; cursor: pointer;"></div>
-        </div>
-        <div class="video-info" style="display: flex; align-items: center; gap: 8px; padding: 4px 8px 0;">
-          <a href="${item.productPage}">
-            <img src="${item.image}" style="width: 36px; height: 36px; object-fit: cover; border-radius: 6px;" />
-          </a>
-          <div style="flex: 1;">
-            <h4 class="one-line-title" style="font-size: 13px; line-height: 1.3; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-              ${item.title}
-            </h4>
-            <div style="font-size: 13px; color: #f53d2d; font-weight: bold;">
-              ${finalPrice}${originalPrice}
-            </div>
-          </div>
-        </div>
-      `;
+  <div class="video-wrapper" style="position: relative;">
+    <iframe 
+      data-video-id="${item.youtube}"
+      frameborder="0"
+      allow="autoplay; encrypted-media"
+      allowfullscreen
+      playsinline
+      muted
+      style="width: 100%; aspect-ratio: 9/16; border-radius: 8px;"
+    ></iframe>
+    <div class="video-overlay" data-video="${item.youtube}" style="position: absolute; inset: 0; cursor: pointer;"></div>
+  </div>
+  <div class="video-info" style="display: flex; align-items: center; gap: 8px; padding: 4px 8px 0;">
+    <a href="${item.productPage}">
+      <img src="${item.image}" style="width: 36px; height: 36px; object-fit: cover; border-radius: 6px;" />
+    </a>
+    <div style="flex: 1; min-width: 0;"> <!-- ❗ Giới hạn chiều ngang để ellipsis hoạt động -->
+      <h4 style="
+        font-size: 13px;
+        line-height: 1.3;
+        margin: 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      ">${item.title}</h4>
+      <div style="font-size: 13px; color: #f53d2d; font-weight: bold;">
+        ${finalPrice}${originalPrice}
+      </div>
+    </div>
+  </div>
+`;
+
     }
 
     if (item.contentType === "image") {
