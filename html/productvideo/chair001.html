@@ -3,7 +3,7 @@
 
 <div class="video-slider-wrapper">
   <div class="video-slider" id="videoSlider">
-    <!-- Thumbnails được render bằng JS -->
+    <!-- JS sẽ render các video thumbnail -->
   </div>
 </div>
 
@@ -44,22 +44,21 @@
   }
 
   .video-item::after {
-    content: '▶';
+    content: '';
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 24px;
     width: 40px;
     height: 40px;
+    transform: translate(-50%, -50%);
     background: rgba(255, 255, 255, 0.85);
-    color: black;
     border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    pointer-events: none;
     box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    background-image: url('data:image/svg+xml;utf8,<svg width="24" height="24" fill="black" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8 5v14l11-7z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 16px 16px;
+    pointer-events: none;
   }
 
   #videoPopup {
@@ -104,7 +103,7 @@
   ];
 
   function extractVideoId(url) {
-    const match = url.match(/(?:v=|\/shorts\/)([a-zA-Z0-9_-]{11})/);
+    const match = url.match(/(?:v=|\/shorts\/|v=)([a-zA-Z0-9_-]{11})/);
     return match ? match[1] : null;
   }
 
@@ -120,11 +119,6 @@
     item.innerHTML = `<img src="${thumb}" loading="lazy" alt="Video ${index + 1}">`;
     item.onclick = () => openVideoPopup(id);
     slider.appendChild(item);
-
-    // ✅ Tự động bật video đầu tiên nếu chạy trực tiếp
-    if (index === 0 && location.pathname.includes("chair001.html")) {
-      setTimeout(() => openVideoPopup(id), 300);
-    }
   });
 
   function openVideoPopup(id) {
