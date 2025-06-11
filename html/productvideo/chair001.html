@@ -1,8 +1,9 @@
+<!-- ✅ KHỐI 4: Video Sản Phẩm -->
 <h2 style="font-size:14px; margin-bottom: 8px;">🎥 Video Sản Phẩm</h2>
 
 <div class="video-slider-wrapper">
   <div class="video-slider" id="videoSlider">
-    <!-- Video thumbnails sẽ được render bằng JS -->
+    <!-- Thumbnails được render bằng JS -->
   </div>
 </div>
 
@@ -26,30 +27,39 @@
   }
 
   .video-item {
-    min-width: calc((100vw - 48px) / 3);
+    aspect-ratio: 9 / 16;
+    width: calc((100vw - 48px) / 3);
     flex-shrink: 0;
     position: relative;
     cursor: pointer;
+    border-radius: 8px;
+    overflow: hidden;
   }
 
   .video-item img {
     width: 100%;
-    height: auto;
-    border-radius: 8px;
-    display: block;
+    height: 100%;
     object-fit: cover;
+    display: block;
   }
 
   .video-item::after {
     content: '▶';
     position: absolute;
-    font-size: 32px;
-    color: white;
-    text-shadow: 0 0 4px black;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    font-size: 24px;
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.85);
+    color: black;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     pointer-events: none;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
   }
 
   #videoPopup {
@@ -111,9 +121,9 @@
     item.onclick = () => openVideoPopup(id);
     slider.appendChild(item);
 
-    // ✅ Tự động mở popup video đầu tiên nếu chạy trực tiếp
+    // ✅ Tự động bật video đầu tiên nếu chạy trực tiếp
     if (index === 0 && location.pathname.includes("chair001.html")) {
-      setTimeout(() => openVideoPopup(id), 200);
+      setTimeout(() => openVideoPopup(id), 300);
     }
   });
 
