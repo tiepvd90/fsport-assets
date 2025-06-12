@@ -63,21 +63,19 @@
 }
 
 .cart-item .remove-btn {
-  background: #e53935;     /* ✅ nền đỏ */
+  background: rgba(0, 0, 0, 0.07); /* ✅ xám nhạt, mờ 70% */
   border: none;
-  color: #fff;             /* ✅ chữ trắng */
-  font-size: 16px;
-  width: 28px;
-  height: 28px;
-  border-radius: 4px;      /* ✅ bo vuông nhẹ */
+  color: #000;                    /* ✅ chữ X màu đen */
+  font-size: 14px;
+  width: 24px;                    /* ✅ nhỏ hơn */
+  height: 24px;
+  border-radius: 4px;             /* ✅ vuông nhẹ */
   display: flex;
   align-items: center;
-  justify-content: center; /* ✅ căn giữa chữ X */
+  justify-content: center;        /* ✅ căn giữa chữ */
   cursor: pointer;
   margin-right: 4px;
 }
-
-
 .cart-item img {
   width: 60px;
   height: 60px;
