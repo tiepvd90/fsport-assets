@@ -1,130 +1,109 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-  <meta charset="UTF-8" />
-  <title>Review Sản Phẩm - Ghế Bệt</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <style>
-    .review-item {
-      margin-top: 16px;
+<style>
+  .review-item {
+    margin-top: 16px;
+  }
+
+  .review-header {
+    font-size: 13px;
+    font-weight: 500;
+    color: #444;
+    margin-bottom: 4px;
+  }
+
+  .review-stars {
+    color: #FFD700;
+    font-size: 14px;
+    margin-bottom: 4px;
+  }
+
+  .review-text {
+    font-size: 14px;
+    color: #222;
+    line-height: 1.5;
+    margin-bottom: 6px;
+  }
+
+  .review-images {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 6px;
+    box-sizing: border-box;
+  }
+
+  .review-image {
+    width: calc(25% - 4.5px);
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: 6px;
+    box-sizing: border-box;
+  }
+</style>
+
+<h2 style="font-size: 16px; font-weight: bold; margin-bottom: 12px;">
+  Review Sản Phẩm
+</h2>
+
+<div id="review1" class="review-item"></div>
+<div id="review2" class="review-item"></div>
+
+<script>
+  const reviewPool = [
+    { name: "Linh N. (Hà Nội)", text: "Mình mua ghế cho bé ngồi học bài, thấy bé ngồi đúng tư thế hơn hẳn, không bị cúi sát vở như trước. Rất đáng tiền!" },
+    { name: "Hương T. (HCM)", text: "Là mẹ bỉm hay phải bế con cho ti, mình rất thích ghế này vì tựa lưng êm, đỡ đau vai gáy. Ngồi lâu không khó chịu như ghế nhựa." },
+    { name: "Minh P. (Đà Nẵng)", text: "Bố mình bị đau lưng kinh niên, từ ngày có ghế này ngồi xem TV thấy cụ khen suốt. Thiết kế thực sự hợp lý cho người lớn tuổi." },
+    { name: "Trí L. (Hải Phòng)", text: "Làm văn phòng ở nhà, mình dùng ghế bệt này ngồi làm việc suốt cả buổi chiều mà không thấy ê mỏi như trước. Rất hài lòng." },
+    { name: "Thảo V. (Nghệ An)", text: "Công việc livestream phải ngồi liên tục, đổi qua ghế này thấy lưng đỡ mỏi hơn rõ rệt. Mềm, nhưng vẫn giữ dáng tốt." },
+    { name: "Vinh N. (TP.HCM)", text: "Shop đóng gói chắc chắn, giao hàng nhanh. Mình đặt sáng hôm trước thì trưa hôm sau đã nhận được, ngồi thử là thích liền!" },
+    { name: "Ngọc A. (Bình Dương)", text: "Tựa lưng ôm rất vừa, đệm mềm mà không bị lún. Dùng cả ngày làm việc vẫn thấy êm, không bị đau hông như mấy loại gối rời." },
+    { name: "Khánh L. (Hà Nội)", text: "Nhà mình nhỏ nên mua 4 cái cho cả nhà ngồi ăn cơm dưới sàn. Nhẹ, dễ xếp gọn mà ngồi vẫn vững chắc, tiện cực kỳ." }
+  ];
+
+  function getUniqueRandomIndices(count, max) {
+    const set = new Set();
+    while (set.size < count) {
+      set.add(Math.floor(Math.random() * max));
     }
+    return Array.from(set);
+  }
 
-    .review-header {
-      font-size: 13px;
-      font-weight: 500;
-      color: #444;
-      margin-bottom: 4px;
-    }
+  function getRandomReviews() {
+    const indices = getUniqueRandomIndices(2, reviewPool.length);
+    return [reviewPool[indices[0]], reviewPool[indices[1]]];
+  }
 
-    .review-stars {
-      color: #FFD700;
-      font-size: 14px;
-      margin-bottom: 4px;
-    }
+  function getReviewImages() {
+    const indices = getUniqueRandomIndices(8, 8).map(i => i + 1);
+    return {
+      review1: indices.slice(0, 4),
+      review2: indices.slice(4, 8)
+    };
+  }
 
-    .review-text {
-      font-size: 14px;
-      color: #222;
-      line-height: 1.5;
-      margin-bottom: 6px;
-    }
+  function renderReview(containerId, name, text, imageNums) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
 
-    .review-images {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-top: 6px;
-      box-sizing: border-box;
-    }
+    const imagesHTML = imageNums.map(n => {
+      const url = `/assets/images/thumb/reviews/chair/chair001/${n}.webp`;
+      return `<img src="${url}" alt="Ảnh review ${n}" class="review-image">`;
+    }).join("");
 
-    .review-image {
-      width: calc(25% - 4.5px);
-      aspect-ratio: 1 / 1;
-      object-fit: cover;
-      border-radius: 6px;
-      box-sizing: border-box;
-    }
-  </style>
-</head>
-<body>
-  <h2 style="font-size: 16px; font-weight: bold; margin-bottom: 12px;">
-    Review Sản Phẩm
-  </h2>
+    container.innerHTML = `
+      <div class="review-header">
+        <span class="review-name">${name}</span>
+      </div>
+      <div class="review-stars">★★★★★</div>
+      <div class="review-text">${text}</div>
+      <div class="review-images">${imagesHTML}</div>
+    `;
+  }
 
-  <div id="review1" class="review-item"></div>
-  <div id="review2" class="review-item"></div>
+  (function runReviewBlock() {
+    const [r1, r2] = getRandomReviews();
+    const { review1, review2 } = getReviewImages();
 
-  <script>
-    const reviewPool = [
-      { name: "Linh N. (Hà Nội)", text: "Mình mua ghế cho bé ngồi học bài, thấy bé ngồi đúng tư thế hơn hẳn, không bị cúi sát vở như trước. Rất đáng tiền!" },
-      { name: "Hương T. (HCM)", text: "Là mẹ bỉm hay phải bế con cho ti, mình rất thích ghế này vì tựa lưng êm, đỡ đau vai gáy. Ngồi lâu không khó chịu như ghế nhựa." },
-      { name: "Minh P. (Đà Nẵng)", text: "Bố mình bị đau lưng kinh niên, từ ngày có ghế này ngồi xem TV thấy cụ khen suốt. Thiết kế thực sự hợp lý cho người lớn tuổi." },
-      { name: "Trí L. (Hải Phòng)", text: "Làm văn phòng ở nhà, mình dùng ghế bệt này ngồi làm việc suốt cả buổi chiều mà không thấy ê mỏi như trước. Rất hài lòng." },
-      { name: "Thảo V. (Nghệ An)", text: "Công việc livestream phải ngồi liên tục, đổi qua ghế này thấy lưng đỡ mỏi hơn rõ rệt. Mềm, nhưng vẫn giữ dáng tốt." },
-      { name: "Vinh N. (TP.HCM)", text: "Shop đóng gói chắc chắn, giao hàng nhanh. Mình đặt sáng hôm trước thì trưa hôm sau đã nhận được, ngồi thử là thích liền!" },
-      { name: "Ngọc A. (Bình Dương)", text: "Tựa lưng ôm rất vừa, đệm mềm mà không bị lún. Dùng cả ngày làm việc vẫn thấy êm, không bị đau hông như mấy loại gối rời." },
-      { name: "Khánh L. (Hà Nội)", text: "Nhà mình nhỏ nên mua 4 cái cho cả nhà ngồi ăn cơm dưới sàn. Nhẹ, dễ xếp gọn mà ngồi vẫn vững chắc, tiện cực kỳ." }
-    ];
-
-    function getUniqueRandomIndices(count, max) {
-      const set = new Set();
-      while (set.size < count) {
-        set.add(Math.floor(Math.random() * max));
-      }
-      return Array.from(set);
-    }
-
-    function getRandomReviews() {
-      const indices = getUniqueRandomIndices(2, reviewPool.length);
-      return [reviewPool[indices[0]], reviewPool[indices[1]]];
-    }
-
-    function getReviewImages() {
-      const indices = getUniqueRandomIndices(8, 8).map(i => i + 1);
-      return {
-        review1: indices.slice(0, 4),
-        review2: indices.slice(4, 8)
-      };
-    }
-
-    function renderReview(containerId, name, text, imageNums) {
-      const container = document.getElementById(containerId);
-      if (!container) {
-        console.error("❌ Không tìm thấy container:", containerId);
-        return;
-      }
-
-      const imagesHTML = imageNums.map(n => {
-        const url = `/assets/images/thumb/reviews/chair/chair001/${n}.webp`;
-        return `<img src="${url}" alt="Ảnh review ${n}" class="review-image">`;
-      }).join("");
-
-      container.innerHTML = `
-        <div class="review-header">
-          <span class="review-name">${name}</span>
-        </div>
-        <div class="review-stars">★★★★★</div>
-        <div class="review-text">${text}</div>
-        <div class="review-images">${imagesHTML}</div>
-      `;
-    }
-
-    document.addEventListener("DOMContentLoaded", function () {
-      console.log("✅ DOM đã sẵn sàng, bắt đầu initReviews...");
-
-      const [r1, r2] = getRandomReviews();
-      const { review1, review2 } = getReviewImages();
-
-      console.log("🟢 Review 1:", r1);
-      console.log("🟢 Review 2:", r2);
-      console.log("🟢 Ảnh review1:", review1);
-      console.log("🟢 Ảnh review2:", review2);
-
-      renderReview("review1", r1.name, r1.text, review1);
-      renderReview("review2", r2.name, r2.text, review2);
-
-      console.log("✅ Đã render xong cả 2 review");
-    });
-  </script>
-</body>
-</html>
+    renderReview("review1", r1.name, r1.text, review1);
+    renderReview("review2", r2.name, r2.text, review2);
+  })();
+</script>
