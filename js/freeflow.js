@@ -97,10 +97,14 @@ function renderFeed(feed) {
         const overlay = div.querySelector(".video-overlay");
         overlay.onclick = () => {
           const id = overlay.getAttribute("data-video");
-          const popup = document.getElementById("videoOverlay");
-          const frame = document.getElementById("videoFrame");
-          frame.src = `https://www.youtube.com/embed/${id}?autoplay=1&mute=0&playsinline=1&controls=1`;
-          popup.style.display = "flex";
+const productLink = feed.find(i => i.youtube === id)?.productPage || "#";
+const popup = document.getElementById("videoOverlay");
+const frame = document.getElementById("videoFrame");
+const viewBtn = document.getElementById("viewProductBtn");
+
+frame.src = `https://www.youtube.com/embed/${id}?autoplay=1&mute=0&playsinline=1&controls=1`;
+viewBtn.href = productLink;
+popup.style.display = "flex";
         };
       }, 0);
     } else {
