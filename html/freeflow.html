@@ -3,131 +3,53 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Fun Sport</title>
+  <title>FreeFlow Feed</title>
 
-  <!-- ✅ Google Font -->
+  <!-- ✅ Font & CSS -->
   <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;700&display=swap" rel="stylesheet" />
-
-  <!-- ✅ CSS chính -->
   <link rel="stylesheet" href="/css/base.css" />
   <link rel="stylesheet" href="/css/freeflow.css" />
 </head>
 <body>
 
-  <!-- 🔥 FREEFLOW FEED -->
+  <!-- ✅ Vùng hiển thị feed -->
   <div id="freeflowFeed"></div>
 
-  <!-- ✅ JS FreeFlow -->
+  <!-- ✅ Popup video chuẩn productvideo -->
+  <div id="videoPopup">
+    <div class="popup-video-frame">
+      <div class="popup-header">
+        <button class="popup-buy" id="popupBuyBtn">XEM SẢN PHẨM</button>
+        <button class="popup-close" onclick="closeVideoPopup()">ĐÓNG</button>
+      </div>
+      <iframe id="popupIframe" src="" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+    </div>
+  </div>
+
+  <!-- ✅ Script FreeFlow -->
   <script src="/js/freeflow.js"></script>
   <script>
     fetchFreeFlowData("https://script.google.com/macros/s/AKfycbwuEh9sP65vyQL0XzU8gY1Os0QYV_K5egKJgm8OhImAPjvdyrQiU7XCY909N99TnltP/exec");
 
     function closeVideoPopup() {
-      const overlay = document.getElementById("videoOverlay");
-      const frame = document.getElementById("videoFrame");
-      frame.src = "";
-      overlay.style.display = "none";
+      const popup = document.getElementById("videoPopup");
+      const iframe = document.getElementById("popupIframe");
+      iframe.src = "";
+      popup.style.display = "none";
+      document.body.style.overflow = "";
+    }
+
+    function openVideoPopup(videoId, productUrl) {
+      const popup = document.getElementById("videoPopup");
+      const iframe = document.getElementById("popupIframe");
+      const btn = document.getElementById("popupBuyBtn");
+
+      iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&playsinline=1`;
+      btn.onclick = () => window.open(productUrl, "_blank");
+
+      popup.style.display = "flex";
+      document.body.style.overflow = "hidden";
     }
   </script>
-
-  <!-- 🔳 Popup video -->
-<div id="videoOverlay" style="
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.6);
-  z-index: 10000;
-  justify-content: center;
-  align-items: center;
-  font-family: 'Be Vietnam Pro', sans-serif;
-  box-sizing: border-box;
-">
-  <div style="
-    background: white;
-    border-radius: 12px;
-    width: 95vw;
-    max-width: 420px;
-    box-shadow: 0 6px 24px rgba(0,0,0,0.2);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    box-sizing: border-box;
-    overflow: hidden;
-  ">
-
-    <!-- 🔼 Thanh nút phía trên -->
-    <div style="
-      width: 100%;
-      display: flex;
-      padding: 12px 12px 0;
-      gap: 8px;
-      box-sizing: border-box;
-    ">
-      <a id="viewProductBtn" href="#" target="_blank" style="
-        flex: 2;
-        background: #f53d2d;
-        color: white;
-        text-align: center;
-        padding: 10px 0;
-        border-radius: 999px;
-        font-weight: bold;
-        text-transform: uppercase;
-        text-decoration: none;
-      ">XEM SẢN PHẨM</a>
-
-      <button onclick="closeVideoPopup()" style="
-        flex: 1;
-        background: black;
-        color: white;
-        border: none;
-        border-radius: 999px;
-        padding: 10px 0;
-        font-weight: bold;
-        text-transform: uppercase;
-        cursor: pointer;
-      ">ĐÓNG</button>
-    </div>
-
-    <!-- 📺 Video iframe -->
-    <div style="
-      width: 100%;
-      aspect-ratio: 9/16;
-      background: #000;
-      border-radius: 8px;
-      overflow: hidden;
-      margin: 12px;
-      box-sizing: border-box;
-    ">
-      <iframe id="videoFrame" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen style="width: 100%; height: 100%;"></iframe>
-    </div>
-  </div>
-</div>
-      <div style="display: flex; width: 100%; margin-top: 12px; gap: 8px;">
-        <a id="viewProductBtn" href="#" target="_blank" style="
-          flex: 2;
-          background: #f53d2d;
-          color: white;
-          text-align: center;
-          padding: 10px;
-          border-radius: 999px;
-          font-weight: bold;
-          text-transform: uppercase;
-          text-decoration: none;
-        ">XEM SẢN PHẨM</a>
-
-        <button onclick="closeVideoPopup()" style="
-          flex: 1;
-          background: black;
-          color: white;
-          border: none;
-          border-radius: 999px;
-          padding: 10px;
-          font-weight: bold;
-          text-transform: uppercase;
-        ">ĐÓNG</button>
-      </div>
-    </div>
-  </div>
-
 </body>
 </html>
