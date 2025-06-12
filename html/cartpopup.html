@@ -1,15 +1,4 @@
-<!-- ✅ Container chứa JSON -->
-<div id="cartContainer"></div>
-
-<script>
-  function initCartContainer() {
-    const container = document.getElementById("cartContainer");
-    const loai = window.loai || "default";
-    if (container) {
-      container.setAttribute("data-json", `/json/${loai}.json`);
-    }
-  }
-</script>
+<div id="cartContainer" data-json="/json/chair.json"></div>
 
 <!-- ✅ Popup giỏ hàng -->
 <div id="cartPopup" class="cart-popup hidden" style="display: none;">
