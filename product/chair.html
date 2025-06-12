@@ -135,16 +135,7 @@
   fetch("/html/freeflow.html")
     .then(res => res.text())
     .then(html => {
-      const container = document.getElementById("freeflow-placeholder");
-      const temp = document.createElement("div");
-      temp.innerHTML = html;
-      Array.from(temp.children).forEach(el => container.appendChild(el));
-
-      setTimeout(() => {
-        if (typeof fetchFreeFlowData === "function") {
-          fetchFreeFlowData("https://script.google.com/macros/s/AKfycbwuEh9sP65vyQL0XzU8gY1Os0QYV_K5egKJgm8OhImAPjvdyrQiU7XCY909N99TnltP/exec");
-        }
-      }, 200);
+      document.getElementById("freeflow-placeholder").innerHTML = html;
     });
 </script>
 
