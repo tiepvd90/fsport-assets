@@ -1,0 +1,118 @@
+<style>
+  .review-item {
+    margin-top: 16px;
+  }
+
+  .review-header {
+    font-size: 13px;
+    font-weight: 500;
+    color: #444;
+    margin-bottom: 4px;
+  }
+
+  .review-stars {
+    color: #FFD700;
+    font-size: 14px;
+    margin-bottom: 4px;
+  }
+
+  .review-text {
+    font-size: 14px;
+    color: #222;
+    line-height: 1.5;
+    margin-bottom: 6px;
+  }
+
+  .review-images {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 6px;
+    box-sizing: border-box;
+  }
+
+  .review-image {
+    width: calc(25% - 4.5px);
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: 6px;
+    box-sizing: border-box;
+  }
+</style>
+
+<h2 style="font-size: 16px; font-weight: bold; margin-bottom: 12px;">
+  Review Sản Phẩm
+</h2>
+
+<div id="review1" class="review-item"></div>
+<div id="review2" class="review-item"></div>
+
+<script>
+  const reviewPool = [
+    {
+      name: "Trang V. (TP.HCM)",
+      text: "Mình từng thuê SUP đi chơi nhưng sau khi mua của bên FA thì thấy đáng tiền thật. Bơm nhanh, mang theo gọn nhẹ, chèo cực kỳ ổn định. Giao hàng nhanh, phụ kiện đầy đủ.",
+      imageUrls: ["https://i.postimg.cc/pLwPqvTG/cheo-thuyen-sup.jpg"]
+    },
+    {
+      name: "Hoàng T. (Hà Nội)",
+      text: "Trước đây mình hay thuê SUP mỗi lần đi biển, nhưng mua của FA rồi mới thấy đúng là nên đầu tư từ đầu. Ván chắc chắn, lên hình đẹp, đi đâu cũng mang theo được.",
+      imageUrls: ["https://i.postimg.cc/hjgcR0VV/281869563-331345509135443-3369932602561377383-n.jpg"]
+    },
+    {
+      name: "Minh Khoa (Đà Nẵng)",
+      text: "Mua SUP bên FA xong là hết muốn thuê ngoài luôn. Gấp gọn để cốp xe, mang ra biển bơm chưa tới 10 phút. Chèo siêu đầm, rất êm.",
+      imageUrls: ["https://i.postimg.cc/qvhksqk6/Capture.jpg"]
+    },
+    {
+      name: "Lan Anh (Phú Quốc)",
+      text: "Từng đi tour chèo SUP nên hơi lăn tăn lúc mua, nhưng nhận được hàng thì bất ngờ vì chất lượng vượt kỳ vọng. Thiết kế đẹp, phụ kiện đầy đủ, dùng thấy thích hẳn.",
+      imageUrls: ["https://i.postimg.cc/43ps00HJ/cheo-thuyen-sup-phu-quoc-11.jpg"]
+    },
+    {
+      name: "Nam L. (Nha Trang)",
+      text: "Ván SUP bên FA dày dặn, chắc chắn, không bị lún như mấy loại mỏng. Chèo ổn định cả khi có sóng. Mình đem ra đảo chèo, ai cũng hỏi mua ở đâu.",
+      imageUrls: ["https://i.postimg.cc/qvhksqk6/Capture.jpg"]
+    },
+    {
+      name: "Linh Chi (Cần Thơ)",
+      text: "Chèo thử vài loại thuê rồi nên lúc mua cũng kỹ, và FA làm mình yên tâm. Ván bơm nhanh, kèm đủ phụ kiện, đặc biệt là chèo thấy rất chắc tay.",
+      imageUrls: ["https://i.postimg.cc/pLwPqvTG/cheo-thuyen-sup.jpg"]
+    }
+  ];
+
+  function getUniqueRandomIndices(count, max) {
+    const set = new Set();
+    while (set.size < count) {
+      set.add(Math.floor(Math.random() * max));
+    }
+    return Array.from(set);
+  }
+
+  function renderReview(containerId, name, text, imageUrls) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+
+    const imagesHTML = imageUrls.map(url => {
+      return `<img src="${url}" alt="Ảnh review" class="review-image">`;
+    }).join("");
+
+    container.innerHTML = `
+      <div class="review-header">
+        <span class="review-name">${name}</span>
+      </div>
+      <div class="review-stars">★★★★★</div>
+      <div class="review-text">${text}</div>
+      <div class="review-images">${imagesHTML}</div>
+    `;
+  }
+
+  (function runReviewBlock() {
+    const indices = getUniqueRandomIndices(2, reviewPool.length);
+    const r1 = reviewPool[indices[0]];
+    const r2 = reviewPool[indices[1]];
+
+    renderReview("review1", r1.name, r1.text, r1.imageUrls);
+    renderReview("review2", r2.name, r2.text, r2.imageUrls);
+  })();
+</script>
