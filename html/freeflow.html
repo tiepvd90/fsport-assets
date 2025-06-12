@@ -17,26 +17,26 @@
   <!-- 🔥 FREEFLOW FEED (không kèm tiêu đề) -->
   <div id="freeflowFeed"></div>
 
+  <!-- 🔳 Popup video YouTube -->
+  <div id="videoOverlay" style="display:none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 9999; justify-content: center; align-items: center;">
+    <div style="position: relative; width: 100%; max-width: 400px;">
+      <button id="videoCloseBtn" style="position: absolute; top: 8px; right: 8px; z-index: 2; background: #000; color: #fff; border: none; font-size: 18px; border-radius: 50%; width: 32px; height: 32px;">×</button>
+      <iframe id="videoFrame"
+              width="100%"
+              height="auto"
+              style="aspect-ratio: 9/16; border: none; border-radius: 8px;"
+              frameborder="0"
+              allow="autoplay; encrypted-media"
+              allowfullscreen>
+      </iframe>
+    </div>
+  </div>
+
   <!-- ✅ JS FreeFlow -->
   <script src="https://fun-sport.co/js/freeflow.js"></script>
   <script>
     fetchFreeFlowData("https://script.google.com/macros/s/AKfycbwuEh9sP65vyQL0XzU8gY1Os0QYV_K5egKJgm8OhImAPjvdyrQiU7XCY909N99TnltP/exec");
-
-    function closeVideoPopup() {
-      const overlay = document.getElementById("videoOverlay");
-      const frame = document.getElementById("videoFrame");
-      frame.src = "";
-      overlay.style.display = "none";
-    }
   </script>
-
-  <!-- 🔳 Popup video YouTube -->
-  <div id="videoOverlay" style="display:none;">
-    <button onclick="closeVideoPopup()" style="position:absolute;top:12px;right:12px;font-size:28px;color:white;background:none;border:none;cursor:pointer;">×</button>
-    <div class="video-inner">
-      <iframe id="videoFrame" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-    </div>
-  </div>
 
 </body>
 </html>
