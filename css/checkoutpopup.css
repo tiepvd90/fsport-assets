@@ -33,16 +33,19 @@
 
 /* === NÚT ĐÓNG === */
 .checkout-close {
+  .checkout-content {
+  padding-top: env(safe-area-inset-top, 12px); /* ✅ tránh bị tràn lên notch */
+}
+  top: 12px;       /* ✅ top vừa phải, không sát nữa */
+  right: 6px;
+  font-size: 42px;
+  color: #000;
+  line-height: 1;
   position: absolute;
-  top: 6px;           /* ✅ Sát trên nhưng vẫn có chút khoảng cách */
-  right: 6px;         /* ✅ Sát phải */
-  font-size: 42px;    /* ✅ To rõ */
   background: none;
   border: none;
-  color: #000;        /* ✅ Màu đen rõ ràng */
   cursor: pointer;
   z-index: 10;
-  line-height: 1;     /* ✅ Không bị lệch dọc */
 }
 
 /* === TIÊU ĐỀ === */
