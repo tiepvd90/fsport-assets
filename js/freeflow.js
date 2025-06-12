@@ -1,4 +1,4 @@
-// 🌀 FreeFlow v1.1 — Bình đẳng video & ảnh, video có thumbnail, tiêu đề gọn đẹp
+// 🌀 FreeFlow v1.2 — Sửa lỗi video trắng, autoplay, đóng popup
 let freeflowData = [];
 
 async function fetchFreeFlowData(jsonUrl) {
@@ -32,7 +32,7 @@ function renderFeed(feed) {
   if (!container) return;
   container.innerHTML = "";
 
-  feed.forEach(item => {
+  feed.forEach((item, index) => {
     const finalPrice = item.price ? Number(item.price).toLocaleString() + "đ" : "";
     const originalPrice =
       item.originalPrice && item.originalPrice > item.price
@@ -66,7 +66,7 @@ function renderFeed(feed) {
             playsinline
             muted
             style="width: 100%; aspect-ratio: 9/16; border-radius: 8px;"
-            src=""
+            src="https://www.youtube.com/embed/${item.youtube}?autoplay=1&mute=1&playsinline=1&controls=1&loop=1&playlist=${item.youtube}"
           ></iframe>
           <div class="video-overlay" data-video="${item.youtube}" style="position: absolute; inset: 0; cursor: pointer;"></div>
         </div>
@@ -112,32 +112,19 @@ function renderFeed(feed) {
 
     container.appendChild(div);
   });
-
-  observeYouTubeIframes();
-}
-
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    const iframe = entry.target;
-    const videoId = iframe.getAttribute("data-video-id");
-    if (entry.isIntersecting && iframe.src === "") {
-      iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&playsinline=1&controls=0&loop=1&playlist=${videoId}`;
-    }
-    if (!entry.isIntersecting && iframe.src !== "") {
-      iframe.src = "";
-    }
-  });
-}, {
-  threshold: 0.75
-});
-
-function observeYouTubeIframes() {
-  const iframes = document.querySelectorAll('iframe[data-video-id]');
-  iframes.forEach(iframe => observer.observe(iframe));
 }
 
 function closeVideoPopup() {
   const frame = document.getElementById("videoFrame");
-  frame.src = "";
-  document.getElementById("videoOverlay").style.display = "none";
+  if (frame) frame.src = "";
+  const popup = document.getElementById("videoOverlay");
+  if (popup) popup.style.display = "none";
 }
+
+// ✅ Gán sự kiện cho nút đóng popup video
+document.addEventListener("DOMContentLoaded", () => {
+  const closeBtn = document.getElementById("videoCloseBtn");
+  if (closeBtn) {
+    closeBtn.onclick = closeVideoPopup;
+  }
+});
