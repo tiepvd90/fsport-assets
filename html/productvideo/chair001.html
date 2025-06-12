@@ -40,6 +40,12 @@
     box-shadow: 0 1px 4px rgba(0,0,0,0.08);
   }
 
+  @media (min-width: 768px) {
+    .video-item {
+      width: calc(((100vw - 96px) / 6) * 2 / 3); /* 👈 nhỏ lại còn 2/3 */
+    }
+  }
+
   .video-thumb {
     position: relative;
     aspect-ratio: 9 / 16;
@@ -170,8 +176,16 @@
   ];
 
   function extractVideoId(url) {
-    const match = url.match(/(?:v=|\/shorts\/)([a-zA-Z0-9_-]{11})/);
-    return match ? match[1] : null;
+    const patterns = [
+      /youtu\.be\/([a-zA-Z0-9_-]{11})/,
+      /youtube\.com\/shorts\/([a-zA-Z0-9_-]{11})/,
+      /youtube\.com\/watch\?v=([a-zA-Z0-9_-]{11})/
+    ];
+    for (let pattern of patterns) {
+      const match = url.match(pattern);
+      if (match) return match[1];
+    }
+    return null;
   }
 
   const slider = document.getElementById("videoSlider");
@@ -199,7 +213,7 @@
     const iframe = document.getElementById("popupIframe");
     iframe.src = `https://www.youtube.com/embed/${id}?autoplay=1&rel=0&playsinline=1`;
     popup.style.display = "flex";
-    document.body.style.overflow = "hidden"; // chặn cuộn
+    document.body.style.overflow = "hidden";
   }
 
   function closeProductVideoPopup() {
@@ -207,7 +221,7 @@
     const iframe = document.getElementById("popupIframe");
     iframe.src = "";
     popup.style.display = "none";
-    document.body.style.overflow = ""; // khôi phục cuộn
+    document.body.style.overflow = "";
   }
 
   function addToCart() {
