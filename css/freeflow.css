@@ -1,150 +1,116 @@
-/* ==== FreeFlow Feed Layout (Masonry Responsive, Centered) ==== */
+/* === FREEFLOW CSS CHUẨN === */
 #freeflowFeed {
-  column-count: 2;
-  column-gap: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
   padding: 12px;
-  margin: auto;
-  max-width: 100%;
+  justify-content: space-between;
 }
 
-/* Tablet (≥600px) */
-@media screen and (min-width: 600px) {
-  #freeflowFeed {
-    column-count: 3;
-    max-width: 720px;
-  }
-}
-
-/* Desktop (≥1024px) */
-@media screen and (min-width: 1024px) {
-  #freeflowFeed {
-    column-count: 6;
-    max-width: 1080px;
-  }
-}
-
-/* ==== Feed Item Card ==== */
 .feed-item {
-  break-inside: avoid;
-  margin-bottom: 12px;
+  width: calc(33.333% - 8px);
   background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  border-radius: 8px;
   overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.06);
   cursor: pointer;
-  transition: transform 0.2s ease;
 }
 
-.feed-item:hover {
-  transform: translateY(-4px);
-}
-
-/* ==== Ảnh ==== */
-.feed-item img {
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  object-fit: cover;
-  display: block;
-  border-bottom: 1px solid #eee;
-}
-
-/* ==== Video ==== */
+.feed-item img,
 .feed-item iframe {
   width: 100%;
-  aspect-ratio: 9 / 16;
-  object-fit: cover;
+  height: auto;
   display: block;
-  border-bottom: 1px solid #eee;
+  border-radius: 0;
 }
 
-/* ==== Tiêu đề ngắn 1 dòng ==== */
 .one-line-title {
-  padding: 8px;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 500;
-  color: #333;
-  margin: 0;
+  color: #111;
+  padding: 4px 6px 0;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-/* ==== Dòng giá ==== */
 .price-line {
-  padding: 0 8px 8px 8px;
-}
-
-.price {
+  font-size: 13px;
   color: #f53d2d;
   font-weight: bold;
-  font-size: 15px;
+  padding: 0 6px 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .original-price {
   color: #999;
-  font-size: 13px;
+  font-weight: normal;
   text-decoration: line-through;
-  margin-left: 6px;
 }
 
-/* ==== POPUP VIDEO (theo chuẩn productvideo) ==== */
-#videoPopup {
+/* === POPUP === */
+#freeflowPopup {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.85);
+  background: rgba(0,0,0,0.6);
   display: none;
   align-items: center;
   justify-content: center;
   z-index: 9999;
-  padding: 20px;
-  font-family: 'Be Vietnam Pro', sans-serif;
 }
 
 .popup-video-frame {
-  width: 100vw;
-  max-height: 100vh;
+  background: #fff;
+  border-radius: 12px;
+  max-width: 420px;
+  width: 90%;
   aspect-ratio: 9 / 16;
-  background: white;
-  border: 1px solid #ccc;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  position: relative;
   overflow: hidden;
+  border: 1px solid #ddd;
   display: flex;
   flex-direction: column;
 }
 
 .popup-header {
   display: flex;
-  gap: 6px;
-  padding: 8px;
-  background: #fff;
   justify-content: space-between;
-}
-
-.popup-buy,
-.popup-close {
-  font-size: 13px;
-  font-weight: bold;
-  border: none;
-  padding: 8px;
-  cursor: pointer;
-  border-radius: 20px;
-  text-transform: uppercase;
-  flex: 1;
+  padding: 10px;
+  gap: 8px;
 }
 
 .popup-buy {
   flex: 2;
-  background: #e53935;
-  color: white;
+  background: #f53d2d;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 6px;
+  font-weight: bold;
+  font-size: 13px;
+  cursor: pointer;
 }
 
 .popup-close {
-  background: black;
-  color: white;
+  flex: 1;
+  background: #000;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 6px;
+  font-weight: bold;
+  font-size: 13px;
+  cursor: pointer;
 }
 
-#popupIframe {
+#freeflowIframe {
   flex: 1;
   width: 100%;
   height: 100%;
   border: none;
+  display: block;
+  background: #000;
 }
