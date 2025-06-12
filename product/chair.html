@@ -202,9 +202,16 @@
 </script>
  <!-- HẾT KHỐI 4: Mô tả sản phẩm -->
     <!-- ✅ FreeFlow -->
-    <h2 style="font-size: 18px; margin: 24px 12px 12px;">CÓ THỂ BẠN SẼ THÍCH</h2>
-    <div id="freeflow-placeholder"></div>
-  </div>
+<h2 style="font-size: 18px; margin: 24px 12px 12px;">CÓ THỂ BẠN SẼ THÍCH</h2>
+<div id="freeflow-placeholder"></div>
+<script>
+  fetch("/html/freeflow_embed.html")
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById("freeflow-placeholder").innerHTML = html;
+    });
+</script>
+<!-- END FreeFlow -->
 
   <!-- ✅ Inject popup + footer -->
   <script>
