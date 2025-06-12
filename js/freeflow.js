@@ -82,10 +82,10 @@ function renderFeed(feed) {
       setTimeout(() => {
         const overlay = div.querySelector(".video-overlay");
         overlay.onclick = () => {
-          const id = overlay.getAttribute("data-video");
-          const productLink = item.productPage || "#";
-          openVideoPopup(id, productLink);
-        };
+  const id = overlay.getAttribute("data-video");
+  const productLink = item.productPage || "#";
+  openFreeflowPopup(id, productLink);
+};
       }, 0);
     } else {
       div.onclick = () => {
@@ -117,11 +117,10 @@ function observeYouTubeIframes() {
   iframes.forEach(iframe => observer.observe(iframe));
 }
 
-// ✅ Mở popup kiểu productvideo
-function openVideoPopup(videoId, productUrl) {
-  const popup = document.getElementById("videoPopup");
-  const iframe = document.getElementById("popupIframe");
-  const btn = document.getElementById("popupBuyBtn");
+function openFreeflowPopup(videoId, productUrl) {
+  const popup = document.getElementById("freeflowPopup");
+  const iframe = document.getElementById("freeflowIframe");
+  const btn = document.getElementById("freeflowBuyBtn");
 
   iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&playsinline=1`;
   btn.onclick = () => window.open(productUrl, "_blank");
@@ -130,10 +129,9 @@ function openVideoPopup(videoId, productUrl) {
   document.body.style.overflow = "hidden";
 }
 
-// ✅ Đóng popup
-function closeVideoPopup() {
-  const iframe = document.getElementById("popupIframe");
+function closeFreeflowPopup() {
+  const iframe = document.getElementById("freeflowIframe");
   iframe.src = "";
-  document.getElementById("videoPopup").style.display = "none";
+  document.getElementById("freeflowPopup").style.display = "none";
   document.body.style.overflow = "";
 }
