@@ -1,4 +1,4 @@
-// 🌀 FreeFlow v1.3 — Phiên bản chuẩn popup video + ảnh, không chặn scroll, không lỗi layout
+// 🌀 FreeFlow v1.1 — Bình đẳng video & ảnh, video có thumbnail, tiêu đề gọn đẹp
 let freeflowData = [];
 
 async function fetchFreeFlowData(jsonUrl) {
@@ -35,43 +35,59 @@ function renderFeed(feed) {
   feed.forEach(item => {
     const finalPrice = item.price ? Number(item.price).toLocaleString() + "đ" : "";
     const originalPrice = item.originalPrice && item.originalPrice > item.price
-      ? `<span class="original-price">${Number(item.originalPrice).toLocaleString()}đ</span>` : "";
+      ? <span class="original-price" style="color:#555; font-size:12px; margin-left:4px; text-decoration: line-through;">${Number(item.originalPrice).toLocaleString()}đ</span> : "";
 
     const div = document.createElement("div");
     div.className = "feed-item";
 
     let mediaHtml = "";
     if (item.contentType === "image") {
-      mediaHtml = `
-        <img loading="lazy" src="${item.image}" alt="${item.title}" />
-        <h4 class="one-line-title">${item.title}</h4>
-        <div class="price-line">
-          <span class="price">${finalPrice}</span> ${originalPrice}
-        </div>
-      `;
+      mediaHtml = <img loading="lazy" src="${item.image}" alt="${item.title}" style="width: 100%; border-radius: 8px;" />;
     } else if (item.contentType === "youtube") {
-      mediaHtml = `
-        <div class="video-wrapper" style="position: relative;">
-          <iframe 
-            data-video-id="${item.youtube}"
-            frameborder="0"
-            allow="autoplay; encrypted-media"
-            allowfullscreen
-            playsinline
-            muted
-          ></iframe>
-          <div class="video-overlay" data-video="${item.youtube}" data-url="${item.productPage}" style="position: absolute; inset: 0; cursor: pointer;"></div>
+      mediaHtml = 
+  <div class="video-wrapper" style="position: relative;">
+    <iframe 
+      data-video-id="${item.youtube}"
+      frameborder="0"
+      allow="autoplay; encrypted-media"
+      allowfullscreen
+      playsinline
+      muted
+      style="width: 100%; aspect-ratio: 9/16; border-radius: 8px;"
+    ></iframe>
+    <div class="video-overlay" data-video="${item.youtube}" style="position: absolute; inset: 0; cursor: pointer;"></div>
+  </div>
+  <div class="video-info" style="display: flex; align-items: center; gap: 8px; padding: 4px 8px 0;">
+    <a href="${item.productPage}">
+      <img src="${item.image}" style="width: 36px; height: 36px; object-fit: cover; border-radius: 6px;" />
+    </a>
+    <div style="flex: 1; min-width: 0;"> <!-- ❗ Giới hạn chiều ngang để ellipsis hoạt động -->
+      <h4 style="
+        font-size: 13px;
+        line-height: 1.3;
+        margin: 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      ">${item.title}</h4>
+      <div style="font-size: 13px; color: #f53d2d; font-weight: bold;">
+        ${finalPrice}${originalPrice}
+      </div>
+    </div>
+  </div>
+;
+
+    }
+
+    if (item.contentType === "image") {
+      mediaHtml += 
+        <h4 class="one-line-title" style="margin: 4px 8px 0; font-size: 13px; line-height: 1.3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+          ${item.title}
+        </h4>
+        <div class="price-line" style="padding: 2px 8px 6px; font-size: 13px;">
+          <span class="price" style="color: #f53d2d; font-weight: bold;">${finalPrice}</span> ${originalPrice}
         </div>
-        <div class="video-info">
-          <a href="${item.productPage}">
-            <img src="${item.image}" class="video-thumb" />
-          </a>
-          <div class="video-meta">
-            <h4>${item.title}</h4>
-            <div class="video-price">${finalPrice}${originalPrice}</div>
-          </div>
-        </div>
-      `;
+      ;
     }
 
     div.innerHTML = mediaHtml;
@@ -80,9 +96,11 @@ function renderFeed(feed) {
       setTimeout(() => {
         const overlay = div.querySelector(".video-overlay");
         overlay.onclick = () => {
-          const videoId = overlay.getAttribute("data-video");
-          const productUrl = overlay.getAttribute("data-url");
-          openFreeflowPopup(videoId, productUrl);
+          const id = overlay.getAttribute("data-video");
+          const popup = document.getElementById("videoOverlay");
+          const frame = document.getElementById("videoFrame");
+          frame.src = https://www.youtube.com/embed/${id}?autoplay=1&mute=0&playsinline=1&controls=1;
+          popup.style.display = "flex";
         };
       }, 0);
     } else {
@@ -97,39 +115,28 @@ function renderFeed(feed) {
   observeYouTubeIframes();
 }
 
-function observeYouTubeIframes() {
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      const iframe = entry.target;
-      const videoId = iframe.getAttribute("data-video-id");
-      if (entry.isIntersecting && iframe.src === "") {
-        iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&playsinline=1&controls=0&loop=1&playlist=${videoId}`;
-      }
-      if (!entry.isIntersecting && iframe.src !== "") {
-        iframe.src = "";
-      }
-    });
-  }, { threshold: 0.75 });
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    const iframe = entry.target;
+    const videoId = iframe.getAttribute("data-video-id");
+    if (entry.isIntersecting && iframe.src === "") {
+      iframe.src = https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&playsinline=1&controls=0&loop=1&playlist=${videoId};
+    }
+    if (!entry.isIntersecting && iframe.src !== "") {
+      iframe.src = "";
+    }
+  });
+}, {
+  threshold: 0.75
+});
 
+function observeYouTubeIframes() {
   const iframes = document.querySelectorAll('iframe[data-video-id]');
   iframes.forEach(iframe => observer.observe(iframe));
 }
 
-function openFreeflowPopup(videoId, productUrl) {
-  const popup = document.getElementById("freeflowPopup");
-  const iframe = document.getElementById("freeflowIframe");
-  const btn = document.getElementById("freeflowBuyBtn");
-
-  iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&playsinline=1`;
-  btn.onclick = () => window.open(productUrl, "_blank");
-
-  popup.style.display = "flex";
-  document.body.classList.add("no-scroll");
-}
-
-function closeFreeflowPopup() {
-  const iframe = document.getElementById("freeflowIframe");
-  iframe.src = "";
-  document.getElementById("freeflowPopup").style.display = "none";
-  document.body.classList.remove("no-scroll");
+function closeVideoPopup() {
+  const frame = document.getElementById("videoFrame");
+  frame.src = "";
+  document.getElementById("videoOverlay").style.display = "none";
 }
