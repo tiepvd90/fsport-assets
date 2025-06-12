@@ -3,33 +3,40 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>FreeFlow Feed</title>
+  <title>Fun Sport</title>
 
-  <!-- ✅ Font + CSS -->
+  <!-- ✅ Google Font -->
   <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;700&display=swap" rel="stylesheet" />
+
+  <!-- ✅ CSS chính -->
   <link rel="stylesheet" href="/css/base.css" />
   <link rel="stylesheet" href="/css/freeflow.css" />
 </head>
-<body style="background: #f9f9f9; font-family: 'Be Vietnam Pro', sans-serif;">
+<body>
 
-  <!-- ✅ FreeFlow Feed -->
+  <!-- 🔥 FREEFLOW FEED (không kèm tiêu đề) -->
   <div id="freeflowFeed"></div>
 
-  <!-- ✅ Popup Video -->
-  <div id="freeflowPopup" class="freeflow-popup hidden">
-    <div class="popup-video-frame">
-      <div class="popup-header">
-        <button class="popup-buy" id="freeflowBuyBtn">XEM SẢN PHẨM</button>
-        <button class="popup-close" onclick="closeFreeflowPopup()">ĐÓNG</button>
-      </div>
-      <iframe id="freeflowIframe" src="" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-    </div>
-  </div>
-
-  <!-- ✅ Script -->
+  <!-- ✅ JS FreeFlow -->
   <script src="/js/freeflow.js"></script>
   <script>
     fetchFreeFlowData("https://script.google.com/macros/s/AKfycbwuEh9sP65vyQL0XzU8gY1Os0QYV_K5egKJgm8OhImAPjvdyrQiU7XCY909N99TnltP/exec");
+
+    function closeVideoPopup() {
+      const overlay = document.getElementById("videoOverlay");
+      const frame = document.getElementById("videoFrame");
+      frame.src = "";
+      overlay.style.display = "none";
+    }
   </script>
+
+  <!-- 🔳 Popup video YouTube -->
+  <div id="videoOverlay" style="display:none;">
+    <button onclick="closeVideoPopup()" style="position:absolute;top:12px;right:12px;font-size:28px;color:white;background:none;border:none;cursor:pointer;">×</button>
+    <div class="video-inner">
+      <iframe id="videoFrame" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+    </div>
+  </div>
+
 </body>
 </html>
