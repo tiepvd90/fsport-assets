@@ -1,4 +1,4 @@
-const totalImages = 20;
+const totalImages = 5;
 const imagesToShow = 5;
 
 const container = document.getElementById('lazySlideshow');
