@@ -36,10 +36,10 @@
   position: absolute;
   top: 10px;
   right: 12px;
-  font-size: 28px;
+  font-size: 42px;         /* ✅ to gấp rưỡi */
   background: none;
   border: none;
-  color: #999;
+  color: #000;             /* ✅ đen rõ ràng */
   cursor: pointer;
   z-index: 2;
 }
@@ -63,16 +63,20 @@
 }
 
 .cart-item .remove-btn {
-  background: #eee;
+  background: #e53935;     /* ✅ nền đỏ */
   border: none;
-  color: #000;
-  font-size: 14px;
+  color: #fff;             /* ✅ chữ trắng */
+  font-size: 16px;
   width: 28px;
   height: 28px;
-  border-radius: 50%;
+  border-radius: 4px;      /* ✅ bo vuông nhẹ */
+  display: flex;
+  align-items: center;
+  justify-content: center; /* ✅ căn giữa chữ X */
   cursor: pointer;
   margin-right: 4px;
 }
+
 
 .cart-item img {
   width: 60px;
