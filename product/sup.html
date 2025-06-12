@@ -81,7 +81,6 @@
 
   <div class="page-container">
     <!-- ✅ Container JSON sản phẩm -->
-    <div id="cartContainer" data-json="/json/chair.json"></div>
 
     <!-- ✅ Placeholders -->
     <div id="cartPopup-placeholder"></div>
@@ -255,7 +254,6 @@
         }
       });
     }
-<div id="cartContainer"></div>
 
     async function setupPage() {
       await injectHTML("/html/cartpopup.html", "cartPopup-placeholder");
@@ -268,7 +266,7 @@
 
       setTimeout(async () => {
         const map = await fetchVoucherMap();
-        window.__vouchersRaw = map["chair"] || {};
+        window.__vouchersRaw = map[window.loai] || {};
         window.voucherByProduct = {};
         initCartPopup();
       }, 100);
