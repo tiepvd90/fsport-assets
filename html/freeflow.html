@@ -1,37 +1,54 @@
-<!-- ✅ freeflow_embed.html (CHỈ NHÚNG, không có <html>, <head>, <body>) -->
-<div id="freeflowFeed"></div>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FreeFlow Feed</title>
 
-<!-- ✅ Popup FreeFlow -->
-<div id="freeflowPopup">
-  <div class="popup-video-frame">
-    <div class="popup-header">
-      <button class="popup-buy" id="freeflowBuyBtn">XEM SẢN PHẨM</button>
-      <button class="popup-close" onclick="closeFreeflowPopup()">ĐÓNG</button>
+  <!-- ✅ Font + CSS -->
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/base.css" />
+  <link rel="stylesheet" href="/css/freeflow.css" />
+</head>
+<body style="background: #f9f9f9; font-family: 'Be Vietnam Pro', sans-serif;">
+
+  <!-- ✅ FreeFlow Feed -->
+  <div id="freeflowFeed"></div>
+
+  <!-- ✅ Popup Video -->
+  <div id="freeflowPopup" style="display: none;">
+    <div class="popup-video-frame">
+      <div class="popup-header">
+        <button class="popup-buy" id="freeflowBuyBtn">XEM SẢN PHẨM</button>
+        <button class="popup-close" onclick="closeFreeflowPopup()">ĐÓNG</button>
+      </div>
+      <iframe id="freeflowIframe" src="" allow="autoplay; encrypted-media" allowfullscreen></iframe>
     </div>
-    <iframe id="freeflowIframe" src="" allow="autoplay; encrypted-media" allowfullscreen></iframe>
   </div>
-</div>
 
-<script src="/js/freeflow.js"></script>
-<script>
-  fetchFreeFlowData("https://script.google.com/macros/s/AKfycbwuEh9sP65vyQL0XzU8gY1Os0QYV_K5egKJgm8OhImAPjvdyrQiU7XCY909N99TnltP/exec");
+  <!-- ✅ Script -->
+  <script src="/js/freeflow.js"></script>
+  <script>
+    fetchFreeFlowData("https://script.google.com/macros/s/AKfycbwuEh9sP65vyQL0XzU8gY1Os0QYV_K5egKJgm8OhImAPjvdyrQiU7XCY909N99TnltP/exec");
 
-  function openFreeflowPopup(videoId, productUrl) {
-    const popup = document.getElementById("freeflowPopup");
-    const iframe = document.getElementById("freeflowIframe");
-    const btn = document.getElementById("freeflowBuyBtn");
+    function openFreeflowPopup(videoId, productUrl) {
+      const popup = document.getElementById("freeflowPopup");
+      const iframe = document.getElementById("freeflowIframe");
+      const btn = document.getElementById("freeflowBuyBtn");
 
-    iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&playsinline=1`;
-    btn.onclick = () => window.open(productUrl, "_blank");
+      iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&playsinline=1`;
+      btn.onclick = () => window.open(productUrl, "_blank");
 
-    popup.style.display = "flex";
-    document.body.style.overflow = "hidden";
-  }
+      popup.style.display = "flex";
+      document.body.style.overflow = "hidden";
+    }
 
-  function closeFreeflowPopup() {
-    const iframe = document.getElementById("freeflowIframe");
-    iframe.src = "";
-    document.getElementById("freeflowPopup").style.display = "none";
-    document.body.style.overflow = "";
-  }
-</script>
+    function closeFreeflowPopup() {
+      const iframe = document.getElementById("freeflowIframe");
+      iframe.src = "";
+      document.getElementById("freeflowPopup").style.display = "none";
+      document.body.style.overflow = "";
+    }
+  </script>
+</body>
+</html>
