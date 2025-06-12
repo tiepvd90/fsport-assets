@@ -1,12 +1,15 @@
 <!-- ✅ Container chứa JSON -->
 <div id="cartContainer"></div>
-document.addEventListener("DOMContentLoaded", () => {
-  const container = document.getElementById("cartContainer");
-  const loai = window.loai || "default";
-  if (container) {
-    container.setAttribute("data-json", `/json/${loai}.json`);
+
+<script>
+  function initCartContainer() {
+    const container = document.getElementById("cartContainer");
+    const loai = window.loai || "default";
+    if (container) {
+      container.setAttribute("data-json", `/json/${loai}.json`);
+    }
   }
-});
+</script>
 
 <!-- ✅ Popup giỏ hàng -->
 <div id="cartPopup" class="cart-popup hidden" style="display: none;">
