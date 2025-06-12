@@ -2,307 +2,217 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Ghế công thái học tựa lưng chỉnh dáng ngồi đúng chống gù FA</title>
-  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Ghế công thái học FA - Chỉnh dáng ngồi đúng</title>
+
   <!-- ✅ CSS -->
   <link rel="stylesheet" href="https://friendly-kitten-d760ff.netlify.app/css/cartpopup.css" />
   <link rel="stylesheet" href="https://friendly-kitten-d760ff.netlify.app/css/checkoutpopup.css" />
   <link rel="stylesheet" href="../css/slideshow.css" />
+  <link rel="stylesheet" href="/css/freeflow.css" />
 
-  <!-- ✅ JS định nghĩa -->
-  <script>
-  window.loai = "chair";
-  window.productCategory = "chair";     // Nhóm sản phẩm
-  window.productPage = "chair001";      // Trang cụ thể
-</script>
   <style>
-    body {
-      background-color: #f9f9f9;
-    }
-
-    .product-hero {
-      background-color: #ffffff;
-      padding: 2px 2px;
-      border-radius: 0px;
-      box-sizing: border-box;
-    }
-
+    body { background-color: #f9f9f9; }
+    .product-hero { background: #fff; padding: 2px; }
     @media (min-width: 768px) {
-      .page-container {
-        padding: 0 8px;
-        max-width: 1180px;
-        margin: auto;
-        box-sizing: border-box;
-      }
+      .page-container { padding: 0 8px; max-width: 1180px; margin: auto; }
     }
-
-    .shipping-wrapper {
-      border-top: 1px solid #f9f9f9;
-      border-bottom: 1px solid #f9f9f9;
-      padding: 10px 0;
-      margin: 16px 0;
-    }
-
-    .shipping-info {
-      font-size: 14px;
-      color: #333;
-      font-family: 'Be Vietnam Pro', sans-serif;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      padding: 0 12px;
-    }
-
-    .shipping-line {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .shipping-line .icon {
-      font-size: 16px;
-      flex-shrink: 0;
-    }
+    .shipping-wrapper { border-top: 1px solid #f9f9f9; border-bottom: 1px solid #f9f9f9; padding: 10px 0; margin: 16px 0; }
+    .shipping-info { font-size: 14px; color: #333; font-family: 'Be Vietnam Pro', sans-serif; display: flex; flex-direction: column; gap: 4px; padding: 0 12px; }
+    .shipping-line { display: flex; align-items: center; gap: 6px; }
+    .shipping-line .icon { font-size: 16px; flex-shrink: 0; }
   </style>
 </head>
 <body>
-  <!-- ✅ Tracking trực tiếp -->
+<script>
+  window.loai = "chair";
+  window.productCategory = "chair";
+  window.productPage = "chair001";
+</script>
 <script src="https://friendly-kitten-d760ff.netlify.app/js/tracking.js"></script>
 <script>
   trackBothPixels("ViewContent", {
-    content_id: window.productPage || "unknown",
-    content_name: window.productPage || "unknown",
-    content_category: window.productCategory || "unknown",
+    content_id: window.productPage,
+    content_name: window.productPage,
+    content_category: window.productCategory,
     value: 0,
     currency: "VND"
   });
 </script>
 
-  <div class="page-container">
-    <!-- ✅ Container JSON sản phẩm -->
-    <div id="cartContainer" data-json="/json/chair.json"></div>
+<div class="page-container">
+  <div id="cartContainer" data-json="/json/chair.json"></div>
+  <div id="cartPopup-placeholder"></div>
+  <div id="checkoutPopup-placeholder"></div>
+  <div id="sticky-footer-placeholder"></div>
 
-    <!-- ✅ Placeholders -->
-    <div id="cartPopup-placeholder"></div>
-    <div id="checkoutPopup-placeholder"></div>
-    <div id="sticky-footer-placeholder"></div>
+  <div class="lazy-slideshow" id="lazySlideshow">
+    <div class="slide-counter" id="slideCounter">1/1</div>
+  </div>
+  <script src="../js/slideshow.js"></script>
 
-    <!-- ✅ Slideshow -->
-    <div class="lazy-slideshow" id="lazySlideshow">
-      <div class="slide-counter" id="slideCounter">1/1</div>
-    </div>
-    <script src="../js/slideshow.js"></script>
+  <div id="flashbanner-placeholder"></div>
+  <script>
+    fetch("/html/flashsalebanner/chair001.html")
+      .then(res => res.text())
+      .then(html => document.getElementById("flashbanner-placeholder").innerHTML = html);
+  </script>
 
-    <!-- ✅ Flash Sale Banner -->
-    <div id="flashbanner-placeholder"></div>
-    <script>
-      fetch("/html/flashsalebanner/chair001.html")
-        .then(res => res.text())
-        .then(html => {
-          document.getElementById("flashbanner-placeholder").innerHTML = html;
-        });
-    </script>
-
-    <!-- ✅ KHỐI 1: Tiêu đề + Shipping -->
-    <div class="product-hero">
-      <h1 style="font-size: 14px; font-weight: bold; margin-top: 8px; font-family: 'Be Vietnam Pro', sans-serif;">
-        Ghế Công Thái Học FA – Chỉnh Dáng Ngồi Đúng, Chống Gù Cho Mọi Lứa Tuổi
-      </h1>
-
-      <div class="shipping-wrapper">
-        <div class="shipping-info">
-          <div class="shipping-line">
-            <span class="icon">🚚</span>
-            Ship từ Hà Nội – Giao Hàng Toàn Quốc, Nhận Hàng Trong Vòng 3 Ngày
-          </div>
-          <div class="shipping-line">
-            <span class="icon">🔍</span>
-            Kiểm Tra Hàng Trước Khi Thanh Toán
-          </div>
-        </div>
+  <div class="product-hero">
+    <h1 style="font-size: 14px; font-weight: bold; margin-top: 8px; font-family: 'Be Vietnam Pro', sans-serif;">
+      Ghế Công Thái Học FA – Chỉnh Dáng Ngồi Đúng, Chống Gù Cho Mọọi Lứa Tuổi
+    </h1>
+    <div class="shipping-wrapper">
+      <div class="shipping-info">
+        <div class="shipping-line"><span class="icon">🚚</span>Ship từ Hà Nội – Giao Toàn Quốc trong 3 ngày</div>
+        <div class="shipping-line"><span class="icon">🔍</span>Kiểm tra hàng trước khi thanh toán</div>
       </div>
     </div>
+  </div>
 
-    <!-- ✅ KHỐI 2: Reviews -->
-    <div class="product-hero" style="margin-top: 12px;">
-      <div id="review-placeholder"></div>
-    </div>
-    <script>
-  fetch("/html/reviewblock/chair001.html")
-    .then(res => res.text())
-    .then(html => {
-      const container = document.getElementById("review-placeholder");
-      container.innerHTML = html;
-
-      // ✅ Kích hoạt lại các <script> thủ công
-      const scripts = container.querySelectorAll("script");
-      scripts.forEach(oldScript => {
-        const newScript = document.createElement("script");
-        if (oldScript.src) {
-          newScript.src = oldScript.src;
-        } else {
-          newScript.textContent = oldScript.textContent;
-        }
-        document.body.appendChild(newScript);
+  <div class="product-hero" style="margin-top: 12px;">
+    <div id="review-placeholder"></div>
+  </div>
+  <script>
+    fetch("/html/reviewblock/chair001.html")
+      .then(res => res.text())
+      .then(html => {
+        const container = document.getElementById("review-placeholder");
+        container.innerHTML = html;
+        const scripts = container.querySelectorAll("script");
+        scripts.forEach(oldScript => {
+          const newScript = document.createElement("script");
+          if (oldScript.src) newScript.src = oldScript.src;
+          else newScript.textContent = oldScript.textContent;
+          document.body.appendChild(newScript);
+        });
       });
-    });
-</script>
-<!-- HẾT KHỐI 2: review -->
-    <!-- ✅ KHỐI 3: Video sản phẩm -->
-<div class="product-hero" style="margin-top: 12px;">
-  <div id="video-placeholder"></div>
+  </script>
+
+  <div class="product-hero" style="margin-top: 12px;">
+    <div id="video-placeholder"></div>
+  </div>
+  <script>
+    fetch("/html/productvideo/chair001.html")
+      .then(res => res.text())
+      .then(html => {
+        const container = document.getElementById("video-placeholder");
+        container.innerHTML = html;
+        const scripts = container.querySelectorAll("script");
+        scripts.forEach(oldScript => {
+          const newScript = document.createElement("script");
+          if (oldScript.src) newScript.src = oldScript.src;
+          else newScript.textContent = oldScript.textContent;
+          oldScript.replaceWith(newScript);
+        });
+      });
+  </script>
+
+  <div class="product-hero" style="margin-top: 12px;">
+    <div id="productdescription-placeholder"></div>
+  </div>
+  <script>
+    fetch("/html/productdescription/chair001.html")
+      .then(res => res.text())
+      .then(html => {
+        const container = document.getElementById("productdescription-placeholder");
+        container.innerHTML = html;
+        const scripts = container.querySelectorAll("script");
+        scripts.forEach(script => {
+          const s = document.createElement("script");
+          if (script.src) s.src = script.src;
+          else s.textContent = script.textContent;
+          document.body.appendChild(s);
+        });
+      });
+  </script>
+
+  <h2 style="font-size: 18px; margin: 24px 12px 12px;">CÓ THỂ BẠN SẺ THÍCH</h2>
+  <div id="freeflow-placeholder"></div>
 </div>
-<script>
-  fetch("/html/productvideo/chair001.html")
-    .then(res => res.text())
-    .then(html => {
-      const container = document.getElementById("video-placeholder");
-      container.innerHTML = html;
 
-      // ✅ Tìm tất cả <script> vừa chèn và kích hoạt lại
-      const scripts = container.querySelectorAll("script");
-      scripts.forEach(oldScript => {
-        const newScript = document.createElement("script");
-        if (oldScript.src) {
-          newScript.src = oldScript.src;
-        } else {
-          newScript.textContent = oldScript.textContent;
-        }
-        oldScript.replaceWith(newScript);
-      });
-    })
-    .catch(err => console.warn("❌ Lỗi khi chèn video:", err));
-</script>
-<!-- Hết KHỐI 3: Video sản phẩm -->
-    <!-- ✅ KHỐI 4: Mô tả sản phẩm -->
-<div class="product-hero" style="margin-top: 12px;">
-  <div id="productdescription-placeholder"></div>
-</div>
-
-<script>
-  fetch("/html/productdescription/chair001.html")
-    .then(res => res.text())
-    .then(html => {
-      const container = document.getElementById("productdescription-placeholder");
-      container.innerHTML = html;
-
-      // ✅ Kích hoạt lại script thủ công
-      const scripts = container.querySelectorAll("script");
-      scripts.forEach(script => {
-        const s = document.createElement("script");
-        if (script.src) {
-          s.src = script.src;
-        } else {
-          s.textContent = script.textContent;
-        }
-        document.body.appendChild(s);
-      });
-    });
-</script>
- <!-- HẾT KHỐI 4: Mô tả sản phẩm -->
-    <!-- ✅ FreeFlow -->
-<h2 style="font-size: 18px; margin: 24px 12px 12px;">CÓ THỂ BẠN SẼ THÍCH</h2>
-<div id="freeflow-placeholder"></div>
 <script>
   fetch("/html/freeflow.html")
     .then(res => res.text())
     .then(html => {
-      document.getElementById("freeflow-placeholder").innerHTML = html;
-    });
-</script>
-<!-- END FreeFlow -->
-
-  <!-- ✅ Inject popup + footer -->
-  <script>
-    async function loadScript(src) {
-      return new Promise(resolve => {
-        const s = document.createElement("script");
-        s.src = src;
-        s.onload = resolve;
-        document.body.appendChild(s);
-      });
-    }
-
-    async function injectHTML(file, placeholderId) {
-      const res = await fetch(file);
-      const html = await res.text();
-      const container = document.getElementById(placeholderId);
+      const container = document.getElementById("freeflow-placeholder");
       const temp = document.createElement("div");
       temp.innerHTML = html;
+      Array.from(temp.children).forEach(el => container.appendChild(el));
 
-      Array.from(temp.children).forEach(el => {
-        if (el.tagName === "SCRIPT") {
-          const script = document.createElement("script");
-          if (el.src) {
-            script.src = el.src;
-            script.async = false;
-          } else {
-            script.textContent = el.textContent;
-          }
-          document.body.appendChild(script);
-        } else {
-          container.appendChild(el);
+      setTimeout(() => {
+        if (typeof fetchFreeFlowData === "function") {
+          fetchFreeFlowData("https://script.google.com/macros/s/AKfycbwuEh9sP65vyQL0XzU8gY1Os0QYV_K5egKJgm8OhImAPjvdyrQiU7XCY909N99TnltP/exec");
         }
-      });
-    }
+      }, 200);
+    });
+</script>
 
-    async function setupPage() {
-      await injectHTML("/html/cartpopup.html", "cartPopup-placeholder");
-      await injectHTML("/html/checkoutpopup.html", "checkoutPopup-placeholder");
-      await injectHTML("/html/stickyfooter.html", "sticky-footer-placeholder");
+<script>
+  async function loadScript(src) {
+    return new Promise(resolve => {
+      const s = document.createElement("script");
+      s.src = src;
+      s.onload = resolve;
+      document.body.appendChild(s);
+    });
+  }
 
-      await loadScript("https://friendly-kitten-d760ff.netlify.app/js/voucherpopup.js");
-      await loadScript("https://friendly-kitten-d760ff.netlify.app/js/cartpopup.js");
-      await loadScript("https://friendly-kitten-d760ff.netlify.app/js/checkoutpopup.js");
+  async function injectHTML(file, placeholderId) {
+    const res = await fetch(file);
+    const html = await res.text();
+    const container = document.getElementById(placeholderId);
+    const temp = document.createElement("div");
+    temp.innerHTML = html;
 
-      setTimeout(async () => {
-        const map = await fetchVoucherMap();
-        window.__vouchersRaw = map["chair"] || {};
-        window.voucherByProduct = {};
-        initCartPopup();
-      }, 100);
-    }
+    Array.from(temp.children).forEach(el => {
+      if (el.tagName === "SCRIPT") {
+        const script = document.createElement("script");
+        if (el.src) script.src = el.src;
+        else script.textContent = el.textContent;
+        document.body.appendChild(script);
+      } else {
+        container.appendChild(el);
+      }
+    });
+  }
 
-    setupPage();
-  </script>
+  async function setupPage() {
+    await injectHTML("/html/cartpopup.html", "cartPopup-placeholder");
+    await injectHTML("/html/checkoutpopup.html", "checkoutPopup-placeholder");
+    await injectHTML("/html/stickyfooter.html", "sticky-footer-placeholder");
 
-  <!-- ✅ Tracking -->
-  <div id="base-placeholder"></div>
-  <script>
-    fetch("/html/base.html")
-      .then(res => res.text())
-      .then(html => {
-        document.getElementById("base-placeholder").outerHTML = html;
-        if (typeof trackBothPixels === "function") {
-          trackBothPixels("ViewContent", {
-            content_id: window.productPage,
-            content_name: window.productPage,
-            content_category: window.productCategory,
-            value: 0,
-            currency: "VND"
-          });
-        }
-      });
-  </script>
+    await loadScript("https://friendly-kitten-d760ff.netlify.app/js/voucherpopup.js");
+    await loadScript("https://friendly-kitten-d760ff.netlify.app/js/cartpopup.js");
+    await loadScript("https://friendly-kitten-d760ff.netlify.app/js/checkoutpopup.js");
 
-  <!-- ✅ Load FreeFlow -->
-  <script src="https://friendly-kitten-d760ff.netlify.app/js/freeflow.js"></script>
-  <script>
-    fetch("/html/freeflow.html")
-      .then(res => res.text())
-      .then(html => {
-        const container = document.getElementById("freeflow-placeholder");
-        const temp = document.createElement("div");
-        temp.innerHTML = html;
-        Array.from(temp.children).forEach(el => container.appendChild(el));
+    setTimeout(async () => {
+      const map = await fetchVoucherMap();
+      window.__vouchersRaw = map["chair"] || {};
+      window.voucherByProduct = {};
+      initCartPopup();
+    }, 100);
+  }
 
-        setTimeout(() => {
-          if (typeof fetchFreeFlowData === "function") {
-            fetchFreeFlowData("https://script.google.com/macros/s/AKfycbwuEh9sP65vyQL0XzU8gY1Os0QYV_K5egKJgm8OhImAPjvdyrQiU7XCY909N99TnltP/exec");
-          }
-        }, 200);
-      });
-  </script>
+  setupPage();
+</script>
+
+<div id="base-placeholder"></div>
+<script>
+  fetch("/html/base.html")
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById("base-placeholder").outerHTML = html;
+      if (typeof trackBothPixels === "function") {
+        trackBothPixels("ViewContent", {
+          content_id: window.productPage,
+          content_name: window.productPage,
+          content_category: window.productCategory,
+          value: 0,
+          currency: "VND"
+        });
+      }
+    });
+</script>
 </body>
 </html>
