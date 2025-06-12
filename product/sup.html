@@ -222,15 +222,6 @@
 </script>
 
 <!-- END FreeFlow -->
-<script>
-  function initCartContainer() {
-    const container = document.getElementById("cartContainer");
-    const loai = window.loai || "default"; // fallback nếu thiếu
-    if (container) {
-      container.setAttribute("data-json", `/json/${loai}.json`);
-    }
-  }
-</script>
   <!-- ✅ Inject popup + footer -->
   <script>
     async function loadScript(src) {
