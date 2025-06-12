@@ -44,36 +44,83 @@
   Review Sản Phẩm
 </h2>
 
-<!-- Review 1 -->
-<div class="review-item">
-  <div class="review-header">
-    <span class="review-name">Hà T. (Hà Nội)</span>
-  </div>
-  <div class="review-stars">★★★★★</div>
-  <div class="review-text">
-    Ghế ngồi chắc chắn, đệm êm hơn mình nghĩ. Mình khá kỹ tính nhưng khi nhận hàng thì hoàn toàn hài lòng – từ cách đóng gói cho tới chất lượng. Giao hàng cũng rất nhanh, đặt hôm trước hôm sau đã có luôn. Cảm ơn shop!
-  </div>
-  <div class="review-images">
-    <img src="/assets/images/thumb/reviews/chair/chair001/1.webp" alt="Ảnh review 1-1" class="review-image">
-    <img src="/assets/images/thumb/reviews/chair/chair001/2.webp" alt="Ảnh review 1-2" class="review-image">
-    <img src="/assets/images/thumb/reviews/chair/chair001/3.webp" alt="Ảnh review 1-3" class="review-image">
-    <img src="/assets/images/thumb/reviews/chair/chair001/4.webp" alt="Ảnh review 1-4" class="review-image">
-  </div>
-</div>
+<div id="review1" class="review-item"></div>
+<div id="review2" class="review-item"></div>
 
-<!-- Review 2 -->
-<div class="review-item">
-  <div class="review-header">
-    <span class="review-name">Dũng N. (HCM)</span>
-  </div>
-  <div class="review-stars">★★★★★</div>
-  <div class="review-text">
-    Ngồi thử vài hôm thấy thật sự thoải mái, lưng không còn bị mỏi khi làm việc lâu. Thích quá nên mình đặt thêm một chiếc nữa cho bé nhà mình dùng học bài – đúng tư thế và bé cũng mê luôn. Một sản phẩm đáng tiền!
-  </div>
-  <div class="review-images">
-    <img src="/assets/images/thumb/reviews/chair/chair001/5.webp" alt="Ảnh review 2-1" class="review-image">
-    <img src="/assets/images/thumb/reviews/chair/chair001/6.webp" alt="Ảnh review 2-2" class="review-image">
-    <img src="/assets/images/thumb/reviews/chair/chair001/7.webp" alt="Ảnh review 2-3" class="review-image">
-    <img src="/assets/images/thumb/reviews/chair/chair001/8.webp" alt="Ảnh review 2-4" class="review-image">
-  </div>
-</div>
+<script>
+  window.loai = "chair";
+  window.productPage = "chair001";
+
+  const reviewPool = [
+    { name: "Linh N. (Hà Nội)", text: "Mình mua ghế cho bé ngồi học bài, thấy bé ngồi đúng tư thế hơn hẳn, không bị cúi sát vở như trước. Rất đáng tiền!" },
+    { name: "Hương T. (HCM)", text: "Là mẹ bỉm hay phải bế con cho ti, mình rất thích ghế này vì tựa lưng êm, đỡ đau vai gáy. Ngồi lâu không khó chịu như ghế nhựa." },
+    { name: "Minh P. (Đà Nẵng)", text: "Bố mình bị đau lưng kinh niên, từ ngày có ghế này ngồi xem TV thấy cụ khen suốt. Thiết kế thực sự hợp lý cho người lớn tuổi." },
+    { name: "Trí L. (Hải Phòng)", text: "Làm văn phòng ở nhà, mình dùng ghế bệt này ngồi làm việc suốt cả buổi chiều mà không thấy ê mỏi như trước. Rất hài lòng." },
+    { name: "Thảo V. (Nghệ An)", text: "Công việc livestream phải ngồi liên tục, đổi qua ghế này thấy lưng đỡ mỏi hơn rõ rệt. Mềm, nhưng vẫn giữ dáng tốt." },
+    { name: "Vinh N. (TP.HCM)", text: "Shop đóng gói chắc chắn, giao hàng nhanh. Mình đặt sáng hôm trước thì trưa hôm sau đã nhận được, ngồi thử là thích liền!" },
+    { name: "Ngọc A. (Bình Dương)", text: "Tựa lưng ôm rất vừa, đệm mềm mà không bị lún. Dùng cả ngày làm việc vẫn thấy êm, không bị đau hông như mấy loại gối rời." },
+    { name: "Khánh L. (Hà Nội)", text: "Nhà mình nhỏ nên mua 4 cái cho cả nhà ngồi ăn cơm dưới sàn. Nhẹ, dễ xếp gọn mà ngồi vẫn vững chắc, tiện cực kỳ." },
+    { name: "Lan T. (Quảng Ninh)", text: "Thiết kế công thái học đúng nghĩa — ngồi thẳng lưng, dễ chịu. Trước hay ngồi vẹo vai giờ không còn nữa." },
+    { name: "Tùng B. (Đà Lạt)", text: "Đặt mua 3 chiếc để dùng trong phòng làm việc tại homestay, khách nào ngồi cũng khen. Ghế đẹp, ngồi êm mà không bị sụp." },
+    { name: "My D. (HCM)", text: "Lần đầu mua ghế kiểu này, ban đầu hơi lo vì giá khá cao, nhưng ngồi thử vài hôm thấy đúng là đáng tiền. Lưng nhẹ hẳn!" },
+    { name: "Phúc K. (Huế)", text: "Ghế không cần lắp đặt, mở ra là dùng ngay. Rất tiện, nhất là với người không quen ráp đồ nội thất như mình." },
+    { name: "Mai H. (Hà Nội)", text: "Trước bé học online toàn ngồi co ro, giờ có ghế này bé ngồi thẳng lưng, nhìn thấy rõ sự thay đổi tư thế. Rất an tâm." },
+    { name: "Tuấn D. (Cần Thơ)", text: "Thích ghế này vì không cần bàn ghế lớn mà vẫn có chỗ ngồi đúng tư thế. Đỡ lưng, đỡ vai gáy, ngồi trên sàn cũng thoải mái." },
+    { name: "Chi N. (Vũng Tàu)", text: "Mình mua cho mẹ ngồi làm việc vặt ở nhà. Mẹ bảo nhẹ, dễ di chuyển, ngồi lâu vẫn thấy dễ chịu hơn ghế gỗ cũ." },
+    { name: "Long V. (Bắc Ninh)", text: "Tư thế ngồi rất tự nhiên, không bị gò bó. Thiết kế đơn giản nhưng chắc chắn. Mua thêm chiếc nữa để trong phòng ngủ." },
+    { name: "Yến M. (Thanh Hóa)", text: "Ghế ngồi yên, không trượt, không gây tiếng kêu. Phù hợp với sàn gạch trơn, không lo bị trượt khi bé con nghịch nhiều." },
+    { name: "Khoa H. (Tây Ninh)", text: "Học bài cả buổi tối mà không bị mỏi cổ hay gù lưng. Ghế giúp mình duy trì tư thế ngồi đúng mà vẫn rất thoải mái." },
+    { name: "Trang L. (Hà Nam)", text: "Ghế gọn, đặt đâu cũng được. Mình dùng ở phòng khách để đọc sách, vừa tiện vừa đẹp. Không chê được điểm nào." },
+    { name: "Hậu N. (Biên Hòa)", text: "Rất hài lòng với lớp đệm – êm mà không bị lún. Ghế không ọp ẹp như mấy loại ghế ngồi bệt bình thường. Đúng là ghế cao cấp!" }
+  ];
+
+  function getUniqueRandomIndices(count, max) {
+    const set = new Set();
+    while (set.size < count) {
+      set.add(Math.floor(Math.random() * max));
+    }
+    return Array.from(set);
+  }
+
+  function getRandomReviews() {
+    const indices = getUniqueRandomIndices(2, reviewPool.length);
+    return [reviewPool[indices[0]], reviewPool[indices[1]]];
+  }
+
+  function getReviewImages() {
+    const indices = getUniqueRandomIndices(8, 20).map(i => i + 1);
+    return {
+      review1: indices.slice(0, 4),
+      review2: indices.slice(4, 8)
+    };
+  }
+
+  function renderReview(containerId, name, text, imageNums) {
+    const loai = window.loai;
+    const productPage = window.productPage;
+    const container = document.getElementById(containerId);
+
+    const imagesHTML = imageNums.map(n =>
+      `<img src="/assets/images/thumb/reviews/${loai}/${productPage}/${n}.webp" alt="Ảnh review" class="review-image">`
+    ).join("");
+
+    container.innerHTML = `
+      <div class="review-header">
+        <span class="review-name">${name}</span>
+      </div>
+      <div class="review-stars">★★★★★</div>
+      <div class="review-text">${text}</div>
+      <div class="review-images">${imagesHTML}</div>
+    `;
+  }
+
+  function initReviews() {
+    const [r1, r2] = getRandomReviews();
+    const { review1, review2 } = getReviewImages();
+
+    renderReview("review1", r1.name, r1.text, review1);
+    renderReview("review2", r2.name, r2.text, review2);
+  }
+
+  initReviews();
+</script>
