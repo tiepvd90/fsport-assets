@@ -1,4 +1,5 @@
 const totalImages = 20;
+const imagesToShow = 5;
 
 const container = document.getElementById('lazySlideshow');
 const counter = document.getElementById('slideCounter');
@@ -7,12 +8,23 @@ let loadedCount = 0;
 let triedCount = 0;
 const slides = [];
 
-for (let i = 1; i <= totalImages; i++) {
+// 👉 Hàm random 5 số không trùng nhau từ 1 đến 20
+function getRandomNumbers(count, max) {
+  const set = new Set();
+  while (set.size < count) {
+    set.add(Math.floor(Math.random() * max) + 1);
+  }
+  return Array.from(set);
+}
+
+const randomIndices = getRandomNumbers(imagesToShow, totalImages);
+
+randomIndices.forEach((i, index) => {
   const src = `/assets/images/gallery/${loai}/${productPage}/${i}.jpg`;
   const img = document.createElement('img');
   img.src = src;
   img.className = 'slide lazy-slide';
-  img.loading = i === 1 ? 'eager' : 'lazy';
+  img.loading = index === 0 ? 'eager' : 'lazy';
 
   img.onload = () => {
     slides.push(img);
@@ -25,12 +37,10 @@ for (let i = 1; i <= totalImages; i++) {
     triedCount++;
     checkReady();
   };
-}
+});
 
 function checkReady() {
-  // Khi đã thử đủ số ảnh
-  if (triedCount === totalImages) {
-    // Chèn các ảnh đã load thành công
+  if (triedCount === imagesToShow) {
     slides.forEach((img, i) => {
       if (i === 0) img.classList.add('show');
       container.insertBefore(img, counter);
