@@ -1,4 +1,4 @@
-// 🌀 FreeFlow v1.3 — Chuẩn popup video + bình đẳng ảnh & video
+// 🌀 FreeFlow v1.3 — Phiên bản chuẩn popup video + ảnh, không chặn scroll, không lỗi layout
 let freeflowData = [];
 
 async function fetchFreeFlowData(jsonUrl) {
@@ -12,16 +12,19 @@ async function fetchFreeFlowData(jsonUrl) {
 }
 
 function updateFeed(searchTerm = "") {
-  const currentCategory = window.productCategory || "";
+  const currentCategory = window.currentProductCategory || "";
+
   const scored = freeflowData.map(item => {
     const base = item.basePriority || 0;
     const searchModifier = item.tags?.some(tag => tag.includes(searchTerm)) ? 10 : 0;
     const categoryBoost = item.tags?.some(tag => tag.includes(currentCategory)) ? 15 : 0;
-    const random = Math.floor(Math.random() * (base * 0.3));
-    item.finalPriority = base + searchModifier + categoryBoost + random;
+    const randomPoint = Math.floor(Math.random() * (base * 0.3));
+    item.finalPriority = base + searchModifier + categoryBoost + randomPoint;
     return item;
   });
-  renderFeed(scored.sort((a, b) => b.finalPriority - a.finalPriority));
+
+  const finalDisplay = [...scored].sort((a, b) => b.finalPriority - a.finalPriority);
+  renderFeed(finalDisplay);
 }
 
 function renderFeed(feed) {
@@ -31,22 +34,23 @@ function renderFeed(feed) {
 
   feed.forEach(item => {
     const finalPrice = item.price ? Number(item.price).toLocaleString() + "đ" : "";
-    const originalPrice = item.originalPrice > item.price
+    const originalPrice = item.originalPrice && item.originalPrice > item.price
       ? `<span class="original-price">${Number(item.originalPrice).toLocaleString()}đ</span>` : "";
 
     const div = document.createElement("div");
     div.className = "feed-item";
 
-    let html = "";
+    let mediaHtml = "";
     if (item.contentType === "image") {
-      html = `
+      mediaHtml = `
         <img loading="lazy" src="${item.image}" alt="${item.title}" />
         <h4 class="one-line-title">${item.title}</h4>
-        <div class="price-line"><span class="price">${finalPrice}</span> ${originalPrice}</div>
+        <div class="price-line">
+          <span class="price">${finalPrice}</span> ${originalPrice}
+        </div>
       `;
-      div.onclick = () => window.location.href = item.productPage;
     } else if (item.contentType === "youtube") {
-      html = `
+      mediaHtml = `
         <div class="video-wrapper" style="position: relative;">
           <iframe 
             data-video-id="${item.youtube}"
@@ -56,53 +60,59 @@ function renderFeed(feed) {
             playsinline
             muted
           ></iframe>
-          <div class="video-overlay" data-id="${item.youtube}" data-url="${item.productPage}" style="position:absolute;inset:0;cursor:pointer;"></div>
+          <div class="video-overlay" data-video="${item.youtube}" data-url="${item.productPage}" style="position: absolute; inset: 0; cursor: pointer;"></div>
         </div>
-        <div class="video-info" style="display: flex; gap: 8px; padding: 4px 8px 0;">
+        <div class="video-info">
           <a href="${item.productPage}">
-            <img src="${item.image}" style="width: 36px; height: 36px; border-radius: 6px; object-fit: cover;" />
+            <img src="${item.image}" class="video-thumb" />
           </a>
-          <div style="flex: 1; overflow: hidden;">
-            <h4 class="one-line-title">${item.title}</h4>
-            <div style="font-size: 13px; color: #f53d2d; font-weight: bold;">${finalPrice}${originalPrice}</div>
+          <div class="video-meta">
+            <h4>${item.title}</h4>
+            <div class="video-price">${finalPrice}${originalPrice}</div>
           </div>
         </div>
       `;
     }
 
-    div.innerHTML = html;
-    container.appendChild(div);
+    div.innerHTML = mediaHtml;
 
     if (item.contentType === "youtube") {
       setTimeout(() => {
         const overlay = div.querySelector(".video-overlay");
         overlay.onclick = () => {
-          const videoId = overlay.dataset.id;
-          const productUrl = overlay.dataset.url;
+          const videoId = overlay.getAttribute("data-video");
+          const productUrl = overlay.getAttribute("data-url");
           openFreeflowPopup(videoId, productUrl);
         };
       }, 0);
+    } else {
+      div.onclick = () => {
+        window.location.href = item.productPage;
+      };
     }
+
+    container.appendChild(div);
   });
 
   observeYouTubeIframes();
 }
 
 function observeYouTubeIframes() {
-  const observer = new IntersectionObserver(entries => {
+  const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       const iframe = entry.target;
-      const id = iframe.dataset.videoId;
-      if (entry.isIntersecting && !iframe.src) {
-        iframe.src = `https://www.youtube.com/embed/${id}?autoplay=1&mute=1&playsinline=1&controls=0&loop=1&playlist=${id}`;
+      const videoId = iframe.getAttribute("data-video-id");
+      if (entry.isIntersecting && iframe.src === "") {
+        iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&playsinline=1&controls=0&loop=1&playlist=${videoId}`;
       }
-      if (!entry.isIntersecting && iframe.src) {
+      if (!entry.isIntersecting && iframe.src !== "") {
         iframe.src = "";
       }
     });
   }, { threshold: 0.75 });
 
-  document.querySelectorAll('iframe[data-video-id]').forEach(iframe => observer.observe(iframe));
+  const iframes = document.querySelectorAll('iframe[data-video-id]');
+  iframes.forEach(iframe => observer.observe(iframe));
 }
 
 function openFreeflowPopup(videoId, productUrl) {
@@ -114,12 +124,12 @@ function openFreeflowPopup(videoId, productUrl) {
   btn.onclick = () => window.open(productUrl, "_blank");
 
   popup.style.display = "flex";
-  document.body.style.overflow = "hidden";
+  document.body.classList.add("no-scroll");
 }
 
 function closeFreeflowPopup() {
   const iframe = document.getElementById("freeflowIframe");
   iframe.src = "";
   document.getElementById("freeflowPopup").style.display = "none";
-  document.body.style.overflow = "";
+  document.body.classList.remove("no-scroll");
 }
