@@ -17,20 +17,43 @@
   <!-- 🔥 FREEFLOW FEED (không kèm tiêu đề) -->
   <div id="freeflowFeed"></div>
 
-  <!-- 🔳 Popup video YouTube -->
-  <div id="videoOverlay" style="display:none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 9999; justify-content: center; align-items: center;">
-    <div style="position: relative; width: 100%; max-width: 400px;">
-      <button id="videoCloseBtn" style="position: absolute; top: 8px; right: 8px; z-index: 2; background: #000; color: #fff; border: none; font-size: 18px; border-radius: 50%; width: 32px; height: 32px;">×</button>
-      <iframe id="videoFrame"
-              width="100%"
-              height="auto"
-              style="aspect-ratio: 9/16; border: none; border-radius: 8px;"
-              frameborder="0"
-              allow="autoplay; encrypted-media"
-              allowfullscreen>
-      </iframe>
-    </div>
+  <!-- ✅ FreeFlow Popup Video -->
+<div id="videoOverlay"
+     style="display:none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 9999; display: flex; justify-content: center; align-items: center;">
+
+  <!-- 🧱 KHUNG HÌNH CHỮ NHẬT BỌC TOÀN BỘ -->
+  <div style="
+    position: relative;
+    width: 100%;
+    max-width: 420px;
+    aspect-ratio: 9 / 16;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  ">
+    <!-- ❌ Nút Đóng -->
+    <button id="videoCloseBtn"
+            style="position: absolute; top: 8px; right: 8px; z-index: 10; background: black; color: white; border: none; font-size: 18px; border-radius: 50%; width: 32px; height: 32px; cursor: pointer;">
+      ×
+    </button>
+
+    <!-- 🎬 Video iframe -->
+    <iframe id="videoFrame"
+            width="100%"
+            height="100%"
+            style="border: none; display: block;"
+            allow="autoplay; encrypted-media"
+            allowfullscreen
+            playsinline>
+    </iframe>
   </div>
+</div>
+
 
   <!-- ✅ JS FreeFlow -->
   <script src="https://fun-sport.co/js/freeflow.js"></script>
