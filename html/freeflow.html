@@ -19,11 +19,14 @@
 
   <!-- ✅ FreeFlow Popup Video -->
 <div id="videoOverlay"
-     style="display:none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 9999; display: flex; justify-content: center; align-items: center;">
+     style="display:none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 9999;">
 
-  <!-- 🧱 KHUNG HÌNH CHỮ NHẬT BỌC TOÀN BỘ -->
+  <!-- 🎯 KHUNG PHÓNG TO ĐÚNG TỶ LỆ -->
   <div style="
-    position: relative;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     width: 100%;
     max-width: 420px;
     aspect-ratio: 9 / 16;
@@ -33,8 +36,6 @@
     box-shadow: 0 6px 20px rgba(0,0,0,0.5);
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
   ">
     <!-- ❌ Nút Đóng -->
     <button id="videoCloseBtn"
@@ -42,7 +43,7 @@
       ×
     </button>
 
-    <!-- 🎬 Video iframe -->
+    <!-- 🎬 Iframe video -->
     <iframe id="videoFrame"
             width="100%"
             height="100%"
@@ -53,6 +54,7 @@
     </iframe>
   </div>
 </div>
+
 
 
   <!-- ✅ JS FreeFlow -->
