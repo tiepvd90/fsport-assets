@@ -80,7 +80,7 @@
     }
 
     function getReviewImages() {
-      const indices = getUniqueRandomIndices(8, 8).map(i => i + 1); // random từ 1-8
+      const indices = getUniqueRandomIndices(8, 8).map(i => i + 1);
       return {
         review1: indices.slice(0, 4),
         review2: indices.slice(4, 8)
@@ -89,11 +89,15 @@
 
     function renderReview(containerId, name, text, imageNums) {
       const container = document.getElementById(containerId);
-      if (!container) return;
+      if (!container) {
+        console.error("❌ Không tìm thấy container:", containerId);
+        return;
+      }
 
-      const imagesHTML = imageNums.map(n =>
-        `<img src="/assets/images/thumb/reviews/chair/chair001/${n}.webp" alt="Ảnh review ${n}" class="review-image">`
-      ).join("");
+      const imagesHTML = imageNums.map(n => {
+        const url = `/assets/images/thumb/reviews/chair/chair001/${n}.webp`;
+        return `<img src="${url}" alt="Ảnh review ${n}" class="review-image">`;
+      }).join("");
 
       container.innerHTML = `
         <div class="review-header">
@@ -105,16 +109,22 @@
       `;
     }
 
-    function initReviews() {
+    document.addEventListener("DOMContentLoaded", function () {
+      console.log("✅ DOM đã sẵn sàng, bắt đầu initReviews...");
+
       const [r1, r2] = getRandomReviews();
       const { review1, review2 } = getReviewImages();
 
+      console.log("🟢 Review 1:", r1);
+      console.log("🟢 Review 2:", r2);
+      console.log("🟢 Ảnh review1:", review1);
+      console.log("🟢 Ảnh review2:", review2);
+
       renderReview("review1", r1.name, r1.text, review1);
       renderReview("review2", r2.name, r2.text, review2);
-    }
 
-    // ✅ Chạy ngay sau khi DOM sẵn sàng
-    initReviews();
+      console.log("✅ Đã render xong cả 2 review");
+    });
   </script>
 </body>
 </html>
