@@ -9,7 +9,7 @@
   <div class="popup-video-frame">
     <div class="popup-header">
       <button class="popup-buy" onclick="buyNow()">MUA NGAY</button>
-      <button class="popup-close" onclick="closeVideoPopup()">ĐÓNG</button>
+      <button class="popup-close" onclick="closeProductVideoPopup()">ĐÓNG</button>
     </div>
     <iframe id="popupIframe" src="" allow="autoplay; encrypted-media" allowfullscreen></iframe>
   </div>
@@ -105,17 +105,16 @@
   }
 
   .popup-video-frame {
-  width: 100vw;
-  max-height: 100vh;
-  aspect-ratio: 9 / 16;
-  background: white;
-  border: 1px solid #ccc;
-  border-radius: 0;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-}
-
+    width: 100vw;
+    max-height: 100vh;
+    aspect-ratio: 9 / 16;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
 
   .popup-header {
     display: flex;
@@ -186,7 +185,7 @@
     item.className = "video-item";
 
     item.innerHTML = `
-      <div class="video-thumb" onclick="openVideoPopup('${id}')">
+      <div class="video-thumb" onclick="openProductVideoPopup('${id}')">
         <img src="${thumb}" loading="lazy" alt="Video ${index + 1}">
       </div>
       <button class="atc-button" onclick="addToCart()">THÊM VÀO GIỎ</button>
@@ -195,7 +194,7 @@
     slider.appendChild(item);
   });
 
-  function openVideoPopup(id) {
+  function openProductVideoPopup(id) {
     const popup = document.getElementById("videoPopup");
     const iframe = document.getElementById("popupIframe");
     iframe.src = `https://www.youtube.com/embed/${id}?autoplay=1&rel=0&playsinline=1`;
@@ -203,7 +202,7 @@
     document.body.style.overflow = "hidden"; // chặn cuộn
   }
 
-  function closeVideoPopup() {
+  function closeProductVideoPopup() {
     const popup = document.getElementById("videoPopup");
     const iframe = document.getElementById("popupIframe");
     iframe.src = "";
@@ -218,7 +217,7 @@
   }
 
   function buyNow() {
-    closeVideoPopup();
+    closeProductVideoPopup();
     addToCart();
   }
 </script>
