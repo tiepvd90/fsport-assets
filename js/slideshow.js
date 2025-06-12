@@ -8,7 +8,10 @@ let loadedCount = 0;
 let triedCount = 0;
 const slides = [];
 
-// 👉 Hàm random 5 số không trùng nhau từ 1 đến 20
+// ✅ Đường dẫn cố định
+const basePath = 'assets/images/gallery/chair/chair001';
+
+// 👉 Hàm random 5 số khác nhau từ 1 đến 20
 function getRandomNumbers(count, max) {
   const set = new Set();
   while (set.size < count) {
@@ -17,14 +20,34 @@ function getRandomNumbers(count, max) {
   return Array.from(set);
 }
 
+// 👉 Random 5 ảnh
 const randomIndices = getRandomNumbers(imagesToShow, totalImages);
 
-randomIndices.forEach((i, index) => {
-  const src = `/assets/images/gallery/${loai}/${productPage}/${i}.jpg`;
+// 👉 Thêm ảnh đại diện video đầu tiên
+const videoImg = document.createElement('img');
+videoImg.src = `${basePath}/random.jpg`;
+videoImg.className = 'slide lazy-slide';
+videoImg.loading = 'eager';
+
+videoImg.onload = () => {
+  slides.push(videoImg);
+  loadedCount++;
+  triedCount++;
+  checkReady();
+};
+
+videoImg.onerror = () => {
+  triedCount++;
+  checkReady();
+};
+
+// 👉 Load các ảnh ngẫu nhiên
+randomIndices.forEach((i) => {
+  const src = `${basePath}/${i}.jpg`;
   const img = document.createElement('img');
   img.src = src;
   img.className = 'slide lazy-slide';
-  img.loading = index === 0 ? 'eager' : 'lazy';
+  img.loading = 'lazy';
 
   img.onload = () => {
     slides.push(img);
@@ -40,7 +63,7 @@ randomIndices.forEach((i, index) => {
 });
 
 function checkReady() {
-  if (triedCount === imagesToShow) {
+  if (triedCount === imagesToShow + 1) { // 5 ảnh + 1 ảnh video
     slides.forEach((img, i) => {
       if (i === 0) img.classList.add('show');
       container.insertBefore(img, counter);
@@ -54,6 +77,7 @@ function checkReady() {
   }
 }
 
+// ✅ Hàm slideshow giữ nguyên như cũ
 function initSlideshow(totalSlides) {
   let currentSlide = 0;
   const slidesEls = document.querySelectorAll('.lazy-slide');
@@ -75,7 +99,6 @@ function initSlideshow(totalSlides) {
     counterEl.textContent = `${currentSlide + 1}/${totalSlides}`;
   }
 
-  // Touch
   let startX = 0;
   const slideshow = document.getElementById('lazySlideshow');
 
@@ -92,7 +115,6 @@ function initSlideshow(totalSlides) {
     }
   });
 
-  // Mouse drag
   let isDragging = false;
   let dragStart = 0;
 
