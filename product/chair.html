@@ -128,16 +128,23 @@
   </script>
 
   <h2 style="font-size: 18px; margin: 24px 12px 12px;">CÓ THỂ BẠN SẺ THÍCH</h2>
-  <div id="freeflow-placeholder"></div>
-</div>
+  <div id="freeflow-placeholder">Đang tải nội dung...</div>
 
 <script>
   fetch("/html/freeflow.html")
-    .then(res => res.text())
+    .then(res => {
+      if (!res.ok) throw new Error("Lỗi khi tải freeflow.html: " + res.status);
+      return res.text();
+    })
     .then(html => {
       document.getElementById("freeflow-placeholder").innerHTML = html;
+    })
+    .catch(err => {
+      console.error("❌ Không thể nhúng FreeFlow:", err);
+      document.getElementById("freeflow-placeholder").innerHTML = "<p style='color: red;'>Không thể tải nội dung FreeFlow.</p>";
     });
 </script>
+
 
 <script>
   async function loadScript(src) {
