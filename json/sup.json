@@ -1,0 +1,68 @@
+{
+  "thuộc_tính": [
+    {
+      "label": "Phân loại",
+      "key": "Phân loại",
+      "type": "option",
+      "display": "thumbnail",
+      "values": [
+        "Classic - Vân Đậm",
+        "Classic - Vân Nhạt",
+        "Sport - Xanh Biển",
+        "Sport - Xanh Lá",
+        "Race - Tím",
+        "Race - Hồng"
+      ]
+    }
+  ],
+  "biến_thể": [
+    {
+      "id": "classicdam",
+      "category": "sup",
+      "Phân loại": "Classic - Vân Đậm",
+      "Giá": 3100000,
+      "Giá gốc": 4500000,
+      "Ảnh": "https://i.postimg.cc/9MtmkKGg/classic1.jpg"
+    },
+    {
+      "id": "classicnhat",
+      "category": "sup",
+      "Phân loại": "Classic - Vân Nhạt",
+      "Giá": 3100000,
+      "Giá gốc": 4500000,
+      "Ảnh": "https://i.postimg.cc/GtLLnKKL/classic2.jpg"
+    },
+    {
+      "id": "sportblue",
+      "category": "sup",
+      "Phân loại": "Sport - Xanh Biển",
+      "Giá": 3500000,
+      "Giá gốc": 5000000,
+      "Ảnh": "https://i.postimg.cc/xTrrmtMc/sport-blue.jpg"
+    },
+    {
+      "id": "sportgreen",
+      "category": "sup",
+      "Phân loại": "Sport - Xanh Lá",
+      "Giá": 3500000,
+      "Giá gốc": 5000000,
+      "Ảnh": "https://i.postimg.cc/h4QWhHJk/sport-green.jpg"
+    },
+    {
+      "id": "racetim",
+      "category": "sup",
+      "Phân loại": "Race - Tím",
+      "Giá": 3900000,
+      "Giá gốc": 6000000,
+      "Ảnh": "https://i.postimg.cc/LX7cNVWQ/race-t-m.jpg"
+    },
+    {
+      "id": "racehong",
+      "category": "sup",
+      "Phân loại": "Race - Hồng",
+      "Giá": 3900000,
+      "Giá gốc": 6000000,
+      "Ảnh": "https://i.postimg.cc/brtKMtcy/race-h-ng.jpg"
+    }
+  ]
+}
