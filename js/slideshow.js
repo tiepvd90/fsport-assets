@@ -25,7 +25,7 @@ const randomIndices = getRandomNumbers(imagesToShow, totalImages);
 
 // 👉 Thêm ảnh đại diện video đầu tiên
 const videoImg = document.createElement('img');
-videoImg.src = `${basePath}/random.jpg`;
+videoImg.src = `${basePath}/randomIndices.jpg`;
 videoImg.className = 'slide lazy-slide';
 videoImg.loading = 'eager';
 
