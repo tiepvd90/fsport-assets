@@ -1,155 +1,88 @@
-/* === FreeFlow Feed Layout === */
+/* ==== FreeFlow Feed Layout (Masonry Responsive, Centered) ==== */
 #freeflowFeed {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr); /* mobile: 2 cột */
-  gap: 8px;
-  padding: 8px;
-  box-sizing: border-box;
+  column-count: 2;
+  column-gap: 12px;
+  padding: 12px;
+  margin: auto;
+  max-width: 100%;
 }
 
-@media (min-width: 768px) {
+/* Tablet (≥600px) */
+@media screen and (min-width: 600px) {
   #freeflowFeed {
-    grid-template-columns: repeat(6, 1fr); /* desktop: 6 cột */
+    column-count: 3;
+    max-width: 720px;
   }
 }
 
-/* === Feed Item === */
-.feed-item {
-  background: #fff;
-  border-radius: 8px;
-  overflow: hidden;
-  font-size: 13px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
+/* Desktop (≥1024px) */
+@media screen and (min-width: 1024px) {
+  #freeflowFeed {
+    column-count: 6;
+    max-width: 1080px;
+  }
 }
 
-/* === Image / Video === */
-.feed-item img,
+/* ==== Feed Item Card ==== */
+.feed-item {
+  break-inside: avoid;
+  margin-bottom: 12px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.feed-item:hover {
+  transform: translateY(-4px);
+}
+
+/* ==== Ảnh ==== */
+.feed-item img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+  border-bottom: 1px solid #eee;
+}
+
+/* ==== Video ==== */
 .feed-item iframe {
   width: 100%;
-  display: block;
   aspect-ratio: 9 / 16;
   object-fit: cover;
-  border-radius: 0;
+  display: block;
+  border-bottom: 1px solid #eee;
 }
 
-/* === Tiêu đề 1 dòng === */
+/* ==== Tiêu đề ngắn 1 dòng ==== */
 .one-line-title {
-  font-size: 13px;
+  padding: 8px;
+  font-size: 14px;
   font-weight: 500;
-  margin: 4px 6px 0;
+  color: #333;
+  margin: 0;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-/* === Giá tiền === */
+/* ==== Dòng giá ==== */
 .price-line {
-  font-size: 13px;
-  margin: 4px 6px 6px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
+  padding: 0 8px 8px 8px;
 }
 
 .price {
   color: #f53d2d;
   font-weight: bold;
+  font-size: 15px;
 }
 
 .original-price {
-  color: #888;
-  text-decoration: line-through;
-  font-size: 12px;
-}
-
-/* === Video Info (dưới video) === */
-.video-info {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 4px 8px 6px;
-}
-
-.video-info img {
-  width: 36px;
-  height: 36px;
-  object-fit: cover;
-  border-radius: 6px;
-}
-
-/* === Popup Video === */
-#freeflowPopup {
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
-  background: rgba(0, 0, 0, 0.5);
-  display: none;
-  justify-content: center;
-  align-items: center;
-  padding: 16px;
-  box-sizing: border-box;
-}
-
-.popup-video-frame {
-  background: #fff;
-  border: 1px solid #ccc;
-  border-radius: 12px;
-  width: 100%;
-  max-width: 420px;
-  aspect-ratio: 9 / 16;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-
-.popup-header {
-  display: flex;
-  justify-content: space-between;
-  padding: 8px;
-  background: #fff;
-  border-bottom: 1px solid #eee;
-  z-index: 1;
-}
-
-.popup-buy,
-.popup-close {
-  flex: 1;
-  padding: 8px 12px;
+  color: #999;
   font-size: 13px;
-  border-radius: 8px;
-  font-weight: bold;
-  border: none;
-  cursor: pointer;
-}
-
-.popup-buy {
-  background: #f53d2d;
-  color: white;
-  margin-right: 4px;
-}
-
-.popup-close {
-  background: black;
-  color: white;
-  max-width: 33%;
-}
-
-.popup-video-frame iframe {
-  flex: 1;
-  border: none;
-  width: 100%;
-  height: 100%;
-  display: block;
-}
-
-/* === Overlay Click === */
-.video-overlay {
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  cursor: pointer;
+  text-decoration: line-through;
+  margin-left: 6px;
 }
