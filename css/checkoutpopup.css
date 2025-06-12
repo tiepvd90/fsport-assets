@@ -34,14 +34,15 @@
 /* === NÚT ĐÓNG === */
 .checkout-close {
   position: absolute;
-  top: 10px;
-  right: 12px;
-  font-size: 42px;         /* ✅ to gấp rưỡi */
+  top: 6px;           /* ✅ Sát trên nhưng vẫn có chút khoảng cách */
+  right: 6px;         /* ✅ Sát phải */
+  font-size: 42px;    /* ✅ To rõ */
   background: none;
   border: none;
-  color: #000;             /* ✅ đen rõ ràng */
+  color: #000;        /* ✅ Màu đen rõ ràng */
   cursor: pointer;
-  z-index: 2;
+  z-index: 10;
+  line-height: 1;     /* ✅ Không bị lệch dọc */
 }
 
 /* === TIÊU ĐỀ === */
