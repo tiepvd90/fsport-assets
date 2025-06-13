@@ -24,7 +24,8 @@
   display: flex;
   flex-direction: column;
   overflow-y: auto;
-  scroll-padding-bottom: 10px; /* ⬅️ giúp không bị che bởi nút đỏ */
+  scroll-padding-bottom: 80px; /* ⬅️ giúp không bị che bởi nút đỏ */
+  padding-bottom: 16px;
   box-sizing: border-box;
 }
 
