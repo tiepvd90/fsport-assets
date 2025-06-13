@@ -19,14 +19,15 @@
   left: 0;
   width: 100%;
   height: auto;
-  max-height: 90vh;
+  max-height: 75vh;
   background: #fff;
   padding: 16px;
-  padding-bottom: 6px;
+  padding-bottom: 80px;
   display: flex;
   flex-direction: column;
   overflow-y: auto;
   box-sizing: border-box;
+  scroll-padding-bottom: 80px;
 }
 #variantList {
   flex-shrink: 0;
