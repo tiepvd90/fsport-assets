@@ -190,28 +190,35 @@ function bindAddToCartButton() {
     isCartEventBound = true;
 
     atcBtn.addEventListener("click", (e) => {
-  e.preventDefault();
-  e.stopImmediatePropagation();
+      e.preventDefault();
+      e.stopImmediatePropagation();
 
       if (!isCartPopupOpen) {
         toggleCartPopup(true);
       } else {
         const quantity = parseInt(document.getElementById("quantityInput")?.value) || 1;
-        if (!window.selectedVariant) return alert("Vui lòng chọn phân loại.");
+        if (!window.selectedVariant) {
+          return alert("Vui lòng chọn phân loại sản phẩm.");
+        }
+
+        // ✅ Kiểm tra đã chọn đủ tất cả thuộc tính chưa
+        const requiredKeys = window.allAttributes.map(a => a.key);
+        const selectedKeys = Object.keys(window.selectedVariant);
+        const isComplete = requiredKeys.every(key => selectedKeys.includes(key));
+        if (!isComplete) {
+          return alert("Vui lòng chọn đầy đủ phân loại sản phẩm.");
+        }
 
         const product = window.selectedVariant;
         const loai = window.productCategory || "unknown";
         const voucherAmount = window.voucherByProduct?.[product.id] || 0;
-        const variantText = [product["Màu Sắc"], product["Size"]].filter(Boolean).join(" - ");
+
         window.cart.push({
-        ...product,
-        quantity,
-        loai,
-        "Phân loại": variantText, // ✅ thêm dòng này
-        voucher: voucherAmount > 0 ? { amount: voucherAmount } : undefined
-       });
-
-
+          ...product,
+          quantity,
+          loai,
+          voucher: voucherAmount > 0 ? { amount: voucherAmount } : undefined
+        });
         saveCart();
 
         if (typeof trackBothPixels === "function") {
