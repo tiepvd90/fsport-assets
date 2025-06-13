@@ -63,21 +63,27 @@ function buyNow() {
 
 // ✅ Dùng productPage để xác định JSON video
 document.addEventListener("DOMContentLoaded", () => {
-  const loai = window.loai || "default";
   const productPage = window.productPage || "default";
-  const jsonUrl = `/json/${loai}/productvideo.json`;
+  const jsonUrl = "/json/productvideo.json"; // ✅ cố định
+
+  console.log("📦 Đang tải video cho:", productPage);
+  console.log("🔗 Từ file:", jsonUrl);
 
   fetch(jsonUrl)
     .then(res => res.json())
     .then(data => {
+      console.log("📥 Dữ liệu JSON:", data);
+
       const productData = data[productPage];
       if (Array.isArray(productData)) {
         renderProductVideos(productData);
+        console.log(`✅ Hiển thị ${productData.length} video cho: ${productPage}`);
       } else {
-        console.warn(`❌ Không tìm thấy video cho productPage "${productPage}"`);
+        console.warn(`⚠️ Không có video cho productPage "${productPage}"`);
       }
     })
     .catch(err => {
-      console.error("❌ Lỗi khi tải productvideo.json:", err);
+      console.error("❌ Lỗi khi tải JSON:", err);
     });
 });
+
