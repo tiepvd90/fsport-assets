@@ -54,11 +54,14 @@
   align-items: flex-start;
 }
 #mainImage {
-  width: 160px;
-  height: 160px;
+  width: 100%;
+  max-width: 200px;       /* hoặc 220px nếu muốn to hơn nữa */
+  aspect-ratio: 1 / 1;     /* ✅ Vuông hình */
   object-fit: cover;
   border-radius: 10px;
+  flex-shrink: 0;          /* ✅ Không bị co lại trong flex */
 }
+
 .product-info {
   flex: 1;
   display: flex;
@@ -102,8 +105,8 @@
 }
 .variant-thumbnails {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 8px;
+  grid-template-columns: repeat(6, 1fr);  /* ✅ 6 cột mỗi hàng */
+  gap: 6px;                                /* ✅ Cho gọn lại */
 }
 .variant-thumb {
   border: 1.5px solid #ccc;
