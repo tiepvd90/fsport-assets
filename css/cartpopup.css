@@ -18,17 +18,17 @@
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 75vh; /* ⬅️ tăng thêm 1 chút */
+  height: 75vh;
   max-height: 75vh;
   background: #fff;
   padding: 16px;
+  padding-bottom: 16px; /* ✅ QUAY LẠI mức bình thường */
   display: flex;
   flex-direction: column;
   overflow-y: auto;
-  scroll-padding-bottom: 80px; /* ⬅️ giúp không bị che bởi nút đỏ */
-  padding-bottom: 16px;
   box-sizing: border-box;
 }
+
 
 @keyframes slideUp {
   to { transform: translateY(0); }
@@ -196,6 +196,9 @@
 
 /* ========== NÚT THÊM VÀO GIỎ HÀNG ========== */
 .cart-submit-btn {
+  position: fixed;
+  bottom: 0;
+  left: 0;
   width: 100%;
   padding: 14px;
   background: #e53935;
@@ -203,10 +206,10 @@
   font-weight: bold;
   font-size: 15px;
   border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background 0.2s ease;
+  border-radius: 0; /* ❗️Nếu muốn sát viền */
+  z-index: 9999;
 }
+
 .cart-submit-btn:hover {
   background: #d32f2f;
 }
