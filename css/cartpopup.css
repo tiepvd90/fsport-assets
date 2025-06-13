@@ -72,7 +72,7 @@
 }
 #mainImage {
   width: 100%;
-  max-width: 200px;
+  max-width: 240px;
   aspect-ratio: 1 / 1;
   object-fit: cover;
   border-radius: 10px;
@@ -266,7 +266,7 @@
   font-style: italic;
   font-weight: bold;
   color: #000;
-  font-size: 10px;
+  font-size: 12px;
   margin-left: 4px;
 }
 
