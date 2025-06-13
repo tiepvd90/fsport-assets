@@ -151,6 +151,12 @@ function selectVariant(data) {
     productVariantText.style.marginTop = "16px";
   }
 }
+function changeQuantity(delta) {
+  const input = document.getElementById("quantityInput");
+  let value = parseInt(input?.value || "1");
+  if (input) input.value = Math.max(1, value + delta);
+}
+
 
 function toggleCartPopup(show = true) {
   const popup = document.getElementById("cartPopup");
