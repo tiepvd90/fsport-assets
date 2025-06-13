@@ -196,7 +196,7 @@ function bindAddToCartButton() {
         const product = window.selectedVariant;
         const loai = window.productCategory || "unknown";
         const voucherAmount = window.voucherByProduct?.[product.id] || 0;
-
+        const variantText = [product["Màu Sắc"], product["Size"]].filter(Boolean).join(" - ");
         window.cart.push({
           ...product,
           quantity,
