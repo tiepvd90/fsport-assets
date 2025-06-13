@@ -22,16 +22,27 @@
   max-height: 75vh;
   background: #fff;
   padding: 16px;
-  padding-bottom: 16px; /* ✅ QUAY LẠI mức bình thường */
+  padding-bottom: 16px;
   display: flex;
   flex-direction: column;
   overflow-y: auto;
   box-sizing: border-box;
 }
 
+.cart-popup-content.animate-slideup {
+  animation: slideUp 0.3s ease-out forwards;
+  transform: translateY(100%);
+}
 
 @keyframes slideUp {
-  to { transform: translateY(0); }
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 /* ========== NÚT ĐÓNG ========== */
@@ -39,8 +50,8 @@
   position: absolute;
   top: 7px;
   right: 7px;
-  font-size: 36px;   /* ✅ To rõ ràng */
-  color: #000;       /* ✅ Màu đen đậm */
+  font-size: 36px;
+  color: #000;
   background: none;
   border: none;
   cursor: pointer;
@@ -57,13 +68,12 @@
 }
 #mainImage {
   width: 100%;
-  max-width: 200px;       /* hoặc 220px nếu muốn to hơn nữa */
-  aspect-ratio: 1 / 1;     /* ✅ Vuông hình */
+  max-width: 200px;
+  aspect-ratio: 1 / 1;
   object-fit: cover;
   border-radius: 10px;
-  flex-shrink: 0;          /* ✅ Không bị co lại trong flex */
+  flex-shrink: 0;
 }
-
 .product-info {
   flex: 1;
   display: flex;
@@ -96,7 +106,7 @@
   margin-bottom: 0;
 }
 
-/* ========== PHÂN LOẠI (ĐÃ SỬA) ========== */
+/* ========== PHÂN LOẠI (GỘP THUMBNAIL & BUTTON) ========== */
 .variant-group {
   margin-bottom: 16px;
 }
@@ -105,24 +115,28 @@
   margin-bottom: 6px;
   font-weight: normal;
 }
-.variant-thumbnails {
+.variant-thumbnails,
+.variant-buttons {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
 }
-
 .variant-thumb {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 6px;
   border: 1px solid #ccc;
   border-radius: 6px;
-  padding: 4px 8px;
+  padding: 6px 12px;
   background: #fff;
-  max-width: 48%; /* Hoặc 100% nếu muốn full chiều ngang */
   box-sizing: border-box;
-  height: 40px;   /* ✅ Chiều cao cố định cho gọn */
   cursor: pointer;
+  min-width: 48%;
+  height: auto;
+  font-size: 13px;
+  text-align: center;
+  transition: all 0.2s;
 }
 .variant-thumb.selected {
   border: 2px solid #e53935;
@@ -142,32 +156,31 @@
 
 /* ========== SỐ LƯỢNG ========== */
 .quantity-wrapper {
-  display: flex;
+  display: flex !important;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 12px;
+  padding: 0 8px;
+  margin-top: 12px;
   font-size: 14px;
+  flex-wrap: nowrap;
 }
 .quantity-control {
-  display: flex;
-  align-items: center;
   background: #f2f2f2;
   border-radius: 8px;
+  display: flex;
+  align-items: center;
   overflow: hidden;
   height: 30px;
-  font-size: 16px;
 }
 .quantity-control button {
   background: transparent;
   border: none;
-  color: #000;
   width: 30px;
-  height: 100%;
+  height: 30px;
+  color: #000;
   font-size: 18px;
   font-weight: bold;
   cursor: pointer;
-  touch-action: manipulation;
-  -webkit-tap-highlight-color: transparent;
 }
 .quantity-control input {
   width: 36px;
@@ -176,10 +189,8 @@
   border: none;
   background: transparent;
   color: #111;
-  font-size: 19px;
+  font-size: 18px;
   font-weight: bold;
-  line-height: 30px;
-  padding: 0;
   appearance: textfield;
 }
 .quantity-control input::-webkit-outer-spin-button,
@@ -206,10 +217,9 @@
   font-weight: bold;
   font-size: 15px;
   border: none;
-  border-radius: 0; /* ❗️Nếu muốn sát viền */
+  border-radius: 0;
   z-index: 9999;
 }
-
 .cart-submit-btn:hover {
   background: #d32f2f;
 }
@@ -224,60 +234,4 @@
   margin-left: 6px;
   border-radius: 4px;
   vertical-align: middle;
-}
-.cart-popup-content.animate-slideup {
-  animation: slideUp 0.3s ease-out forwards;
-  transform: translateY(100%);
-}
-
-@keyframes slideUp {
-  from {
-    transform: translateY(100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-.quantity-wrapper {
-  display: flex !important;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 8px;
-  margin-top: 12px;
-  font-size: 14px;
-  flex-wrap: nowrap;
-}
-
-.quantity-control {
-  background: #f2f2f2;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  overflow: hidden;
-  height: 30px;
-}
-
-.quantity-control button {
-  background: transparent;
-  border: none;
-  width: 30px;
-  height: 30px;
-  color: #000;
-  font-size: 18px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.quantity-control input {
-  width: 36px;
-  height: 30px;
-  text-align: center;
-  border: none;
-  background: transparent;
-  color: #111;
-  font-size: 18px;
-  font-weight: bold;
-  appearance: textfield;
 }
