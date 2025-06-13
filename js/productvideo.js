@@ -14,7 +14,7 @@ function extractVideoId(url) {
 function renderProductVideos(videoUrls) {
   const slider = document.getElementById("videoSlider");
   if (!slider) {
-    console.warn("⚠️ Không tìm thấy #videoSlider trong DOM");
+    console.warn("❌ Không tìm thấy #videoSlider");
     return;
   }
 
@@ -64,24 +64,24 @@ function buyNow() {
   addToCart();
 }
 
-// ✅ Hàm khởi tạo toàn cục — gọi thủ công sau khi HTML đã render
+// ✅ HÀM TOÀN CỤC KHỞI TẠO VIDEO
 window.initProductVideo = function () {
   const productPage = window.productPage || "default";
   const jsonUrl = "/json/productvideo.json";
 
-  console.log("📦 Đang tải video cho:", productPage);
+  console.log("📦 Bắt đầu tải video cho:", productPage);
+
   fetch(jsonUrl)
     .then(res => res.json())
     .then(data => {
       const productData = data[productPage];
-      if (Array.isArray(productData)) {
-        renderProductVideos(productData);
-        console.log(`✅ Đã hiển thị ${productData.length} video cho ${productPage}`);
-      } else {
-        console.warn(`⚠️ Không có dữ liệu video cho ${productPage}`);
+      if (!Array.isArray(productData)) {
+        console.warn("⚠️ Không có video cho:", productPage);
+        return;
       }
+      renderProductVideos(productData);
     })
     .catch(err => {
-      console.error("❌ Lỗi tải JSON:", err);
+      console.error("❌ Lỗi khi tải productvideo.json:", err);
     });
 };
