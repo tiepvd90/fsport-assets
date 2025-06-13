@@ -1,0 +1,35 @@
+{
+  "thuộc_tính": [
+    {
+      "label": "Màu Sắc",
+      "key": "Màu Sắc",
+      "type": "option",
+      "display": "thumbnail",
+      "values": [
+        { "text": "Trắng", "image": "https://example.com/images/trang.jpg" },
+        { "text": "Đen", "image": "https://example.com/images/den.jpg" },
+        { "text": "Đỏ Hồng", "image": "https://example.com/images/dohong.jpg" },
+        { "text": "Cam", "image": "https://example.com/images/cam.jpg" },
+        { "text": "Vàng Chanh", "image": "https://example.com/images/vangchanh.jpg" },
+        { "text": "Cốm", "image": "https://example.com/images/com.jpg" },
+        { "text": "Lục Lam", "image": "https://example.com/images/luclam.jpg" },
+        { "text": "Tím", "image": "https://example.com/images/tim.jpg" }
+      ]
+    },
+    {
+      "label": "Size",
+      "key": "Size",
+      "type": "option",
+      "display": "text",
+      "values": ["33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44"]
+    }
+  ],
+  "biến_thể": [
+    {
+      "id": "ysandal5568",
+      "category": "ysandal",
+      "Giá": 420000,
+      "Giá gốc": 480000
+    }
+  ]
+}
