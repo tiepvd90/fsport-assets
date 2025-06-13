@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Product Video - sup001</title>
+
+  <!-- ✅ Gán biến toàn cục -->
+  <script>
+    window.loai = "sup"; // thư mục chứa productvideo.json
+    window.productPage = "sup001"; // tên khóa trong JSON
+  </script>
+
+  <!-- ✅ Gọi CSS popup video -->
+  <link rel="stylesheet" href="/css/productvideo.css">
+</head>
+<body style="font-family: sans-serif; padding: 20px;">
+
+  <h1>Test Popup Video: SUP001</h1>
+
+  <!-- ✅ Placeholder để nhúng khối product video -->
+  <div id="productvideo-placeholder"></div>
+
+  <!-- ✅ Gọi HTML product video -->
+  <script>
+    fetch("/html/productvideo.html")
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById("productvideo-placeholder").innerHTML = html;
+      });
+  </script>
+
+  <!-- ✅ JS xử lý logic popup -->
+  <script src="/js/productvideo.js"></script>
+
+</body>
+</html>
