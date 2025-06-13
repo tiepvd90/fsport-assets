@@ -19,6 +19,7 @@
   left: 0;
   width: 100%;
   height: 75vh; /* ⬅️ tăng thêm 1 chút */
+  max-height: 75vh;
   background: #fff;
   padding: 16px;
   display: flex;
@@ -27,11 +28,6 @@
   scroll-padding-bottom: 80px; /* ⬅️ giúp không bị che bởi nút đỏ */
   padding-bottom: 16px;
   box-sizing: border-box;
-  
-  height: auto !important;
-  max-height: calc(100vh - 60px); /* chừa chỗ cho sticky-footer nếu có */
-  overflow-y: auto;
-  padding-bottom: 16px !important;  /* Giảm lại để không đẩy lên quá cao */
 }
 
 @keyframes slideUp {
