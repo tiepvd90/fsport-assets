@@ -173,34 +173,41 @@
   flex-wrap: nowrap;
 }
 .quantity-control {
-  background: #f2f2f2;
-  border-radius: 8px;
   display: flex;
   align-items: center;
+  height: 20px;              /* ✅ Chiều cao nhỏ lại */
+  border: 1px solid #ccc;    /* ✅ Viền xám */
+  border-radius: 6px;
+  background: #fff;          /* ✅ Nền trắng */
   overflow: hidden;
-  height: 30px;
 }
+
 .quantity-control button {
   background: transparent;
   border: none;
-  width: 30px;
-  height: 30px;
+  width: 24px;
+  height: 100%;
+  font-size: 16px;
+  font-weight: normal;       /* ✅ Không in đậm */
   color: #000;
-  font-size: 18px;
-  font-weight: bold;
   cursor: pointer;
+  padding: 0;
+  line-height: 1;
 }
+
 .quantity-control input {
-  width: 36px;
-  height: 30px;
+  width: 30px;
+  height: 100%;
   text-align: center;
   border: none;
   background: transparent;
   color: #111;
-  font-size: 18px;
-  font-weight: bold;
+  font-size: 14px;
+  font-weight: normal;       /* ✅ Không in đậm */
   appearance: textfield;
+  padding: 0;
 }
+
 .quantity-control input::-webkit-outer-spin-button,
 .quantity-control input::-webkit-inner-spin-button {
   -webkit-appearance: none;
