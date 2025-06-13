@@ -87,24 +87,24 @@
 }
 .product-price {
   display: flex;
-  flex-direction: column; /* ✅ Cho giá gốc lên trên */
+  flex-direction: column; /* ✅ Xếp giá theo chiều dọc */
   gap: 2px;
 }
 
 .price-original {
   color: #aaa;
   text-decoration: line-through;
-  font-size: 13px;         /* ✅ Nhỏ hơn */
-  margin-bottom: 0;
+  font-size: 13px;       /* ✅ Nhỏ hơn, nằm trên */
   line-height: 1;
 }
 
 .price-sale {
   color: #e53935;
   font-weight: bold;
-  font-size: 16px;         /* ✅ To hơn một chút */
+  font-size: 17px;       /* ✅ To hơn, nằm dưới */
   line-height: 1;
 }
+
 
 .product-variant-text {
   font-size: 13px;
