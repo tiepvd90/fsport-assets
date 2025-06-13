@@ -198,11 +198,14 @@ function bindAddToCartButton() {
         const voucherAmount = window.voucherByProduct?.[product.id] || 0;
         const variantText = [product["Màu Sắc"], product["Size"]].filter(Boolean).join(" - ");
         window.cart.push({
-          ...product,
-          quantity,
-          loai,
-          voucher: voucherAmount > 0 ? { amount: voucherAmount } : undefined
-        });
+        ...product,
+        quantity,
+        loai,
+        "Phân loại": variantText, // ✅ thêm dòng này
+        voucher: voucherAmount > 0 ? { amount: voucherAmount } : undefined
+       });
+
+
         saveCart();
 
         if (typeof trackBothPixels === "function") {
