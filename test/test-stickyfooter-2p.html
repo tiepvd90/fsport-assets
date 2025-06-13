@@ -10,10 +10,11 @@
     body { font-family: 'Be Vietnam Pro', sans-serif; padding-bottom: 80px; }
   </style>
 
-  <!-- ✅ Truyền biến nhận diện loại popup -->
+  <!-- ✅ Biến nhận diện sản phẩm -->
   <script>
-    window.loai = "ysandal";
-    window.cartpopupType = "cartpopup-2p";
+    window.loai = "ysandal";               // ✅ Phân loại chính (dùng cho tracking, shipping, ...)
+    window.productPage = "ysandal5568";    // ✅ ID sản phẩm, dùng để lấy đúng JSON
+    window.cartpopupType = "cartpopup-2p"; // ✅ Gọi đúng file JS cartpopup dành cho 2 phân loại
   </script>
 </head>
 <body>
@@ -21,10 +22,10 @@
   <h1>🧪 Test Sticky Footer với cartpopup-2p.js</h1>
   <p>Trang này dùng JSON: <code>/json/ysandal5568.json</code></p>
 
-  <!-- ✅ Container JSON -->
+  <!-- ✅ Container để JS biết lấy JSON -->
   <div id="cartContainer" data-json="/json/ysandal5568.json"></div>
 
-  <!-- ✅ HTML popup giỏ hàng (tái sử dụng) -->
+  <!-- ✅ HTML popup giỏ hàng -->
   <div id="cartPopup" class="cart-popup hidden" style="display: none;">
     <div class="cart-popup-overlay" onclick="toggleCartPopup(false)"></div>
     <div class="cart-popup-content">
@@ -68,7 +69,8 @@
     <button id="btn-atc" class="footer-btn">THÊM VÀO GIỎ HÀNG</button>
   </div>
 
-  <!-- ✅ Gọi stickyfooter.js -->
+  <!-- ✅ Gọi đúng JS -->
+  <script src="/js/cartpopup-2p.js"></script>
   <script src="/js/stickyfooter.js"></script>
 </body>
 </html>
