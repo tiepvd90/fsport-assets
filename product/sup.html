@@ -154,24 +154,26 @@
 </div>
 
 <script>
-  // ✅ Gán tên sản phẩm (dùng làm key trong productvideo.json)
-  window.productPage = "sup001";
-
-  // ✅ Gọi file HTML khối video chung
+  // ✅ Gọi file HTML video (gồm khung & ID #videoSlider)
   fetch("/html/productvideo.html")
     .then(res => res.text())
     .then(html => {
-      const container = document.getElementById("video-placeholder");
-      container.innerHTML = html;
+      document.getElementById("video-placeholder").innerHTML = html;
 
-      // ✅ Tải JS logic sau khi HTML đã render
+      // ✅ Gọi JS sau khi HTML có mặt
       const script = document.createElement("script");
       script.src = "/js/productvideo.js";
-      script.onload = () => console.log("✅ Đã load productvideo.js");
-      script.onerror = () => console.error("❌ Không load được productvideo.js");
+      script.onload = () => {
+        console.log("✅ Đã load JS, gọi init...");
+        if (typeof initProductVideo === "function") {
+          initProductVideo();
+        } else {
+          console.warn("❌ Không tìm thấy initProductVideo()");
+        }
+      };
       document.body.appendChild(script);
     })
-    .catch(err => console.warn("❌ Lỗi khi chèn video:", err));
+    .catch(err => console.warn("❌ Lỗi khi chèn productvideo.html:", err));
 </script>
 <!-- 🔚 Hết KHỐI 3 -->
 
