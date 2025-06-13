@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Test Sticky Footer - 2P</title>
+  <link rel="stylesheet" href="/css/cartpopup.css" />
+  <link rel="stylesheet" href="/css/stickyfooter.css" />
+  <style>
+    body { font-family: 'Be Vietnam Pro', sans-serif; padding-bottom: 80px; }
+  </style>
+
+  <!-- ✅ Truyền biến nhận diện loại popup -->
+  <script>
+    window.loai = "ysandal";
+    window.cartpopupType = "cartpopup-2p";
+  </script>
+</head>
+<body>
+
+  <h1>🧪 Test Sticky Footer với cartpopup-2p.js</h1>
+  <p>Trang này dùng JSON: <code>/json/ysandal5568.json</code></p>
+
+  <!-- ✅ Container JSON -->
+  <div id="cartContainer" data-json="/json/ysandal5568.json"></div>
+
+  <!-- ✅ HTML popup giỏ hàng (tái sử dụng) -->
+  <div id="cartPopup" class="cart-popup hidden" style="display: none;">
+    <div class="cart-popup-overlay" onclick="toggleCartPopup(false)"></div>
+    <div class="cart-popup-content">
+      <button class="cart-popup-close" onclick="toggleCartPopup(false)">&times;</button>
+
+      <div class="product-header" style="display: flex; gap: 12px;">
+        <img id="mainImage" src="" alt="Ảnh sản phẩm" style="width: 120px; border-radius: 8px; object-fit: cover;" />
+        <div class="product-info" style="display: flex; flex-direction: column; flex: 1;">
+          <div>
+            <div class="product-price">
+              <span class="price-sale" id="productPrice">0đ</span>
+              <span class="price-original" id="productOriginalPrice">0đ</span>
+            </div>
+            <div id="voucherLabel" style="display: none; background: #eee; padding: 4px 8px; margin-top: 6px;"></div>
+          </div>
+          <div id="productVariantText" style="font-size: 13px; color: #555;"></div>
+        </div>
+      </div>
+
+      <div id="variantList"></div>
+
+      <div style="margin-top: 16px;">
+        <div class="variant-label">Số lượng:</div>
+        <div style="display: flex; align-items: center; justify-content: space-between;">
+          <div style="flex: 1;">
+            <input id="quantityInput" type="number" value="1" min="1" style="width: 60px; padding: 6px;" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ✅ Sticky Footer -->
+  <div class="sticky-footer">
+    <a class="footer-icon" id="call-link" href="#">
+      <img src="https://img.icons8.com/ios-filled/24/000000/phone.png" alt=""><br>Gọi
+    </a>
+    <a class="footer-icon" id="chat-link" href="#">
+      <img src="https://img.icons8.com/ios-filled/24/000000/facebook-messenger.png" alt=""><br>Chat
+    </a>
+    <button id="btn-atc" class="footer-btn">THÊM VÀO GIỎ HÀNG</button>
+  </div>
+
+  <!-- ✅ Gọi stickyfooter.js -->
+  <script src="/js/stickyfooter.js"></script>
+</body>
+</html>
