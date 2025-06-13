@@ -163,13 +163,19 @@ function toggleCartPopup(show = true) {
     content.classList.add("animate-slideup");
     popup.classList.remove("hidden");
     isCartPopupOpen = true;
+
+    // ✅ Thêm dòng này để tránh lỗi lần đầu
+    setTimeout(() => bindAddToCartButton(), 100);
   } else {
     content.classList.remove("animate-slideup");
     popup.classList.add("hidden");
-    setTimeout(() => popup.style.display = "none", 300);
+    setTimeout(() => {
+      popup.style.display = "none";
+    }, 300);
     isCartPopupOpen = false;
   }
 }
+
 
 function bindAddToCartButton() {
   const atcBtn = document.getElementById("btn-atc");
