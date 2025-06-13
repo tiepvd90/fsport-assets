@@ -148,32 +148,33 @@
     });
 </script>
 <!-- HẾT KHỐI 2: review -->
-    <!-- ✅ KHỐI 3: Video sản phẩm -->
+<!-- ✅ KHỐI 3: Video sản phẩm -->
 <div class="product-hero" style="margin-top: 12px;">
-  <div id="video-placeholder"></div>
+  <div id="video-placeholder">Đang tải video...</div>
 </div>
+
 <script>
-  fetch("/html/productvideo/sup001.html")
+  // ✅ Gán tên sản phẩm (dùng làm key trong productvideo.json)
+  window.productPage = "sup001";
+
+  // ✅ Gọi file HTML khối video chung
+  fetch("/html/productvideo.html")
     .then(res => res.text())
     .then(html => {
       const container = document.getElementById("video-placeholder");
       container.innerHTML = html;
 
-      // ✅ Tìm tất cả <script> vừa chèn và kích hoạt lại
-      const scripts = container.querySelectorAll("script");
-      scripts.forEach(oldScript => {
-        const newScript = document.createElement("script");
-        if (oldScript.src) {
-          newScript.src = oldScript.src;
-        } else {
-          newScript.textContent = oldScript.textContent;
-        }
-        oldScript.replaceWith(newScript);
-      });
+      // ✅ Tải JS logic sau khi HTML đã render
+      const script = document.createElement("script");
+      script.src = "/js/productvideo.js";
+      script.onload = () => console.log("✅ Đã load productvideo.js");
+      script.onerror = () => console.error("❌ Không load được productvideo.js");
+      document.body.appendChild(script);
     })
     .catch(err => console.warn("❌ Lỗi khi chèn video:", err));
 </script>
-<!-- Hết KHỐI 3: Video sản phẩm -->
+<!-- 🔚 Hết KHỐI 3 -->
+
     <!-- ✅ KHỐI 4: Mô tả sản phẩm -->
 <div class="product-hero" style="margin-top: 12px;">
   <div id="productdescription-placeholder"></div>
