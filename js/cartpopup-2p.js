@@ -7,7 +7,8 @@ let isCartPopupOpen = false;
 
 function initCartPopup() {
   const container = document.getElementById("cartContainer");
-  const jsonUrl = container?.getAttribute("data-json") || "/json/default.json";
+  const productPage = window.productPage || "default";
+  const jsonUrl = container?.getAttribute("data-json") || `/json/${productPage}.json`;
 
   fetch(jsonUrl)
     .then(res => res.json())
