@@ -35,7 +35,19 @@ function renderOptions(attributes) {
   attributes.forEach(attr => {
     const group = document.createElement("div");
     group.className = "variant-group";
-    group.innerHTML = `<div class="variant-label">${attr.label}:</div>`;
+    let noteText = "";
+if (attr.key.toLowerCase().includes("size")) {
+  const noteMap = {
+    "ysandal5568": "Trừ 2 size so với giày thể thao, Shop hỗ trợ đổi trả nếu không vừa",
+  };
+  const currentPage = window.productPage || "";
+  if (noteMap[currentPage]) {
+    noteText = ` <span class="sizenote">${noteMap[currentPage]}</span>`;
+  }
+}
+
+group.innerHTML = `<div class="variant-label">${attr.label}:${noteText}</div>`;
+
 
     const displayMode = attr.display || "button";
     const wrapper = document.createElement("div");
