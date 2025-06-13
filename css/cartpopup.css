@@ -262,3 +262,10 @@
   border-radius: 4px;
   vertical-align: middle;
 }
+.sizenote {
+  font-style: italic;
+  font-weight: bold;
+  color: #000;
+  margin-left: 4px;
+}
+
