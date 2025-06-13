@@ -213,6 +213,11 @@ function bindAddToCartButton() {
         const loai = window.productCategory || "unknown";
         const voucherAmount = window.voucherByProduct?.[product.id] || 0;
 
+        // ✅ Gộp phân loại
+        const phanLoaiText = requiredKeys.map(key => product[key]).join(" - ");
+        product["Phân loại"] = phanLoaiText;
+
+        // ✅ Thêm vào giỏ
         window.cart.push({
           ...product,
           quantity,
@@ -224,7 +229,7 @@ function bindAddToCartButton() {
         if (typeof trackBothPixels === "function") {
           trackBothPixels("AddToCart", {
             content_id: product.id,
-            content_name: product["Phân loại"] || product["Màu Sắc"] || "",
+            content_name: phanLoaiText,
             content_category: product.category || loai,
             content_page: window.productPage || "unknown",
             value: product.Giá,
