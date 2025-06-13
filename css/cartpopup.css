@@ -104,42 +104,38 @@
   font-weight: normal;
 }
 .variant-thumbnails {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);  /* ✅ 6 cột mỗi hàng */
-  gap: 6px;                                /* ✅ Cho gọn lại */
-}
-.variant-thumb {
-  border: 1.5px solid #ccc;
-  border-radius: 6px;
-  padding: 4px 2px;
-  background: #fff;
-  text-align: center;
-  transition: border-color 0.2s;
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.variant-thumb {
+  display: flex;
   align-items: center;
+  gap: 6px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 4px 8px;
+  background: #fff;
+  max-width: 48%; /* Hoặc 100% nếu muốn full chiều ngang */
+  box-sizing: border-box;
+  height: 40px;   /* ✅ Chiều cao cố định cho gọn */
+  cursor: pointer;
 }
 .variant-thumb.selected {
   border: 2px solid #e53935;
 }
 .variant-thumb img {
-  width: 60px;
-  height: 60px;
-  object-fit: cover;
+  width: 28px;
+  height: 28px;
   border-radius: 4px;
+  object-fit: cover;
 }
 .variant-title {
-  font-size: 11px;
-  color: #333;
-  text-align: center;
-  margin-top: 4px;
-  line-height: 1.3;
-  max-height: 2.6em;
+  font-size: 12px;
+  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
 }
 
 /* ========== SỐ LƯỢNG ========== */
