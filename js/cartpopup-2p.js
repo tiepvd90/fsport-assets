@@ -1,3 +1,5 @@
+// ✅ cartpopup-2p.js: Dùng cho sản phẩm có 2 phân loại (ví dụ Màu & Size)
+
 window.selectedVariant = null;
 window.cart = window.cart || [];
 let isCartEventBound = false;
@@ -5,8 +7,7 @@ let isCartPopupOpen = false;
 
 function initCartPopup() {
   const container = document.getElementById("cartContainer");
-  const loai = window.loai || "default";
-  const jsonUrl = container?.getAttribute("data-json") || `/json/${loai}.json`;
+  const jsonUrl = container?.getAttribute("data-json") || "/json/default.json";
 
   fetch(jsonUrl)
     .then(res => res.json())
@@ -14,12 +15,12 @@ function initCartPopup() {
       if (data["thuộc_tính"] && data["biến_thể"]?.length === 1) {
         window.allAttributes = data["thuộc_tính"];
         window.baseVariant = data["biến_thể"][0];
-        window.productCategory = window.baseVariant.category || loai;
+        window.productCategory = window.baseVariant.category || "unknown";
 
         renderOptions(window.allAttributes);
         bindAddToCartButton();
       } else {
-        console.error("❌ JSON không đúng định dạng đơn giản (1 biến thể).");
+        console.error("❌ JSON không đúng định dạng đơn giản (1 biến thể).", data);
       }
     })
     .catch(err => console.warn("Không thể tải JSON sản phẩm:", err));
@@ -65,7 +66,6 @@ function renderOptions(attributes) {
     container.appendChild(group);
   });
 
-  // Tự chọn sẵn mỗi nhóm 1 giá trị đầu tiên
   const firsts = container.querySelectorAll(".variant-thumb");
   if (firsts[0]) firsts[0].click();
 }
@@ -81,7 +81,6 @@ function updateSelectedVariant() {
     ...selected
   };
 
-  // Tìm ảnh theo thuộc tính "Màu Sắc" (nếu có)
   const colorKey = Object.keys(selected).find(k => /màu/i.test(k));
   const colorVal = selected[colorKey];
   const colorOptions = window.allAttributes?.find(a => a.key === colorKey)?.values || [];
@@ -152,12 +151,6 @@ function selectVariant(data) {
   }
 }
 
-function changeQuantity(delta) {
-  const input = document.getElementById("quantityInput");
-  let value = parseInt(input?.value || "1");
-  if (input) input.value = Math.max(1, value + delta);
-}
-
 function toggleCartPopup(show = true) {
   const popup = document.getElementById("cartPopup");
   const content = popup?.querySelector(".cart-popup-content");
@@ -173,9 +166,7 @@ function toggleCartPopup(show = true) {
   } else {
     content.classList.remove("animate-slideup");
     popup.classList.add("hidden");
-    setTimeout(() => {
-      popup.style.display = "none";
-    }, 300);
+    setTimeout(() => popup.style.display = "none", 300);
     isCartPopupOpen = false;
   }
 }
@@ -228,13 +219,7 @@ function saveCart() {
 
 document.addEventListener("DOMContentLoaded", () => {
   const closeBtns = document.querySelectorAll(".cart-popup-close, .cart-popup-overlay");
-  closeBtns.forEach(btn => {
-    btn.addEventListener("click", () => toggleCartPopup(false));
-  });
-
-  window.toggleForm = function () {
-    toggleCartPopup(true);
-  };
-
-  initCartPopup(); // Khởi động popup ngay sau DOM ready
+  closeBtns.forEach(btn => btn.addEventListener("click", () => toggleCartPopup(false)));
+  window.toggleForm = () => toggleCartPopup(true);
+  initCartPopup();
 });
