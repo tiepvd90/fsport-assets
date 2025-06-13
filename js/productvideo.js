@@ -13,7 +13,10 @@ function extractVideoId(url) {
 
 function renderProductVideos(videoUrls) {
   const slider = document.getElementById("videoSlider");
-  if (!slider) return;
+  if (!slider) {
+    console.warn("⚠️ Không tìm thấy #videoSlider trong DOM");
+    return;
+  }
 
   videoUrls.forEach((url, index) => {
     const id = extractVideoId(url);
@@ -61,29 +64,24 @@ function buyNow() {
   addToCart();
 }
 
-// ✅ Dùng productPage để xác định JSON video
-document.addEventListener("DOMContentLoaded", () => {
+// ✅ Hàm khởi tạo toàn cục — gọi thủ công sau khi HTML đã render
+window.initProductVideo = function () {
   const productPage = window.productPage || "default";
-  const jsonUrl = "/json/productvideo.json"; // ✅ cố định
+  const jsonUrl = "/json/productvideo.json";
 
   console.log("📦 Đang tải video cho:", productPage);
-  console.log("🔗 Từ file:", jsonUrl);
-
   fetch(jsonUrl)
     .then(res => res.json())
     .then(data => {
-      console.log("📥 Dữ liệu JSON:", data);
-
       const productData = data[productPage];
       if (Array.isArray(productData)) {
         renderProductVideos(productData);
-        console.log(`✅ Hiển thị ${productData.length} video cho: ${productPage}`);
+        console.log(`✅ Đã hiển thị ${productData.length} video cho ${productPage}`);
       } else {
-        console.warn(`⚠️ Không có video cho productPage "${productPage}"`);
+        console.warn(`⚠️ Không có dữ liệu video cho ${productPage}`);
       }
     })
     .catch(err => {
-      console.error("❌ Lỗi khi tải JSON:", err);
+      console.error("❌ Lỗi tải JSON:", err);
     });
-});
-
+};
