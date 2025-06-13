@@ -176,7 +176,10 @@ function bindAddToCartButton() {
   if (atcBtn && !isCartEventBound) {
     isCartEventBound = true;
 
-    atcBtn.addEventListener("click", () => {
+    atcBtn.addEventListener("click", (e) => {
+  e.preventDefault();
+  e.stopImmediatePropagation();
+
       if (!isCartPopupOpen) {
         toggleCartPopup(true);
       } else {
