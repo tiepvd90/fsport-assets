@@ -149,34 +149,34 @@
     });
 </script>
 <!-- HẾT KHỐI 2: review -->
-    <!-- ✅ KHỐI 3: Video sản phẩm -->
+ <!-- ✅ KHỐI 3: Video sản phẩm -->
 <div class="product-hero" style="margin-top: 12px;">
   <div id="video-placeholder">Đang tải video...</div>
 </div>
 
 <script>
-  // ✅ Gán productPage tương ứng
-  window.productPage = "chair001";
-
+  // ✅ Gọi file HTML video (gồm khung & ID #videoSlider)
   fetch("/html/productvideo.html")
     .then(res => res.text())
     .then(html => {
-      const container = document.getElementById("video-placeholder");
-      container.innerHTML = html;
+      document.getElementById("video-placeholder").innerHTML = html;
 
+      // ✅ Gọi JS sau khi HTML có mặt
       const script = document.createElement("script");
       script.src = "/js/productvideo.js";
       script.onload = () => {
+        console.log("✅ Đã load JS, gọi init...");
         if (typeof initProductVideo === "function") {
-          initProductVideo(); // ✅ GỌI THỦ CÔNG
+          initProductVideo();
+        } else {
+          console.warn("❌ Không tìm thấy initProductVideo()");
         }
       };
       document.body.appendChild(script);
     })
-    .catch(err => console.warn("❌ Lỗi khi chèn video:", err));
+    .catch(err => console.warn("❌ Lỗi khi chèn productvideo.html:", err));
 </script>
-
-<!-- Hết KHỐI 3: Video sản phẩm -->
+<!-- 🔚 Hết KHỐI 3 -->
     <!-- ✅ KHỐI 4: Mô tả sản phẩm -->
 <div class="product-hero" style="margin-top: 12px;">
   <div id="productdescription-placeholder"></div>
