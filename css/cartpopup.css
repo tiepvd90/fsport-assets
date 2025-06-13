@@ -106,7 +106,7 @@
   margin-bottom: 0;
 }
 
-/* ========== PHÂN LOẠI (GỘP THUMBNAIL & BUTTON) ========== */
+/* ========== PHÂN LOẠI CHUNG ========== */
 .variant-group {
   margin-bottom: 16px;
 }
@@ -115,31 +115,39 @@
   margin-bottom: 6px;
   font-weight: normal;
 }
+
 .variant-thumbnails,
 .variant-buttons {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
+  gap: 8px;
 }
+
+/* ========== STYLE DÙNG CHUNG ========== */
 .variant-thumb {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
+  padding: 6px 14px;
+  font-size: 14px;
+  background: #fff;
   border: 1px solid #ccc;
   border-radius: 6px;
-  padding: 6px 12px;
-  background: #fff;
-  box-sizing: border-box;
   cursor: pointer;
-  min-width: 48%;
-  height: auto;
-  font-size: 13px;
-  text-align: center;
   transition: all 0.2s;
+  user-select: none;
+  box-sizing: border-box;
 }
+
 .variant-thumb.selected {
   border: 2px solid #e53935;
+}
+
+/* ========== RIÊNG THUMBNAIL ========== */
+.variant-thumbnails .variant-thumb {
+  gap: 6px;
+  padding: 4px 8px;
+  height: 40px;
 }
 .variant-thumb img {
   width: 28px;
