@@ -1,17 +1,27 @@
-// ✅ Script xử lý Sticky Footer
+// ✅ TỰ ĐỘNG LOAD FILE cartpopup JS TƯƠNG ỨNG
+(function loadCartPopupJS() {
+  const type = window.cartpopupType || "cartpopup"; // fallback mặc định
+  const script = document.createElement("script");
+  script.src = `/js/${type}.js`;
+  script.onload = () => console.log(`✅ Loaded: ${script.src}`);
+  script.onerror = () => console.error(`❌ Failed to load: ${script.src}`);
+  document.body.appendChild(script);
+})();
+
+// ✅ GỌI POPUP GIỎ HÀNG
 function tryOpenCartPopup(attempt = 1) {
   if (typeof toggleCartPopup === "function") {
     console.log("✅ Gọi toggleCartPopup");
     toggleCartPopup(true);
   } else if (attempt < 5) {
-    console.warn(`🔁 Đợi cartpopup.js (lần ${attempt})...`);
+    console.warn(`🔁 Đợi cartpopup JS (lần ${attempt})...`);
     setTimeout(() => tryOpenCartPopup(attempt + 1), 200);
   } else {
     console.error("❌ toggleCartPopup chưa sẵn sàng.");
   }
 }
 
-// ✅ Đợi 300ms sau DOM inject để gắn sự kiện
+// ✅ ĐỢI DOM XONG MỚI GẮN SỰ KIỆN
 setTimeout(() => {
   const btnAtc = document.getElementById("btn-atc");
   const callLink = document.getElementById("call-link");
@@ -22,11 +32,13 @@ setTimeout(() => {
   console.log(" - callLink:", callLink);
   console.log(" - chatLink:", chatLink);
 
+  // ✅ BẮT SỰ KIỆN NÚT "THÊM VÀO GIỎ HÀNG"
   if (btnAtc) {
     btnAtc.addEventListener("click", () => {
       const loai = window.productCategory || window.loai || "unknown";
       console.log("🧪 Đã click nút ATC:", loai);
 
+      // ✅ TRACKING
       if (typeof trackBothPixels === "function") {
         trackBothPixels("AddToCart", {
           content_name: "click_btn_atc_" + loai,
@@ -36,12 +48,14 @@ setTimeout(() => {
         console.warn("⚠️ trackBothPixels chưa tồn tại");
       }
 
+      // ✅ GỌI POPUP
       tryOpenCartPopup();
     });
   } else {
     console.error("❌ Không tìm thấy nút btn-atc trong DOM");
   }
 
+  // ✅ CẬP NHẬT LINK GỌI/CHAT TỪ settings.json
   fetch("https://friendly-kitten-d760ff.netlify.app/json/settings.json")
     .then(res => res.json())
     .then(data => {
