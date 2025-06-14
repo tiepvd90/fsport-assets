@@ -5,6 +5,9 @@ switch (window.productPage) {
   case "sup001":
     totalImages = 14;
     break;
+  case "ysandalbn68":
+    totalImages = 9;
+    break;  
   case "ysandal5568":
     totalImages = 41;
     break;
