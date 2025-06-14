@@ -1,0 +1,105 @@
+<style>
+  .desc-text {
+    font-size: 12px;
+    line-height: 1.6;
+    color: #222;
+    font-family: 'Be Vietnam Pro', sans-serif;
+  }
+
+  .desc-toggle-btn {
+    margin-top: 16px;
+    background: none;
+    border: none;
+    font-weight: bold;
+    color: #000;
+    cursor: pointer;
+    padding: 10px 0;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    width: 100%;
+    font-family: 'Be Vietnam Pro', sans-serif;
+  }
+
+  .desc-toggle-btn .arrow {
+    font-size: 12px;
+    display: inline-block;
+    transform: translateY(1px);
+  }
+
+  .desc-fade {
+    height: 60px;
+    background: linear-gradient(to top, #fff, transparent);
+    margin-top: -60px;
+    pointer-events: none;
+  }
+
+  .hidden {
+    display: none;
+  }
+
+  .desc-img {
+    width: 100%;
+    display: block;
+    border-radius: 8px;
+    margin-bottom: 12px;
+  }
+</style>
+
+<h2 class="desc-title" style="font-size: 14px; font-weight: bold; margin-bottom: 8px;">
+  Mô Tả Sản Phẩm
+</h2>
+
+<img src="https://i.postimg.cc/6QTwqNXW/14.jpg" alt="Ảnh mô tả sản phẩm" class="desc-img">
+<img src="https://i.postimg.cc/Z5w4J5Xs/size.jpg" alt="Bảng size sản phẩm" class="desc-img">
+
+<div id="descShort" class="desc-text">
+  <p><strong>DÉP CHẠY BỘ YSANDAL BCU5560 – PHIÊN BẢN MỚI NHẤT</strong></p>
+  <p>Dòng dép thể thao cao cấp đến từ Đài Loan, làm từ nhựa EVA nguyên khối kết hợp tinh bột hàu kháng khuẩn. Thiết kế siêu nhẹ, đàn hồi tốt, thoáng khí và không gây hôi chân.</p>
+  <p>Phù hợp cho chạy bộ, thể thao, đi biển hoặc sử dụng hằng ngày. Màu sắc nổi bật: Xanh, Hồng, Vàng Chanh, Nâu, Rêu, Đen.</p>
+</div>
+
+<div id="descFull" class="desc-text hidden">
+  <p><strong>✅ ƯU ĐIỂM NỔI BẬT:</strong></p>
+  <ul>
+    <li>Nhựa EVA đúc nguyên khối: đàn hồi tốt, êm ái và linh hoạt</li>
+    <li>Tinh bột hàu kháng khuẩn – an toàn và thân thiện với da</li>
+    <li>Trọng lượng siêu nhẹ, thoáng khí, không gây hôi chân</li>
+    <li>Đế chống trơn trượt tuyệt đối</li>
+    <li>Dễ dàng vệ sinh bằng nước và xà phòng</li>
+    <li>Xuất xứ: <strong>Made in Taiwan</strong></li>
+  </ul>
+
+  <p><strong>📏 CÁCH CHỌN SIZE:</strong></p>
+  <ul>
+    <li>Lùi 2 size so với giày thể thao (VD: giày thể thao size 40 → dép size 38)</li>
+    <li>Lùi 1 size so với giày tây/thời trang</li>
+    <li>Hoặc đo chiều dài bàn chân để đối chiếu bảng size đính kèm trên ảnh</li>
+  </ul>
+
+  <p><strong>🔁 CHÍNH SÁCH ĐỔI SIZE / MÀU:</strong> Hỗ trợ đổi size và màu thoải mái nếu sản phẩm còn nguyên tem mác và chưa qua sử dụng.</p>
+  <p><strong>📩 CẦN TƯ VẤN SIZE?</strong> Nhắn tin cho shop – luôn sẵn sàng hỗ trợ!</p>
+</div>
+
+<div class="desc-fade" id="descFade"></div>
+
+<button id="toggleDesc" class="desc-toggle-btn">
+  Xem Thêm <span class="arrow">&#x25BC;</span>
+</button>
+
+<script>
+  const toggleBtn = document.getElementById('toggleDesc');
+  const descFull = document.getElementById('descFull');
+  const fade = document.getElementById('descFade');
+
+  toggleBtn.addEventListener('click', () => {
+    const isHidden = descFull.classList.contains('hidden');
+    descFull.classList.toggle('hidden');
+    fade.style.display = isHidden ? 'none' : 'block';
+    toggleBtn.innerHTML = isHidden
+      ? 'Thu Gọn <span class="arrow">&#x25B2;</span>'
+      : 'Xem Thêm <span class="arrow">&#x25BC;</span>';
+  });
+</script>
