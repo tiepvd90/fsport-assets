@@ -1,0 +1,98 @@
+<style>
+  .desc-text {
+    font-size: 12px;
+    line-height: 1.6;
+    color: #222;
+    font-family: 'Be Vietnam Pro', sans-serif;
+  }
+
+  .desc-toggle-btn {
+    margin-top: 16px;
+    background: none;
+    border: none;
+    font-weight: bold;
+    color: #000;
+    cursor: pointer;
+    padding: 10px 0;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    width: 100%;
+    font-family: 'Be Vietnam Pro', sans-serif;
+  }
+
+  .desc-toggle-btn .arrow {
+    font-size: 12px;
+    display: inline-block;
+    transform: translateY(1px);
+  }
+
+  .desc-fade {
+    height: 60px;
+    background: linear-gradient(to top, #fff, transparent);
+    margin-top: -60px;
+    pointer-events: none;
+  }
+
+  .hidden {
+    display: none;
+  }
+
+  .desc-img {
+    width: 100%;
+    display: block;
+    border-radius: 8px;
+    margin-bottom: 12px;
+  }
+</style>
+
+<h2 class="desc-title" style="font-size: 14px; font-weight: bold; margin-bottom: 8px;">
+  Mô Tả Sản Phẩm
+</h2>
+
+<img src="https://i.postimg.cc/x15FT1n7/Capture.jpg" alt="Ảnh mô tả sản phẩm 1" class="desc-img">
+<img src="https://postimg.cc/nX53xM8P" alt="Ảnh mô tả sản phẩm 2" class="desc-img">
+
+<div id="descShort" class="desc-text">
+  <p><strong>DÉP CHẠY BỘ YSANDAL BCU5568 – NHẸ, ÊM, CHỐNG TRƠN</strong></p>
+  <p>Sản xuất từ nhựa EVA đúc nguyên khối, dép siêu nhẹ, đàn hồi cao, giảm chấn tốt và không gây hôi chân. Thích hợp cho chạy bộ, thể thao, đi biển hoặc sử dụng hằng ngày.</p>
+  <p>Màu sắc đa dạng: Trắng, Đen, Đỏ Hồng, Lục Lam, Vàng Chanh, Cốm, Tím, Cam.</p>
+</div>
+
+<div id="descFull" class="desc-text hidden">
+  <p>
+    Đế dép chống trơn trượt, dễ vệ sinh bằng nước và xà phòng. Sản phẩm Made in Taiwan – bền bỉ, an toàn và linh hoạt cho mọi hoạt động.
+  </p>
+  <p><strong>📏 CÁCH CHỌN SIZE:</strong></p>
+  <ul>
+    <li>Lùi 2 size so với giày thể thao (VD: giày 40 → dép 38)</li>
+    <li>Lùi 1 size so với giày tây/thời trang</li>
+    <li>Có thể đo chiều dài bàn chân để đối chiếu bảng size đính kèm</li>
+  </ul>
+  <p><strong>🔁 ĐỔI SIZE/MÀU:</strong> Hỗ trợ đổi thoải mái khi sản phẩm còn mới, nguyên tem mác.</p>
+  <p><strong>🎁 ƯU ĐÃI:</strong> Mã giảm giá vận chuyển, mã giảm giá sản phẩm, tư vấn nhanh chóng.</p>
+  <p><strong>⚠️ LƯU Ý:</strong> Không để dép dưới ánh nắng trực tiếp khi không dùng. Rửa sạch trước khi sử dụng lần đầu để loại bỏ lớp dầu bảo quản.</p>
+</div>
+
+<div class="desc-fade" id="descFade"></div>
+
+<button id="toggleDesc" class="desc-toggle-btn">
+  Xem Thêm <span class="arrow">&#x25BC;</span>
+</button>
+
+<script>
+  const toggleBtn = document.getElementById('toggleDesc');
+  const descFull = document.getElementById('descFull');
+  const fade = document.getElementById('descFade');
+
+  toggleBtn.addEventListener('click', () => {
+    const isHidden = descFull.classList.contains('hidden');
+    descFull.classList.toggle('hidden');
+    fade.style.display = isHidden ? 'none' : 'block';
+    toggleBtn.innerHTML = isHidden
+      ? 'Thu Gọn <span class="arrow">&#x25B2;</span>'
+      : 'Xem Thêm <span class="arrow">&#x25BC;</span>';
+  });
+</script>
