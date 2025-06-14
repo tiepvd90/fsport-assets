@@ -44,8 +44,11 @@
   Review Sản Phẩm
 </h2>
 
+<!-- ✅ 4 ô hiển thị review -->
 <div id="review1" class="review-item"></div>
 <div id="review2" class="review-item"></div>
+<div id="review3" class="review-item"></div>
+<div id="review4" class="review-item"></div>
 
 <script>
   async function fetchAndRenderReviews() {
@@ -53,18 +56,15 @@
       const res = await fetch("/json/reviewblock/ysandal5568.json");
       const data = await res.json();
 
-      if (!Array.isArray(data) || data.length < 3) {
+      if (!Array.isArray(data) || data.length < 4) {
         console.error("Không đủ review để hiển thị.");
         return;
       }
 
-      const indices = getUniqueRandomIndices(3, data.length);
-      const selected = [data[indices[0]], data[indices[1]]];
-
-      renderReview("review1", selected[0]);
-      renderReview("review2", selected[1]);
-      renderReview("review2", selected[2]);
-
+      const indices = getUniqueRandomIndices(4, data.length);
+      for (let i = 0; i < 4; i++) {
+        renderReview(`review${i + 1}`, data[indices[i]]);
+      }
     } catch (err) {
       console.error("Lỗi khi tải review JSON:", err);
     }
