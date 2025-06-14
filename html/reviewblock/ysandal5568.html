@@ -53,12 +53,12 @@
       const res = await fetch("/json/reviewblock/ysandal5568.json");
       const data = await res.json();
 
-      if (!Array.isArray(data) || data.length < 2) {
+      if (!Array.isArray(data) || data.length < 3) {
         console.error("Không đủ review để hiển thị.");
         return;
       }
 
-      const indices = getUniqueRandomIndices(2, data.length);
+      const indices = getUniqueRandomIndices(3, data.length);
       const selected = [data[indices[0]], data[indices[1]]];
 
       renderReview("review1", selected[0]);
