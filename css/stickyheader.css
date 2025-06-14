@@ -1,30 +1,36 @@
-/* === STICKY HEADER TRÊN MỌI TRANG === */
 .sticky-header {
   position: sticky;
   top: 0;
   z-index: 10000;
-  background: #fff;
+  background: white;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 48px;
-  padding: 0 12px;
-  border-bottom: 1px solid #eee;
+  padding: 10px 16px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
   font-family: 'Be Vietnam Pro', sans-serif;
 }
 
-.header-icon {
-  width: 24px;
-  height: 24px;
+.header-left {
+  font-size: 20px;
+  color: black;
   cursor: pointer;
+  flex-shrink: 0;
 }
 
 .header-title {
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 600;
-  color: #000;
-  text-transform: uppercase;
-  flex: 1;
+  color: black;
   text-align: center;
-  pointer-events: none;
+  flex-grow: 1;
+}
+
+.header-icon {
+  font-size: 20px;
+  color: black;
+  background: none;
+  padding: 6px;
+  cursor: pointer;
+  flex-shrink: 0;
 }
