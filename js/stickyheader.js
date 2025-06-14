@@ -1,4 +1,5 @@
-document.addEventListener("DOMContentLoaded", () => {
+// Gọi sau khi stickyheader.html đã được inject xong
+function initStickyHeader() {
   const cartIcon = document.getElementById("cartIcon");
 
   if (!cartIcon) {
@@ -17,4 +18,4 @@ document.addEventListener("DOMContentLoaded", () => {
       alert("⚠️ Giỏ hàng chưa hoạt động – thiếu hàm toggleCheckoutPopup!");
     }
   });
-});
+}
