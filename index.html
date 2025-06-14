@@ -18,22 +18,6 @@
   <!-- ✅ Placeholder để chèn sticky header -->
   <div id="sticky-header-placeholder"></div>
 
-  <!-- ✅ Gọi file HTML sticky header + khởi tạo JS sau khi chèn -->
-  <script src="/js/stickyheader.js"></script>
-  <script>
-    fetch("/html/stickyheader.html")
-      .then(res => res.text())
-      .then(html => {
-        document.getElementById("sticky-header-placeholder").innerHTML = html;
-        // ✅ Gọi hàm init sau khi HTML đã được đưa vào DOM
-        if (typeof initStickyHeader === "function") {
-          initStickyHeader();
-        } else {
-          console.warn("⚠️ initStickyHeader chưa sẵn sàng.");
-        }
-      });
-  </script>
-
   <!-- 🔥 FREEFLOW FEED -->
   <div id="freeflowFeed"></div>
 
@@ -50,9 +34,6 @@
     }
   </script>
 
-  <!-- ✅ Nhúng JS popup giỏ hàng (đảm bảo toggleCheckoutPopup tồn tại) -->
-  <script src="/js/checkoutpopup.js"></script>
-
   <!-- 🔳 Popup video YouTube -->
   <div id="videoOverlay" style="display:none;">
     <button onclick="closeVideoPopup()" style="position:absolute;top:12px;right:12px;font-size:28px;color:white;background:none;border:none;cursor:pointer;">×</button>
@@ -60,6 +41,26 @@
       <iframe id="videoFrame" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
     </div>
   </div>
+
+  <!-- ✅ Gọi checkoutpopup.js trước để đảm bảo toggleCheckoutPopup tồn tại -->
+  <script src="/js/checkoutpopup.js"></script>
+
+  <!-- ✅ Gọi stickyheader.js sau khi HTML được gắn -->
+  <script src="/js/stickyheader.js"></script>
+  <script>
+    fetch("/html/stickyheader.html")
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById("sticky-header-placeholder").innerHTML = html;
+
+        // Gọi hàm khởi tạo sau khi sticky header đã được gắn xong
+        if (typeof initStickyHeader === "function") {
+          initStickyHeader();
+        } else {
+          console.warn("⚠️ Hàm initStickyHeader chưa được định nghĩa.");
+        }
+      });
+  </script>
 
 </body>
 </html>
