@@ -53,23 +53,23 @@ function renderCheckoutCart() {
       ? <span class="voucher-tag" style="background: rgba(0,160,230,0.6); color: white; font-size: 9px; padding: 2px 6px; margin-left: 6px; border-radius: 4px; vertical-align: middle;">Voucher: -${item.voucher.amount.toLocaleString()}₫</span>
       : "";
 
-    el.innerHTML = 
-      <button class="remove-btn" onclick="removeItem(${index})">&times;</button>
-      <img src="${item.Ảnh}" alt="img" />
-      <div class="cart-item-details">
-        <div class="cart-item-name">${item["Phân loại"]}</div>
-        <div class="cart-item-price-qty">
-          <div class="cart-item-price">
-            ${priceText} ${voucherHtml}
-          </div>
-          <div class="cart-item-qty">
-            <button onclick="changeItemQty(${index}, -1)">−</button>
-            <span>${item.quantity}</span>
-            <button onclick="changeItemQty(${index}, 1)">+</button>
-          </div>
-        </div>
+    el.innerHTML = `
+  <button class="remove-btn" onclick="removeItem(${index})">&times;</button>
+  <img src="${item.Ảnh}" alt="img" />
+  <div class="cart-item-details">
+    <div class="cart-item-name">${item["Phân loại"]}</div>
+    <div class="cart-item-price-qty">
+      <div class="cart-item-price">
+        ${priceText} ${voucherHtml}
       </div>
-    ;
+      <div class="cart-item-qty">
+        <button onclick="changeItemQty(${index}, -1)">−</button>
+        <span>${item.quantity}</span>
+        <button onclick="changeItemQty(${index}, 1)">+</button>
+      </div>
+    </div>
+  </div>
+`;
     list.appendChild(el);
   });
 
