@@ -62,7 +62,6 @@
     </div>
   </div>
 </div>
-
 <!-- ✅ ICON GIỎ HÀNG GÓC PHẢI TRÊN -->
 <div id="cartIconWrapper" style="
   position: fixed;
@@ -73,13 +72,19 @@
   font-family: 'Be Vietnam Pro', sans-serif;
 ">
   <div id="cartIcon" onclick="showCheckoutPopup()" style="
-    font-size: 22px;
     background: rgba(0, 153, 255, 0.3); /* Xanh biển nhạt với opacity */
-    padding: 6px 10px;
+    padding: 6px;
     border-radius: 50%;
     box-shadow: 0 0 6px rgba(0,0,0,0.2);
     cursor: pointer;
-  ">🛒</div>
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  ">
+    <img src="/assets/images/carticon.png" alt="Giỏ hàng" style="width: 22px; height: 22px;">
+  </div>
 
   <div id="cartLabel" style="
     font-size: 11px;
@@ -89,16 +94,3 @@
     transition: opacity 0.3s ease;
   ">Giỏ hàng</div>
 </div>
-
-<!-- ✅ Script hiển thị dòng "Giỏ hàng" mỗi 5s -->
-<script>
-  setInterval(() => {
-    const label = document.getElementById("cartLabel");
-    label.style.opacity = "1";
-    setTimeout(() => {
-      label.style.opacity = "0";
-    }, 2000); // Ẩn sau 2s
-  }, 5000); // Mỗi 5s hiện 1 lần
-</script>
-
-
