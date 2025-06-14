@@ -1,0 +1,30 @@
+/* === STICKY HEADER TRÊN MỌI TRANG === */
+.sticky-header {
+  position: sticky;
+  top: 0;
+  z-index: 10000;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 48px;
+  padding: 0 12px;
+  border-bottom: 1px solid #eee;
+  font-family: 'Be Vietnam Pro', sans-serif;
+}
+
+.header-icon {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+}
+
+.header-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #000;
+  text-transform: uppercase;
+  flex: 1;
+  text-align: center;
+  pointer-events: none;
+}
