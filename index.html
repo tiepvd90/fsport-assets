@@ -2,23 +2,23 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <title>Fun Sport</title>
 
   <!-- ✅ Google Font -->
   <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;700&display=swap" rel="stylesheet" />
 
-  <!-- ✅ CSS chính -->
+  <!-- ✅ CSS -->
   <link rel="stylesheet" href="/css/base.css" />
   <link rel="stylesheet" href="/css/freeflow.css" />
   <link rel="stylesheet" href="/css/stickyheader.css" />
 </head>
 <body>
 
-  <!-- ✅ Placeholder để chèn sticky header -->
+  <!-- ✅ Sticky Header -->
   <div id="sticky-header-placeholder"></div>
 
-  <!-- 🔥 FREEFLOW FEED -->
+  <!-- ✅ FreeFlow Feed -->
   <div id="freeflowFeed"></div>
 
   <!-- ✅ JS FreeFlow -->
@@ -34,7 +34,7 @@
     }
   </script>
 
-  <!-- 🔳 Popup video YouTube -->
+  <!-- 🔳 Popup video -->
   <div id="videoOverlay" style="display:none;">
     <button onclick="closeVideoPopup()" style="position:absolute;top:12px;right:12px;font-size:28px;color:white;background:none;border:none;cursor:pointer;">×</button>
     <div class="video-inner">
@@ -42,24 +42,30 @@
     </div>
   </div>
 
-  <!-- ✅ Gọi checkoutpopup.js trước để đảm bảo toggleCheckoutPopup tồn tại -->
+  <!-- ✅ Load checkoutpopup.js trước để hàm toggleCheckoutPopup sẵn sàng -->
   <script src="/js/checkoutpopup.js"></script>
 
-  <!-- ✅ Gọi stickyheader.js sau khi HTML được gắn -->
-  <script src="/js/stickyheader.js"></script>
+  <!-- ✅ Load stickyheader.js sau và khởi tạo đúng thời điểm -->
   <script>
-    fetch("/html/stickyheader.html")
-      .then(res => res.text())
-      .then(html => {
-        document.getElementById("sticky-header-placeholder").innerHTML = html;
+    async function loadStickyHeader() {
+      const res = await fetch("/html/stickyheader.html");
+      const html = await res.text();
+      document.getElementById("sticky-header-placeholder").innerHTML = html;
 
-        // Gọi hàm khởi tạo sau khi sticky header đã được gắn xong
+      // Đợi DOM chèn xong rồi khởi chạy
+      setTimeout(() => {
         if (typeof initStickyHeader === "function") {
           initStickyHeader();
         } else {
-          console.warn("⚠️ Hàm initStickyHeader chưa được định nghĩa.");
+          console.warn("⚠️ initStickyHeader chưa được định nghĩa.");
         }
-      });
+      }, 50);
+    }
+
+    const stickyScript = document.createElement("script");
+    stickyScript.src = "/js/stickyheader.js";
+    stickyScript.onload = loadStickyHeader;
+    document.body.appendChild(stickyScript);
   </script>
 
 </body>
