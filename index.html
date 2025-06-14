@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <title>Fun Sport</title>
 
-  <!-- ✅ Google Font -->
+  <!-- ✅ Font -->
   <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;700&display=swap" rel="stylesheet" />
 
   <!-- ✅ CSS -->
@@ -42,30 +42,51 @@
     </div>
   </div>
 
-  <!-- ✅ Load checkoutpopup.js trước để hàm toggleCheckoutPopup sẵn sàng -->
-  <script src="/js/checkoutpopup.js"></script>
-
-  <!-- ✅ Load stickyheader.js sau và khởi tạo đúng thời điểm -->
+  <!-- ✅ JS: Load sticky header đúng thứ tự -->
   <script>
-    async function loadStickyHeader() {
-      const res = await fetch("/html/stickyheader.html");
-      const html = await res.text();
-      document.getElementById("sticky-header-placeholder").innerHTML = html;
-
-      // Đợi DOM chèn xong rồi khởi chạy
-      setTimeout(() => {
-        if (typeof initStickyHeader === "function") {
-          initStickyHeader();
-        } else {
-          console.warn("⚠️ initStickyHeader chưa được định nghĩa.");
-        }
-      }, 50);
+    function loadScript(src) {
+      return new Promise((resolve, reject) => {
+        const s = document.createElement("script");
+        s.src = src;
+        s.onload = resolve;
+        s.onerror = reject;
+        document.body.appendChild(s);
+      });
     }
 
-    const stickyScript = document.createElement("script");
-    stickyScript.src = "/js/stickyheader.js";
-    stickyScript.onload = loadStickyHeader;
-    document.body.appendChild(stickyScript);
+    async function setupStickyHeader() {
+      try {
+        // 1. Load checkoutpopup.js trước
+        await loadScript("/js/checkoutpopup.js");
+        console.log("✅ Đã load checkoutpopup.js");
+
+        if (typeof toggleCheckoutPopup !== "function") {
+          console.error("❌ toggleCheckoutPopup không tồn tại sau khi load script.");
+          return;
+        }
+
+        // 2. Load stickyheader.js
+        await loadScript("/js/stickyheader.js");
+        console.log("✅ Đã load stickyheader.js");
+
+        // 3. Chèn stickyheader.html
+        const res = await fetch("/html/stickyheader.html");
+        const html = await res.text();
+        document.getElementById("sticky-header-placeholder").innerHTML = html;
+
+        // 4. Gọi khởi tạo
+        if (typeof initStickyHeader === "function") {
+          initStickyHeader();
+          console.log("✅ Đã gọi initStickyHeader()");
+        } else {
+          console.warn("⚠️ initStickyHeader không tồn tại.");
+        }
+      } catch (err) {
+        console.error("❌ Lỗi khi load sticky header:", err);
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", setupStickyHeader);
   </script>
 
 </body>
