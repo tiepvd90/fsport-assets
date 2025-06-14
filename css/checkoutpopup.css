@@ -13,10 +13,12 @@
   position: absolute;
   inset: 0;
   background: rgba(0, 0, 0, 0.4);
+  z-index: 1; /* ✅ lớp nền mờ nằm dưới */
 }
 
 .checkout-content {
   position: relative;
+  z-index: 10; /* ✅ nội dung popup nằm trên và có thể click */
   width: 100%;
   max-width: 480px;
   height: 100%;
@@ -24,6 +26,7 @@
   display: flex;
   flex-direction: column;
 }
+
 
 .checkout-inner-scroll {
   flex: 1;
