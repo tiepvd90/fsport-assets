@@ -5,18 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <title>Fun Sport</title>
 
-  <!-- ✅ Font -->
+  <!-- ✅ Font & CSS -->
   <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;700&display=swap" rel="stylesheet" />
-
-  <!-- ✅ CSS -->
   <link rel="stylesheet" href="/css/base.css" />
   <link rel="stylesheet" href="/css/freeflow.css" />
   <link rel="stylesheet" href="/css/stickyheader.css" />
 </head>
 <body>
 
-  <!-- ✅ Placeholders -->
-  <div id="sticky-header-placeholder"></div>
+  <!-- ✅ Sticky Header (có position: sticky) -->
+  <div style="position: sticky; top: 0; z-index: 10000; background: white;">
+    <div id="sticky-header-placeholder"></div>
+  </div>
+
+  <!-- ✅ Giỏ hàng + Base placeholders -->
   <div id="checkoutPopup-placeholder"></div>
   <div id="base-placeholder"></div>
 
@@ -44,9 +46,8 @@
     </div>
   </div>
 
-  <!-- ✅ Inject HTML & JS -->
+  <!-- ✅ HTML injection logic -->
   <script>
-    // ✅ Inject HTML với script xử lý đúng (giống productPage)
     async function injectHTML(file, placeholderId) {
       const res = await fetch(file);
       const html = await res.text();
@@ -54,36 +55,40 @@
       const temp = document.createElement("div");
       temp.innerHTML = html;
 
-      Array.from(temp.children).forEach(el => {
-        if (el.tagName === "SCRIPT") {
-          const script = document.createElement("script");
-          if (el.src) {
-            script.src = el.src;
-            script.async = false;
-          } else {
-            script.textContent = el.textContent;
-          }
-          document.body.appendChild(script);
+      // ✅ Chạy lại tất cả script bên trong
+      const scripts = temp.querySelectorAll("script");
+      scripts.forEach(oldScript => {
+        const newScript = document.createElement("script");
+        if (oldScript.src) {
+          newScript.src = oldScript.src;
         } else {
+          newScript.textContent = oldScript.textContent;
+        }
+        document.body.appendChild(newScript);
+      });
+
+      // ✅ Gắn phần tử khác ngoài script
+      Array.from(temp.children).forEach(el => {
+        if (el.tagName !== "SCRIPT") {
           container.appendChild(el);
         }
       });
     }
 
     async function setupPage() {
-      // ✅ Inject popup giỏ hàng trước (hàm toggleCheckoutPopup nằm trong đó)
+      // 1. Inject giỏ hàng
       await injectHTML("/html/checkoutpopup.html", "checkoutPopup-placeholder");
 
-      // ✅ Alias để xử lý onclick cũ từ icon giỏ hàng
+      // 2. Alias cho các icon cũ dùng onclick="showCheckoutPopup()"
       window.showCheckoutPopup = function () {
         if (typeof toggleCheckoutPopup === "function") {
           toggleCheckoutPopup(true);
         } else {
-          console.warn("⚠️ toggleCheckoutPopup chưa tồn tại.");
+          alert("⚠️ Giỏ hàng chưa hoạt động – thiếu hàm toggleCheckoutPopup!");
         }
       };
 
-      // ✅ Load stickyheader.js và HTML
+      // 3. Inject sticky header JS + HTML
       const stickyScript = document.createElement("script");
       stickyScript.src = "/js/stickyheader.js";
       stickyScript.onload = async () => {
@@ -94,7 +99,7 @@
       };
       document.body.appendChild(stickyScript);
 
-      // ✅ Inject base.html (footer, tracking, etc.)
+      // 4. Inject base.html
       const baseRes = await fetch("/html/base.html");
       const baseHtml = await baseRes.text();
       document.getElementById("base-placeholder").outerHTML = baseHtml;
