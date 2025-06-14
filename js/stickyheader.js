@@ -1,21 +1,16 @@
-// Gọi sau khi stickyheader.html đã được inject xong
 function initStickyHeader() {
-  const cartIcon = document.getElementById("cartIcon");
+  console.log("✅ initStickyHeader chạy");
 
-  if (!cartIcon) {
-    console.error("❌ Không tìm thấy phần tử #cartIcon trong DOM.");
-    return;
+  const cartBtn = document.getElementById("cartBtn");
+  if (cartBtn) {
+    cartBtn.addEventListener("click", () => {
+      console.log("🛒 [DEBUG] Icon giỏ hàng đã được click.");
+      if (typeof toggleCheckoutPopup === "function") {
+        toggleCheckoutPopup(true);
+      } else {
+        alert("⚠️ Giỏ hàng chưa hoạt động – thiếu hàm toggleCheckoutPopup!");
+        console.warn("⚠️ toggleCheckoutPopup chưa được định nghĩa.");
+      }
+    });
   }
-
-  cartIcon.addEventListener("click", () => {
-    console.log("🛒 [DEBUG] Icon giỏ hàng đã được click.");
-
-    if (typeof toggleCheckoutPopup === "function") {
-      console.log("✅ [DEBUG] Gọi toggleCheckoutPopup(true)");
-      toggleCheckoutPopup(true);
-    } else {
-      console.warn("⚠️ [DEBUG] Hàm toggleCheckoutPopup chưa được định nghĩa.");
-      alert("⚠️ Giỏ hàng chưa hoạt động – thiếu hàm toggleCheckoutPopup!");
-    }
-  });
 }
