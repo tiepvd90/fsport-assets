@@ -10,8 +10,6 @@
   <link rel="stylesheet" href="https://friendly-kitten-d760ff.netlify.app/css/checkoutpopup.css" />
   <link rel="stylesheet" href="../css/slideshow.css" />
 <link rel="icon" type="image/png" href="/favicon.png" />
-  <link rel="stylesheet" href="/css/stickyheader.css">
-
   <!-- ✅ JS định nghĩa -->
   <script>
   window.loai = "chair";
@@ -70,13 +68,6 @@
   </style>
 </head>
 <body>
-  <!-- ✅ Sticky Header -->
-  <div id="stickyHeader" class="sticky-header">
-    <div class="header-left" onclick="history.back()">←</div>
-    <div class="header-title">SHOP MALL CHÍNH HÃNG</div>
-    <div class="header-icon" id="cartBtn">🛒</div>
-  </div>
-
   <!-- ✅ Tracking trực tiếp -->
 <script src="https://friendly-kitten-d760ff.netlify.app/js/tracking.js"></script>
 <script>
@@ -238,16 +229,14 @@
   <!-- ✅ Inject popup + footer -->
   <script>
     async function loadScript(src) {
-  // ✅ Tránh load lại nếu đã tồn tại
-  if (document.querySelector(`script[src="${src}"]`)) return;
+      return new Promise(resolve => {
+        const s = document.createElement("script");
+        s.src = src;
+        s.onload = resolve;
+        document.body.appendChild(s);
+      });
+    }
 
-  return new Promise(resolve => {
-    const s = document.createElement("script");
-    s.src = src;
-    s.onload = resolve;
-    document.body.appendChild(s);
-  });
-}
     async function injectHTML(file, placeholderId) {
       const res = await fetch(file);
       const html = await res.text();
@@ -290,12 +279,6 @@
 
     setupPage();
   </script>
-<script src="/js/stickyheader.js"></script>
-<script>
-  setupPage().then(() => {
-  initStickyHeader();
-});
-</script>
 
   <!-- ✅ Tracking -->
   <div id="base-placeholder"></div>
