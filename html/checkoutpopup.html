@@ -64,30 +64,41 @@
 </div>
 
 <!-- ✅ ICON GIỎ HÀNG GÓC PHẢI TRÊN -->
-<div id="cartIcon" onclick="showCheckoutPopup()" style="
+<div id="cartIconWrapper" style="
   position: fixed;
   top: 12px;
   right: 12px;
-  width: 44px;
-  height: 44px;
-  background: linear-gradient(135deg, #ffe4ec, #ffd8c2); /* pastel hồng-cam nhẹ */
-  border-radius: 50%;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-  display: flex;
-  align-items: center;
-  justify-content: center;
   z-index: 9999;
-  cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  text-align: center;
+  font-family: 'Be Vietnam Pro', sans-serif;
 ">
-  <img src="https://img.icons8.com/ios-glyphs/24/ffffff/shopping-cart.png" alt="Cart" style="width: 24px; height: 24px;">
+  <div id="cartIcon" onclick="showCheckoutPopup()" style="
+    font-size: 22px;
+    background: rgba(0, 153, 255, 0.3); /* Xanh biển nhạt với opacity */
+    padding: 6px 10px;
+    border-radius: 50%;
+    box-shadow: 0 0 6px rgba(0,0,0,0.2);
+    cursor: pointer;
+  ">🛒</div>
+
+  <div id="cartLabel" style="
+    font-size: 11px;
+    margin-top: 4px;
+    color: #333;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  ">Giỏ hàng</div>
 </div>
 
-<!-- ✅ Hover effect -->
-<style>
-  #cartIcon:hover {
-    transform: scale(1.1);
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
-  }
-</style>
+<!-- ✅ Script hiển thị dòng "Giỏ hàng" mỗi 5s -->
+<script>
+  setInterval(() => {
+    const label = document.getElementById("cartLabel");
+    label.style.opacity = "1";
+    setTimeout(() => {
+      label.style.opacity = "0";
+    }, 2000); // Ẩn sau 2s
+  }, 5000); // Mỗi 5s hiện 1 lần
+</script>
+
 
