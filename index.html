@@ -15,14 +15,15 @@
 </head>
 <body>
 
-  <!-- ✅ Sticky Header & Popup Placeholder -->
+  <!-- ✅ Placeholders -->
   <div id="sticky-header-placeholder"></div>
   <div id="checkoutPopup-placeholder"></div>
+  <div id="base-placeholder"></div>
 
   <!-- ✅ FreeFlow Feed -->
   <div id="freeflowFeed"></div>
 
-  <!-- ✅ FreeFlow JS -->
+  <!-- ✅ FreeFlow Script -->
   <script src="/js/freeflow.js"></script>
   <script>
     fetchFreeFlowData("https://script.google.com/macros/s/AKfycbwuEh9sP65vyQL0XzU8gY1Os0QYV_K5egKJgm8OhImAPjvdyrQiU7XCY909N99TnltP/exec");
@@ -35,7 +36,7 @@
     }
   </script>
 
-  <!-- 🔳 Popup video -->
+  <!-- ✅ Popup video -->
   <div id="videoOverlay" style="display:none;">
     <button onclick="closeVideoPopup()" style="position:absolute;top:12px;right:12px;font-size:28px;color:white;background:none;border:none;cursor:pointer;">×</button>
     <div class="video-inner">
@@ -43,9 +44,9 @@
     </div>
   </div>
 
-  <!-- ✅ Inject checkoutpopup.html & stickyheader.html (không sửa JS gốc) -->
+  <!-- ✅ Inject HTML & JS -->
   <script>
-    // Hàm dùng lại từ trang sản phẩm
+    // ✅ Inject HTML với script xử lý đúng (giống productPage)
     async function injectHTML(file, placeholderId) {
       const res = await fetch(file);
       const html = await res.text();
@@ -69,30 +70,37 @@
       });
     }
 
-    async function setupStickyHeader() {
-      // 🧩 Bước 1: Inject checkoutpopup.html trước (đảm bảo toggleCheckoutPopup hoạt động)
+    async function setupPage() {
+      // ✅ Inject popup giỏ hàng trước (hàm toggleCheckoutPopup nằm trong đó)
       await injectHTML("/html/checkoutpopup.html", "checkoutPopup-placeholder");
 
-      // 🧩 Bước 2: Load stickyheader.js
-      const script = document.createElement("script");
-      script.src = "/js/stickyheader.js";
-      script.onload = async () => {
-        // 🧩 Bước 3: Sau khi JS xong, inject HTML
+      // ✅ Alias để xử lý onclick cũ từ icon giỏ hàng
+      window.showCheckoutPopup = function () {
+        if (typeof toggleCheckoutPopup === "function") {
+          toggleCheckoutPopup(true);
+        } else {
+          console.warn("⚠️ toggleCheckoutPopup chưa tồn tại.");
+        }
+      };
+
+      // ✅ Load stickyheader.js và HTML
+      const stickyScript = document.createElement("script");
+      stickyScript.src = "/js/stickyheader.js";
+      stickyScript.onload = async () => {
         const res = await fetch("/html/stickyheader.html");
         const html = await res.text();
         document.getElementById("sticky-header-placeholder").innerHTML = html;
-
-        // 🧩 Bước 4: Khởi tạo sticky header
-        if (typeof initStickyHeader === "function") {
-          initStickyHeader();
-        } else {
-          console.warn("⚠️ initStickyHeader chưa được định nghĩa.");
-        }
+        if (typeof initStickyHeader === "function") initStickyHeader();
       };
-      document.body.appendChild(script);
+      document.body.appendChild(stickyScript);
+
+      // ✅ Inject base.html (footer, tracking, etc.)
+      const baseRes = await fetch("/html/base.html");
+      const baseHtml = await baseRes.text();
+      document.getElementById("base-placeholder").outerHTML = baseHtml;
     }
 
-    document.addEventListener("DOMContentLoaded", setupStickyHeader);
+    document.addEventListener("DOMContentLoaded", setupPage);
   </script>
 
 </body>
