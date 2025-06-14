@@ -13,6 +13,21 @@
   <link rel="stylesheet" href="/css/freeflow.css" />
 </head>
 <body>
+<!-- ✅ Placeholder để chèn sticky header -->
+<div id="sticky-header-placeholder"></div>
+
+<!-- ✅ Gọi file HTML -->
+<script>
+  fetch("/html/stickyheader.html")
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById("sticky-header-placeholder").innerHTML = html;
+    });
+</script>
+
+<!-- ✅ Gọi CSS và JS tương ứng -->
+<link rel="stylesheet" href="/css/stickyheader.css">
+<script src="/js/stickyheader.js" defer></script>
 
   <!-- 🔥 FREEFLOW FEED -->
   <div id="freeflowFeed"></div>
