@@ -1,4 +1,20 @@
-const totalImages = 14;
+let totalImages = 0;
+
+switch (window.productPage) {
+  case "chair001":
+  case "sup001":
+    totalImages = 14;
+    break;
+  case "ysandal5568":
+    totalImages = 41;
+    break;
+  default:
+    totalImages = 5; // hoặc giá trị mặc định khác nếu cần
+    break;
+}
+
+console.log("Tổng số ảnh:", totalImages);
+
 const imagesToShow = 5;
 
 const container = document.getElementById('lazySlideshow');
