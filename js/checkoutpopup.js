@@ -8,9 +8,10 @@ function loadCart() {
     window.cart = [];
   }
 }
-loadCart(); // ⬅️ Gọi ngay lập tức khi file được load
+loadCart();
 
 let shippingFee = 0;
+let shippingFeeOriginal = 0;
 let voucherValue = 0;
 
 // ✅ HIỆN CHECKOUT POPUP
@@ -23,7 +24,7 @@ function showCheckoutPopup() {
   popup.style.display = "flex";
   document.body.style.overflow = "hidden";
 
-  bindCheckoutEvents(); // ✅ Gắn lại sự kiện sau khi hiển thị popup
+  bindCheckoutEvents();
 }
 
 // ✅ ẨN CHECKOUT POPUP
@@ -90,9 +91,30 @@ function updateCheckoutSummary() {
   if (qtyEl) qtyEl.textContent = `${totalQty} sản phẩm`;
   if (subtotalEl) subtotalEl.textContent = `${subtotal.toLocaleString()}₫`;
 
-  document.getElementById("shippingFeeText").textContent = `${shipping.toLocaleString()}₫`;
-  document.getElementById("voucherText").textContent = voucherValue > 0 ? `-${voucherValue.toLocaleString()}₫` : "";
-  document.getElementById("voucherText").style.display = voucherValue > 0 ? "block" : "none";
+  const shippingEl = document.getElementById("shippingFeeText");
+  if (shippingEl) {
+    if (shippingFeeOriginal > shippingFee) {
+      shippingEl.innerHTML = `
+        <span style="text-decoration: line-through; color: gray; margin-right: 6px;">
+          ${shippingFeeOriginal.toLocaleString()}₫
+        </span>
+        <span style="color: red; font-weight: bold;">
+          ${shippingFee.toLocaleString()}₫
+        </span>
+      `;
+    } else {
+      shippingEl.textContent = `${shippingFee.toLocaleString()}₫`;
+    }
+  }
+
+  const voucherTextEl = document.getElementById("voucherText");
+  if (voucherValue > 0) {
+    voucherTextEl.textContent = `-${voucherValue.toLocaleString()}₫`;
+    voucherTextEl.style.display = "block";
+  } else {
+    voucherTextEl.style.display = "none";
+  }
+
   document.getElementById("totalText").textContent = `${total.toLocaleString()}₫`;
 }
 
@@ -122,11 +144,14 @@ function loadShippingFee() {
     .then(res => res.json())
     .then(data => {
       const fees = window.cart.map(i => data[i.loai] || 0);
-      shippingFee = Math.max(...fees, 0);
+      const maxFee = Math.max(...fees, 0);
+      shippingFeeOriginal = maxFee;
+      shippingFee = Math.round(maxFee * 0.4); // Giảm 60%
       updateCheckoutSummary();
     })
     .catch(err => {
       console.warn("Không thể tải shippingfee.json:", err);
+      shippingFeeOriginal = 0;
       shippingFee = 0;
       updateCheckoutSummary();
     });
@@ -161,7 +186,6 @@ function submitOrder() {
     total: window.cart.reduce((sum, i) => sum + i.Giá * i.quantity, 0) + shippingFee - voucherValue
   };
 
-  // ✅ GỬI ĐƠN HÀNG VỀ MAKE.COM
   fetch("https://hook.eu2.make.com/m9o7boye6fl1hstehst7waysmt38b2ul", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -172,7 +196,6 @@ function submitOrder() {
       return res.text();
     })
     .then(() => {
-      // ✅ TRACKING: Purchase & Subscribe
       if (typeof trackBothPixels === "function" && firstItem) {
         trackBothPixels("Purchase", {
           content_id: firstItem.id || "unknown",
