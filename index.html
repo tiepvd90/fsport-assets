@@ -9,18 +9,14 @@
   <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="/css/base.css" />
   <link rel="stylesheet" href="/css/freeflow.css" />
-  <link rel="stylesheet" href="/css/stickyheader.css" />
+
+  <!-- ✅ Favicon -->
+  <link rel="icon" type="image/png" href="/favicon.png" />
 </head>
 <body>
 
-  <!-- ✅ Sticky Header (có position: sticky) -->
-  <div style="position: sticky; top: 0; z-index: 10000; background: white;">
-    <div id="sticky-header-placeholder"></div>
-  </div>
-
-  <!-- ✅ Giỏ hàng + Base placeholders -->
+  <!-- ✅ Placeholder cho popup giỏ hàng -->
   <div id="checkoutPopup-placeholder"></div>
-  <div id="base-placeholder"></div>
 
   <!-- ✅ FreeFlow Feed -->
   <div id="freeflowFeed"></div>
@@ -29,7 +25,16 @@
   <script src="/js/freeflow.js"></script>
   <script>
     fetchFreeFlowData("https://script.google.com/macros/s/AKfycbwuEh9sP65vyQL0XzU8gY1Os0QYV_K5egKJgm8OhImAPjvdyrQiU7XCY909N99TnltP/exec");
+  </script>
 
+  <!-- ✅ Gọi video popup nếu có -->
+  <div id="videoOverlay" style="display:none;">
+    <button onclick="closeVideoPopup()" style="position:absolute;top:12px;right:12px;font-size:28px;color:white;background:none;border:none;cursor:pointer;">×</button>
+    <div class="video-inner">
+      <iframe id="videoFrame" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+    </div>
+  </div>
+  <script>
     function closeVideoPopup() {
       const overlay = document.getElementById("videoOverlay");
       const frame = document.getElementById("videoFrame");
@@ -38,15 +43,7 @@
     }
   </script>
 
-  <!-- ✅ Popup video -->
-  <div id="videoOverlay" style="display:none;">
-    <button onclick="closeVideoPopup()" style="position:absolute;top:12px;right:12px;font-size:28px;color:white;background:none;border:none;cursor:pointer;">×</button>
-    <div class="video-inner">
-      <iframe id="videoFrame" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-    </div>
-  </div>
-
-  <!-- ✅ HTML injection logic -->
+  <!-- ✅ Inject checkoutpopup.html để test icon sẵn có -->
   <script>
     async function injectHTML(file, placeholderId) {
       const res = await fetch(file);
@@ -55,7 +52,7 @@
       const temp = document.createElement("div");
       temp.innerHTML = html;
 
-      // ✅ Chạy lại tất cả script bên trong
+      // Gắn lại các <script>
       const scripts = temp.querySelectorAll("script");
       scripts.forEach(oldScript => {
         const newScript = document.createElement("script");
@@ -67,7 +64,7 @@
         document.body.appendChild(newScript);
       });
 
-      // ✅ Gắn phần tử khác ngoài script
+      // Gắn phần HTML còn lại
       Array.from(temp.children).forEach(el => {
         if (el.tagName !== "SCRIPT") {
           container.appendChild(el);
@@ -75,37 +72,18 @@
       });
     }
 
-    async function setupPage() {
-      // 1. Inject giỏ hàng
+    document.addEventListener("DOMContentLoaded", async () => {
       await injectHTML("/html/checkoutpopup.html", "checkoutPopup-placeholder");
 
-      // 2. Alias cho các icon cũ dùng onclick="showCheckoutPopup()"
-      window.showCheckoutPopup = function () {
+      // (tuỳ chọn) tạo alias nếu cần
+      window.showCheckoutPopup = () => {
         if (typeof toggleCheckoutPopup === "function") {
           toggleCheckoutPopup(true);
         } else {
           alert("⚠️ Giỏ hàng chưa hoạt động – thiếu hàm toggleCheckoutPopup!");
         }
       };
-
-      // 3. Inject sticky header JS + HTML
-      const stickyScript = document.createElement("script");
-      stickyScript.src = "/js/stickyheader.js";
-      stickyScript.onload = async () => {
-        const res = await fetch("/html/stickyheader.html");
-        const html = await res.text();
-        document.getElementById("sticky-header-placeholder").innerHTML = html;
-        if (typeof initStickyHeader === "function") initStickyHeader();
-      };
-      document.body.appendChild(stickyScript);
-
-      // 4. Inject base.html
-      const baseRes = await fetch("/html/base.html");
-      const baseHtml = await baseRes.text();
-      document.getElementById("base-placeholder").outerHTML = baseHtml;
-    }
-
-    document.addEventListener("DOMContentLoaded", setupPage);
+    });
   </script>
 
 </body>
