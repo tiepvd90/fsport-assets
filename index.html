@@ -11,23 +11,28 @@
   <!-- ✅ CSS chính -->
   <link rel="stylesheet" href="/css/base.css" />
   <link rel="stylesheet" href="/css/freeflow.css" />
+  <link rel="stylesheet" href="/css/stickyheader.css" />
 </head>
 <body>
-<!-- ✅ Placeholder để chèn sticky header -->
-<div id="sticky-header-placeholder"></div>
 
-<!-- ✅ Gọi file HTML -->
-<script>
-  fetch("/html/stickyheader.html")
-    .then(res => res.text())
-    .then(html => {
-      document.getElementById("sticky-header-placeholder").innerHTML = html;
-    });
-</script>
+  <!-- ✅ Placeholder để chèn sticky header -->
+  <div id="sticky-header-placeholder"></div>
 
-<!-- ✅ Gọi CSS và JS tương ứng -->
-<link rel="stylesheet" href="/css/stickyheader.css">
-<script src="/js/stickyheader.js" defer></script>
+  <!-- ✅ Gọi file HTML sticky header + khởi tạo JS sau khi chèn -->
+  <script src="/js/stickyheader.js"></script>
+  <script>
+    fetch("/html/stickyheader.html")
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById("sticky-header-placeholder").innerHTML = html;
+        // ✅ Gọi hàm init sau khi HTML đã được đưa vào DOM
+        if (typeof initStickyHeader === "function") {
+          initStickyHeader();
+        } else {
+          console.warn("⚠️ initStickyHeader chưa sẵn sàng.");
+        }
+      });
+  </script>
 
   <!-- 🔥 FREEFLOW FEED -->
   <div id="freeflowFeed"></div>
@@ -44,6 +49,9 @@
       overlay.style.display = "none";
     }
   </script>
+
+  <!-- ✅ Nhúng JS popup giỏ hàng (đảm bảo toggleCheckoutPopup tồn tại) -->
+  <script src="/js/checkoutpopup.js"></script>
 
   <!-- 🔳 Popup video YouTube -->
   <div id="videoOverlay" style="display:none;">
