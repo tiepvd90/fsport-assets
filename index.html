@@ -15,13 +15,14 @@
 </head>
 <body>
 
-  <!-- ✅ Sticky Header -->
+  <!-- ✅ Sticky Header & Popup Placeholder -->
   <div id="sticky-header-placeholder"></div>
+  <div id="checkoutPopup-placeholder"></div>
 
   <!-- ✅ FreeFlow Feed -->
   <div id="freeflowFeed"></div>
 
-  <!-- ✅ JS FreeFlow -->
+  <!-- ✅ FreeFlow JS -->
   <script src="/js/freeflow.js"></script>
   <script>
     fetchFreeFlowData("https://script.google.com/macros/s/AKfycbwuEh9sP65vyQL0XzU8gY1Os0QYV_K5egKJgm8OhImAPjvdyrQiU7XCY909N99TnltP/exec");
@@ -42,48 +43,53 @@
     </div>
   </div>
 
-  <!-- ✅ JS: Load sticky header đúng thứ tự -->
+  <!-- ✅ Inject checkoutpopup.html & stickyheader.html (không sửa JS gốc) -->
   <script>
-    function loadScript(src) {
-      return new Promise((resolve, reject) => {
-        const s = document.createElement("script");
-        s.src = src;
-        s.onload = resolve;
-        s.onerror = reject;
-        document.body.appendChild(s);
+    // Hàm dùng lại từ trang sản phẩm
+    async function injectHTML(file, placeholderId) {
+      const res = await fetch(file);
+      const html = await res.text();
+      const container = document.getElementById(placeholderId);
+      const temp = document.createElement("div");
+      temp.innerHTML = html;
+
+      Array.from(temp.children).forEach(el => {
+        if (el.tagName === "SCRIPT") {
+          const script = document.createElement("script");
+          if (el.src) {
+            script.src = el.src;
+            script.async = false;
+          } else {
+            script.textContent = el.textContent;
+          }
+          document.body.appendChild(script);
+        } else {
+          container.appendChild(el);
+        }
       });
     }
 
     async function setupStickyHeader() {
-      try {
-        // 1. Load checkoutpopup.js trước
-        await loadScript("/js/checkoutpopup.js");
-        console.log("✅ Đã load checkoutpopup.js");
+      // 🧩 Bước 1: Inject checkoutpopup.html trước (đảm bảo toggleCheckoutPopup hoạt động)
+      await injectHTML("/html/checkoutpopup.html", "checkoutPopup-placeholder");
 
-        if (typeof toggleCheckoutPopup !== "function") {
-          console.error("❌ toggleCheckoutPopup không tồn tại sau khi load script.");
-          return;
-        }
-
-        // 2. Load stickyheader.js
-        await loadScript("/js/stickyheader.js");
-        console.log("✅ Đã load stickyheader.js");
-
-        // 3. Chèn stickyheader.html
+      // 🧩 Bước 2: Load stickyheader.js
+      const script = document.createElement("script");
+      script.src = "/js/stickyheader.js";
+      script.onload = async () => {
+        // 🧩 Bước 3: Sau khi JS xong, inject HTML
         const res = await fetch("/html/stickyheader.html");
         const html = await res.text();
         document.getElementById("sticky-header-placeholder").innerHTML = html;
 
-        // 4. Gọi khởi tạo
+        // 🧩 Bước 4: Khởi tạo sticky header
         if (typeof initStickyHeader === "function") {
           initStickyHeader();
-          console.log("✅ Đã gọi initStickyHeader()");
         } else {
-          console.warn("⚠️ initStickyHeader không tồn tại.");
+          console.warn("⚠️ initStickyHeader chưa được định nghĩa.");
         }
-      } catch (err) {
-        console.error("❌ Lỗi khi load sticky header:", err);
-      }
+      };
+      document.body.appendChild(script);
     }
 
     document.addEventListener("DOMContentLoaded", setupStickyHeader);
