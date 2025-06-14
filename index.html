@@ -5,20 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <title>Fun Sport</title>
 
-  <!-- ✅ Font & CSS -->
+  <!-- ✅ Fonts + CSS -->
   <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="/css/base.css" />
   <link rel="stylesheet" href="/css/checkoutpopup.css" />
+  <link rel="stylesheet" href="/css/freeflow.css" />
 
   <!-- ✅ Favicon -->
   <link rel="icon" type="image/png" href="/favicon.png" />
 </head>
 <body>
 
-  <!-- ✅ Placeholder -->
+  <!-- ✅ Popup & FreeFlow -->
   <div id="checkoutPopup-placeholder"></div>
+  <div id="freeflow-placeholder"></div>
 
-  <!-- ✅ Inject HTML -->
+  <!-- ✅ Inject HTML & JS -->
   <script>
     async function injectHTML(file, placeholderId) {
       const res = await fetch(file);
@@ -27,7 +29,7 @@
       const temp = document.createElement("div");
       temp.innerHTML = html;
 
-      // ✅ Gắn <script> bên trong file
+      // ✅ Inject nội dung HTML và <script>
       const scripts = temp.querySelectorAll("script");
       scripts.forEach(oldScript => {
         const newScript = document.createElement("script");
@@ -39,7 +41,6 @@
         document.body.appendChild(newScript);
       });
 
-      // ✅ Gắn các phần tử còn lại
       Array.from(temp.children).forEach(el => {
         if (el.tagName !== "SCRIPT") {
           container.appendChild(el);
@@ -47,31 +48,38 @@
       });
     }
 
-    // ✅ Chờ DOM sẵn sàng rồi inject và mở popup
     document.addEventListener("DOMContentLoaded", async () => {
+      // ✅ 1. Inject checkout popup
       await injectHTML("/html/checkoutpopup.html", "checkoutPopup-placeholder");
 
-      // ✅ Chờ cho JS được thực thi
-      let retries = 10;
-      const waitFor = () => {
-        if (typeof toggleCheckoutPopup === "function") {
-          window.cart = [{
-            id: "chair001",
-            title: "Đặc Biệt Navy",
-            price: 469000,
-            quantity: 1,
-            image: "https://i.postimg.cc/T3B1F6Rx/navy.jpg",
-            category: "chair",
-            productPage: "chair001"
-          }];
-          toggleCheckoutPopup(true);
-        } else if (retries-- > 0) {
-          setTimeout(waitFor, 200);
-        } else {
-          alert("❌ Không thể khởi tạo toggleCheckoutPopup.");
-        }
+      // ✅ 2. Inject script JS nếu chưa nằm trong HTML
+      const script = document.createElement("script");
+      script.src = "/js/checkoutpopup.js";
+      script.onload = () => {
+        // ✅ Sau khi JS đã có, push cart rồi bật popup
+        window.cart = [{
+          id: "chair001",
+          title: "Đặc Biệt Navy",
+          price: 469000,
+          quantity: 1,
+          image: "https://i.postimg.cc/T3B1F6Rx/navy.jpg",
+          category: "chair",
+          productPage: "chair001"
+        }];
+        toggleCheckoutPopup(true);
       };
-      waitFor();
+      document.body.appendChild(script);
+
+      // ✅ 3. Inject FreeFlow feed
+      await injectHTML("/html/freeflow.html", "freeflow-placeholder");
+
+      // ✅ 4. Load JS FreeFlow + gọi dữ liệu
+      const ffScript = document.createElement("script");
+      ffScript.src = "/js/freeflow.js";
+      ffScript.onload = () => {
+        fetchFreeFlowData("https://script.google.com/macros/s/AKfycbwuEh9sP65vyQL0XzU8gY1Os0QYV_K5egKJgm8OhImAPjvdyrQiU7XCY909N99TnltP/exec");
+      };
+      document.body.appendChild(ffScript);
     });
   </script>
 
