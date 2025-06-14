@@ -1,0 +1,37 @@
+{
+  "thuộc_tính": [
+    {
+      "label": "Màu Sắc",
+      "key": "Màu Sắc",
+      "type": "option",
+      "display": "thumbnail",
+      "values": [
+  { "text": "Đỏ Hồng", "image": "https://i.postimg.cc/6qbPsVJ0/dohong.jpg" },
+  { "text": "Hồng", "image": "https://i.postimg.cc/prLS1G7r/hong.jpg" },
+  { "text": "Lam", "image": "https://i.postimg.cc/X7XhfPdD/lam.jpg" },
+  { "text": "Lục Lam", "image": "https://i.postimg.cc/Fsq6DxxF/luclam.jpg" },
+  { "text": "Xanh Ngọc", "image": "https://i.postimg.cc/bwtBM26x/mint.jpg" },
+  { "text": "Rêu", "image": "https://i.postimg.cc/LsFbM67r/reu.jpg" },
+  { "text": "Tím", "image": "https://i.postimg.cc/5t5k9WWj/tim.jpg" },
+  { "text": "Trắng", "image": "https://i.postimg.cc/QtXYHYjm/trang.jpg" },
+  { "text": "Vàng Chanh", "image": "https://i.postimg.cc/k4f18N4m/vangchanh.jpg" },
+  { "text": "Đen", "image": "https://i.postimg.cc/c1F28Wgn/en.jpg" }
+]
+    },
+    {
+      "label": "Size",
+      "key": "Size",
+      "type": "option",
+      "display": "button",
+      "values": ["33/34", "35", "36", "37", "38", "39", "40", "41/42", "43", "44", "45", "46"]
+    }
+  ],
+  "biến_thể": [
+    {
+      "id": "ysandalbn68",
+      "category": "ysandal",
+      "Giá": 420000,
+      "Giá gốc": 480000
+    }
+  ]
+}
