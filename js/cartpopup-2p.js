@@ -39,7 +39,7 @@ function renderOptions(attributes) {
 if (attr.key.toLowerCase().includes("size")) {
   const noteMap = {
     "ysandal5568": "Trừ 2 size so với giày thể thao, ví dụ: hàng ngày đi giày thể thao size 40 => Chọn dép này size 38",
-    "ysandal5568": "Trừ 1 size so với giày thể thao, ví dụ: hàng ngày đi giày thể thao size 40 => Chọn dép này size 39",
+    "ysandalbn68": "Trừ 1 size so với giày thể thao, ví dụ: hàng ngày đi giày thể thao size 40 => Chọn dép này size 39",
   };
   const currentPage = window.productPage || "";
   if (noteMap[currentPage]) {
