@@ -13,14 +13,17 @@ loadCart(); // ⬅️ Gọi ngay lập tức khi file được load
 let shippingFee = 0;
 let voucherValue = 0;
 
-
 // ✅ HIỆN CHECKOUT POPUP
 function showCheckoutPopup() {
   loadShippingFee();
   renderCheckoutCart();
-  document.getElementById("checkoutPopup").classList.remove("hidden");
-  document.getElementById("checkoutPopup").style.display = "flex";
+
+  const popup = document.getElementById("checkoutPopup");
+  popup.classList.remove("hidden");
+  popup.style.display = "flex";
   document.body.style.overflow = "hidden";
+
+  bindCheckoutEvents(); // ✅ Gắn lại sự kiện sau khi hiển thị popup
 }
 
 // ✅ ẨN CHECKOUT POPUP
@@ -73,11 +76,10 @@ function renderCheckoutCart() {
   updateCheckoutSummary();
 }
 
+// ✅ CẬP NHẬT TỔNG KẾT ĐƠN HÀNG
 function updateCheckoutSummary() {
   const subtotal = window.cart.reduce((sum, item) => sum + item.Giá * item.quantity, 0);
   const totalQty = window.cart.reduce((sum, item) => sum + item.quantity, 0);
-
-  // ✅ Tính tổng giảm từ voucher
   voucherValue = window.cart.reduce((sum, item) => sum + (item.voucher?.amount || 0) * item.quantity, 0);
 
   const shipping = shippingFee;
@@ -111,16 +113,6 @@ function removeItem(index) {
 // ✅ LƯU GIỎ HÀNG VÀO localStorage
 function saveCart() {
   localStorage.setItem("cart", JSON.stringify(window.cart));
-}
-
-// ✅ LOAD GIỎ HÀNG KHI MỞ TRANG
-function loadCart() {
-  try {
-    const data = JSON.parse(localStorage.getItem("cart"));
-    if (Array.isArray(data)) window.cart = data;
-  } catch (e) {
-    console.warn("Không thể load cart từ localStorage");
-  }
 }
 
 // ✅ TẢI PHÍ VẬN CHUYỂN
@@ -181,24 +173,24 @@ function submitOrder() {
   .then(() => {
     // ✅ TRACKING: Purchase & Subscribe
     if (typeof trackBothPixels === "function" && firstItem) {
-  trackBothPixels("Purchase", {
-    content_id: firstItem.id || "unknown",
-    content_name: firstItem["Phân loại"] || "unknown",
-    content_category: firstItem.category || "unknown",
-    content_page: window.productPage || "unknown",
-    value: orderData.total,
-    currency: "VND"
-  });
+      trackBothPixels("Purchase", {
+        content_id: firstItem.id || "unknown",
+        content_name: firstItem["Phân loại"] || "unknown",
+        content_category: firstItem.category || "unknown",
+        content_page: window.productPage || "unknown",
+        value: orderData.total,
+        currency: "VND"
+      });
 
-  trackBothPixels("Subscribe", {
-    content_id: firstItem.id || "unknown",
-    content_name: firstItem["Phân loại"] || "unknown",
-    content_category: firstItem.category || "unknown",
-    content_page: window.productPage || "unknown",
-    value: orderData.total,
-    currency: "VND"
-  });
-}
+      trackBothPixels("Subscribe", {
+        content_id: firstItem.id || "unknown",
+        content_name: firstItem["Phân loại"] || "unknown",
+        content_category: firstItem.category || "unknown",
+        content_page: window.productPage || "unknown",
+        value: orderData.total,
+        currency: "VND"
+      });
+    }
 
     alert("Cảm ơn bạn đã đặt hàng! Funsport sẽ sớm liên hệ.");
     window.cart = [];
@@ -211,9 +203,17 @@ function submitOrder() {
   });
 }
 
+// ✅ GẮN SỰ KIỆN CHO NÚT ĐẶT HÀNG
+function bindCheckoutEvents() {
+  const btn = document.getElementById("checkoutSubmitBtn");
+  if (btn && !btn.dataset.bound) {
+    btn.addEventListener("click", submitOrder);
+    btn.dataset.bound = "true";
+  }
+}
 
-// ✅ BIND SỰ KIỆN KHI LOAD
+// ✅ KHI LOAD TRANG
 window.addEventListener("DOMContentLoaded", () => {
   loadCart();
-  document.getElementById("checkoutSubmitBtn")?.addEventListener("click", submitOrder);
+  bindCheckoutEvents();
 });
