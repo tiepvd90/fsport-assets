@@ -50,26 +50,26 @@ function renderCheckoutCart() {
     const hasVoucher = item.voucher?.amount;
     const priceText = item.Giá.toLocaleString() + "₫";
     const voucherHtml = hasVoucher
-      ? <span class="voucher-tag" style="background: rgba(0,160,230,0.6); color: white; font-size: 9px; padding: 2px 6px; margin-left: 6px; border-radius: 4px; vertical-align: middle;">Voucher: -${item.voucher.amount.toLocaleString()}₫</span>
+      ? `<span class="voucher-tag" style="background: rgba(0,160,230,0.6); color: white; font-size: 9px; padding: 2px 6px; margin-left: 6px; border-radius: 4px; vertical-align: middle;">Voucher: -${item.voucher.amount.toLocaleString()}₫</span>`
       : "";
 
     el.innerHTML = `
-  <button class="remove-btn" onclick="removeItem(${index})">&times;</button>
-  <img src="${item.Ảnh}" alt="img" />
-  <div class="cart-item-details">
-    <div class="cart-item-name">${item["Phân loại"]}</div>
-    <div class="cart-item-price-qty">
-      <div class="cart-item-price">
-        ${priceText} ${voucherHtml}
+      <button class="remove-btn" onclick="removeItem(${index})">&times;</button>
+      <img src="${item.Ảnh}" alt="img" />
+      <div class="cart-item-details">
+        <div class="cart-item-name">${item["Phân loại"]}</div>
+        <div class="cart-item-price-qty">
+          <div class="cart-item-price">
+            ${priceText} ${voucherHtml}
+          </div>
+          <div class="cart-item-qty">
+            <button onclick="changeItemQty(${index}, -1)">−</button>
+            <span>${item.quantity}</span>
+            <button onclick="changeItemQty(${index}, 1)">+</button>
+          </div>
+        </div>
       </div>
-      <div class="cart-item-qty">
-        <button onclick="changeItemQty(${index}, -1)">−</button>
-        <span>${item.quantity}</span>
-        <button onclick="changeItemQty(${index}, 1)">+</button>
-      </div>
-    </div>
-  </div>
-`;
+    `;
     list.appendChild(el);
   });
 
@@ -87,12 +87,13 @@ function updateCheckoutSummary() {
 
   const qtyEl = document.getElementById("itemQuantityText");
   const subtotalEl = document.getElementById("subtotalText");
-  if (qtyEl) qtyEl.textContent = (${totalQty} sản phẩm);
-  if (subtotalEl) subtotalEl.textContent = ${subtotal.toLocaleString()}₫;
+  if (qtyEl) qtyEl.textContent = `${totalQty} sản phẩm`;
+  if (subtotalEl) subtotalEl.textContent = `${subtotal.toLocaleString()}₫`;
 
-  document.getElementById("shippingFeeText").textContent = ${shipping.toLocaleString()}₫;
-  document.getElementById("voucherText").textContent = -${voucherValue.toLocaleString()}₫;
-  document.getElementById("totalText").textContent = ${total.toLocaleString()}₫;
+  document.getElementById("shippingFeeText").textContent = `${shipping.toLocaleString()}₫`;
+  document.getElementById("voucherText").textContent = voucherValue > 0 ? `-${voucherValue.toLocaleString()}₫` : "";
+  document.getElementById("voucherText").style.display = voucherValue > 0 ? "block" : "none";
+  document.getElementById("totalText").textContent = `${total.toLocaleString()}₫`;
 }
 
 // ✅ THÊM / BỚT SỐ LƯỢNG
@@ -166,41 +167,41 @@ function submitOrder() {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(orderData)
   })
-  .then(res => {
-    if (!res.ok) throw new Error("Gửi đơn hàng thất bại");
-    return res.text();
-  })
-  .then(() => {
-    // ✅ TRACKING: Purchase & Subscribe
-    if (typeof trackBothPixels === "function" && firstItem) {
-      trackBothPixels("Purchase", {
-        content_id: firstItem.id || "unknown",
-        content_name: firstItem["Phân loại"] || "unknown",
-        content_category: firstItem.category || "unknown",
-        content_page: window.productPage || "unknown",
-        value: orderData.total,
-        currency: "VND"
-      });
+    .then(res => {
+      if (!res.ok) throw new Error("Gửi đơn hàng thất bại");
+      return res.text();
+    })
+    .then(() => {
+      // ✅ TRACKING: Purchase & Subscribe
+      if (typeof trackBothPixels === "function" && firstItem) {
+        trackBothPixels("Purchase", {
+          content_id: firstItem.id || "unknown",
+          content_name: firstItem["Phân loại"] || "unknown",
+          content_category: firstItem.category || "unknown",
+          content_page: window.productPage || "unknown",
+          value: orderData.total,
+          currency: "VND"
+        });
 
-      trackBothPixels("Subscribe", {
-        content_id: firstItem.id || "unknown",
-        content_name: firstItem["Phân loại"] || "unknown",
-        content_category: firstItem.category || "unknown",
-        content_page: window.productPage || "unknown",
-        value: orderData.total,
-        currency: "VND"
-      });
-    }
+        trackBothPixels("Subscribe", {
+          content_id: firstItem.id || "unknown",
+          content_name: firstItem["Phân loại"] || "unknown",
+          content_category: firstItem.category || "unknown",
+          content_page: window.productPage || "unknown",
+          value: orderData.total,
+          currency: "VND"
+        });
+      }
 
-    alert("Cảm ơn bạn đã đặt hàng! Funsport sẽ sớm liên hệ.");
-    window.cart = [];
-    saveCart();
-    hideCheckoutPopup();
-  })
-  .catch(err => {
-    console.error("❌ Lỗi khi gửi về Make.com:", err);
-    alert("Có lỗi xảy ra khi gửi đơn hàng, vui lòng thử lại sau.");
-  });
+      alert("Cảm ơn bạn đã đặt hàng! Funsport sẽ sớm liên hệ.");
+      window.cart = [];
+      saveCart();
+      hideCheckoutPopup();
+    })
+    .catch(err => {
+      console.error("❌ Lỗi khi gửi về Make.com:", err);
+      alert("Có lỗi xảy ra khi gửi đơn hàng, vui lòng thử lại sau.");
+    });
 }
 
 // ✅ GẮN SỰ KIỆN CHO NÚT ĐẶT HÀNG
