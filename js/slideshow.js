@@ -11,6 +11,9 @@ switch (window.productPage) {
   case "ysandal5568":
     totalImages = 41;
     break;
+  case "ysandal5560":
+    totalImages = 14;
+    break;
   default:
     totalImages = 5; // hoặc giá trị mặc định khác nếu cần
     break;
