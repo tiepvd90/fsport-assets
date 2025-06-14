@@ -23,7 +23,7 @@ function showCheckoutPopup() {
   popup.style.display = "flex";
   document.body.style.overflow = "hidden";
 
-  bindCheckoutEvents(); // ✅ Gắn lại sự kiện sau khi hiển thị popup
+  bindCheckoutEvents();
 }
 
 // ✅ ẨN CHECKOUT POPUP
@@ -77,21 +77,31 @@ function renderCheckoutCart() {
 }
 
 // ✅ CẬP NHẬT TỔNG KẾT ĐƠN HÀNG
-function updateCheckoutSummary() {
+function updateCheckoutSummary(originalShipping = 0) {
   const subtotal = window.cart.reduce((sum, item) => sum + item.Giá * item.quantity, 0);
   const totalQty = window.cart.reduce((sum, item) => sum + item.quantity, 0);
   voucherValue = window.cart.reduce((sum, item) => sum + (item.voucher?.amount || 0) * item.quantity, 0);
 
-  const shipping = shippingFee;
-  const total = subtotal + shipping - voucherValue;
+  const total = subtotal + shippingFee - voucherValue;
 
   const qtyEl = document.getElementById("itemQuantityText");
   const subtotalEl = document.getElementById("subtotalText");
   if (qtyEl) qtyEl.textContent = `(${totalQty} sản phẩm)`;
   if (subtotalEl) subtotalEl.textContent = `${subtotal.toLocaleString()}₫`;
 
-  document.getElementById("shippingFeeText").textContent = `${shipping.toLocaleString()}₫`;
-  document.getElementById("voucherText").textContent = `-${voucherValue.toLocaleString()}₫`;
+  document.getElementById("originalShippingFee").textContent = `${originalShipping.toLocaleString()}₫`;
+  document.getElementById("shippingFeeText").textContent = `${shippingFee.toLocaleString()}₫`;
+
+  const voucherEl = document.getElementById("voucherText");
+  if (voucherEl) {
+    if (voucherValue === 0) {
+      voucherEl.parentElement.style.display = "none";
+    } else {
+      voucherEl.textContent = `-${voucherValue.toLocaleString()}₫`;
+      voucherEl.parentElement.style.display = "flex";
+    }
+  }
+
   document.getElementById("totalText").textContent = `${total.toLocaleString()}₫`;
 }
 
@@ -121,13 +131,14 @@ function loadShippingFee() {
     .then(res => res.json())
     .then(data => {
       const fees = window.cart.map(i => data[i.loai] || 0);
-      shippingFee = Math.max(...fees, 0);
-      updateCheckoutSummary();
+      const maxFee = Math.max(...fees, 0);
+      shippingFee = Math.floor(maxFee * 0.4);
+      updateCheckoutSummary(maxFee);
     })
     .catch(err => {
       console.warn("Không thể tải shippingfee.json:", err);
       shippingFee = 0;
-      updateCheckoutSummary();
+      updateCheckoutSummary(0);
     });
 }
 
@@ -160,47 +171,45 @@ function submitOrder() {
     total: window.cart.reduce((sum, i) => sum + i.Giá * i.quantity, 0) + shippingFee - voucherValue
   };
 
-  // ✅ GỬI ĐƠN HÀNG VỀ MAKE.COM
   fetch("https://hook.eu2.make.com/m9o7boye6fl1hstehst7waysmt38b2ul", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(orderData)
   })
-  .then(res => {
-    if (!res.ok) throw new Error("Gửi đơn hàng thất bại");
-    return res.text();
-  })
-  .then(() => {
-    // ✅ TRACKING: Purchase & Subscribe
-    if (typeof trackBothPixels === "function" && firstItem) {
-      trackBothPixels("Purchase", {
-        content_id: firstItem.id || "unknown",
-        content_name: firstItem["Phân loại"] || "unknown",
-        content_category: firstItem.category || "unknown",
-        content_page: window.productPage || "unknown",
-        value: orderData.total,
-        currency: "VND"
-      });
+    .then(res => {
+      if (!res.ok) throw new Error("Gửi đơn hàng thất bại");
+      return res.text();
+    })
+    .then(() => {
+      if (typeof trackBothPixels === "function" && firstItem) {
+        trackBothPixels("Purchase", {
+          content_id: firstItem.id || "unknown",
+          content_name: firstItem["Phân loại"] || "unknown",
+          content_category: firstItem.category || "unknown",
+          content_page: window.productPage || "unknown",
+          value: orderData.total,
+          currency: "VND"
+        });
 
-      trackBothPixels("Subscribe", {
-        content_id: firstItem.id || "unknown",
-        content_name: firstItem["Phân loại"] || "unknown",
-        content_category: firstItem.category || "unknown",
-        content_page: window.productPage || "unknown",
-        value: orderData.total,
-        currency: "VND"
-      });
-    }
+        trackBothPixels("Subscribe", {
+          content_id: firstItem.id || "unknown",
+          content_name: firstItem["Phân loại"] || "unknown",
+          content_category: firstItem.category || "unknown",
+          content_page: window.productPage || "unknown",
+          value: orderData.total,
+          currency: "VND"
+        });
+      }
 
-    alert("Cảm ơn bạn đã đặt hàng! Funsport sẽ sớm liên hệ.");
-    window.cart = [];
-    saveCart();
-    hideCheckoutPopup();
-  })
-  .catch(err => {
-    console.error("❌ Lỗi khi gửi về Make.com:", err);
-    alert("Có lỗi xảy ra khi gửi đơn hàng, vui lòng thử lại sau.");
-  });
+      alert("Cảm ơn bạn đã đặt hàng! Funsport sẽ sớm liên hệ.");
+      window.cart = [];
+      saveCart();
+      hideCheckoutPopup();
+    })
+    .catch(err => {
+      console.error("❌ Lỗi khi gửi về Make.com:", err);
+      alert("Có lỗi xảy ra khi gửi đơn hàng, vui lòng thử lại sau.");
+    });
 }
 
 // ✅ GẮN SỰ KIỆN CHO NÚT ĐẶT HÀNG
