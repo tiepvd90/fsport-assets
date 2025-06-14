@@ -72,12 +72,13 @@
 }
 #mainImage {
   width: 100%;
-  max-width: 240px;
-  aspect-ratio: 1 / 1;
+  max-width: 280px; /* ⬅️ tăng chiều ngang */
+  aspect-ratio: 4 / 5; /* ⬅️ tăng chiều cao hơn so với chiều ngang */
   object-fit: cover;
   border-radius: 10px;
   flex-shrink: 0;
 }
+
 .product-info {
   flex: 1;
   display: flex;
