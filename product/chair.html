@@ -290,9 +290,9 @@
   </script>
 <script src="/js/stickyheader.js"></script>
 <script>
-  document.addEventListener("DOMContentLoaded", () => {
-    initStickyHeader();
-  });
+  setupPage().then(() => {
+  initStickyHeader();
+});
 </script>
 
   <!-- ✅ Tracking -->
