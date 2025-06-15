@@ -11,7 +11,7 @@
     "tags": ["SUP", "thuyền", "bơm"],
     "basePriority": 10,
     "productCategory": "sup",
-    "sellerID": "001"
+    "sellerID": "huyenle"
   },
   {
     "itemId": "sup010",
@@ -25,7 +25,7 @@
     "tags": ["SUP", "thuyền", "bơm"],
     "basePriority": 18,
     "productCategory": "sup",
-    "sellerID": "001"
+    "sellerID": "huyenle"
   },
   {
     "itemId": "sup011",
@@ -39,7 +39,7 @@
     "tags": ["SUP", "thuyền", "bơm"],
     "basePriority": 24,
     "productCategory": "sup",
-    "sellerID": "001"
+    "sellerID": "huyenle"
   },
   {
     "itemId": "sup012",
@@ -53,7 +53,7 @@
     "tags": ["SUP", "thuyền", "bơm"],
     "basePriority": 25,
     "productCategory": "sup",
-    "sellerID": "001"
+    "sellerID": "huyenle"
   },
   {
     "itemId": "chair4a",
@@ -67,7 +67,7 @@
     "tags": ["ghế", "ghế fa", "ghế chỉnh dáng ngồi"],
     "basePriority": 30,
     "productCategory": "chair",
-    "sellerID": "001"
+    "sellerID": "huyenle"
   },
   {
     "itemId": "chair4b",
@@ -81,7 +81,7 @@
     "tags": ["ghế", "ghế fa", "ghế chỉnh dáng ngồi"],
     "basePriority": 20,
     "productCategory": "chair",
-    "sellerID": "001"
+    "sellerID": "huyenle"
   },
   {
     "itemId": "chair4c",
@@ -95,7 +95,7 @@
     "tags": ["ghế", "ghế fa", "ghế chỉnh dáng ngồi"],
     "basePriority": 20,
     "productCategory": "chair",
-    "sellerID": "001"
+    "sellerID": "huyenle"
   },
   {
     "itemId": "chair4",
@@ -109,7 +109,7 @@
     "tags": ["ghế", "ghế fa", "ghế chỉnh dáng ngồi"],
     "basePriority": 20,
     "productCategory": "chair",
-    "sellerID": "001"
+    "sellerID": "huyenle"
   },
   {
     "itemId": "chairvid001",
@@ -123,7 +123,7 @@
     "tags": ["SUP", "thuyền", "bơm"],
     "basePriority": 17,
     "productCategory": "chair",
-    "sellerID": "001"
+    "sellerID": "huyenle"
   },
   {
     "itemId": "chairvid002",
@@ -137,7 +137,7 @@
     "tags": ["SUP", "thuyền", "bơm"],
     "basePriority": 20,
     "productCategory": "chair",
-    "sellerID": "001"
+    "sellerID": "huyenle"
   },
   {
     "itemId": "sup",
@@ -151,7 +151,7 @@
     "tags": ["SUP", "thuyền", "bơm"],
     "basePriority": 15,
     "productCategory": "sup",
-    "sellerID": "001"
+    "sellerID": "huyenle"
   },
   {
     "itemId": "dep1",
@@ -165,7 +165,7 @@
     "tags": ["ysandal"],
     "basePriority": 25,
     "productCategory": "ysandal",
-    "sellerID": "001"
+    "sellerID": "huyenle"
   },
   {
     "itemId": "dep2",
@@ -179,7 +179,7 @@
     "tags": ["ysandal"],
     "basePriority": 25,
     "productCategory": "ysandal",
-    "sellerID": "001"
+    "sellerID": "huyenle"
   },
   {
     "itemId": "dep3",
@@ -193,7 +193,7 @@
     "tags": ["ysandal"],
     "basePriority": 25,
     "productCategory": "ysandal",
-    "sellerID": "001"
+    "sellerID": "huyenle"
   },
   {
     "itemId": "dep4",
@@ -207,7 +207,7 @@
     "tags": ["ysandal"],
     "basePriority": 25,
     "productCategory": "ysandal",
-    "sellerID": "001"
+    "sellerID": "huyenle"
   },
   {
     "itemId": "dep5",
@@ -221,7 +221,7 @@
     "tags": ["ysandal"],
     "basePriority": 25,
     "productCategory": "ysandal",
-    "sellerID": "001"
+    "sellerID": "huyenle"
   },
   {
     "itemId": "dep6",
@@ -235,7 +235,7 @@
     "tags": ["ysandal"],
     "basePriority": 25,
     "productCategory": "ysandal",
-    "sellerID": "001"
+    "sellerID": "huyenle"
   },
   {
     "itemId": "dep7",
@@ -249,7 +249,7 @@
     "tags": ["ysandal"],
     "basePriority": 17,
     "productCategory": "ysandal",
-    "sellerID": "001"
+    "sellerID": "huyenle"
   },
   {
     "itemId": "dep8",
@@ -263,6 +263,6 @@
     "tags": ["ysandal"],
     "basePriority": 25,
     "productCategory": "ysandal",
-    "sellerID": "001"
+    "sellerID": "huyenle"
   }
 ]
