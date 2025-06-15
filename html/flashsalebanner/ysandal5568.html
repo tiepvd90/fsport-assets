@@ -16,12 +16,23 @@
     font-family: 'Be Vietnam Pro', sans-serif;
     white-space: nowrap;
     overflow: hidden;
-    text-overflow: ellipsis;
     max-width: 100%;
+  }
+
+  /* 🔁 Giảm font cho màn nhỏ */
+  @media (max-width: 400px) {
+    .swinging-text {
+      font-size: 14px;
+    }
+  }
+
+  @media (max-width: 320px) {
+    .swinging-text {
+      font-size: 12px;
+    }
   }
 </style>
 
-<!-- ✅ Banner khuyến mãi 1 dòng cố định -->
 <div style="
   background-image: url('https://i.postimg.cc/wB7DgT1R/flash-sale-background.jpg');
   background-size: cover;
