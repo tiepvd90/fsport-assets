@@ -1,0 +1,89 @@
+{
+  "thuộc_tính": [
+    {
+      "key": "Màu Sắc",
+      "label": "Màu Sắc",
+      "display": "thumbnail",
+      "values": [
+        {
+          "text": "Meikan - Đen Xám",
+          "image": "https://i.postimg.cc/zDtrp1Qn/denxam.webp",
+          "Giá": 80000,
+          "Giá gốc": 130000
+        },
+        {
+          "text": "Meikan - Xanh",
+          "image": "https://i.postimg.cc/7h6yDB5G/xanh.webp",
+          "Giá": 80000,
+          "Giá gốc": 130000
+        },
+        {
+          "text": "Meikan Vàng",
+          "image": "https://i.postimg.cc/TPMGmq4F/vang.webp",
+          "Giá": 80000,
+          "Giá gốc": 130000
+        },
+        {
+          "text": "Meikan Coolmax - Đen Xám",
+          "image": "https://i.postimg.cc/WbfS9s0c/coolmax-denxam.webp",
+          "Giá": 120000,
+          "Giá gốc": 180000
+        },
+        {
+          "text": "Meikan Coolmax - Đen Xanh Dương",
+          "image": "https://i.postimg.cc/WbtwqxCW/coolmax-denxanhduong.webp",
+          "Giá": 120000,
+          "Giá gốc": 180000
+        },
+        {
+          "text": "Meikan Coolmax - Đen Cam",
+          "image": "https://i.postimg.cc/MKZrPs4V/coolmax-dencam.webp",
+          "Giá": 120000,
+          "Giá gốc": 180000
+        },
+        {
+          "text": "Meikan Coolmax - Đen Xanh Rêu",
+          "image": "https://i.postimg.cc/HsLB4rct/coolmax-denxanhreu.webp",
+          "Giá": 120000,
+          "Giá gốc": 180000
+        },
+        {
+          "text": "Meikan Coolmax - Đen Hồng",
+          "image": "https://i.postimg.cc/3xVSw3wF/coolmax-hongden.webp",
+          "Giá": 120000,
+          "Giá gốc": 180000
+        }
+      ]
+    },
+    {
+      "key": "Size",
+      "label": "Size",
+      "values": ["M(34-38)", "L(39-42)"]
+    }
+  ],
+  "biến_thể": [
+    { "Màu Sắc": "Meikan - Đen Xám", "Size": "M(34-38)", "id": "meikan-denxam-m" },
+    { "Màu Sắc": "Meikan - Đen Xám", "Size": "L(39-42)", "id": "meikan-denxam-l" },
+
+    { "Màu Sắc": "Meikan - Xanh", "Size": "M(34-38)", "id": "meikan-xanh-m" },
+    { "Màu Sắc": "Meikan - Xanh", "Size": "L(39-42)", "id": "meikan-xanh-l" },
+
+    { "Màu Sắc": "Meikan Vàng", "Size": "M(34-38)", "id": "meikan-vang-m" },
+    { "Màu Sắc": "Meikan Vàng", "Size": "L(39-42)", "id": "meikan-vang-l" },
+
+    { "Màu Sắc": "Meikan Coolmax - Đen Xám", "Size": "M(34-38)", "id": "coolmax-denxam-m" },
+    { "Màu Sắc": "Meikan Coolmax - Đen Xám", "Size": "L(39-42)", "id": "coolmax-denxam-l" },
+
+    { "Màu Sắc": "Meikan Coolmax - Đen Xanh Dương", "Size": "M(34-38)", "id": "coolmax-xanhduong-m" },
+    { "Màu Sắc": "Meikan Coolmax - Đen Xanh Dương", "Size": "L(39-42)", "id": "coolmax-xanhduong-l" },
+
+    { "Màu Sắc": "Meikan Coolmax - Đen Cam", "Size": "M(34-38)", "id": "coolmax-cam-m" },
+    { "Màu Sắc": "Meikan Coolmax - Đen Cam", "Size": "L(39-42)", "id": "coolmax-cam-l" },
+
+    { "Màu Sắc": "Meikan Coolmax - Đen Xanh Rêu", "Size": "M(34-38)", "id": "coolmax-xanhreu-m" },
+    { "Màu Sắc": "Meikan Coolmax - Đen Xanh Rêu", "Size": "L(39-42)", "id": "coolmax-xanhreu-l" },
+
+    { "Màu Sắc": "Meikan Coolmax - Đen Hồng", "Size": "M(34-38)", "id": "coolmax-hong-m" },
+    { "Màu Sắc": "Meikan Coolmax - Đen Hồng", "Size": "L(39-42)", "id": "coolmax-hong-l" }
+  ]
+}
