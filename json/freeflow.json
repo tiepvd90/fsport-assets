@@ -9,7 +9,9 @@
     "youtube": "",
     "productPage": "/product/sup",
     "tags": ["SUP", "thuyền", "bơm"],
-    "basePriority": 10
+    "basePriority": 10,
+    "productCategory": "sup",
+    "sellerID": "001"
   },
   {
     "itemId": "sup010",
@@ -21,7 +23,9 @@
     "youtube": "",
     "productPage": "/product/sup",
     "tags": ["SUP", "thuyền", "bơm"],
-    "basePriority": 18
+    "basePriority": 18,
+    "productCategory": "sup",
+    "sellerID": "001"
   },
   {
     "itemId": "sup011",
@@ -33,7 +37,9 @@
     "youtube": "",
     "productPage": "/product/sup",
     "tags": ["SUP", "thuyền", "bơm"],
-    "basePriority": 24
+    "basePriority": 24,
+    "productCategory": "sup",
+    "sellerID": "001"
   },
   {
     "itemId": "sup012",
@@ -45,7 +51,9 @@
     "youtube": "",
     "productPage": "/product/sup",
     "tags": ["SUP", "thuyền", "bơm"],
-    "basePriority": 25
+    "basePriority": 25,
+    "productCategory": "sup",
+    "sellerID": "001"
   },
   {
     "itemId": "chair4",
@@ -57,7 +65,9 @@
     "youtube": "",
     "productPage": "/product/chair",
     "tags": ["ghế", "ghế fa", "ghế chỉnh dáng ngồi"],
-    "basePriority": 30
+    "basePriority": 30,
+    "productCategory": "chair",
+    "sellerID": "001"
   },
   {
     "itemId": "chair4",
@@ -69,7 +79,9 @@
     "youtube": "",
     "productPage": "/product/chair",
     "tags": ["ghế", "ghế fa", "ghế chỉnh dáng ngồi"],
-    "basePriority": 20
+    "basePriority": 20,
+    "productCategory": "chair",
+    "sellerID": "001"
   },
   {
     "itemId": "chair4",
@@ -81,7 +93,9 @@
     "youtube": "",
     "productPage": "/product/chair",
     "tags": ["ghế", "ghế fa", "ghế chỉnh dáng ngồi"],
-    "basePriority": 20
+    "basePriority": 20,
+    "productCategory": "chair",
+    "sellerID": "001"
   },
   {
     "itemId": "chair4",
@@ -93,7 +107,9 @@
     "youtube": "",
     "productPage": "/product/chair",
     "tags": ["ghế", "ghế fa", "ghế chỉnh dáng ngồi"],
-    "basePriority": 20
+    "basePriority": 20,
+    "productCategory": "chair",
+    "sellerID": "001"
   },
   {
     "itemId": "chairvid001",
@@ -105,7 +121,9 @@
     "youtube": "pvI-V4wAGTo",
     "productPage": "/product/chair",
     "tags": ["SUP", "thuyền", "bơm"],
-    "basePriority": 17
+    "basePriority": 17,
+    "productCategory": "chair",
+    "sellerID": "001"
   },
   {
     "itemId": "chairvid002",
@@ -117,7 +135,9 @@
     "youtube": "GiJ0PijF7nE",
     "productPage": "/product/chair",
     "tags": ["SUP", "thuyền", "bơm"],
-    "basePriority": 20
+    "basePriority": 20,
+    "productCategory": "chair",
+    "sellerID": "001"
   },
   {
     "itemId": "sup",
@@ -129,7 +149,9 @@
     "youtube": "-qDapgXdyoA",
     "productPage": "/product/sup",
     "tags": ["SUP", "thuyền", "bơm"],
-    "basePriority": 15
+    "basePriority": 15,
+    "productCategory": "sup",
+    "sellerID": "001"
   },
   {
     "itemId": "dep1",
@@ -141,7 +163,9 @@
     "youtube": "",
     "productPage": "/product/ysandalbn68",
     "tags": ["ysandal"],
-    "basePriority": 25
+    "basePriority": 25,
+    "productCategory": "ysandal",
+    "sellerID": "001"
   },
   {
     "itemId": "dep2",
@@ -153,7 +177,9 @@
     "youtube": "",
     "productPage": "/product/ysandalbn68",
     "tags": ["ysandal"],
-    "basePriority": 25
+    "basePriority": 25,
+    "productCategory": "ysandal",
+    "sellerID": "001"
   },
   {
     "itemId": "dep3",
@@ -165,7 +191,9 @@
     "youtube": "",
     "productPage": "/product/ysandalbn68",
     "tags": ["ysandal"],
-    "basePriority": 25
+    "basePriority": 25,
+    "productCategory": "ysandal",
+    "sellerID": "001"
   },
   {
     "itemId": "dep4",
@@ -177,7 +205,9 @@
     "youtube": "",
     "productPage": "/product/ysandalbn68",
     "tags": ["ysandal"],
-    "basePriority": 25
+    "basePriority": 25,
+    "productCategory": "ysandal",
+    "sellerID": "001"
   },
   {
     "itemId": "dep5",
@@ -189,7 +219,9 @@
     "youtube": "",
     "productPage": "/product/ysandal5568",
     "tags": ["ysandal"],
-    "basePriority": 25
+    "basePriority": 25,
+    "productCategory": "ysandal",
+    "sellerID": "001"
   },
   {
     "itemId": "dep6",
@@ -201,7 +233,9 @@
     "youtube": "",
     "productPage": "/product/ysandal5560",
     "tags": ["ysandal"],
-    "basePriority": 25
+    "basePriority": 25,
+    "productCategory": "ysandal",
+    "sellerID": "001"
   },
   {
     "itemId": "dep7",
@@ -213,7 +247,9 @@
     "youtube": "Z7ql8lmWUUA",
     "productPage": "/product/ysandal5568",
     "tags": ["ysandal"],
-    "basePriority": 17
+    "basePriority": 17,
+    "productCategory": "ysandal",
+    "sellerID": "001"
   },
   {
     "itemId": "dep8",
@@ -225,6 +261,8 @@
     "youtube": "",
     "productPage": "/product/ysandal5568",
     "tags": ["ysandal"],
-    "basePriority": 25
+    "basePriority": 25,
+    "productCategory": "ysandal",
+    "sellerID": "001"
   }
 ]
