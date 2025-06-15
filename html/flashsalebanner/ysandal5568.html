@@ -1,4 +1,24 @@
-<!-- ✅ Flash Sale Banner -->
+<style>
+  @keyframes swingText {
+    0% { transform: rotate(0deg); }
+    25% { transform: rotate(2deg); }
+    50% { transform: rotate(-2deg); }
+    75% { transform: rotate(2deg); }
+    100% { transform: rotate(0deg); }
+  }
+
+  .swinging-text {
+    animation: swingText 1s infinite;
+    font-size: 16px;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+    width: 100%;
+    font-family: 'Be Vietnam Pro', sans-serif;
+  }
+</style>
+
+<!-- ✅ Banner khuyến mãi -->
 <div style="
   background-image: url('https://i.postimg.cc/wB7DgT1R/flash-sale-background.jpg');
   background-size: cover;
@@ -7,26 +27,10 @@
   height: 40px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   padding: 0 20px;
-  color: white;
-  font-weight: bold;
-  font-size: 15px;
   box-sizing: border-box;
 ">
-  <!-- Giá bên trái -->
-  <div style="flex-shrink: 0; white-space: nowrap; font-size: 17px;">
-    480.000đ - 650.000đ
-  </div>
-
-  <!-- Flash Sale bên phải -->
-  <div style="display: flex; align-items: center; gap: 6px; text-align: right;">
-    <img src="https://img.icons8.com/color/24/000000/flash-on.png" style="width: 14px; height: 14px;" />
-    <div style="display: flex; flex-direction: column; line-height: 1.2;">
-      <div style="font-size: 13px; text-align: center;">Flash Sale</div>
-      <div style="font-size: 10px; font-weight: normal;">Kết Thúc Hôm Nay</div>
-    </div>
-    <img src="https://img.icons8.com/color/24/000000/flash-on.png" style="width: 14px; height: 14px;" />
-  </div>
+  <div class="swinging-text">🎁 Mua Dép Chạy Tặng Khăn Ống Đa Năng 🎁</div>
 </div>
-<!-- END Flash Sale Banner -->
+<!-- END Banner -->
