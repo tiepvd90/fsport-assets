@@ -1,23 +1,21 @@
 let freeflowData = [];
 let itemsLoaded = 0;
 const BATCH_SIZE = 4;
+let sheetLoaded = false;
+let isLoadingSheet = false;
 
 async function fetchFreeFlowData() {
   const localUrl = "/json/freeflow.json";
-  const fallbackUrl = "https://script.google.com/macros/s/AKfycbwu.../exec"; // 🔁 thay bằng link Google Sheet thật
+  const fallbackUrl = "https://script.google.com/macros/s/AKfycbwuEh9sP65vyQL0XzU8gY1Os0QYV_K5egKJgm8OhImAPjvdyrQiU7XCY909N99TnltP/exec"; // Thay bằng link thật
 
   try {
     const res = await fetch(localUrl);
     const data = await res.json();
     if (Array.isArray(data) && data.length > 0) {
       processAndSortData(data);
-    } else {
-      console.warn("⚠️ JSON nội bộ rỗng, chuyển sang Google Sheet...");
-      await fetchFromGoogleSheet(fallbackUrl);
     }
   } catch (e) {
-    console.warn("❌ Lỗi tải JSON nội bộ:", e);
-    await fetchFromGoogleSheet(fallbackUrl);
+    console.warn("⚠️ Lỗi tải JSON nội bộ:", e);
   }
 }
 
@@ -26,51 +24,54 @@ async function fetchFromGoogleSheet(url) {
     const res = await fetch(url);
     const data = await res.json();
     if (Array.isArray(data) && data.length > 0) {
+      sheetLoaded = true;
       processAndSortData(data);
-    } else {
-      console.error("❌ Google Sheet cũng rỗng hoặc lỗi dữ liệu.");
     }
   } catch (e) {
     console.error("❌ Không thể tải từ Google Sheet:", e);
   }
 }
 
-function processAndSortData(data) {
+function processAndSortData(newData) {
   const currentCategory = (window.productCategory || "").toLowerCase();
 
-  freeflowData = data.map(item => {
+  const processed = newData.map(item => {
     const base = Number(item.basePriority) || 0;
     const random = Math.floor(Math.random() * 20) + 1;
     const category = (item.productCategory || "").toLowerCase();
     const categoryScore = currentCategory && category === currentCategory ? 60 : 0;
-
     const finalPriority = base + random + categoryScore;
-
     return { ...item, finalPriority };
   });
 
+  freeflowData = [...freeflowData, ...processed];
   freeflowData.sort((a, b) => (b.finalPriority || 0) - (a.finalPriority || 0));
-
   lazyRenderNextBatch();
 }
 
 function lazyRenderNextBatch() {
   const container = document.getElementById("freeflowFeed");
-  if (!container || itemsLoaded >= freeflowData.length) return;
+  if (!container) return;
 
-  const batch = freeflowData.slice(itemsLoaded, itemsLoaded + BATCH_SIZE);
-  batch.forEach(item => renderFeedItem(item, container));
-  itemsLoaded += BATCH_SIZE;
-  setupAutoplayObserver();
+  if (itemsLoaded < freeflowData.length) {
+    const batch = freeflowData.slice(itemsLoaded, itemsLoaded + BATCH_SIZE);
+    batch.forEach(item => renderFeedItem(item, container));
+    itemsLoaded += BATCH_SIZE;
+    setupAutoplayObserver();
+  }
+
+  if (itemsLoaded >= freeflowData.length && !sheetLoaded && !isLoadingSheet) {
+    isLoadingSheet = true;
+    fetchFromGoogleSheet("https://script.google.com/macros/s/AKfycbwuEh9sP65vyQL0XzU8gY1Os0QYV_K5egKJgm8OhImAPjvdyrQiU7XCY909N99TnltP/exec");
+  }
 }
 
 function renderFeedItem(item, container) {
   const finalPrice = item.price ? Number(item.price).toLocaleString() + "đ" : "";
-  const originalPrice =
-    item.originalPrice && item.originalPrice > item.price
-      ? `<span class="original-price" style="color:#555; font-size:12px; margin-left:4px; text-decoration: line-through;">
-           ${Number(item.originalPrice).toLocaleString()}đ
-         </span>` : "";
+  const originalPrice = item.originalPrice && item.originalPrice > item.price
+    ? `<span style="color:#555; font-size:12px; margin-left:4px; text-decoration: line-through;">
+         ${Number(item.originalPrice).toLocaleString()}đ
+       </span>` : "";
 
   const div = document.createElement("div");
   div.className = "feed-item";
@@ -80,16 +81,16 @@ function renderFeedItem(item, container) {
   if (item.contentType === "image") {
     mediaHtml = `
       <img loading="lazy" src="${item.image}" alt="${item.title}" style="width: 100%; border-radius: 8px;" />
-      <h4 class="one-line-title" style="margin: 4px 8px 0; font-size: 13px; line-height: 1.3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+      <h4 style="margin: 4px 8px 0; font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
         ${item.title}
       </h4>
-      <div class="price-line" style="padding: 2px 8px 6px; font-size: 13px;">
-        <span class="price" style="color: #f53d2d; font-weight: bold;">${finalPrice}</span> ${originalPrice}
+      <div style="padding: 2px 8px 6px; font-size: 13px;">
+        <span style="color: #f53d2d; font-weight: bold;">${finalPrice}</span> ${originalPrice}
       </div>
     `;
   } else if (item.contentType === "youtube") {
     mediaHtml = `
-      <div class="video-wrapper" style="position: relative;">
+      <div style="position: relative;">
         <iframe 
           data-video-id="${item.youtube}"
           frameborder="0"
@@ -101,19 +102,14 @@ function renderFeedItem(item, container) {
         ></iframe>
         <div class="video-overlay" data-video="${item.youtube}" style="position: absolute; inset: 0; cursor: pointer;"></div>
       </div>
-      <div class="video-info" style="display: flex; align-items: center; gap: 8px; padding: 4px 8px 0;">
+      <div style="display: flex; align-items: center; gap: 8px; padding: 4px 8px 0;">
         <a href="${item.productPage}">
           <img src="${item.image}" style="width: 36px; height: 36px; object-fit: cover; border-radius: 6px;" />
         </a>
         <div style="flex: 1; min-width: 0;">
-          <h4 style="
-            font-size: 13px;
-            line-height: 1.3;
-            margin: 0;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-          ">${item.title}</h4>
+          <h4 style="font-size: 13px; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+            ${item.title}
+          </h4>
           <div style="font-size: 13px; color: #f53d2d; font-weight: bold;">
             ${finalPrice}${originalPrice}
           </div>
@@ -149,14 +145,19 @@ function setupAutoplayObserver() {
   const observer = new IntersectionObserver(entries => {
     entries.forEach(entry => {
       const iframe = entry.target;
-      const id = iframe.getAttribute('data-video-id');
-      if (entry.isIntersecting) {
-        iframe.src = `https://www.youtube.com/embed/${id}?autoplay=1&mute=1&playsinline=1&controls=1&loop=1&playlist=${id}`;
-      } else {
-        iframe.src = "";
+      const id = iframe.getAttribute("data-video-id");
+
+      if (!iframe.src) {
+        iframe.src = `https://www.youtube.com/embed/${id}?enablejsapi=1&autoplay=0&mute=1&playsinline=1&controls=0&loop=1&playlist=${id}`;
       }
+
+      const command = entry.isIntersecting ? "playVideo" : "pauseVideo";
+      iframe.contentWindow?.postMessage(
+        JSON.stringify({ event: "command", func: command, args: [] }),
+        "*"
+      );
     });
-  }, { threshold: 0.5 });
+  }, { threshold: 0.6 });
 
   iframes.forEach(iframe => observer.observe(iframe));
 }
@@ -171,6 +172,7 @@ function closeVideoPopup() {
 document.addEventListener("DOMContentLoaded", () => {
   const closeBtn = document.getElementById("videoCloseBtn");
   if (closeBtn) closeBtn.onclick = closeVideoPopup;
+
   fetchFreeFlowData();
 
   window.addEventListener("scroll", () => {
