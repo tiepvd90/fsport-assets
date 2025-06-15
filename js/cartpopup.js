@@ -54,7 +54,6 @@ function renderOptions(attributes) {
 
       let imageUrl = "";
 
-      // ✅ Ưu tiên ảnh từ biến_thể
       const matchedVariant = window.allVariants.find(v => v[attr.key] === valText && v["Ảnh"]);
       if (matchedVariant?.["Ảnh"]) {
         imageUrl = matchedVariant["Ảnh"];
@@ -100,7 +99,6 @@ function updateSelectedVariant() {
   );
 
   if (matched) {
-    // ✅ Bổ sung giá/ảnh nếu thiếu
     const colorKey = Object.keys(selected).find(k => /màu/i.test(k));
     const colorVal = selected[colorKey];
     const colorAttr = window.allAttributes?.find(a => a.key === colorKey);
@@ -123,7 +121,6 @@ function selectVariant(data) {
   const productVariantText = document.getElementById("productVariantText");
   const voucherLabel = document.getElementById("voucherLabel");
 
-  // ✅ Đảm bảo có Giá
   if (!data.Giá || !data["Giá gốc"]) {
     const colorKey = Object.keys(data).find(k => /màu/i.test(k));
     const colorVal = data[colorKey];
@@ -233,11 +230,16 @@ function bindAddToCartButton() {
         const product = window.selectedVariant;
         const loai = window.productCategory || window.loai || "unknown";
 
-        // ✅ Gán tên phân loại rõ ràng
-        const phanLoaiText = Object.keys(product)
-          .filter(k => !["Ảnh", "Giá", "Giá gốc", "id", "category"].includes(k))
-          .map(k => product[k])
-          .join(" - ");
+        // ✅ Kiểm tra đã chọn đủ phân loại
+        const requiredKeys = window.allAttributes.map(a => a.key);
+        const selectedKeys = Object.keys(product);
+        const isComplete = requiredKeys.every(k => selectedKeys.includes(k));
+        if (!isComplete) {
+          return alert("Vui lòng chọn đầy đủ phân loại sản phẩm.");
+        }
+
+        // ✅ Gán phân loại
+        const phanLoaiText = requiredKeys.map(k => product[k]).join(" - ");
         product["Phân loại"] = phanLoaiText;
 
         const contentId = product.id || phanLoaiText;
@@ -279,9 +281,7 @@ document.addEventListener("DOMContentLoaded", () => {
     btn.addEventListener("click", () => toggleCartPopup(false));
   });
 
-  window.toggleForm = function () {
-    toggleCartPopup(true);
-  };
+  window.toggleForm = () => toggleCartPopup(true);
 
   initCartPopup();
 });
