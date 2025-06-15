@@ -59,7 +59,6 @@ function renderOptions(attributes) {
       if (matchedVariant?.["Ảnh"]) {
         imageUrl = matchedVariant["Ảnh"];
       } else {
-        // ✅ Thử lấy ảnh từ thuộc_tính
         const matchedAttrValue = attr.values.find(v => typeof v === "object" && v.text === valText);
         imageUrl = matchedAttrValue?.image || "";
       }
@@ -101,7 +100,7 @@ function updateSelectedVariant() {
   );
 
   if (matched) {
-    // ✅ Tự bổ sung ảnh, giá nếu thiếu
+    // ✅ Bổ sung giá/ảnh nếu thiếu
     const colorKey = Object.keys(selected).find(k => /màu/i.test(k));
     const colorVal = selected[colorKey];
     const colorAttr = window.allAttributes?.find(a => a.key === colorKey);
@@ -124,7 +123,7 @@ function selectVariant(data) {
   const productVariantText = document.getElementById("productVariantText");
   const voucherLabel = document.getElementById("voucherLabel");
 
-  // ✅ Fix lỗi khi Giá chưa tồn tại
+  // ✅ Đảm bảo có Giá
   if (!data.Giá || !data["Giá gốc"]) {
     const colorKey = Object.keys(data).find(k => /màu/i.test(k));
     const colorVal = data[colorKey];
@@ -233,8 +232,15 @@ function bindAddToCartButton() {
 
         const product = window.selectedVariant;
         const loai = window.productCategory || window.loai || "unknown";
-        const contentId = product.id || product["Phân loại"];
-        const contentName = product["Phân loại"];
+
+        // ✅ Gán tên phân loại rõ ràng
+        const phanLoaiText = Object.keys(product)
+          .filter(k => !["Ảnh", "Giá", "Giá gốc", "id", "category"].includes(k))
+          .map(k => product[k])
+          .join(" - ");
+        product["Phân loại"] = phanLoaiText;
+
+        const contentId = product.id || phanLoaiText;
         const voucherAmount = window.voucherByProduct?.[contentId] || 0;
 
         window.cart.push({
@@ -248,7 +254,7 @@ function bindAddToCartButton() {
         if (typeof trackBothPixels === "function") {
           trackBothPixels("AddToCart", {
             content_id: contentId,
-            content_name: contentName,
+            content_name: phanLoaiText,
             content_category: product.category || loai,
             content_page: window.productPage || "unknown",
             value: product.Giá || 0,
