@@ -1,0 +1,109 @@
+<style>
+  .desc-text {
+    font-size: 12px;
+    line-height: 1.6;
+    color: #222;
+    font-family: 'Be Vietnam Pro', sans-serif;
+  }
+
+  .desc-toggle-btn {
+    margin-top: 16px;
+    background: none;
+    border: none;
+    font-weight: bold;
+    color: #000;
+    cursor: pointer;
+    padding: 10px 0;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    width: 100%;
+    font-family: 'Be Vietnam Pro', sans-serif;
+  }
+
+  .desc-toggle-btn .arrow {
+    font-size: 12px;
+    display: inline-block;
+    transform: translateY(1px);
+  }
+
+  .desc-fade {
+    height: 60px;
+    background: linear-gradient(to top, #fff, transparent);
+    margin-top: -60px;
+    pointer-events: none;
+  }
+
+  .hidden {
+    display: none;
+  }
+
+  .desc-img {
+    width: 100%;
+    display: block;
+    border-radius: 8px;
+    margin-bottom: 12px;
+  }
+</style>
+
+<h2 class="desc-title" style="font-size: 14px; font-weight: bold; margin-bottom: 8px;">
+  Mô Tả Sản Phẩm
+</h2>
+
+<img src="https://i.postimg.cc/mkLbd0KK/2.png" alt="Ảnh mô tả sản phẩm 1" class="desc-img">
+<img src="https://i.postimg.cc/wv68HDFm/7.png" alt="Ảnh mô tả sản phẩm 2" class="desc-img">
+
+<div id="descShort" class="desc-text">
+  <p><strong>TẤT XỎ NGÓN MEIKAN – TĂNG LINH HOẠT, GIẢM CHẤN THƯƠNG KHI VẬN ĐỘNG</strong></p>
+  <p>Tất/vớ xỏ ngón giúp linh hoạt hơn giữa các ngón chân, giảm ma sát, làm thoáng khí, giữ thăng bằng tốt khi chạy bộ, đạp xe, leo núi... Thiết kế tách rời 5 ngón ngăn ngừa mụn nước và hỗ trợ vận động bền bỉ hơn.</p>
+</div>
+
+<div id="descFull" class="desc-text hidden">
+  <p><strong>✅ ƯU ĐIỂM NỔI BẬT:</strong></p>
+  <ul>
+    <li>Tách 5 ngón chống phồng rộp, hỗ trợ linh hoạt khi chạy</li>
+    <li>Lưới thoáng khí ở mu bàn chân giúp khô thoáng nhanh</li>
+    <li>Gót có đệm nhẹ, nâng đỡ gân Achilles, hạn chế chấn thương</li>
+    <li>Áp lực nén nhẹ giúp lưu thông máu khi vận động</li>
+  </ul>
+
+  <p><strong>🌟 GHI CHÚ:</strong> <span style="color:#d0021b"><strong>Dòng Meikan Coolmax</strong></span> là phiên bản <strong>cao cấp hơn</strong> với chất liệu Coolmax siêu thoáng khí, nhẹ và bền – phù hợp với vận động viên chạy bộ chuyên sâu.</p>
+
+  <p><strong>📏 HƯỚNG DẪN CHỌN SIZE:</strong></p>
+  <ul>
+    <li><strong>Size M</strong>: Chiều dài chân từ 22–24cm (size giày 35–39)</li>
+    <li><strong>Size L</strong>: Chiều dài chân từ 24–26cm (size giày 40–44)</li>
+  </ul>
+
+  <p><strong>⚙️ TÍNH NĂNG:</strong></p>
+  <ul>
+    <li>Gọn nhẹ, dễ mang theo</li>
+    <li>Phù hợp cho cả nam và nữ</li>
+    <li>Lý tưởng cho chạy bộ, leo núi, đạp xe, trekking…</li>
+  </ul>
+
+  <p><strong>📩 CẦN TƯ VẤN THÊM?</strong> Nhắn tin cho shop – luôn sẵn sàng hỗ trợ!</p>
+</div>
+
+<div class="desc-fade" id="descFade"></div>
+
+<button id="toggleDesc" class="desc-toggle-btn">
+  Xem Thêm <span class="arrow">&#x25BC;</span>
+</button>
+
+<script>
+  const toggleBtn = document.getElementById('toggleDesc');
+  const descFull = document.getElementById('descFull');
+  const fade = document.getElementById('descFade');
+
+  toggleBtn.addEventListener('click', () => {
+    const isHidden = descFull.classList.contains('hidden');
+    descFull.classList.toggle('hidden');
+    fade.style.display = isHidden ? 'none' : 'block';
+    toggleBtn.innerHTML = isHidden
+      ? 'Thu Gọn <span class="arrow">&#x25B2;</span>'
+      : 'Xem Thêm <span class="arrow">&#x25BC;</span>';
+  });
+</script>
