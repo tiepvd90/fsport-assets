@@ -56,7 +56,7 @@
     "sellerID": "001"
   },
   {
-    "itemId": "chair4",
+    "itemId": "chair4a",
     "title": "Ghế Chỉnh Dáng Ngồi",
     "price": 419000,
     "originalPrice": 500000,
@@ -70,7 +70,7 @@
     "sellerID": "001"
   },
   {
-    "itemId": "chair4",
+    "itemId": "chair4b",
     "title": "Ghế Hỗ Trợ Cột Sống",
     "price": 419000,
     "originalPrice": 500000,
@@ -84,7 +84,7 @@
     "sellerID": "001"
   },
   {
-    "itemId": "chair4",
+    "itemId": "chair4c",
     "title": "Ghế Đặc Biệt - Màu Nâu",
     "price": 469000,
     "originalPrice": 600000,
