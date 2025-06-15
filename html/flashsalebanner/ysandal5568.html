@@ -1,50 +1,58 @@
 <style>
-  @keyframes swingText {
-    0% { transform: rotate(0deg); }
-    25% { transform: rotate(2deg); }
-    50% { transform: rotate(-2deg); }
-    75% { transform: rotate(2deg); }
-    100% { transform: rotate(0deg); }
-  }
-
-  .swinging-text {
-    animation: swingText 1s infinite;
-    font-size: 16px;
-    color: #28a745;
-    font-weight: bold;
-    text-align: center;
-    font-family: 'Be Vietnam Pro', sans-serif;
-    white-space: nowrap;
-    overflow: hidden;
-    max-width: 100%;
-  }
-
-  /* 🔁 Giảm font cho màn nhỏ */
-  @media (max-width: 400px) {
-    .swinging-text {
-      font-size: 14px;
+  /* 💫 Hiệu ứng lắc + nhấp nháy */
+  @keyframes swingGlow {
+    0%, 100% {
+      transform: rotate(0deg);
+      opacity: 1;
+      text-shadow: 0 0 4px rgba(255,255,255,0.8);
+    }
+    25% {
+      transform: rotate(1.5deg);
+      opacity: 0.9;
+    }
+    50% {
+      transform: rotate(-1.5deg);
+      opacity: 1;
+      text-shadow: 0 0 6px rgba(255,255,255,1);
+    }
+    75% {
+      transform: rotate(1deg);
+      opacity: 0.95;
     }
   }
 
-  @media (max-width: 320px) {
-    .swinging-text {
-      font-size: 12px;
+  .flash-banner {
+    width: 100%;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(to right, #FF0000 50%, #FFA500 50%);
+    font-family: 'Be Vietnam Pro', sans-serif;
+    overflow: hidden;
+    padding: 0 12px;
+    box-sizing: border-box;
+  }
+
+  .flash-banner-text {
+    font-size: 17px;
+    font-weight: 900;
+    color: white;
+    text-transform: uppercase;
+    text-align: center;
+    white-space: nowrap;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+    animation: swingGlow 1.6s infinite ease-in-out;
+  }
+
+  @media (max-width: 400px) {
+    .flash-banner-text {
+      font-size: 15px;
     }
   }
 </style>
 
-<div style="
-  background-image: url('https://i.postimg.cc/wB7DgT1R/flash-sale-background.jpg');
-  background-size: cover;
-  background-position: center;
-  width: 100%;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 12px;
-  box-sizing: border-box;
-  overflow: hidden;
-">
-  <div class="swinging-text">🎁 Mua Dép Chạy Tặng Khăn Ống Đa Năng 🎁</div>
+<!-- ✅ Banner -->
+<div class="flash-banner">
+  <div class="flash-banner-text">🎁 Mua Dép Chạy Tặng Khăn Ống Đa Năng 🎁</div>
 </div>
