@@ -1,4 +1,3 @@
-// 🌀 FreeFlow v1.3 — Lazy Load + Autoplay + Fallback Google Sheet
 let freeflowData = [];
 let itemsLoaded = 0;
 const BATCH_SIZE = 4;
@@ -11,8 +10,7 @@ async function fetchFreeFlowData() {
     const res = await fetch(localUrl);
     const data = await res.json();
     if (Array.isArray(data) && data.length > 0) {
-      freeflowData = data;
-      lazyRenderNextBatch();
+      processAndSortData(data);
     } else {
       console.warn("⚠️ JSON nội bộ rỗng, chuyển sang Google Sheet...");
       await fetchFromGoogleSheet(fallbackUrl);
@@ -28,14 +26,32 @@ async function fetchFromGoogleSheet(url) {
     const res = await fetch(url);
     const data = await res.json();
     if (Array.isArray(data) && data.length > 0) {
-      freeflowData = data;
-      lazyRenderNextBatch();
+      processAndSortData(data);
     } else {
       console.error("❌ Google Sheet cũng rỗng hoặc lỗi dữ liệu.");
     }
   } catch (e) {
     console.error("❌ Không thể tải từ Google Sheet:", e);
   }
+}
+
+function processAndSortData(data) {
+  const currentCategory = (window.productCategory || "").toLowerCase();
+
+  freeflowData = data.map(item => {
+    const base = Number(item.basePriority) || 0;
+    const random = Math.floor(Math.random() * 20) + 1;
+    const category = (item.productCategory || "").toLowerCase();
+    const categoryScore = currentCategory && category === currentCategory ? 60 : 0;
+
+    const finalPriority = base + random + categoryScore;
+
+    return { ...item, finalPriority };
+  });
+
+  freeflowData.sort((a, b) => (b.finalPriority || 0) - (a.finalPriority || 0));
+
+  lazyRenderNextBatch();
 }
 
 function lazyRenderNextBatch() {
@@ -157,7 +173,6 @@ document.addEventListener("DOMContentLoaded", () => {
   if (closeBtn) closeBtn.onclick = closeVideoPopup;
   fetchFreeFlowData();
 
-  // ➕ Lazy load thêm khi scroll chạm cuối
   window.addEventListener("scroll", () => {
     const scrollBottom = window.innerHeight + window.scrollY;
     if (scrollBottom >= document.body.offsetHeight - 300) {
