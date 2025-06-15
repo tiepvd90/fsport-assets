@@ -6,15 +6,15 @@ let isCartPopupOpen = false;
 function initCartPopup() {
   const container = document.getElementById("cartContainer");
   const loai = window.productPage || "default";
-  const jsonUrl = container?.getAttribute("data-json") || `/json/${window.productPage}.json`;
+  const jsonUrl = container?.getAttribute("data-json") || `/json/${loai}.json`;
 
   fetch(jsonUrl)
     .then(res => res.json())
     .then(data => {
       if (data["thuộc_tính"] && data["biến_thể"]) {
         window.allVariants = data["biến_thể"];
-        window.productCategory = data["category"] || loai;
         window.allAttributes = data["thuộc_tính"];
+        window.productCategory = data["category"] || loai;
 
         if (window.__voucherWaiting?.amount) {
           data["biến_thể"].forEach(sp => {
@@ -59,7 +59,7 @@ function renderOptions(attributes) {
       if (matchedVariant?.["Ảnh"]) {
         imageUrl = matchedVariant["Ảnh"];
       } else {
-        // ✅ Thử lấy từ thuộc_tính nếu có
+        // ✅ Thử lấy ảnh từ thuộc_tính
         const matchedAttrValue = attr.values.find(v => typeof v === "object" && v.text === valText);
         imageUrl = matchedAttrValue?.image || "";
       }
@@ -101,14 +101,15 @@ function updateSelectedVariant() {
   );
 
   if (matched) {
-    // ✅ Gán thêm Ảnh nếu chưa có
-    if (!matched["Ảnh"]) {
-      const colorKey = Object.keys(selected).find(k => /màu/i.test(k));
-      const colorVal = selected[colorKey];
-      const colorAttr = window.allAttributes.find(a => a.key === colorKey);
-      const matchedColor = colorAttr?.values.find(v => typeof v === "object" && v.text === colorVal);
-      matched["Ảnh"] = matchedColor?.image || "";
-    }
+    // ✅ Tự bổ sung ảnh, giá nếu thiếu
+    const colorKey = Object.keys(selected).find(k => /màu/i.test(k));
+    const colorVal = selected[colorKey];
+    const colorAttr = window.allAttributes?.find(a => a.key === colorKey);
+    const matchedColor = colorAttr?.values?.find(v => typeof v === "object" && v.text === colorVal);
+
+    if (!matched["Ảnh"] && matchedColor?.image) matched["Ảnh"] = matchedColor.image;
+    if (!matched["Giá"] && matchedColor?.Giá) matched["Giá"] = matchedColor.Giá;
+    if (!matched["Giá gốc"] && matchedColor?.["Giá gốc"]) matched["Giá gốc"] = matchedColor["Giá gốc"];
 
     selectVariant(matched);
   }
@@ -122,6 +123,17 @@ function selectVariant(data) {
   const productOriginalPrice = document.getElementById("productOriginalPrice");
   const productVariantText = document.getElementById("productVariantText");
   const voucherLabel = document.getElementById("voucherLabel");
+
+  // ✅ Fix lỗi khi Giá chưa tồn tại
+  if (!data.Giá || !data["Giá gốc"]) {
+    const colorKey = Object.keys(data).find(k => /màu/i.test(k));
+    const colorVal = data[colorKey];
+    const colorAttr = window.allAttributes?.find(a => a.key === colorKey);
+    const matchedColor = colorAttr?.values?.find(v => typeof v === "object" && v.text === colorVal);
+
+    if (matchedColor?.Giá) data.Giá = matchedColor.Giá;
+    if (matchedColor?.["Giá gốc"]) data["Giá gốc"] = matchedColor["Giá gốc"];
+  }
 
   if (mainImage) mainImage.src = data.Ảnh || "";
 
@@ -143,7 +155,6 @@ function selectVariant(data) {
     if (voucherLabel) {
       voucherLabel.textContent = `Voucher: ${voucherAmount.toLocaleString()}đ`;
       voucherLabel.style.display = "block";
-      voucherLabel.style.borderRadius = "0px";
     }
 
     const finalLine = document.createElement("div");
@@ -233,14 +244,6 @@ function bindAddToCartButton() {
           voucher: voucherAmount > 0 ? { amount: voucherAmount } : undefined
         });
         saveCart();
-
-        console.log("🔥 Gửi ATC:", {
-          content_id: contentId,
-          content_name: contentName,
-          content_category: product.category || loai,
-          content_page: window.productPage || "unknown",
-          value: product.Giá || 0
-        });
 
         if (typeof trackBothPixels === "function") {
           trackBothPixels("AddToCart", {
