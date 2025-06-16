@@ -1,47 +1,73 @@
-<!-- ✅ Flash Sale Banner -->
-<div id="flashSaleBanner" style="
-  background-image: url('https://i.postimg.cc/wB7DgT1R/flash-sale-background.jpg');
-  background-size: cover;
-  background-position: center;
-  width: 100%;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 20px;
-  color: white;
-  font-weight: bold;
-  font-size: 15px;
-  box-sizing: border-box;
-">
-  <!-- Giá bên trái (JS sẽ thay đổi) -->
-  <div id="flashSalePrice" style="flex-shrink: 0; white-space: nowrap; font-size: 17px;"></div>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Flash Sale Template</title>
+</head>
+<body>
+  <!-- ✅ Giả lập gán productPage -->
+  <script>
+    window.productPage = "meikan"; // đổi thành "gaiter" để test thử
+  </script>
 
-  <!-- Flash Sale bên phải -->
-  <div style="display: flex; align-items: center; gap: 6px; text-align: right;">
-    <img src="https://img.icons8.com/color/24/000000/flash-on.png" style="width: 14px; height: 14px;" />
-    <div style="display: flex; flex-direction: column; line-height: 1.2;">
-      <div style="font-size: 13px; text-align: center;">Flash Sale</div>
-      <div style="font-size: 10px; font-weight: normal;">Kết Thúc Hôm Nay</div>
+  <!-- ✅ Flash Sale Banner -->
+  <div id="flashSaleBanner" style="
+    background-image: url('https://i.postimg.cc/wB7DgT1R/flash-sale-background.jpg');
+    background-size: cover;
+    background-position: center;
+    width: 100%;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    color: white;
+    font-weight: bold;
+    font-size: 15px;
+    box-sizing: border-box;
+  ">
+    <!-- Giá bên trái (JS sẽ chèn) -->
+    <div id="flashSalePrice" style="flex-shrink: 0; white-space: nowrap; font-size: 17px;"></div>
+
+    <!-- Flash Sale bên phải -->
+    <div style="display: flex; align-items: center; gap: 6px; text-align: right;">
+      <img src="https://img.icons8.com/color/24/000000/flash-on.png" style="width: 14px; height: 14px;" />
+      <div style="display: flex; flex-direction: column; line-height: 1.2;">
+        <div style="font-size: 13px; text-align: center;">Flash Sale</div>
+        <div style="font-size: 10px; font-weight: normal;">Kết Thúc Hôm Nay</div>
+      </div>
+      <img src="https://img.icons8.com/color/24/000000/flash-on.png" style="width: 14px; height: 14px;" />
     </div>
-    <img src="https://img.icons8.com/color/24/000000/flash-on.png" style="width: 14px; height: 14px;" />
   </div>
-</div>
-<!-- END Flash Sale Banner -->
 
-<!-- ✅ Script để cập nhật giá -->
-<script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const priceDiv = document.getElementById("flashSalePrice");
-    const page = window.productPage || "";
+  <!-- ✅ Script xử lý và debug -->
+  <script>
+    setTimeout(function () {
+      const priceDiv = document.getElementById("flashSalePrice");
+      const page = window.productPage;
 
-    let priceText = "";
-    if (page === "meikan") {
-      priceText = "80.000đ - 120.000đ";
-    } else if (page === "gaiter") {
-      priceText = "49.000đ";
-    }
+      console.log("🧪 Debug Flash Sale:");
+      console.log("window.productPage =", page);
+      console.log("priceDiv exists:", !!priceDiv);
 
-    priceDiv.textContent = priceText;
-  });
-</script>
+      let priceText = "";
+
+      if (page === "meikan") {
+        priceText = "80.000đ - 120.000đ";
+      } else if (page === "gaiter") {
+        priceText = "49.000đ";
+      } else {
+        console.log("⚠️ Không khớp tên productPage");
+      }
+
+      if (priceDiv) {
+        priceDiv.textContent = priceText;
+        console.log("✅ Đã gán giá trị:", priceText);
+      } else {
+        console.log("❌ Không tìm thấy #flashSalePrice");
+      }
+    }, 50); // Delay nhẹ để đảm bảo DOM và biến global đã sẵn sàng
+  </script>
+</body>
+</html>
