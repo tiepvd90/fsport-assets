@@ -15,8 +15,8 @@
   box-sizing: border-box;
 ">
   <!-- Giá bên trái -->
-  <div style="flex-shrink: 0; white-space: nowrap; font-size: 17px;">
-    80.000đ - 120.000đ
+  <div id="flashSalePrice" style="flex-shrink: 0; white-space: nowrap; font-size: 17px;">
+    <!-- Nội dung sẽ được JS chèn vào -->
   </div>
 
   <!-- Flash Sale bên phải -->
@@ -30,3 +30,16 @@
   </div>
 </div>
 <!-- END Flash Sale Banner -->
+
+<script>
+  const page = window.productPage || "";
+  const flashSalePrice = document.getElementById("flashSalePrice");
+
+  if (page === "meikan") {
+    flashSalePrice.textContent = "80.000đ - 120.000đ";
+  } else if (page === "gaiter") {
+    flashSalePrice.textContent = "49.000đ";
+  } else {
+    flashSalePrice.textContent = "";
+  }
+</script>
