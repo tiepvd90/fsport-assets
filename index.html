@@ -2,72 +2,52 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-  <title>Fun Sport</title>
-
-  <link rel="stylesheet" href="/css/base.css" />
-  <link rel="stylesheet" href="/css/checkoutpopup.css" />
-  <link rel="stylesheet" href="/css/freeflow.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>FreeFlow</title>
   <link rel="icon" type="image/png" href="/favicon.png" />
-</head>
-<body>
-
-  <div id="checkoutPopup-placeholder"></div>
-  <div id="freeflow-placeholder"></div>
-
-  <script>
-    async function injectHTML(file, placeholderId) {
-      const res = await fetch(file);
-      const html = await res.text();
-      const container = document.getElementById(placeholderId);
-      const temp = document.createElement("div");
-      temp.innerHTML = html;
-
-      const scripts = temp.querySelectorAll("script");
-      scripts.forEach(oldScript => {
-        const newScript = document.createElement("script");
-        if (oldScript.src) {
-          newScript.src = oldScript.src;
-        } else {
-          newScript.textContent = oldScript.textContent;
-        }
-        document.body.appendChild(newScript);
-      });
-
-      Array.from(temp.children).forEach(el => {
-        if (el.tagName !== "SCRIPT") {
-          container.appendChild(el);
-        }
-      });
+  <style>
+    body {
+      background-color: #f9f9f9;
+      margin: 0;
+      font-family: 'Be Vietnam Pro', sans-serif;
     }
 
-    document.addEventListener("DOMContentLoaded", async () => {
-      await injectHTML("/html/checkoutpopup.html", "checkoutPopup-placeholder");
-      await injectHTML("/html/freeflow.html", "freeflow-placeholder");
+    .cover-img {
+      width: 100%;
+      display: block;
+    }
 
-      // ✅ Chờ 300ms để đảm bảo các hàm JS đã sẵn sàng
-      setTimeout(() => {
-        // ✅ Dữ liệu test chính xác
-        window.cart = [{
-          id: "chair001",
-          title: "Đặc Biệt Navy",
-          price: 469000,
-          quantity: 1,
-          image: "https://i.postimg.cc/T3B1F6Rx/navy.jpg",
-          category: "chair",
-          productPage: "chair001"
-        }];
+    h2 {
+      font-size: 18px;
+      margin: 24px 12px 12px;
+    }
+  </style>
+</head>
+<body>
+  <!-- ✅ Ảnh cover -->
+  <img src="https://i.postimg.cc/bYHVx94t/cover1.webp" alt="Cover 1" class="cover-img" />
+  <img src="https://i.postimg.cc/3rB94JDj/cover2.webp" alt="Cover 2" class="cover-img" />
 
-        if (typeof toggleCheckoutPopup === "function") {
-          toggleCheckoutPopup(true);
-        }
+  <!-- ✅ FreeFlow -->
+  <h2>CÓ THỂ BẠN SẼ THÍCH</h2>
+  <div id="freeflow-placeholder"></div>
 
-        if (typeof fetchFreeFlowData === "function") {
-          fetchFreeFlowData("https://script.google.com/macros/s/AKfycbwuEh9sP65vyQL0XzU8gY1Os0QYV_K5egKJgm8OhImAPjvdyrQiU7XCY909N99TnltP/exec");
-        }
-      }, 300);
-    });
+  <script src="https://friendly-kitten-d760ff.netlify.app/js/freeflow.js"></script>
+  <script>
+    fetch("/html/freeflow.html")
+      .then(res => res.text())
+      .then(html => {
+        const container = document.getElementById("freeflow-placeholder");
+        const temp = document.createElement("div");
+        temp.innerHTML = html;
+        Array.from(temp.children).forEach(el => container.appendChild(el));
+
+        setTimeout(() => {
+          if (typeof fetchFreeFlowData === "function") {
+            fetchFreeFlowData("https://script.google.com/macros/s/AKfycbwuEh9sP65vyQL0XzU8gY1Os0QYV_K5egKJgm8OhImAPjvdyrQiU7XCY909N99TnltP/exec");
+          }
+        }, 200);
+      });
   </script>
-
 </body>
 </html>
