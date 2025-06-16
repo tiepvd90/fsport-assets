@@ -249,23 +249,7 @@ function bindAddToCartButton() {
             value: product.Giá,
             currency: "VND"
           });
-          // ✅ Gửi log về Make.com để kiểm tra sau
-  fetch("https://hook.eu2.make.com/31c0jdh2vkvkjcnaenbm3kyze8fp3us3", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      content_id: contentId,
-      content_name: phanLoaiText,
-      content_category: window.productCategory || window.productCategory,
-      content_page: window.productPage || "unknown",
-      value: product.Giá || 0,
-      currency: "VND",
-      timestamp: new Date().toISOString()
-    })
-  }).catch((err) => {
-    console.warn("⚠️ Không thể gửi dữ liệu về Make:", err);
-  });
-  // END Gửi log về Make.com để kiểm tra sau
+          
         }
 
         toggleCartPopup(false);
