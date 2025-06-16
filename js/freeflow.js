@@ -97,9 +97,9 @@ function renderFeedItem(item, container) {
   const finalPrice = item.price ? Number(item.price).toLocaleString() + "đ" : "";
   const originalPrice =
     item.originalPrice && item.originalPrice > item.price
-      ? <span class="original-price" style="color:#555; font-size:12px; margin-left:4px; text-decoration: line-through;">
+      ? `<span class="original-price" style="color:#555; font-size:12px; margin-left:4px; text-decoration: line-through;">
            ${Number(item.originalPrice).toLocaleString()}đ
-         </span> : "";
+         </span>` : "";
 
   const div = document.createElement("div");
   div.className = "feed-item";
@@ -107,7 +107,7 @@ function renderFeedItem(item, container) {
   let mediaHtml = "";
 
   if (item.contentType === "image") {
-    mediaHtml = 
+    mediaHtml = `
       <img loading="lazy" src="${item.image}" alt="${item.title}" style="width: 100%; border-radius: 8px;" />
       <h4 class="one-line-title" style="margin: 4px 8px 0; font-size: 13px; line-height: 1.3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
         ${item.title}
@@ -115,9 +115,9 @@ function renderFeedItem(item, container) {
       <div class="price-line" style="padding: 2px 8px 6px; font-size: 13px;">
         <span class="price" style="color: #f53d2d; font-weight: bold;">${finalPrice}</span> ${originalPrice}
       </div>
-    ;
+    `;
   } else if (item.contentType === "youtube") {
-    mediaHtml = 
+    mediaHtml = `
       <div class="video-wrapper" style="position: relative;">
         <iframe 
           data-video-id="${item.youtube}"
@@ -149,7 +149,7 @@ function renderFeedItem(item, container) {
           </div>
         </div>
       </div>
-    ;
+    `;
   }
 
   div.innerHTML = mediaHtml;
@@ -161,7 +161,7 @@ function renderFeedItem(item, container) {
         const id = overlay.getAttribute("data-video");
         const popup = document.getElementById("videoOverlay");
         const frame = document.getElementById("videoFrame");
-        frame.src = https://www.youtube.com/embed/${id}?autoplay=1&mute=0&playsinline=1&controls=1;
+        frame.src = `https://www.youtube.com/embed/${id}?autoplay=1&mute=0&playsinline=1&controls=1`;
         popup.style.display = "flex";
       };
     }, 0);
@@ -184,7 +184,7 @@ function setupAutoplayObserver() {
       const win = iframe.contentWindow;
 
       if (entry.isIntersecting) {
-        iframe.src = https://www.youtube.com/embed/${id}?autoplay=1&mute=1&playsinline=1&controls=1&loop=1&playlist=${id};
+        iframe.src = `https://www.youtube.com/embed/${id}?autoplay=1&mute=1&playsinline=1&controls=1&loop=1&playlist=${id}`;
       } else {
         iframe.src = "";
       }
@@ -217,5 +217,3 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
-
-
