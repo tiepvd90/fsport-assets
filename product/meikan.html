@@ -94,14 +94,18 @@
     <script src="../js/slideshow.js"></script>
 
     <!-- ✅ Flash Sale Banner -->
-    <div id="flashbanner-placeholder"></div>
-    <script>
-      fetch("/html/flashsalebanner/template01.html")
-        .then(res => res.text())
-        .then(html => {
-          document.getElementById("flashbanner-placeholder").innerHTML = html;
-        });
-    </script>
+<script>
+  window.productPage = "meikan"; // hoặc "gaiter", v.v.
+</script>
+<div id="flashbanner-placeholder"></div>
+<script>
+  fetch("/html/flashsalebanner/template01.html")
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById("flashbanner-placeholder").innerHTML = html;
+    });
+</script>
+
 
     <!-- ✅ KHỐI 1: Tiêu đề + Shipping -->
     <div class="product-hero">
