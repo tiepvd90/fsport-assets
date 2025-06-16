@@ -263,22 +263,6 @@ function bindAddToCartButton() {
             currency: "VND"
           });
         }
-       // ✅ Gửi log Google Sheet, fallback nếu lỗi
-  fetch("https://script.google.com/macros/s/AKfycbxpn-hdD75n5kfE7lm13QcVvB3njTzGTA3d3wyQMfCxzPu11SeCnSaIAywm7-na8gGSpA/exec", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      content_id: contentId,
-      content_name: phanLoaiText,
-      content_category: product.category || loai,
-      content_page: window.productPage || "unknown",
-      value: product.Giá || 0,
-      currency: "VND"
-    })
-  }).catch((err) => {
-    console.warn("⚠️ Không thể gửi log Google Sheet:", err);
-    // Không làm gì cả, không ảnh hưởng flow chính
-  });
         toggleCartPopup(false);
         if (typeof showCheckoutPopup === "function") showCheckoutPopup();
       }
