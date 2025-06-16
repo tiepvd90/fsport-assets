@@ -40,10 +40,10 @@ setTimeout(() => {
 
       // ✅ TRACKING
       if (typeof trackBothPixels === "function") {
-        trackBothPixels("AddToCart", {
-          content_name: "click_btn_atc_" + loai,
-          content_category: loai
-        });
+        trackBothPixels("AddToWishList", {
+  content_name: "click_btn_atc_" + loai,
+  content_category: loai
+});
       } else {
         console.warn("⚠️ trackBothPixels chưa tồn tại");
       }
