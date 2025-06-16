@@ -112,34 +112,6 @@
     "sellerID": "huyenle"
   },
   {
-    "itemId": "chairvid001",
-    "title": "Ghế Công Thái Học FA",
-    "price": 419000,
-    "originalPrice": null,
-    "contentType": "youtube",
-    "image": "https://i.postimg.cc/Twt9WhLy/KZ98-VL3-Imgur.jpg",
-    "youtube": "pvI-V4wAGTo",
-    "productPage": "/product/chair",
-    "tags": ["SUP", "thuyền", "bơm"],
-    "basePriority": 17,
-    "productCategory": "chair",
-    "sellerID": "huyenle"
-  },
-  {
-    "itemId": "chairvid002",
-    "title": "Ghế Công Thái Học FA",
-    "price": 419000,
-    "originalPrice": null,
-    "contentType": "youtube",
-    "image": "https://i.postimg.cc/Twt9WhLy/KZ98-VL3-Imgur.jpg",
-    "youtube": "GiJ0PijF7nE",
-    "productPage": "/product/chair",
-    "tags": ["SUP", "thuyền", "bơm"],
-    "basePriority": 20,
-    "productCategory": "chair",
-    "sellerID": "huyenle"
-  },
-  {
     "itemId": "sup",
     "title": "Thuyền SUP 2 Lớp",
     "price": 3279115,
