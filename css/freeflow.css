@@ -7,7 +7,6 @@
   max-width: 100%;
 }
 
-/* Tablet (≥600px) */
 @media screen and (min-width: 600px) {
   #freeflowFeed {
     column-count: 3;
@@ -15,11 +14,17 @@
   }
 }
 
-/* Desktop (≥1024px) */
 @media screen and (min-width: 1024px) {
   #freeflowFeed {
     column-count: 6;
     max-width: 1080px;
+  }
+}
+
+@media screen and (max-width: 599px) {
+  #freeflowFeed {
+    column-count: 2;
+    max-width: 100%;
   }
 }
 
@@ -29,7 +34,7 @@
   margin-bottom: 12px;
   background: #fff;
   border-radius: 12px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
   overflow: hidden;
   cursor: pointer;
   transition: transform 0.2s ease;
@@ -39,22 +44,56 @@
   transform: translateY(-4px);
 }
 
-/* ==== Ảnh ==== */
+/* ==== Ảnh sản phẩm ==== */
 .feed-item img {
   width: 100%;
-  aspect-ratio: 1 / 1;
   object-fit: cover;
   display: block;
   border-bottom: 1px solid #eee;
 }
 
-/* ==== Video ==== */
-.feed-item iframe {
+/* ==== Thumbnail video (đè lên iframe khi chưa play) ==== */
+.youtube-thumb {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
   width: 100%;
   aspect-ratio: 9 / 16;
   object-fit: cover;
+  border-radius: 12px;
+  transition: opacity 0.3s ease;
   display: block;
+}
+
+/* ==== Wrapper video ==== */
+.video-wrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 9 / 16;
+  overflow: hidden;
   border-bottom: 1px solid #eee;
+  border-radius: 12px;
+  background: #000;
+}
+
+/* ==== Iframe video ==== */
+.feed-item iframe {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  aspect-ratio: 9 / 16;
+  border: none;
+  border-radius: 12px;
+  background: transparent;
+  display: block;
+}
+
+/* ==== Overlay bắt sự kiện click mở popup ==== */
+.video-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  cursor: pointer;
 }
 
 /* ==== Tiêu đề ngắn 1 dòng ==== */
@@ -69,7 +108,7 @@
   text-overflow: ellipsis;
 }
 
-/* ==== Dòng giá ==== */
+/* ==== Dòng giá dưới ảnh ==== */
 .price-line {
   padding: 0 8px 8px 8px;
 }
@@ -86,27 +125,41 @@
   text-decoration: line-through;
   margin-left: 6px;
 }
-.youtube-thumb {
-  border-radius: 12px;
+
+/* ==== Phần thông tin dưới video ==== */
+.video-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px 8px;
+}
+
+.product-thumb {
+  width: 36px;
+  height: 36px;
   object-fit: cover;
-  width: 100%;
-  aspect-ratio: 9 / 16;
-  display: block;
+  border-radius: 6px;
+  flex-shrink: 0;
 }
 
-.video-wrapper {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 9 / 16;
+.info-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.info-text h4 {
+  font-size: 13px;
+  margin: 0;
+  white-space: nowrap;
   overflow: hidden;
-  border-bottom: 1px solid #eee;
-  border-radius: 12px;
-  background: #000;
+  text-overflow: ellipsis;
+  color: #333;
+  font-weight: 500;
+  line-height: 1.4;
 }
 
-@media screen and (max-width: 599px) {
-  #freeflowFeed {
-    column-count: 2;
-    max-width: 100%;
-  }
+.info-text .price {
+  font-size: 13px;
+  font-weight: bold;
+  color: #f53d2d;
 }
