@@ -38,34 +38,27 @@
   overflow: hidden;
   cursor: pointer;
   transition: transform 0.2s ease;
+  min-height: 280px; /* Giữ chiều cao cố định để tránh layout bị nhảy */
 }
 
 .feed-item:hover {
   transform: translateY(-4px);
 }
 
-/* ==== Ảnh sản phẩm ==== */
-.feed-item img {
-  width: 100%;
-  object-fit: cover;
-  display: block;
-  border-bottom: 1px solid #eee;
-}
-
-/* ==== Thumbnail video (đè lên iframe khi chưa play) ==== */
+/* ==== Hình ảnh và thumbnail video ==== */
+.feed-item img,
 .youtube-thumb {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
   width: 100%;
   aspect-ratio: 9 / 16;
   object-fit: cover;
+  display: block;
+  background: #f2f2f2;
+  min-height: 250px;
   border-radius: 12px;
   transition: opacity 0.3s ease;
-  display: block;
 }
 
-/* ==== Wrapper video ==== */
+/* ==== Wrapper cho video (iframe + overlay + thumbnail) ==== */
 .video-wrapper {
   position: relative;
   width: 100%;
@@ -76,7 +69,7 @@
   background: #000;
 }
 
-/* ==== Iframe video ==== */
+/* ==== Iframe Video YouTube ==== */
 .feed-item iframe {
   position: relative;
   z-index: 2;
@@ -84,11 +77,12 @@
   aspect-ratio: 9 / 16;
   border: none;
   border-radius: 12px;
-  background: transparent;
+  background: #000;
   display: block;
+  transition: opacity 0.3s ease;
 }
 
-/* ==== Overlay bắt sự kiện click mở popup ==== */
+/* ==== Overlay click mở popup video ==== */
 .video-overlay {
   position: absolute;
   inset: 0;
@@ -96,7 +90,7 @@
   cursor: pointer;
 }
 
-/* ==== Tiêu đề ngắn 1 dòng ==== */
+/* ==== Tiêu đề sản phẩm ==== */
 .one-line-title {
   padding: 8px;
   font-size: 14px;
@@ -126,7 +120,7 @@
   margin-left: 6px;
 }
 
-/* ==== Phần thông tin dưới video ==== */
+/* ==== Phần info bên dưới video ==== */
 .video-info {
   display: flex;
   align-items: center;
