@@ -14,7 +14,10 @@ function initCartPopup() {
       if (data["thuộc_tính"] && data["biến_thể"]) {
         window.allVariants = data["biến_thể"];
         window.allAttributes = data["thuộc_tính"];
-        window.productCategory = data["category"] || loai;
+        window.productCategory = data["category"]
+  || (Array.isArray(data["biến_thể"]) ? data["biến_thể"][0]?.category : "unknown")
+  || "unknown";
+
 
         if (window.__voucherWaiting?.amount) {
           data["biến_thể"].forEach(sp => {
