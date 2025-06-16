@@ -244,12 +244,11 @@ function bindAddToCartButton() {
           trackBothPixels("AddToCart", {
             content_id: product.id,
             content_name: phanLoaiText,
-            content_category: window.productCategory || window.productCategory,
+            content_category: product.category || loai,
             content_page: window.productPage || "unknown",
             value: product.Giá,
             currency: "VND"
           });
-          
         }
 
         toggleCartPopup(false);
