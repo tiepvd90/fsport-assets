@@ -1,5 +1,5 @@
 <!-- ✅ Flash Sale Banner -->
-<div style="
+<div id="flashSaleBanner" style="
   background-image: url('https://i.postimg.cc/wB7DgT1R/flash-sale-background.jpg');
   background-size: cover;
   background-position: center;
@@ -15,9 +15,7 @@
   box-sizing: border-box;
 ">
   <!-- Giá bên trái -->
-  <div style="flex-shrink: 0; white-space: nowrap; font-size: 17px;">
-    80.000đ - 120.000đ
-  </div>
+  <div id="flashSalePrice" style="flex-shrink: 0; white-space: nowrap; font-size: 17px;"></div>
 
   <!-- Flash Sale bên phải -->
   <div style="display: flex; align-items: center; gap: 6px; text-align: right;">
@@ -30,3 +28,17 @@
   </div>
 </div>
 <!-- END Flash Sale Banner -->
+
+<script>
+  const productPage = "meikan"; // test cứng
+
+  const priceMap = {
+    meikan: "80.000đ - 120.000đ",
+    gaiter: "49.000đ",
+    // Thêm sản phẩm khác ở đây nếu cần
+    // example: "sup": "2.500.000đ"
+  };
+
+  const flashSalePrice = document.getElementById("flashSalePrice");
+  flashSalePrice.textContent = priceMap[productPage] || ""; // fallback nếu không khớp
+</script>
