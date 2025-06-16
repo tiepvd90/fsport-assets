@@ -1,0 +1,102 @@
+<style>
+  .desc-text {
+    font-size: 12px;
+    line-height: 1.6;
+    color: #222;
+    font-family: 'Be Vietnam Pro', sans-serif;
+  }
+
+  .desc-toggle-btn {
+    margin-top: 16px;
+    background: none;
+    border: none;
+    font-weight: bold;
+    color: #000;
+    cursor: pointer;
+    padding: 10px 0;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    width: 100%;
+    font-family: 'Be Vietnam Pro', sans-serif;
+  }
+
+  .desc-toggle-btn .arrow {
+    font-size: 12px;
+    display: inline-block;
+    transform: translateY(1px);
+  }
+
+  .desc-fade {
+    height: 60px;
+    background: linear-gradient(to top, #fff, transparent);
+    margin-top: -60px;
+    pointer-events: none;
+  }
+
+  .hidden {
+    display: none;
+  }
+
+  .desc-img {
+    width: 100%;
+    display: block;
+    border-radius: 8px;
+    margin-bottom: 12px;
+  }
+</style>
+
+<h2 class="desc-title" style="font-size: 14px; font-weight: bold; margin-bottom: 8px;">
+  Mô Tả Sản Phẩm
+</h2>
+
+<img src="https://i.postimg.cc/QtH1Dkk4/mota.jpg" alt="Ảnh mô tả khăn ống 1" class="desc-img">
+<img src="https://i.postimg.cc/0NtDhHmK/5.jpg" alt="Ảnh mô tả khăn ống 2" class="desc-img">
+
+<div id="descShort" class="desc-text">
+  <p><strong>🧣 KHĂN ỐNG ĐA NĂNG – BẢO VỆ TOÀN DIỆN, PHONG CÁCH CÁ TÍNH!</strong></p>
+  <p>✅ Chất liệu cao cấp: 90% Polyester + 10% Spandex – mềm mại, thoáng mát, co giãn 4 chiều cực tốt<br>
+  ✅ Kích thước lý tưởng: 24cm x 50cm | Trọng lượng siêu nhẹ ~29g<br>
+  ✅ Freesize – Phù hợp cho cả nam & nữ, mọi độ tuổi<br>
+  ✅ Màu sắc đa dạng, dễ phối đồ và phù hợp nhiều phong cách</p>
+</div>
+
+<div id="descFull" class="desc-text hidden">
+  <p><strong>🎯 TÍNH NĂNG NỔI BẬT:</strong></p>
+  <ul>
+    <li>☀️ Chống nắng - Chống UV đến 90%, bảo vệ da tối đa khi vận động ngoài trời</li>
+    <li>💨 Thoáng khí - Hút ẩm - Nhanh khô, không gây bí bách khi đeo lâu</li>
+    <li>🌀 Co giãn đàn hồi tuyệt vời – dễ dàng tạo thành khẩu trang, khăn choàng, cột tóc, băng đô, vòng tay…</li>
+    <li>🌬️ Chống bụi, chắn gió, lý tưởng cho chạy bộ, thể dục, đạp xe, đi phượt, hiking, đi mô tô</li>
+    <li>🎽 Vải cao cấp, độ bền cao – dùng lâu không giãn, không bai</li>
+  </ul>
+
+  <p><strong>📦 CHÍNH SÁCH ĐỔI TRẢ LINH HOẠT:</strong><br>
+  🔄 Đổi màu hoặc mẫu thoải mái, chỉ cần khăn còn mới, chưa qua sử dụng & còn tem mác<br>
+  📩 Mua về không ưng có thể đổi ngay – hỗ trợ khách hàng hết mình!</p>
+
+  <p><strong>🛒 Thêm vào giỏ ngay hôm nay</strong> để vừa bảo vệ bản thân, vừa nâng tầm phong cách thể thao & đường phố!</p>
+</div>
+
+<div class="desc-fade" id="descFade"></div>
+
+<button id="toggleDesc" class="desc-toggle-btn">
+  Xem Thêm <span class="arrow">&#x25BC;</span>
+</button>
+
+<script>
+  const toggleBtn = document.getElementById('toggleDesc');
+  const descFull = document.getElementById('descFull');
+  const fade = document.getElementById('descFade');
+
+  toggleBtn.addEventListener('click', () => {
+    const isHidden = descFull.classList.contains('hidden');
+    descFull.classList.toggle('hidden');
+    fade.style.display = isHidden ? 'none' : 'block';
+    toggleBtn.innerHTML = isHidden
+      ? 'Thu Gọn <span class="arrow">&#x25B2;</span>'
+      : 'Xem Thêm <span class="arrow">&#x25BC;</span>';
+  });
+</script>
