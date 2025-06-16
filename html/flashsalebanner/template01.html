@@ -1,4 +1,3 @@
-<!-- ✅ Flash Sale Banner -->
 <div id="flashSaleBanner" style="
   background-image: url('https://i.postimg.cc/wB7DgT1R/flash-sale-background.jpg');
   background-size: cover;
@@ -15,7 +14,7 @@
   box-sizing: border-box;
 ">
   <!-- Giá bên trái -->
-  <div id="flashSalePrice" style="flex-shrink: 0; white-space: nowrap; font-size: 17px; background: red;"></div>
+  <div id="flashSalePrice" style="flex-shrink: 0; white-space: nowrap; font-size: 17px;"></div>
 
   <!-- Flash Sale bên phải -->
   <div style="display: flex; align-items: center; gap: 6px; text-align: right;">
@@ -27,26 +26,20 @@
     <img src="https://img.icons8.com/color/24/000000/flash-on.png" style="width: 14px; height: 14px;" />
   </div>
 </div>
-<!-- END Flash Sale Banner -->
 
 <script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const productPage = "meikan"; // test cứng
+  (function () {
     const priceMap = {
       meikan: "80.000đ - 120.000đ",
-      gaiter: "49.000đ"
+      gaiter: "49.000đ",
     };
 
-    const flashSalePrice = document.getElementById("flashSalePrice");
-    const priceText = priceMap[productPage] || "Không tìm thấy giá";
-
-    console.log("🔍 productPage =", productPage);
-    console.log("🔍 Giá tìm được =", priceText);
-
-    if (flashSalePrice) {
-      flashSalePrice.textContent = priceText;
-    } else {
-      console.warn("⚠️ Không tìm thấy phần tử #flashSalePrice");
+    const productPage = window.productPage || "default";
+    const priceEl = document.getElementById("flashSalePrice");
+    if (priceEl && priceMap[productPage]) {
+      priceEl.textContent = priceMap[productPage];
+    } else if (priceEl) {
+      priceEl.textContent = "Đang cập nhật...";
     }
-  });
+  })();
 </script>
