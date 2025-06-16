@@ -92,42 +92,16 @@
       <div class="slide-counter" id="slideCounter">1/1</div>
     </div>
     <script src="../js/slideshow.js"></script>
-
     <!-- ✅ Flash Sale Banner -->
-<!-- Gán productPage -->
-<script>window.productPage = "meikan";</script>
-
-<div id="flashbanner-placeholder"></div>
-
-<script>
-  fetch("/html/flashsalebanner/template01.html")
-    .then(res => res.text())
-    .then(html => {
-      const wrapper = document.getElementById("flashbanner-placeholder");
-
-      // Tạo container tạm để trích script
-      const temp = document.createElement("div");
-      temp.innerHTML = html;
-
-      // Lấy nội dung script
-      const scripts = temp.querySelectorAll("script");
-      scripts.forEach(script => {
-        const newScript = document.createElement("script");
-        if (script.src) {
-          newScript.src = script.src;
-        } else {
-          newScript.textContent = script.textContent;
-        }
-        document.body.appendChild(newScript);
-        script.remove(); // gỡ khỏi temp
-      });
-
-      // Cuối cùng gán phần còn lại vào DOM
-      wrapper.innerHTML = temp.innerHTML;
-    });
-</script>
-
-
+<!-- ✅ Flash Sale Banner -->
+    <div id="flashbanner-placeholder"></div>
+    <script>
+      fetch("/html/flashsalebanner/template01.html")
+        .then(res => res.text())
+        .then(html => {
+          document.getElementById("flashbanner-placeholder").innerHTML = html;
+        });
+    </script>
 
     <!-- ✅ KHỐI 1: Tiêu đề + Shipping -->
     <div class="product-hero">
