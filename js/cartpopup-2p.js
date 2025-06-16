@@ -16,7 +16,10 @@ function initCartPopup() {
       if (data["thuộc_tính"] && data["biến_thể"]?.length === 1) {
         window.allAttributes = data["thuộc_tính"];
         window.baseVariant = data["biến_thể"][0];
-        window.productCategory = window.baseVariant.category || "unknown";
+        window.productCategory = data["category"]
+  || (Array.isArray(data["biến_thể"]) ? data["biến_thể"][0]?.category : "unknown")
+  || "unknown";
+
 
         renderOptions(window.allAttributes);
         bindAddToCartButton();
@@ -249,25 +252,24 @@ function bindAddToCartButton() {
             value: product.Giá,
             currency: "VND"
           });
-          // ✅ Gửi log về Make.com để kiểm tra sau
-  fetch("https://hook.eu2.make.com/31c0jdh2vkvkjcnaenbm3kyze8fp3us3", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      content_id: contentId,
-      content_name: phanLoaiText,
-      content_category: window.productCategory || window.productCategory,
-      content_page: window.productPage || "unknown",
-      value: product.Giá || 0,
-      currency: "VND",
-      timestamp: new Date().toISOString()
-    })
-  }).catch((err) => {
-    console.warn("⚠️ Không thể gửi dữ liệu về Make:", err);
-  });
-// END Gửi log về Make.com để kiểm tra sau
         }
-
+// ✅ Gửi log về Make.com
+fetch("https://hook.eu2.make.com/31c0jdh2vkvkjcnaenbm3kyze8fp3us3", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    content_id: product.id,
+    content_name: phanLoaiText,
+    content_category: product.category || loai,
+    content_page: window.productPage || "unknown",
+    value: product.Giá,
+    currency: "VND",
+    timestamp: new Date().toISOString()
+  })
+}).catch(err => {
+  console.warn("⚠️ Không thể gửi dữ liệu về Make:", err);
+});
+// END Gửi log về Make.com
         toggleCartPopup(false);
         if (typeof showCheckoutPopup === "function") showCheckoutPopup();
       }
