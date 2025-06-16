@@ -257,7 +257,7 @@ function bindAddToCartButton() {
           trackBothPixels("AddToCart", {
             content_id: contentId,
             content_name: phanLoaiText,
-            content_category: product.category || loai,
+            content_category: window.productCategory || window.productCategory,
             content_page: window.productPage || "unknown",
             value: product.Giá || 0,
             currency: "VND"
@@ -269,7 +269,7 @@ function bindAddToCartButton() {
     body: JSON.stringify({
       content_id: contentId,
       content_name: phanLoaiText,
-      content_category: product.category || loai,
+      content_category: window.productCategory || window.productCategory,
       content_page: window.productPage || "unknown",
       value: product.Giá || 0,
       currency: "VND",
