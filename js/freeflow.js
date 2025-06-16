@@ -1,5 +1,5 @@
 const CACHE_KEY = "freeflowCache";
-const CACHE_DURATION_MS = 30 * 60 * 1000; // 30 phút
+const CACHE_DURATION_MS = 30 * 60 * 1000;
 const fallbackUrl = "https://script.google.com/macros/s/AKfycbwuEh9sP65vyQL0XzU8gY1Os0QYV_K5egKJgm8OhImAPjvdyrQiU7XCY909N99TnltP/exec";
 const BATCH_SIZE = 4;
 
@@ -7,8 +7,8 @@ let freeflowData = [];
 let itemsLoaded = 0;
 const renderedItemIds = new Set();
 const productCategory = window.productCategory || "0";
+const alreadyObserved = new WeakSet();
 
-// ✅ Load cache
 function loadCachedFreeFlow() {
   try {
     const cached = JSON.parse(localStorage.getItem(CACHE_KEY));
@@ -19,7 +19,6 @@ function loadCachedFreeFlow() {
   return null;
 }
 
-// ✅ Save cache
 function saveCache(data) {
   localStorage.setItem(CACHE_KEY, JSON.stringify({
     timestamp: Date.now(),
@@ -27,7 +26,6 @@ function saveCache(data) {
   }));
 }
 
-// ✅ Fetch từ local + Google Sheet
 async function fetchFreeFlowData() {
   const cached = loadCachedFreeFlow();
   if (cached) {
@@ -66,18 +64,16 @@ async function fetchFromGoogleSheet(existingData) {
   }
 }
 
-// ✅ Tính điểm ưu tiên & sort
 function processAndSortData(data) {
   freeflowData = data.map(item => {
-    const match = (item.productCategory === productCategory) ? 60 : 0;
+    const bonus = (item.productCategory === productCategory) ? 60 : 0;
     return {
       ...item,
-      finalPriority: (item.basePriority || 0) + Math.floor(Math.random() * 20) + match
+      finalPriority: (item.basePriority || 0) + Math.floor(Math.random() * 20) + bonus
     };
   }).sort((a, b) => b.finalPriority - a.finalPriority);
 }
 
-// ✅ Hiển thị batch tiếp theo
 function lazyRenderNextBatch() {
   const container = document.getElementById("freeflowFeed");
   if (!container || itemsLoaded >= freeflowData.length) return;
@@ -98,20 +94,19 @@ function lazyRenderNextBatch() {
   setupAutoplayObserver();
 }
 
-// ✅ Render từng item
 function renderFeedItem(item, container) {
+  const eager = itemsLoaded < BATCH_SIZE ? "eager" : "lazy";
   const finalPrice = item.price ? Number(item.price).toLocaleString() + "đ" : "";
   const originalPrice = item.originalPrice > item.price
-    ? `<span class="original-price" style="color:#999; font-size:13px; text-decoration: line-through; margin-left:6px;">
-         ${Number(item.originalPrice).toLocaleString()}đ
-       </span>` : "";
+    ? `<span class="original-price">${Number(item.originalPrice).toLocaleString()}đ</span>` : "";
 
   const div = document.createElement("div");
   div.className = "feed-item";
+  div.style.minHeight = "280px";
 
   if (item.contentType === "image") {
     div.innerHTML = `
-      <img loading="lazy" src="${item.image}" alt="${item.title}" />
+      <img loading="${eager}" src="${item.image}" alt="${item.title}" style="aspect-ratio: 9 / 16; object-fit: cover; width: 100%;" />
       <h4 class="one-line-title">${item.title}</h4>
       <div class="price-line">
         <span class="price">${finalPrice}</span> ${originalPrice}
@@ -124,8 +119,7 @@ function renderFeedItem(item, container) {
     const videoSrc = `https://www.youtube.com/embed/${item.youtube}?enablejsapi=1&mute=1&playsinline=1&controls=1&loop=1&playlist=${item.youtube}`;
     div.innerHTML = `
       <div class="video-wrapper">
-        <img src="https://img.youtube.com/vi/${item.youtube}/hqdefault.jpg"
-             class="youtube-thumb" />
+        <img src="https://img.youtube.com/vi/${item.youtube}/hqdefault.jpg" class="youtube-thumb" loading="${eager}" />
         <iframe data-video-id="${item.youtube}" src="${videoSrc}"></iframe>
         <div class="video-overlay" data-video="${item.youtube}"></div>
       </div>
@@ -155,9 +149,9 @@ function renderFeedItem(item, container) {
   container.appendChild(div);
 }
 
-// ✅ Autoplay mượt bằng postMessage
 function setupAutoplayObserver() {
   const iframes = document.querySelectorAll("iframe[data-video-id]");
+
   const observer = new IntersectionObserver(entries => {
     entries.forEach(entry => {
       const iframe = entry.target;
@@ -174,10 +168,14 @@ function setupAutoplayObserver() {
     });
   }, { threshold: 0.5 });
 
-  iframes.forEach(iframe => observer.observe(iframe));
+  iframes.forEach(iframe => {
+    if (!alreadyObserved.has(iframe)) {
+      observer.observe(iframe);
+      alreadyObserved.add(iframe);
+    }
+  });
 }
 
-// ✅ Đóng popup video
 function closeVideoPopup() {
   const frame = document.getElementById("videoFrame");
   if (frame) frame.src = "";
@@ -185,7 +183,6 @@ function closeVideoPopup() {
   if (popup) popup.style.display = "none";
 }
 
-// ✅ Khởi tạo
 document.addEventListener("DOMContentLoaded", () => {
   const closeBtn = document.getElementById("videoCloseBtn");
   if (closeBtn) closeBtn.onclick = closeVideoPopup;
