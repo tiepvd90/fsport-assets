@@ -1,13 +1,11 @@
 const CACHE_KEY = "freeflowCache";
 const CACHE_DURATION_MS = 30 * 60 * 1000; // 30 phút
 const fallbackUrl = "https://script.google.com/macros/s/AKfycbwuEh9sP65vyQL0XzU8gY1Os0QYV_K5egKJgm8OhImAPjvdyrQiU7XCY909N99TnltP/exec";
-const BATCH_SIZE = 4;
-
 let freeflowData = [];
 let itemsLoaded = 0;
 let productCategory = window.productCategory || "0";
 
-// ✅ Kiểm tra cache localStorage
+// ✅ Load cache nếu còn hạn
 function loadCachedFreeFlow() {
   try {
     const cached = JSON.parse(localStorage.getItem(CACHE_KEY));
@@ -18,58 +16,13 @@ function loadCachedFreeFlow() {
   return null;
 }
 
-// ✅ Lưu cache vào localStorage
+// ✅ Lưu cache
 function saveCache(data) {
-  const payload = {
-    timestamp: Date.now(),
-    data: data
-  };
+  const payload = { timestamp: Date.now(), data };
   localStorage.setItem(CACHE_KEY, JSON.stringify(payload));
 }
 
-// ✅ Tải dữ liệu ban đầu
-async function fetchFreeFlowData() {
-  const cached = loadCachedFreeFlow();
-  if (cached) {
-    processAndSortData(cached);
-    lazyRenderNextBatch();
-    return;
-  }
-
-  try {
-    const res = await fetch("/json/freeflow.json");
-    const localData = await res.json();
-    const deduped = Array.isArray(localData) ? localData : [];
-    processAndSortData(deduped);
-    saveCache(deduped);
-    lazyRenderNextBatch();
-
-    // Sau đó nối thêm từ Google Sheet (nếu có)
-    fetchFromGoogleSheet(deduped);
-  } catch (e) {
-    console.warn("Lỗi khi tải local JSON:", e);
-    fetchFromGoogleSheet([]);
-  }
-}
-
-async function fetchFromGoogleSheet(existingData) {
-  try {
-    const res = await fetch(fallbackUrl);
-    const sheetData = await res.json();
-    if (!Array.isArray(sheetData)) return;
-
-    const existingIds = new Set(existingData.map(i => i.itemId));
-    const newItems = sheetData.filter(i => !existingIds.has(i.itemId));
-    const combined = [...existingData, ...newItems];
-
-    processAndSortData(combined);
-    saveCache(combined);
-  } catch (e) {
-    console.error("Không thể fetch từ Google Sheet:", e);
-  }
-}
-
-// ✅ Tính điểm và sắp xếp
+// ✅ Sắp xếp và tính điểm ưu tiên
 function processAndSortData(data) {
   freeflowData = data.map(item => {
     const random = Math.floor(Math.random() * 20) + 1;
@@ -81,25 +34,83 @@ function processAndSortData(data) {
   }).sort((a, b) => b.finalPriority - a.finalPriority);
 }
 
-// ✅ Hiển thị batch tiếp theo
-function lazyRenderNextBatch() {
-  const container = document.getElementById("freeflowFeed");
-  if (!container || itemsLoaded >= freeflowData.length) return;
+// ✅ Tải dữ liệu chính
+async function fetchFreeFlowData() {
+  const cached = loadCachedFreeFlow();
+  if (cached) {
+    processAndSortData(cached);
+    renderInitialAndLoadRest();
+    return;
+  }
 
-  const batch = freeflowData.slice(itemsLoaded, itemsLoaded + BATCH_SIZE);
-  batch.forEach(item => renderFeedItem(item, container));
-  itemsLoaded += BATCH_SIZE;
-  setupAutoplayObserver();
+  try {
+    const res = await fetch("/json/freeflow.json");
+    const localData = await res.json();
+    const validData = Array.isArray(localData) ? localData : [];
+
+    processAndSortData(validData);
+    saveCache(validData);
+    renderInitialAndLoadRest();
+
+    // Nối thêm từ Google Sheet
+    fetchFromGoogleSheet(validData);
+  } catch (e) {
+    console.warn("Lỗi khi tải local JSON:", e);
+    fetchFromGoogleSheet([]);
+  }
 }
 
-// ✅ Render từng item
+// ✅ Gọi Google Sheet
+async function fetchFromGoogleSheet(existingData) {
+  try {
+    const res = await fetch(fallbackUrl);
+    const sheetData = await res.json();
+    if (!Array.isArray(sheetData)) return;
+
+    const existingIds = new Set(existingData.map(i => i.itemId));
+    const newItems = sheetData.filter(i => !existingIds.has(i.itemId));
+    if (newItems.length === 0) return;
+
+    const combined = [...existingData, ...newItems];
+    processAndSortData(combined);
+    saveCache(combined);
+
+    // Render các item mới sau khi tải xong
+    const container = document.getElementById("freeflowFeed");
+    const moreItems = freeflowData.slice(itemsLoaded);
+    moreItems.forEach(item => renderFeedItem(item, container));
+    itemsLoaded = freeflowData.length;
+    setupAutoplayObserver();
+  } catch (e) {
+    console.error("Không thể fetch từ Google Sheet:", e);
+  }
+}
+
+// ✅ Render 4 item đầu → sau 300ms render hết
+function renderInitialAndLoadRest() {
+  const container = document.getElementById("freeflowFeed");
+  if (!container) return;
+
+  const firstBatch = freeflowData.slice(0, 4);
+  firstBatch.forEach(item => renderFeedItem(item, container));
+  itemsLoaded = 4;
+  setupAutoplayObserver();
+
+  setTimeout(() => {
+    const remaining = freeflowData.slice(4);
+    remaining.forEach(item => renderFeedItem(item, container));
+    itemsLoaded = freeflowData.length;
+    setupAutoplayObserver();
+  }, 300);
+}
+
+// ✅ Render item đơn
 function renderFeedItem(item, container) {
   const finalPrice = item.price ? Number(item.price).toLocaleString() + "đ" : "";
-  const originalPrice =
-    item.originalPrice && item.originalPrice > item.price
-      ? `<span class="original-price" style="color:#555; font-size:12px; margin-left:4px; text-decoration: line-through;">
-           ${Number(item.originalPrice).toLocaleString()}đ
-         </span>` : "";
+  const originalPrice = (item.originalPrice && item.originalPrice > item.price)
+    ? `<span class="original-price" style="color:#555; font-size:12px; margin-left:4px; text-decoration: line-through;">
+         ${Number(item.originalPrice).toLocaleString()}đ
+       </span>` : "";
 
   const div = document.createElement("div");
   div.className = "feed-item";
@@ -174,19 +185,20 @@ function renderFeedItem(item, container) {
   container.appendChild(div);
 }
 
-// ✅ Autoplay smooth (dùng postMessage để tránh reload iframe)
+// ✅ Autoplay cho iframe YouTube
 function setupAutoplayObserver() {
   const iframes = document.querySelectorAll('iframe[data-video-id]');
   const observer = new IntersectionObserver(entries => {
     entries.forEach(entry => {
       const iframe = entry.target;
       const id = iframe.getAttribute('data-video-id');
-      const win = iframe.contentWindow;
+      if (!id) return;
 
+      const targetSrc = `https://www.youtube.com/embed/${id}?autoplay=1&mute=1&playsinline=1&controls=1&loop=1&playlist=${id}`;
       if (entry.isIntersecting) {
-        iframe.src = `https://www.youtube.com/embed/${id}?autoplay=1&mute=1&playsinline=1&controls=1&loop=1&playlist=${id}`;
+        if (iframe.src !== targetSrc) iframe.src = targetSrc;
       } else {
-        iframe.src = "";
+        if (iframe.src !== "") iframe.src = "";
       }
     });
   }, { threshold: 0.5 });
@@ -194,7 +206,7 @@ function setupAutoplayObserver() {
   iframes.forEach(iframe => observer.observe(iframe));
 }
 
-// ✅ Đóng popup video
+// ✅ Đóng popup
 function closeVideoPopup() {
   const frame = document.getElementById("videoFrame");
   if (frame) frame.src = "";
@@ -202,18 +214,10 @@ function closeVideoPopup() {
   if (popup) popup.style.display = "none";
 }
 
-// ✅ Khởi tạo
+// ✅ Khởi động
 document.addEventListener("DOMContentLoaded", () => {
   const closeBtn = document.getElementById("videoCloseBtn");
   if (closeBtn) closeBtn.onclick = closeVideoPopup;
 
   fetchFreeFlowData();
-
-  // Lazy load khi cuộn gần cuối
-  window.addEventListener("scroll", () => {
-    const scrollBottom = window.innerHeight + window.scrollY;
-    if (scrollBottom >= document.body.offsetHeight - 300) {
-      lazyRenderNextBatch();
-    }
-  });
 });
