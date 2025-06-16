@@ -6,9 +6,9 @@
   <title>Flash Sale Template</title>
 </head>
 <body>
-  <!-- ✅ Giả lập gán productPage -->
+  <!-- ✅ Gán tên sản phẩm đang xem -->
   <script>
-    window.productPage = "meikan"; // đổi thành "gaiter" để test thử
+    window.productPage = "meikan"; // thay bằng "gaiter" để test sản phẩm khác
   </script>
 
   <!-- ✅ Flash Sale Banner -->
@@ -27,8 +27,14 @@
     font-size: 15px;
     box-sizing: border-box;
   ">
-    <!-- Giá bên trái (JS sẽ chèn) -->
-    <div id="flashSalePrice" style="flex-shrink: 0; white-space: nowrap; font-size: 17px;"></div>
+    <!-- Giá bên trái (JS sẽ gán sau) -->
+    <div id="flashSalePrice" style="
+      flex-shrink: 0;
+      white-space: nowrap;
+      font-size: 17px;
+      min-width: 100px;
+      visibility: hidden;
+    ">–</div>
 
     <!-- Flash Sale bên phải -->
     <div style="display: flex; align-items: center; gap: 6px; text-align: right;">
@@ -41,33 +47,26 @@
     </div>
   </div>
 
-  <!-- ✅ Script xử lý và debug -->
+  <!-- ✅ Script xử lý logic hiển thị giá -->
   <script>
-    setTimeout(function () {
+    document.addEventListener("DOMContentLoaded", function () {
       const priceDiv = document.getElementById("flashSalePrice");
       const page = window.productPage;
 
-      console.log("🧪 Debug Flash Sale:");
-      console.log("window.productPage =", page);
-      console.log("priceDiv exists:", !!priceDiv);
-
       let priceText = "";
-
       if (page === "meikan") {
         priceText = "80.000đ - 120.000đ";
       } else if (page === "gaiter") {
         priceText = "49.000đ";
       } else {
-        console.log("⚠️ Không khớp tên productPage");
+        console.warn("Không có giá cho productPage:", page);
       }
 
       if (priceDiv) {
         priceDiv.textContent = priceText;
-        console.log("✅ Đã gán giá trị:", priceText);
-      } else {
-        console.log("❌ Không tìm thấy #flashSalePrice");
+        priceDiv.style.visibility = "visible";
       }
-    }, 50); // Delay nhẹ để đảm bảo DOM và biến global đã sẵn sàng
+    });
   </script>
 </body>
 </html>
