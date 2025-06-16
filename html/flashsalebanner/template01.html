@@ -15,7 +15,7 @@
   box-sizing: border-box;
 ">
   <!-- Giá bên trái -->
-  <div id="flashSalePrice" style="flex-shrink: 0; white-space: nowrap; font-size: 17px;"></div>
+  <div id="flashSalePrice" style="flex-shrink: 0; white-space: nowrap; font-size: 17px; background: red;"></div>
 
   <!-- Flash Sale bên phải -->
   <div style="display: flex; align-items: center; gap: 6px; text-align: right;">
@@ -30,15 +30,23 @@
 <!-- END Flash Sale Banner -->
 
 <script>
-  const productPage = "meikan"; // test cứng
+  document.addEventListener("DOMContentLoaded", function () {
+    const productPage = "meikan"; // test cứng
+    const priceMap = {
+      meikan: "80.000đ - 120.000đ",
+      gaiter: "49.000đ"
+    };
 
-  const priceMap = {
-    meikan: "80.000đ - 120.000đ",
-    gaiter: "49.000đ",
-    // Thêm sản phẩm khác ở đây nếu cần
-    // example: "sup": "2.500.000đ"
-  };
+    const flashSalePrice = document.getElementById("flashSalePrice");
+    const priceText = priceMap[productPage] || "Không tìm thấy giá";
 
-  const flashSalePrice = document.getElementById("flashSalePrice");
-  flashSalePrice.textContent = priceMap[productPage] || ""; // fallback nếu không khớp
+    console.log("🔍 productPage =", productPage);
+    console.log("🔍 Giá tìm được =", priceText);
+
+    if (flashSalePrice) {
+      flashSalePrice.textContent = priceText;
+    } else {
+      console.warn("⚠️ Không tìm thấy phần tử #flashSalePrice");
+    }
+  });
 </script>
