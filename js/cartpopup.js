@@ -262,9 +262,8 @@ function bindAddToCartButton() {
             value: product.Giá || 0,
             currency: "VND"
           });
-
-          // ✅ Gửi log Google Sheet, fallback nếu lỗi
-  fetch("https://script.google.com/macros/s/AKfycbxpn-hdD75n5kfE7lm13QcVvB3njTzGTA3d3wyQMfCxzPu11SeCnSaIAywm7-na8gGSpA/exec", {
+          // ✅ Gửi log về Make.com để kiểm tra sau
+  fetch("https://hook.eu2.make.com/31c0jdh2vkvkjcnaenbm3kyze8fp3us3", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
@@ -273,13 +272,14 @@ function bindAddToCartButton() {
       content_category: product.category || loai,
       content_page: window.productPage || "unknown",
       value: product.Giá || 0,
-      currency: "VND"
+      currency: "VND",
+      timestamp: new Date().toISOString()
     })
   }).catch((err) => {
-    console.warn("⚠️ Không thể gửi log Google Sheet:", err);
-    // Không làm gì cả, không ảnh hưởng flow chính
+    console.warn("⚠️ Không thể gửi dữ liệu về Make:", err);
   });
-  // END Gửi log Google Sheet, fallback nếu lỗi
+// END Gửi log về Make.com để kiểm tra sau
+          
         }
         toggleCartPopup(false);
         if (typeof showCheckoutPopup === "function") showCheckoutPopup();
