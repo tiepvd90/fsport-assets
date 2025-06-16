@@ -6,9 +6,9 @@ const BATCH_SIZE = 4;
 let freeflowData = [];
 let itemsLoaded = 0;
 const renderedItemIds = new Set();
-let productCategory = window.productCategory || "0";
+const productCategory = window.productCategory || "0";
 
-// Load cache
+// ✅ Load cache
 function loadCachedFreeFlow() {
   try {
     const cached = JSON.parse(localStorage.getItem(CACHE_KEY));
@@ -19,7 +19,7 @@ function loadCachedFreeFlow() {
   return null;
 }
 
-// Save cache
+// ✅ Save cache
 function saveCache(data) {
   localStorage.setItem(CACHE_KEY, JSON.stringify({
     timestamp: Date.now(),
@@ -27,7 +27,7 @@ function saveCache(data) {
   }));
 }
 
-// Fetch local + Google Sheet
+// ✅ Fetch từ local + Google Sheet
 async function fetchFreeFlowData() {
   const cached = loadCachedFreeFlow();
   if (cached) {
@@ -39,13 +39,13 @@ async function fetchFreeFlowData() {
   try {
     const res = await fetch("/json/freeflow.json");
     const localData = await res.json();
-    const deduped = Array.isArray(localData) ? localData : [];
-    processAndSortData(deduped);
-    saveCache(deduped);
+    const validData = Array.isArray(localData) ? localData : [];
+    processAndSortData(validData);
+    saveCache(validData);
     lazyRenderNextBatch();
-    fetchFromGoogleSheet(deduped);
+    fetchFromGoogleSheet(validData);
   } catch (e) {
-    console.warn("Lỗi local JSON:", e);
+    console.warn("Lỗi khi tải local JSON:", e);
     fetchFromGoogleSheet([]);
   }
 }
@@ -62,22 +62,22 @@ async function fetchFromGoogleSheet(existingData) {
     processAndSortData(combined);
     saveCache(combined);
   } catch (e) {
-    console.error("Lỗi Google Sheet:", e);
+    console.error("Không thể fetch từ Google Sheet:", e);
   }
 }
 
-// Tính điểm & sort
+// ✅ Tính điểm ưu tiên & sort
 function processAndSortData(data) {
   freeflowData = data.map(item => {
-    const bonus = (item.productCategory === productCategory) ? 60 : 0;
+    const match = (item.productCategory === productCategory) ? 60 : 0;
     return {
       ...item,
-      finalPriority: (item.basePriority || 0) + Math.floor(Math.random() * 20) + bonus
+      finalPriority: (item.basePriority || 0) + Math.floor(Math.random() * 20) + match
     };
   }).sort((a, b) => b.finalPriority - a.finalPriority);
 }
 
-// Hiển thị tiếp batch
+// ✅ Hiển thị batch tiếp theo
 function lazyRenderNextBatch() {
   const container = document.getElementById("freeflowFeed");
   if (!container || itemsLoaded >= freeflowData.length) return;
@@ -98,11 +98,11 @@ function lazyRenderNextBatch() {
   setupAutoplayObserver();
 }
 
-// Render từng item
+// ✅ Render từng item
 function renderFeedItem(item, container) {
   const finalPrice = item.price ? Number(item.price).toLocaleString() + "đ" : "";
   const originalPrice = item.originalPrice > item.price
-    ? `<span class="original-price" style="color:#555; font-size:12px; margin-left:4px; text-decoration: line-through;">
+    ? `<span class="original-price" style="color:#999; font-size:13px; text-decoration: line-through; margin-left:6px;">
          ${Number(item.originalPrice).toLocaleString()}đ
        </span>` : "";
 
@@ -111,43 +111,31 @@ function renderFeedItem(item, container) {
 
   if (item.contentType === "image") {
     div.innerHTML = `
-      <img loading="lazy" src="${item.image}" alt="${item.title}" style="width: 100%; border-radius: 8px;" />
-      <h4 class="one-line-title" style="margin: 4px 8px 0; font-size: 13px; line-height: 1.3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-        ${item.title}
-      </h4>
-      <div class="price-line" style="padding: 2px 8px 6px; font-size: 13px;">
-        <span class="price" style="color: #f53d2d; font-weight: bold;">${finalPrice}</span> ${originalPrice}
+      <img loading="lazy" src="${item.image}" alt="${item.title}" />
+      <h4 class="one-line-title">${item.title}</h4>
+      <div class="price-line">
+        <span class="price">${finalPrice}</span> ${originalPrice}
       </div>
     `;
     div.onclick = () => window.location.href = item.productPage;
-  } else if (item.contentType === "youtube") {
+  }
+
+  else if (item.contentType === "youtube") {
+    const videoSrc = `https://www.youtube.com/embed/${item.youtube}?enablejsapi=1&mute=1&playsinline=1&controls=1&loop=1&playlist=${item.youtube}`;
     div.innerHTML = `
-      <div class="video-wrapper" style="position: relative;">
+      <div class="video-wrapper">
         <img src="https://img.youtube.com/vi/${item.youtube}/hqdefault.jpg"
-             style="width: 100%; aspect-ratio: 9/16; position: absolute; inset: 0; object-fit: cover; border-radius: 8px;"
              class="youtube-thumb" />
-        <iframe
-          data-video-id="${item.youtube}"
-          src=""
-          frameborder="0"
-          allow="autoplay; encrypted-media"
-          allowfullscreen
-          playsinline
-          muted
-          style="width: 100%; aspect-ratio: 9/16; border-radius: 8px; background: transparent;">
-        </iframe>
-        <div class="video-overlay" data-video="${item.youtube}" style="position: absolute; inset: 0; cursor: pointer;"></div>
+        <iframe data-video-id="${item.youtube}" src="${videoSrc}"></iframe>
+        <div class="video-overlay" data-video="${item.youtube}"></div>
       </div>
-      <div class="video-info" style="display: flex; align-items: center; gap: 8px; padding: 4px 8px 0;">
+      <div class="video-info">
         <a href="${item.productPage}">
-          <img src="${item.image}" style="width: 36px; height: 36px; object-fit: cover; border-radius: 6px;" />
+          <img src="${item.image}" class="product-thumb" />
         </a>
-        <div style="flex: 1; min-width: 0;">
-          <h4 style="font-size: 13px; line-height: 1.3; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-            ${item.title}</h4>
-          <div style="font-size: 13px; color: #f53d2d; font-weight: bold;">
-            ${finalPrice}${originalPrice}
-          </div>
+        <div class="info-text">
+          <h4>${item.title}</h4>
+          <div class="price">${finalPrice}${originalPrice}</div>
         </div>
       </div>
     `;
@@ -167,24 +155,20 @@ function renderFeedItem(item, container) {
   container.appendChild(div);
 }
 
-// Autoplay mượt
+// ✅ Autoplay mượt bằng postMessage
 function setupAutoplayObserver() {
   const iframes = document.querySelectorAll("iframe[data-video-id]");
   const observer = new IntersectionObserver(entries => {
     entries.forEach(entry => {
       const iframe = entry.target;
-      const id = iframe.getAttribute("data-video-id");
+      const win = iframe.contentWindow;
       const thumb = iframe.previousElementSibling;
 
-      if (!iframe.src) {
-        iframe.src = `https://www.youtube.com/embed/${id}?enablejsapi=1&mute=1&playsinline=1&controls=1&loop=1&playlist=${id}`;
-      }
-
       if (entry.isIntersecting) {
-        iframe.contentWindow?.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+        win?.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
         if (thumb) thumb.style.display = "none";
       } else {
-        iframe.contentWindow?.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
+        win?.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
         if (thumb) thumb.style.display = "block";
       }
     });
@@ -193,7 +177,7 @@ function setupAutoplayObserver() {
   iframes.forEach(iframe => observer.observe(iframe));
 }
 
-// Đóng popup video
+// ✅ Đóng popup video
 function closeVideoPopup() {
   const frame = document.getElementById("videoFrame");
   if (frame) frame.src = "";
@@ -201,7 +185,7 @@ function closeVideoPopup() {
   if (popup) popup.style.display = "none";
 }
 
-// Khởi tạo
+// ✅ Khởi tạo
 document.addEventListener("DOMContentLoaded", () => {
   const closeBtn = document.getElementById("videoCloseBtn");
   if (closeBtn) closeBtn.onclick = closeVideoPopup;
