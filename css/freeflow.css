@@ -86,3 +86,27 @@
   text-decoration: line-through;
   margin-left: 6px;
 }
+.youtube-thumb {
+  border-radius: 12px;
+  object-fit: cover;
+  width: 100%;
+  aspect-ratio: 9 / 16;
+  display: block;
+}
+
+.video-wrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 9 / 16;
+  overflow: hidden;
+  border-bottom: 1px solid #eee;
+  border-radius: 12px;
+  background: #000;
+}
+
+@media screen and (max-width: 599px) {
+  #freeflowFeed {
+    column-count: 2;
+    max-width: 100%;
+  }
+}
