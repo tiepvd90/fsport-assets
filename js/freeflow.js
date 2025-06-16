@@ -130,6 +130,8 @@ function renderFeedItem(item, container) {
   } else if (item.contentType === "youtube") {
     mediaHtml = `
       <div class="video-wrapper" style="position: relative;">
+        <img class="video-thumb" src="https://fun-sport.co/assets/images/thumb/vid-thumb.webp" 
+             style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; border-radius: 8px; z-index: 1;" />
         <iframe 
           data-video-id="${item.youtube}"
           src=""
@@ -138,9 +140,9 @@ function renderFeedItem(item, container) {
           allowfullscreen
           playsinline
           muted
-          style="width: 100%; aspect-ratio: 9/16; border-radius: 8px;"
+          style="width: 100%; aspect-ratio: 9/16; border-radius: 8px; position: relative; z-index: 2;"
         ></iframe>
-        <div class="video-overlay" data-video="${item.youtube}" style="position: absolute; inset: 0; cursor: pointer;"></div>
+        <div class="video-overlay" data-video="${item.youtube}" style="position: absolute; inset: 0; cursor: pointer; z-index: 3;"></div>
       </div>
       <div class="video-info" style="display: flex; align-items: center; gap: 8px; padding: 4px 8px 0;">
         <a href="${item.productPage}">
