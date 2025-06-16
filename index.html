@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>FreeFlow</title>
+  <title>Fun Sport</title>
   <link rel="icon" type="image/png" href="/favicon.png" />
   <style>
     body {
@@ -15,11 +15,7 @@
     .cover-img {
       width: 100%;
       display: block;
-    }
-
-    h2 {
-      font-size: 18px;
-      margin: 24px 12px 12px;
+      margin-bottom: 8px;
     }
   </style>
 </head>
@@ -29,9 +25,23 @@
   <img src="https://i.postimg.cc/3rB94JDj/cover2.webp" alt="Cover 2" class="cover-img" />
 
   <!-- ✅ FreeFlow -->
-  <h2>CÓ THỂ BẠN SẼ THÍCH</h2>
   <div id="freeflow-placeholder"></div>
 
+  <!-- ✅ Checkout Popup -->
+  <div id="checkoutPopup-placeholder"></div>
+  <script>
+    // Inject HTML file for checkout popup
+    fetch("/html/checkoutpopup.html")
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById("checkoutPopup-placeholder").innerHTML = html;
+        const script = document.createElement("script");
+        script.src = "https://friendly-kitten-d760ff.netlify.app/js/checkoutpopup.js";
+        document.body.appendChild(script);
+      });
+  </script>
+
+  <!-- ✅ Load FreeFlow -->
   <script src="https://friendly-kitten-d760ff.netlify.app/js/freeflow.js"></script>
   <script>
     fetch("/html/freeflow.html")
