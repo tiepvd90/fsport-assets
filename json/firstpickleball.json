@@ -5,81 +5,65 @@
       "label": "Phân Loại",
       "display": "thumbnail",
       "values": [
-        { "text": "Rồng Đen" },
-        { "text": "Rồng Trắng" },
-        { "text": "Jusain Black" },
-        { "text": "Jusain Mint" },
-        { "text": "Teflon Đen" },
-        { "text": "Teflon Trắng" },
-        { "text": "Airforce - Đen Đỏ" },
-        { "text": "Airforce - Xám" }
+        {
+          "text": "Rồng Đen",
+          "image": "https://i.postimg.cc/2y5Lfx18/e81f5260f13842661b29-removebg.jpg",
+          "Giá": 1050000,
+          "Giá gốc": 1470000
+        },
+        {
+          "text": "Rồng Trắng",
+          "image": "https://i.postimg.cc/43TK3GY0/d6a9ffaa18caab94f2db-removebg.jpg",
+          "Giá": 999000,
+          "Giá gốc": 1398000
+        },
+        {
+          "text": "Jusain Black",
+          "image": "https://i.postimg.cc/4yF74hcv/IMG-7327-removebg.jpg",
+          "Giá": 1100000,
+          "Giá gốc": 1540000
+        },
+        {
+          "text": "Jusain Mint",
+          "image": "https://i.postimg.cc/SN32wCkk/IMG-7321-removebg.jpg",
+          "Giá": 1050000,
+          "Giá gốc": 1470000
+        },
+        {
+          "text": "Teflon Đen",
+          "image": "https://i.postimg.cc/59PFSDrH/Capture.jpg",
+          "Giá": 1590000,
+          "Giá gốc": 2226000
+        },
+        {
+          "text": "Teflon Trắng",
+          "image": "https://i.postimg.cc/DwQGLm3h/Capture.jpg",
+          "Giá": 1590000,
+          "Giá gốc": 2226000
+        },
+        {
+          "text": "Airforce - Đen Đỏ",
+          "image": "https://i.postimg.cc/TYcMS812/den.webp",
+          "Giá": 1500000,
+          "Giá gốc": 2100000
+        },
+        {
+          "text": "Airforce - Xám",
+          "image": "https://i.postimg.cc/2S8RNHLQ/xam.webp",
+          "Giá": 1400000,
+          "Giá gốc": 2000000
+        }
       ]
     }
   ],
   "biến_thể": [
-    {
-      "Phân Loại": "Rồng Đen",
-      "id": "pickleball-rongden",
-      "image": "https://i.postimg.cc/2y5Lfx18/e81f5260f13842661b29-removebg.jpg",
-      "Giá": 1050000,
-      "Giá gốc": 1470000,
-      "category": "pickleball"
-    },
-    {
-      "Phân Loại": "Rồng Trắng",
-      "id": "pickleball-rongtrang",
-      "image": "https://i.postimg.cc/43TK3GY0/d6a9ffaa18caab94f2db-removebg.jpg",
-      "Giá": 999000,
-      "Giá gốc": 1398000,
-      "category": "pickleball"
-    },
-    {
-      "Phân Loại": "Jusain Black",
-      "id": "pickleball-jusainblack",
-      "image": "https://i.postimg.cc/4yF74hcv/IMG-7327-removebg.jpg",
-      "Giá": 1100000,
-      "Giá gốc": 1540000,
-      "category": "pickleball"
-    },
-    {
-      "Phân Loại": "Jusain Mint",
-      "id": "pickleball-jusainmint",
-      "image": "https://i.postimg.cc/SN32wCkk/IMG-7321-removebg.jpg",
-      "Giá": 1050000,
-      "Giá gốc": 1470000,
-      "category": "pickleball"
-    },
-    {
-      "Phân Loại": "Teflon Đen",
-      "id": "pickleball-teflonden",
-      "image": "https://i.postimg.cc/59PFSDrH/Capture.jpg",
-      "Giá": 1590000,
-      "Giá gốc": 2226000,
-      "category": "pickleball"
-    },
-    {
-      "Phân Loại": "Teflon Trắng",
-      "id": "pickleball-teflontrang",
-      "image": "https://i.postimg.cc/DwQGLm3h/Capture.jpg",
-      "Giá": 1590000,
-      "Giá gốc": 2226000,
-      "category": "pickleball"
-    },
-    {
-      "Phân Loại": "Airforce - Đen Đỏ",
-      "id": "pickleball-airforce-den",
-      "image": "https://i.postimg.cc/TYcMS812/den.webp",
-      "Giá": 1500000,
-      "Giá gốc": 2100000,
-      "category": "pickleball"
-    },
-    {
-      "Phân Loại": "Airforce - Xám",
-      "id": "pickleball-airforce-xam",
-      "image": "https://i.postimg.cc/2S8RNHLQ/xam.webp",
-      "Giá": 1400000,
-      "Giá gốc": 2000000,
-      "category": "pickleball"
-    }
+    { "Phân Loại": "Rồng Đen", "id": "pickleball-rongden", "category": "pickleball" },
+    { "Phân Loại": "Rồng Trắng", "id": "pickleball-rongtrang", "category": "pickleball" },
+    { "Phân Loại": "Jusain Black", "id": "pickleball-jusainblack", "category": "pickleball" },
+    { "Phân Loại": "Jusain Mint", "id": "pickleball-jusainmint", "category": "pickleball" },
+    { "Phân Loại": "Teflon Đen", "id": "pickleball-teflonden", "category": "pickleball" },
+    { "Phân Loại": "Teflon Trắng", "id": "pickleball-teflontrang", "category": "pickleball" },
+    { "Phân Loại": "Airforce - Đen Đỏ", "id": "pickleball-airforce-den", "category": "pickleball" },
+    { "Phân Loại": "Airforce - Xám", "id": "pickleball-airforce-xam", "category": "pickleball" }
   ]
 }
