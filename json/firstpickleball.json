@@ -1,8 +1,8 @@
 {
   "thuộc_tính": [
     {
-      "key": "Phân Loại",
-      "label": "Phân Loại",
+      "key": "Màu Sắc",
+      "label": "Màu Sắc",
       "display": "thumbnail",
       "values": [
         {
@@ -57,13 +57,13 @@
     }
   ],
   "biến_thể": [
-    { "Phân Loại": "Rồng Đen", "id": "pickleball-rongden", "category": "pickleball" },
-    { "Phân Loại": "Rồng Trắng", "id": "pickleball-rongtrang", "category": "pickleball" },
-    { "Phân Loại": "Jusain Black", "id": "pickleball-jusainblack", "category": "pickleball" },
-    { "Phân Loại": "Jusain Mint", "id": "pickleball-jusainmint", "category": "pickleball" },
-    { "Phân Loại": "Teflon Đen", "id": "pickleball-teflonden", "category": "pickleball" },
-    { "Phân Loại": "Teflon Trắng", "id": "pickleball-teflontrang", "category": "pickleball" },
-    { "Phân Loại": "Airforce - Đen Đỏ", "id": "pickleball-airforce-den", "category": "pickleball" },
-    { "Phân Loại": "Airforce - Xám", "id": "pickleball-airforce-xam", "category": "pickleball" }
+    { "Màu Sắc": "Rồng Đen", "id": "pickleball-rongden", "category": "pickleball" },
+    { "Màu Sắc": "Rồng Trắng", "id": "pickleball-rongtrang", "category": "pickleball" },
+    { "Màu Sắc": "Jusain Black", "id": "pickleball-jusainblack", "category": "pickleball" },
+    { "Màu Sắc": "Jusain Mint", "id": "pickleball-jusainmint", "category": "pickleball" },
+    { "Màu Sắc": "Teflon Đen", "id": "pickleball-teflonden", "category": "pickleball" },
+    { "Màu Sắc": "Teflon Trắng", "id": "pickleball-teflontrang", "category": "pickleball" },
+    { "Màu Sắc": "Airforce - Đen Đỏ", "id": "pickleball-airforce-den", "category": "pickleball" },
+    { "Màu Sắc": "Airforce - Xám", "id": "pickleball-airforce-xam", "category": "pickleball" }
   ]
 }
