@@ -28,17 +28,22 @@ function renderProductVideos(videoUrls) {
     if (index === 0) {
       // 🔴 Video đầu tiên: autoplay với iframe, không cần overlay thumbnail
       item.innerHTML = `
-        <iframe 
-          src="https://www.youtube.com/embed/${id}?autoplay=1&mute=1&playsinline=1&controls=1&loop=1&playlist=${id}"
-          frameborder="0"
-          allow="autoplay; encrypted-media"
-          allowfullscreen
-          playsinline
-          muted
-          style="width: 100%; aspect-ratio: 9/16; border-radius: 8px;"
-        ></iframe>
-        <button class="atc-button" onclick="addToCart()">THÊM VÀO GIỎ</button>
-      `;
+  <div style="position: relative; width: 100%; aspect-ratio: 9/16; border-radius: 8px; overflow: hidden;">
+    <iframe 
+      src="https://www.youtube.com/embed/${id}?autoplay=1&mute=1&playsinline=1&controls=1&loop=1&playlist=${id}"
+      frameborder="0"
+      allow="autoplay; encrypted-media"
+      allowfullscreen
+      playsinline
+      muted
+      style="width: 100%; height: 100%;"
+    ></iframe>
+    <div onclick="openProductVideoPopup('${id}')" 
+         style="position: absolute; inset: 0; cursor: pointer;"></div>
+  </div>
+  <button class="atc-button" onclick="addToCart()">THÊM VÀO GIỎ</button>
+`;
+
     } else {
       // 🟡 Các video khác: hiển thị thumbnail YouTube, click để mở popup
       const thumb = `https://img.youtube.com/vi/${id}/hqdefault.jpg`;
