@@ -19,11 +19,20 @@ function initCartPopup() {
   || "unknown";
 
 
-        if (window.__voucherWaiting?.amount) {
-          data["biến_thể"].forEach(sp => {
-            if (sp.id) window.voucherByProduct[sp.id] = window.__voucherWaiting.amount;
-          });
-        }
+        data["biến_thể"].forEach(sp => {
+  const id = sp.id;
+
+  // ✅ Gán từ __voucherWaiting nếu có
+  if (window.__voucherWaiting?.amount && id) {
+    window.voucherByProduct[id] = window.__voucherWaiting.amount;
+  }
+
+  // ✅ Gán cứng voucher 200k nếu đúng biến thể Titan
+  if (id === "pickleball-titan16") {
+    window.voucherByProduct[id] = 200000;
+  }
+});
+
 
         renderOptions(data["thuộc_tính"]);
         bindAddToCartButton();
