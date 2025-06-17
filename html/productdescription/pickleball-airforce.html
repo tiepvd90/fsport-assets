@@ -1,0 +1,109 @@
+<style>
+  .desc-text {
+    font-size: 12px;
+    line-height: 1.6;
+    color: #222;
+    font-family: 'Be Vietnam Pro', sans-serif;
+  }
+
+  .desc-toggle-btn {
+    margin-top: 16px;
+    background: none;
+    border: none;
+    font-weight: bold;
+    color: #000;
+    cursor: pointer;
+    padding: 10px 0;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    width: 100%;
+    font-family: 'Be Vietnam Pro', sans-serif;
+  }
+
+  .desc-toggle-btn .arrow {
+    font-size: 12px;
+    display: inline-block;
+    transform: translateY(1px);
+  }
+
+  .desc-fade {
+    height: 60px;
+    background: linear-gradient(to top, #fff, transparent);
+    margin-top: -60px;
+    pointer-events: none;
+  }
+
+  .hidden {
+    display: none;
+  }
+
+  .desc-img {
+    width: 100%;
+    display: block;
+    border-radius: 8px;
+    margin-bottom: 12px;
+  }
+</style>
+
+<img src="https://i.postimg.cc/8PrcNLfP/10.jpg" alt="FSport AirForce" class="desc-img" />
+
+<h2 class="desc-title" style="font-size: 14px; font-weight: bold; margin-bottom: 8px;">
+  Mô Tả Sản Phẩm
+</h2>
+
+<div id="descShort" class="desc-text">
+  <p><strong>🏓 VỢT PICKLEBALL FSPORT AIRFORCE – ĐÚC NGUYÊN KHỐI, CÔNG NGHỆ ÉP NHIỆT CAO CẤP</strong></p>
+  <p><strong>Thông số kỹ thuật:</strong><br>
+  • Trọng lượng: 220g (±5g)<br>
+  • Kích thước: 420 x 185 x 14 (mm)<br>
+  • Lõi: Tổ ong Polypropylene (PP)<br>
+  • Bề mặt vợt:<br>
+  – Màu xám: Carbon T700<br>
+  – Màu đen đỏ: Carbon 3K ép nhiệt nguyên khối</p>
+</div>
+
+<div id="descFull" class="desc-text hidden">
+  <p><strong>🎯 ĐẶC ĐIỂM NỔI BẬT</strong></p>
+
+  <p><strong>1. Thiết kế tấn công với kích thước tiêu chuẩn 420x185mm</strong><br>
+  FSport AirForce được thiết kế dài hơn, tối ưu cho những pha tấn công tầm xa. Chiều dài tay đòn lớn giúp tăng lực mô men quay – tạo ra sức mạnh vượt trội trong các cú đánh mạnh.</p>
+
+  <p><strong>2. Độ dày lý tưởng 14mm – Tăng tốc độ và cảm giác bóng</strong><br>
+  Bề mặt 14mm mỏng hơn các loại vợt thông thường, mang lại cảm giác linh hoạt, nhanh nhạy – cực kỳ phù hợp cho người chơi thiên về tốc độ và phản xạ.</p>
+
+  <p><strong>3. Lõi tổ ong PP siêu nhẹ và bền bỉ</strong><br>
+  Với cấu trúc rỗng và trọng lượng nhẹ, lõi tổ ong PP mang lại cảm giác đầm tay nhưng vẫn dễ kiểm soát. Đặc biệt chống thấm, chống sốc và thân thiện với môi trường.</p>
+
+  <p><strong>4. Chất liệu carbon ép nhiệt – Tùy chọn theo phong cách chơi</strong><br>
+  – Phiên bản màu xám sử dụng Carbon T700: bền, nhẹ, dễ kiểm soát – phù hợp cho người mới đến trung cấp.<br>
+  – Phiên bản màu đen đỏ dùng Carbon 3K ép nhiệt nguyên khối: bề mặt siêu nhám, tăng độ xoáy – dành cho người chơi kỹ thuật hoặc thi đấu.</p>
+
+  <p><strong>5. Bề mặt nhám tạo xoáy mạnh mẽ</strong><br>
+  Dù là T700 hay 3K, bề mặt vợt AirForce đều có độ nhám cao giúp người chơi dễ dàng thực hiện các cú spin (topspin, volley, slice) chính xác và đầy uy lực.</p>
+
+  <p><strong>👉 FSport AirForce – Dòng vợt dành cho những ai nghiêm túc với Pickleball và muốn chinh phục từng cú đánh với sự ổn định, sức mạnh và độ xoáy vượt trội.</strong></p>
+</div>
+
+<div class="desc-fade" id="descFade"></div>
+
+<button id="toggleDesc" class="desc-toggle-btn">
+  Xem Thêm <span class="arrow">&#x25BC;</span>
+</button>
+
+<script>
+  const toggleBtn = document.getElementById('toggleDesc');
+  const descFull = document.getElementById('descFull');
+  const fade = document.getElementById('descFade');
+
+  toggleBtn.addEventListener('click', () => {
+    const isHidden = descFull.classList.contains('hidden');
+    descFull.classList.toggle('hidden');
+    fade.style.display = isHidden ? 'none' : 'block';
+    toggleBtn.innerHTML = isHidden
+      ? 'Thu Gọn <span class="arrow">&#x25B2;</span>'
+      : 'Xem Thêm <span class="arrow">&#x25BC;</span>';
+  });
+</script>
