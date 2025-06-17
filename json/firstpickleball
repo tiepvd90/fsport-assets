@@ -1,0 +1,33 @@
+{
+  "thuộc_tính": [
+    {
+      "key": "Phân Loại",
+      "label": "Phân Loại",
+      "display": "thumbnail",
+      "values": [
+        {
+          "text": "Airforce-Đen Đỏ",
+          "image": "https://i.postimg.cc/TYcMS812/den.webp",
+          "Giá": 1500000,
+          "Giá gốc": 2100000
+        },
+        {
+          "text": "Airforce-Xám",
+          "image": "https://i.postimg.cc/2S8RNHLQ/xam.webp",
+          "Giá": 1400000,
+          "Giá gốc": 2000000
+        }
+      ]
+    }
+  ],
+  "biến_thể": [
+    {
+      "id": "air-den",
+      "category": "pickleball"
+    },
+    {
+      "id": "air-xam",
+      "category": "pickleball"
+    }
+  ]
+}
