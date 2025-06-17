@@ -8,66 +8,50 @@
         {
           "text": "Rồng Đen",
           "image": "https://i.postimg.cc/2y5Lfx18/e81f5260f13842661b29-removebg.jpg",
-          "id": "pickleball-rongden",
           "Giá": 1050000,
-          "Giá gốc": 1470000,
-          "category": "pickleball"
+          "Giá gốc": 1470000
         },
         {
           "text": "Rồng Trắng",
           "image": "https://i.postimg.cc/43TK3GY0/d6a9ffaa18caab94f2db-removebg.jpg",
-          "id": "pickleball-rongtrang",
           "Giá": 999000,
-          "Giá gốc": 1398000,
-          "category": "pickleball"
+          "Giá gốc": 1398000
         },
         {
           "text": "Jusain Black",
           "image": "https://i.postimg.cc/4yF74hcv/IMG-7327-removebg.jpg",
-          "id": "pickleball-jusainblack",
           "Giá": 1100000,
-          "Giá gốc": 1540000,
-          "category": "pickleball"
+          "Giá gốc": 1540000
         },
         {
           "text": "Jusain Mint",
           "image": "https://i.postimg.cc/SN32wCkk/IMG-7321-removebg.jpg",
-          "id": "pickleball-jusainmint",
           "Giá": 1050000,
-          "Giá gốc": 1470000,
-          "category": "pickleball"
+          "Giá gốc": 1470000
         },
         {
           "text": "Teflon Đen",
           "image": "https://i.postimg.cc/59PFSDrH/Capture.jpg",
-          "id": "pickleball-teflonden",
           "Giá": 1590000,
-          "Giá gốc": 2226000,
-          "category": "pickleball"
+          "Giá gốc": 2226000
         },
         {
           "text": "Teflon Trắng",
           "image": "https://i.postimg.cc/DwQGLm3h/Capture.jpg",
-          "id": "pickleball-teflontrang",
           "Giá": 1590000,
-          "Giá gốc": 2226000,
-          "category": "pickleball"
+          "Giá gốc": 2226000
         },
         {
           "text": "Airforce - Đen Đỏ",
           "image": "https://i.postimg.cc/TYcMS812/den.webp",
-          "id": "pickleball-airforce-den",
           "Giá": 1500000,
-          "Giá gốc": 2100000,
-          "category": "pickleball"
+          "Giá gốc": 2100000
         },
         {
           "text": "Airforce - Xám",
           "image": "https://i.postimg.cc/2S8RNHLQ/xam.webp",
-          "id": "pickleball-airforce-xam",
           "Giá": 1400000,
-          "Giá gốc": 2000000,
-          "category": "pickleball"
+          "Giá gốc": 2000000
         }
       ]
     }
