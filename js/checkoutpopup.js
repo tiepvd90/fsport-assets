@@ -162,7 +162,14 @@ function submitOrder() {
   const name = document.getElementById("checkoutName")?.value.trim();
   const phone = document.getElementById("checkoutPhone")?.value.trim();
   const address = document.getElementById("checkoutAddress")?.value.trim();
-  if (!name || !phone || !address) return alert("Vui lòng nhập đầy đủ thông tin.");
+  if (!name || !phone || !address) {
+  return alert("Vui lòng nhập đầy đủ thông tin.");
+}
+
+if (!window.cart.length) {
+  return alert("Giỏ hàng của bạn đang trống.");
+}
+
 
   const firstItem = window.cart[0] || {};
   const category = firstItem.category || "unknown";
@@ -172,20 +179,34 @@ function submitOrder() {
     phone,
     address,
     category,
-    items: window.cart.map(item => ({
-      id: item.id || null,
-      category: item.category || "unknown",
-      "Phân loại": item["Phân loại"],
-      Giá: item.Giá,
-      Ảnh: item.Ảnh,
-      quantity: item.quantity,
-      voucher: item.voucher || null
-    })),
+    items: window.cart.map(item => {
+  const baseItem = {
+    id: item.id || null,
+    category: item.category || "unknown",
+    "Phân loại": item["Phân loại"],
+    Giá: item.Giá,
+    Ảnh: item.Ảnh,
+    quantity: item.quantity
+  };
+
+  if (item.voucher && typeof item.voucher.amount === "number" && item.voucher.amount > 0) {
+    baseItem.voucher = {
+      amount: item.voucher.amount,
+      label: item.voucher.label || ""
+    };
+  }
+
+  return baseItem;
+}),
+
     shippingFee,
     voucherValue,
     total: window.cart.reduce((sum, i) => sum + i.Giá * i.quantity, 0) + shippingFee - voucherValue
   };
+// ✅ Log ra console để kiểm tra trước khi gửi
+console.log("📦 Sending orderData:", orderData);
 
+// ✅ Gửi về Make
   fetch("https://hook.eu2.make.com/m9o7boye6fl1hstehst7waysmt38b2ul", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
