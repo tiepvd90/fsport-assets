@@ -1,0 +1,124 @@
+<style>
+  .desc-img-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .desc-img {
+    width: 100%;
+    border-radius: 8px;
+    display: block;
+  }
+
+  .desc-text {
+    font-size: 12px;
+    line-height: 1.6;
+    color: #222;
+    font-family: 'Be Vietnam Pro', sans-serif;
+  }
+
+  .desc-title {
+    font-size: 14px;
+    font-weight: bold;
+    margin: 12px 0 8px;
+  }
+
+  .desc-toggle-btn {
+    margin-top: 16px;
+    background: none;
+    border: none;
+    font-weight: bold;
+    color: #000;
+    cursor: pointer;
+    padding: 10px 0;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    width: 100%;
+    font-family: 'Be Vietnam Pro', sans-serif;
+  }
+
+  .desc-toggle-btn .arrow {
+    font-size: 12px;
+    display: inline-block;
+    transform: translateY(1px);
+  }
+
+  .desc-fade {
+    height: 60px;
+    background: linear-gradient(to top, #fff, transparent);
+    margin-top: -60px;
+    pointer-events: none;
+  }
+
+  .hidden {
+    display: none;
+  }
+</style>
+
+<div class="desc-img-grid">
+  <img src="https://i.postimg.cc/ydjWqW0s/800px-titan.jpg" class="desc-img" alt="Vợt Titan" />
+  <img src="https://i.postimg.cc/254Vw06q/800px-1.jpg" class="desc-img" alt="Vợt T700 Pro" />
+</div>
+
+<h2 class="desc-title">Mô Tả Dòng Vợt Tiêu Chuẩn Fsport</h2>
+
+<div id="descShort" class="desc-text">
+  <p><strong>🎾 Vợt Pickleball Fsport – Cân Bằng Giữa Độ Bền, Kiểm Soát và Hiệu Năng</strong></p>
+  <p>Fsport mang đến những dòng vợt tiêu chuẩn dành cho người chơi chuyên nghiệp lẫn phong trào, nổi bật với <strong>dòng Titan</strong> và <strong>T700 Pro</strong> – mỗi dòng là một lựa chọn tối ưu cho phong cách chơi khác nhau.</p>
+</div>
+
+<div id="descFull" class="desc-text hidden">
+  <p>💪 <strong>Titan Series</strong> được thiết kế với bề mặt carbon nhúng <strong>các sợi titanium siêu bền</strong>, giúp tăng độ cứng, chống trầy xước và ít bị tổn thương hơn hẳn so với các lớp phủ titan thông thường. Đây là lựa chọn lý tưởng cho những người chơi muốn một cây vợt chắc chắn, ổn định lâu dài.</p>
+
+  <p>⚡ <strong>T700 Pro</strong> sử dụng carbon T700 với <strong>độ nhám vừa phải</strong>, đảm bảo bóng rời mặt nhanh, hỗ trợ tạo xoáy vừa đủ, mang lại cảm giác kiểm soát linh hoạt trong các pha bóng tốc độ cao.</p>
+
+  <p>🔧 Công nghệ mặt vợt:
+    <br>– <strong>MaxGrip Surface</strong>: tăng bám bóng, hỗ trợ spin mạnh mẽ.
+    <br>– <strong>Carbon+ Nano Coating</strong>: chống trầy tốt, tăng tuổi thọ mặt vợt.
+  </p>
+
+  <p>🏓 Công nghệ lõi:
+    <br>– <strong>UltraCore PMI</strong>: lõi tổ ong nguyên khối, phản hồi mạnh, đánh êm tay.
+    <br>– <strong>Multi-Layer Core</strong>: đa lớp tổ ong, cân bằng lực và kiểm soát.
+  </p>
+
+  <p>🌪 Khung khí động học:
+    <br>– <strong>Aerodynamic Frame</strong>: giảm lực cản, tăng tốc độ vung vợt.
+    <br>– <strong>Reinforced Edge Guard</strong>: viền chống va đập, tăng độ bền.
+  </p>
+
+  <p>✋ Cán vợt và thẩm mỹ:
+    <br>– <strong>ProGrip Handle</strong>: lớp PU chống trượt, kiểm soát lực tay tốt.
+    <br>– <strong>Laser-Cut Graphics & Matte Finish</strong>: thiết kế tinh xảo, đẹp và sạch.
+  </p>
+
+  <p>⚖️ <strong>Dynamic Balance System:</strong> giúp phân bố trọng lượng đồng đều, hỗ trợ kiểm soát bóng chính xác trong mọi tình huống.</p>
+
+  <p><strong>🔥 Dù bạn là người chơi thiên về kiểm soát hay thiên về sức mạnh, Fsport đều có dòng vợt phù hợp.</strong></p>
+</div>
+
+<div class="desc-fade" id="descFade"></div>
+
+<button id="toggleDesc" class="desc-toggle-btn">
+  Xem Thêm <span class="arrow">&#x25BC;</span>
+</button>
+
+<script>
+  const toggleBtn = document.getElementById('toggleDesc');
+  const descFull = document.getElementById('descFull');
+  const fade = document.getElementById('descFade');
+
+  toggleBtn.addEventListener('click', () => {
+    const isHidden = descFull.classList.contains('hidden');
+    descFull.classList.toggle('hidden');
+    fade.style.display = isHidden ? 'none' : 'block';
+    toggleBtn.innerHTML = isHidden
+      ? 'Thu Gọn <span class="arrow">&#x25B2;</span>'
+      : 'Xem Thêm <span class="arrow">&#x25BC;</span>';
+  });
+</script>
