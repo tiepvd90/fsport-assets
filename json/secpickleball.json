@@ -1,0 +1,62 @@
+{
+  "thuộc_tính": [
+    {
+      "key": "Màu Sắc",
+      "label": "Màu Sắc",
+      "display": "thumbnail",
+      "values": [
+        {
+          "text": "Titan 16mm",
+          "image": "https://i.postimg.cc/Prk55WrK/titan16.jpg",
+          "Giá": 499000,
+          "Giá gốc": 999000
+        },
+        {
+          "text": "Titan 14mm",
+          "image": "https://i.postimg.cc/rF6Kt6g1/titan14.jpg",
+          "Giá": 599000,
+          "Giá gốc": 899000
+        },
+        {
+          "text": "T700 Pro Xám",
+          "image": "https://i.postimg.cc/tJNDPd0W/1.webp",
+          "Giá": 435000,
+          "Giá gốc": 699000
+        },
+        {
+          "text": "T700 Pro Hồng",
+          "image": "https://i.postimg.cc/HxHyMqTv/2.webp",
+          "Giá": 435000,
+          "Giá gốc": 699000
+        },
+        {
+          "text": "Flexion Xám",
+          "image": "https://i.postimg.cc/KcP0dbKj/5.webp",
+          "Giá": 399000,
+          "Giá gốc": 599000
+        },
+        {
+          "text": "Flexion Cam",
+          "image": "https://i.postimg.cc/1zSt7Dbf/4.webp",
+          "Giá": 399000,
+          "Giá gốc": 599000
+        },
+        {
+          "text": "Flexion Xanh",
+          "image": "https://i.postimg.cc/Pxxd0yyr/3.webp",
+          "Giá": 399000,
+          "Giá gốc": 599000
+        }
+      ]
+    }
+  ],
+  "biến_thể": [
+    { "Màu Sắc": "Titan 16mm", "id": "pickleball-titan16", "category": "pickleball" },
+    { "Màu Sắc": "Titan 14mm", "id": "pickleball-titan14", "category": "pickleball" },
+    { "Màu Sắc": "T700 Pro Xám", "id": "pickleball-t700pro-xam", "category": "pickleball" },
+    { "Màu Sắc": "T700 Pro Hồng", "id": "pickleball-t700pro-hong", "category": "pickleball" },
+    { "Màu Sắc": "Flexion Xám", "id": "pickleball-flexion-xam", "category": "pickleball" },
+    { "Màu Sắc": "Flexion Cam", "id": "pickleball-flexion-cam", "category": "pickleball" },
+    { "Màu Sắc": "Flexion Xanh", "id": "pickleball-flexion-xanh", "category": "pickleball" }
+  ]
+}
