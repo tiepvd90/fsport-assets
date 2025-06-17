@@ -72,7 +72,7 @@
 }
 #mainImage {
   width: 100%;
-  max-width: 320px;     /* ⬅️ to hơn rõ ràng về chiều ngang */
+  max-width: 90px;     /* ⬅️ to hơn rõ ràng về chiều ngang */
   aspect-ratio: 4 / 3; 
   object-fit: cover;
   border-radius: 10px;
