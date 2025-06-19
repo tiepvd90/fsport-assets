@@ -23,17 +23,3 @@
     THÊM VÀO GIỎ HÀNG
   </button>
 </div>
-
-<script>
-  document.getElementById("btn-atc")?.addEventListener("click", () => {
-    if (typeof trackBothPixels === "function") {
-      trackBothPixels("AddToCart", {
-        content_page: window.productPage || "unknown",
-        content_category: window.productCategory || "unknown",
-        content_name: "Click ATC đầu tiên",
-        value: 0,
-        currency: "VND"
-      });
-    }
-  });
-</script>
