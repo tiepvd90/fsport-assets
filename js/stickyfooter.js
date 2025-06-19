@@ -35,22 +35,19 @@ setTimeout(() => {
   // ✅ BẮT SỰ KIỆN NÚT "THÊM VÀO GIỎ HÀNG"
   if (btnAtc) {
     btnAtc.addEventListener("click", () => {
-      const loai = window.productCategory || window.loai || "unknown";
-      console.log("🧪 Đã click nút ATC:", loai);
+  const loai = window.productCategory || window.loai || "unknown";
+  console.log("🔥 ĐÃ CLICK STICKY Footer button", loai);
 
-      // ✅ TRACKING
-      if (typeof trackBothPixels === "function") {
-        trackBothPixels("AddToWishList", {
-  content_name: "click_btn_atc_" + loai,
-  content_category: loai
-});
-      } else {
-        console.warn("⚠️ trackBothPixels chưa tồn tại");
-      }
-
-      // ✅ GỌI POPUP
-      tryOpenCartPopup();
+  // ✅ Gửi đúng event bạn muốn
+  if (typeof trackBothPixels === "function") {
+    trackBothPixels("AddToWishlist", {
+      content_name: "click_btn_atc_" + loai,
+      content_category: loai
     });
+  }
+
+  tryOpenCartPopup();
+});
   } else {
     console.error("❌ Không tìm thấy nút btn-atc trong DOM");
   }
