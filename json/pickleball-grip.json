@@ -1,0 +1,90 @@
+{
+  "thuộc_tính": [
+    {
+      "key": "Màu Sắc",
+      "label": "Màu Sắc",
+      "display": "thumbnail",
+      "values": [
+        {
+          "text": "Xanh Mạ",
+          "image": "/assets/images/thumb/pickleball/grip/xanhma.webp",
+          "Giá": 9000,
+          "Giá gốc": 18000
+        },
+        {
+          "text": "Xanh Chuối",
+          "image": "/assets/images/thumb/pickleball/grip/xanhchuoi.webp",
+          "Giá": 9000,
+          "Giá gốc": 18000
+        },
+        {
+          "text": "Đen",
+          "image": "/assets/images/thumb/pickleball/grip/den.webp",
+          "Giá": 9000,
+          "Giá gốc": 18000
+        },
+        {
+          "text": "Tím",
+          "image": "/assets/images/thumb/pickleball/grip/tim.webp",
+          "Giá": 9000,
+          "Giá gốc": 18000
+        },
+        {
+          "text": "Violet",
+          "image": "/assets/images/thumb/pickleball/grip/violet.webp",
+          "Giá": 9000,
+          "Giá gốc": 18000
+        },
+        {
+          "text": "Trắng",
+          "image": "/assets/images/thumb/pickleball/grip/trang.webp",
+          "Giá": 9000,
+          "Giá gốc": 18000
+        },
+        {
+          "text": "Cam",
+          "image": "/assets/images/thumb/pickleball/grip/cam.webp",
+          "Giá": 9000,
+          "Giá gốc": 18000
+        },
+        {
+          "text": "Hồng",
+          "image": "/assets/images/thumb/pickleball/grip/hong.webp",
+          "Giá": 9000,
+          "Giá gốc": 18000
+        },
+        {
+          "text": "Hồng Phấn",
+          "image": "/assets/images/thumb/pickleball/grip/hongphan.webp",
+          "Giá": 9000,
+          "Giá gốc": 18000
+        },
+        {
+          "text": "Xanh Biển",
+          "image": "/assets/images/thumb/pickleball/grip/xanhbien.webp",
+          "Giá": 9000,
+          "Giá gốc": 18000
+        },
+        {
+          "text": "Xanh Da Trời",
+          "image": "/assets/images/thumb/pickleball/grip/xanhdatroi.webp",
+          "Giá": 9000,
+          "Giá gốc": 18000
+        }
+      ]
+    }
+  ],
+  "biến_thể": [
+    { "Màu Sắc": "Xanh Mạ", "id": "gripxanhma", "category": "pickleball" },
+    { "Màu Sắc": "Xanh Chuối", "id": "gripxanhchuoi", "category": "pickleball" },
+    { "Màu Sắc": "Đen", "id": "gripden", "category": "pickleball" },
+    { "Màu Sắc": "Tím", "id": "griptim", "category": "pickleball" },
+    { "Màu Sắc": "Violet", "id": "gripviolet", "category": "pickleball" },
+    { "Màu Sắc": "Trắng", "id": "griptrang", "category": "pickleball" },
+    { "Màu Sắc": "Cam", "id": "gripcam", "category": "pickleball" },
+    { "Màu Sắc": "Hồng", "id": "griphong", "category": "pickleball" },
+    { "Màu Sắc": "Hồng Phấn", "id": "griphongphan", "category": "pickleball" },
+    { "Màu Sắc": "Xanh Biển", "id": "gripxanhbien", "category": "pickleball" },
+    { "Màu Sắc": "Xanh Da Trời", "id": "gripxanhdatroi", "category": "pickleball" }
+  ]
+}
