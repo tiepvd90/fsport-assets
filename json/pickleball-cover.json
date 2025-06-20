@@ -1,8 +1,8 @@
 {
   "thuộc_tính": [
     {
-      "key": "Loại",
-      "label": "Loại",
+      "key": "Màu Sắc",
+      "label": "Màu Sắc",
       "display": "thumbnail",
       "values": [
         {
@@ -16,7 +16,7 @@
   ],
   "biến_thể": [
     {
-      "Loại": "Túi Bảo Vệ Mặt Vợt",
+      "Màu Sắc": "Túi Bảo Vệ Mặt Vợt",
       "id": "cover",
       "category": "pickleball"
     }
