@@ -1,0 +1,110 @@
+<style>
+  .desc-img-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .desc-img {
+    width: 100%;
+    border-radius: 8px;
+    display: block;
+  }
+
+  .desc-text {
+    font-size: 12px;
+    line-height: 1.6;
+    color: #222;
+    font-family: 'Be Vietnam Pro', sans-serif;
+  }
+
+  .desc-title {
+    font-size: 14px;
+    font-weight: bold;
+    margin: 12px 0 8px;
+  }
+
+  .desc-toggle-btn {
+    margin-top: 16px;
+    background: none;
+    border: none;
+    font-weight: bold;
+    color: #000;
+    cursor: pointer;
+    padding: 10px 0;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    width: 100%;
+    font-family: 'Be Vietnam Pro', sans-serif;
+  }
+
+  .desc-toggle-btn .arrow {
+    font-size: 12px;
+    display: inline-block;
+    transform: translateY(1px);
+  }
+
+  .desc-fade {
+    height: 60px;
+    background: linear-gradient(to top, #fff, transparent);
+    margin-top: -60px;
+    pointer-events: none;
+  }
+
+  .hidden {
+    display: none;
+  }
+</style>
+
+<div class="desc-img-grid">
+  <img src="https://i.postimg.cc/2SBCb1Z8/bongdau.webp" class="desc-img" alt="Bóng Pickleball Thi Đấu" />
+  <img src="https://i.postimg.cc/26YjfC3j/bongpro.webp" class="desc-img" alt="Bóng Pickleball Pro" />
+</div>
+
+<h2 class="desc-title">Mô Tả Bóng Pickleball FSport</h2>
+
+<div id="descShort" class="desc-text">
+  <p><strong>🏓 Bóng Pickleball Ngoài Trời FSport – Tiêu Chuẩn Thi Đấu</strong></p>
+  <p>Bóng chất lượng cao dành cho tập luyện và thi đấu, độ bền vượt trội, bay ổn định và cảm giác chơi mượt mà. Phù hợp cho người chơi phong trào đến chuyên nghiệp.</p>
+</div>
+
+<div id="descFull" class="desc-text hidden">
+  <p>✔️ Bóng Pickleball FSport là lựa chọn lý tưởng cho cả <strong>tập luyện chuyên sâu</strong> lẫn <strong>thi đấu ngoài trời</strong>. Sản phẩm đạt tiêu chuẩn quốc tế với độ nảy ổn định và khả năng chịu va đập cực tốt.</p>
+
+  <p><strong>🔍 Thông tin kỹ thuật:</strong><br>
+  – Chất liệu: Nhựa PE cao cấp<br>
+  – Kích thước: 74 mm<br>
+  – Trọng lượng: 26 gr<br>
+  – Cấu trúc: 40 lỗ</p>
+
+  <p>💪 Độ bền cao và khả năng chống nứt tuyệt vời nhờ công nghệ <strong>đúc quay cao cấp</strong>.</p>
+  <p>✅ Không dễ bị biến dạng khi sử dụng lâu dài, bóng giữ được độ nảy ổn định suốt thời gian chơi.</p>
+  <p>🌱 Chất liệu PE thân thiện môi trường, không có mùi đặc biệt, an toàn khi sử dụng.</p>
+  <p>🌀 Lỗ thiết kế dạng góc L cho cảm giác êm ái và giúp bóng bay ổn định hơn trong điều kiện ngoài trời.</p>
+  <p>🎯 Đáp ứng tốt cả nhu cầu tập luyện thường xuyên và thi đấu thực chiến.</p>
+</div>
+
+<div class="desc-fade" id="descFade"></div>
+
+<button id="toggleDesc" class="desc-toggle-btn">
+  Xem Thêm <span class="arrow">&#x25BC;</span>
+</button>
+
+<script>
+  const toggleBtn = document.getElementById('toggleDesc');
+  const descFull = document.getElementById('descFull');
+  const fade = document.getElementById('descFade');
+
+  toggleBtn.addEventListener('click', () => {
+    const isHidden = descFull.classList.contains('hidden');
+    descFull.classList.toggle('hidden');
+    fade.style.display = isHidden ? 'none' : 'block';
+    toggleBtn.innerHTML = isHidden
+      ? 'Thu Gọn <span class="arrow">&#x25B2;</span>'
+      : 'Xem Thêm <span class="arrow">&#x25BC;</span>';
+  });
+</script>
