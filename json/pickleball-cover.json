@@ -1,0 +1,24 @@
+{
+  "thuộc_tính": [
+    {
+      "key": "Loại",
+      "label": "Loại",
+      "display": "thumbnail",
+      "values": [
+        {
+          "text": "Túi Bảo Vệ Mặt Vợt",
+          "image": "https://i.postimg.cc/Dy2wprMW/1.webp",
+          "Giá": 37000,
+          "Giá gốc": 55000
+        }
+      ]
+    }
+  ],
+  "biến_thể": [
+    {
+      "Loại": "Túi Bảo Vệ Mặt Vợt",
+      "id": "cover",
+      "category": "pickleball"
+    }
+  ]
+}
