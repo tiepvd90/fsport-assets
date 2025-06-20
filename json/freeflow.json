@@ -23,7 +23,7 @@
     "youtube": "",
     "productPage": "/product/sup",
     "tags": ["SUP", "thuyền", "bơm"],
-    "basePriority": 18,
+    "basePriority": 15,
     "productCategory": "sup",
     "sellerID": "huyenle"
   },
@@ -37,7 +37,7 @@
     "youtube": "",
     "productPage": "/product/sup",
     "tags": ["SUP", "thuyền", "bơm"],
-    "basePriority": 24,
+    "basePriority": 15,
     "productCategory": "sup",
     "sellerID": "huyenle"
   },
@@ -51,7 +51,7 @@
     "youtube": "",
     "productPage": "/product/sup",
     "tags": ["SUP", "thuyền", "bơm"],
-    "basePriority": 25,
+    "basePriority": 15,
     "productCategory": "sup",
     "sellerID": "huyenle"
   },
@@ -65,7 +65,7 @@
     "youtube": "",
     "productPage": "/product/chair",
     "tags": ["ghế", "ghế fa", "ghế chỉnh dáng ngồi"],
-    "basePriority": 30,
+    "basePriority": 15,
     "productCategory": "chair",
     "sellerID": "huyenle"
   },
@@ -79,7 +79,7 @@
     "youtube": "",
     "productPage": "/product/chair",
     "tags": ["ghế", "ghế fa", "ghế chỉnh dáng ngồi"],
-    "basePriority": 20,
+    "basePriority": 15,
     "productCategory": "chair",
     "sellerID": "huyenle"
   },
@@ -93,7 +93,7 @@
     "youtube": "",
     "productPage": "/product/chair",
     "tags": ["ghế", "ghế fa", "ghế chỉnh dáng ngồi"],
-    "basePriority": 20,
+    "basePriority": 15,
     "productCategory": "chair",
     "sellerID": "huyenle"
   },
@@ -107,7 +107,7 @@
     "youtube": "",
     "productPage": "/product/chair",
     "tags": ["ghế", "ghế fa", "ghế chỉnh dáng ngồi"],
-    "basePriority": 20,
+    "basePriority": 15,
     "productCategory": "chair",
     "sellerID": "huyenle"
   },
@@ -135,7 +135,7 @@
     "youtube": "",
     "productPage": "/product/ysandalbn68",
     "tags": ["ysandal"],
-    "basePriority": 25,
+    "basePriority": 17,
     "productCategory": "ysandal",
     "sellerID": "huyenle"
   },
@@ -149,7 +149,7 @@
     "youtube": "",
     "productPage": "/product/ysandalbn68",
     "tags": ["ysandal"],
-    "basePriority": 25,
+    "basePriority": 17,
     "productCategory": "ysandal",
     "sellerID": "huyenle"
   },
@@ -163,7 +163,7 @@
     "youtube": "",
     "productPage": "/product/ysandalbn68",
     "tags": ["ysandal"],
-    "basePriority": 25,
+    "basePriority": 15,
     "productCategory": "ysandal",
     "sellerID": "huyenle"
   },
@@ -177,7 +177,7 @@
     "youtube": "",
     "productPage": "/product/ysandalbn68",
     "tags": ["ysandal"],
-    "basePriority": 25,
+    "basePriority": 15,
     "productCategory": "ysandal",
     "sellerID": "huyenle"
   },
@@ -191,7 +191,7 @@
     "youtube": "",
     "productPage": "/product/ysandal5568",
     "tags": ["ysandal"],
-    "basePriority": 25,
+    "basePriority": 15,
     "productCategory": "ysandal",
     "sellerID": "huyenle"
   },
@@ -205,7 +205,7 @@
     "youtube": "",
     "productPage": "/product/ysandal5560",
     "tags": ["ysandal"],
-    "basePriority": 25,
+    "basePriority": 15,
     "productCategory": "ysandal",
     "sellerID": "huyenle"
   },
@@ -233,7 +233,7 @@
     "youtube": "",
     "productPage": "/product/ysandal5568",
     "tags": ["ysandal"],
-    "basePriority": 25,
+    "basePriority": 15,
     "productCategory": "ysandal",
     "sellerID": "huyenle"
   }
