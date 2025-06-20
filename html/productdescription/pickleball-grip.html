@@ -1,0 +1,119 @@
+<style>
+  .desc-img-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .desc-img {
+    width: 100%;
+    border-radius: 8px;
+    display: block;
+  }
+
+  .desc-text {
+    font-size: 12px;
+    line-height: 1.6;
+    color: #222;
+    font-family: 'Be Vietnam Pro', sans-serif;
+  }
+
+  .desc-title {
+    font-size: 14px;
+    font-weight: bold;
+    margin: 12px 0 8px;
+  }
+
+  .desc-toggle-btn {
+    margin-top: 16px;
+    background: none;
+    border: none;
+    font-weight: bold;
+    color: #000;
+    cursor: pointer;
+    padding: 10px 0;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    width: 100%;
+    font-family: 'Be Vietnam Pro', sans-serif;
+  }
+
+  .desc-toggle-btn .arrow {
+    font-size: 12px;
+    display: inline-block;
+    transform: translateY(1px);
+  }
+
+  .desc-fade {
+    height: 60px;
+    background: linear-gradient(to top, #fff, transparent);
+    margin-top: -60px;
+    pointer-events: none;
+  }
+
+  .hidden {
+    display: none;
+  }
+</style>
+
+<div class="desc-img-grid">
+  <img src="/assets/images/thumb/pickleball/grip/den.webp" class="desc-img" alt="Quấn cán vợt màu đen" />
+  <img src="/assets/images/thumb/pickleball/grip/xanhma.webp" class="desc-img" alt="Quấn cán vợt màu xanh" />
+</div>
+
+<h2 class="desc-title">Mô Tả Quấn Cán Vợt Pickleball F-Sport</h2>
+
+<div id="descShort" class="desc-text">
+  <p><strong>✔ Quấn cán vợt chính hãng F-Sport</strong>, làm từ cao su non mềm mại, đàn hồi tốt, giúp cầm chắc tay và thoải mái hơn khi chơi thể thao.</p>
+  <p>Thích hợp với vợt pickleball, cầu lông, tennis, gậy golf và nhiều dụng cụ thể thao cầm tay khác.</p>
+</div>
+
+<div id="descFull" class="desc-text hidden">
+  <p>🎨 <strong>Màu sắc đa dạng:</strong> Đen, vàng, xanh, tím, đỏ, hồng, xanh lá...</p>
+  <p>📏 <strong>Chiều dài:</strong> 1.05m &nbsp;&nbsp;&nbsp;&nbsp; 🔢 <strong>Số lượng:</strong> 1 chiếc</p>
+
+  <p><strong>🌟 Tính năng nổi bật:</strong></p>
+  <ul>
+    <li><strong>Chất liệu cao su non:</strong> Êm tay, mềm mại, đàn hồi tốt và không gây kích ứng da.</li>
+    <li><strong>Chống trượt:</strong> Thiết kế xoắn ốc với bề mặt nổi giúp tăng độ bám, hạn chế trơn trượt khi tay ra mồ hôi.</li>
+    <li><strong>Thấm hút mồ hôi:</strong> Kết cấu đan chéo hỗ trợ thoát mồ hôi nhanh, giữ tay luôn khô thoáng.</li>
+  </ul>
+
+  <p><strong>🧾 Mô tả sản phẩm:</strong></p>
+  <ul>
+    <li><strong>Độ bền cao:</strong> Ít giãn, giữ form tốt dù sử dụng lâu dài.</li>
+    <li><strong>Dễ thay thế:</strong> Có thể cuộn thêm để tăng độ dày tay cầm tùy ý.</li>
+    <li><strong>Đa năng:</strong> Dùng được cho nhiều loại vợt và thiết bị thể thao khác.</li>
+  </ul>
+
+  <p><strong>📌 Lưu ý:</strong></p>
+  <ul>
+    <li>Kích thước có thể chênh lệch 1–2 cm do đo lường thủ công.</li>
+    <li>Màu sắc hiển thị có thể khác thực tế tuỳ vào ánh sáng và thiết bị màn hình.</li>
+  </ul>
+</div>
+
+<div class="desc-fade" id="descFade"></div>
+
+<button id="toggleDesc" class="desc-toggle-btn">
+  Xem Thêm <span class="arrow">&#x25BC;</span>
+</button>
+
+<script>
+  const toggleBtn = document.getElementById('toggleDesc');
+  const descFull = document.getElementById('descFull');
+  const fade = document.getElementById('descFade');
+
+  toggleBtn.addEventListener('click', () => {
+    const isHidden = descFull.classList.contains('hidden');
+    descFull.classList.toggle('hidden');
+    fade.style.display = isHidden ? 'none' : 'block';
+    toggleBtn.innerHTML = isHidden
+      ? 'Thu Gọn <span class="arrow">&#x25B2;</span>'
+      : 'Xem Thêm <span class="arrow">&#x25BC;</span>';
+  });
+</script>
