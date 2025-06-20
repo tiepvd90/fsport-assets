@@ -1,0 +1,46 @@
+{
+  "thuộc_tính": [
+    {
+      "key": "Màu Sắc",
+      "label": "Màu Sắc",
+      "display": "thumbnail",
+      "values": [
+        {
+          "text": "Bóng Thi Đấu",
+          "image": "https://i.postimg.cc/2SBCb1Z8/bongdau.webp",
+          "Giá": 29000,
+          "Giá gốc": 40000
+        },
+        {
+          "text": "Bóng Tập Luyện",
+          "image": "https://i.postimg.cc/B6N39DdN/bongtap.webp",
+          "Giá": 9000,
+          "Giá gốc": 20000
+        },
+        {
+          "text": "Bóng Thi Đấu Pro",
+          "image": "https://i.postimg.cc/26YjfC3j/bongpro.webp",
+          "Giá": 39000,
+          "Giá gốc": 50000
+        }
+      ]
+    }
+  ],
+  "biến_thể": [
+    {
+      "Màu Sắc": "Bóng Thi Đấu",
+      "id": "bongthidau",
+      "category": "pickleball"
+    },
+    {
+      "Màu Sắc": "Bóng Tập Luyện",
+      "id": "bongtapluyen",
+      "category": "pickleball"
+    },
+    {
+      "Màu Sắc": "Bóng Thi Đấu Pro",
+      "id": "bongthidaupro",
+      "category": "pickleball"
+    }
+  ]
+}
