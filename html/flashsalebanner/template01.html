@@ -31,12 +31,11 @@
 </div>
 
 <script>
-  (function () {
+  function renderFlashSalePrice() {
     const priceMap = {
       meikan: "80.000đ - 120.000đ",
       gaiter: "49.000đ",
       pickleball-bag": "269.000đ"
-      // ➕ Thêm sản phẩm khác nếu cần
     };
 
     const productPage = window.productPage || "default";
@@ -44,6 +43,7 @@
 
     const priceEl = document.getElementById("flashSalePrice");
     if (priceEl) priceEl.textContent = flashPrice;
-  })();
+  }
 </script>
+
 <!-- END Flash Sale Banner -->
