@@ -13,20 +13,49 @@
       font-family: 'Be Vietnam Pro', sans-serif;
     }
 
-    .cover-img {
+    h2 {
+      font-size: 18px;
+      font-weight: bold;
+      padding: 16px;
+      margin: 0;
+    }
+
+    #hotItemsRow {
+      display: flex;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      padding: 0 16px 16px;
+      gap: 12px;
+    }
+
+    .feed-item {
+      width: 180px;
+      flex-shrink: 0;
+      border: 1px solid #eee;
+      border-radius: 8px;
+      background: #fff;
+      overflow: hidden;
+    }
+
+    .feed-item img {
       width: 100%;
+      height: auto;
       display: block;
-      margin-bottom: 8px;
+    }
+
+    .feed-item .title {
+      font-size: 14px;
+      padding: 8px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
   </style>
 </head>
 <body>
-  <!-- ✅ Ảnh cover -->
-  <img src="https://i.postimg.cc/bYHVx94t/cover1.webp" alt="Cover 1" class="cover-img" />
-  <img src="https://i.postimg.cc/3rB94JDj/cover2.webp" alt="Cover 2" class="cover-img" />
-
-  <!-- ✅ FreeFlow -->
-  <div id="freeflow-placeholder"></div>
+  <!-- ✅ HOT ITEMS Section -->
+  <h2>🔥 HOT ITEMS</h2>
+  <div id="hotItemsRow"></div>
 
   <!-- ✅ Checkout Popup -->
   <div id="checkoutPopup-placeholder"></div>
@@ -41,22 +70,28 @@
       });
   </script>
 
-  <!-- ✅ Load FreeFlow -->
+  <!-- ✅ Load FreeFlow.js -->
   <script src="https://friendly-kitten-d760ff.netlify.app/js/freeflow.js"></script>
   <script>
-    fetch("/html/freeflow.html")
-      .then(res => res.text())
-      .then(html => {
-        const container = document.getElementById("freeflow-placeholder");
-        const temp = document.createElement("div");
-        temp.innerHTML = html;
-        Array.from(temp.children).forEach(el => container.appendChild(el));
+    const wantedIds = ["ysandal9", "ysandal10", "ysandal11", "gaiter1"];
 
-        setTimeout(() => {
-          if (typeof fetchFreeFlowData === "function") {
-            fetchFreeFlowData("https://script.google.com/macros/s/AKfycbwuEh9sP65vyQL0XzU8gY1Os0QYV_K5egKJgm8OhImAPjvdyrQiU7XCY909N99TnltP/exec");
-          }
-        }, 200);
+    fetch("https://script.google.com/macros/s/AKfycbwuEh9sP65vyQL0XzU8gY1Os0QYV_K5egKJgm8OhImAPjvdyrQiU7XCY909N99TnltP/exec")
+      .then(res => res.json())
+      .then(data => {
+        const filtered = data.filter(item => wantedIds.includes(item.itemId));
+        const container = document.getElementById("hotItemsRow");
+
+        filtered.forEach(item => {
+          const div = document.createElement("div");
+          div.className = "feed-item";
+          div.innerHTML = `
+            <a href="${item.productPage}">
+              <img src="${item.image}" alt="${item.title}" />
+              <div class="title">${item.title}</div>
+            </a>
+          `;
+          container.appendChild(div);
+        });
       });
   </script>
 </body>
