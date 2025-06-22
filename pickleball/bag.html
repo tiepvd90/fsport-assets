@@ -82,42 +82,41 @@
     </div>
     <script src="../js/slideshow.js"></script>
 
-    <script>
-  fetch("/html/flashsalebanner/template01.html")
-  .then(res => res.text())
-  .then(html => {
+    <!-- ✅ Flash Sale Banner -->
+<div id="flashbanner-placeholder"></div>
+
+<script>
+  window.addEventListener("DOMContentLoaded", function () {
     const container = document.getElementById("flashbanner-placeholder");
     if (!container) {
       console.warn("❌ Không tìm thấy #flashbanner-placeholder");
       return;
     }
 
-    const temp = document.createElement("div");
-    temp.innerHTML = html;
+    fetch("/html/flashsalebanner/template01.html")
+      .then(res => res.text())
+      .then(html => {
+        const temp = document.createElement("div");
+        temp.innerHTML = html;
 
-    const scripts = temp.querySelectorAll("script");
-    const nonScriptElements = Array.from(temp.childNodes).filter(node => node.tagName !== "SCRIPT");
+        const scripts = temp.querySelectorAll("script");
+        const nonScriptElements = Array.from(temp.childNodes).filter(node => node.tagName !== "SCRIPT");
 
-    // ✅ Chèn phần nội dung
-    nonScriptElements.forEach(el => {
-      if (el) container.appendChild(el);
-    });
+        nonScriptElements.forEach(el => container.appendChild(el));
 
-    // ✅ Thi hành script
-    scripts.forEach(script => {
-      try {
-        eval(script.textContent);
-      } catch (e) {
-        console.warn("⚠️ Lỗi khi chạy script flash banner:", e);
-      }
-    });
+        scripts.forEach(script => {
+          try {
+            eval(script.textContent);
+          } catch (e) {
+            console.warn("⚠️ Lỗi khi chạy script flash banner:", e);
+          }
+        });
 
-    // ✅ Gọi lại hàm sau khi script đã có
-    if (typeof renderFlashSalePrice === "function") {
-      renderFlashSalePrice();
-    }
+        if (typeof renderFlashSalePrice === "function") {
+          renderFlashSalePrice();
+        }
+      });
   });
-
 </script>
 
 
