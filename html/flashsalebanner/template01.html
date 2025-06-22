@@ -16,7 +16,7 @@
 ">
   <!-- Giá bên trái -->
   <div id="flashSalePrice" style="flex-shrink: 0; white-space: nowrap; font-size: 17px;">
-    Upto 30% Off
+    Upto 35% Off
   </div>
 
   <!-- Flash Sale bên phải -->
@@ -29,24 +29,4 @@
     <img src="https://img.icons8.com/color/24/000000/flash-on.png" style="width: 14px; height: 14px;" />
   </div>
 </div>
-
-<script>
-  (function () {
-    console.log("🟡 [template01] window.productPage trước khi xử lý:", window.productPage);
-    const priceMap = {
-      "pickleball-bag": "269.000đ",
-      "meikan": "80.000đ - 120.000đ",
-      "gaiter": "49.000đ"
-      // ➕ Mở rộng tại đây nếu cần
-    };
-
-    const productPage = window.productPage || "default";
-    console.log("🟡 [template01] Đang xử lý banner cho:", productPage);
-
-    const flashPrice = priceMap[productPage] || "Từ 49K";
-
-    const priceEl = document.getElementById("flashSalePrice");
-    if (priceEl) priceEl.textContent = flashPrice;
-  })();
-</script>
 <!-- END Flash Sale Banner -->
