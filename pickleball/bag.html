@@ -82,35 +82,33 @@
     </div>
     <script src="../js/slideshow.js"></script>
 
-    <!-- ✅ Flash Sale Banner -->
-<div id="flashbanner-placeholder"></div>
-<script>
+    <script>
   fetch("/html/flashsalebanner/template01.html")
     .then(res => res.text())
     .then(html => {
       const container = document.getElementById("flashbanner-placeholder");
 
-      // Tạo thẻ tạm để xử lý HTML và script
+      // Tạo thẻ tạm để xử lý
       const temp = document.createElement("div");
       temp.innerHTML = html;
 
-      // Tách phần HTML & Script
+      // ✅ Tách phần nội dung và script
       const scripts = temp.querySelectorAll("script");
       const nonScriptElements = Array.from(temp.childNodes).filter(node => node.tagName !== "SCRIPT");
 
-      // Append phần không phải script trước
+      // ✅ Chèn nội dung HTML trước
       nonScriptElements.forEach(el => container.appendChild(el));
 
-      // Thi hành script inline (giúp renderFlashSalePrice được define)
+      // ✅ Thi hành script inline
       scripts.forEach(script => {
         try {
           eval(script.textContent);
         } catch (e) {
-          console.warn("Lỗi eval script trong flash banner:", e);
+          console.warn("⚠️ Lỗi khi chạy script flash banner:", e);
         }
       });
 
-      // Cuối cùng gọi hàm
+      // ✅ Gọi lại hàm sau khi script đã được eval
       if (typeof renderFlashSalePrice === "function") {
         renderFlashSalePrice();
       }
