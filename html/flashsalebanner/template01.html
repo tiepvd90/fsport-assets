@@ -16,7 +16,7 @@
 ">
   <!-- Giá bên trái -->
   <div id="flashSalePrice" style="flex-shrink: 0; white-space: nowrap; font-size: 17px;">
-    Đang tải...
+    <!-- Giá sẽ được xử lý và chèn vào tự động -->
   </div>
 
   <!-- Flash Sale bên phải -->
@@ -29,22 +29,25 @@
     <img src="https://img.icons8.com/color/24/000000/flash-on.png" style="width: 14px; height: 14px;" />
   </div>
 </div>
-<script>
-  function renderFlashSalePrice() {
-    // 🐞 DEBUG trong hàm renderFlashSalePrice – kiểm tra biến truyền vào
-    console.log("🟡 [renderFlashSalePrice] window.productPage =", window.productPage);
 
+<script>
+  // ✅ Logic gán giá dựa theo window.productPage
+  (function () {
     const priceMap = {
-      "pickleball-bag": "269.000đ"
-      // 👉 Thêm các sản phẩm khác ở đây nếu cần
+      "pickleball-bag": "269.000đ",
+      "meikan": "80.000đ - 120.000đ",
+      "gaiter": "49.000đ"
+      // ➕ Thêm ở đây nếu cần
     };
 
     const productPage = window.productPage || "default";
+
+    console.log("🟡 [template01] Đang xử lý banner cho:", productPage);
+
     const flashPrice = priceMap[productPage] || "Từ 49K";
 
     const priceEl = document.getElementById("flashSalePrice");
     if (priceEl) priceEl.textContent = flashPrice;
-  }
+  })();
 </script>
-
 <!-- END Flash Sale Banner -->
