@@ -83,7 +83,20 @@
     <script src="../js/slideshow.js"></script>
     
  <!-- ✅ flashbanner -->
-<iframe src="/html/flashsalebanner/template01.html" style="border: none; width: 100%; height: 40px;" scrolling="no"></iframe>
+<!-- Gọi template -->
+<div id="flashbanner-placeholder"></div>
+<script>
+  fetch("/html/flashsalebanner/template01.html")
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById("flashbanner-placeholder").innerHTML = html;
+
+      // Sau khi gán HTML xong, gọi JS xử lý
+      const s = document.createElement("script");
+      s.src = "/js/flashsalebanner/template01.js";
+      document.body.appendChild(s);
+    });
+</script>
 
     <!-- ✅ KHỐI 1: Tiêu đề + Shipping -->
     <div class="product-hero">
