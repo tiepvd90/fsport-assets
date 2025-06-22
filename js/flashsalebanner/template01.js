@@ -7,8 +7,8 @@
   // ✅ Danh sách giá theo trang sản phẩm
   const priceMap = {
     "pickleball-bag": "269.000đ",
-    "meikan": "80.000đ - 120.000đ",
-    "gaiter": "49.000đ"
+    "pickleball-ball": "9.000đ - 39000đ",
+    "pickleball-grip": "9.000đ",
     // ➕ Thêm sản phẩm khác ở đây nếu cần
   };
 
