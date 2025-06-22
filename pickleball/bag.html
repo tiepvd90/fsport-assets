@@ -127,12 +127,18 @@
 
     <!-- ✅ KHỐI 4: Mô tả sản phẩm -->
 <script>
-  fetch("/html/productdescription/pickleball-bag.html")
-    .then(res => res.text())
-    .then(html => {
-      document.getElementById("productdescription-placeholder").innerHTML = html;
-    });
+  document.addEventListener("DOMContentLoaded", function () {
+    fetch("/html/productdescription/pickleball-bag.html")
+      .then(res => res.text())
+      .then(html => {
+        const container = document.getElementById("productdescription-placeholder");
+        if (container) {
+          container.innerHTML = html;
+        }
+      });
+  });
 </script>
+
  <!-- HẾT KHỐI 4: Mô tả sản phẩm -->
     <!-- ✅ FreeFlow -->
 <h2 style="font-size: 18px; margin: 24px 12px 12px;">CÓ THỂ BẠN SẼ THÍCH</h2>
