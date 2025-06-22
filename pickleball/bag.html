@@ -126,27 +126,11 @@
     
 
     <!-- ✅ KHỐI 4: Mô tả sản phẩm -->
-<div class="product-hero" style="margin-top: 12px;">
-  <div id="productdescription-placeholder"></div>
-</div>
 <script>
   fetch("/html/productdescription/pickleball-bag.html")
     .then(res => res.text())
     .then(html => {
-      const container = document.getElementById("productdescription-placeholder");
-      container.innerHTML = html;
-
-      // ✅ Kích hoạt lại script thủ công
-      const scripts = container.querySelectorAll("script");
-      scripts.forEach(script => {
-        const s = document.createElement("script");
-        if (script.src) {
-          s.src = script.src;
-        } else {
-          s.textContent = script.textContent;
-        }
-        document.body.appendChild(s);
-      });
+      document.getElementById("productdescription-placeholder").innerHTML = html;
     });
 </script>
  <!-- HẾT KHỐI 4: Mô tả sản phẩm -->
