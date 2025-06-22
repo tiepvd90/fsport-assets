@@ -32,6 +32,8 @@
 
 <script>
   function renderFlashSalePrice() {
+    console.log("🔍 productPage truyền vào là:", window.productPage);
+
     const priceMap = {
       "pickleball-bag": "269.000đ"
     };
@@ -43,5 +45,6 @@
     if (priceEl) priceEl.textContent = flashPrice;
   }
 </script>
+
 
 <!-- END Flash Sale Banner -->
