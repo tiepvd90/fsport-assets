@@ -16,7 +16,7 @@
 ">
   <!-- Giá bên trái -->
   <div id="flashSalePrice" style="flex-shrink: 0; white-space: nowrap; font-size: 17px;">
-    <!-- Giá sẽ được xử lý và chèn vào tự động -->
+    Từ 49K
   </div>
 
   <!-- Flash Sale bên phải -->
@@ -31,17 +31,15 @@
 </div>
 
 <script>
-  // ✅ Logic gán giá dựa theo window.productPage
   (function () {
     const priceMap = {
       "pickleball-bag": "269.000đ",
       "meikan": "80.000đ - 120.000đ",
       "gaiter": "49.000đ"
-      // ➕ Thêm ở đây nếu cần
+      // ➕ Mở rộng tại đây nếu cần
     };
 
     const productPage = window.productPage || "default";
-
     console.log("🟡 [template01] Đang xử lý banner cho:", productPage);
 
     const flashPrice = priceMap[productPage] || "Từ 49K";
