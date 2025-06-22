@@ -1,5 +1,5 @@
 <!-- ✅ Flash Sale Banner -->
-<div style="
+<div id="flashSaleBanner" style="
   background-image: url('https://i.postimg.cc/wB7DgT1R/flash-sale-background.jpg');
   background-size: cover;
   background-position: center;
@@ -15,8 +15,8 @@
   box-sizing: border-box;
 ">
   <!-- Giá bên trái -->
-  <div style="flex-shrink: 0; white-space: nowrap; font-size: 17px;">
-    80.000đ - 120.000đ
+  <div id="flashSalePrice" style="flex-shrink: 0; white-space: nowrap; font-size: 17px;">
+    Đang tải...
   </div>
 
   <!-- Flash Sale bên phải -->
@@ -29,4 +29,77 @@
     <img src="https://img.icons8.com/color/24/000000/flash-on.png" style="width: 14px; height: 14px;" />
   </div>
 </div>
+
+<script>
+  (function () {
+    const priceMap = {
+      meikan: "80.000đ - 120.000đ",
+      gaiter: "49.000đ",
+      "pickleball-titan16": "499.000đ",
+      "pickleball-airforce": "599.000đ - 699.000đ",
+      "ysandal-bcu5560": "390.000đ",
+      <!-- ✅ Flash Sale Banner -->
+<div id="flashSaleBanner" style="
+  background-image: url('https://i.postimg.cc/wB7DgT1R/flash-sale-background.jpg');
+  background-size: cover;
+  background-position: center;
+  width: 100%;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  color: white;
+  font-weight: bold;
+  font-size: 15px;
+  box-sizing: border-box;
+">
+  <!-- Giá bên trái -->
+  <div id="flashSalePrice" style="flex-shrink: 0; white-space: nowrap; font-size: 17px;">
+    Đang tải...
+  </div>
+
+  <!-- Flash Sale bên phải -->
+  <div style="display: flex; align-items: center; gap: 6px; text-align: right;">
+    <img src="https://img.icons8.com/color/24/000000/flash-on.png" style="width: 14px; height: 14px;" />
+    <div style="display: flex; flex-direction: column; line-height: 1.2;">
+      <div style="font-size: 13px; text-align: center;">Flash Sale</div>
+      <div style="font-size: 10px; font-weight: normal;">Kết Thúc Hôm Nay</div>
+    </div>
+    <img src="https://img.icons8.com/color/24/000000/flash-on.png" style="width: 14px; height: 14px;" />
+  </div>
+</div>
+
+<script>
+  (function () {
+    const priceMap = {
+      meikan: "80.000đ - 120.000đ",
+      gaiter: "49.000đ",
+      "pickleball-titan16": "499.000đ",
+      "pickleball-airforce": "599.000đ - 699.000đ",
+      "ysandal-bcu5560": "390.000đ",
+      "fsport-chair": "1.290.000đ",
+      fsport-bag": "269.000đ"
+      // ➕ Thêm sản phẩm khác nếu cần
+    };
+
+    const productPage = window.productPage || "default";
+    const flashPrice = priceMap[productPage] || "Từ 49K";
+
+    const priceEl = document.getElementById("flashSalePrice");
+    if (priceEl) priceEl.textContent = flashPrice;
+  })();
+</script>
+<!-- END Flash Sale Banner -->
+
+      // ➕ Thêm sản phẩm khác nếu cần
+    };
+
+    const productPage = window.productPage || "default";
+    const flashPrice = priceMap[productPage] || "Từ 49K";
+
+    const priceEl = document.getElementById("flashSalePrice");
+    if (priceEl) priceEl.textContent = flashPrice;
+  })();
+</script>
 <!-- END Flash Sale Banner -->
