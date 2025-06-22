@@ -9,7 +9,7 @@
     "pickleball-bag": "269.000đ",
     "pickleball-ball": "9.000đ - 39000đ",
     "pickleball-grip": "9.000đ",
-    "pickleball-grip": "37.000đ"
+    "pickleball-cover": "37.000đ"
     // ➕ Thêm sản phẩm khác ở đây nếu cần
   };
 
@@ -17,7 +17,7 @@
   const productPage = window.productPage || "default";
 
   // ✅ Lấy giá theo productPage (nếu không có thì fallback)
-  const flashPrice = priceMap[productPage] || "Từ 49K";
+  const flashPrice = priceMap[productPage] || "Upto 30% Off";
 
   // ✅ Gán giá vào DOM
   const priceEl = document.getElementById("flashSalePrice");
