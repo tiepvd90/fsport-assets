@@ -1,123 +1,66 @@
-<style>
-  .desc-img-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    margin-bottom: 16px;
-  }
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mô Tả Sản Phẩm</title>
+  <link rel="stylesheet" href="/css/productdescription.css">
+</head>
+<body>
 
-  .desc-img {
-    width: 100%;
-    border-radius: 8px;
-    display: block;
-  }
+<div class="desc-container">
+  <!-- 🔽 Hình ảnh mô tả (có thể xóa nếu không dùng ảnh) -->
+  <div class="desc-img-grid">
+    <img src="https://i.postimg.cc/C5P4LLVp/hong.webp" class="desc-img" alt="Túi Pickleball Hồng">
+    <img src="https://i.postimg.cc/B6hF2Y7x/xam.webp" class="desc-img" alt="Túi Pickleball Ghi">
+  </div>
 
-  .desc-text {
-    font-size: 12px;
-    line-height: 1.6;
-    color: #222;
-    font-family: 'Be Vietnam Pro', sans-serif;
-  }
+  <!-- 🔽 Tiêu đề mô tả -->
+  <h2 class="desc-title">Mô Tả Túi / Balo Pickleball F-Sports</h2>
 
-  .desc-title {
-    font-size: 14px;
-    font-weight: bold;
-    margin: 12px 0 8px;
-  }
+  <!-- 🔽 Đoạn ngắn -->
+  <div class="desc-text" id="descShort">
+    <p><strong>🎒 Túi / Balo Pickleball F-Sports – Thiết Kế Năng Động, Chất Liệu Cao Cấp</strong></p>
+    <p>Chất liệu vải dù 650T bền bỉ, chống nước nhẹ. Thiết kế thời trang, tiện lợi, phù hợp với cả tập luyện lẫn thi đấu.</p>
+  </div>
 
-  .desc-toggle-btn {
-    margin-top: 16px;
-    background: none;
-    border: none;
-    font-weight: bold;
-    color: #000;
-    cursor: pointer;
-    padding: 10px 0;
-    font-size: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    width: 100%;
-    font-family: 'Be Vietnam Pro', sans-serif;
-  }
+  <!-- 🔽 Đoạn đầy đủ (ẩn mặc định) -->
+  <div class="desc-text hidden" id="descFull">
+    <p><strong>🧵 Chất liệu:</strong> Vải dù 650T cao cấp</p>
+    <p><strong>🎨 Màu sắc:</strong> Hồng, Ghi, Đen</p>
 
-  .desc-toggle-btn .arrow {
-    font-size: 12px;
-    display: inline-block;
-    transform: translateY(1px);
-  }
+    <p><strong>✨ Đặc điểm nổi bật:</strong></p>
+    <ul>
+      <li><strong>Ngăn chính rộng rãi:</strong> Đựng được bóng, điện thoại, chìa khóa, ví và nhiều vật dụng cá nhân khác.</li>
+      <li><strong>Ngăn riêng cho vợt:</strong> Giúp bảo vệ mặt vợt tránh trầy xước.</li>
+      <li><strong>Dây đeo vai êm ái:</strong> Dễ dàng mang theo khi di chuyển.</li>
+      <li><strong>Đường may chắc chắn:</strong> Tăng độ bền theo thời gian sử dụng.</li>
+    </ul>
 
-  .desc-fade {
-    height: 60px;
-    background: linear-gradient(to top, #fff, transparent);
-    margin-top: -60px;
-    pointer-events: none;
-  }
+    <p><strong>🧢 Phong cách & Công dụng:</strong></p>
+    <ul>
+      <li>Thiết kế trẻ trung, năng động – phù hợp với mọi lứa tuổi.</li>
+      <li>Bảo vệ vợt pickleball khỏi va đập và trầy xước.</li>
+      <li>Giữ vợt và phụ kiện luôn gọn gàng, sạch sẽ.</li>
+      <li>Phù hợp mang theo khi tập luyện, thi đấu hoặc du lịch.</li>
+    </ul>
 
-  .hidden {
-    display: none;
-  }
-</style>
+    <p><strong>💡 Tại sao túi Pickleball F-Sports lại hot?</strong></p>
+    <ul>
+      <li>Vật dụng không thể thiếu cho người chơi Pickleball "chính hiệu".</li>
+      <li>Thiết kế bền bỉ – bảo vệ tối ưu cho vợt và đồ dùng.</li>
+      <li>Phong cách thời trang – ghi điểm với mọi ánh nhìn.</li>
+      <li>Tối giản nhưng sang trọng – thể hiện cá tính riêng.</li>
+    </ul>
+  </div>
 
-<div class="desc-img-grid">
-  <img src="https://i.postimg.cc/C5P4LLVp/hong.webp" class="desc-img" alt="Túi Balo Pickleball F-Sports Màu Hồng" />
-  <img src="https://i.postimg.cc/B6hF2Y7x/xam.webp" class="desc-img" alt="Túi Pickleball F-Sports Màu Ghi" />
+  <!-- 🔽 Fade & Nút toggle -->
+  <div class="desc-fade" id="descFade"></div>
+  <button id="toggleDesc" class="desc-toggle-btn">
+    Xem Thêm <span class="arrow">&#x25BC;</span>
+  </button>
 </div>
 
-<h2 class="desc-title">Mô Tả Túi / Balo Pickleball F-Sports</h2>
-
-<div id="descShort" class="desc-text">
-  <p><strong>🎒 Túi / Balo Pickleball F-Sports – Thiết Kế Năng Động, Chất Liệu Cao Cấp</strong></p>
-  <p>Chất liệu vải dù 650T bền bỉ, chống nước nhẹ. Thiết kế thời trang, tiện lợi, phù hợp với cả tập luyện lẫn thi đấu.</p>
-</div>
-
-<div id="descFull" class="desc-text hidden">
-  <p><strong>🧵 Chất liệu:</strong> Vải dù 650T cao cấp</p>
-  <p><strong>🎨 Màu sắc:</strong> Hồng, Ghi, Đen</p>
-
-  <p><strong>✨ Đặc điểm nổi bật:</strong></p>
-  <ul>
-    <li><strong>Ngăn chính rộng rãi:</strong> Đựng được bóng, điện thoại, chìa khóa, ví và nhiều vật dụng cá nhân khác.</li>
-    <li><strong>Ngăn riêng cho vợt:</strong> Giúp bảo vệ mặt vợt tránh trầy xước.</li>
-    <li><strong>Dây đeo vai êm ái:</strong> Dễ dàng mang theo khi di chuyển.</li>
-    <li><strong>Đường may chắc chắn:</strong> Tăng độ bền theo thời gian sử dụng.</li>
-  </ul>
-
-  <p><strong>🧢 Phong cách & Công dụng:</strong></p>
-  <ul>
-    <li>Thiết kế trẻ trung, năng động – phù hợp với mọi lứa tuổi.</li>
-    <li>Bảo vệ vợt pickleball khỏi va đập và trầy xước.</li>
-    <li>Giữ vợt và phụ kiện luôn gọn gàng, sạch sẽ.</li>
-    <li>Phù hợp mang theo khi tập luyện, thi đấu hoặc du lịch.</li>
-  </ul>
-
-  <p><strong>💡 Tại sao túi Pickleball F-Sports lại hot?</strong></p>
-  <ul>
-    <li>Vật dụng không thể thiếu cho người chơi Pickleball "chính hiệu".</li>
-    <li>Thiết kế bền bỉ – bảo vệ tối ưu cho vợt và đồ dùng.</li>
-    <li>Phong cách thời trang – ghi điểm với mọi ánh nhìn.</li>
-    <li>Tối giản nhưng sang trọng – thể hiện cá tính riêng.</li>
-  </ul>
-</div>
-
-<div class="desc-fade" id="descFade"></div>
-
-<button id="toggleDesc" class="desc-toggle-btn">
-  Xem Thêm <span class="arrow">&#x25BC;</span>
-</button>
-
-<script>
-  const toggleBtn = document.getElementById('toggleDesc');
-  const descFull = document.getElementById('descFull');
-  const fade = document.getElementById('descFade');
-
-  toggleBtn.addEventListener('click', () => {
-    const isHidden = descFull.classList.contains('hidden');
-    descFull.classList.toggle('hidden');
-    fade.style.display = isHidden ? 'none' : 'block';
-    toggleBtn.innerHTML = isHidden
-      ? 'Thu Gọn <span class="arrow">&#x25B2;</span>'
-      : 'Xem Thêm <span class="arrow">&#x25BC;</span>';
-  });
-</script>
+<script src="/js/productdescription.js"></script>
+</body>
+</html>
