@@ -81,43 +81,17 @@
       <div class="slide-counter" id="slideCounter">1/1</div>
     </div>
     <script src="../js/slideshow.js"></script>
-
-    <!-- ✅ Flash Sale Banner -->
-<div id="flashbanner-placeholder"></div>
-
+    
+ <!-- ✅ flashbanner -->
+    <div id="flashbanner-placeholder"></div>
 <script>
-  window.addEventListener("DOMContentLoaded", function () {
-    const container = document.getElementById("flashbanner-placeholder");
-    if (!container) {
-      console.warn("❌ Không tìm thấy #flashbanner-placeholder");
-      return;
-    }
-
-    fetch("/html/flashsalebanner/template01.html")
-      .then(res => res.text())
-      .then(html => {
-        const temp = document.createElement("div");
-        temp.innerHTML = html;
-
-        const scripts = temp.querySelectorAll("script");
-        const nonScriptElements = Array.from(temp.childNodes).filter(node => node.tagName !== "SCRIPT");
-
-        nonScriptElements.forEach(el => container.appendChild(el));
-
-        scripts.forEach(script => {
-          try {
-            eval(script.textContent);
-          } catch (e) {
-            console.warn("⚠️ Lỗi khi chạy script flash banner:", e);
-          }
-        });
-
-        if (typeof renderFlashSalePrice === "function") {
-          renderFlashSalePrice();
-        }
-      });
-  });
+  fetch("/html/flashsalebanner/template01.html")
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById("flashbanner-placeholder").innerHTML = html;
+    });
 </script>
+
 
 
     <!-- ✅ KHỐI 1: Tiêu đề + Shipping -->
