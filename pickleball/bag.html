@@ -88,20 +88,13 @@
   fetch("/html/flashsalebanner/template01.html")
     .then(res => res.text())
     .then(html => {
-      document.getElementById("flashbanner-placeholder").innerHTML = html;
-
-      // 🔁 Inject lại script trong template để logic giá hoạt động
       const container = document.getElementById("flashbanner-placeholder");
-      const scripts = container.querySelectorAll("script");
-      scripts.forEach(oldScript => {
-        const newScript = document.createElement("script");
-        if (oldScript.src) {
-          newScript.src = oldScript.src;
-        } else {
-          newScript.textContent = oldScript.textContent;
-        }
-        document.body.appendChild(newScript);
-      });
+      container.innerHTML = html;
+
+      // ✅ Gọi hàm nếu được khai báo trong template
+      if (typeof renderFlashSalePrice === "function") {
+        renderFlashSalePrice();
+      }
     });
 </script>
 
