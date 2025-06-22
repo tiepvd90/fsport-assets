@@ -89,14 +89,34 @@
     .then(res => res.text())
     .then(html => {
       const container = document.getElementById("flashbanner-placeholder");
-      container.innerHTML = html;
 
-      // ✅ Gọi hàm nếu được khai báo trong template
+      // Tạo thẻ tạm để xử lý HTML và script
+      const temp = document.createElement("div");
+      temp.innerHTML = html;
+
+      // Tách phần HTML & Script
+      const scripts = temp.querySelectorAll("script");
+      const nonScriptElements = Array.from(temp.childNodes).filter(node => node.tagName !== "SCRIPT");
+
+      // Append phần không phải script trước
+      nonScriptElements.forEach(el => container.appendChild(el));
+
+      // Thi hành script inline (giúp renderFlashSalePrice được define)
+      scripts.forEach(script => {
+        try {
+          eval(script.textContent);
+        } catch (e) {
+          console.warn("Lỗi eval script trong flash banner:", e);
+        }
+      });
+
+      // Cuối cùng gọi hàm
       if (typeof renderFlashSalePrice === "function") {
         renderFlashSalePrice();
       }
     });
 </script>
+
 
     <!-- ✅ KHỐI 1: Tiêu đề + Shipping -->
     <div class="product-hero">
