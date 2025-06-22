@@ -13,28 +13,35 @@
       font-family: 'Be Vietnam Pro', sans-serif;
     }
 
+    .cover-img {
+      width: 100%;
+      display: block;
+      margin-bottom: 12px;
+    }
+
     h2 {
       font-size: 18px;
       font-weight: bold;
-      padding: 16px;
-      margin: 0;
+      padding: 0 16px;
+      margin: 12px 0 8px;
     }
 
     #hotItemsRow {
-      display: flex;
-      flex-wrap: nowrap;
-      overflow-x: auto;
-      padding: 0 16px 16px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
       gap: 12px;
+      padding: 0 16px 16px;
+      box-sizing: border-box;
     }
 
     .feed-item {
-      width: 180px;
-      flex-shrink: 0;
       border: 1px solid #eee;
       border-radius: 8px;
       background: #fff;
       overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
     }
 
     .feed-item img {
@@ -44,16 +51,25 @@
     }
 
     .feed-item .title {
-      font-size: 14px;
+      font-size: 13px;
       padding: 8px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
+
+    @media (max-width: 768px) {
+      #hotItemsRow {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
   </style>
 </head>
 <body>
-  <!-- ✅ HOT ITEMS Section -->
+  <!-- ✅ Ảnh cover đầu tiên -->
+  <img src="https://i.postimg.cc/bYHVx94t/cover1.webp" alt="Cover 1" class="cover-img" />
+
+  <!-- ✅ HOT ITEMS -->
   <h2>🔥 HOT ITEMS</h2>
   <div id="hotItemsRow"></div>
 
@@ -70,7 +86,7 @@
       });
   </script>
 
-  <!-- ✅ Load FreeFlow.js -->
+  <!-- ✅ Load FreeFlow script -->
   <script src="https://friendly-kitten-d760ff.netlify.app/js/freeflow.js"></script>
   <script>
     const wantedIds = ["ysandal9", "ysandal10", "ysandal11", "gaiter1"];
@@ -78,7 +94,7 @@
     fetch("https://script.google.com/macros/s/AKfycbwuEh9sP65vyQL0XzU8gY1Os0QYV_K5egKJgm8OhImAPjvdyrQiU7XCY909N99TnltP/exec")
       .then(res => res.json())
       .then(data => {
-        const filtered = data.filter(item => wantedIds.includes(item.itemId));
+        const filtered = wantedIds.map(id => data.find(item => item.itemId === id)).filter(Boolean);
         const container = document.getElementById("hotItemsRow");
 
         filtered.forEach(item => {
