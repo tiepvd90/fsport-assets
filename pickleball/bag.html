@@ -83,14 +83,27 @@
     <script src="../js/slideshow.js"></script>
 
     <!-- ✅ Flash Sale Banner -->
-    <div id="flashbanner-placeholder"></div>
-    <script>
-      fetch("/html/flashsalebanner/template01.html")
-        .then(res => res.text())
-        .then(html => {
-          document.getElementById("flashbanner-placeholder").innerHTML = html;
-        });
-    </script>
+<div id="flashbanner-placeholder"></div>
+<script>
+  fetch("/html/flashsalebanner/template01.html")
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById("flashbanner-placeholder").innerHTML = html;
+
+      // 🔁 Inject lại script trong template để logic giá hoạt động
+      const container = document.getElementById("flashbanner-placeholder");
+      const scripts = container.querySelectorAll("script");
+      scripts.forEach(oldScript => {
+        const newScript = document.createElement("script");
+        if (oldScript.src) {
+          newScript.src = oldScript.src;
+        } else {
+          newScript.textContent = oldScript.textContent;
+        }
+        document.body.appendChild(newScript);
+      });
+    });
+</script>
 
     <!-- ✅ KHỐI 1: Tiêu đề + Shipping -->
     <div class="product-hero">
