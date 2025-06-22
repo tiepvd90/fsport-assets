@@ -1,0 +1,41 @@
+{
+  "thuộc_tính": [
+    {
+      "key": "Màu Sắc",
+      "label": "Màu Sắc",
+      "display": "thumbnail",
+      "values": [
+        {
+          "text": "Màu Hồng",
+          "image": "https://i.postimg.cc/C5P4LLVp/hong.webp",
+          "Giá": 269000,
+          "Giá gốc": 330000
+        },
+        {
+          "text": "Màu Xám",
+          "image": "https://i.postimg.cc/B6hF2Y7x/xam.webp",
+          "Giá": 269000,
+          "Giá gốc": 330000
+        },
+        {
+          "text": "Màu Đen Quai Xám",
+          "image": "https://i.postimg.cc/vHZqRCdd/denquaighi.webp",
+          "Giá": 269000,
+          "Giá gốc": 330000
+        },
+        {
+          "text": "Màu Đen Quai Vàng",
+          "image": "https://i.postimg.cc/SsGr3fTs/denquaivang.jpg",
+          "Giá": 269000,
+          "Giá gốc": 330000
+        }
+      ]
+    }
+  ],
+  "biến_thể": [
+    { "Màu Sắc": "Màu Hồng", "id": "mauhong", "category": "pickleball" },
+    { "Màu Sắc": "Màu Xám", "id": "mauxam", "category": "pickleball" },
+    { "Màu Sắc": "Màu Đen Quai Xám", "id": "maudenquaixam", "category": "pickleball" },
+    { "Màu Sắc": "Màu Đen Quai Vàng", "id": "maudenquaivang", "category": "pickleball" }
+  ]
+}
