@@ -29,13 +29,14 @@
     <img src="https://img.icons8.com/color/24/000000/flash-on.png" style="width: 14px; height: 14px;" />
   </div>
 </div>
-
 <script>
   function renderFlashSalePrice() {
-    console.log("🔍 productPage truyền vào là:", window.productPage);
+    // 🐞 DEBUG trong hàm renderFlashSalePrice – kiểm tra biến truyền vào
+    console.log("🟡 [renderFlashSalePrice] window.productPage =", window.productPage);
 
     const priceMap = {
       "pickleball-bag": "269.000đ"
+      // 👉 Thêm các sản phẩm khác ở đây nếu cần
     };
 
     const productPage = window.productPage || "default";
@@ -45,6 +46,5 @@
     if (priceEl) priceEl.textContent = flashPrice;
   }
 </script>
-
 
 <!-- END Flash Sale Banner -->
