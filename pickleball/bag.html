@@ -126,20 +126,13 @@
     
 
     <!-- ✅ KHỐI 4: Mô tả sản phẩm -->
-<script>
-  document.addEventListener("DOMContentLoaded", function () {
-    fetch("/html/productdescription/pickleball-bag.html")
-      .then(res => res.text())
-      .then(html => {
-        const container = document.getElementById("productdescription-placeholder");
-        if (container) {
-          container.innerHTML = html;
-        }
-      });
-  });
-</script>
+<div class="product-hero" style="margin-top: 12px;">
+  <div id="productdescription-placeholder" data-src="/html/productdescription/pickleball-bag.html"></div>
+</div>
 
- <!-- HẾT KHỐI 4: Mô tả sản phẩm -->
+<script src="/js/productdescription.js"></script>
+<!-- 🔚 HẾT KHỐI 4 -->
+
     <!-- ✅ FreeFlow -->
 <h2 style="font-size: 18px; margin: 24px 12px 12px;">CÓ THỂ BẠN SẼ THÍCH</h2>
 <div id="freeflow-placeholder"></div>
