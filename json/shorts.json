@@ -1,0 +1,51 @@
+{
+  "thuộc_tính": [
+    {
+      "key": "Màu Sắc",
+      "label": "Màu Sắc",
+      "display": "thumbnail",
+      "values": [
+        { "text": "Đen", "image": "https://i.postimg.cc/TP7Znvmd/den.webp", "Giá": 189000, "Giá gốc": 240000 },
+        { "text": "Hồng Đất", "image": "https://i.postimg.cc/J7B9Hgh8/hongdat.webp", "Giá": 189000, "Giá gốc": 240000 },
+        { "text": "Vàng Nhạt", "image": "https://i.postimg.cc/zXZ4CjLg/vangnhat.webp", "Giá": 189000, "Giá gốc": 240000 },
+        { "text": "Xám", "image": "https://i.postimg.cc/0jgXCkNs/xam.webp", "Giá": 189000, "Giá gốc": 240000 },
+        { "text": "Xanh Cốm", "image": "https://i.postimg.cc/0jpWWT6J/xanhcom.webp", "Giá": 189000, "Giá gốc": 240000 },
+        { "text": "Xanh Dương", "image": "https://i.postimg.cc/nVYGWYR7/xanhduong.webp", "Giá": 189000, "Giá gốc": 240000 }
+      ]
+    },
+    {
+      "key": "Size",
+      "label": "Kích thước",
+      "values": [
+        "S (43-49kg <155cm)",
+        "M (50-54kg 155-160cm)",
+        "L (55-60kg 160-165cm)"
+      ]
+    }
+  ],
+  "biến_thể": [
+    { "Màu Sắc": "Đen", "Size": "S (43-49kg <155cm)", "id": "short-den-s", "category": "ysandal" },
+    { "Màu Sắc": "Đen", "Size": "M (50-54kg 155-160cm)", "id": "short-den-m", "category": "ysandal" },
+    { "Màu Sắc": "Đen", "Size": "L (55-60kg 160-165cm)", "id": "short-den-l", "category": "ysandal" },
+
+    { "Màu Sắc": "Hồng Đất", "Size": "S (43-49kg <155cm)", "id": "short-hongdat-s", "category": "ysandal" },
+    { "Màu Sắc": "Hồng Đất", "Size": "M (50-54kg 155-160cm)", "id": "short-hongdat-m", "category": "ysandal" },
+    { "Màu Sắc": "Hồng Đất", "Size": "L (55-60kg 160-165cm)", "id": "short-hongdat-l", "category": "ysandal" },
+
+    { "Màu Sắc": "Vàng Nhạt", "Size": "S (43-49kg <155cm)", "id": "short-vangnhat-s", "category": "ysandal" },
+    { "Màu Sắc": "Vàng Nhạt", "Size": "M (50-54kg 155-160cm)", "id": "short-vangnhat-m", "category": "ysandal" },
+    { "Màu Sắc": "Vàng Nhạt", "Size": "L (55-60kg 160-165cm)", "id": "short-vangnhat-l", "category": "ysandal" },
+
+    { "Màu Sắc": "Xám", "Size": "S (43-49kg <155cm)", "id": "short-xam-s", "category": "ysandal" },
+    { "Màu Sắc": "Xám", "Size": "M (50-54kg 155-160cm)", "id": "short-xam-m", "category": "ysandal" },
+    { "Màu Sắc": "Xám", "Size": "L (55-60kg 160-165cm)", "id": "short-xam-l", "category": "ysandal" },
+
+    { "Màu Sắc": "Xanh Cốm", "Size": "S (43-49kg <155cm)", "id": "short-xanhcom-s", "category": "ysandal" },
+    { "Màu Sắc": "Xanh Cốm", "Size": "M (50-54kg 155-160cm)", "id": "short-xanhcom-m", "category": "ysandal" },
+    { "Màu Sắc": "Xanh Cốm", "Size": "L (55-60kg 160-165cm)", "id": "short-xanhcom-l", "category": "ysandal" },
+
+    { "Màu Sắc": "Xanh Dương", "Size": "S (43-49kg <155cm)", "id": "short-xanhduong-s", "category": "ysandal" },
+    { "Màu Sắc": "Xanh Dương", "Size": "M (50-54kg 155-160cm)", "id": "short-xanhduong-m", "category": "ysandal" },
+    { "Màu Sắc": "Xanh Dương", "Size": "L (55-60kg 160-165cm)", "id": "short-xanhduong-l", "category": "ysandal" }
+  ]
+}
