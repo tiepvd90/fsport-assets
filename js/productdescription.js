@@ -22,6 +22,27 @@ document.addEventListener("DOMContentLoaded", function () {
     .then(html => {
       console.log("✅ Thành công, đang chèn HTML mô tả...");
       container.innerHTML = html;
+
+      // ✅ Kích hoạt nút Xem thêm sau khi HTML được render
+      const toggleBtn = container.querySelector("#toggleDesc");
+      const descFull = container.querySelector("#descFull");
+      const descFade = container.querySelector("#descFade");
+
+      if (!toggleBtn || !descFull || !descFade) return;
+
+      toggleBtn.addEventListener("click", () => {
+        const isHidden = descFull.classList.contains("hidden");
+
+        if (isHidden) {
+          descFull.classList.remove("hidden");
+          descFade.style.display = "none";
+          toggleBtn.innerHTML = `Thu Gọn <span class="arrow">&#x25B2;</span>`;
+        } else {
+          descFull.classList.add("hidden");
+          descFade.style.display = "block";
+          toggleBtn.innerHTML = `Xem Thêm <span class="arrow">&#x25BC;</span>`;
+        }
+      });
     })
     .catch(err => {
       console.error("❌ Lỗi khi fetch mô tả sản phẩm:", err);
