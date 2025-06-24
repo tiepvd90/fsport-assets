@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
   <title>Forrest Gump và tinh thần chạy không ngừng nghỉ</title>
   <link rel="stylesheet" href="/stories/css/stories.css">
 </head>
@@ -27,14 +28,15 @@
     <p><em>Admin Funsport:</em> Những huyền thoại được ghi nhớ không phải vì họ tài năng hơn người khác, mà là vì hành động của họ truyền cảm hứng được cho nhân loại.</p>
   </article>
 
-  <div id="footerContainer"></div>
-  <script>
-    fetch('/stories/html/stickyfooter-stories.html')
-      .then(res => res.text())
-      .then(html => {
-        document.getElementById('footerContainer').innerHTML = html;
-      });
-  </script>
+  <!-- Sticky Footer -->
+<div id="footerContainer"></div>
+<script>
+  fetch('/stories/html/stickyfooter-stories.html')
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById('footerContainer').innerHTML = html;
+    });
+</script>
 
 </body>
 </html>
