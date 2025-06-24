@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stories - Funsport</title>
+  <link rel="stylesheet" href="/stories/css/stories.css">
+  
+  <style>
+    .story-feed-container {
+      max-width: 720px;
+      margin: 0 auto;
+      padding-bottom: 80px;
+    }
+
+    .story-item {
+      padding: 16px 0;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .story-item h2 {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 6px;
+      color: #111;
+    }
+
+    .story-item p {
+      font-size: 13px;
+      color: #555;
+      margin-bottom: 8px;
+    }
+
+    .story-item img {
+      width: 100%;
+      border-radius: 8px;
+      margin: 12px 0;
+    }
+
+    #loadMoreBtn {
+      display: block;
+      margin: 24px auto;
+      padding: 10px 16px;
+      border: none;
+      background: #eee;
+      color: #333;
+      font-size: 14px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    #loadMoreBtn:hover {
+      background: #ddd;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="stories-header">Chuyên Mục Stories</div>
+
+  <div class="story-feed-container" id="storyFeed"></div>
+  <button id="loadMoreBtn">Xem thêm</button>
+
+  <!-- Sticky footer -->
+  <div id="footerContainer"></div>
+  <script>
+    fetch('/stories/html/stickyfooter-stories.html')
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById('footerContainer').innerHTML = html;
+      });
+  </script>
+
+  <!-- Lazyload dữ liệu -->
+  <script>
+    const storiesData = [
+      {
+        title: "Forrest Gump và tinh thần chạy không ngừng nghỉ",
+        excerpt: "Một biểu tượng sống với đôi chân không biết mỏi...",
+        image: "https://i.postimg.cc/bYHVx94t/cover1.webp",
+        link: "/stories/forrest-gump.html"
+      },
+      {
+        title: "Ben Baltz – Cậu bé chạy bằng chân giả",
+        excerpt: "Câu chuyện phi thường về nghị lực thi đấu trên một chân giả...",
+        image: "https://i.postimg.cc/5NBQtwLP/ben-baltz.jpg",
+        link: "/stories/ben-baltz.html"
+      },
+      // ✅ Thêm bài tại đây...
+    ];
+
+    let batchSize = 6;
+    let currentIndex = 0;
+
+    function loadStories() {
+      const container = document.getElementById('storyFeed');
+      const nextItems = storiesData.slice(currentIndex, currentIndex + batchSize);
+
+      nextItems.forEach(item => {
+        const html = `
+          <div class="story-item">
+            <a href="${item.link}" style="text-decoration: none;">
+              <h2>${item.title}</h2>
+              <p>${item.excerpt}</p>
+              <img src="${item.image}" loading="lazy" alt="${item.title}">
+            </a>
+          </div>
+        `;
+        container.insertAdjacentHTML('beforeend', html);
+      });
+
+      currentIndex += batchSize;
+
+      if (currentIndex >= storiesData.length) {
+        document.getElementById('loadMoreBtn').style.display = 'none';
+      }
+    }
+
+    document.getElementById('loadMoreBtn').addEventListener('click', loadStories);
+    window.addEventListener('DOMContentLoaded', loadStories);
+  </script>
+   // ✅ Sticky footer
+<div id="footerContainer"></div>
+<script>
+  fetch('/stories/html/stickyfooter-stories.html')
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById('footerContainer').innerHTML = html;
+    });
+</script>
+
+</body>
+</html>
