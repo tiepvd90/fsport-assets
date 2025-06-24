@@ -1,0 +1,135 @@
+/* ===== TOÀN TRANG ===== */
+body {
+  margin: 0;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  background-color: #f9f9f9;
+  color: #222;
+  line-height: 1.7;
+  font-size: 14px;
+  padding: 0 16px;
+}
+
+/* ===== HEADER MỤC ===== */
+.stories-header {
+  text-align: center;
+  padding: 24px 0 12px;
+  font-size: 20px;
+  font-weight: bold;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 16px;
+}
+
+/* ===== DANH SÁCH BÀI VIẾT ===== */
+.story-card {
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 16px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  transition: all 0.2s ease;
+}
+
+.story-card:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.story-thumb {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.story-content {
+  padding: 12px;
+}
+
+.story-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #111;
+}
+
+.story-excerpt {
+  font-size: 13px;
+  color: #555;
+  margin-bottom: 8px;
+}
+
+.story-meta {
+  font-size: 12px;
+  color: #999;
+}
+
+/* ===== TRANG CHI TIẾT BÀI VIẾT ===== */
+.story-article {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 24px 0 80px; /* chừa chỗ cho footer */
+}
+
+.story-article h1 {
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 16px;
+}
+
+.story-article img {
+  width: 100%;
+  border-radius: 8px;
+  margin: 16px 0;
+}
+
+.story-article p {
+  margin-bottom: 16px;
+  text-align: justify;
+}
+
+.story-article h2 {
+  font-size: 18px;
+  font-weight: bold;
+  margin-top: 24px;
+  margin-bottom: 12px;
+}
+
+/* ===== NÚT BACK (TRÊN MỖI BÀI) ===== */
+.story-back {
+  display: inline-block;
+  margin-bottom: 16px;
+  font-size: 13px;
+  color: #007aff;
+  text-decoration: none;
+}
+
+/* ===== STICKY FOOTER ===== */
+.story-footer-icons {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: #000;
+  display: flex;
+  justify-content: space-around;
+  padding: 6px 0 8px;
+  border-top: 1px solid #333;
+  z-index: 1000;
+}
+
+.footer-tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 12px;
+  color: #888;
+  text-decoration: none;
+  flex: 1;
+}
+
+.footer-tab div:first-child {
+  font-size: 20px;
+  margin-bottom: 2px;
+}
+
+.footer-tab.active {
+  color: #fff;
+}
