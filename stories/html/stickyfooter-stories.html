@@ -5,11 +5,11 @@
     <i class="lucide" data-lucide="arrow-left"></i>
     <div>Back</div>
   </a>
-  <a href="/stories.html" class="footer-tab active">
+  <a href="/stories.html" class="footer-tab" data-tab="stories">
     <i class="lucide" data-lucide="newspaper"></i>
     <div>Stories</div>
   </a>
-  <a href="/" class="footer-tab">
+  <a href="/" class="footer-tab" data-tab="shop">
     <i class="lucide" data-lucide="shopping-bag"></i>
     <div>Shop</div>
   </a>
@@ -18,3 +18,21 @@
     <div>Next</div>
   </a>
 </div>
+
+<script src="https://unpkg.com/lucide@latest"></script>
+<script>
+  lucide.createIcons();
+
+  // ✅ Gán tab active theo URL
+  const path = window.location.pathname;
+  const isStories = path.startsWith("/stories");
+  const isHome = path === "/" || path.startsWith("/index");
+
+  const allTabs = document.querySelectorAll(".footer-tab[data-tab]");
+  allTabs.forEach(tab => {
+    const type = tab.getAttribute("data-tab");
+    if ((type === "stories" && isStories) || (type === "shop" && isHome)) {
+      tab.classList.add("active");
+    }
+  });
+</script>
