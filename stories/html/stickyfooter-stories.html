@@ -23,16 +23,18 @@
 <script>
   lucide.createIcons();
 
-  // ✅ Gán tab active theo URL
-  const path = window.location.pathname;
-  const isStories = path.startsWith("/stories");
-  const isHome = path === "/" || path.startsWith("/index");
+  // ✅ Gán tab active sau khi HTML đã inject xong
+  setTimeout(() => {
+    const path = location.pathname;
+    const isStories = path.startsWith('/stories');
+    const isShop = path === '/' || path === '/index.html';
 
-  const allTabs = document.querySelectorAll(".footer-tab[data-tab]");
-  allTabs.forEach(tab => {
-    const type = tab.getAttribute("data-tab");
-    if ((type === "stories" && isStories) || (type === "shop" && isHome)) {
-      tab.classList.add("active");
-    }
-  });
+    const tabs = document.querySelectorAll('.footer-tab[data-tab]');
+    tabs.forEach(tab => {
+      const type = tab.dataset.tab;
+      if ((type === 'stories' && isStories) || (type === 'shop' && isShop)) {
+        tab.classList.add('active');
+      }
+    });
+  }, 10);
 </script>
