@@ -43,3 +43,8 @@
   align-self: center;
   max-width: calc(100% - 140px);
 }
+.footer-icon i.lucide {
+  width: 20px;
+  height: 20px;
+  stroke-width: 1.8;
+}
