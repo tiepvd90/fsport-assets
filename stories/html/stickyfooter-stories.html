@@ -1,28 +1,29 @@
-<!-- Gọi CSS sticky footer -->
 <link rel="stylesheet" href="/stories/css/stories.css">
 
 <!-- Sticky Footer -->
 <div class="story-footer-icons">
   <a href="javascript:history.back()" class="footer-tab">
-    <i data-lucide="arrow-left"></i>
+    <i class="lucide" data-lucide="arrow-left"></i>
     <div>Back</div>
   </a>
   <a href="/stories.html" class="footer-tab active">
-    <i data-lucide="newspaper"></i>
+    <i class="lucide" data-lucide="newspaper"></i>
     <div>Stories</div>
   </a>
   <a href="/" class="footer-tab">
-    <i data-lucide="shopping-bag"></i>
+    <i class="lucide" data-lucide="shopping-bag"></i>
     <div>Shop</div>
   </a>
   <a href="javascript:history.forward()" class="footer-tab">
-    <i data-lucide="arrow-right"></i>
+    <i class="lucide" data-lucide="arrow-right"></i>
     <div>Next</div>
   </a>
 </div>
 
-<!-- Gọi thư viện Lucide -->
+<!-- Lucide icon loader -->
 <script src="https://unpkg.com/lucide@latest"></script>
 <script>
-  lucide.createIcons();
+  window.addEventListener("DOMContentLoaded", () => {
+    lucide.createIcons();
+  });
 </script>
