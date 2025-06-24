@@ -28,17 +28,29 @@
     <p><em>Admin Funsport:</em> Những huyền thoại được ghi nhớ không phải vì họ tài năng hơn người khác, mà là vì hành động của họ truyền cảm hứng được cho nhân loại.</p>
   </article>
 
-  // ✅ Sticky footer
-<div id="footerContainer"></div>
-<script src="https://unpkg.com/lucide@latest"></script>
+  // Sticky Footer
+  <div id="footerContainer"></div>
 <script>
   fetch('/stories/html/stickyfooter-stories.html')
     .then(res => res.text())
     .then(html => {
-      document.getElementById('footerContainer').innerHTML = html;
-      lucide.createIcons(); // ⚠️ Phải gọi sau khi gắn HTML vào DOM
+      const container = document.getElementById('footerContainer');
+      container.innerHTML = html;
+
+      // ✅ Kích hoạt script bên trong nội dung fetch
+      const scripts = container.querySelectorAll("script");
+      scripts.forEach(script => {
+        const newScript = document.createElement("script");
+        if (script.src) {
+          newScript.src = script.src;
+        } else {
+          newScript.textContent = script.textContent;
+        }
+        document.body.appendChild(newScript);
+      });
     });
 </script>
+
 
 </body>
 </html>
