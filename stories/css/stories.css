@@ -133,3 +133,10 @@ body {
 .footer-tab.active {
   color: #fff;
 }
+.footer-tab i.lucide {
+  width: 22px;
+  height: 22px;
+  margin-bottom: 4px;
+  stroke-width: 1.5;
+}
+
