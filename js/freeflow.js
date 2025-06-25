@@ -30,7 +30,7 @@ function processAndSortData(data) {
     .filter(item => item.productCategory === productCategory)
     .map(item => ({
       ...item,
-      finalPriority: (item.basePriority || 0) + random() + 60
+      finalPriority: (item.basePriority || 0) + random() + 75
     }))
     .sort((a, b) => b.finalPriority - a.finalPriority);
 
