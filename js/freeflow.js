@@ -26,7 +26,7 @@ function saveCache(data) {
 function processAndSortData(data) {
   freeflowData = data.map(item => {
     const random = Math.floor(Math.random() * 20) + 1;
-    const matchCategory = (item.productCategory === productCategory) ? 60 : 0;
+    const matchCategory = (item.productCategory === productCategory) ? 90 : 0;
     return {
       ...item,
       finalPriority: (item.basePriority || 0) + random + matchCategory
