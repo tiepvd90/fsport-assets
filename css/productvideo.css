@@ -1,4 +1,4 @@
-/* ==== VIDEO SLIDER ==== */
+/* ==== DANH SÁCH VIDEO ==== */
 .video-slider-wrapper {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
@@ -61,7 +61,6 @@
   pointer-events: none;
 }
 
-/* ==== NÚT THÊM VÀO GIỎ ==== */
 .atc-button {
   font-size: 12px;
   font-weight: bold;
@@ -91,7 +90,7 @@
   z-index: 9999;
 }
 
-/* Khung popup đẹp như FreeFlow */
+/* Cải tiến đẹp như FreeFlow nhưng vẫn giữ nút */
 .popup-frame {
   position: absolute;
   top: 50%;
@@ -108,7 +107,6 @@
   flex-direction: column;
 }
 
-/* Header chứa 2 nút */
 .popup-header {
   display: flex;
   gap: 8px;
@@ -141,7 +139,6 @@
   color: white;
 }
 
-/* Video */
 #popupIframe {
   flex: 1;
   width: 100%;
