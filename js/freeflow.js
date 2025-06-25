@@ -97,7 +97,7 @@ function renderInitialAndLoadRest() {
   setupAutoplayObserver();
 
   setTimeout(() => {
-    const remaining = freeflowData.slice(4, 100);
+    const remaining = freeflowData.slice(4);
     remaining.forEach(item => renderFeedItem(item, container));
     itemsLoaded = freeflowData.length;
     setupAutoplayObserver();
