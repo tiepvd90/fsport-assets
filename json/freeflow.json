@@ -303,14 +303,453 @@
     "sellerID": "huyenle"
   },
   {
+    "itemId": "gaiter2",
+    "title": "Khăn Ống Đa Năng Đi Phượt Thể Thao",
+    "price": 49000,
+    "originalPrice": 60000,
+    "contentType": "image",
+    "image": "https://i.postimg.cc/sDrFMnQh/1.jpg",
+    "youtube": "",
+    "productPage": "/product/gaiter",
+    "tags": [
+      "gaiter",
+      "ysandal"
+    ],
+    "basePriority": 15,
+    "productCategory": "ysandal",
+    "sellerID": "huyenle"
+  },
+  {
+    "itemId": "gaiter3",
+    "title": "Khăn Ống Đa Năng Đi Phượt Thể Thao",
+    "price": 49000,
+    "originalPrice": 60000,
+    "contentType": "image",
+    "image": "https://i.postimg.cc/qB2SH8bM/3.jpg",
+    "youtube": "",
+    "productPage": "/product/gaiter",
+    "tags": [
+      "gaiter",
+      "ysandal"
+    ],
+    "basePriority": 15,
+    "productCategory": "ysandal",
+    "sellerID": "huyenle"
+  },
+  {
+    "itemId": "gaiter4",
+    "title": "Khăn Ống Đa Năng Đi Phượt Thể Thao",
+    "price": 49000,
+    "originalPrice": 60000,
+    "contentType": "image",
+    "image": "https://i.postimg.cc/mgg59Kbt/4.jpg",
+    "youtube": "",
+    "productPage": "/product/gaiter",
+    "tags": [
+      "gaiter",
+      "ysandal"
+    ],
+    "basePriority": 15,
+    "productCategory": "ysandal",
+    "sellerID": "huyenle"
+  },
+  {
+    "itemId": "meikan1",
+    "title": "Tất Vớ Chạy Bộ Xỏ Ngón Đạp Xe Thể Thao",
+    "price": 79000,
+    "originalPrice": 120000,
+    "contentType": "image",
+    "image": "https://i.postimg.cc/mkfHfcLK/1.jpg",
+    "youtube": "",
+    "productPage": "/product/meikan",
+    "tags": [
+      "meikan",
+      "ysandal"
+    ],
+    "basePriority": 15,
+    "productCategory": "ysandal",
+    "sellerID": "huyenle"
+  },
+  {
+    "itemId": "meikan2",
+    "title": "Tất Vớ Chạy Bộ Xỏ Ngón Đạp Xe Thể Thao",
+    "price": 79000,
+    "originalPrice": 120000,
+    "contentType": "image",
+    "image": "https://i.postimg.cc/cHmSZ20Z/2.jpg",
+    "youtube": "",
+    "productPage": "/product/meikan",
+    "tags": [
+      "meikan",
+      "ysandal"
+    ],
+    "basePriority": 15,
+    "productCategory": "ysandal",
+    "sellerID": "huyenle"
+  },
+  {
+    "itemId": "meikan3",
+    "title": "Tất Vớ Chạy Bộ Xỏ Ngón Đạp Xe Thể Thao",
+    "price": 79000,
+    "originalPrice": 120000,
+    "contentType": "image",
+    "image": "https://i.postimg.cc/hvtqGstm/3.jpg",
+    "youtube": "",
+    "productPage": "/product/meikan",
+    "tags": [
+      "meikan",
+      "ysandal"
+    ],
+    "basePriority": 15,
+    "productCategory": "ysandal",
+    "sellerID": "huyenle"
+  },
+  {
+    "itemId": "meikan4",
+    "title": "Tất Vớ Chạy Bộ Xỏ Ngón Đạp Xe Thể Thao",
+    "price": 79000,
+    "originalPrice": 120000,
+    "contentType": "image",
+    "image": "https://i.postimg.cc/Y2dHs5dz/4.jpg",
+    "youtube": "",
+    "productPage": "/product/meikan",
+    "tags": [
+      "meikan",
+      "ysandal"
+    ],
+    "basePriority": 15,
+    "productCategory": "ysandal",
+    "sellerID": "huyenle"
+  },
+  {
+    "itemId": "pickleball-001",
+    "title": "Vợt Pickleball F-Sport – Bền và Chuẩn",
+    "price": 999000,
+    "originalPrice": 2000000,
+    "contentType": "image",
+    "image": "https://i.postimg.cc/QNvGWJ32/Untitled-2.jpg",
+    "youtube": "",
+    "productPage": "/product/pickleball-airforce",
+    "tags": [
+      "pickleball"
+    ],
+    "basePriority": 16,
+    "productCategory": "pickleball",
+    "sellerID": "huyenle"
+  },
+  {
+    "itemId": "pickleball-002",
+    "title": "Đúc Nguyên Khối, Ép Nhiệt Tối Ưu",
+    "price": 1000000,
+    "originalPrice": 2000000,
+    "contentType": "image",
+    "image": "https://i.postimg.cc/qM708vhK/z6527095389448-8be71a1b65ed1cefbcb1eb74dd1d0dad.jpg",
+    "youtube": "",
+    "productPage": "/product/firstpickleball",
+    "tags": [
+      "pickleball"
+    ],
+    "basePriority": 16,
+    "productCategory": "pickleball",
+    "sellerID": "huyenle"
+  },
+  {
+    "itemId": "pickleball-003",
+    "title": "Cảm Giác Chuẩn, Đánh Cực Êm Tay",
+    "price": 999000,
+    "originalPrice": 2000000,
+    "contentType": "image",
+    "image": "https://i.postimg.cc/c45WTGwb/z6527095948834-7827078994b988726ead2d761f08d3c0.jpg",
+    "youtube": "",
+    "productPage": "/product/firstpickleball",
+    "tags": [
+      "pickleball"
+    ],
+    "basePriority": 16,
+    "productCategory": "pickleball",
+    "sellerID": "huyenle"
+  },
+  {
+    "itemId": "pickleball-004",
+    "title": "Chọn Vợt Chuẩn, Lên Tay Từng Cú",
+    "price": 1050000,
+    "originalPrice": 2000000,
+    "contentType": "image",
+    "image": "https://i.postimg.cc/TYcMS812/den.webp",
+    "youtube": "",
+    "productPage": "/product/firstpickleball",
+    "tags": [
+      "pickleball"
+    ],
+    "basePriority": 16,
+    "productCategory": "pickleball",
+    "sellerID": "huyenle"
+  },
+  {
+    "itemId": "pickleball-005",
+    "title": "Chuẩn Thi Đấu – Chuẩn Phong Cách",
+    "price": 999000,
+    "originalPrice": 2000000,
+    "contentType": "image",
+    "image": "https://i.postimg.cc/V6RQCxz4/z6527095698122-791158ef0cf2d60c5d1ccd0535d08274.jpg",
+    "youtube": "",
+    "productPage": "/product/firstpickleball",
+    "tags": [
+      "pickleball"
+    ],
+    "basePriority": 16,
+    "productCategory": "pickleball",
+    "sellerID": "huyenle"
+  },
+  {
+    "itemId": "pickleball-006",
+    "title": "Vợt Siêu Nhám – Tạo Xoáy Linh Hoạt",
+    "price": 999000,
+    "originalPrice": 2000000,
+    "contentType": "image",
+    "image": "https://i.postimg.cc/2SzHq11p/5.jpg",
+    "youtube": "",
+    "productPage": "/product/firstpickleball",
+    "tags": [
+      "pickleball"
+    ],
+    "basePriority": 16,
+    "productCategory": "pickleball",
+    "sellerID": "huyenle"
+  },
+  {
+    "itemId": "pickleball-007",
+    "title": "Jusain & AirForce – Dành Cho Người Chơi Thật",
+    "price": 1050000,
+    "originalPrice": 2000000,
+    "contentType": "image",
+    "image": "https://i.postimg.cc/Ls5NTGkN/11.jpg",
+    "youtube": "",
+    "productPage": "/product/firstpickleball",
+    "tags": [
+      "pickleball"
+    ],
+    "basePriority": 16,
+    "productCategory": "pickleball",
+    "sellerID": "huyenle"
+  },
+  {
+    "itemId": "pickleball-008",
+    "title": "Vợt thi đấu, Đủ Size, Đủ Lực, Đủ Hiệu Năng",
+    "price": 999000,
+    "originalPrice": 2000000,
+    "contentType": "image",
+    "image": "https://i.postimg.cc/DzN5Y5BF/7.jpg",
+    "youtube": "",
+    "productPage": "/product/firstpickleball",
+    "tags": [
+      "pickleball"
+    ],
+    "basePriority": 16,
+    "productCategory": "pickleball",
+    "sellerID": "huyenle"
+  },
+  {
+    "itemId": "pickleball-009",
+    "title": "Vợt T700 Pro Cao cấp",
+    "price": 435000,
+    "originalPrice": 600000,
+    "contentType": "image",
+    "image": "https://i.postimg.cc/HxHyMqTv/2.webp",
+    "youtube": "",
+    "productPage": "/product/secpickleball",
+    "tags": [
+      "pickleball"
+    ],
+    "basePriority": 16,
+    "productCategory": "pickleball",
+    "sellerID": "huyenle"
+  },
+  {
+    "itemId": "pickleball-010",
+    "title": "Rẻ Vô Địch: Vợt Pickleball Titan",
+    "price": 499000,
+    "originalPrice": 699000,
+    "contentType": "image",
+    "image": "https://i.postimg.cc/63hPKxHd/Untitled-2.jpg",
+    "youtube": "",
+    "productPage": "/product/secpickleball",
+    "tags": [
+      "pickleball"
+    ],
+    "basePriority": 16,
+    "productCategory": "pickleball",
+    "sellerID": "huyenle"
+  },
+  {
+    "itemId": "pickleball-011",
+    "title": "Vợt T700 Pro Cao cấp",
+    "price": 435000,
+    "originalPrice": 600000,
+    "contentType": "image",
+    "image": "https://i.postimg.cc/tJNDPd0W/1.webp",
+    "youtube": "",
+    "productPage": "/product/secpickleball",
+    "tags": [
+      "pickleball"
+    ],
+    "basePriority": 16,
+    "productCategory": "pickleball",
+    "sellerID": "huyenle"
+  },
+  {
     "itemId": "pickleball-012",
     "title": "Vợt Tiêu Chuẩn Thi Đấu",
     "price": 999000,
-    "originalPrice": 1500000,
+    "originalPrice": 150000,
     "contentType": "youtube",
     "image": "https://i.postimg.cc/QNvGWJ32/Untitled-2.jpg",
     "youtube": "otxZyMed-Ck",
     "productPage": "/product/firstpickleball",
+    "tags": [
+      "pickleball"
+    ],
+    "basePriority": 16,
+    "productCategory": "pickleball",
+    "sellerID": "huyenle"
+  },
+  {
+    "itemId": "pickleball-013",
+    "title": "Rẻ Vô Địch: Vợt Pickleball Titan",
+    "price": 499000,
+    "originalPrice": 699000,
+    "contentType": "youtube",
+    "image": "https://i.postimg.cc/63hPKxHd/Untitled-2.jpg",
+    "youtube": "3YOeWTL1TvA",
+    "productPage": "/product/secpickleball",
+    "tags": [
+      "pickleball"
+    ],
+    "basePriority": 22,
+    "productCategory": "pickleball",
+    "sellerID": "huyenle"
+  },
+  {
+    "itemId": "pickleball-014",
+    "title": "Lõi chống ồn vợt teflon",
+    "price": 1590000,
+    "originalPrice": 220000,
+    "contentType": "youtube",
+    "image": "https://i.postimg.cc/QNvGWJ32/Untitled-2.jpg",
+    "youtube": "Cz_teoKmZZg",
+    "productPage": "/product/firstpickleball",
+    "tags": [
+      "pickleball"
+    ],
+    "basePriority": 16,
+    "productCategory": "pickleball",
+    "sellerID": "huyenle"
+  },
+  {
+    "itemId": "pickleball-cover",
+    "title": "Túi bảo vệ mặt vợt pickleball",
+    "price": 37000,
+    "originalPrice": 55000,
+    "contentType": "image",
+    "image": "https://i.postimg.cc/ZRCM5Mn9/1.webp",
+    "youtube": "",
+    "productPage": "/pickleball/cover",
+    "tags": [
+      "pickleball"
+    ],
+    "basePriority": 16,
+    "productCategory": "pickleball",
+    "sellerID": "huyenle"
+  },
+  {
+    "itemId": "pickleball-ball1",
+    "title": "Bóng Pickleball Tiêu Chuẩn Thi Đấu",
+    "price": 29000,
+    "originalPrice": 40000,
+    "contentType": "image",
+    "image": "https://i.postimg.cc/N0mGVKsP/1.webp",
+    "youtube": "",
+    "productPage": "/pickleball/ball",
+    "tags": [
+      "pickleball"
+    ],
+    "basePriority": 16,
+    "productCategory": "pickleball",
+    "sellerID": "huyenle"
+  },
+  {
+    "itemId": "pickleball-ball2",
+    "title": "Bóng Pickleball Tập Luyện",
+    "price": 9000,
+    "originalPrice": 20000,
+    "contentType": "image",
+    "image": "https://i.postimg.cc/rFH8w1zP/2.webp",
+    "youtube": "",
+    "productPage": "/pickleball/ball",
+    "tags": [
+      "pickleball"
+    ],
+    "basePriority": 16,
+    "productCategory": "pickleball",
+    "sellerID": "huyenle"
+  },
+  {
+    "itemId": "pickleball-ball3",
+    "title": "Pro Pickleball , bóng dạ quang siêu cứng",
+    "price": 39000,
+    "originalPrice": 50000,
+    "contentType": "image",
+    "image": "https://i.postimg.cc/R0fTpxWL/pro.jpg",
+    "youtube": "",
+    "productPage": "/pickleball/ball",
+    "tags": [
+      "pickleball"
+    ],
+    "basePriority": 16,
+    "productCategory": "pickleball",
+    "sellerID": "huyenle"
+  },
+  {
+    "itemId": "pickleball-grip1",
+    "title": "Quấn Cán Pickleball Cao Su Non",
+    "price": 9000,
+    "originalPrice": 18000,
+    "contentType": "image",
+    "image": "https://i.postimg.cc/htQ8hR1R/xanhdatroi.webp",
+    "youtube": "",
+    "productPage": "/pickleball/grip",
+    "tags": [
+      "pickleball"
+    ],
+    "basePriority": 16,
+    "productCategory": "pickleball",
+    "sellerID": "huyenle"
+  },
+  {
+    "itemId": "pickleball-grip2",
+    "title": " F-sports Quấn cán Vợt Pickleball",
+    "price": 9000,
+    "originalPrice": 18000,
+    "contentType": "image",
+    "image": "https://i.postimg.cc/Hsh4pk5t/hongphan.webp",
+    "youtube": "",
+    "productPage": "/pickleball/grip",
+    "tags": [
+      "pickleball"
+    ],
+    "basePriority": 16,
+    "productCategory": "pickleball",
+    "sellerID": "huyenle"
+  },
+  {
+    "itemId": "pickleball-bag",
+    "title": "Túi Đựng Vợt Pickleball Balo Đựng Vợt Pickleball",
+    "price": 269000,
+    "originalPrice": 330000,
+    "contentType": "image",
+    "image": "https://i.postimg.cc/L63ttgmT/Capture.jpg",
+    "youtube": "",
+    "productPage": "/pickleball/bag",
     "tags": [
       "pickleball"
     ],
@@ -335,6 +774,89 @@
     "sellerID": "huyenle"
   },
   {
+    "itemId": "pickleball-bag3",
+    "title": "Túi Trống Pickleball Chống Nước",
+    "price": 269000,
+    "originalPrice": null,
+    "contentType": "youtube",
+    "image": "https://i.postimg.cc/L63ttgmT/Capture.jpg",
+    "youtube": "GWlux7nXYSA",
+    "productPage": "/pickleball/bag",
+    "tags": [
+      "pickleball"
+    ],
+    "basePriority": 16,
+    "productCategory": "pickleball",
+    "sellerID": "huyenle"
+  },
+  {
+    "itemId": "pickleball-grip3",
+    "title": "Quấn Cán Pickleball Cao Su Non",
+    "price": 9000,
+    "originalPrice": 18000,
+    "contentType": "image",
+    "image": "https://i.postimg.cc/hPXW46RV/1.jpg",
+    "youtube": "",
+    "productPage": "/pickleball/grip",
+    "tags": [
+      "pickleball"
+    ],
+    "basePriority": 16,
+    "productCategory": "pickleball",
+    "sellerID": "huyenle"
+  },
+  {
+    "itemId": "shorts1",
+    "title": "Quần Chạy Bộ Nữ 2 Lớp Xẻ Lai Cao Cấp Cạp Cao",
+    "price": 189000,
+    "originalPrice": 240000,
+    "contentType": "image",
+    "image": "https://i.postimg.cc/zXZ4CjLg/vangnhat.webp",
+    "youtube": "",
+    "productPage": "/product/shorts",
+    "tags": [
+      "shorts",
+      "ysandal"
+    ],
+    "basePriority": 15,
+    "productCategory": "ysandal",
+    "sellerID": "huyenle"
+  },
+  {
+    "itemId": "shorts2",
+    "title": "Màu Xám Quần Chạy Bộ Nữ Cao Cấp Cạp Cao",
+    "price": 189000,
+    "originalPrice": 240000,
+    "contentType": "image",
+    "image": "https://i.postimg.cc/0jgXCkNs/xam.webp",
+    "youtube": "",
+    "productPage": "/product/shorts",
+    "tags": [
+      "shorts",
+      "ysandal"
+    ],
+    "basePriority": 15,
+    "productCategory": "ysandal",
+    "sellerID": "huyenle"
+  },
+  {
+    "itemId": "shorts3",
+    "title": "Xanh Cốm Quần Chạy Bộ Nữ Cao Cấp Cạp Cao",
+    "price": 189000,
+    "originalPrice": 240000,
+    "contentType": "image",
+    "image": "https://i.postimg.cc/0jpWWT6J/xanhcom.webp",
+    "youtube": "",
+    "productPage": "/product/shorts",
+    "tags": [
+      "shorts",
+      "ysandal"
+    ],
+    "basePriority": 15,
+    "productCategory": "ysandal",
+    "sellerID": "huyenle"
+  },
+  {
     "itemId": "sup251",
     "title": "Thuyền SUP Made In VietNam",
     "price": 3100000,
@@ -347,7 +869,7 @@
       "sup"
     ],
     "basePriority": 16,
-    "productCategory": "sup",
+    "productCategory": "pickleball",
     "sellerID": "huyenle"
   }
 ]
