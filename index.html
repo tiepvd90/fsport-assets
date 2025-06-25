@@ -50,7 +50,23 @@
         const container = document.getElementById("freeflow-placeholder");
         const temp = document.createElement("div");
         temp.innerHTML = html;
-        Array.from(temp.children).forEach(el => container.appendChild(el));
+        Array.from(temp.children).forEach(el => {
+  if (el.id === "videoOverlay") {
+    document.body.appendChild(el); // Đảm bảo overlay ở cuối
+  } else {
+    container.appendChild(el);
+  }
+});
+
+// Gắn lại sự kiện đóng popup video
+const btn = document.getElementById("videoCloseBtn");
+if (btn) btn.onclick = function () {
+  const frame = document.getElementById("videoFrame");
+  const popup = document.getElementById("videoOverlay");
+  if (frame) frame.src = "";
+  if (popup) popup.style.display = "none";
+};
+
 
         setTimeout(() => {
           if (typeof fetchFreeFlowData === "function") {
