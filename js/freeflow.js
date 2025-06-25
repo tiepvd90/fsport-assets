@@ -24,14 +24,34 @@ function saveCache(data) {
 
 // ✅ Sắp xếp và tính điểm ưu tiên
 function processAndSortData(data) {
-  freeflowData = data.map(item => {
-    const random = Math.floor(Math.random() * 20) + 1;
-    const matchCategory = (item.productCategory === productCategory) ? 90 : 0;
-    return {
+  const random = () => Math.floor(Math.random() * 20) + 1;
+
+  const preferred = data
+    .filter(item => item.productCategory === productCategory)
+    .map(item => ({
       ...item,
-      finalPriority: (item.basePriority || 0) + random + matchCategory
-    };
-  }).sort((a, b) => b.finalPriority - a.finalPriority);
+      finalPriority: (item.basePriority || 0) + random() + 60
+    }))
+    .sort((a, b) => b.finalPriority - a.finalPriority);
+
+  const others = data
+    .filter(item => item.productCategory !== productCategory)
+    .map(item => ({
+      ...item,
+      finalPriority: (item.basePriority || 0) + random()
+    }))
+    .sort((a, b) => b.finalPriority - a.finalPriority);
+
+  // Trộn theo tỷ lệ 2:1 để cột trái-phải không bị lệch category
+  const mixed = [];
+  let i = 0, j = 0;
+  while (i < preferred.length || j < others.length) {
+    if (i < preferred.length) mixed.push(preferred[i++]);
+    if (i < preferred.length) mixed.push(preferred[i++]);
+    if (j < others.length) mixed.push(others[j++]);
+  }
+
+  freeflowData = mixed;
 }
 
 // ✅ Tải dữ liệu chính
