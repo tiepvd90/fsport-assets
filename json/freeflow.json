@@ -236,5 +236,118 @@
     "basePriority": 15,
     "productCategory": "ysandal",
     "sellerID": "huyenle"
+  },
+  {
+    "itemId": "ysandal9",
+    "title": "BCU5568 Dép Chạy Bộ Ysandal đài loan",
+    "price": 550000,
+    "originalPrice": 700000,
+    "contentType": "image",
+    "image": "https://i.postimg.cc/br8JLvnp/2.jpg",
+    "youtube": "",
+    "productPage": "/product/ysandal5568",
+    "tags": [
+      "ysandal"
+    ],
+    "basePriority": 15,
+    "productCategory": "ysandal",
+    "sellerID": "huyenle"
+  },
+  {
+    "itemId": "ysandal10",
+    "title": "BCU5568 Dép Chạy Bộ Ysandal đài loan",
+    "price": 550000,
+    "originalPrice": 700000,
+    "contentType": "image",
+    "image": "https://i.postimg.cc/DwDwH6GC/3.jpg",
+    "youtube": "",
+    "productPage": "/product/ysandal5568",
+    "tags": [
+      "ysandal"
+    ],
+    "basePriority": 15,
+    "productCategory": "ysandal",
+    "sellerID": "huyenle"
+  },
+  {
+    "itemId": "ysandal11",
+    "title": "BCU5568 Dép Chạy Bộ Ysandal đài loan",
+    "price": 550000,
+    "originalPrice": 700000,
+    "contentType": "image",
+    "image": "https://i.postimg.cc/7L2ZkzMq/Capture.jpg",
+    "youtube": "",
+    "productPage": "/product/ysandal5568",
+    "tags": [
+      "ysandal"
+    ],
+    "basePriority": 15,
+    "productCategory": "ysandal",
+    "sellerID": "huyenle"
+  },
+  {
+    "itemId": "gaiter1",
+    "title": "Khăn Ống Đa Năng Đi Phượt Thể Thao",
+    "price": 49000,
+    "originalPrice": 60000,
+    "contentType": "image",
+    "image": "https://i.postimg.cc/L8vMKzsZ/2.jpg",
+    "youtube": "",
+    "productPage": "/product/gaiter",
+    "tags": [
+      "gaiter",
+      "ysandal"
+    ],
+    "basePriority": 15,
+    "productCategory": "ysandal",
+    "sellerID": "huyenle"
+  },
+  {
+    "itemId": "pickleball-012",
+    "title": "Vợt Tiêu Chuẩn Thi Đấu",
+    "price": 999000,
+    "originalPrice": 1500000,
+    "contentType": "youtube",
+    "image": "https://i.postimg.cc/QNvGWJ32/Untitled-2.jpg",
+    "youtube": "otxZyMed-Ck",
+    "productPage": "/product/firstpickleball",
+    "tags": [
+      "pickleball"
+    ],
+    "basePriority": 16,
+    "productCategory": "pickleball",
+    "sellerID": "huyenle"
+  },
+  {
+    "itemId": "pickleball-bag2",
+    "title": "Túi Trống Pickleball Chống Nước",
+    "price": 269000,
+    "originalPrice": null,
+    "contentType": "youtube",
+    "image": "https://i.postimg.cc/L63ttgmT/Capture.jpg",
+    "youtube": "ZHhJspf6qzE",
+    "productPage": "/pickleball/bag",
+    "tags": [
+      "pickleball"
+    ],
+    "basePriority": 20,
+    "productCategory": "pickleball",
+    "sellerID": "huyenle"
+  },
+  {
+    "itemId": "sup251",
+    "title": "Thuyền SUP Made In VietNam",
+    "price": 3100000,
+    "originalPrice": null,
+    "contentType": "youtube",
+    "image": "https://i.postimg.cc/VNPpr6Cp/z5877726978291-e407e7717db9548c3d68b7124fd31735.jpg",
+    "youtube": "8bvPXroXLuY",
+    "productPage": "/product/sup",
+    "tags": [
+      "sup"
+    ],
+    "basePriority": 16,
+    "productCategory": "sup",
+    "sellerID": "huyenle"
   }
 ]
