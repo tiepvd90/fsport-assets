@@ -92,7 +92,7 @@
 }
 
 .popup-video-frame {
-  height: calc(100vh - 16px);
+  height: calc(100vh - 48px); /* chừa chỗ cho header */
   aspect-ratio: 9 / 16;
   width: auto;
   max-width: 100vw;
@@ -103,6 +103,7 @@
   flex-direction: column;
   border-radius: 12px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+  margin-top: 24px; /* đẩy xuống 1 chút cho an toàn trên mobile */
 }
 
 
@@ -112,6 +113,7 @@
   padding: 8px;
   background: #fff;
   justify-content: space-between;
+  flex-shrink: 0;
 }
 
 .popup-buy, .popup-close {
