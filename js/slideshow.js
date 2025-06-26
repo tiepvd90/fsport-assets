@@ -9,7 +9,7 @@ switch (window.productPage) {
   case "firstpickleball":
   case "pickleball-airforce":
     totalImages = 9;
-    break;  
+    break;
   case "ysandal5568":
     totalImages = 41;
     break;
@@ -20,45 +20,44 @@ switch (window.productPage) {
     totalImages = 9;
     break;
   default:
-    totalImages = 5; // hoặc giá trị mặc định khác nếu cần
+    totalImages = 5;
     break;
 }
 
-console.log("Tổng số ảnh:", totalImages);
-
 const imagesToShow = 5;
-
 const container = document.getElementById('lazySlideshow');
 const counter = document.getElementById('slideCounter');
+const loai = window.loai;
+const productPage = window.productPage;
+const basePath = `/assets/images/gallery/${loai}/${productPage}`;
 
 let loadedCount = 0;
 let triedCount = 0;
 const slides = [];
 
-// ⚠️ Lấy biến loai & productPage từ global (window)
-const loai = window.loai;
-const productPage = window.productPage;
-const basePath = `/assets/images/gallery/${loai}/${productPage}`;
+// ✅ Luôn có ảnh đầu tiên là 1.jpg
+const orderedIndices = [1];
 
-// 🔁 Hàm random số không trùng
-function getRandomNumbers(count, max) {
-  const set = new Set();
-  while (set.size < count) {
-    set.add(Math.floor(Math.random() * max) + 1);
+// ✅ Random 4 ảnh còn lại từ 2 → totalImages, không trùng
+function getRandomFromTwoOnwards(count, max) {
+  const nums = [];
+  for (let i = 2; i <= max; i++) nums.push(i);
+  for (let i = nums.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [nums[i], nums[j]] = [nums[j], nums[i]];
   }
-  return Array.from(set);
+  return nums.slice(0, count);
 }
 
-// 🔁 Random 5 ảnh trong 20 ảnh
-const randomIndices = getRandomNumbers(imagesToShow, totalImages);
+orderedIndices.push(...getRandomFromTwoOnwards(imagesToShow - 1, totalImages));
 
-// 🔁 Tải từng ảnh
-randomIndices.forEach((i, index) => {
+// 🔁 Tải ảnh
+orderedIndices.forEach((i, index) => {
   const src = `${basePath}/${i}.jpg`;
   const img = document.createElement('img');
   img.src = src;
   img.className = 'slide lazy-slide';
-  img.loading = index === 0 ? 'eager' : 'lazy';
+  img.loading = index === 0 ? 'eager' : 'lazy'; // Ảnh đầu tiên ưu tiên tải sớm
 
   img.onload = () => {
     slides.push(img);
