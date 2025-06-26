@@ -19,24 +19,26 @@
   <div id="videoOverlay"
        style="display:none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 9999;">
 
- <!-- ✅ 2 nút, mỗi cái 1 góc, không bị kéo giãn -->
+<!-- Nút XEM SẢN PHẨM -->
 <button id="viewProductBtn"
-        style="position: absolute; top: 20px; left: 20px; z-index: 10001;
-               background: #f53d2d; color: white; border: none;
+        style="all: unset; position: absolute; top: 20px; left: 20px; z-index: 10001;
+               background: #f53d2d; color: white;
                font-size: 14px; font-weight: bold; border-radius: 8px;
-               padding: 6px 14px; cursor: pointer;
-               white-space: nowrap; display: inline-flex; width: auto;">
+               padding: 6px 14px; cursor: pointer; border: none;
+               white-space: nowrap; box-shadow: 0 1px 2px rgba(0,0,0,0.15);">
   XEM SẢN PHẨM
 </button>
 
+<!-- Nút ĐÓNG -->
 <button id="videoCloseBtn"
-        style="position: absolute; top: 20px; right: 20px; z-index: 10001;
-               background: white; color: black; border: 1px solid #000;
+        style="all: unset; position: absolute; top: 20px; right: 20px; z-index: 10001;
+               background: white; color: black;
                font-size: 14px; font-weight: bold; border-radius: 8px;
-               padding: 6px 14px; cursor: pointer;
-               white-space: nowrap; display: inline-flex; width: auto;">
+               padding: 6px 14px; cursor: pointer; border: 1px solid #000;
+               white-space: nowrap; box-shadow: 0 1px 2px rgba(0,0,0,0.1);">
   ĐÓNG
 </button>
+
 
 
 
