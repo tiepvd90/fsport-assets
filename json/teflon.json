@@ -1,0 +1,35 @@
+{
+  "thuộc_tính": [
+    {
+      "key": "Màu Sắc",
+      "label": "Màu Sắc",
+      "display": "thumbnail",
+      "values": [
+        {
+          "text": "Đen",
+          "image": "https://i.postimg.cc/k4HRHzGQ/den.jpg",
+          "Giá": 1450000,
+          "Giá gốc": 2200000
+        },
+        {
+          "text": "Trắng",
+          "image": "https://i.postimg.cc/L5ZgFDgr/trang.webp",
+          "Giá": 1450000,
+          "Giá gốc": 2200000
+        }
+      ]
+    }
+  ],
+  "biến_thể": [
+    {
+      "Màu Sắc": "Đen",
+      "id": "teflon-den",
+      "category": "pickleball"
+    },
+    {
+      "Màu Sắc": "Trắng",
+      "id": "teflon-trang",
+      "category": "pickleball"
+    }
+  ]
+}
