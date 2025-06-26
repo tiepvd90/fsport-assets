@@ -19,30 +19,24 @@
   <div id="videoOverlay"
        style="display:none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 9999;">
 
-  <!-- ✅ Nút XEM SẢN PHẨM và ĐÓNG cách xa rõ ràng -->
-<div style="
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  right: 20px;
-  z-index: 10000;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-">
-  <button id="viewProductBtn"
-          style="background: #f53d2d; color: white; border: none;
-                 font-size: 14px; font-weight: bold; border-radius: 8px;
-                 padding: 6px 14px; cursor: pointer;">
-    XEM SẢN PHẨM
-  </button>
-  <button id="videoCloseBtn"
-          style="background: white; color: black; border: 1px solid #000;
-                 font-size: 14px; font-weight: bold; border-radius: 8px;
-                 padding: 6px 14px; cursor: pointer;">
-    ĐÓNG
-  </button>
-</div>
+  <!-- Nút XEM SẢN PHẨM bên trái -->
+<button id="viewProductBtn"
+        style="position: absolute; top: 20px; left: 20px; z-index: 10001;
+               background: #f53d2d; color: white; border: none;
+               font-size: 14px; font-weight: bold; border-radius: 8px;
+               padding: 6px 14px; cursor: pointer;">
+  XEM SẢN PHẨM
+</button>
+
+<!-- Nút ĐÓNG bên phải -->
+<button id="videoCloseBtn"
+        style="position: absolute; top: 20px; right: 20px; z-index: 10001;
+               background: white; color: black; border: 1px solid #000;
+               font-size: 14px; font-weight: bold; border-radius: 8px;
+               padding: 6px 14px; cursor: pointer;">
+  ĐÓNG
+</button>
+
 
     
     <!-- ✅ KHUNG VIDEO -->
