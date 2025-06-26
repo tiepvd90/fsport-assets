@@ -1,53 +1,115 @@
-<div class="desc-container">
-  <div class="desc-img-grid">
-    <img src="https://fun-sport.co/assets/images/gallery/pickleball/teflon/4.JPG" class="desc-img" alt="Vợt F-Sports Teflon">
-  </div>
+<style>
+  .desc-text {
+    font-size: 12px;
+    line-height: 1.6;
+    color: #222;
+    font-family: 'Be Vietnam Pro', sans-serif;
+  }
 
-  <h2 class="desc-title">Vợt Pickleball F-Sports Teflon – Giảm Tiếng Ồn, Công Nghệ NCT-BV81</h2>
+  .desc-toggle-btn {
+    margin-top: 16px;
+    background: none;
+    border: none;
+    font-weight: bold;
+    color: #000;
+    cursor: pointer;
+    padding: 10px 0;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    width: 100%;
+    font-family: 'Be Vietnam Pro', sans-serif;
+  }
 
-  <div class="desc-text" id="descShort">
-    <p><strong>🔥 F-Sports Teflon – Vợt thi đấu cao cấp, cảm giác đánh êm – chuẩn – chính xác</strong></p>
-    <p>Được đúc nguyên khối bằng Carbon ép nóng, tích hợp lõi tổ ong công nghệ NCT-BV81 giúp giảm tiếng ồn và rung động rõ rệt – lựa chọn lý tưởng cho người chơi có kỹ thuật tốt hoặc thi đấu.</p>
-  </div>
+  .desc-toggle-btn .arrow {
+    font-size: 12px;
+    display: inline-block;
+    transform: translateY(1px);
+  }
 
-  <div class="desc-text hidden" id="descFull">
-    <p><strong>🔧 Thông số kỹ thuật:</strong></p>
-    <ul>
-      <li>Kích thước: 420 x 188 x 14 mm</li>
-      <li>Trọng lượng: khoảng 225g</li>
-      <li>Phong cách: Kiểm soát, ổn định</li>
-      <li>Chuẩn thi đấu: USAPA</li>
-      <li>Bề mặt: Sợi Carbon Teflon + viền T700 (nhám nhẹ, tạo xoáy tốt)</li>
-      <li>Lõi vợt: Tổ ong Polypropylene công nghệ NCT-BV81</li>
-    </ul>
+  .desc-fade {
+    height: 60px;
+    background: linear-gradient(to top, #fff, transparent);
+    margin-top: -60px;
+    pointer-events: none;
+  }
 
-    <p><strong>🧠 Cốt vợt NCT-BV81 – Giảm rung, giảm ồn, tăng điểm ngọt:</strong></p>
-    <ul>
-      <li>Giảm tiếng ồn hiệu quả, mang lại cảm giác đánh êm ái</li>
-      <li>Hấp thụ rung động, hạn chế truyền lực xuống cổ tay</li>
-      <li>Cấu trúc lõi tổ ong tối ưu, tăng diện tích điểm ngọt</li>
-    </ul>
+  .hidden {
+    display: none;
+  }
 
-    <p><strong>💎 Thiết kế đúc nguyên khối – Một khối carbon liền mạch:</strong></p>
-    <ul>
-      <li>Toàn bộ cây vợt, kể cả phần đáy chuôi, được đúc liền khối – không có nhựa ốp riêng</li>
-      <li>Độ chính xác cao, chắc chắn, bền bỉ vượt trội</li>
-      <li>Không thể đính logo kim loại ở đáy – logo F-Sports được đính kèm trong hộp để xác minh chính hãng</li>
-    </ul>
+  .desc-title {
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 8px;
+    font-family: 'Be Vietnam Pro', sans-serif;
+  }
+</style>
 
-    <p><strong>🎯 Điểm nổi bật của F-Sports Teflon:</strong></p>
-    <ul>
-      <li>Bề mặt Carbon Teflon + T700 tạo xoáy mạnh, kiểm soát tốt</li>
-      <li>Độ nhám tối ưu – không quá trơn, không quá bám</li>
-      <li>Cấu trúc liền mạch – không ghép cạnh, đảm bảo ổn định và chính xác</li>
-      <li>Phù hợp với người chơi kỹ thuật khá – tốt, thích cảm giác vợt chắc tay, êm và kiểm soát cao</li>
-    </ul>
-  </div>
+<h2 class="desc-title">
+  Vợt Pickleball F-Sports Teflon – Giảm Tiếng Ồn, Công Nghệ NCT-BV81
+</h2>
 
-  <div class="desc-fade" id="descFade"></div>
-  <button id="toggleDesc" class="desc-toggle-btn">
-    Xem Thêm <span class="arrow">&#x25BC;</span>
-  </button>
+<img src="https://fun-sport.co/assets/images/gallery/pickleball/teflon/4.JPG" alt="Vợt F-Sports Teflon" style="max-width: 100%; display: block; margin-bottom: 12px;" />
+
+<div id="descShort" class="desc-text">
+  <p><strong>🔥 F-Sports Teflon – Vợt thi đấu cao cấp, cảm giác đánh êm – chuẩn – chính xác</strong></p>
+  <p>Được đúc nguyên khối bằng Carbon ép nóng, tích hợp lõi tổ ong công nghệ NCT-BV81 giúp giảm tiếng ồn và rung động rõ rệt – lựa chọn lý tưởng cho người chơi có kỹ thuật tốt hoặc thi đấu.</p>
 </div>
 
-<script src="/js/productdescription.js"></script>
+<div id="descFull" class="desc-text hidden">
+  <p><strong>🔧 Thông số kỹ thuật:</strong></p>
+  <ul>
+    <li>Kích thước: 420 x 188 x 14 mm</li>
+    <li>Trọng lượng: khoảng 225g</li>
+    <li>Phong cách: Kiểm soát, ổn định</li>
+    <li>Chuẩn thi đấu: USAPA</li>
+    <li>Bề mặt: Sợi Carbon Teflon + viền T700 (nhám nhẹ, tạo xoáy tốt)</li>
+    <li>Lõi vợt: Tổ ong Polypropylene công nghệ NCT-BV81</li>
+  </ul>
+
+  <p><strong>🧠 Cốt vợt NCT-BV81 – Giảm rung, giảm ồn, tăng điểm ngọt:</strong></p>
+  <ul>
+    <li>Giảm tiếng ồn hiệu quả, mang lại cảm giác đánh êm ái</li>
+    <li>Hấp thụ rung động, hạn chế truyền lực xuống cổ tay</li>
+    <li>Cấu trúc lõi tổ ong tối ưu, tăng diện tích điểm ngọt</li>
+  </ul>
+
+  <p><strong>💎 Thiết kế đúc nguyên khối – Một khối carbon liền mạch:</strong></p>
+  <ul>
+    <li>Toàn bộ cây vợt, kể cả phần đáy chuôi, được đúc liền khối – không có nhựa ốp riêng</li>
+    <li>Độ chính xác cao, chắc chắn, bền bỉ vượt trội</li>
+    <li>Không thể đính logo kim loại ở đáy – logo F-Sports được đính kèm trong hộp để xác minh chính hãng</li>
+  </ul>
+
+  <p><strong>🎯 Điểm nổi bật của F-Sports Teflon:</strong></p>
+  <ul>
+    <li>Bề mặt Carbon Teflon + T700 tạo xoáy mạnh, kiểm soát tốt</li>
+    <li>Độ nhám tối ưu – không quá trơn, không quá bám</li>
+    <li>Cấu trúc liền mạch – không ghép cạnh, đảm bảo ổn định và chính xác</li>
+    <li>Phù hợp với người chơi kỹ thuật khá – tốt, thích cảm giác vợt chắc tay, êm và kiểm soát cao</li>
+  </ul>
+</div>
+
+<div class="desc-fade" id="descFade"></div>
+
+<button id="toggleDesc" class="desc-toggle-btn">
+  Xem Thêm <span class="arrow">&#x25BC;</span>
+</button>
+
+<script>
+  const toggleBtn = document.getElementById('toggleDesc');
+  const descFull = document.getElementById('descFull');
+  const fade = document.getElementById('descFade');
+
+  toggleBtn.addEventListener('click', () => {
+    const isHidden = descFull.classList.contains('hidden');
+    descFull.classList.toggle('hidden');
+    fade.style.display = isHidden ? 'none' : 'block';
+    toggleBtn.innerHTML = isHidden
+      ? 'Thu Gọn <span class="arrow">&#x25B2;</span>'
+      : 'Xem Thêm <span class="arrow">&#x25BC;</span>';
+  });
+</script>
