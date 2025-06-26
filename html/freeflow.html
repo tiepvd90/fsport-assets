@@ -19,15 +19,22 @@
   <div id="videoOverlay"
        style="display:none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 9999;">
 
-    <!-- ✅ Nút ĐÓNG -->
-    <button id="videoCloseBtn"
-            onclick="closePopup()"
-            style="position: absolute; top: 20px; right: 20px; z-index: 10000;
-                   background: white; color: black; border: 1px solid #000;
-                   font-size: 14px; font-weight: bold; border-radius: 8px;
-                   padding: 6px 12px; cursor: pointer;">
-      ĐÓNG VIDEO
-    </button>
+    <!-- ✅ Nút XEM SẢN PHẨM và ĐÓNG -->
+<div style="position: absolute; top: 20px; right: 20px; z-index: 10000; display: flex; gap: 10px;">
+  <button id="viewProductBtn"
+          style="background: #f53d2d; color: white; border: none;
+                 font-size: 14px; font-weight: bold; border-radius: 8px;
+                 padding: 6px 12px; cursor: pointer;">
+    XEM SẢN PHẨM
+  </button>
+  <button id="videoCloseBtn"
+          style="background: white; color: black; border: 1px solid #000;
+                 font-size: 14px; font-weight: bold; border-radius: 8px;
+                 padding: 6px 12px; cursor: pointer;">
+    ĐÓNG
+  </button>
+</div>
+
 
     <!-- ✅ KHUNG VIDEO -->
     <div style="
