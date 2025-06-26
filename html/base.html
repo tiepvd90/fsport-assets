@@ -32,3 +32,12 @@ fetch("https://friendly-kitten-d760ff.netlify.app/json/settings.json")
   .then(data => window.globalSettings = data)
   .catch(err => console.warn("Không thể tải settings.json", err));
 </script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-RXC205951M"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-RXC205951M');
+</script>
