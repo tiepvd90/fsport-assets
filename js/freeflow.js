@@ -196,6 +196,10 @@ function renderFeedItem(item, container) {
         const frame = document.getElementById("videoFrame");
         frame.src = `https://www.youtube.com/embed/${id}?autoplay=1&mute=0&playsinline=1&controls=1`;
         popup.style.display = "flex";
+        const viewBtn = document.getElementById("viewProductBtn");
+if (viewBtn) {
+  viewBtn.onclick = () => window.location.href = item.productPage;
+}
       };
     }, 0);
   } else {
