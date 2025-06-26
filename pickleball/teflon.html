@@ -169,31 +169,14 @@
 <!-- HẾT KHỐI 2: review -->
 
 
-    <!-- ✅ KHỐI 4: Mô tả sản phẩm -->
+     <!-- ✅ KHỐI 4: Mô tả sản phẩm -->
 <div class="product-hero" style="margin-top: 12px;">
-  <div id="productdescription-placeholder"></div>
+  <div id="productdescription-placeholder" data-src="/html/productdescription/pickleball/teflon.html"></div>
 </div>
-<script>
-  fetch("/html/productdescription/pickleball/teflon.html")
-    .then(res => res.text())
-    .then(html => {
-      const container = document.getElementById("productdescription-placeholder");
-      container.innerHTML = html;
 
-      // ✅ Kích hoạt lại script thủ công
-      const scripts = container.querySelectorAll("script");
-      scripts.forEach(script => {
-        const s = document.createElement("script");
-        if (script.src) {
-          s.src = script.src;
-        } else {
-          s.textContent = script.textContent;
-        }
-        document.body.appendChild(s);
-      });
-    });
-</script>
- <!-- HẾT KHỐI 4: Mô tả sản phẩm -->
+<script src="/js/productdescription.js"></script>
+<!-- 🔚 HẾT KHỐI 4 -->
+    
     <!-- ✅ FreeFlow -->
 <h2 style="font-size: 18px; margin: 24px 12px 12px;">CÓ THỂ BẠN SẼ THÍCH</h2>
 <div id="freeflow-placeholder"></div>
