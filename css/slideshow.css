@@ -1,29 +1,39 @@
 /* slideshow.css */
+
+/* 📦 Khung slideshow */
 .lazy-slideshow {
   position: relative;
   width: 100%;
   max-width: 100%;
+  aspect-ratio: 1 / 1;
+  min-height: 300px; /* Fallback cho desktop khi ảnh chưa load */
   overflow: hidden;
   border-radius: 0px;
-  aspect-ratio: 1 / 1;
   touch-action: pan-y;
 }
 
+/* 🖼️ Từng ảnh trong slideshow */
 .lazy-slideshow .slide {
   position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
   opacity: 0;
   transition: opacity 1s ease;
   pointer-events: none;
+  z-index: 1;
 }
 
-.lazy-slideshow .show {
+/* ✅ Ảnh đang được hiển thị */
+.lazy-slideshow .slide.show {
   opacity: 1;
   pointer-events: auto;
+  z-index: 2;
 }
 
+/* 🔢 Bộ đếm số ảnh */
 .slide-counter {
   position: absolute;
   bottom: 10px;
@@ -34,6 +44,6 @@
   padding: 4px 8px;
   border-radius: 20px;
   font-weight: bold;
-  z-index: 2;
+  z-index: 3;
   font-family: Arial, sans-serif;
 }
