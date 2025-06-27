@@ -1,19 +1,26 @@
-// ✅ cartpopup-3p.js: Dùng cho sản phẩm có 3 phân loại (ví dụ Màu, Size, Text)
-
-window.selectedVariant = null;
+window.selectedVariant = {};
 window.cart = window.cart || [];
 let isCartEventBound = false;
+let isCartPopupOpen = false;
 
 function initCartPopup() {
-  const jsonUrl = `/json/${window.category}/${window.productPage}.json`;
+  const container = document.getElementById("cartContainer");
+  const productPage = window.productPage || "default";
+  const jsonUrl = container?.getAttribute("data-json") || `/json/${window.category}/${window.productPage}.json`;
+
   fetch(jsonUrl)
     .then(res => res.json())
     .then(data => {
-      window.allAttributes = data["thuộc_tính"];
-      window.allVariants = data["biến_thể"];
-      window.productCategory = data["category"] || "unknown";
-      renderOptions(window.allAttributes);
-      bindAddToCartButton();
+      if (data["thuộc_tính"] && data["biến_thể"]?.length === 1) {
+        window.allAttributes = data["thuộc_tính"];
+        window.baseVariant = data["biến_thể"][0];
+        window.productCategory = data["category"] || data["biến_thể"][0]?.category || "unknown";
+
+        renderOptions(window.allAttributes);
+        bindAddToCartButton();
+      } else {
+        console.error("❌ JSON không đúng định dạng đơn giản (1 biến thể).", data);
+      }
     })
     .catch(err => console.warn("Không thể tải JSON sản phẩm:", err));
 }
@@ -26,76 +33,79 @@ function renderOptions(attributes) {
   attributes.forEach(attr => {
     const group = document.createElement("div");
     group.className = "variant-group";
-    let noteText = "";
+    group.innerHTML = `<div class="variant-label">${attr.label}:</div>`;
 
-    group.innerHTML = `<div class="variant-label">${attr.label}:${noteText}</div>`;
+    // 👉 Nếu là text input
+    if (attr.input === "text") {
+      const input = document.createElement("input");
+      input.type = "text";
+      input.className = "variant-text-input";
+      input.placeholder = "Nhập nội dung in lên áo...";
+      input.dataset.key = attr.key;
+      input.addEventListener("input", (e) => {
+        window.selectedVariant[attr.key] = e.target.value;
+      });
+      group.appendChild(input);
+      container.appendChild(group);
+      return;
+    }
+
+    // 👉 Nếu là chọn button hoặc thumbnail
     const displayMode = attr.display || "button";
     const wrapper = document.createElement("div");
     wrapper.className = displayMode === "thumbnail" ? "variant-thumbnails" : "variant-buttons";
 
-    if (attr.key === "ff_text") {
-      const input = document.createElement("input");
-      input.type = "text";
-      input.placeholder = "Nhập text in (tuỳ chọn)";
-      input.id = "ff_text_input";
-      input.className = "variant-input";
-      input.addEventListener("input", () => updateSelectedVariant());
-      wrapper.appendChild(input);
-    } else {
-      attr.values.forEach(val => {
-        const value = typeof val === "string" ? val : val.text;
-        const image = typeof val === "object" ? val.image : null;
+    attr.values.forEach(val => {
+      const value = typeof val === "string" ? val : val.text;
+      const image = typeof val === "object" ? val.image : null;
 
-        const thumb = document.createElement("div");
-        thumb.className = "variant-thumb";
-        thumb.dataset.key = attr.key;
-        thumb.dataset.value = value;
-        thumb.innerHTML = displayMode === "thumbnail"
-          ? `<img src="${image || ""}" alt="${value}" /><div class="variant-title">${value}</div>`
-          : value;
+      const thumb = document.createElement("div");
+      thumb.className = "variant-thumb";
+      thumb.dataset.key = attr.key;
+      thumb.dataset.value = value;
 
-        thumb.addEventListener("click", () => {
-          document.querySelectorAll(`.variant-thumb[data-key="${attr.key}"]`).forEach(el => el.classList.remove("selected"));
-          thumb.classList.add("selected");
-          updateSelectedVariant();
-        });
+      thumb.innerHTML = displayMode === "thumbnail"
+        ? `<img src="${image || ""}" alt="${value}" /><div class="variant-title">${value}</div>`
+        : value;
 
-        wrapper.appendChild(thumb);
+      thumb.addEventListener("click", () => {
+        document.querySelectorAll(`.variant-thumb[data-key="${attr.key}"]`).forEach(el => el.classList.remove("selected"));
+        thumb.classList.add("selected");
+        updateSelectedVariant();
       });
-    }
+
+      wrapper.appendChild(thumb);
+    });
 
     group.appendChild(wrapper);
     container.appendChild(group);
   });
 
-  const firsts = container.querySelectorAll(".variant-thumb");
-  if (firsts[0]) firsts[0].click();
+  // 👉 Auto chọn lựa chọn đầu tiên của từng nhóm
+  container.querySelectorAll(".variant-thumb").forEach((el, i) => {
+    if (i === 0 || el.dataset.key.toLowerCase() === "design") el.click();
+  });
 }
 
 function updateSelectedVariant() {
-  const selected = {};
+  const selected = { ...window.selectedVariant };
   document.querySelectorAll(".variant-thumb.selected").forEach(btn => {
     selected[btn.dataset.key] = btn.dataset.value;
   });
-  const text = document.getElementById("ff_text_input")?.value || "";
-  selected["ff_text"] = text;
 
-  const variant = window.allVariants.find(v =>
-    v.ff_design === selected["ff_design"] &&
-    v.ff_color === selected["ff_color"] &&
-    v.ff_size === selected["ff_size"]
-  );
+  const variant = {
+    ...window.baseVariant,
+    ...selected
+  };
 
-  if (!variant) return;
+  // ✅ Lấy ảnh theo design
+  const designKey = "design";
+  const designVal = selected[designKey];
+  const designOptions = window.allAttributes.find(a => a.key === designKey)?.values || [];
+  const matchedDesign = designOptions.find(v => typeof v === "object" && v.text === designVal);
+  variant["Ảnh"] = matchedDesign?.image || "";
 
-  const colorKey = "ff_color";
-  const colorVal = selected[colorKey];
-  const colorOptions = window.allAttributes?.find(a => a.key === colorKey)?.values || [];
-  const matchedColor = colorOptions.find(v => typeof v === "object" && v.text === colorVal);
-  variant["Ảnh"] = matchedColor?.image || "";
-
-  const merged = { ...variant, ...selected };
-  selectVariant(merged);
+  selectVariant(variant);
 }
 
 function selectVariant(data) {
@@ -105,7 +115,6 @@ function selectVariant(data) {
   const productPrice = document.getElementById("productPrice");
   const productOriginalPrice = document.getElementById("productOriginalPrice");
   const productVariantText = document.getElementById("productVariantText");
-  const voucherLabel = document.getElementById("voucherLabel");
 
   if (mainImage) mainImage.src = data.Ảnh || "";
 
@@ -116,36 +125,28 @@ function selectVariant(data) {
   if (oldFinal) oldFinal.remove();
 
   if (voucherAmount > 0) {
-    if (productPrice) {
-      productPrice.textContent = data.Giá.toLocaleString() + "đ";
-      productPrice.style.color = "black";
-      productPrice.style.textDecoration = "line-through";
-    }
-    if (productOriginalPrice) productOriginalPrice.style.display = "none";
-    if (voucherLabel) {
-      voucherLabel.textContent = `Voucher: ${voucherAmount.toLocaleString()}đ`;
-      voucherLabel.style.display = "block";
-    }
+    productPrice.textContent = data.Giá.toLocaleString() + "đ";
+    productPrice.style.color = "black";
+    productPrice.style.textDecoration = "line-through";
+
+    productOriginalPrice.style.display = "none";
+    document.getElementById("voucherLabel").textContent = `Voucher: ${voucherAmount.toLocaleString()}đ`;
 
     const finalLine = document.createElement("div");
     finalLine.id = "finalPriceLine";
     finalLine.textContent = finalPrice.toLocaleString() + "đ";
     finalLine.style.color = "#d0021b";
     finalLine.style.fontWeight = "bold";
-    finalLine.style.marginTop = "6px";
     finalLine.style.fontSize = "21px";
-    voucherLabel?.parentElement?.appendChild(finalLine);
+    document.getElementById("voucherLabel")?.parentElement?.appendChild(finalLine);
   } else {
-    if (productPrice) {
-      productPrice.textContent = data.Giá.toLocaleString() + "đ";
-      productPrice.style.color = "#d0021b";
-      productPrice.style.textDecoration = "none";
-    }
-    if (productOriginalPrice) {
-      productOriginalPrice.textContent = data["Giá gốc"].toLocaleString() + "đ";
-      productOriginalPrice.style.display = "inline";
-    }
-    if (voucherLabel) voucherLabel.style.display = "none";
+    productPrice.textContent = data.Giá.toLocaleString() + "đ";
+    productPrice.style.color = "#d0021b";
+    productPrice.style.textDecoration = "none";
+
+    productOriginalPrice.textContent = data["Giá gốc"].toLocaleString() + "đ";
+    productOriginalPrice.style.display = "inline";
+    document.getElementById("voucherLabel").style.display = "none";
   }
 
   if (productVariantText) {
@@ -155,7 +156,6 @@ function selectVariant(data) {
       selectedText.push(data[key]);
     }
     productVariantText.textContent = selectedText.join(", ");
-    productVariantText.style.marginTop = "16px";
   }
 }
 
@@ -163,55 +163,44 @@ function bindAddToCartButton() {
   const atcBtn = document.getElementById("btn-atc");
   if (atcBtn && !isCartEventBound) {
     isCartEventBound = true;
-    atcBtn.addEventListener("click", () => {
-      const product = window.selectedVariant;
-      if (!product || !product.ff_design || !product.ff_color || !product.ff_size) {
-        alert("Vui lòng chọn đầy đủ phân loại sản phẩm.");
-        return;
-      }
 
+    atcBtn.addEventListener("click", () => {
+      const quantity = parseInt(document.getElementById("quantityInput")?.value) || 1;
       const requiredKeys = window.allAttributes.map(a => a.key);
-      const phanLoaiText = requiredKeys.map(key => product[key]).join(" - ");
+      const selectedKeys = Object.keys(window.selectedVariant);
+      const isComplete = requiredKeys.every(key => {
+        const val = window.selectedVariant[key];
+        return val !== undefined && val !== "";
+      });
+      if (!isComplete) return alert("Vui lòng chọn và nhập đầy đủ phân loại sản phẩm.");
+
+      const product = { ...window.selectedVariant };
+      const loai = window.productCategory || "unknown";
       const voucherAmount = window.voucherByProduct?.[product.id] || 0;
 
-      product["Phân loại"] = phanLoaiText;
+      product["Phân loại"] = requiredKeys.map(k => product[k]).join(" - ");
+
       window.cart.push({
         ...product,
-        quantity: 1,
-        loai: window.productCategory,
+        quantity,
+        loai,
         voucher: voucherAmount > 0 ? { amount: voucherAmount } : undefined
       });
-
       saveCart();
-
-      if (typeof trackBothPixels === "function") {
-        trackBothPixels("AddToCart", {
-          content_id: product.id,
-          content_name: phanLoaiText,
-          content_category: product.category || window.productCategory,
-          content_page: window.productPage || "unknown",
-          value: product.Giá,
-          currency: "VND"
-        });
-      }
-
-      fetch("https://hook.eu2.make.com/your-make-endpoint", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          content_id: product.id,
-          content_name: phanLoaiText,
-          content_category: product.category || window.productCategory,
-          content_page: window.productPage || "unknown",
-          value: product.Giá,
-          currency: "VND",
-          timestamp: new Date().toISOString()
-        })
-      }).catch(err => console.warn("⚠️ Không thể gửi dữ liệu về Make:", err));
-
+      toggleCartPopup(false);
       if (typeof showCheckoutPopup === "function") showCheckoutPopup();
     });
   }
+}
+
+function toggleCartPopup(show = true) {
+  const popup = document.getElementById("cartPopup");
+  const content = popup?.querySelector(".cart-popup-content");
+  if (!popup || !content) return;
+
+  popup.style.display = show ? "flex" : "none";
+  popup.classList.toggle("hidden", !show);
+  isCartPopupOpen = show;
 }
 
 function saveCart() {
@@ -219,5 +208,8 @@ function saveCart() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll(".cart-popup-close, .cart-popup-overlay").forEach(btn =>
+    btn.addEventListener("click", () => toggleCartPopup(false))
+  );
   initCartPopup();
 });
