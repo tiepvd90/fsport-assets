@@ -166,12 +166,14 @@ function bindAddToCartButton() {
       } else {
         const quantity = parseInt(document.getElementById("quantityInput")?.value) || 1;
         const requiredKeys = window.allAttributes.map(a => a.key);
-        const selectedKeys = Object.keys(window.selectedVariant);
         const isComplete = requiredKeys.every(key => {
           const val = window.selectedVariant[key];
           return val !== undefined && val !== "";
         });
-        if (!isComplete) return alert("Vui lòng chọn và nhập đầy đủ phân loại sản phẩm.");
+        if (!isComplete) {
+          alert("Vui lòng chọn và nhập đầy đủ phân loại sản phẩm.");
+          return;
+        }
 
         const product = { ...window.selectedVariant };
         const loai = window.productCategory || "unknown";
@@ -192,6 +194,7 @@ function bindAddToCartButton() {
     });
   }
 }
+
 
 function toggleCartPopup(show = true) {
   const popup = document.getElementById("cartPopup");
