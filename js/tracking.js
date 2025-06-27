@@ -67,3 +67,18 @@ function trackBothPixels(eventName, params = {}) {
     console.log(`[TikTok Pixel] Tracked: ${eventName}`, params);
   }
 }
+
+// GA
+(function() {
+  const s1 = document.createElement('script');
+  s1.src = 'https://www.googletagmanager.com/gtag/js?id=G-RXC205951M';
+  s1.async = true;
+  document.head.appendChild(s1);
+
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){ dataLayer.push(arguments); }
+  window.gtag = gtag;
+
+  gtag('js', new Date());
+  gtag('config', 'G-RXC205951M');
+})();
