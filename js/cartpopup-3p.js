@@ -6,7 +6,7 @@ let isCartEventBound = false;
 let isCartPopupOpen = false;
 
 function initCartPopup() {
-  const jsonUrl = `json/${window.category}/${window.productPage}.json`;
+  const jsonUrl = `/json/${window.category}/${window.productPage}.json`;
   fetch(jsonUrl)
     .then(res => res.json())
     .then(data => {
