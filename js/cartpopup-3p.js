@@ -2,7 +2,7 @@ window.selectedVariant = {};
 window.cart = window.cart || [];
 let isCartEventBound = false;
 let isCartPopupOpen = false;
-
+window.productCategory = "tshirt"
 function initCartPopup() {
   const container = document.getElementById("cartContainer");
   const productPage = window.productPage || "default";
