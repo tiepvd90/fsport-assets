@@ -1,20 +1,21 @@
 {
-  "biến_thể": [
-    { "id": "ty", "ff_design": "tý/chuột", "Giá": 99000, "Ảnh": "https://i.postimg.cc/VkY5ghf7/t.png" },
-    { "id": "suu", "ff_design": "sửu", "Giá": 99000, "Ảnh": "https://i.postimg.cc/5NWXY0ZW/s-u.png" },
-    { "id": "dan", "ff_design": "dần", "Giá": 99000, "Ảnh": "https://i.postimg.cc/Y9Vpwnww/d-n.png" },
-    { "id": "mao", "ff_design": "mão", "Giá": 99000, "Ảnh": "https://i.postimg.cc/MXJqnnTP/m-o.png" },
-    { "id": "thin", "ff_design": "thìn", "Giá": 99000, "Ảnh": "https://i.postimg.cc/J43Gb8LD/th-n.png" },
-    { "id": "ty_ran", "ff_design": "tỵ/rắn", "Giá": 99000, "Ảnh": "https://i.postimg.cc/tgJJQVVW/t.png" },
-    { "id": "ngo", "ff_design": "ngọ", "Giá": 99000, "Ảnh": "https://i.postimg.cc/sXtvJDxS/ng.png" },
-    { "id": "mui", "ff_design": "mùi", "Giá": 99000, "Ảnh": "https://i.postimg.cc/259qVxf0/m-i.png" },
-    { "id": "than", "ff_design": "thân", "Giá": 99000, "Ảnh": "https://i.postimg.cc/8k6FzWXb/th-n.png" },
-    { "id": "dau", "ff_design": "dậu", "Giá": 99000, "Ảnh": "https://i.postimg.cc/C5qwMGFn/d-u.png" },
-    { "id": "tuat", "ff_design": "tuất", "Giá": 99000, "Ảnh": "https://i.postimg.cc/Cxm5Q4dw/tu-t.png" },
-    { "id": "hoi", "ff_design": "hợi", "Giá": 99000, "Ảnh": "https://i.postimg.cc/63T9gsg0/h-i.png" }
+  "variants": [
+    { "id": "rat", "design": "Rat", "price": 99000, "image": "https://i.postimg.cc/VkY5ghf7/t.png" },
+    { "id": "ox", "design": "Ox", "price": 99000, "image": "https://i.postimg.cc/5NWXY0ZW/s-u.png" },
+    { "id": "tiger", "design": "Tiger", "price": 99000, "image": "https://i.postimg.cc/Y9Vpwnww/d-n.png" },
+    { "id": "rabbit", "design": "Rabbit", "price": 99000, "image": "https://i.postimg.cc/MXJqnnTP/m-o.png" },
+    { "id": "dragon", "design": "Dragon", "price": 99000, "image": "https://i.postimg.cc/J43Gb8LD/th-n.png" },
+    { "id": "snake", "design": "Snake", "price": 99000, "image": "https://i.postimg.cc/tgJJQVVW/t.png" },
+    { "id": "horse", "design": "Horse", "price": 99000, "image": "https://i.postimg.cc/sXtvJDxS/ng.png" },
+    { "id": "goat", "design": "Goat", "price": 99000, "image": "https://i.postimg.cc/259qVxf0/m-i.png" },
+    { "id": "monkey", "design": "Monkey", "price": 99000, "image": "https://i.postimg.cc/8k6FzWXb/th-n.png" },
+    { "id": "rooster", "design": "Rooster", "price": 99000, "image": "https://i.postimg.cc/C5qwMGFn/d-u.png" },
+    { "id": "dog", "design": "Dog", "price": 99000, "image": "https://i.postimg.cc/Cxm5Q4dw/tu-t.png" },
+    { "id": "pig", "design": "Pig", "price": 99000, "image": "https://i.postimg.cc/63T9gsg0/h-i.png" }
   ],
-  "thuộc_tính": [
-    { "key": "ff_color", "values": ["Trắng", "Đen"] },
-    { "key": "ff_size", "values": ["M", "L", "XL", "2XL", "3XL"] }
+  "attributes": [
+    { "key": "color", "label": "Color", "values": ["White", "Black"] },
+    { "key": "size", "label": "Size", "values": ["M", "L", "XL", "2XL", "3XL"] },
+    { "key": "text", "label": "Custom Text", "values": [] }
   ]
 }
