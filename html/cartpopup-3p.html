@@ -1,14 +1,5 @@
 <div id="cartContainer"></div>
 
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const container = document.getElementById("cartContainer");
-    if (container && window.productPage) {
-      container.setAttribute("data-json", `/json/${window.productPage}.json`);
-    }
-  });
-</script>
-
 <div id="cartPopup" class="cart-popup hidden" style="display: none;">
   <div class="cart-popup-overlay" onclick="toggleCartPopup(false)"></div>
   <div class="cart-popup-content">
