@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <title>Test Cartpopup 3P</title>
+  <style>
+    .variant-group { margin-bottom: 12px; }
+    .variant-btn { display: inline-block; padding: 8px 12px; border: 1px solid #ccc; margin: 4px; cursor: pointer; }
+    .variant-btn.selected { background: #000; color: #fff; }
+    .variant-input { display: block; margin-top: 8px; }
+  </style>
+</head>
+<body>
+
+  <div id="cartContainer"></div>
+  <div id="variantList"></div>
+  <img id="mainImage" src="" alt="Ảnh sản phẩm" width="200" />
+  <div id="productPrice"></div>
+  <button id="btn-atc">Thêm vào giỏ hàng</button>
+
+  <script>
+    window.category = "tshirt";
+    window.productPage = "zodiac-animals";
+  </script>
+  <script src="/js/cartpopup-3p.js"></script>
+
+</body>
+</html>
