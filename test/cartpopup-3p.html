@@ -3,11 +3,19 @@
 <head>
   <meta charset="UTF-8" />
   <title>Test Cartpopup 3P</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
   <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      padding: 20px;
+    }
     .variant-group { margin-bottom: 12px; }
-    .variant-btn { display: inline-block; padding: 8px 12px; border: 1px solid #ccc; margin: 4px; cursor: pointer; }
-    .variant-btn.selected { background: #000; color: #fff; }
+    .variant-thumb { display: inline-block; padding: 8px 12px; border: 1px solid #ccc; margin: 4px; cursor: pointer; }
+    .variant-thumb.selected { background: #000; color: #fff; }
     .variant-input { display: block; margin-top: 8px; }
+    #productPrice { font-size: 18px; margin-top: 12px; }
+    #productVariantText { margin-top: 12px; font-size: 14px; }
+    button { padding: 10px 16px; font-size: 14px; cursor: pointer; }
   </style>
 </head>
 <body>
@@ -16,6 +24,7 @@
   <div id="variantList"></div>
   <img id="mainImage" src="" alt="Ảnh sản phẩm" width="200" />
   <div id="productPrice"></div>
+  <div id="productVariantText"></div>
   <button id="btn-atc">Thêm vào giỏ hàng</button>
 
   <script>
