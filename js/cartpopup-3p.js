@@ -6,10 +6,7 @@ let isCartEventBound = false;
 let isCartPopupOpen = false;
 
 function initCartPopup() {
-  const container = document.getElementById("cartContainer");
-  const jsonUrl = container?.getAttribute("data-json");
-  if (!jsonUrl) return;
-
+  const jsonUrl = `json/${window.category}/${window.productPage}.json`;
   fetch(jsonUrl)
     .then(res => res.json())
     .then(data => {
@@ -20,6 +17,9 @@ function initCartPopup() {
       bindAddToCartButton();
     });
 }
+
+// Giữ nguyên các hàm còn lại như cũ
+
 
 function renderOptions(attributes) {
   const container = document.getElementById("variantList");
