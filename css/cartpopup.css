@@ -18,7 +18,7 @@
   bottom: 0;
   left: 0;
   width: 100%;
-  max-height: 85vh; /* Giới hạn chiều cao */
+  max-height: 70vh; /* Giới hạn chiều cao */
   overflow-y: auto; /* Bật scroll nếu nội dung vượt quá */
   background: #fff;
   padding: 16px;
