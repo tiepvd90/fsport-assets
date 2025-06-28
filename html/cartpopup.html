@@ -10,7 +10,7 @@
   function initCartContainer() {
     const container = document.getElementById("cartContainer");
     const productPage = window.productPage || "default";
-    const category = window.productCategory || "default";
+    const category = window.productCategory || "tshirt";
     if (container) {
       fetch(`/json/${productPage}.json`)
         .then(res => {
