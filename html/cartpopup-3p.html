@@ -6,16 +6,10 @@
     const productPage = window.productPage || "default";
     const category = window.productCategory || "tshirt";
     if (container) {
-      fetch(`/json/${category}/${productPage}.json`)
-        .then(res => {
-          if (!res.ok) throw new Error("Primary JSON not found");
-          container.setAttribute("data-json", `/json/${category}/${productPage}.json`);
-        })
-        .catch(() => {
-          container.setAttribute("data-json", `/json/${category}/${productPage}.json`);
-        });
+      container.setAttribute("data-json", `/json/${category}/${productPage}.json`);
     }
   }
+  initCartContainer();
 </script>
 
 <div id="cartPopup" class="cart-popup hidden" style="display: none;">
@@ -39,6 +33,7 @@
       </div>
     </div>
 
+    <!-- ✅ Danh sách phân loại + input text sẽ được render tự động -->
     <div class="variant-list" id="variantList"></div>
 
     <div class="quantity-wrapper">
