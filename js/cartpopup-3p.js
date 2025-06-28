@@ -46,7 +46,7 @@ function renderOptions(attributes) {
       const input = document.createElement("input");
       input.type = "text";
       input.id = `input-${attr.key}`;
-      input.placeholder = "Tên hoặc chữ hoặc năm sinh bạn muốn in lên áo...";
+      input.placeholder = "Tên hoặc năm sinh bạn muốn in lên áo...";
       input.style = "width: 100%; padding: 8px; font-size: 14px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 6px;";
       input.addEventListener("input", () => {
         updateSelectedVariant();
