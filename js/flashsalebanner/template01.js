@@ -10,6 +10,8 @@
     "pickleball-ball": "9.000đ - 39000đ",
     "pickleball-grip": "9.000đ",
     "shorts": "189.000đ",
+    "zodiac-animals": "99.000đ",
+    "teddy": "99.000đ",
     "teflon": "1.450.000đ",
     "pickleball-cover": "37.000đ"
     // ➕ Thêm sản phẩm khác ở đây nếu cần
