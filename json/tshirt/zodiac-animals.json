@@ -22,7 +22,7 @@
     },
     {
       "key": "text",
-      "label": "Text Trên Áo",
+      "label": "Text Trên Áo(Không Bắt Buộc)",
       "input": "text"
     },
     {
