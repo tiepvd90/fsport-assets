@@ -9,6 +9,7 @@ function initCartPopup() {
   const container = document.getElementById("cartContainer");
   const productPage = window.productPage || "default";
   const category = window.productCategory || "tshirt";
+  console.log("📝 [cartpopup-2p.js] window.productCategory:", category);
   const primaryUrl = container?.getAttribute("data-json") || `/json/${productPage}.json`;
   const fallbackUrl = `/json/${category}/${productPage}.json`;
 
