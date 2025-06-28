@@ -42,13 +42,31 @@ function processAndSortData(data) {
     }))
     .sort((a, b) => b.finalPriority - a.finalPriority);
 
-  // Trộn theo tỷ lệ 2:1 để cột trái-phải không bị lệch category
+  // ✅ Gộp lại
+  const combined = [...preferred, ...others];
+
+  // ✅ Phân loại image và youtube
+  const images = combined.filter(i => i.contentType === "image");
+  const videos = combined.filter(i => i.contentType === "youtube");
+
   const mixed = [];
-  let i = 0, j = 0;
-  while (i < preferred.length || j < others.length) {
-    if (i < preferred.length) mixed.push(preferred[i++]);
-    if (i < preferred.length) mixed.push(preferred[i++]);
-    if (j < others.length) mixed.push(others[j++]);
+  let imgIndex = 0, vidIndex = 0;
+
+  while (imgIndex < images.length) {
+    // Thêm tối đa 6 ảnh
+    for (let k = 0; k < 6 && imgIndex < images.length; k++) {
+      mixed.push(images[imgIndex++]);
+    }
+
+    // Sau đó chèn 1 video (nếu còn)
+    if (vidIndex < videos.length) {
+      mixed.push(videos[vidIndex++]);
+    }
+  }
+
+  // Nếu còn video dư, thêm cuối cùng
+  while (vidIndex < videos.length) {
+    mixed.push(videos[vidIndex++]);
   }
 
   freeflowData = mixed;
