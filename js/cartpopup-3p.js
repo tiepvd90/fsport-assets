@@ -14,6 +14,7 @@ function initCartPopup() {
   fetch(jsonUrl)
     .then(res => res.json())
     .then(data => {
+      console.log("✅ DEBUG DATA:", data);
       if (data["thuộc_tính"] && data["biến_thể"]?.length === 1) {
         window.allAttributes = data["thuộc_tính"];
         window.baseVariant = data["biến_thể"][0];
