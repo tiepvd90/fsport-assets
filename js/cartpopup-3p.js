@@ -1,4 +1,4 @@
-// ✅ cartpopup-3p.js: Dùng cho sản phẩm có nhiều phân loại (1 lựa chọn chính đổi ảnh, còn lại text)
+// ✅ cartpopup-3p.js: Dùng cho sản phẩm nhiều phân loại (hỗ trợ input text)
 
 window.selectedVariant = null;
 window.cart = window.cart || [];
@@ -42,33 +42,46 @@ function renderOptions(attributes) {
     group.className = "variant-group";
     group.innerHTML = `<div class="variant-label">${attr.label}:</div>`;
 
-    const displayMode = attr.display || "button";
-    const wrapper = document.createElement("div");
-    wrapper.className = displayMode === "thumbnail" ? "variant-thumbnails" : "variant-buttons";
-
-    attr.values.forEach(val => {
-      const value = typeof val === "string" ? val : val.text;
-      const image = typeof val === "object" ? val.image : null;
-
-      const thumb = document.createElement("div");
-      thumb.className = "variant-thumb";
-      thumb.dataset.key = attr.key;
-      thumb.dataset.value = value;
-
-      thumb.innerHTML = displayMode === "thumbnail"
-        ? `<img src="${image || ""}" alt="${value}" /><div class="variant-title">${value}</div>`
-        : value;
-
-      thumb.addEventListener("click", () => {
-        document.querySelectorAll(`.variant-thumb[data-key="${attr.key}"]`).forEach(el => el.classList.remove("selected"));
-        thumb.classList.add("selected");
+    if (attr.input === "text") {
+      const input = document.createElement("input");
+      input.type = "text";
+      input.id = `input-${attr.key}`;
+      input.placeholder = "Nhập nội dung...";
+      input.style = "width: 100%; padding: 8px; font-size: 14px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 6px;";
+      input.addEventListener("input", () => {
         updateSelectedVariant();
       });
+      group.appendChild(input);
+    } else if (Array.isArray(attr.values)) {
+      const displayMode = attr.display || "button";
+      const wrapper = document.createElement("div");
+      wrapper.className = displayMode === "thumbnail" ? "variant-thumbnails" : "variant-buttons";
 
-      wrapper.appendChild(thumb);
-    });
+      attr.values.forEach(val => {
+        const value = typeof val === "string" ? val : val.text;
+        const image = typeof val === "object" ? val.image : null;
 
-    group.appendChild(wrapper);
+        const thumb = document.createElement("div");
+        thumb.className = "variant-thumb";
+        thumb.dataset.key = attr.key;
+        thumb.dataset.value = value;
+
+        thumb.innerHTML = displayMode === "thumbnail"
+          ? `<img src="${image || ""}" alt="${value}" /><div class="variant-title">${value}</div>`
+          : value;
+
+        thumb.addEventListener("click", () => {
+          document.querySelectorAll(`.variant-thumb[data-key="${attr.key}"]`).forEach(el => el.classList.remove("selected"));
+          thumb.classList.add("selected");
+          updateSelectedVariant();
+        });
+
+        wrapper.appendChild(thumb);
+      });
+
+      group.appendChild(wrapper);
+    }
+
     container.appendChild(group);
   });
 
@@ -80,6 +93,13 @@ function updateSelectedVariant() {
   const selected = {};
   document.querySelectorAll(".variant-thumb.selected").forEach(btn => {
     selected[btn.dataset.key] = btn.dataset.value;
+  });
+
+  window.allAttributes.forEach(attr => {
+    if (attr.input === "text") {
+      const val = document.getElementById(`input-${attr.key}`)?.value || "";
+      selected[attr.key] = val;
+    }
   });
 
   const variant = {
@@ -151,7 +171,7 @@ function selectVariant(data) {
     const selectedText = [];
     for (let key in data) {
       if (["Ảnh", "Giá", "Giá gốc", "id", "category"].includes(key)) continue;
-      selectedText.push(data[key]);
+      if (data[key]) selectedText.push(data[key]);
     }
     productVariantText.textContent = selectedText.join(", ");
     productVariantText.style.marginTop = "16px";
@@ -214,7 +234,6 @@ function bindAddToCartButton() {
         const product = window.selectedVariant;
         const loai = window.productCategory || "unknown";
         const voucherAmount = window.voucherByProduct?.[product.id] || 0;
-
         const phanLoaiText = requiredKeys.map(key => product[key]).join(" - ");
         product["Phân loại"] = phanLoaiText;
 
