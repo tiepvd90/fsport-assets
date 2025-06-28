@@ -8,18 +8,23 @@ let isCartPopupOpen = false;
 function initCartPopup() {
   const container = document.getElementById("cartContainer");
   const productPage = window.productPage || "default";
-  const jsonUrl = container?.getAttribute("data-json") || `/json/${productPage}.json`;
+  const category = window.productCategory || "default";
+  const primaryUrl = container?.getAttribute("data-json") || `/json/${productPage}.json`;
+  const fallbackUrl = `/json/${category}/${productPage}.json`;
 
-  fetch(jsonUrl)
-    .then(res => res.json())
+  fetch(primaryUrl)
+    .then(res => {
+      if (!res.ok) throw new Error("Primary JSON not found");
+      return res.json();
+    })
+    .catch(() => fetch(fallbackUrl).then(res => res.json()))
     .then(data => {
       if (data["thuộc_tính"] && data["biến_thể"]?.length === 1) {
         window.allAttributes = data["thuộc_tính"];
         window.baseVariant = data["biến_thể"][0];
         window.productCategory = data["category"]
-  || (Array.isArray(data["biến_thể"]) ? data["biến_thể"][0]?.category : "unknown")
-  || "unknown";
-
+          || (Array.isArray(data["biến_thể"]) ? data["biến_thể"][0]?.category : "unknown")
+          || "unknown";
 
         renderOptions(window.allAttributes);
         bindAddToCartButton();
