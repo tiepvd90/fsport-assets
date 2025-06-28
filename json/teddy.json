@@ -1,0 +1,36 @@
+{
+  "thuộc_tính": [
+    {
+      "label": "Màu Sắc",
+      "key": "Màu Sắc",
+      "type": "option",
+      "display": "thumbnail",
+      "values": [
+        { "text": "Trắng", "image": "https://i.postimg.cc/XYnP49CP/2.jpg" },
+        { "text": "Đen", "image": "https://i.postimg.cc/kgwp4DNg/4.jpg" },
+        { "text": "Xanh Navy", "image": "https://i.postimg.cc/N0MPrYb7/7.jpg" }
+      ]
+    },
+    {
+      "label": "Size",
+      "key": "Size",
+      "type": "option",
+      "display": "button",
+      "values": [
+        "M",
+        "L",
+        "XL",
+        "2XL",
+        "3XL"
+      ]
+    }
+  ],
+  "biến_thể": [
+    {
+      "id": "teddy",
+      "category": "shirt",
+      "Giá": 99000,
+      "Giá gốc": 150000
+    }
+  ]
+}
