@@ -9,9 +9,17 @@
 <script>
   function initCartContainer() {
     const container = document.getElementById("cartContainer");
-    const loai = window.loai || "default";
+    const productPage = window.productPage || "default";
+    const category = window.productCategory || "default";
     if (container) {
-      container.setAttribute("data-json", `/json/${productPage}.json`);
+      fetch(`/json/${productPage}.json`)
+        .then(res => {
+          if (!res.ok) throw new Error("Primary JSON not found");
+          container.setAttribute("data-json", `/json/${productPage}.json`);
+        })
+        .catch(() => {
+          container.setAttribute("data-json", `/json/${category}/${productPage}.json`);
+        });
     }
   }
 </script>
