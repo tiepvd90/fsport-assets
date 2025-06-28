@@ -1,4 +1,22 @@
-<div id="cartContainer" data-json="https://fun-sport.co/json/tshirt/zodiac-animals.json"></div>
+<div id="cartContainer"></div>
+
+<script>
+  function initCartContainer() {
+    const container = document.getElementById("cartContainer");
+    const productPage = window.productPage || "default";
+    const category = window.productCategory || "tshirt";
+    if (container) {
+      fetch(`/json/${category}/${productPage}.json`)
+        .then(res => {
+          if (!res.ok) throw new Error("Primary JSON not found");
+          container.setAttribute("data-json", `/json/${category}/${productPage}.json`);
+        })
+        .catch(() => {
+          container.setAttribute("data-json", `/json/${category}/${productPage}.json`);
+        });
+    }
+  }
+</script>
 
 <div id="cartPopup" class="cart-popup hidden" style="display: none;">
   <div class="cart-popup-overlay" onclick="toggleCartPopup(false)"></div>
@@ -6,7 +24,7 @@
     <button class="cart-popup-close" onclick="toggleCartPopup(false)">&times;</button>
 
     <div class="product-header" style="display: flex; gap: 12px;">
-      <img id="mainImage" src="" alt="Ảnh sản phẩm" style="width: 80px; height: 80px; object-fit: cover; border: 1px solid #ddd;" />
+      <img id="mainImage" src="" alt="Ảnh sản phẩm" />
       <div class="product-info" style="display: flex; flex-direction: column; flex: 1;">
         <div>
           <div class="product-price">
@@ -23,7 +41,7 @@
 
     <div class="variant-list" id="variantList"></div>
 
-    <div class="quantity-wrapper" style="margin-top: 12px;">
+    <div class="quantity-wrapper">
       <label for="quantityInput" style="margin-right: 8px;">Số lượng:</label>
       <div class="quantity-control">
         <button type="button" onclick="changeQuantity(-1)">−</button>
@@ -31,7 +49,5 @@
         <button type="button" onclick="changeQuantity(1)">+</button>
       </div>
     </div>
-
-    <button id="btn-atc" style="margin-top: 16px; width: 100%; background: #d0021b; color: white; padding: 10px; border: none; border-radius: 6px; font-weight: bold;">THÊM VÀO GIỎ HÀNG</button>
   </div>
 </div>
