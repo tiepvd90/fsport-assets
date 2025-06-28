@@ -1,4 +1,5 @@
 {
+  "mainImageKey": "design",
   "thuộc_tính": [
     {
       "key": "design",
@@ -20,14 +21,14 @@
       ]
     },
     {
-      "key": "text trên áo",
+      "key": "text",
       "label": "Text Trên Áo",
       "input": "text"
     },
     {
-      "key": "màu sắc",
+      "key": "color",
       "label": "Màu Sắc",
-      "values": ["Trắng", "Đen"]
+      "values": ["Trắng", "Đen", "Xanh Navy", "Đỏ", "Xám Tiêu"]
     },
     {
       "key": "size",
@@ -40,7 +41,7 @@
       "id": "shirt12congiap",
       "Giá": 99000,
       "Giá gốc": 150000,
-      "category": "áo thun 12 con giáp"
+      "category": "tshirt"
     }
   ]
 }
