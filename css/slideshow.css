@@ -40,3 +40,7 @@
   z-index: 3;
   font-family: Arial, sans-serif;
 }
+.lazy-slideshow {
+  width: 400px;
+  height: 400px;
+}
