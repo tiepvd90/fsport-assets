@@ -871,5 +871,340 @@
     "basePriority": 16,
     "productCategory": "sup",
     "sellerID": "huyenle"
+  },
+  {
+    "itemId": "pickleball-air2606",
+    "title": "Carbon 3K - Chuẩn Thi Đấu",
+    "price": 1200000,
+    "originalPrice": NaN,
+    "contentType": "youtube",
+    "image": "https://i.postimg.cc/TYcMS812/den.webp",
+    "youtube": "_rBLEmTVoA8",
+    "productPage": "/product/pickleball-airforce",
+    "tags": [
+      "pickleball"
+    ],
+    "basePriority": 18,
+    "productCategory": "pickleball",
+    "sellerID": "huyenle"
+  },
+  {
+    "itemId": "pickleball-2605-2",
+    "title": "Chuẩn Thi Đấu Đúc Nguyên khối",
+    "price": 999000,
+    "originalPrice": 2000000.0,
+    "contentType": "image",
+    "image": "https://i.postimg.cc/k59jyNMy/ads.jpg",
+    "youtube": "",
+    "productPage": "/product/firstpickleball",
+    "tags": [
+      "pickleball"
+    ],
+    "basePriority": 16,
+    "productCategory": "pickleball",
+    "sellerID": "huyenle"
+  },
+  {
+    "itemId": "chair2605",
+    "title": "Ghế chống gù cao cấp",
+    "price": 399000,
+    "originalPrice": 600000.0,
+    "contentType": "youtube",
+    "image": "https://i.postimg.cc/Twt9WhLy/KZ98-VL3-Imgur.jpg",
+    "youtube": "5kdg92uNp2k",
+    "productPage": "/product/chair",
+    "tags": [
+      "chair"
+    ],
+    "basePriority": 16,
+    "productCategory": "chair",
+    "sellerID": "huyenle"
+  },
+  {
+    "itemId": "chair2605-2",
+    "title": "Bí kíp chữa đau lưng",
+    "price": 399000,
+    "originalPrice": 600000.0,
+    "contentType": "youtube",
+    "image": "https://i.postimg.cc/Twt9WhLy/KZ98-VL3-Imgur.jpg",
+    "youtube": "GiJ0PijF7nE",
+    "productPage": "/product/chair",
+    "tags": [
+      "chair"
+    ],
+    "basePriority": 16,
+    "productCategory": "chair",
+    "sellerID": "huyenle"
+  },
+  {
+    "itemId": "chair2605-3",
+    "title": "Ghế công thái học",
+    "price": 399000,
+    "originalPrice": 600000.0,
+    "contentType": "youtube",
+    "image": "https://i.postimg.cc/Twt9WhLy/KZ98-VL3-Imgur.jpg",
+    "youtube": "R_MNOwJA1LA",
+    "productPage": "/product/chair",
+    "tags": [
+      "chair"
+    ],
+    "basePriority": 16,
+    "productCategory": "chair",
+    "sellerID": "huyenle"
+  },
+  {
+    "itemId": "teflon",
+    "title": "Vợt Chuẩn Thi Đấu",
+    "price": 1450000,
+    "originalPrice": NaN,
+    "contentType": "youtube",
+    "image": "https://i.postimg.cc/L5ZgFDgr/trang.webp",
+    "youtube": "hWCb2FseWT4",
+    "productPage": "/pickleball/teflon",
+    "tags": [
+      "pickleball",
+      "teflon"
+    ],
+    "basePriority": 16,
+    "productCategory": "pickleball",
+    "sellerID": "huyenle"
+  },
+  {
+    "itemId": "titan16mm",
+    "title": "[Rẻ Vô Địch} Vợt Titan 16mm",
+    "price": 499000,
+    "originalPrice": NaN,
+    "contentType": "youtube",
+    "image": "https://i.postimg.cc/Prk55WrK/titan16.jpg",
+    "youtube": "Hgo-mQFUSHc",
+    "productPage": "/product/secpickleball",
+    "tags": [
+      "pickleball",
+      "titan"
+    ],
+    "basePriority": 16,
+    "productCategory": "pickleball",
+    "sellerID": "huyenle"
+  },
+  {
+    "itemId": "tshirt-teddy",
+    "title": "Áo Thun Gấu Teddy",
+    "price": 99900,
+    "originalPrice": 150000.0,
+    "contentType": "image",
+    "image": "https://i.postimg.cc/XYnP49CP/2.jpg",
+    "youtube": "",
+    "productPage": "/tshirt/teddy",
+    "tags": [
+      "tshirt",
+      "teddy"
+    ],
+    "basePriority": 22,
+    "productCategory": "tshirt",
+    "sellerID": "huyenle"
+  },
+  {
+    "itemId": "tshirt-zodiac-1",
+    "title": "Áo Thun Tuổi Của Bạn",
+    "price": 99900,
+    "originalPrice": 150000.0,
+    "contentType": "image",
+    "image": "https://i.postimg.cc/G2nQSr40/1-t.jpg",
+    "youtube": "",
+    "productPage": "/tshirt/zodiac-animals",
+    "tags": [
+      "tshirt",
+      "zodiac"
+    ],
+    "basePriority": 18,
+    "productCategory": "tshirt",
+    "sellerID": "huyenle"
+  },
+  {
+    "itemId": "tshirt-zodiac-2",
+    "title": "Áo Thun Tuổi Của Bạn",
+    "price": 99900,
+    "originalPrice": 150000.0,
+    "contentType": "image",
+    "image": "https://i.postimg.cc/9fZP9SJL/10-d-u.jpg",
+    "youtube": "",
+    "productPage": "/tshirt/zodiac-animals",
+    "tags": [
+      "tshirt",
+      "zodiac"
+    ],
+    "basePriority": 18,
+    "productCategory": "tshirt",
+    "sellerID": "huyenle"
+  },
+  {
+    "itemId": "tshirt-zodiac-3",
+    "title": "Áo Thun Tuổi Của Bạn",
+    "price": 99900,
+    "originalPrice": 150000.0,
+    "contentType": "image",
+    "image": "https://i.postimg.cc/G2RFxQfd/11-tu-t.jpg",
+    "youtube": "",
+    "productPage": "/tshirt/zodiac-animals",
+    "tags": [
+      "tshirt",
+      "zodiac"
+    ],
+    "basePriority": 18,
+    "productCategory": "tshirt",
+    "sellerID": "huyenle"
+  },
+  {
+    "itemId": "tshirt-zodiac-4",
+    "title": "Áo Thun Tuổi Của Bạn",
+    "price": 99900,
+    "originalPrice": 150000.0,
+    "contentType": "image",
+    "image": "https://i.postimg.cc/Y9x1nFcg/12-h-i.jpg",
+    "youtube": "",
+    "productPage": "/tshirt/zodiac-animals",
+    "tags": [
+      "tshirt",
+      "zodiac"
+    ],
+    "basePriority": 18,
+    "productCategory": "tshirt",
+    "sellerID": "huyenle"
+  },
+  {
+    "itemId": "tshirt-zodiac-5",
+    "title": "Áo Thun Tuổi Của Bạn",
+    "price": 99900,
+    "originalPrice": 150000.0,
+    "contentType": "image",
+    "image": "https://i.postimg.cc/qvgjNjPF/2-s-u.jpg",
+    "youtube": "",
+    "productPage": "/tshirt/zodiac-animals",
+    "tags": [
+      "tshirt",
+      "zodiac"
+    ],
+    "basePriority": 18,
+    "productCategory": "tshirt",
+    "sellerID": "huyenle"
+  },
+  {
+    "itemId": "tshirt-zodiac-6",
+    "title": "Áo Thun Tuổi Của Bạn",
+    "price": 99900,
+    "originalPrice": 150000.0,
+    "contentType": "image",
+    "image": "https://i.postimg.cc/yNZjPWYX/3-d-n.jpg",
+    "youtube": "",
+    "productPage": "/tshirt/zodiac-animals",
+    "tags": [
+      "tshirt",
+      "zodiac"
+    ],
+    "basePriority": 18,
+    "productCategory": "tshirt",
+    "sellerID": "huyenle"
+  },
+  {
+    "itemId": "tshirt-zodiac-7",
+    "title": "Áo Thun Tuổi Của Bạn",
+    "price": 99900,
+    "originalPrice": 150000.0,
+    "contentType": "image",
+    "image": "https://i.postimg.cc/L87vLjR8/4-m-o.jpg",
+    "youtube": "",
+    "productPage": "/tshirt/zodiac-animals",
+    "tags": [
+      "tshirt",
+      "zodiac"
+    ],
+    "basePriority": 18,
+    "productCategory": "tshirt",
+    "sellerID": "huyenle"
+  },
+  {
+    "itemId": "tshirt-zodiac-8",
+    "title": "Áo Thun Tuổi Của Bạn",
+    "price": 99900,
+    "originalPrice": 150000.0,
+    "contentType": "image",
+    "image": "https://i.postimg.cc/wv5kCPN1/5-th-n.jpg",
+    "youtube": "",
+    "productPage": "/tshirt/zodiac-animals",
+    "tags": [
+      "tshirt",
+      "zodiac"
+    ],
+    "basePriority": 18,
+    "productCategory": "tshirt",
+    "sellerID": "huyenle"
+  },
+  {
+    "itemId": "tshirt-zodiac-9",
+    "title": "Áo Thun Tuổi Của Bạn",
+    "price": 99900,
+    "originalPrice": 150000.0,
+    "contentType": "image",
+    "image": "https://i.postimg.cc/wM6kgV50/6-t.jpg",
+    "youtube": "",
+    "productPage": "/tshirt/zodiac-animals",
+    "tags": [
+      "tshirt",
+      "zodiac"
+    ],
+    "basePriority": 18,
+    "productCategory": "tshirt",
+    "sellerID": "huyenle"
+  },
+  {
+    "itemId": "tshirt-zodiac-10",
+    "title": "Áo Thun Tuổi Của Bạn",
+    "price": 99900,
+    "originalPrice": 150000.0,
+    "contentType": "image",
+    "image": "https://i.postimg.cc/7hmn62mD/7-ng.jpg",
+    "youtube": "",
+    "productPage": "/tshirt/zodiac-animals",
+    "tags": [
+      "tshirt",
+      "zodiac"
+    ],
+    "basePriority": 18,
+    "productCategory": "tshirt",
+    "sellerID": "huyenle"
+  },
+  {
+    "itemId": "tshirt-zodiac-11",
+    "title": "Áo Thun Tuổi Của Bạn",
+    "price": 99900,
+    "originalPrice": 150000.0,
+    "contentType": "image",
+    "image": "https://i.postimg.cc/kXYyPW2v/8-m-i.jpg",
+    "youtube": "",
+    "productPage": "/tshirt/zodiac-animals",
+    "tags": [
+      "tshirt",
+      "zodiac"
+    ],
+    "basePriority": 18,
+    "productCategory": "tshirt",
+    "sellerID": "huyenle"
+  },
+  {
+    "itemId": "tshirt-zodiac-12",
+    "title": "Áo Thun Tuổi Của Bạn",
+    "price": 99900,
+    "originalPrice": 150000.0,
+    "contentType": "image",
+    "image": "https://i.postimg.cc/Dwtd8FdW/9-th-n.jpg",
+    "youtube": "",
+    "productPage": "/tshirt/zodiac-animals",
+    "tags": [
+      "tshirt",
+      "zodiac"
+    ],
+    "basePriority": 18,
+    "productCategory": "tshirt",
+    "sellerID": "huyenle"
   }
 ]
