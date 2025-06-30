@@ -1,7 +1,3 @@
-Rõ rồi, mình sẽ viết luôn mã HTML + CSS + JS cho website với popup và giao diện chi tiết vợt giống mẫu bạn gửi.
-
-
-```html
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -54,6 +50,11 @@ Rõ rồi, mình sẽ viết luôn mã HTML + CSS + JS cho website với popup v
       font-weight: bold;
       cursor: pointer;
     }
+    .popup-content .logo-small {
+      width: 50px;
+      margin: 12px auto;
+      display: block;
+    }
     .header {
       display: flex;
       justify-content: center;
@@ -66,6 +67,13 @@ Rõ rồi, mình sẽ viết luôn mã HTML + CSS + JS cho website với popup v
     .product-info {
       display: none;
       padding: 20px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .product-image {
+      width: 100%;
+      border-radius: 8px;
+      margin-bottom: 20px;
     }
     .register-button {
       display: inline-block;
@@ -106,15 +114,22 @@ Rõ rồi, mình sẽ viết luôn mã HTML + CSS + JS cho website với popup v
       margin-top: 40px;
       padding: 20px;
     }
+    @media (max-width: 768px) {
+      .product-info {
+        padding: 10px;
+        margin: 0;
+      }
+    }
   </style>
 </head>
 <body>
 
 <div class="popup" id="authPopup">
   <div class="popup-content">
+    <img src="https://i.postimg.cc/Lsg0XdNN/logo-fsport.png" alt="F Sport Logo" class="logo-small">
     <div class="check-icon">✔️</div>
     <h2>XÁC NHẬN CHÍNH HÃNG THÀNH CÔNG</h2>
-    <p>Chúng tôi cam kết bảo vệ quyền lợi khách hàng và không bao giờ yêu cầu thông tin thẻ tín dụng.</p>
+    <p>Xác nhận chính hãng vợt Gen4 của F Sport</p>
     <button onclick="closePopup()">Tiếp tục</button>
   </div>
 </div>
@@ -125,6 +140,8 @@ Rõ rồi, mình sẽ viết luôn mã HTML + CSS + JS cho website với popup v
   </div>
 
   <h1>Gen4 Trắng – Paddle ID</h1>
+
+  <img src="https://i.postimg.cc/vTs7bkNg/gen4-trang.webp" alt="Gen4 Trắng" class="product-image">
 
   <a href="#" class="register-button">ĐĂNG KÝ VỢT</a>
 
@@ -152,7 +169,3 @@ Rõ rồi, mình sẽ viết luôn mã HTML + CSS + JS cho website với popup v
 
 </body>
 </html>
-```
-
-
-Nếu bạn muốn, mình có thể thêm hiệu ứng mượt hoặc phần login/register như mẫu gốc.
