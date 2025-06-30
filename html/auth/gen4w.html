@@ -55,14 +55,9 @@
       margin: 12px auto;
       display: block;
     }
-    .header {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 16px;
-    }
-    .header img {
-      height: 50px;
+    .popup-content .logo-inline {
+      width: 60px;
+      vertical-align: middle;
     }
     .product-info {
       display: none;
@@ -74,18 +69,6 @@
       width: 100%;
       border-radius: 8px;
       margin-bottom: 20px;
-    }
-    .register-button {
-      display: inline-block;
-      padding: 10px 20px;
-      background: #ffeb3b;
-      color: #000;
-      font-weight: bold;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      margin: 12px 0;
-      text-decoration: none;
     }
     .serial {
       background: #000;
@@ -114,6 +97,11 @@
       margin-top: 40px;
       padding: 20px;
     }
+    .logo-bottom {
+      display: block;
+      margin: 20px auto;
+      width: 80px;
+    }
     @media (max-width: 768px) {
       .product-info {
         padding: 10px;
@@ -129,21 +117,17 @@
     <img src="https://i.postimg.cc/Lsg0XdNN/logo-fsport.png" alt="F Sport Logo" class="logo-small">
     <div class="check-icon">✔️</div>
     <h2>XÁC NHẬN CHÍNH HÃNG THÀNH CÔNG</h2>
-    <p>Xác nhận chính hãng vợt Gen4 của F Sport</p>
+    <p>Xác nhận chính hãng vợt Gen4 của <img src="https://i.postimg.cc/Lsg0XdNN/logo-fsport.png" alt="F Sport Logo" class="logo-inline"></p>
     <button onclick="closePopup()">Tiếp tục</button>
   </div>
 </div>
 
 <div class="product-info" id="productInfo">
-  <div class="header">
-    <img src="https://i.postimg.cc/Lsg0XdNN/logo-fsport.png" alt="F Sport Logo">
-  </div>
-
   <h1>Gen4 Trắng – Paddle ID</h1>
 
   <img src="https://i.postimg.cc/vTs7bkNg/gen4-trang.webp" alt="Gen4 Trắng" class="product-image">
 
-  <a href="#" class="register-button">ĐĂNG KÝ VỢT</a>
+  <img src="https://i.postimg.cc/Lsg0XdNN/logo-fsport.png" alt="F Sport Logo" class="logo-bottom">
 
   <div class="serial">Serial ID: 0000000454</div>
 
