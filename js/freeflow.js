@@ -193,13 +193,14 @@ function renderFeedItem(item, container) {
     div.onclick = () => window.location.href = item.productPage;
   } else if (item.contentType === "photo") {
     div.onclick = () => {
-      const popup = document.getElementById("photoOverlay");
-      const img = document.getElementById("photoFrame");
-      if (popup && img) {
-        img.src = item.image;
-        popup.style.display = "flex";
-      }
-    };
+  const popup = document.getElementById("photoOverlay");
+  const img = document.getElementById("photoFrame");
+  if (popup && img) {
+    img.src = item.image;
+    popup.classList.add("show");
+  }
+};
+
   } else if (item.contentType === "story") {
     div.onclick = () => window.location.href = item.productPage;
   } else if (item.contentType === "youtube") {
@@ -253,12 +254,13 @@ document.addEventListener("DOMContentLoaded", () => {
   if (closeBtn) closeBtn.onclick = closeVideoPopup;
 
   const closePhoto = document.getElementById("photoCloseBtn");
-  if (closePhoto) closePhoto.onclick = () => {
-    const popup = document.getElementById("photoOverlay");
-    const img = document.getElementById("photoFrame");
-    if (popup) popup.style.display = "none";
-    if (img) img.src = "";
-  };
+if (closePhoto) closePhoto.onclick = () => {
+  const popup = document.getElementById("photoOverlay");
+  const img = document.getElementById("photoFrame");
+  if (popup) popup.classList.remove("show");
+  if (img) img.src = "";
+};
+
 
   fetchFreeFlowData();
 });
