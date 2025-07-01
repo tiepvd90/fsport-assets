@@ -1,0 +1,38 @@
+{
+  "thuộc_tính": [
+    {
+      "label": "Màu Sắc",
+      "key": "Màu Sắc",
+      "type": "option",
+      "display": "thumbnail",
+      "values": [
+        { "text": "Trắng", "image": "https://i.postimg.cc/sfBDMnbB/1.jpg" },
+        { "text": "Đen", "image": "https://i.postimg.cc/7Y0HV5Hw/5.jpg" },
+        { "text": "Đỏ", "image": "https://i.postimg.cc/DmVN0fHc/4.jpg" },
+        { "text": "Xám Tiêu", "image": "https://i.postimg.cc/PfBfYWkS/3.jpg" },
+        { "text": "Xanh Navy", "image": "https://i.postimg.cc/MHf4zfPT/2.jpg" }
+      ]
+    },
+    {
+      "label": "Size",
+      "key": "Size",
+      "type": "option",
+      "display": "button",
+      "values": [
+        "M",
+        "L",
+        "XL",
+        "2XL",
+        "3XL"
+      ]
+    }
+  ],
+  "biến_thể": [
+    {
+      "id": "lion",
+      "category": "tshirt",
+      "Giá": 99000,
+      "Giá gốc": 150000
+    }
+  ]
+}
