@@ -106,17 +106,5 @@ if (btn) btn.onclick = function () {
       });
   </script>
   <script src="/js/base.js"></script>
-
-  <!-- Sticky footer -->
-<div id="footerContainer"></div>
-<script src="https://unpkg.com/lucide@latest"></script>
-<script>
-  fetch('/stories/html/stickyfooter-stories.html')
-    .then(res => res.text())
-    .then(html => {
-      document.getElementById('footerContainer').innerHTML = html;
-      lucide.createIcons(); // ⚠️ Phải gọi sau khi gắn HTML vào DOM
-    });
-</script>
 </body>
 </html>
