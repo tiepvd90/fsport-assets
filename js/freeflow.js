@@ -139,22 +139,22 @@ function renderFeedItem(item, container) {
   renderedIds.add(item.itemId);
 
   const div = document.createElement("div");
-  div.className = feed-item ${item.contentType || ""};
+  div.className = `feed-item ${item.contentType || ""}`;
 
   let mediaHtml = "";
 
   if (item.contentType === "image" || item.contentType === "story") {
-    mediaHtml = 
+    mediaHtml = `
       <img loading="lazy" src="${item.image}" alt="${item.title || ''}" />
-      ${item.title ? <h4 class="one-line-title">${item.title}</h4> : ""}
-      ${item.contentType === "image" && item.price ? 
-  <div class="price-line">
-    <span class="price">${Number(item.price).toLocaleString()}đ</span>
-    ${item.originalPrice > item.price ? <span class="original-price">${Number(item.originalPrice).toLocaleString()}đ</span> : ""}
-  </div> : ""}
-    ;
+      ${item.title ? `<h4 class="one-line-title">${item.title}</h4>` : ""}
+      ${item.contentType === "image" && item.price ? `
+        <div class="price-line">
+          <span class="price">${Number(item.price).toLocaleString()}đ</span>
+          ${item.originalPrice > item.price ? `<span class="original-price">${Number(item.originalPrice).toLocaleString()}đ</span>` : ""}
+        </div>` : ""}
+    `;
   } else if (item.contentType === "youtube") {
-    mediaHtml = 
+    mediaHtml = `
       <div class="video-wrapper" style="position: relative;">
         <img class="video-thumb" src="https://fun-sport.co/assets/images/thumb/vid-thumb.webp"
              style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; border-radius: 8px; z-index: 1;" />
@@ -183,12 +183,11 @@ function renderFeedItem(item, container) {
           </div>
         </div>
       </div>
-    ;
+    `;
   }
 
   div.innerHTML = mediaHtml;
 
-  // ✅ Click handler
   if (item.contentType === "image" || item.contentType === "story") {
     div.onclick = () => window.location.href = item.productPage;
   } else if (item.contentType === "youtube") {
@@ -198,7 +197,7 @@ function renderFeedItem(item, container) {
         const id = overlay.getAttribute("data-video");
         const popup = document.getElementById("videoOverlay");
         const frame = document.getElementById("videoFrame");
-        frame.src = https://www.youtube.com/embed/${id}?autoplay=1&mute=0&playsinline=1&controls=1;
+        frame.src = `https://www.youtube.com/embed/${id}?autoplay=1&mute=0&playsinline=1&controls=1`;
         popup.style.display = "flex";
         const viewBtn = document.getElementById("viewProductBtn");
         if (viewBtn) viewBtn.onclick = () => window.location.href = item.productPage;
@@ -216,7 +215,7 @@ function setupAutoplayObserver() {
     entries.forEach(entry => {
       const iframe = entry.target;
       const id = iframe.getAttribute('data-video-id');
-      const targetSrc = https://www.youtube.com/embed/${id}?autoplay=1&mute=1&playsinline=1&controls=1&loop=1&playlist=${id};
+      const targetSrc = `https://www.youtube.com/embed/${id}?autoplay=1&mute=1&playsinline=1&controls=1&loop=1&playlist=${id}`;
       if (entry.isIntersecting) {
         if (iframe.src !== targetSrc) iframe.src = targetSrc;
       } else {
