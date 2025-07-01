@@ -1,14 +1,12 @@
+// ✅ FREEFLOW CONFIG
 const CACHE_KEY = "freeflowCache";
 const CACHE_DURATION_MS = 30 * 60 * 1000;
 const fallbackUrl = "https://script.google.com/macros/s/AKfycbwuEh9sP65vyQL0XzU8gY1Os0QYV_K5egKJgm8OhImAPjvdyrQiU7XCY909N99TnltP/exec";
 
 let freeflowData = [];
 let itemsLoaded = 0;
-const BATCH_SIZE = 20;
-const MAX_DOM_ITEMS = 80;
-let observer = null;
+let productCategory = window.productCategory || "0";
 const renderedIds = new Set();
-const productCategory = window.productCategory || "0";
 
 // ✅ Load cache nếu còn hạn
 function loadCachedFreeFlow() {
@@ -72,7 +70,7 @@ async function fetchFreeFlowData() {
   const cached = loadCachedFreeFlow();
   if (cached) {
     processAndSortData(cached);
-    renderUntilScrollable();
+    renderInitialAndLoadRest();
     return;
   }
 
@@ -83,7 +81,8 @@ async function fetchFreeFlowData() {
 
     processAndSortData(validData);
     saveCache(validData);
-    renderUntilScrollable();
+    renderInitialAndLoadRest();
+
     fetchFromGoogleSheet(validData);
   } catch (e) {
     console.warn("Lỗi khi tải local JSON:", e);
@@ -91,7 +90,7 @@ async function fetchFreeFlowData() {
   }
 }
 
-// ✅ Gọi Google Sheet nếu có item mới
+// ✅ Gọi Google Sheet
 async function fetchFromGoogleSheet(existingData) {
   try {
     const res = await fetch(fallbackUrl);
@@ -105,72 +104,57 @@ async function fetchFromGoogleSheet(existingData) {
     const combined = [...existingData, ...newItems];
     processAndSortData(combined);
     saveCache(combined);
-    renderUntilScrollable();
+
+    const container = document.getElementById("freeflowFeed");
+    const moreItems = freeflowData.slice(itemsLoaded);
+    moreItems.forEach(item => renderFeedItem(item, container));
+    itemsLoaded = freeflowData.length;
+    setupAutoplayObserver();
   } catch (e) {
     console.error("Không thể fetch từ Google Sheet:", e);
   }
 }
 
-// ✅ Tự render cho đến khi đủ để scroll
-function renderUntilScrollable() {
-  renderNextBatch();
-  setTimeout(() => {
-    const scrollable = document.body.scrollHeight > window.innerHeight + 100;
-    if (!scrollable && itemsLoaded < freeflowData.length) {
-      renderUntilScrollable();
-    }
-  }, 200);
-}
-
-// ✅ Render 1 batch (20 items)
-function renderNextBatch() {
+// ✅ Render ban đầu
+function renderInitialAndLoadRest() {
   const container = document.getElementById("freeflowFeed");
   if (!container) return;
 
-  const batch = [];
-  let count = 0;
-  while (itemsLoaded < freeflowData.length && count < BATCH_SIZE) {
-    const item = freeflowData[itemsLoaded++];
-    if (!renderedIds.has(item.itemId)) {
-      renderedIds.add(item.itemId);
-      batch.push(item);
-      count++;
-    }
-  }
+  const firstBatch = freeflowData.slice(0, 4);
+  firstBatch.forEach(item => renderFeedItem(item, container));
+  itemsLoaded = 4;
+  setupAutoplayObserver();
 
-  function renderStep(index = 0) {
-    if (index >= batch.length) return;
-
-    renderFeedItem(batch[index], container);
-    if (container.children.length > MAX_DOM_ITEMS) {
-      container.removeChild(container.firstChild);
-    }
-
-    requestIdleCallback(() => renderStep(index + 1));
-  }
-
-  renderStep();
+  setTimeout(() => {
+    const remaining = freeflowData.slice(4);
+    remaining.forEach(item => renderFeedItem(item, container));
+    itemsLoaded = freeflowData.length;
+    setupAutoplayObserver();
+  }, 300);
 }
 
-// ✅ Render 1 item
+// ✅ Render từng item
 function renderFeedItem(item, container) {
+  if (renderedIds.has(item.itemId)) return;
+  renderedIds.add(item.itemId);
+
   const div = document.createElement("div");
-  div.className = `feed-item ${item.contentType || ""}`;
+  div.className = feed-item ${item.contentType || ""};
 
   let mediaHtml = "";
 
   if (item.contentType === "image" || item.contentType === "story") {
-    mediaHtml = `
+    mediaHtml = 
       <img loading="lazy" src="${item.image}" alt="${item.title || ''}" />
-      ${item.title ? `<h4 class="one-line-title">${item.title}</h4>` : ""}
-      ${item.contentType === "image" && item.price ? `
-        <div class="price-line">
-          <span class="price">${Number(item.price).toLocaleString()}đ</span>
-          ${item.originalPrice > item.price ? `<span class="original-price">${Number(item.originalPrice).toLocaleString()}đ</span>` : ""}
-        </div>` : ""}
-    `;
+      ${item.title ? <h4 class="one-line-title">${item.title}</h4> : ""}
+      ${item.contentType === "image" && item.price ? 
+  <div class="price-line">
+    <span class="price">${Number(item.price).toLocaleString()}đ</span>
+    ${item.originalPrice > item.price ? <span class="original-price">${Number(item.originalPrice).toLocaleString()}đ</span> : ""}
+  </div> : ""}
+    ;
   } else if (item.contentType === "youtube") {
-    mediaHtml = `
+    mediaHtml = 
       <div class="video-wrapper" style="position: relative;">
         <img class="video-thumb" src="https://fun-sport.co/assets/images/thumb/vid-thumb.webp"
              style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; border-radius: 8px; z-index: 1;" />
@@ -182,7 +166,6 @@ function renderFeedItem(item, container) {
           allowfullscreen
           playsinline
           muted
-          loading="lazy"
           style="width: 100%; aspect-ratio: 9/16; border-radius: 8px; position: relative; z-index: 2;">
         </iframe>
         <div class="video-overlay" data-video="${item.youtube}" style="position: absolute; inset: 0; cursor: pointer; z-index: 3;"></div>
@@ -200,11 +183,12 @@ function renderFeedItem(item, container) {
           </div>
         </div>
       </div>
-    `;
+    ;
   }
 
   div.innerHTML = mediaHtml;
 
+  // ✅ Click handler
   if (item.contentType === "image" || item.contentType === "story") {
     div.onclick = () => window.location.href = item.productPage;
   } else if (item.contentType === "youtube") {
@@ -214,7 +198,7 @@ function renderFeedItem(item, container) {
         const id = overlay.getAttribute("data-video");
         const popup = document.getElementById("videoOverlay");
         const frame = document.getElementById("videoFrame");
-        frame.src = `https://www.youtube.com/embed/${id}?autoplay=1&mute=0&playsinline=1&controls=1`;
+        frame.src = https://www.youtube.com/embed/${id}?autoplay=1&mute=0&playsinline=1&controls=1;
         popup.style.display = "flex";
         const viewBtn = document.getElementById("viewProductBtn");
         if (viewBtn) viewBtn.onclick = () => window.location.href = item.productPage;
@@ -223,31 +207,28 @@ function renderFeedItem(item, container) {
   }
 
   container.appendChild(div);
-  observeIframe(div);
 }
 
-// ✅ Theo dõi iframe để lazy autoplay
-function observeIframe(wrapper) {
-  if (!observer) {
-    observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        const iframe = entry.target;
-        const id = iframe.getAttribute('data-video-id');
-        const targetSrc = `https://www.youtube.com/embed/${id}?autoplay=1&mute=1&playsinline=1&controls=1&loop=1&playlist=${id}`;
-        if (entry.isIntersecting) {
-          if (iframe.src !== targetSrc) iframe.src = targetSrc;
-        } else {
-          if (iframe.src !== "") iframe.src = "";
-        }
-      });
-    }, { threshold: 0.5 });
-  }
+// ✅ Tự động phát YouTube
+function setupAutoplayObserver() {
+  const iframes = document.querySelectorAll('iframe[data-video-id]');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      const iframe = entry.target;
+      const id = iframe.getAttribute('data-video-id');
+      const targetSrc = https://www.youtube.com/embed/${id}?autoplay=1&mute=1&playsinline=1&controls=1&loop=1&playlist=${id};
+      if (entry.isIntersecting) {
+        if (iframe.src !== targetSrc) iframe.src = targetSrc;
+      } else {
+        if (iframe.src !== "") iframe.src = "";
+      }
+    });
+  }, { threshold: 0.5 });
 
-  const iframe = wrapper.querySelector('iframe[data-video-id]');
-  if (iframe) observer.observe(iframe);
+  iframes.forEach(iframe => observer.observe(iframe));
 }
 
-// ✅ Khởi chạy
+// ✅ Init
 document.addEventListener("DOMContentLoaded", () => {
   const closeBtn = document.getElementById("videoCloseBtn");
   if (closeBtn) closeBtn.onclick = () => {
@@ -258,10 +239,4 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   fetchFreeFlowData();
-
-  window.addEventListener("scroll", () => {
-    if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 300) {
-      renderNextBatch();
-    }
-  });
 });
