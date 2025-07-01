@@ -1,7 +1,8 @@
 // ✅ FREEFLOW CONFIG
 const CACHE_KEY = "freeflowCache";
-const CACHE_DURATION_MS = 30 * 60 * 1000; // 30 phút
+const CACHE_DURATION_MS = 30 * 60 * 1000;
 const fallbackUrl = "https://script.google.com/macros/s/AKfycbwuEh9sP65vyQL0XzU8gY1Os0QYV_K5egKJgm8OhImAPjvdyrQiU7XCY909N99TnltP/exec";
+
 let freeflowData = [];
 let itemsLoaded = 0;
 let productCategory = window.productCategory || "0";
@@ -48,18 +49,16 @@ function processAndSortData(data) {
 
   const images = combined.filter(i => i.contentType === "image");
   const videos = combined.filter(i => i.contentType === "youtube");
-  const photos = combined.filter(i => i.contentType === "photo");
   const stories = combined.filter(i => i.contentType === "story");
 
   const mixed = [];
-  let imgIndex = 0, vidIndex = 0, photoIndex = 0, storyIndex = 0;
+  let imgIndex = 0, vidIndex = 0, storyIndex = 0;
 
   while (imgIndex < images.length) {
     for (let k = 0; k < 6 && imgIndex < images.length; k++) {
       mixed.push(images[imgIndex++]);
     }
     if (vidIndex < videos.length) mixed.push(videos[vidIndex++]);
-    if (photoIndex < photos.length) mixed.push(photos[photoIndex++]);
     if (storyIndex < stories.length) mixed.push(stories[storyIndex++]);
   }
 
@@ -144,7 +143,7 @@ function renderFeedItem(item, container) {
 
   let mediaHtml = "";
 
-  if (item.contentType === "image" || item.contentType === "photo" || item.contentType === "story") {
+  if (item.contentType === "image" || item.contentType === "story") {
     mediaHtml = `
       <img loading="lazy" src="${item.image}" alt="${item.title || ''}" />
       ${item.title ? `<h4 class="one-line-title">${item.title}</h4>` : ""}
@@ -189,19 +188,8 @@ function renderFeedItem(item, container) {
 
   div.innerHTML = mediaHtml;
 
-  if (item.contentType === "image") {
-    div.onclick = () => window.location.href = item.productPage;
-  } else if (item.contentType === "photo") {
-    div.onclick = () => {
-  const popup = document.getElementById("photoOverlay");
-  const img = document.getElementById("photoFrame");
-  if (popup && img) {
-    img.src = item.image;
-    popup.classList.add("show");
-  }
-};
-
-  } else if (item.contentType === "story") {
+  // ✅ Click handler
+  if (item.contentType === "image" || item.contentType === "story") {
     div.onclick = () => window.location.href = item.productPage;
   } else if (item.contentType === "youtube") {
     setTimeout(() => {
@@ -240,27 +228,15 @@ function setupAutoplayObserver() {
   iframes.forEach(iframe => observer.observe(iframe));
 }
 
-// ✅ Đóng popup video
-function closeVideoPopup() {
-  const frame = document.getElementById("videoFrame");
-  const popup = document.getElementById("videoOverlay");
-  if (frame) frame.src = "";
-  if (popup) popup.style.display = "none";
-}
-
 // ✅ Init
 document.addEventListener("DOMContentLoaded", () => {
   const closeBtn = document.getElementById("videoCloseBtn");
-  if (closeBtn) closeBtn.onclick = closeVideoPopup;
-
-  const closePhoto = document.getElementById("photoCloseBtn");
-if (closePhoto) closePhoto.onclick = () => {
-  const popup = document.getElementById("photoOverlay");
-  const img = document.getElementById("photoFrame");
-  if (popup) popup.classList.remove("show");
-  if (img) img.src = "";
-};
-
+  if (closeBtn) closeBtn.onclick = () => {
+    const popup = document.getElementById("videoOverlay");
+    const frame = document.getElementById("videoFrame");
+    if (popup) popup.style.display = "none";
+    if (frame) frame.src = "";
+  };
 
   fetchFreeFlowData();
 });
