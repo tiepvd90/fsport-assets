@@ -15,10 +15,18 @@
     }
 
     .cover-img {
-      width: 100%;
-      display: block;
-      margin-bottom: 8px;
-    }
+  display: block;
+  width: 100%;
+  max-width: 1080px;  /* Giới hạn ngang giống FreeFlow */
+  margin: 0 auto;
+  border-radius: 12px; /* tuỳ chọn: cho bo góc đẹp */
+}
+@media screen and (max-width: 600px) {
+  .cover-img {
+    padding: 0 12px;
+    box-sizing: border-box;
+  }
+}
   </style>
   <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-RXC205951M"></script>
