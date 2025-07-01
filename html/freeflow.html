@@ -18,31 +18,26 @@
   <!-- ✅ POPUP VIDEO -->
   <div id="videoOverlay"
        style="display:none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 9999;">
+    <!-- Nút XEM SẢN PHẨM -->
+    <button id="viewProductBtn"
+            style="all: unset; position: absolute; top: 20px; left: 20px; z-index: 10001;
+                   background: #f53d2d; color: white;
+                   font-size: 14px; font-weight: bold; border-radius: 8px;
+                   padding: 6px 14px; cursor: pointer; border: none;
+                   white-space: nowrap; box-shadow: 0 1px 2px rgba(0,0,0,0.15);">
+      XEM SẢN PHẨM
+    </button>
 
-<!-- Nút XEM SẢN PHẨM -->
-<button id="viewProductBtn"
-        style="all: unset; position: absolute; top: 20px; left: 20px; z-index: 10001;
-               background: #f53d2d; color: white;
-               font-size: 14px; font-weight: bold; border-radius: 8px;
-               padding: 6px 14px; cursor: pointer; border: none;
-               white-space: nowrap; box-shadow: 0 1px 2px rgba(0,0,0,0.15);">
-  XEM SẢN PHẨM
-</button>
+    <!-- Nút ĐÓNG -->
+    <button id="videoCloseBtn"
+            style="all: unset; position: absolute; top: 20px; right: 20px; z-index: 10001;
+                   background: white; color: black;
+                   font-size: 14px; font-weight: bold; border-radius: 8px;
+                   padding: 6px 14px; cursor: pointer; border: 1px solid #000;
+                   white-space: nowrap; box-shadow: 0 1px 2px rgba(0,0,0,0.1);">
+      ĐÓNG
+    </button>
 
-<!-- Nút ĐÓNG -->
-<button id="videoCloseBtn"
-        style="all: unset; position: absolute; top: 20px; right: 20px; z-index: 10001;
-               background: white; color: black;
-               font-size: 14px; font-weight: bold; border-radius: 8px;
-               padding: 6px 14px; cursor: pointer; border: 1px solid #000;
-               white-space: nowrap; box-shadow: 0 1px 2px rgba(0,0,0,0.1);">
-  ĐÓNG
-</button>
-
-
-
-
-    
     <!-- ✅ KHUNG VIDEO -->
     <div style="
       position: absolute;
@@ -70,18 +65,33 @@
     </div>
   </div>
 
-  <!-- ✅ SCRIPT -->
-  <script src="https://fun-sport.co/js/freeflow.js"></script>
-  <script>
-    fetchFreeFlowData("https://script.google.com/macros/s/AKfycbwuEh9sP65vyQL0XzU8gY1Os0QYV_K5egKJgm8OhImAPjvdyrQiU7XCY909N99TnltP/exec");
+  <!-- ✅ POPUP ẢNH PHOTO -->
+  <div id="photoOverlay"
+       style="display:none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 9999;">
+    <!-- Nút ĐÓNG -->
+    <button id="photoCloseBtn"
+            style="all: unset; position: absolute; top: 20px; right: 20px; z-index: 10001;
+                   background: white; color: black;
+                   font-size: 14px; font-weight: bold; border-radius: 8px;
+                   padding: 6px 14px; cursor: pointer; border: 1px solid #000;
+                   white-space: nowrap; box-shadow: 0 1px 2px rgba(0,0,0,0.1);">
+      ĐÓNG
+    </button>
 
-    // 🔧 Đóng popup video
-    function closePopup() {
-      const overlay = document.getElementById("videoOverlay");
-      const frame = document.getElementById("videoFrame");
-      overlay.style.display = "none";
-      frame.src = ""; // dừng video
-    }
-  </script>
+    <!-- Ảnh phóng to -->
+    <div style="
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      max-width: 100%;
+      max-height: 100%;
+    ">
+      <img id="photoFrame" src="" style="width: 100%; height: auto; border-radius: 12px;" />
+    </div>
+  </div>
+
+  <!-- ✅ SCRIPT -->
+  <script src="/js/freeflow.js"></script>
 </body>
 </html>
