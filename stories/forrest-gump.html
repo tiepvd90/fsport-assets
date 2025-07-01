@@ -67,19 +67,6 @@
 </script>
 <!-- ✅ FreeFlow -->
   <div id="freeflow-placeholder"></div>
-
-  <!-- ✅ Checkout Popup -->
-  <div id="checkoutPopup-placeholder"></div>
-  <script>
-    fetch("/html/checkoutpopup.html")
-      .then(res => res.text())
-      .then(html => {
-        document.getElementById("checkoutPopup-placeholder").innerHTML = html;
-        const script = document.createElement("script");
-        script.src = "https://friendly-kitten-d760ff.netlify.app/js/checkoutpopup.js";
-        document.body.appendChild(script);
-      });
-  </script>
   <!-- ✅ Load FreeFlow -->
   <script src="https://friendly-kitten-d760ff.netlify.app/js/freeflow.js"></script>
   <script>
