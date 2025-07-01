@@ -1,9 +1,11 @@
+// ✅ FREEFLOW CONFIG
 const CACHE_KEY = "freeflowCache";
 const CACHE_DURATION_MS = 30 * 60 * 1000; // 30 phút
 const fallbackUrl = "https://script.google.com/macros/s/AKfycbwuEh9sP65vyQL0XzU8gY1Os0QYV_K5egKJgm8OhImAPjvdyrQiU7XCY909N99TnltP/exec";
 let freeflowData = [];
 let itemsLoaded = 0;
 let productCategory = window.productCategory || "0";
+const renderedIds = new Set();
 
 // ✅ Load cache nếu còn hạn
 function loadCachedFreeFlow() {
@@ -22,7 +24,7 @@ function saveCache(data) {
   localStorage.setItem(CACHE_KEY, JSON.stringify(payload));
 }
 
-// ✅ Sắp xếp và tính điểm ưu tiên
+// ✅ Sắp xếp và trộn nội dung
 function processAndSortData(data) {
   const random = () => Math.floor(Math.random() * 20) + 1;
 
@@ -42,31 +44,23 @@ function processAndSortData(data) {
     }))
     .sort((a, b) => b.finalPriority - a.finalPriority);
 
-  // ✅ Gộp lại
   const combined = [...preferred, ...others];
 
-  // ✅ Phân loại image và youtube
   const images = combined.filter(i => i.contentType === "image");
   const videos = combined.filter(i => i.contentType === "youtube");
+  const photos = combined.filter(i => i.contentType === "photo");
+  const stories = combined.filter(i => i.contentType === "story");
 
   const mixed = [];
-  let imgIndex = 0, vidIndex = 0;
+  let imgIndex = 0, vidIndex = 0, photoIndex = 0, storyIndex = 0;
 
   while (imgIndex < images.length) {
-    // Thêm tối đa 6 ảnh
     for (let k = 0; k < 6 && imgIndex < images.length; k++) {
       mixed.push(images[imgIndex++]);
     }
-
-    // Sau đó chèn 1 video (nếu còn)
-    if (vidIndex < videos.length) {
-      mixed.push(videos[vidIndex++]);
-    }
-  }
-
-  // Nếu còn video dư, thêm cuối cùng
-  while (vidIndex < videos.length) {
-    mixed.push(videos[vidIndex++]);
+    if (vidIndex < videos.length) mixed.push(videos[vidIndex++]);
+    if (photoIndex < photos.length) mixed.push(photos[photoIndex++]);
+    if (storyIndex < stories.length) mixed.push(stories[storyIndex++]);
   }
 
   freeflowData = mixed;
@@ -90,7 +84,6 @@ async function fetchFreeFlowData() {
     saveCache(validData);
     renderInitialAndLoadRest();
 
-    // Nối thêm từ Google Sheet
     fetchFromGoogleSheet(validData);
   } catch (e) {
     console.warn("Lỗi khi tải local JSON:", e);
@@ -113,7 +106,6 @@ async function fetchFromGoogleSheet(existingData) {
     processAndSortData(combined);
     saveCache(combined);
 
-    // Render các item mới sau khi tải xong
     const container = document.getElementById("freeflowFeed");
     const moreItems = freeflowData.slice(itemsLoaded);
     moreItems.forEach(item => renderFeedItem(item, container));
@@ -124,7 +116,7 @@ async function fetchFromGoogleSheet(existingData) {
   }
 }
 
-// ✅ Render 4 item đầu → sau 300ms render hết
+// ✅ Render ban đầu
 function renderInitialAndLoadRest() {
   const container = document.getElementById("freeflowFeed");
   if (!container) return;
@@ -142,35 +134,32 @@ function renderInitialAndLoadRest() {
   }, 300);
 }
 
-// ✅ Render item đơn
+// ✅ Render từng item
 function renderFeedItem(item, container) {
-  const finalPrice = item.price ? Number(item.price).toLocaleString() + "đ" : "";
-  const originalPrice = (item.originalPrice && item.originalPrice > item.price)
-    ? `<span class="original-price" style="color:#555; font-size:12px; margin-left:4px; text-decoration: line-through;">
-         ${Number(item.originalPrice).toLocaleString()}đ
-       </span>` : "";
+  if (renderedIds.has(item.itemId)) return;
+  renderedIds.add(item.itemId);
 
   const div = document.createElement("div");
-  div.className = "feed-item";
+  div.className = `feed-item ${item.contentType || ""}`;
 
   let mediaHtml = "";
 
-  if (item.contentType === "image") {
+  if (item.contentType === "image" || item.contentType === "photo" || item.contentType === "story") {
     mediaHtml = `
-      <img loading="lazy" src="${item.image}" alt="${item.title}" style="width: 100%; border-radius: 8px;" />
-      <h4 class="one-line-title" style="margin: 4px 8px 0; font-size: 13px; line-height: 1.3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-        ${item.title}
-      </h4>
-      <div class="price-line" style="padding: 2px 8px 6px; font-size: 13px;">
-        <span class="price" style="color: #f53d2d; font-weight: bold;">${finalPrice}</span> ${originalPrice}
-      </div>
+      <img loading="lazy" src="${item.image}" alt="${item.title || ''}" />
+      ${item.title ? `<h4 class="one-line-title">${item.title}</h4>` : ""}
+      ${item.contentType === "image" ? `
+        <div class="price-line">
+          <span class="price">${Number(item.price).toLocaleString()}đ</span>
+          ${item.originalPrice > item.price ? `<span class="original-price">${Number(item.originalPrice).toLocaleString()}đ</span>` : ""}
+        </div>` : ""}
     `;
   } else if (item.contentType === "youtube") {
     mediaHtml = `
       <div class="video-wrapper" style="position: relative;">
-        <img class="video-thumb" src="https://fun-sport.co/assets/images/thumb/vid-thumb.webp" 
+        <img class="video-thumb" src="https://fun-sport.co/assets/images/thumb/vid-thumb.webp"
              style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; border-radius: 8px; z-index: 1;" />
-        <iframe 
+        <iframe
           data-video-id="${item.youtube}"
           src=""
           frameborder="0"
@@ -178,8 +167,8 @@ function renderFeedItem(item, container) {
           allowfullscreen
           playsinline
           muted
-          style="width: 100%; aspect-ratio: 9/16; border-radius: 8px; position: relative; z-index: 2;"
-        ></iframe>
+          style="width: 100%; aspect-ratio: 9/16; border-radius: 8px; position: relative; z-index: 2;">
+        </iframe>
         <div class="video-overlay" data-video="${item.youtube}" style="position: absolute; inset: 0; cursor: pointer; z-index: 3;"></div>
       </div>
       <div class="video-info" style="display: flex; align-items: center; gap: 8px; padding: 4px 8px 0;">
@@ -187,16 +176,11 @@ function renderFeedItem(item, container) {
           <img src="${item.image}" style="width: 36px; height: 36px; object-fit: cover; border-radius: 6px;" />
         </a>
         <div style="flex: 1; min-width: 0;">
-          <h4 style="
-            font-size: 13px;
-            line-height: 1.3;
-            margin: 0;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-          ">${item.title}</h4>
+          <h4 style="font-size: 13px; line-height: 1.3; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+            ${item.title}
+          </h4>
           <div style="font-size: 13px; color: #f53d2d; font-weight: bold;">
-            ${finalPrice}${originalPrice}
+            ${Number(item.price).toLocaleString()}đ
           </div>
         </div>
       </div>
@@ -205,7 +189,20 @@ function renderFeedItem(item, container) {
 
   div.innerHTML = mediaHtml;
 
-  if (item.contentType === "youtube") {
+  if (item.contentType === "image") {
+    div.onclick = () => window.location.href = item.productPage;
+  } else if (item.contentType === "photo") {
+    div.onclick = () => {
+      const popup = document.getElementById("photoOverlay");
+      const img = document.getElementById("photoFrame");
+      if (popup && img) {
+        img.src = item.image;
+        popup.style.display = "flex";
+      }
+    };
+  } else if (item.contentType === "story") {
+    div.onclick = () => window.location.href = item.productPage;
+  } else if (item.contentType === "youtube") {
     setTimeout(() => {
       const overlay = div.querySelector(".video-overlay");
       overlay.onclick = () => {
@@ -215,29 +212,21 @@ function renderFeedItem(item, container) {
         frame.src = `https://www.youtube.com/embed/${id}?autoplay=1&mute=0&playsinline=1&controls=1`;
         popup.style.display = "flex";
         const viewBtn = document.getElementById("viewProductBtn");
-if (viewBtn) {
-  viewBtn.onclick = () => window.location.href = item.productPage;
-}
+        if (viewBtn) viewBtn.onclick = () => window.location.href = item.productPage;
       };
     }, 0);
-  } else {
-    div.onclick = () => {
-      window.location.href = item.productPage;
-    };
   }
 
   container.appendChild(div);
 }
 
-// ✅ Autoplay cho iframe YouTube
+// ✅ Tự động phát YouTube
 function setupAutoplayObserver() {
   const iframes = document.querySelectorAll('iframe[data-video-id]');
   const observer = new IntersectionObserver(entries => {
     entries.forEach(entry => {
       const iframe = entry.target;
       const id = iframe.getAttribute('data-video-id');
-      if (!id) return;
-
       const targetSrc = `https://www.youtube.com/embed/${id}?autoplay=1&mute=1&playsinline=1&controls=1&loop=1&playlist=${id}`;
       if (entry.isIntersecting) {
         if (iframe.src !== targetSrc) iframe.src = targetSrc;
@@ -250,18 +239,26 @@ function setupAutoplayObserver() {
   iframes.forEach(iframe => observer.observe(iframe));
 }
 
-// ✅ Đóng popup
+// ✅ Đóng popup video
 function closeVideoPopup() {
   const frame = document.getElementById("videoFrame");
-  if (frame) frame.src = "";
   const popup = document.getElementById("videoOverlay");
+  if (frame) frame.src = "";
   if (popup) popup.style.display = "none";
 }
 
-// ✅ Khởi động
+// ✅ Init
 document.addEventListener("DOMContentLoaded", () => {
   const closeBtn = document.getElementById("videoCloseBtn");
   if (closeBtn) closeBtn.onclick = closeVideoPopup;
+
+  const closePhoto = document.getElementById("photoCloseBtn");
+  if (closePhoto) closePhoto.onclick = () => {
+    const popup = document.getElementById("photoOverlay");
+    const img = document.getElementById("photoFrame");
+    if (popup) popup.style.display = "none";
+    if (img) img.src = "";
+  };
 
   fetchFreeFlowData();
 });
