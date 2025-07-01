@@ -39,12 +39,22 @@
   transform: translateY(-4px);
 }
 
-/* ==== Ảnh ==== */
-.feed-item img {
+/* ==== Ảnh sản phẩm (vuông) ==== */
+.feed-item.image img {
   width: 100%;
   aspect-ratio: 1 / 1;
   object-fit: cover;
   display: block;
+  border-bottom: 1px solid #eee;
+}
+
+/* ==== Ảnh tự do (photo & story) ==== */
+.feed-item.photo img,
+.feed-item.story img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: contain;
   border-bottom: 1px solid #eee;
 }
 
@@ -86,5 +96,3 @@
   text-decoration: line-through;
   margin-left: 6px;
 }
-
-
