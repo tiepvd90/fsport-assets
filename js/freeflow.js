@@ -147,11 +147,11 @@ function renderFeedItem(item, container) {
     mediaHtml = `
       <img loading="lazy" src="${item.image}" alt="${item.title || ''}" />
       ${item.title ? `<h4 class="one-line-title">${item.title}</h4>` : ""}
-      ${item.contentType === "image" ? `
-        <div class="price-line">
-          <span class="price">${Number(item.price).toLocaleString()}đ</span>
-          ${item.originalPrice > item.price ? `<span class="original-price">${Number(item.originalPrice).toLocaleString()}đ</span>` : ""}
-        </div>` : ""}
+      ${item.contentType === "image" && item.price ? `
+  <div class="price-line">
+    <span class="price">${Number(item.price).toLocaleString()}đ</span>
+    ${item.originalPrice > item.price ? `<span class="original-price">${Number(item.originalPrice).toLocaleString()}đ</span>` : ""}
+  </div>` : ""}
     `;
   } else if (item.contentType === "youtube") {
     mediaHtml = `
