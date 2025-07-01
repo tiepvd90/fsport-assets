@@ -10,6 +10,7 @@ let observer = null;
 const renderedIds = new Set();
 const productCategory = window.productCategory || "0";
 
+// ✅ Load cache nếu còn hạn
 function loadCachedFreeFlow() {
   try {
     const cached = JSON.parse(localStorage.getItem(CACHE_KEY));
@@ -20,11 +21,13 @@ function loadCachedFreeFlow() {
   return null;
 }
 
+// ✅ Lưu cache
 function saveCache(data) {
   const payload = { timestamp: Date.now(), data };
   localStorage.setItem(CACHE_KEY, JSON.stringify(payload));
 }
 
+// ✅ Sắp xếp và trộn nội dung
 function processAndSortData(data) {
   const random = () => Math.floor(Math.random() * 20) + 1;
 
@@ -64,11 +67,12 @@ function processAndSortData(data) {
   freeflowData = mixed;
 }
 
+// ✅ Tải dữ liệu chính
 async function fetchFreeFlowData() {
   const cached = loadCachedFreeFlow();
   if (cached) {
     processAndSortData(cached);
-    renderNextBatch();
+    renderUntilScrollable();
     return;
   }
 
@@ -79,8 +83,7 @@ async function fetchFreeFlowData() {
 
     processAndSortData(validData);
     saveCache(validData);
-    renderNextBatch();
-
+    renderUntilScrollable();
     fetchFromGoogleSheet(validData);
   } catch (e) {
     console.warn("Lỗi khi tải local JSON:", e);
@@ -88,6 +91,7 @@ async function fetchFreeFlowData() {
   }
 }
 
+// ✅ Gọi Google Sheet nếu có item mới
 async function fetchFromGoogleSheet(existingData) {
   try {
     const res = await fetch(fallbackUrl);
@@ -101,13 +105,24 @@ async function fetchFromGoogleSheet(existingData) {
     const combined = [...existingData, ...newItems];
     processAndSortData(combined);
     saveCache(combined);
-
-    renderNextBatch(); // tiếp tục hiển thị nếu cần
+    renderUntilScrollable();
   } catch (e) {
     console.error("Không thể fetch từ Google Sheet:", e);
   }
 }
 
+// ✅ Tự render cho đến khi đủ để scroll
+function renderUntilScrollable() {
+  renderNextBatch();
+  setTimeout(() => {
+    const scrollable = document.body.scrollHeight > window.innerHeight + 100;
+    if (!scrollable && itemsLoaded < freeflowData.length) {
+      renderUntilScrollable();
+    }
+  }, 200);
+}
+
+// ✅ Render 1 batch (20 items)
 function renderNextBatch() {
   const container = document.getElementById("freeflowFeed");
   if (!container) return;
@@ -128,7 +143,7 @@ function renderNextBatch() {
 
     renderFeedItem(batch[index], container);
     if (container.children.length > MAX_DOM_ITEMS) {
-      container.removeChild(container.firstChild); // loại bỏ item cũ nhất
+      container.removeChild(container.firstChild);
     }
 
     requestIdleCallback(() => renderStep(index + 1));
@@ -137,6 +152,7 @@ function renderNextBatch() {
   renderStep();
 }
 
+// ✅ Render 1 item
 function renderFeedItem(item, container) {
   const div = document.createElement("div");
   div.className = `feed-item ${item.contentType || ""}`;
@@ -210,6 +226,7 @@ function renderFeedItem(item, container) {
   observeIframe(div);
 }
 
+// ✅ Theo dõi iframe để lazy autoplay
 function observeIframe(wrapper) {
   if (!observer) {
     observer = new IntersectionObserver(entries => {
@@ -230,6 +247,7 @@ function observeIframe(wrapper) {
   if (iframe) observer.observe(iframe);
 }
 
+// ✅ Khởi chạy
 document.addEventListener("DOMContentLoaded", () => {
   const closeBtn = document.getElementById("videoCloseBtn");
   if (closeBtn) closeBtn.onclick = () => {
@@ -241,7 +259,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   fetchFreeFlowData();
 
-  // Nếu muốn hỗ trợ infinite scroll:
   window.addEventListener("scroll", () => {
     if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 300) {
       renderNextBatch();
