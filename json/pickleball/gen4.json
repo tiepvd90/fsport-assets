@@ -1,0 +1,23 @@
+{
+  "thuộc_tính": [
+    {
+      "label": "Màu Sắc",
+      "key": "Màu Sắc",
+      "type": "option",
+      "display": "thumbnail",
+      "values": [
+        { "text": "Trắng", "image": "https://i.postimg.cc/1zJDxFzh/trang.webp" },
+        { "text": "Hồng", "image": "https://i.postimg.cc/W420f8Tw/hong.webp" }
+      ]
+    }
+  ],
+  "biến_thể": [
+    {
+      "id": "gen4",
+      "category": "pickleball",
+      "shared": true,
+      "Giá": 999000,
+      "Giá gốc": 150000
+    }
+  ]
+}
