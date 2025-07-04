@@ -62,7 +62,58 @@
         </div>
       </div>
     </div>
+<!-- ✅ KHỐI 3: Video sản phẩm -->
+<div class="product-hero" style="margin-top: 12px;">
+  <div id="video-placeholder">Đang tải video...</div>
+</div>
 
+<script>
+  // ✅ Gọi file HTML video (gồm khung & ID #videoSlider)
+  fetch("/html/productvideo.html")
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById("video-placeholder").innerHTML = html;
+
+      // ✅ Gọi JS sau khi HTML có mặt
+      const script = document.createElement("script");
+      script.src = "/js/productvideo.js";
+      script.onload = () => {
+        console.log("✅ Đã load JS, gọi init...");
+        if (typeof initProductVideo === "function") {
+          initProductVideo();
+        } else {
+          console.warn("❌ Không tìm thấy initProductVideo()");
+        }
+      };
+      document.body.appendChild(script);
+    })
+    .catch(err => console.warn("❌ Lỗi khi chèn productvideo.html:", err));
+</script>
+<!-- 🔚 Hết KHỐI 3 -->
+    <!-- ✅ KHỐI 2: Reviews -->
+    <div class="product-hero" style="margin-top: 12px;">
+      <div id="review-placeholder"></div>
+    </div>
+    <script>
+  fetch("/html/reviewblock/pickleball.html")
+    .then(res => res.text())
+    .then(html => {
+      const container = document.getElementById("review-placeholder");
+      container.innerHTML = html;
+      // ✅ Kích hoạt lại các <script> thủ công
+      const scripts = container.querySelectorAll("script");
+      scripts.forEach(oldScript => {
+        const newScript = document.createElement("script");
+        if (oldScript.src) {
+          newScript.src = oldScript.src;
+        } else {
+          newScript.textContent = oldScript.textContent;
+        }
+        document.body.appendChild(newScript);
+      });
+    });
+</script>
+<!-- HẾT KHỐI 2: review -->
     <!-- ✅ Mô tả sản phẩm -->
     <div class="product-hero" style="margin-top: 12px;">
       <div id="productdescription-placeholder" data-src="/html/productdescription/pickleball/gen4.html"></div>
