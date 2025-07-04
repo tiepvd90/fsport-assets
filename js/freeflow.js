@@ -7,6 +7,8 @@ let freeflowData = [];
 let itemsLoaded = 0;
 let productCategory = window.productCategory || "0";
 const renderedIds = new Set();
+const ytPlayers = {};
+const activePlayers = new Set();
 
 // ✅ Load cache nếu còn hạn
 function loadCachedFreeFlow() {
@@ -49,17 +51,15 @@ function processAndSortData(data) {
 
   const images = combined.filter(i => i.contentType === "image");
   const videos = combined.filter(i => i.contentType === "youtube");
-  const stories = combined.filter(i => i.contentType === "story");
 
   const mixed = [];
-  let imgIndex = 0, vidIndex = 0, storyIndex = 0;
+  let imgIndex = 0, vidIndex = 0;
 
   while (imgIndex < images.length) {
     for (let k = 0; k < 6 && imgIndex < images.length; k++) {
       mixed.push(images[imgIndex++]);
     }
     if (vidIndex < videos.length) mixed.push(videos[vidIndex++]);
-    if (storyIndex < stories.length) mixed.push(stories[storyIndex++]);
   }
 
   freeflowData = mixed;
@@ -109,7 +109,6 @@ async function fetchFromGoogleSheet(existingData) {
     const moreItems = freeflowData.slice(itemsLoaded);
     moreItems.forEach(item => renderFeedItem(item, container));
     itemsLoaded = freeflowData.length;
-    setupAutoplayObserver();
   } catch (e) {
     console.error("Không thể fetch từ Google Sheet:", e);
   }
@@ -123,13 +122,11 @@ function renderInitialAndLoadRest() {
   const firstBatch = freeflowData.slice(0, 4);
   firstBatch.forEach(item => renderFeedItem(item, container));
   itemsLoaded = 4;
-  setupAutoplayObserver();
 
   setTimeout(() => {
     const remaining = freeflowData.slice(4);
     remaining.forEach(item => renderFeedItem(item, container));
     itemsLoaded = freeflowData.length;
-    setupAutoplayObserver();
   }, 300);
 }
 
@@ -143,11 +140,11 @@ function renderFeedItem(item, container) {
 
   let mediaHtml = "";
 
-  if (item.contentType === "image" || item.contentType === "story") {
+  if (item.contentType === "image") {
     mediaHtml = `
       <img loading="lazy" src="${item.image}" alt="${item.title || ''}" />
       ${item.title ? `<h4 class="one-line-title">${item.title}</h4>` : ""}
-      ${item.contentType === "image" && item.price ? `
+      ${item.price ? `
         <div class="price-line">
           <span class="price">${Number(item.price).toLocaleString()}đ</span>
           ${item.originalPrice > item.price ? `<span class="original-price">${Number(item.originalPrice).toLocaleString()}đ</span>` : ""}
@@ -155,21 +152,15 @@ function renderFeedItem(item, container) {
     `;
   } else if (item.contentType === "youtube") {
     mediaHtml = `
-      <div class="video-wrapper" style="position: relative;">
-        <img class="video-thumb" src="https://fun-sport.co/assets/images/thumb/vid-thumb.webp"
-             style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; border-radius: 8px; z-index: 1;" />
-        <iframe
-          data-video-id="${item.youtube}"
-          src=""
-          frameborder="0"
-          allow="autoplay; encrypted-media"
-          allowfullscreen
-          playsinline
-          muted
-          style="width: 100%; aspect-ratio: 9/16; border-radius: 8px; position: relative; z-index: 2;">
-        </iframe>
-        <div class="video-overlay" data-video="${item.youtube}" style="position: absolute; inset: 0; cursor: pointer; z-index: 3;"></div>
-      </div>
+      <iframe
+        data-video-id="${item.youtube}"
+        src="https://www.youtube.com/embed/${item.youtube}?enablejsapi=1&mute=1&playsinline=1&controls=1"
+        frameborder="0"
+        allow="autoplay; encrypted-media"
+        allowfullscreen
+        playsinline
+        style="width: 100%; aspect-ratio: 9/16; border-radius: 8px;">
+      </iframe>
       <div class="video-info" style="display: flex; align-items: center; gap: 8px; padding: 4px 8px 0;">
         <a href="${item.productPage}">
           <img src="${item.image}" style="width: 36px; height: 36px; object-fit: cover; border-radius: 6px;" />
@@ -188,43 +179,62 @@ function renderFeedItem(item, container) {
 
   div.innerHTML = mediaHtml;
 
-  if (item.contentType === "image" || item.contentType === "story") {
+  if (item.contentType === "image") {
     div.onclick = () => window.location.href = item.productPage;
-  } else if (item.contentType === "youtube") {
-    setTimeout(() => {
-      const overlay = div.querySelector(".video-overlay");
-      overlay.onclick = () => {
-        const id = overlay.getAttribute("data-video");
-        const popup = document.getElementById("videoOverlay");
-        const frame = document.getElementById("videoFrame");
-        frame.src = `https://www.youtube.com/embed/${id}?autoplay=1&mute=0&playsinline=1&controls=1`;
-        popup.style.display = "flex";
-        const viewBtn = document.getElementById("viewProductBtn");
-        if (viewBtn) viewBtn.onclick = () => window.location.href = item.productPage;
-      };
-    }, 0);
   }
 
   container.appendChild(div);
 }
 
-// ✅ Tự động phát YouTube
+// ✅ Tự động phát video (max 2 video cùng lúc)
 function setupAutoplayObserver() {
-  const iframes = document.querySelectorAll('iframe[data-video-id]');
   const observer = new IntersectionObserver(entries => {
     entries.forEach(entry => {
       const iframe = entry.target;
       const id = iframe.getAttribute('data-video-id');
-      const targetSrc = `https://www.youtube.com/embed/${id}?autoplay=1&mute=1&playsinline=1&controls=1&loop=1&playlist=${id}`;
-      if (entry.isIntersecting) {
-        if (iframe.src !== targetSrc) iframe.src = targetSrc;
+      const player = ytPlayers[id];
+      if (!player) return;
+
+      if (entry.isIntersecting && entry.intersectionRatio >= 0.9) {
+        if (!activePlayers.has(id)) {
+          if (activePlayers.size >= 2) {
+            const oldest = [...activePlayers][0];
+            ytPlayers[oldest]?.pauseVideo();
+            activePlayers.delete(oldest);
+          }
+          activePlayers.add(id);
+        }
+        player.playVideo();
       } else {
-        if (iframe.src !== "") iframe.src = "";
+        if (activePlayers.has(id)) {
+          player.pauseVideo();
+          activePlayers.delete(id);
+        }
       }
     });
-  }, { threshold: 0.5 });
+  }, {
+    threshold: [0.9]
+  });
 
-  iframes.forEach(iframe => observer.observe(iframe));
+  document.querySelectorAll('iframe[data-video-id]').forEach(iframe => {
+    observer.observe(iframe);
+  });
+}
+
+// ✅ Khởi tạo YouTube Player
+function onYouTubeIframeAPIReady() {
+  document.querySelectorAll('iframe[data-video-id]').forEach(iframe => {
+    const id = iframe.getAttribute("data-video-id");
+    ytPlayers[id] = new YT.Player(iframe, {
+      events: {
+        'onReady': () => {
+          iframe.setAttribute("data-ready", "1");
+        }
+      }
+    });
+  });
+
+  setupAutoplayObserver();
 }
 
 // ✅ Init
