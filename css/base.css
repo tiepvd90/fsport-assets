@@ -184,3 +184,49 @@ textarea {
   cursor: pointer;
   z-index: 10;
 }
+body {
+  background-color: #f9f9f9;
+}
+
+.product-hero {
+  background-color: #ffffff;
+  padding: 2px 2px;
+  box-sizing: border-box;
+}
+
+@media (min-width: 768px) {
+  .page-container {
+    padding: 0 8px;
+    max-width: 1180px;
+    margin: auto;
+    box-sizing: border-box;
+  }
+}
+
+.shipping-wrapper {
+  border-top: 1px solid #f9f9f9;
+  border-bottom: 1px solid #f9f9f9;
+  padding: 10px 0;
+  margin: 16px 0;
+}
+
+.shipping-info {
+  font-size: 14px;
+  color: #333;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 0 12px;
+}
+
+.shipping-line {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.shipping-line .icon {
+  font-size: 16px;
+  flex-shrink: 0;
+}
