@@ -9,6 +9,22 @@ let productCategory = window.productCategory || "0";
 const renderedIds = new Set();
 const ytPlayers = {};
 const activePlayers = new Set();
+let ytApiReady = false;
+
+// ✅ Tự động chèn YouTube API
+(function loadYouTubeAPI() {
+  if (!window.YT || !window.YT.Player) {
+    const tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    document.head.appendChild(tag);
+  }
+})();
+
+// ✅ YouTube API Callback
+window.onYouTubeIframeAPIReady = function () {
+  ytApiReady = true;
+  initializeYouTubePlayers();
+};
 
 // ✅ Load cache nếu còn hạn
 function loadCachedFreeFlow() {
@@ -109,6 +125,8 @@ async function fetchFromGoogleSheet(existingData) {
     const moreItems = freeflowData.slice(itemsLoaded);
     moreItems.forEach(item => renderFeedItem(item, container));
     itemsLoaded = freeflowData.length;
+
+    if (ytApiReady) initializeYouTubePlayers();
   } catch (e) {
     console.error("Không thể fetch từ Google Sheet:", e);
   }
@@ -127,6 +145,8 @@ function renderInitialAndLoadRest() {
     const remaining = freeflowData.slice(4);
     remaining.forEach(item => renderFeedItem(item, container));
     itemsLoaded = freeflowData.length;
+
+    if (ytApiReady) initializeYouTubePlayers();
   }, 300);
 }
 
@@ -186,14 +206,32 @@ function renderFeedItem(item, container) {
   container.appendChild(div);
 }
 
-// ✅ Tự động phát video (max 2 video cùng lúc)
+// ✅ Tạo player & kích hoạt observer
+function initializeYouTubePlayers() {
+  document.querySelectorAll('iframe[data-video-id]').forEach(iframe => {
+    const id = iframe.getAttribute("data-video-id");
+    if (ytPlayers[id]) return;
+
+    ytPlayers[id] = new YT.Player(iframe, {
+      events: {
+        'onReady': () => {
+          iframe.setAttribute("data-ready", "1");
+        }
+      }
+    });
+  });
+
+  setupAutoplayObserver();
+}
+
+// ✅ Tự động phát tối đa 2 video
 function setupAutoplayObserver() {
   const observer = new IntersectionObserver(entries => {
     entries.forEach(entry => {
       const iframe = entry.target;
       const id = iframe.getAttribute('data-video-id');
       const player = ytPlayers[id];
-      if (!player) return;
+      if (!player || iframe.getAttribute("data-ready") !== "1") return;
 
       if (entry.isIntersecting && entry.intersectionRatio >= 0.9) {
         if (!activePlayers.has(id)) {
@@ -221,23 +259,7 @@ function setupAutoplayObserver() {
   });
 }
 
-// ✅ Khởi tạo YouTube Player
-function onYouTubeIframeAPIReady() {
-  document.querySelectorAll('iframe[data-video-id]').forEach(iframe => {
-    const id = iframe.getAttribute("data-video-id");
-    ytPlayers[id] = new YT.Player(iframe, {
-      events: {
-        'onReady': () => {
-          iframe.setAttribute("data-ready", "1");
-        }
-      }
-    });
-  });
-
-  setupAutoplayObserver();
-}
-
-// ✅ Init
+// ✅ INIT
 document.addEventListener("DOMContentLoaded", () => {
   const closeBtn = document.getElementById("videoCloseBtn");
   if (closeBtn) closeBtn.onclick = () => {
