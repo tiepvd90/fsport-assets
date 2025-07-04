@@ -25,7 +25,7 @@ function saveCache(data) {
   localStorage.setItem(CACHE_KEY, JSON.stringify(payload));
 }
 
-// ✅ Sắp xếp và trộn nội dung
+// ✅ Sắp xếp và trộn nội dung (KHÔNG còn xử lý story)
 function processAndSortData(data) {
   const random = () => Math.floor(Math.random() * 20) + 1;
 
@@ -49,17 +49,15 @@ function processAndSortData(data) {
 
   const images = combined.filter(i => i.contentType === "image");
   const videos = combined.filter(i => i.contentType === "youtube");
-  const stories = combined.filter(i => i.contentType === "story");
 
   const mixed = [];
-  let imgIndex = 0, vidIndex = 0, storyIndex = 0;
+  let imgIndex = 0, vidIndex = 0;
 
   while (imgIndex < images.length) {
     for (let k = 0; k < 6 && imgIndex < images.length; k++) {
       mixed.push(images[imgIndex++]);
     }
     if (vidIndex < videos.length) mixed.push(videos[vidIndex++]);
-    if (storyIndex < stories.length) mixed.push(stories[storyIndex++]);
   }
 
   freeflowData = mixed;
@@ -133,7 +131,7 @@ function renderInitialAndLoadRest() {
   }, 300);
 }
 
-// ✅ Render từng item
+// ✅ Render từng item (XOÁ story)
 function renderFeedItem(item, container) {
   if (renderedIds.has(item.itemId)) return;
   renderedIds.add(item.itemId);
@@ -143,11 +141,11 @@ function renderFeedItem(item, container) {
 
   let mediaHtml = "";
 
-  if (item.contentType === "image" || item.contentType === "story") {
+  if (item.contentType === "image") {
     mediaHtml = `
       <img loading="lazy" src="${item.image}" alt="${item.title || ''}" />
       ${item.title ? `<h4 class="one-line-title">${item.title}</h4>` : ""}
-      ${item.contentType === "image" && item.price ? `
+      ${item.price ? `
         <div class="price-line">
           <span class="price">${Number(item.price).toLocaleString()}đ</span>
           ${item.originalPrice > item.price ? `<span class="original-price">${Number(item.originalPrice).toLocaleString()}đ</span>` : ""}
@@ -188,7 +186,7 @@ function renderFeedItem(item, container) {
 
   div.innerHTML = mediaHtml;
 
-  if (item.contentType === "image" || item.contentType === "story") {
+  if (item.contentType === "image") {
     div.onclick = () => window.location.href = item.productPage;
   } else if (item.contentType === "youtube") {
     setTimeout(() => {
