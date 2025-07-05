@@ -32,23 +32,24 @@ const productPage = window.productPage;
 const basePath = `/assets/images/gallery/${loai}/${productPage}`;
 
 let loadedCount = 0;
-let triedCount = 0;
 const slides = [];
 
-// ✅ Ảnh đầu tiên luôn là 1.jpg
+// ✅ Tạo ảnh 1 và gắn vào DOM ngay lập tức
 const firstImage = document.createElement('img');
 firstImage.src = `${basePath}/1.jpg`;
 firstImage.className = 'slide lazy-slide show';
 firstImage.loading = 'eager';
+container.insertBefore(firstImage, counter);
 
 firstImage.onload = () => {
-  container.insertBefore(firstImage, counter);
   loadedCount++;
-  initSlideshow(imagesToShow);
+  checkReady();
 };
 
-// 👉 chèn ngay, không chờ load
-container.insertBefore(firstImage, counter);
+firstImage.onerror = () => {
+  console.warn("❌ Không tải được ảnh 1.jpg");
+  checkReady();
+};
 
 // ✅ Random 4 ảnh còn lại từ 2 → totalImages
 function getRandomFromTwoOnwards(count, max) {
@@ -63,7 +64,7 @@ function getRandomFromTwoOnwards(count, max) {
 
 const randomIndices = getRandomFromTwoOnwards(imagesToShow - 1, totalImages);
 
-// 🔁 Tải ảnh còn lại (từ ảnh 2 → ...)
+// 🔁 Tải ảnh 2 → ...
 randomIndices.forEach((i) => {
   const src = `${basePath}/${i}.jpg`;
   const img = document.createElement('img');
@@ -72,23 +73,20 @@ randomIndices.forEach((i) => {
   img.loading = 'lazy';
 
   img.onload = () => {
-    slides.push(img);
     loadedCount++;
-    triedCount++;
+    container.insertBefore(img, counter);
     checkReady();
   };
 
   img.onerror = () => {
-    triedCount++;
+    console.warn(`❌ Lỗi tải ảnh ${i}.jpg`);
     checkReady();
   };
 });
 
 function checkReady() {
-  if (triedCount === imagesToShow - 1) {
-    slides.forEach((img) => {
-      container.insertBefore(img, counter);
-    });
+  if (loadedCount >= imagesToShow) {
+    initSlideshow(imagesToShow);
   }
 }
 
