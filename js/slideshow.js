@@ -35,10 +35,8 @@ let loadedCount = 0;
 let triedCount = 0;
 const slides = [];
 
-// ✅ Luôn có ảnh đầu tiên là 1.jpg
-const orderedIndices = [1];
-
-// ✅ Random 4 ảnh còn lại từ 2 → totalImages, không trùng
+// ✅ Ảnh đầu tiên (1.jpg) đã có sẵn trong HTML, không load lại
+// ➕ Chỉ random từ ảnh 2 đến totalImages
 function getRandomFromTwoOnwards(count, max) {
   const nums = [];
   for (let i = 2; i <= max; i++) nums.push(i);
@@ -49,15 +47,15 @@ function getRandomFromTwoOnwards(count, max) {
   return nums.slice(0, count);
 }
 
-orderedIndices.push(...getRandomFromTwoOnwards(imagesToShow - 1, totalImages));
+const orderedIndices = getRandomFromTwoOnwards(imagesToShow - 1, totalImages);
 
-// 🔁 Tải ảnh
-orderedIndices.forEach((i, index) => {
+// 🔁 Tải các ảnh từ 2.jpg trở đi
+orderedIndices.forEach((i) => {
   const src = `${basePath}/${i}.jpg`;
   const img = document.createElement('img');
   img.src = src;
   img.className = 'slide lazy-slide';
-  img.loading = index === 0 ? 'eager' : 'lazy'; // Ảnh đầu tiên ưu tiên tải sớm
+  img.loading = 'lazy';
 
   img.onload = () => {
     slides.push(img);
@@ -73,17 +71,13 @@ orderedIndices.forEach((i, index) => {
 });
 
 function checkReady() {
-  if (triedCount === imagesToShow) {
-    slides.forEach((img, i) => {
-      if (i === 0) img.classList.add('show');
+  if (triedCount === imagesToShow - 1) {
+    // ➕ Gắn các ảnh sau vào DOM
+    slides.forEach((img) => {
       container.insertBefore(img, counter);
     });
 
-    if (slides.length > 0) {
-      initSlideshow(slides.length);
-    } else {
-      console.warn("❌ Không có ảnh nào được load.");
-    }
+    initSlideshow(imagesToShow); // tổng số ảnh là 5 (1 đã có sẵn)
   }
 }
 
