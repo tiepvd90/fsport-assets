@@ -220,7 +220,7 @@ function setupAutoplayObserver() {
         if (iframe.src !== "") iframe.src = "";
       }
     });
-  }, { threshold: 0.5 });
+  }, { threshold: 0.75 });
 
   iframes.forEach(iframe => observer.observe(iframe));
 }
