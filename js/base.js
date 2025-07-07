@@ -63,3 +63,12 @@ document.addEventListener('touchend', function (event) {
   }
   lastTouchEnd = now;
 }, false);
+// ✅ Tự động đóng popup khi người dùng ấn nút Back
+window.onpopstate = function () {
+  // Đóng các popup nếu đang mở
+  document.getElementById("cartPopup")?.classList.add("hidden");
+  document.getElementById("checkoutPopup")?.classList.add("hidden");
+  document.getElementById("voucherPopup")?.classList.add("hidden");
+  document.getElementById("productVideoPopup")?.classList.remove("show");
+  document.getElementById("slideForm")?.classList.add("hidden"); // nếu đang dùng popup trượt
+};
