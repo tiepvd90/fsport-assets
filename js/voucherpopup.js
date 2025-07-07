@@ -16,7 +16,7 @@ const simpleVoucherMap = {
 };
 
 // 🎯 Các productPage được phép áp dụng voucher qua ?ref=
-const allowedPages = ["ysandal5568", "ysandalbn68", "firstpickleball", "secpickleball", "chair001"];
+const allowedPages = ["ysandal5568", "ysandalbn68", "firstpickleball", "secpickleball", "teflon","gen4","pickleball-airforce"];
 
 // 🧨 Hiển thị popup voucher
 function showVoucherPopup(refCode, amount) {
