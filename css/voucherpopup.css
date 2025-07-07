@@ -18,7 +18,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: linear-gradient(to bottom right, #ffffff, #fef3ec);
+  background: linear-gradient(to bottom right, #e6f5fb, #d4effa); /* Xanh biển nhạt */
   padding: 48px 36px;
   border-radius: 16px;
   box-shadow: 0 0 20px rgba(0,0,0,0.2);
@@ -26,11 +26,11 @@
   text-align: center;
   width: 400px;
   max-width: 90%;
-  border: 1px solid #f5c0b0;
+  border: 1px solid #a4d4ec;
 }
 
 .voucher-popup h2 {
-  color: #d93025;
+  color: #0b7fab; /* Màu xanh đậm hơn để nổi bật */
   font-size: 24px;
   margin-bottom: 14px;
 }
@@ -38,11 +38,12 @@
 .voucher-popup p {
   font-size: 18px;
   margin-bottom: 20px;
+  color: #333;
 }
 
 .voucher-popup button {
-  background: #d93025;
-  color: white;
+  background: #000000;  /* Nút đen */
+  color: white;         /* Chữ trắng */
   border: none;
   padding: 12px 28px;
   font-weight: bold;
@@ -58,7 +59,7 @@
   right: 16px;
   font-size: 30px;
   cursor: pointer;
-  color: #999;
+  color: #666;
   font-weight: bold;
 }
 
