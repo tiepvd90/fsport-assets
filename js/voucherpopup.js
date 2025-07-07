@@ -1,9 +1,11 @@
 // 🛡️ Fallback nếu file cũ còn gọi fetchVoucherMap
 if (typeof fetchVoucherMap !== "function") {
-  window.fetchVoucherMap = () => Promise.resolve({});
+  window.fetchVoucherMap = () => {
+    return Promise.resolve({});
+  };
 }
 
-// 🔍 Lấy tên productPage từ URL (vd: /ysandal5568.html → ysandal5568)
+// 🔍 Lấy tên productPage từ URL
 function getProductPageFromUrl() {
   const path = window.location.pathname;
   const filename = path.substring(path.lastIndexOf("/") + 1);
@@ -16,6 +18,9 @@ const simpleVoucherMap = {
   "30k": 30000,
   "50k": 50000
 };
+
+// 🎯 Các productPage được phép áp dụng voucher qua ?ref=
+const allowedPages = ["ysandal5568", "ysandalbn68", "firstpickleball", "secpickleball", "chair001"];
 
 // 🎆 Tạo hiệu ứng pháo hoa
 function createFirework(x, y) {
@@ -59,6 +64,7 @@ function showVoucherPopup(refCode, amount) {
 
   document.getElementById("applyVoucherBtn")?.addEventListener("click", () => {
     localStorage.setItem("savedVoucher", JSON.stringify({ code: refCode, amount }));
+    window.currentVoucherValue = amount;
     window.__voucherWaiting = { amount };
     popup.remove();
     document.querySelector("#btn-atc")?.click();
@@ -67,22 +73,21 @@ function showVoucherPopup(refCode, amount) {
 
 // 🚀 KHỞI ĐỘNG NGAY
 (function runVoucherImmediately() {
-  const refCode = new URLSearchParams(window.location.search).get("ref");
-  const amount = simpleVoucherMap[refCode];
-
-  // ✅ Gán thẳng vào window.voucherByProduct
-  window.voucherByProduct = window.voucherByProduct || {};
+  const urlParams = new URLSearchParams(window.location.search);
+  const refRaw = urlParams.get("ref") || "";
+  const matchedCode = Object.keys(simpleVoucherMap).find(k => refRaw.startsWith(k));
+  const amount = matchedCode ? simpleVoucherMap[matchedCode] : 0;
+  const currentPage = getProductPageFromUrl();
 
   // ✅ Titan luôn được giảm 200K
-  const titanId = "pickleball-titan16";
-  window.voucherByProduct[titanId] = 200000;
+  window.voucherByProduct = window.voucherByProduct || {};
+  window.voucherByProduct["pickleball-titan16"] = 200000;
 
-  // ✅ Nếu có refCode → tất cả sản phẩm sẽ được giảm thêm amount
-  if (amount) {
-    window.__voucherWaiting = { amount }; // Dành cho các file khác đọc nếu cần
-
-    // 🎁 Gán giảm thêm cho toàn bộ sản phẩm sau này (nếu có logic dùng)
-    localStorage.setItem("savedVoucher", JSON.stringify({ code: refCode, amount }));
-    showVoucherPopup(refCode, amount);
+  // ✅ Nếu có ref + trang nằm trong danh sách cho phép
+  if (amount > 0 && allowedPages.includes(currentPage)) {
+    localStorage.setItem("savedVoucher", JSON.stringify({ code: refRaw, amount }));
+    window.currentVoucherValue = amount;
+    window.__voucherWaiting = { amount };
+    showVoucherPopup(refRaw, amount);
   }
 })();
