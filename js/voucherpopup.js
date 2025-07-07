@@ -24,12 +24,17 @@ const allowedPages = ["ysandal5568", "ysandalbn68", "firstpickleball", "secpickl
 function createFirework(x, y) {
   const fw = document.createElement("div");
   fw.className = "firework";
+
+  // 🌈 Thêm class màu ngẫu nhiên
+  const colors = ["gold", "red", "blue", "green", "purple", "orange"];
+  const randomColor = colors[Math.floor(Math.random() * colors.length)];
+  fw.classList.add(randomColor);
+
   fw.style.left = `${x}px`;
   fw.style.top = `${y}px`;
   document.body.appendChild(fw);
-  setTimeout(() => fw.remove(), 1000);
+  setTimeout(() => fw.remove(), 3000); // giữ đủ lâu để animation chạy 3s
 }
-
 function launchFireworks(cx, cy) {
   for (let i = 0; i < 10; i++) {
     const angle = Math.random() * 2 * Math.PI;
