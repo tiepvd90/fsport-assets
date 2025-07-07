@@ -26,10 +26,12 @@ function initCartPopup() {
   if (window.__voucherWaiting?.amount && id) {
     window.voucherByProduct[id] = window.__voucherWaiting.amount;
   }
-
+// ✅ Titan luôn giảm 200k
+        if (id === "pickleball-titan16") {
+          window.voucherByProduct[id] = 200000;
+        }
+      });
 });
-
-
         renderOptions(data["thuộc_tính"]);
         bindAddToCartButton();
       } else {
