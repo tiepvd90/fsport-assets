@@ -79,9 +79,6 @@ function showVoucherPopup(refCode, amount) {
 
   window.voucherByProduct = window.voucherByProduct || {};
 
-  // ✅ Titan luôn được giảm 200K (KHÔNG cần popup)
-  window.voucherByProduct["pickleball-titan16"] = 200000;
-
   // ✅ Nếu có ref hợp lệ và đúng productPage
   if (amount > 0 && allowedPages.includes(currentPage)) {
     localStorage.setItem("savedVoucher", JSON.stringify({ code: refRaw, amount }));
