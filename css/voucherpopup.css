@@ -5,11 +5,13 @@
 }
 
 .firework {
-  position: absolute;
+  position: fixed; /* ✅ fixed thay vì absolute để tính theo viewport */
   width: 10px;
   height: 10px;
   background: gold;
   border-radius: 50%;
+  pointer-events: none;
+  z-index: 99999;
   animation: fireworks 1s ease-out forwards;
 }
 
