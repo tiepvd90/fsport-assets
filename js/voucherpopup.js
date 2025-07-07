@@ -84,11 +84,24 @@ function showVoucherPopup(refCode, amount) {
 
   window.voucherByProduct = window.voucherByProduct || {};
 
-  // ✅ Nếu có ref hợp lệ và đúng productPage
+  // ✅ Nếu có ref hợp lệ và đúng productPage → hiển thị popup + lưu voucher
   if (amount > 0 && allowedPages.includes(currentPage)) {
     localStorage.setItem("savedVoucher", JSON.stringify({ code: refRaw, amount }));
     window.currentVoucherValue = amount;
     window.__voucherWaiting = { amount };
     showVoucherPopup(refRaw, amount);
+  }
+
+  // ✅ Nếu không có ref nhưng đã lưu voucher cũ → áp dụng ngầm
+  else {
+    const saved = JSON.parse(localStorage.getItem("savedVoucher") || "{}");
+    const reusedAmount = saved?.amount;
+    const reusedCode = saved?.code || "";
+
+    if (reusedAmount > 0 && allowedPages.includes(currentPage)) {
+      window.currentVoucherValue = reusedAmount;
+      window.__voucherWaiting = { amount: reusedAmount };
+      // Không cần hiển thị lại popup
+    }
   }
 })();
