@@ -118,6 +118,14 @@ function updateSelectedVariant() {
 }
 
 function selectVariant(data) {
+    // ✅ Nếu có __voucherWaiting → gán vào voucherByProduct
+  if (window.__voucherWaiting?.amount) {
+    window.voucherByProduct = window.voucherByProduct || {};
+    if (!window.voucherByProduct[data.id]) {
+      window.voucherByProduct[data.id] = window.__voucherWaiting.amount;
+    }
+  }
+
   window.selectedVariant = data;
 
   const mainImage = document.getElementById("mainImage");
