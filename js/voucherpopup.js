@@ -1,5 +1,10 @@
-// ✅ Gán productPage hiện tại
-window.productPage = "ysandal5568";
+// ✅ Lấy tên trang hiện tại từ URL
+function getProductPageFromUrl() {
+  const path = window.location.pathname;
+  const parts = path.split("/");
+  const file = parts[parts.length - 1];
+  return file.split(".")[0]; // ví dụ: ysandal5568.html → ysandal5568
+}
 
 // 🧾 Mã giảm giá đơn giản: refCode → amount
 const simpleVoucherMap = {
@@ -8,7 +13,10 @@ const simpleVoucherMap = {
   "50k": 50000
 };
 
-// 🎆 Pháo hoa hiệu ứng
+// ✅ Danh sách productPage được áp dụng
+const allowedPages = ["ysandal5568", "ysandalbn68", "supblue", "chair001"];
+
+// 🎆 Hiệu ứng pháo hoa
 function createFirework(x, y) {
   const fw = document.createElement("div");
   fw.className = "firework";
@@ -57,14 +65,14 @@ function showVoucherPopup(refCode, amount) {
   });
 }
 
-// 🚀 Khởi động sau khi DOM sẵn sàng
+// 🚀 Khởi động sau khi DOM load xong
 window.addEventListener("DOMContentLoaded", () => {
-  const allowed = ["ysandal5568", "ysandalbn68"];
-  if (!allowed.includes(window.productPage)) return;
-
   const refCode = new URLSearchParams(window.location.search).get("ref");
   const amount = simpleVoucherMap[refCode];
   if (!amount) return;
+
+  const currentPage = getProductPageFromUrl();
+  if (!allowedPages.includes(currentPage)) return;
 
   localStorage.setItem("savedVoucher", JSON.stringify({ code: refCode, amount }));
   window.currentVoucherValue = amount;
