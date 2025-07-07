@@ -1,19 +1,28 @@
-// ✅ Lấy tên trang hiện tại từ URL
+// ✅ Fallback nếu file khác gọi fetchVoucherMap
+(function safePatchOldCode() {
+  if (typeof fetchVoucherMap !== "function") {
+    window.fetchVoucherMap = () => {
+      console.warn("⚠️ fetchVoucherMap fallback: trả về rỗng.");
+      return Promise.resolve({});
+    };
+  }
+})();
+
+// ✅ Lấy productPage từ URL (vd: /product/ysandal5568.html → ysandal5568)
 function getProductPageFromUrl() {
   const path = window.location.pathname;
-  const parts = path.split("/");
-  const file = parts[parts.length - 1];
-  return file.split(".")[0]; // ví dụ: ysandal5568.html → ysandal5568
+  const filename = path.substring(path.lastIndexOf("/") + 1); // ysandal5568.html
+  return filename.split(".")[0]; // ysandal5568
 }
 
-// 🧾 Mã giảm giá đơn giản: refCode → amount
+// 🧾 Mã ref hợp lệ → số tiền giảm
 const simpleVoucherMap = {
   "20k": 20000,
   "30k": 30000,
   "50k": 50000
 };
 
-// ✅ Danh sách productPage được áp dụng
+// ✅ Chỉ áp dụng cho các productPage này
 const allowedPages = ["ysandal5568", "ysandalbn68", "supblue", "chair001"];
 
 // 🎆 Hiệu ứng pháo hoa
@@ -65,7 +74,7 @@ function showVoucherPopup(refCode, amount) {
   });
 }
 
-// 🚀 Khởi động sau khi DOM load xong
+// 🚀 Khởi chạy khi DOM sẵn sàng
 window.addEventListener("DOMContentLoaded", () => {
   const refCode = new URLSearchParams(window.location.search).get("ref");
   const amount = simpleVoucherMap[refCode];
