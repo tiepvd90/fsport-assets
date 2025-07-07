@@ -12,38 +12,11 @@ function getProductPageFromUrl() {
 
 // 🎯 Danh sách refCode hợp lệ
 const simpleVoucherMap = {
-  "20k": 20000,
   "30k": 30000,
-  "50k": 50000
 };
 
 // 🎯 Các productPage được phép áp dụng voucher qua ?ref=
 const allowedPages = ["ysandal5568", "ysandalbn68", "firstpickleball", "secpickleball", "chair001"];
-
-// 🎆 Hiệu ứng pháo hoa
-function createFirework(x, y) {
-  const fw = document.createElement("div");
-  fw.className = "firework";
-
-  // 🌈 Thêm class màu ngẫu nhiên
-  const colors = ["gold", "red", "blue", "green", "purple", "orange"];
-  const randomColor = colors[Math.floor(Math.random() * colors.length)];
-  fw.classList.add(randomColor);
-
-  fw.style.left = `${x}px`;
-  fw.style.top = `${y}px`;
-  document.body.appendChild(fw);
-  setTimeout(() => fw.remove(), 3000); // giữ đủ lâu để animation chạy 3s
-}
-function launchFireworks(cx, cy) {
-  for (let i = 0; i < 10; i++) {
-    const angle = Math.random() * 2 * Math.PI;
-    const radius = 50 + Math.random() * 50;
-    const x = cx + radius * Math.cos(angle);
-    const y = cy + radius * Math.sin(angle);
-    createFirework(x, y);
-  }
-}
 
 // 🧨 Hiển thị popup voucher
 function showVoucherPopup(refCode, amount) {
@@ -54,14 +27,11 @@ function showVoucherPopup(refCode, amount) {
   popup.id = "voucherPopup";
   popup.innerHTML = `
     <div class="voucher-close" id="closeVoucherBtn">×</div>
-    <h2>🎉 Nhân Dịp 7/7!</h2>
+    <h2>🎉 Chúc Mừng!</h2>
     <p>Bạn đã nhận được <strong>voucher giảm ${amount.toLocaleString("vi-VN")}₫</strong> khi mua vợt Pickleball và Dép Chạy Bộ Ysandal.</p>
     <button id="applyVoucherBtn">SỬ DỤNG VOUCHER NGAY</button>
   `;
   document.body.appendChild(popup);
-
-  const rect = popup.getBoundingClientRect();
-  launchFireworks(rect.left + rect.width / 2, rect.top + rect.height / 2);
 
   document.getElementById("closeVoucherBtn")?.addEventListener("click", () => popup.remove());
 
