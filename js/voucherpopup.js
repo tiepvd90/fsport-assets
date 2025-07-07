@@ -1,18 +1,17 @@
-// 🔁 Fetch JSON voucher theo loại sản phẩm từ Netlify
-function fetchVoucherMap() {
-  const jsonUrl = "https://friendly-kitten-d760ff.netlify.app/json/voucherpopup.json";
-  return fetch(jsonUrl)
-    .then(res => res.ok ? res.json() : {})
-    .catch(err => {
-      console.warn("❌ Không thể tải voucher JSON:", err);
-      return {};
-    });
-}
+// ✅ Gán productPage hiện tại
+window.productPage = "ysandal5568";
 
-// 🎆 Pháo hoa
+// 🧾 Mã giảm giá đơn giản: refCode → amount
+const simpleVoucherMap = {
+  "20k": 20000,
+  "30k": 30000,
+  "50k": 50000
+};
+
+// 🎆 Pháo hoa hiệu ứng
 function createFirework(x, y) {
-  const fw = document.createElement('div');
-  fw.className = 'firework';
+  const fw = document.createElement("div");
+  fw.className = "firework";
   fw.style.left = `${x}px`;
   fw.style.top = `${y}px`;
   document.body.appendChild(fw);
@@ -29,7 +28,7 @@ function launchFireworks(cx, cy) {
   }
 }
 
-// 🧨 Popup voucher
+// 🧨 Hiển thị popup voucher
 function showVoucherPopup(refCode, amount) {
   if (document.getElementById("voucherPopup")) return;
 
@@ -52,58 +51,24 @@ function showVoucherPopup(refCode, amount) {
   document.getElementById("applyVoucherBtn")?.addEventListener("click", () => {
     localStorage.setItem("savedVoucher", JSON.stringify({ code: refCode, amount }));
     window.currentVoucherValue = amount;
+    window.__voucherWaiting = { amount };
     popup.remove();
     document.querySelector("#btn-atc")?.click();
   });
 }
 
-// ✅ Lấy voucher từ URL hoặc localStorage
-function getVoucherFromUrlOrStorage(vouchers) {
+// 🚀 Khởi động sau khi DOM sẵn sàng
+window.addEventListener("DOMContentLoaded", () => {
+  const allowed = ["ysandal5568", "ysandalbn68"];
+  if (!allowed.includes(window.productPage)) return;
+
   const refCode = new URLSearchParams(window.location.search).get("ref");
+  const amount = simpleVoucherMap[refCode];
+  if (!amount) return;
 
-  if (refCode && vouchers[refCode]) {
-    const { amount } = vouchers[refCode];
-    localStorage.setItem("savedVoucher", JSON.stringify({ code: refCode, amount }));
-    return { code: refCode, amount, from: "url" };
-  }
-
-  // Nếu không có trong URL → kiểm tra localStorage
-  try {
-    const saved = JSON.parse(localStorage.getItem("savedVoucher"));
-    if (saved && saved.code && vouchers[saved.code]) {
-      return { ...saved, from: "storage" };
-    }
-  } catch (e) {}
-
-  return null;
-}
-
-
-// 🚀 Khởi động voucher
-window.addEventListener("DOMContentLoaded", async () => {
-  const loai = window.loai || "chair";
-  const voucherData = await fetchVoucherMap();
-  const vouchers = voucherData?.[loai] || {};
-  window.__vouchersRaw = vouchers;
-  window.voucherByProduct = {};
-
-  const voucherInfo = getVoucherFromUrlOrStorage(vouchers);
-  if (!voucherInfo) return;
-
-  const { code, amount, from } = voucherInfo;
-  const appliesTo = vouchers[code]?.appliesTo || [];
-
-  if (appliesTo.includes("*")) {
-    window.__voucherWaiting = { amount };
-  } else {
-    appliesTo.forEach(id => {
-      window.voucherByProduct[id] = amount;
-    });
-  }
-
+  localStorage.setItem("savedVoucher", JSON.stringify({ code: refCode, amount }));
   window.currentVoucherValue = amount;
+  window.__voucherWaiting = { amount };
 
-  if (from === "url") {
-    showVoucherPopup(code, amount);
-  }
+  showVoucherPopup(refCode, amount);
 });
