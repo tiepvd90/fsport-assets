@@ -78,9 +78,16 @@ function showVoucherPopup(refCode, amount) {
 window.addEventListener("DOMContentLoaded", () => {
   const refCode = new URLSearchParams(window.location.search).get("ref");
   const amount = simpleVoucherMap[refCode];
-  if (!amount) return;
-
   const currentPage = getProductPageFromUrl();
+
+  // ✅ Log debug
+  console.log("🧩 Voucher Debug Log:");
+  console.log("refCode:", refCode);
+  console.log("amount:", amount);
+  console.log("currentPage:", currentPage);
+  console.log("allowedPages.includes(currentPage):", allowedPages.includes(currentPage));
+
+  if (!amount) return;
   if (!allowedPages.includes(currentPage)) return;
 
   localStorage.setItem("savedVoucher", JSON.stringify({ code: refCode, amount }));
@@ -89,3 +96,4 @@ window.addEventListener("DOMContentLoaded", () => {
 
   showVoucherPopup(refCode, amount);
 });
+
