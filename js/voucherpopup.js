@@ -49,8 +49,8 @@ function showVoucherPopup(refCode, amount) {
   popup.id = "voucherPopup";
   popup.innerHTML = `
     <div class="voucher-close" id="closeVoucherBtn">×</div>
-    <h2>🎉 Chúc mừng!</h2>
-    <p>Bạn đã nhận được <strong>voucher giảm ${amount.toLocaleString("vi-VN")}₫</strong> nhân dịp 7/7.</p>
+    <h2>🎉 Nhân Dịp 7/7!</h2>
+    <p>Bạn đã nhận được <strong>voucher giảm ${amount.toLocaleString("vi-VN")}₫</strong> khi mua vợt Pickleball và Dép Chạy Bộ Ysandal.</p>
     <button id="applyVoucherBtn">SỬ DỤNG VOUCHER NGAY</button>
   `;
   document.body.appendChild(popup);
