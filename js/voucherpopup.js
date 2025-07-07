@@ -1,8 +1,6 @@
 // 🛡️ Fallback nếu file cũ còn gọi fetchVoucherMap
 if (typeof fetchVoucherMap !== "function") {
-  window.fetchVoucherMap = () => {
-    return Promise.resolve({});
-  };
+  window.fetchVoucherMap = () => Promise.resolve({});
 }
 
 // 🔍 Lấy tên productPage từ URL
@@ -22,7 +20,7 @@ const simpleVoucherMap = {
 // 🎯 Các productPage được phép áp dụng voucher qua ?ref=
 const allowedPages = ["ysandal5568", "ysandalbn68", "firstpickleball", "secpickleball", "chair001"];
 
-// 🎆 Tạo hiệu ứng pháo hoa
+// 🎆 Hiệu ứng pháo hoa
 function createFirework(x, y) {
   const fw = document.createElement("div");
   fw.className = "firework";
@@ -71,7 +69,7 @@ function showVoucherPopup(refCode, amount) {
   });
 }
 
-// 🚀 KHỞI ĐỘNG NGAY
+// 🚀 Khởi động
 (function runVoucherImmediately() {
   const urlParams = new URLSearchParams(window.location.search);
   const refRaw = urlParams.get("ref") || "";
@@ -79,11 +77,12 @@ function showVoucherPopup(refCode, amount) {
   const amount = matchedCode ? simpleVoucherMap[matchedCode] : 0;
   const currentPage = getProductPageFromUrl();
 
-  // ✅ Titan luôn được giảm 200K
   window.voucherByProduct = window.voucherByProduct || {};
+
+  // ✅ Titan luôn được giảm 200K (KHÔNG cần popup)
   window.voucherByProduct["pickleball-titan16"] = 200000;
 
-  // ✅ Nếu có ref + trang nằm trong danh sách cho phép
+  // ✅ Nếu có ref hợp lệ và đúng productPage
   if (amount > 0 && allowedPages.includes(currentPage)) {
     localStorage.setItem("savedVoucher", JSON.stringify({ code: refRaw, amount }));
     window.currentVoucherValue = amount;
