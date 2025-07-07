@@ -1,38 +1,26 @@
-/* 🎆 Pháo hoa animation */
 @keyframes fireworks {
-  0% {
-    transform: scale(0.5);
-    opacity: 0;
-  }
-  30% {
-    transform: scale(1.8);
-    opacity: 1;
-  }
-  100% {
-    transform: scale(0.2);
-    opacity: 0;
-  }
+  0% { transform: scale(0.5); opacity: 0; }
+  50% { transform: scale(1.2); opacity: 1; }
+  100% { transform: scale(0); opacity: 0; }
 }
 
 .firework {
   position: absolute;
-  width: 12px;
-  height: 12px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
   animation: fireworks 3s ease-out forwards;
-  transform: translate(-50%, -50%);
   pointer-events: none;
 }
 
-/* 🎨 Tùy chọn nhiều màu cho pháo hoa */
+/* 🎨 Màu ngẫu nhiên cho pháo hoa */
 .firework.gold   { background: gold; }
-.firework.red    { background: #ff3b30; }
-.firework.blue   { background: #007aff; }
-.firework.green  { background: #4cd964; }
-.firework.purple { background: #5856d6; }
-.firework.orange { background: #ff9500; }
+.firework.red    { background: red; }
+.firework.blue   { background: #2196f3; }
+.firework.green  { background: #4caf50; }
+.firework.purple { background: #9c27b0; }
+.firework.orange { background: orange; }
 
-/* 🎁 Popup Voucher */
 .voucher-popup {
   position: fixed;
   top: 50%;
@@ -50,7 +38,7 @@
 }
 
 .voucher-popup h2 {
-  color: #0b7fab;
+  color: #0b7fab; /* Màu xanh đậm hơn để nổi bật */
   font-size: 24px;
   margin-bottom: 14px;
 }
@@ -62,8 +50,8 @@
 }
 
 .voucher-popup button {
-  background: #000000;
-  color: white;
+  background: #000000;  /* Nút đen */
+  color: white;         /* Chữ trắng */
   border: none;
   padding: 12px 28px;
   font-weight: bold;
