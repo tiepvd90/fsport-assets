@@ -20,7 +20,7 @@ const simpleVoucherMap = {
 };
 
 // 🎯 Các productPage được phép áp dụng
-const allowedPages = ["ysandal5568", "ysandalbn68", "supblue", "chair001"];
+const allowedPages = ["ysandal5568", "ysandalbn68", "firstpickleball", "secpickleball", "chair001"];
 
 // 🎆 Tạo hiệu ứng pháo hoa
 function createFirework(x, y) {
@@ -83,12 +83,17 @@ function showVoucherPopup(refCode, amount) {
   console.log("currentPage:", currentPage);
   console.log("allowedPages.includes(currentPage):", allowedPages.includes(currentPage));
 
-  if (!amount) return;
-  if (!allowedPages.includes(currentPage)) return;
+  if (amount && allowedPages.includes(currentPage)) {
+    localStorage.setItem("savedVoucher", JSON.stringify({ code: refCode, amount }));
+    window.currentVoucherValue = amount;
+    window.__voucherWaiting = { amount };
+    showVoucherPopup(refCode, amount);
+  }
 
-  localStorage.setItem("savedVoucher", JSON.stringify({ code: refCode, amount }));
-  window.currentVoucherValue = amount;
-  window.__voucherWaiting = { amount };
-
-  showVoucherPopup(refCode, amount);
+  // ✅ FIX CỨNG: Nếu là Titan thì luôn giảm 200k
+  if (currentPage === "titan") {
+    window.voucherByProduct = window.voucherByProduct || {};
+    window.voucherByProduct["pickleball-titan16"] = 200000;
+    console.log("🔥 Titan voucher fixed: 200000đ");
+  }
 })();
