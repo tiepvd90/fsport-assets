@@ -30,7 +30,6 @@ function initCartPopup() {
         if (id === "pickleball-titan16") {
           window.voucherByProduct[id] = 200000;
         }
-      });
 });
         renderOptions(data["thuộc_tính"]);
         bindAddToCartButton();
