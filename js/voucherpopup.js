@@ -1,31 +1,28 @@
-// ✅ Fallback nếu file khác gọi fetchVoucherMap
-(function safePatchOldCode() {
-  if (typeof fetchVoucherMap !== "function") {
-    window.fetchVoucherMap = () => {
-      console.warn("⚠️ fetchVoucherMap fallback: trả về rỗng.");
-      return Promise.resolve({});
-    };
-  }
-})();
-
-// ✅ Lấy productPage từ URL (vd: /product/ysandal5568.html → ysandal5568)
-function getProductPageFromUrl() {
-  const path = window.location.pathname;
-  const filename = path.substring(path.lastIndexOf("/") + 1); // ysandal5568.html
-  return filename.split(".")[0]; // ysandal5568
+// 🛡️ Fallback nếu file cũ còn gọi fetchVoucherMap
+if (typeof fetchVoucherMap !== "function") {
+  window.fetchVoucherMap = () => {
+    return Promise.resolve({});
+  };
 }
 
-// 🧾 Mã ref hợp lệ → số tiền giảm
+// 🔍 Lấy tên productPage từ URL (vd: /ysandal5568.html → ysandal5568)
+function getProductPageFromUrl() {
+  const path = window.location.pathname;
+  const filename = path.substring(path.lastIndexOf("/") + 1);
+  return filename.split(".")[0];
+}
+
+// 🎯 Danh sách refCode hợp lệ
 const simpleVoucherMap = {
   "20k": 20000,
   "30k": 30000,
   "50k": 50000
 };
 
-// ✅ Chỉ áp dụng cho các productPage này
+// 🎯 Các productPage được phép áp dụng
 const allowedPages = ["ysandal5568", "ysandalbn68", "supblue", "chair001"];
 
-// 🎆 Hiệu ứng pháo hoa
+// 🎆 Tạo hiệu ứng pháo hoa
 function createFirework(x, y) {
   const fw = document.createElement("div");
   fw.className = "firework";
@@ -74,13 +71,12 @@ function showVoucherPopup(refCode, amount) {
   });
 }
 
-// 🚀 Khởi chạy khi DOM sẵn sàng
-window.addEventListener("DOMContentLoaded", () => {
+// 🚀 KHỞI ĐỘNG NGAY
+(function runVoucherImmediately() {
   const refCode = new URLSearchParams(window.location.search).get("ref");
   const amount = simpleVoucherMap[refCode];
   const currentPage = getProductPageFromUrl();
 
-  // ✅ Log debug
   console.log("🧩 Voucher Debug Log:");
   console.log("refCode:", refCode);
   console.log("amount:", amount);
@@ -95,5 +91,4 @@ window.addEventListener("DOMContentLoaded", () => {
   window.__voucherWaiting = { amount };
 
   showVoucherPopup(refCode, amount);
-});
-
+})();
