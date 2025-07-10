@@ -29,23 +29,22 @@ function saveCache(data) {
 function processAndSortData(data) {
   const random = () => Math.floor(Math.random() * 20) + 1;
 
+  // ✅ Ưu tiên category trùng
   const preferred = data
     .filter(item => item.productCategory === productCategory)
     .map(item => ({
       ...item,
       finalPriority: (item.basePriority || 0) + random() + 75
-    }))
-    .sort((a, b) => b.finalPriority - a.finalPriority);
+    }));
 
   const others = data
     .filter(item => item.productCategory !== productCategory)
     .map(item => ({
       ...item,
       finalPriority: (item.basePriority || 0) + random()
-    }))
-    .sort((a, b) => b.finalPriority - a.finalPriority);
+    }));
 
-  // ✅ Trộn preferred và others luân phiên để tránh đổ dồn 1 bên
+  // ✅ Trộn đều preferred và others
   function interleaveBalanced(preferred, others) {
     const result = [];
     let i = 0, j = 0;
@@ -54,7 +53,7 @@ function processAndSortData(data) {
     for (let k = 0; k < total; k++) {
       if ((k % 2 === 0 && i < preferred.length) || j >= others.length) {
         result.push(preferred[i++]);
-      } else if (j < others.length) {
+      } else {
         result.push(others[j++]);
       }
     }
@@ -64,7 +63,10 @@ function processAndSortData(data) {
 
   const combined = interleaveBalanced(preferred, others);
 
-  // ✅ Tiếp tục xử lý ảnh và video như cũ
+  // ✅ Sort toàn bộ lại theo finalPriority ↓
+  combined.sort((a, b) => b.finalPriority - a.finalPriority);
+
+  // ✅ Chia ảnh và video
   const images = combined.filter(i => i.contentType === "image");
   const videos = combined.filter(i => i.contentType === "youtube");
 
@@ -78,9 +80,9 @@ function processAndSortData(data) {
     if (vidIndex < videos.length) mixed.push(videos[vidIndex++]);
   }
 
-  freeflowData = mixed;
+  // ✅ Gán mảng chính để render
+  freeflowData = [...mixed];
 }
-
 
 // ✅ Tải dữ liệu chính
 async function fetchFreeFlowData() {
