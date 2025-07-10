@@ -45,8 +45,26 @@ function processAndSortData(data) {
     }))
     .sort((a, b) => b.finalPriority - a.finalPriority);
 
-  const combined = [...preferred, ...others];
+  // ✅ Trộn preferred và others luân phiên để tránh đổ dồn 1 bên
+  function interleaveBalanced(preferred, others) {
+    const result = [];
+    let i = 0, j = 0;
+    const total = preferred.length + others.length;
 
+    for (let k = 0; k < total; k++) {
+      if ((k % 2 === 0 && i < preferred.length) || j >= others.length) {
+        result.push(preferred[i++]);
+      } else if (j < others.length) {
+        result.push(others[j++]);
+      }
+    }
+
+    return result;
+  }
+
+  const combined = interleaveBalanced(preferred, others);
+
+  // ✅ Tiếp tục xử lý ảnh và video như cũ
   const images = combined.filter(i => i.contentType === "image");
   const videos = combined.filter(i => i.contentType === "youtube");
 
@@ -62,6 +80,7 @@ function processAndSortData(data) {
 
   freeflowData = mixed;
 }
+
 
 // ✅ Tải dữ liệu chính
 async function fetchFreeFlowData() {
