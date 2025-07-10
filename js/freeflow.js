@@ -79,6 +79,21 @@ function processAndSortData(data) {
     }
     if (vidIndex < videos.length) mixed.push(videos[vidIndex++]);
   }
+function reorderForVisualMasonry(data, columns = 2) {
+  const rows = Math.ceil(data.length / columns);
+  const reordered = [];
+
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < columns; c++) {
+      const index = c * rows + r;
+      if (index < data.length) {
+        reordered.push(data[index]);
+      }
+    }
+  }
+
+  return reordered;
+}
 
   // ✅ Gán mảng chính để render
   freeflowData = reorderForVisualMasonry(mixed, 2);
