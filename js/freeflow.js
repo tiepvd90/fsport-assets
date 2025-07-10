@@ -19,17 +19,16 @@ function loadCachedFreeFlow() {
   return null;
 }
 
-// ✅ Lưu cache
+// ✅ Lưu cache dữ liệu gốc
 function saveCache(data) {
   const payload = { timestamp: Date.now(), data };
   localStorage.setItem(CACHE_KEY, JSON.stringify(payload));
 }
 
-// ✅ Sắp xếp và trộn nội dung (KHÔNG còn xử lý story)
+// ✅ Trộn & sắp xếp dữ liệu
 function processAndSortData(data) {
   const random = () => Math.floor(Math.random() * 20) + 1;
 
-  // ✅ Ưu tiên category trùng
   const preferred = data
     .filter(item => item.productCategory === productCategory)
     .map(item => ({
@@ -44,12 +43,11 @@ function processAndSortData(data) {
       finalPriority: (item.basePriority || 0) + random()
     }));
 
-  // ✅ Trộn đều preferred và others
+  // Trộn preferred và others luân phiên
   function interleaveBalanced(preferred, others) {
     const result = [];
     let i = 0, j = 0;
     const total = preferred.length + others.length;
-
     for (let k = 0; k < total; k++) {
       if ((k % 2 === 0 && i < preferred.length) || j >= others.length) {
         result.push(preferred[i++]);
@@ -57,45 +55,37 @@ function processAndSortData(data) {
         result.push(others[j++]);
       }
     }
-
     return result;
   }
 
   const combined = interleaveBalanced(preferred, others);
-
-  // ✅ Sort toàn bộ lại theo finalPriority ↓
   combined.sort((a, b) => b.finalPriority - a.finalPriority);
 
-  // ✅ Chia ảnh và video
   const images = combined.filter(i => i.contentType === "image");
   const videos = combined.filter(i => i.contentType === "youtube");
 
   const mixed = [];
   let imgIndex = 0, vidIndex = 0;
-
   while (imgIndex < images.length) {
     for (let k = 0; k < 6 && imgIndex < images.length; k++) {
       mixed.push(images[imgIndex++]);
     }
     if (vidIndex < videos.length) mixed.push(videos[vidIndex++]);
   }
-function reorderForVisualMasonry(data, columns = 2) {
-  const rows = Math.ceil(data.length / columns);
-  const reordered = [];
 
-  for (let r = 0; r < rows; r++) {
-    for (let c = 0; c < columns; c++) {
-      const index = c * rows + r;
-      if (index < data.length) {
-        reordered.push(data[index]);
+  // ✅ Sắp xếp lại để masonry chia đều trái phải
+  function reorderForVisualMasonry(data, columns = 2) {
+    const rows = Math.ceil(data.length / columns);
+    const reordered = [];
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < columns; c++) {
+        const index = c * rows + r;
+        if (index < data.length) reordered.push(data[index]);
       }
     }
+    return reordered;
   }
 
-  return reordered;
-}
-
-  // ✅ Gán mảng chính để render
   freeflowData = reorderForVisualMasonry(mixed, 2);
 }
 
@@ -103,9 +93,8 @@ function reorderForVisualMasonry(data, columns = 2) {
 async function fetchFreeFlowData() {
   const cached = loadCachedFreeFlow();
   if (cached) {
-    processAndSortData(cached);
+    processAndSortData(cached); // luôn tính lại theo productCategory
     renderInitialAndLoadRest();
-    return;
   }
 
   try {
@@ -167,7 +156,7 @@ function renderInitialAndLoadRest() {
   }, 300);
 }
 
-// ✅ Render từng item (XOÁ story)
+// ✅ Render từng item
 function renderFeedItem(item, container) {
   if (renderedIds.has(item.itemId)) return;
   renderedIds.add(item.itemId);
