@@ -81,7 +81,7 @@ function processAndSortData(data) {
   }
 
   // ✅ Gán mảng chính để render
-  freeflowData = [...mixed];
+  freeflowData = reorderForVisualMasonry(mixed, 2);
 }
 
 // ✅ Tải dữ liệu chính
