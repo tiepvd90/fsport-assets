@@ -26,8 +26,8 @@ function initCartPopup() {
   if (window.__voucherWaiting?.amount && id) {
     window.voucherByProduct[id] = window.__voucherWaiting.amount;
   }
-// ✅ Titan luôn giảm 200k
-        if (id === "pickleball-titan16") {
+// ✅ Titan, rồng đen, rồng trắng, jusain black luôn giảm 200k
+        if (["pickleball-titan16", "pickleball-rongden", "pickleball-rongtrang", "pickleball-jusainblack"].includes(id)) {
           window.voucherByProduct[id] = 200000;
         }
 });
