@@ -1,4 +1,3 @@
-
 <style>
   @keyframes swingText {
     0% { transform: rotate(0deg); }
@@ -15,10 +14,11 @@
     font-weight: 900;
     text-align: center;
     font-family: 'Be Vietnam Pro', sans-serif;
-    white-space: nowrap;
-    overflow: hidden;
+    white-space: normal; /* ✅ Cho phép xuống dòng */
+    word-break: break-word; /* ✅ Ngắt từ nếu cần */
     max-width: 100%;
     text-transform: uppercase;
+    line-height: 1.3;
   }
 
   @media (max-width: 400px) {
@@ -37,13 +37,14 @@
 <div style="
   background-color: #28a745;
   width: 100%;
-  height: 40px;
+  height: auto; /* ✅ Cho phép tăng chiều cao khi xuống dòng */
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0 12px;
+  padding: 8px 12px;
   box-sizing: border-box;
   overflow: hidden;
+  text-align: center;
 ">
-  <div class="swinging-text">🎁 GIÁ RẺ VÔ ĐỊCH CHO VỢT RỒNG ĐEN, RỒNG TRẮNG, JUSAIN BLACK 🎁</div>
+  <div class="swinging-text">🎁RẺ VÔ ĐỊCH CHO VỢT RỒNG ĐEN, RỒNG TRẮNG, JUSAIN BLACK 🎁</div>
 </div>
