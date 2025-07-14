@@ -1,0 +1,49 @@
+
+<style>
+  @keyframes swingText {
+    0% { transform: rotate(0deg); }
+    25% { transform: rotate(2deg); }
+    50% { transform: rotate(-2deg); }
+    75% { transform: rotate(2deg); }
+    100% { transform: rotate(0deg); }
+  }
+
+  .swinging-text {
+    animation: swingText 1s infinite;
+    font-size: 16px;
+    color: white;
+    font-weight: 900;
+    text-align: center;
+    font-family: 'Be Vietnam Pro', sans-serif;
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 100%;
+    text-transform: uppercase;
+  }
+
+  @media (max-width: 400px) {
+    .swinging-text {
+      font-size: 14px;
+    }
+  }
+
+  @media (max-width: 320px) {
+    .swinging-text {
+      font-size: 12px;
+    }
+  }
+</style>
+
+<div style="
+  background-color: #28a745;
+  width: 100%;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 12px;
+  box-sizing: border-box;
+  overflow: hidden;
+">
+  <div class="swinging-text">🎁 GIÁ RẺ VÔ ĐỊCH CHO VỢT RỒNG ĐEN, RỒNG TRẮNG, JUSAIN BLACK 🎁</div>
+</div>
