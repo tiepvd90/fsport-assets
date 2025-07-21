@@ -16,9 +16,12 @@ const simpleVoucherMap = {
 };
 
 // 🎯 Các productPage được phép áp dụng voucher qua ?ref=
-const allowedPages = ["ysandal5568", "ysandalbn68", "firstpickleball", "secpickleball", "teflon","gen4","pickleball-airforce"];
+const allowedPages = [
+  "ysandal5568", "ysandalbn68", "firstpickleball",
+  "secpickleball", "teflon", "gen4", "pickleball-airforce"
+];
 
-// 🧨 Hiển thị popup voucher
+// 🎁 Tạo popup voucher chính
 function showVoucherPopup(refCode, amount) {
   if (document.getElementById("voucherPopup")) return;
 
@@ -44,7 +47,33 @@ function showVoucherPopup(refCode, amount) {
   });
 }
 
-// 🚀 Khởi động
+// 🖼️ Tạo ảnh nổi voucher nhỏ bên phải
+function createVoucherFloatingIcon(amount, refCode) {
+  if (document.getElementById("voucherFloatIcon")) return;
+
+  const icon = document.createElement("div");
+  icon.id = "voucherFloatIcon";
+  icon.innerHTML = `
+    <div class="voucher-float-img-wrapper">
+      <img src="https://i.postimg.cc/pdNBDJ8B/voucher30k.png" alt="voucher" />
+      <div class="voucher-float-close" id="closeVoucherIcon">×</div>
+    </div>
+  `;
+  document.body.appendChild(icon);
+
+  icon.addEventListener("click", (e) => {
+    if (e.target.id !== "closeVoucherIcon") {
+      showVoucherPopup(refCode, amount);
+    }
+  });
+
+  document.getElementById("closeVoucherIcon")?.addEventListener("click", (e) => {
+    e.stopPropagation();
+    icon.remove();
+  });
+}
+
+// 🚀 Khởi động logic voucher
 (function runVoucherImmediately() {
   const urlParams = new URLSearchParams(window.location.search);
   const refRaw = urlParams.get("ref") || "";
@@ -54,11 +83,17 @@ function showVoucherPopup(refCode, amount) {
 
   window.voucherByProduct = window.voucherByProduct || {};
 
-  // ✅ Nếu có ref hợp lệ và đúng productPage → hiển thị popup + lưu voucher
+  // ✅ Nếu có ref hợp lệ và đúng productPage
   if (amount > 0 && allowedPages.includes(currentPage)) {
     localStorage.setItem("savedVoucher", JSON.stringify({ code: refRaw, amount }));
     window.currentVoucherValue = amount;
     window.__voucherWaiting = { amount };
+
+    // Nếu chưa có popup thì hiện ảnh nổi
+    if (!document.getElementById("voucherPopup")) {
+      createVoucherFloatingIcon(amount, refRaw);
+    }
+
     showVoucherPopup(refRaw, amount);
   }
 
@@ -71,7 +106,10 @@ function showVoucherPopup(refCode, amount) {
     if (reusedAmount > 0 && allowedPages.includes(currentPage)) {
       window.currentVoucherValue = reusedAmount;
       window.__voucherWaiting = { amount: reusedAmount };
-      // Không cần hiển thị lại popup
+
+      if (!document.getElementById("voucherPopup")) {
+        createVoucherFloatingIcon(reusedAmount, reusedCode);
+      }
     }
   }
 })();
