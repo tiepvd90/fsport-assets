@@ -3,25 +3,21 @@ if (typeof fetchVoucherMap !== "function") {
   window.fetchVoucherMap = () => Promise.resolve({});
 }
 
-// 🔍 Lấy tên productPage từ URL
 function getProductPageFromUrl() {
   const path = window.location.pathname;
   const filename = path.substring(path.lastIndexOf("/") + 1);
   return filename.split(".")[0];
 }
 
-// 🎯 Danh sách refCode hợp lệ
 const simpleVoucherMap = {
   "30k": 30000,
 };
 
-// 🎯 Các productPage được phép áp dụng voucher qua ?ref=
 const allowedPages = [
   "ysandal5568", "ysandalbn68", "firstpickleball",
   "secpickleball", "teflon", "gen4", "pickleball-airforce"
 ];
 
-// 🎁 Tạo popup voucher chính
 function showVoucherPopup(refCode, amount) {
   if (document.getElementById("voucherPopup")) return;
 
@@ -32,6 +28,7 @@ function showVoucherPopup(refCode, amount) {
     <div class="voucher-close" id="closeVoucherBtn">×</div>
     <h2>🎉 Chúc Mừng!</h2>
     <p>Bạn đã nhận được <strong>voucher giảm ${amount.toLocaleString("vi-VN")}₫</strong> khi mua vợt Pickleball và Dép Chạy Bộ Ysandal.</p>
+    <p><span id="voucherCountdown" style="font-weight:bold; color:#e53935;"></span></p>
     <button id="applyVoucherBtn">SỬ DỤNG VOUCHER NGAY</button>
   `;
   document.body.appendChild(popup);
@@ -45,9 +42,10 @@ function showVoucherPopup(refCode, amount) {
     popup.remove();
     document.querySelector("#btn-atc")?.click();
   });
+
+  startVoucherCountdown(600); // 600 giây = 10 phút
 }
 
-// 🖼️ Tạo ảnh nổi voucher nhỏ bên phải
 function createVoucherFloatingIcon(amount, refCode) {
   if (document.getElementById("voucherFloatIcon")) return;
 
@@ -73,7 +71,29 @@ function createVoucherFloatingIcon(amount, refCode) {
   });
 }
 
-// 🚀 Khởi động logic voucher
+function startVoucherCountdown(seconds) {
+  const countdownEl = document.getElementById("voucherCountdown");
+  if (!countdownEl) return;
+
+  function formatTime(s) {
+    const m = Math.floor(s / 60);
+    const sec = s % 60;
+    return `${m} phút ${sec < 10 ? "0" : ""}${sec} giây`;
+  }
+
+  countdownEl.textContent = `Voucher sẽ hết hạn sau: ${formatTime(seconds)}`;
+  const interval = setInterval(() => {
+    seconds--;
+    if (seconds <= 0) {
+      clearInterval(interval);
+      countdownEl.textContent = "Voucher đã hết hạn!";
+    } else {
+      countdownEl.textContent = `Voucher sẽ hết hạn sau: ${formatTime(seconds)}`;
+    }
+  }, 1000);
+}
+
+// 🚀 Khởi động
 (function runVoucherImmediately() {
   const urlParams = new URLSearchParams(window.location.search);
   const refRaw = urlParams.get("ref") || "";
@@ -83,22 +103,17 @@ function createVoucherFloatingIcon(amount, refCode) {
 
   window.voucherByProduct = window.voucherByProduct || {};
 
-  // ✅ Nếu có ref hợp lệ và đúng productPage
   if (amount > 0 && allowedPages.includes(currentPage)) {
     localStorage.setItem("savedVoucher", JSON.stringify({ code: refRaw, amount }));
     window.currentVoucherValue = amount;
     window.__voucherWaiting = { amount };
 
-    // Nếu chưa có popup thì hiện ảnh nổi
     if (!document.getElementById("voucherPopup")) {
       createVoucherFloatingIcon(amount, refRaw);
     }
 
     showVoucherPopup(refRaw, amount);
-  }
-
-  // ✅ Nếu không có ref nhưng đã lưu voucher cũ → áp dụng ngầm
-  else {
+  } else {
     const saved = JSON.parse(localStorage.getItem("savedVoucher") || "{}");
     const reusedAmount = saved?.amount;
     const reusedCode = saved?.code || "";
