@@ -29,7 +29,7 @@ function showVoucherPopup(refCode, amount) {
     <h2>🎉 Chúc Mừng!</h2>
     <p>Bạn đã nhận được <strong>voucher giảm ${amount.toLocaleString("vi-VN")}₫</strong> khi mua vợt Pickleball và Dép Chạy Bộ Ysandal.</p>
     <p><span id="voucherCountdown" style="font-weight:bold; color:#e53935;"></span></p>
-    <button id="applyVoucherBtn">SỬ DỤNG VOUCHER NGAY</button>
+    <button id="applyVoucherBtn">LẤY MÃ GIẢM GIÁ NGAY</button>
   `;
   document.body.appendChild(popup);
 
