@@ -1,3 +1,4 @@
+/* 🎆 Hiệu ứng pháo hoa */
 @keyframes fireworks {
   0% { transform: scale(0.5); opacity: 0; }
   50% { transform: scale(1.2); opacity: 1; }
@@ -13,7 +14,6 @@
   pointer-events: none;
 }
 
-/* 🎨 Màu ngẫu nhiên cho pháo hoa */
 .firework.gold   { background: gold; }
 .firework.red    { background: red; }
 .firework.blue   { background: #2196f3; }
@@ -21,12 +21,13 @@
 .firework.purple { background: #9c27b0; }
 .firework.orange { background: orange; }
 
+/* 🎁 Popup voucher chính */
 .voucher-popup {
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: linear-gradient(to bottom right, #e6f5fb, #d4effa); /* Xanh biển nhạt */
+  background: linear-gradient(to bottom right, #e6f5fb, #d4effa);
   padding: 48px 36px;
   border-radius: 16px;
   box-shadow: 0 0 20px rgba(0,0,0,0.2);
@@ -38,7 +39,7 @@
 }
 
 .voucher-popup h2 {
-  color: #0b7fab; /* Màu xanh đậm hơn để nổi bật */
+  color: #0b7fab;
   font-size: 24px;
   margin-bottom: 14px;
 }
@@ -50,8 +51,8 @@
 }
 
 .voucher-popup button {
-  background: #000000;  /* Nút đen */
-  color: white;         /* Chữ trắng */
+  background: #000;
+  color: #fff;
   border: none;
   padding: 12px 28px;
   font-weight: bold;
@@ -61,6 +62,7 @@
   font-size: 16px;
 }
 
+/* ❌ Nút đóng popup */
 .voucher-close {
   position: absolute;
   top: 10px;
@@ -70,7 +72,51 @@
   color: #666;
   font-weight: bold;
 }
-
 .voucher-close:hover {
   color: #000;
+}
+
+/* 📌 Ảnh nổi bên phải - VOUCHER 30K */
+#voucherFloatIcon {
+  position: fixed;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 9998;
+  cursor: pointer;
+  animation: bounce 2s infinite;
+}
+
+/* ⚙️ Container cho ảnh và nút đóng */
+.voucher-float-img-wrapper {
+  position: relative;
+}
+.voucher-float-img-wrapper img {
+  width: 80px;
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 0 0 12px rgba(255, 105, 0, 0.3);
+}
+
+/* ❌ Nút tắt ảnh nổi */
+.voucher-float-close {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: black;
+  color: white;
+  font-weight: bold;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  line-height: 18px;
+  font-size: 14px;
+  text-align: center;
+  cursor: pointer;
+}
+
+/* 🎯 Animation nhẹ cho icon nổi */
+@keyframes bounce {
+  0%, 100% { transform: translateY(-50%) translateY(0); }
+  50% { transform: translateY(-50%) translateY(-8px); }
 }
