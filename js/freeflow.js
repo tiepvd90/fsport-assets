@@ -226,3 +226,37 @@ document.addEventListener("DOMContentLoaded", () => {
 
   fetchFreeFlowData();
 });
+function setupAutoplayObserver() {
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      const img = entry.target;
+      const videoId = img.getAttribute("data-video");
+      const wrapper = img.parentElement;
+
+      // Đang trong vùng nhìn
+      if (entry.isIntersecting) {
+        if (!wrapper.querySelector("iframe")) {
+          const iframe = document.createElement("iframe");
+          iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&playsinline=1&controls=0&loop=1&playlist=${videoId}`;
+          iframe.style = "width: 100%; aspect-ratio: 9/16; border-radius: 8px;";
+          iframe.setAttribute("allow", "autoplay; encrypted-media");
+          iframe.setAttribute("frameborder", "0");
+          iframe.setAttribute("allowfullscreen", "true");
+
+          wrapper.innerHTML = "";
+          wrapper.appendChild(iframe);
+        }
+      } else {
+        // Thoát khỏi vùng nhìn → xóa iframe, khôi phục thumbnail
+        if (wrapper.querySelector("iframe")) {
+          wrapper.innerHTML = `<img class="video-thumb" src="https://img.youtube.com/vi/${videoId}/hqdefault.jpg"
+            style="width: 100%; aspect-ratio: 9/16; object-fit: cover; border-radius: 8px; cursor: pointer;"
+            data-video="${videoId}" />`;
+          observer.observe(wrapper.querySelector(".video-thumb")); // gắn lại quan sát
+        }
+      }
+    });
+  }, { threshold: 0.8 });
+
+  document.querySelectorAll('.video-thumb').forEach(img => observer.observe(img));
+}
