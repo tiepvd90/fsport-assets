@@ -24,6 +24,12 @@
       margin-bottom: 16px;
     }
 
+    h2 {
+      font-size: 18px;
+      font-weight: 600;
+      margin: 24px 0 12px;
+    }
+
     .product-horizontal {
       display: flex;
       align-items: flex-start;
@@ -102,46 +108,101 @@
 <body>
   <div class="page-container">
 
-    <h1>Túi & Bóng Pickleball</h1>
+    <h1>Bộ Sưu Tập Pickleball: Vợt, Túi & Phụ Kiện Chính Hãng</h1>
 
-    <!-- Túi Pickleball -->
-<div class="product-horizontal">
-  <a href="https://fun-sport.co/pickleball/bag">
-    <img src="https://i.postimg.cc/L63ttgmT/Capture.jpg" alt="Túi Pickleball" class="product-image" />
-  </a>
-  <div class="product-info">
-    <div class="product-title">Túi Pickleball Nam Nữ – Vải Dù Chống Thấm</div>
-    <div class="product-meta">
-      <div class="price-wrap">
-        <span class="price-sale">269.000đ</span>
-        <span class="price-original">425.000đ</span>
-      </div>
-      <a href="https://fun-sport.co/pickleball/bag" class="buy-btn">XEM SẢN PHẨM</a>
-    </div>
-  </div>
-</div>
+    <h2>Túi & Bóng Pickleball</h2>
 
-<!-- Bóng Pickleball -->
-<div class="product-horizontal">
-  <a href="https://fun-sport.co/pickleball/ball">
-    <img src="https://i.postimg.cc/N0mGVKsP/1.webp" alt="Bóng Pickleball" class="product-image" />
-  </a>
-  <div class="product-info">
-    <div class="product-title">Bóng Pickleball Chuẩn Thi Đấu – Dạ Quang</div>
-    <div class="product-meta">
-      <div class="price-wrap">
-        <span class="price-sale">9.000đ</span>
-        <span class="price-original">50.000đ</span>
+    <!-- Túi -->
+    <div class="product-horizontal">
+      <a href="https://fun-sport.co/pickleball/bag">
+        <img src="https://i.postimg.cc/L63ttgmT/Capture.jpg" alt="Túi Pickleball" class="product-image" />
+      </a>
+      <div class="product-info">
+        <div class="product-title">Túi Pickleball Nam Nữ – Vải Dù Chống Thấm</div>
+        <div class="product-meta">
+          <div class="price-wrap">
+            <span class="price-sale">269.000đ</span>
+            <span class="price-original">425.000đ</span>
+          </div>
+          <a href="https://fun-sport.co/pickleball/bag" class="buy-btn">XEM SẢN PHẨM</a>
+        </div>
       </div>
-      <a href="https://fun-sport.co/pickleball/ball" class="buy-btn">XEM SẢN PHẨM</a>
     </div>
-  </div>
-</div>
-    <!-- Giữ lại giỏ hàng -->
+
+    <!-- Bóng -->
+    <div class="product-horizontal">
+      <a href="https://fun-sport.co/pickleball/ball">
+        <img src="https://i.postimg.cc/N0mGVKsP/1.webp" alt="Bóng Pickleball" class="product-image" />
+      </a>
+      <div class="product-info">
+        <div class="product-title">Bóng Pickleball Chuẩn Thi Đấu – Dạ Quang</div>
+        <div class="product-meta">
+          <div class="price-wrap">
+            <span class="price-sale">9.000đ</span>
+            <span class="price-original">50.000đ</span>
+          </div>
+          <a href="https://fun-sport.co/pickleball/ball" class="buy-btn">XEM SẢN PHẨM</a>
+        </div>
+      </div>
+    </div>
+
+    <h2>Vợt Pickleball</h2>
+    <div id="paddle-list"></div>
+
     <div id="checkoutPopup-placeholder"></div>
   </div>
 
-  <!-- Inject checkoutpopup -->
+  <!-- Khai báo mảng + render JS -->
+  <script>
+    const paddles = [
+      {
+        title: "Pickleball AirForce Đúc nguyên khối – 14mm - thiên công",
+        image: "https://i.postimg.cc/2S8RNHLQ/xam.webp",
+        price: "1.200.000đ",
+        originalPrice: "1.750.000đ",
+        link: "/product/pickleball-airforce"
+      },
+      {
+        title: "Pickleball Teflon – 14mm- Carbon Tràn Viền, lõi chống ồn",
+        image: "https://i.postimg.cc/HLk1G279/2.jpg",
+        price: "1.450.000đ",
+        originalPrice: "2.000.000đ",
+        link: "/pickleball/teflon"
+      },
+      {
+        title: "Vợt Pickleball Phantom – 14mm- carbon Tràn Viền, lõi gen4",
+        image: "https://i.postimg.cc/MK9c2sn9/1.jpg",
+        price: "2.100.000đ",
+        originalPrice: "3.000.000đ",
+        link: "/pickleball/phantom"
+      }
+    ];
+
+    const container = document.getElementById("paddle-list");
+
+    paddles.forEach(p => {
+      const html = `
+        <div class="product-horizontal">
+          <a href="${p.link}">
+            <img src="${p.image}" alt="${p.title}" class="product-image" />
+          </a>
+          <div class="product-info">
+            <div class="product-title">${p.title}</div>
+            <div class="product-meta">
+              <div class="price-wrap">
+                <span class="price-sale">${p.price}</span>
+                <span class="price-original">${p.originalPrice}</span>
+              </div>
+              <a href="${p.link}" class="buy-btn">XEM SẢN PHẨM</a>
+            </div>
+          </div>
+        </div>
+      `;
+      container.insertAdjacentHTML("beforeend", html);
+    });
+  </script>
+
+  <!-- Giữ lại checkoutpopup -->
   <script>
     async function injectHTML(file, placeholderId) {
       const res = await fetch(file);
@@ -202,8 +263,6 @@
         }
       });
   </script>
-
-  <!-- Base -->
   <script src="/js/base.js"></script>
 </body>
 </html>
