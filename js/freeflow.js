@@ -1,3 +1,4 @@
+// ✅ FREEFLOW CONFIG
 const CACHE_KEY = "freeflowCache";
 const CACHE_DURATION_MS = 30 * 60 * 1000;
 const fallbackUrl = "https://script.google.com/macros/s/AKfycbwuEh9sP65vyQL0XzU8gY1Os0QYV_K5egKJgm8OhImAPjvdyrQiU7XCY909N99TnltP/exec";
@@ -7,6 +8,7 @@ let itemsLoaded = 0;
 let productCategory = window.productCategory || "0";
 const renderedIds = new Set();
 
+// ✅ Load cache nếu còn hạn
 function loadCachedFreeFlow() {
   try {
     const cached = JSON.parse(localStorage.getItem(CACHE_KEY));
@@ -17,11 +19,13 @@ function loadCachedFreeFlow() {
   return null;
 }
 
+// ✅ Lưu cache dữ liệu gốc
 function saveCache(data) {
   const payload = { timestamp: Date.now(), data };
   localStorage.setItem(CACHE_KEY, JSON.stringify(payload));
 }
 
+// ✅ Trộn & sắp xếp dữ liệu
 function processAndSortData(data) {
   const random = () => Math.floor(Math.random() * 20) + 1;
 
@@ -39,6 +43,7 @@ function processAndSortData(data) {
       finalPriority: (item.basePriority || 0) + random()
     }));
 
+  // Trộn preferred và others luân phiên
   function interleaveBalanced(preferred, others) {
     const result = [];
     let i = 0, j = 0;
@@ -68,6 +73,7 @@ function processAndSortData(data) {
     if (vidIndex < videos.length) mixed.push(videos[vidIndex++]);
   }
 
+  // ✅ Sắp xếp lại để masonry chia đều trái phải
   function reorderForVisualMasonry(data, columns = 2) {
     const rows = Math.ceil(data.length / columns);
     const reordered = [];
@@ -83,10 +89,11 @@ function processAndSortData(data) {
   freeflowData = reorderForVisualMasonry(mixed, 2);
 }
 
+// ✅ Tải dữ liệu chính
 async function fetchFreeFlowData() {
   const cached = loadCachedFreeFlow();
   if (cached) {
-    processAndSortData(cached);
+    processAndSortData(cached); // luôn tính lại theo productCategory
     renderInitialAndLoadRest();
   }
 
@@ -106,6 +113,7 @@ async function fetchFreeFlowData() {
   }
 }
 
+// ✅ Gọi Google Sheet
 async function fetchFromGoogleSheet(existingData) {
   try {
     const res = await fetch(fallbackUrl);
@@ -130,6 +138,7 @@ async function fetchFromGoogleSheet(existingData) {
   }
 }
 
+// ✅ Render ban đầu
 function renderInitialAndLoadRest() {
   const container = document.getElementById("freeflowFeed");
   if (!container) return;
@@ -147,6 +156,7 @@ function renderInitialAndLoadRest() {
   }, 300);
 }
 
+// ✅ Render từng item
 function renderFeedItem(item, container) {
   if (renderedIds.has(item.itemId)) return;
   renderedIds.add(item.itemId);
@@ -169,9 +179,19 @@ function renderFeedItem(item, container) {
   } else if (item.contentType === "youtube") {
     mediaHtml = `
       <div class="video-wrapper" style="position: relative;">
-        <img class="video-thumb" src="https://img.youtube.com/vi/${item.youtube}/hqdefault.jpg"
-             data-video="${item.youtube}" data-product="${item.productPage}"
-             style="width: 100%; aspect-ratio: 9/16; object-fit: cover; border-radius: 8px; cursor: pointer;" />
+        <img class="video-thumb" src="https://fun-sport.co/assets/images/thumb/vid-thumb.webp"
+             style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; border-radius: 8px; z-index: 1;" />
+        <iframe
+          data-video-id="${item.youtube}"
+          src=""
+          frameborder="0"
+          allow="autoplay; encrypted-media"
+          allowfullscreen
+          playsinline
+          muted
+          style="width: 100%; aspect-ratio: 9/16; border-radius: 8px; position: relative; z-index: 2;">
+        </iframe>
+        <div class="video-overlay" data-video="${item.youtube}" style="position: absolute; inset: 0; cursor: pointer; z-index: 3;"></div>
       </div>
       <div class="video-info" style="display: flex; align-items: center; gap: 8px; padding: 4px 8px 0;">
         <a href="${item.productPage}">
@@ -193,55 +213,44 @@ function renderFeedItem(item, container) {
 
   if (item.contentType === "image") {
     div.onclick = () => window.location.href = item.productPage;
+  } else if (item.contentType === "youtube") {
+    setTimeout(() => {
+      const overlay = div.querySelector(".video-overlay");
+      overlay.onclick = () => {
+        const id = overlay.getAttribute("data-video");
+        const popup = document.getElementById("videoOverlay");
+        const frame = document.getElementById("videoFrame");
+        frame.src = `https://www.youtube.com/embed/${id}?autoplay=1&mute=0&playsinline=1&controls=1`;
+        popup.style.display = "flex";
+        const viewBtn = document.getElementById("viewProductBtn");
+        if (viewBtn) viewBtn.onclick = () => window.location.href = item.productPage;
+      };
+    }, 0);
   }
 
   container.appendChild(div);
 }
 
+// ✅ Tự động phát YouTube
 function setupAutoplayObserver() {
+  const iframes = document.querySelectorAll('iframe[data-video-id]');
   const observer = new IntersectionObserver(entries => {
     entries.forEach(entry => {
-      const img = entry.target;
-      const videoId = img.getAttribute("data-video");
-      const productPage = img.getAttribute("data-product");
-      const wrapper = img.parentElement;
-
+      const iframe = entry.target;
+      const id = iframe.getAttribute('data-video-id');
+      const targetSrc = `https://www.youtube.com/embed/${id}?autoplay=1&mute=1&playsinline=1&controls=1&loop=1&playlist=${id}`;
       if (entry.isIntersecting) {
-        if (!wrapper.querySelector("iframe")) {
-          const iframe = document.createElement("iframe");
-          iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&playsinline=1&controls=0&loop=1&playlist=${videoId}`;
-          iframe.style = "width: 100%; aspect-ratio: 9/16; border-radius: 8px;";
-          iframe.setAttribute("allow", "autoplay; encrypted-media");
-          iframe.setAttribute("frameborder", "0");
-          iframe.setAttribute("allowfullscreen", "true");
-          wrapper.innerHTML = "";
-          wrapper.appendChild(iframe);
-
-          // Gắn lại click mở popup có tiếng
-          iframe.style.cursor = "pointer";
-          iframe.addEventListener("click", () => {
-            const popup = document.getElementById("videoOverlay");
-            const frame = document.getElementById("videoFrame");
-            frame.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=0&playsinline=1&controls=1`;
-            popup.style.display = "flex";
-            const viewBtn = document.getElementById("viewProductBtn");
-            if (viewBtn) viewBtn.onclick = () => window.location.href = productPage;
-          });
-        }
+        if (iframe.src !== targetSrc) iframe.src = targetSrc;
       } else {
-        wrapper.innerHTML = `<img class="video-thumb" src="https://img.youtube.com/vi/${videoId}/hqdefault.jpg"
-          data-video="${videoId}" data-product="${productPage}"
-          style="width: 100%; aspect-ratio: 9/16; object-fit: cover; border-radius: 8px; cursor: pointer;" />`;
-
-        const newThumb = wrapper.querySelector(".video-thumb");
-        observer.observe(newThumb);
+        if (iframe.src !== "") iframe.src = "";
       }
     });
-  }, { threshold: 0.8 });
+  }, { threshold: 0.75 });
 
-  document.querySelectorAll(".video-thumb").forEach(img => observer.observe(img));
+  iframes.forEach(iframe => observer.observe(iframe));
 }
 
+// ✅ Init
 document.addEventListener("DOMContentLoaded", () => {
   const closeBtn = document.getElementById("videoCloseBtn");
   if (closeBtn) closeBtn.onclick = () => {
@@ -256,6 +265,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 window.addEventListener("pageshow", function (event) {
   if (event.persisted || performance.getEntriesByType("navigation")[0]?.type === "back_forward") {
+    // ❗ Reload lại nếu quay lại từ nút back trên Safari (chỉ dành cho trang có FreeFlow)
     location.reload();
   }
 });
