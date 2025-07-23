@@ -1,0 +1,21 @@
+{
+  "thuộc_tính": [
+    {
+      "label": "Màu Sắc",
+      "key": "Màu Sắc",
+      "type": "option",
+      "display": "thumbnail",
+      "values": [
+        { "text": "Đen", "image": "https://i.postimg.cc/852FtJrV/1.jpg" }
+      ]
+    }
+  ],
+  "biến_thể": [
+    {
+      "id": "phantom",
+      "category": "pickleball",
+      "Giá": 2100000,
+      "Giá gốc": 2900000
+    }
+  ]
+}
