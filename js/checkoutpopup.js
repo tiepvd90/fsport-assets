@@ -9,7 +9,7 @@ function loadCart() {
   }
 }
 loadCart();
-
+updateCartItemCount();
 let shippingFee = 0;
 let shippingFeeOriginal = 0;
 let voucherValue = 0;
@@ -136,7 +136,9 @@ function removeItem(index) {
 // ✅ LƯU GIỎ HÀNG VÀO localStorage
 function saveCart() {
   localStorage.setItem("cart", JSON.stringify(window.cart));
+  updateCartItemCount();
 }
+
 
 // ✅ TẢI PHÍ VẬN CHUYỂN
 function loadShippingFee() {
@@ -262,3 +264,11 @@ window.addEventListener("DOMContentLoaded", () => {
   loadCart();
   bindCheckoutEvents();
 });
+function updateCartItemCount() {
+  const badge = document.getElementById("cartItemCount");
+  if (!badge) return;
+
+  const cart = Array.isArray(window.cart) ? window.cart : [];
+  const totalQty = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+  badge.textContent = totalQty;
+}
