@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>Bộ Sưu Tập Pickleball: Vợt, Túi & Phụ Kiện Chính Hãng</title>
 
-  <!-- ✅ Fonts & CSS -->
+  <!-- Fonts & CSS -->
   <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="/css/base.css" />
   <link rel="stylesheet" href="https://friendly-kitten-d760ff.netlify.app/css/checkoutpopup.css" />
@@ -18,27 +18,34 @@
       padding: 16px;
     }
 
+    h1 {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+
     .product-horizontal {
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       background: #fff;
-      padding: 12px 0;
-      gap: 12px;
+      padding: 16px 0;
+      gap: 14px;
       border-bottom: 1px solid #eee;
     }
 
     .product-image {
-      width: 96px;
-      height: 96px;
+      width: 120px;
+      height: 120px;
       object-fit: cover;
       border-radius: 8px;
+      flex-shrink: 0;
     }
 
     .product-info {
       flex: 1;
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 8px;
     }
 
     .product-title {
@@ -48,52 +55,44 @@
       color: #000;
     }
 
-    .product-price {
-      font-size: 14px;
+    .product-meta {
       display: flex;
-      align-items: baseline;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
       gap: 8px;
     }
 
     .price-sale {
       color: #e53935;
       font-weight: 700;
+      font-size: 14px;
     }
 
     .price-original {
       color: #999;
       text-decoration: line-through;
       font-size: 13px;
+      margin-left: 6px;
     }
 
-    .product-footer {
+    .price-wrap {
       display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .badge-sale {
-      background: linear-gradient(to right, #ff7043, #ff3d00);
-      color: white;
-      font-size: 12px;
-      padding: 2px 6px;
-      border-radius: 4px;
-      font-weight: 600;
+      align-items: baseline;
     }
 
     .buy-btn {
-      background: #ff3d00;
-      color: white;
+      background: #000;
+      color: #fff;
       font-size: 13px;
       font-weight: 600;
       text-decoration: none;
-      padding: 6px 10px;
+      padding: 6px 12px;
       border-radius: 4px;
       white-space: nowrap;
     }
   </style>
 
-  <!-- ✅ JS khai báo -->
   <script>
     window.loai = "pickleball";
     window.productCategory = "pickleball";
@@ -103,45 +102,43 @@
 <body>
   <div class="page-container">
 
-    <h1 style="font-size: 20px; font-weight: 600; margin-bottom: 16px;">Phụ Kiện & Bóng Pickleball</h1>
+    <h1>Túi & Phụ Kiện Chính Hãng</h1>
 
-    <!-- ✅ Product Card 1 -->
+    <!-- Túi Pickleball -->
     <div class="product-horizontal">
       <img src="https://i.postimg.cc/L63ttgmT/Capture.jpg" alt="Túi Pickleball" class="product-image" />
       <div class="product-info">
         <div class="product-title">Túi Pickleball Nam Nữ – Vải Dù Chống Thấm</div>
-        <div class="product-price">
-          <span class="price-sale">269.000đ</span>
-          <span class="price-original">425.000đ</span>
-        </div>
-        <div class="product-footer">
-          <div class="badge-sale">-37%</div>
+        <div class="product-meta">
+          <div class="price-wrap">
+            <span class="price-sale">269.000đ</span>
+            <span class="price-original">425.000đ</span>
+          </div>
           <a href="https://fun-sport.co/pickleball/bag" class="buy-btn">XEM SẢN PHẨM</a>
         </div>
       </div>
     </div>
 
-    <!-- ✅ Product Card 2 -->
+    <!-- Bóng Pickleball -->
     <div class="product-horizontal">
       <img src="https://i.postimg.cc/N0mGVKsP/1.webp" alt="Bóng Pickleball" class="product-image" />
       <div class="product-info">
         <div class="product-title">Bóng Pickleball Chuẩn Thi Đấu – Dạ Quang</div>
-        <div class="product-price">
-          <span class="price-sale">9.000đ</span>
-          <span class="price-original">50.000đ</span>
-        </div>
-        <div class="product-footer">
-          <div class="badge-sale">-82%</div>
+        <div class="product-meta">
+          <div class="price-wrap">
+            <span class="price-sale">9.000đ</span>
+            <span class="price-original">50.000đ</span>
+          </div>
           <a href="https://fun-sport.co/pickleball/ball" class="buy-btn">XEM SẢN PHẨM</a>
         </div>
       </div>
     </div>
 
-    <!-- ✅ Placeholder cho giỏ hàng -->
+    <!-- Giữ lại giỏ hàng -->
     <div id="checkoutPopup-placeholder"></div>
   </div>
 
-  <!-- ✅ Inject script cho giỏ hàng -->
+  <!-- Inject checkoutpopup -->
   <script>
     async function injectHTML(file, placeholderId) {
       const res = await fetch(file);
@@ -183,7 +180,7 @@
     setupPage();
   </script>
 
-  <!-- ✅ Tracking -->
+  <!-- Tracking -->
   <script src="https://friendly-kitten-d760ff.netlify.app/js/tracking.js"></script>
   <div id="base-placeholder"></div>
   <script>
@@ -203,7 +200,7 @@
       });
   </script>
 
-  <!-- ✅ Base -->
+  <!-- Base -->
   <script src="/js/base.js"></script>
 </body>
 </html>
