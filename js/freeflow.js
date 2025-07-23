@@ -270,4 +270,4 @@ window.addEventListener("pageshow", function (event) {
     isBackFromCache = true;
   }
 });
-
+window.addEventListener("unload", function () {});
