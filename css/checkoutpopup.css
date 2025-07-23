@@ -261,18 +261,19 @@
 /* === BADGE SỐ LƯỢNG === */
 #cartItemCount {
   position: absolute;
-  bottom: -4px;
-  right: -4px;
+  bottom: -6px;
+  right: -6px;
   background: red;
   color: white;
-  font-size: 11px;
+  font-size: 13px;
   font-weight: bold;
   border-radius: 50%;
-  width: 16px;
-  height: 16px;
+  width: 20px;
+  height: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
   line-height: 1;
   pointer-events: none;
+  box-shadow: 0 0 3px rgba(0,0,0,0.2);
 }
