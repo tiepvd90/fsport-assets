@@ -239,9 +239,23 @@ function setupAutoplayObserver() {
       } else {
         if (wrapper.querySelector("iframe")) {
           wrapper.innerHTML = `<img class="video-thumb" src="https://img.youtube.com/vi/${videoId}/hqdefault.jpg"
-            data-video="${videoId}"
-            style="width: 100%; aspect-ratio: 9/16; object-fit: cover; border-radius: 8px; cursor: pointer;" />`;
-          observer.observe(wrapper.querySelector(".video-thumb"));
+  data-video="${videoId}"
+  style="width: 100%; aspect-ratio: 9/16; object-fit: cover; border-radius: 8px; cursor: pointer;" />`;
+
+const newThumb = wrapper.querySelector(".video-thumb");
+observer.observe(newThumb);
+
+// ✅ Gắn lại sự kiện click để mở popup khi người dùng bấm vào thumbnail
+newThumb.addEventListener("click", () => {
+  const popup = document.getElementById("videoOverlay");
+  const frame = document.getElementById("videoFrame");
+  frame.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=0&playsinline=1&controls=1`;
+  popup.style.display = "flex";
+
+  const viewBtn = document.getElementById("viewProductBtn");
+  if (viewBtn) viewBtn.onclick = () => window.location.href = item.productPage;
+});
+
         }
       }
     });
