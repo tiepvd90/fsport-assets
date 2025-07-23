@@ -264,26 +264,8 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 window.addEventListener("pageshow", function (event) {
-  const isBack = event.persisted || performance.getEntriesByType("navigation")[0]?.type === "back_forward";
-
-  if (isBack) {
-    const container = document.getElementById("freeflowFeed");
-
-    // Xoá hết và render lại toàn bộ nếu quay lại trang
-    if (container) {
-      container.innerHTML = ""; // Xoá sạch
-      itemsLoaded = 0;
-      freeflowData.slice(0, 4).forEach(item => renderFeedItem(item, container));
-      itemsLoaded = 4;
-
-      setTimeout(() => {
-        const remaining = freeflowData.slice(4);
-        remaining.forEach(item => renderFeedItem(item, container));
-        itemsLoaded = freeflowData.length;
-        setupAutoplayObserver(); // Gắn lại observer
-      }, 300);
-    }
+  if (event.persisted || performance.getEntriesByType("navigation")[0]?.type === "back_forward") {
+    // ❗ Reload lại nếu quay lại từ nút back trên Safari (chỉ dành cho trang có FreeFlow)
+    location.reload();
   }
 });
-
-
