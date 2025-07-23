@@ -262,3 +262,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   fetchFreeFlowData();
 });
+
+window.addEventListener("pageshow", function (event) {
+  if (event.persisted || performance.getEntriesByType("navigation")[0]?.type === "back_forward") {
+    // ❗ Reload lại nếu quay lại từ nút back trên Safari (chỉ dành cho trang có FreeFlow)
+    location.reload();
+  }
+});
