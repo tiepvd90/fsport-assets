@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Bộ Sưu Tập Pickleball: Vợt, Túi & Phụ Kiện Chính Hãng</title>
+
+  <!-- ✅ CSS -->
+  <link rel="stylesheet" href="/css/base.css" />
+  <link rel="stylesheet" href="https://friendly-kitten-d760ff.netlify.app/css/checkoutpopup.css" />
+  <link rel="icon" type="image/png" href="/favicon.png" />
+  <style>
+    .section-title {
+      font-size: 20px;
+      font-weight: 600;
+      text-align: center;
+      margin: 24px 0 16px;
+    }
+    .card-row {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      padding: 0 16px;
+    }
+    .product-card {
+      display: flex;
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #fff;
+    }
+    .product-card img {
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+      flex-shrink: 0;
+    }
+    .product-info {
+      flex-grow: 1;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .product-title {
+      font-size: 15px;
+      font-weight: 500;
+      margin-bottom: 4px;
+      line-height: 1.4;
+    }
+    .price {
+      font-size: 15px;
+      font-weight: bold;
+      color: #e60000;
+    }
+    .price-old {
+      text-decoration: line-through;
+      font-size: 13px;
+      color: #999;
+      margin-left: 6px;
+    }
+    .discount {
+      background: #ff424e;
+      color: white;
+      font-size: 12px;
+      font-weight: bold;
+      padding: 2px 6px;
+      border-radius: 4px;
+      margin-left: 8px;
+    }
+    .btn-view {
+      align-self: flex-start;
+      margin-top: 8px;
+      padding: 6px 12px;
+      background: #222;
+      color: white;
+      border-radius: 16px;
+      font-size: 13px;
+      text-decoration: none;
+    }
+  </style>
+
+  <script>
+    window.loai = "pickleball";
+    window.productCategory = "pickleball";
+    window.productPage = "collection";
+  </script>
+</head>
+<body>
+  <div class="page-container">
+    <div id="checkoutPopup-placeholder"></div>
+
+    <h1 class="section-title">Bộ Sưu Tập Pickleball: Vợt, Túi & Phụ Kiện Chính Hãng</h1>
+
+    <div class="card-row">
+      <!-- Túi -->
+      <div class="product-card">
+        <img src="https://i.postimg.cc/L63ttgmT/Capture.jpg" alt="Túi Pickleball">
+        <div class="product-info">
+          <div>
+            <div class="product-title">Túi Pickleball Nam Nữ – Vải Dù Chống Thấm</div>
+            <div>
+              <span class="price">269.000đ</span>
+              <span class="price-old">425.000đ</span>
+              <span class="discount">-37%</span>
+            </div>
+          </div>
+          <a class="btn-view" href="https://fun-sport.co/pickleball/bag">XEM</a>
+        </div>
+      </div>
+
+      <!-- Bóng -->
+      <div class="product-card">
+        <img src="https://i.postimg.cc/N0mGVKsP/1.webp" alt="Bóng Pickleball">
+        <div class="product-info">
+          <div>
+            <div class="product-title">Bóng Pickleball Chuẩn Thi Đấu – Dạ Quang</div>
+            <div>
+              <span class="price">9.000đ</span>
+              <span class="price-old">50.000đ</span>
+              <span class="discount">-82%</span>
+            </div>
+          </div>
+          <a class="btn-view" href="https://fun-sport.co/pickleball/ball">XEM</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ✅ Inject checkoutpopup -->
+  <script>
+    async function injectHTML(file, placeholderId) {
+      const res = await fetch(file);
+      const html = await res.text();
+      const container = document.getElementById(placeholderId);
+      const temp = document.createElement("div");
+      temp.innerHTML = html;
+      Array.from(temp.children).forEach(el => {
+        if (el.tagName === "SCRIPT") {
+          const script = document.createElement("script");
+          if (el.src) {
+            script.src = el.src;
+            script.async = false;
+          } else {
+            script.textContent = el.textContent;
+          }
+          document.body.appendChild(script);
+        } else {
+          container.appendChild(el);
+        }
+      });
+    }
+
+    injectHTML("/html/checkoutpopup.html", "checkoutPopup-placeholder");
+  </script>
+
+  <!-- ✅ Tracking -->
+  <script src="https://friendly-kitten-d760ff.netlify.app/js/tracking.js"></script>
+  <div id="base-placeholder"></div>
+  <script>
+    fetch("/html/base.html")
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById("base-placeholder").outerHTML = html;
+        if (typeof trackBothPixels === "function") {
+          trackBothPixels("ViewContent", {
+            content_id: window.productPage,
+            content_name: window.productPage,
+            content_category: window.productCategory,
+            value: 0,
+            currency: "VND"
+          });
+        }
+      });
+  </script>
+
+  <!-- ✅ Base script -->
+  <script src="/js/base.js"></script>
+</body>
+</html>
