@@ -268,12 +268,22 @@ window.addEventListener("pageshow", function (event) {
 
   if (isBack) {
     const container = document.getElementById("freeflowFeed");
-    const hasItems = container && container.querySelector(".feed-item");
 
-    // Chỉ reload nếu không có item nào hiển thị (trường hợp Safari back bị trắng)
-    if (!hasItems) {
-      location.reload();
+    // Xoá hết và render lại toàn bộ nếu quay lại trang
+    if (container) {
+      container.innerHTML = ""; // Xoá sạch
+      itemsLoaded = 0;
+      freeflowData.slice(0, 4).forEach(item => renderFeedItem(item, container));
+      itemsLoaded = 4;
+
+      setTimeout(() => {
+        const remaining = freeflowData.slice(4);
+        remaining.forEach(item => renderFeedItem(item, container));
+        itemsLoaded = freeflowData.length;
+        setupAutoplayObserver(); // Gắn lại observer
+      }, 300);
     }
   }
 });
+
 
