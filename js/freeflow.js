@@ -7,6 +7,7 @@ let freeflowData = [];
 let itemsLoaded = 0;
 let productCategory = window.productCategory || "0";
 const renderedIds = new Set();
+let isBackFromCache = false;
 
 // ✅ Load cache nếu còn hạn
 function loadCachedFreeFlow() {
@@ -240,10 +241,11 @@ function setupAutoplayObserver() {
       const id = iframe.getAttribute('data-video-id');
       const targetSrc = `https://www.youtube.com/embed/${id}?autoplay=1&mute=1&playsinline=1&controls=1&loop=1&playlist=${id}`;
       if (entry.isIntersecting) {
-        if (iframe.src !== targetSrc) iframe.src = targetSrc;
-      } else {
-        if (iframe.src !== "") iframe.src = "";
-      }
+  if (iframe.src !== targetSrc) iframe.src = targetSrc;
+} else {
+  if (!isBackFromCache && iframe.src !== "") iframe.src = "";
+}
+
     });
   }, { threshold: 0.75 });
 
@@ -265,7 +267,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 window.addEventListener("pageshow", function (event) {
   if (event.persisted || performance.getEntriesByType("navigation")[0]?.type === "back_forward") {
-    // ❗ Reload lại nếu quay lại từ nút back trên Safari (chỉ dành cho trang có FreeFlow)
-    location.reload();
+    isBackFromCache = true;
   }
 });
+
