@@ -78,7 +78,7 @@ window.onpopstate = function () {
 
 // 🟢 Danh sách user
 const userPool = [
-  "TuanTran", "MinhNguyen", "HuyenLe", "AnhT***", "B***Ngoc",
+  "TuanTran", "M**n", "HuyenLe", "AnhT***", "B***Ngoc",
   "HoangA***", "L***Huong", "Q***Khanh", "P***Thao", "KimL***",
   "MyLinh", "ThanhT***", "NgocA***", "VanK***", "HaiD***",
   "ThuT***", "DucH***", "NhatM***", "B***Tram", "GiaB***",
@@ -92,13 +92,13 @@ const userPool = [
 
 // 🟠 Danh sách sản phẩm
 const productPool = [
-  "Vợt Phantom", "Vợt Gen4 Hồng", "Vợt AirForce Xám", "Vợt Teflon", 
-  "Vợt Rồng Đen", "Vợt Gen4 Xám", "Vợt T700 Pro", "Vợt AirForce Đen", "Thuyền SUP", "Vợt Rồng Trắng"
+  "Vợt Phantom", "Vợt Gen4 Hồng", "Vợt AirForce", "Vợt Teflon", 
+  "Vợt Rồng Đen", "Vợt Gen4 Xám", "Vợt T700 Pro", "Vợt AirForce", "Thuyền SUP", "Vợt Rồng Trắng"
 ];
 
 // 🔵 Danh sách hành động
 const actionPool = [
-    "Vừa Đặt Mua", "Vừa Thêm Vào Giỏ Hàng"
+    "Vừa Đặt Mua", "Vừa Thêm Vào Giỏ"
 ];
 
 // ✅ Hàm chọn ngẫu nhiên
