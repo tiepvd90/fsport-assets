@@ -72,3 +72,63 @@ window.onpopstate = function () {
   document.getElementById("productVideoPopup")?.classList.remove("show");
   document.getElementById("slideForm")?.classList.add("hidden"); // nếu đang dùng popup trượt
 };
+/* ===========================
+   ✅ FAKE NOTIFY BẮT ĐẦU Ở ĐÂY
+   =========================== */
+
+// 🟢 Danh sách user
+const userPool = [
+  "TuanTran", "MinhNguyen", "HuyenLe", "AnhT***", "B***Ngoc",
+  "HoangA***", "L***Huong", "Q***Khanh", "P***Thao", "KimL***",
+  "MyLinh", "ThanhT***", "NgocA***", "VanK***", "HaiD***",
+  "ThuT***", "DucH***", "NhatM***", "B***Tram", "GiaB***",
+  "KhanhL***", "LienH***", "Phuoc***", "ThaoN***", "Vuong***",
+  "NamPh***", "HieuT***", "T***Anh", "LinhD***", "Phat***",
+  "T***Trang", "BaoN***", "Quynh***", "D***Tien", "HoaiA***",
+  "AnK***", "PhongL***", "Dieu***", "H***Phat", "MaiL***",
+  "Khang***", "SonT***", "YenL***", "Toan***", "Huong***",
+  "Kiet***", "VyL***", "LocT***", "Trang***", "Trung***"
+];
+
+// 🟠 Danh sách sản phẩm
+const productPool = [
+  "Vợt Phantom", "Vợt Gen4", "Vợt AirForce",
+  "Vợt Teflon", "Vợt Thiên Công", "Ghế bệt chỉnh dáng"
+];
+
+// 🔵 Danh sách hành động
+const actionPool = [
+  "vừa mua", "vừa thêm vào giỏ hàng", "đặt mua thành công",
+  "chốt đơn ngay", "vừa thanh toán", "thêm vào giỏ"
+];
+
+// ✅ Hàm chọn ngẫu nhiên
+function randomItem(arr) {
+  return arr[Math.floor(Math.random() * arr.length)];
+}
+
+// ✅ Hiển thị popup
+function showFakeNotification() {
+  const user = randomItem(userPool);
+  const product = randomItem(productPool);
+  const action = randomItem(actionPool);
+
+  const popup = document.getElementById("fakeNotification");
+  if (!popup) return; // nếu chưa có div thì thoát
+
+  popup.textContent = `${user} ${action} ${product}`;
+  popup.style.left = "20px"; // trượt vào
+
+  setTimeout(() => {
+    popup.style.left = "-400px"; // trượt ra
+  }, 5000);
+
+  // Random lại thời gian hiển thị tiếp theo (20–40 giây)
+  const nextTime = Math.floor(Math.random() * 20000) + 20000;
+  setTimeout(showFakeNotification, nextTime);
+}
+
+// ✅ Khởi động fake notify sau khi DOM load
+document.addEventListener("DOMContentLoaded", () => {
+  setTimeout(showFakeNotification, 5000);
+});
