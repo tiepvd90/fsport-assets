@@ -92,14 +92,13 @@ const userPool = [
 
 // 🟠 Danh sách sản phẩm
 const productPool = [
-  "Vợt Phantom", "Vợt Gen4", "Vợt AirForce",
-  "Vợt Teflon", "Vợt Thiên Công", "Ghế bệt chỉnh dáng"
+  "Vợt Phantom", "Vợt Gen4 Hồng", "Vợt AirForce Xám", "Vợt Teflon", 
+  "Vợt Rồng Đen", "Vợt Gen4 Xám", "Vợt T700 Pro", "Vợt AirForce Đen", "Thuyền SUP", "Vợt Rồng Trắng"
 ];
 
 // 🔵 Danh sách hành động
 const actionPool = [
-  "vừa mua", "vừa thêm vào giỏ hàng", "đặt mua thành công",
-  "chốt đơn ngay", "vừa thanh toán", "thêm vào giỏ"
+    "Vừa Đặt Mua", "Vừa Thêm Vào Giỏ Hàng"
 ];
 
 // ✅ Hàm chọn ngẫu nhiên
@@ -124,7 +123,7 @@ function showFakeNotification() {
   }, 5000);
 
   // Random lại thời gian hiển thị tiếp theo (20–40 giây)
-  const nextTime = Math.floor(Math.random() * 20000) + 20000;
+  const nextTime = Math.floor(Math.random() * 10000) + 10000;
   setTimeout(showFakeNotification, nextTime);
 }
 
