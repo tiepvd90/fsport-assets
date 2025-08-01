@@ -1,7 +1,7 @@
 /* ✅ Container bao toàn bộ mô tả sản phẩm */
 .desc-container {
   font-family: 'Be Vietnam Pro', sans-serif;
-  max-width: 480px;
+  max-width: 960px;
   margin: 0 auto;
   padding: 0 16px;
   box-sizing: border-box;
