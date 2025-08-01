@@ -122,8 +122,8 @@ function showFakeNotification() {
     popup.style.left = "-400px"; // trượt ra
   }, 5000);
 
-  // Random lại thời gian hiển thị tiếp theo (20–40 giây)
-  const nextTime = Math.floor(Math.random() * 10000) + 10000;
+  // Random lại thời gian hiển thị tiếp theo (15–25 giây)
+  const nextTime = Math.floor(Math.random() * 15000) + 10000;
   setTimeout(showFakeNotification, nextTime);
 }
 
