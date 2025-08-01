@@ -6,20 +6,20 @@
       "type": "option",
       "display": "thumbnail",
       "values": [
-        { "text": "Chữ Phantom Màu Xanh", "image": "https://i.postimg.cc/852FtJrV/1.jpg" },
-        { "text": "Chữ Phantom Màu Tím", "image": "https://i.postimg.cc/wBMPSRqj/tim.webp" }
+        {
+          "text": "Chữ Phantom Màu Xanh",
+          "image": "https://i.postimg.cc/852FtJrV/1.jpg"
+        },
+        {
+          "text": "Chữ Phantom Màu Tím",
+          "image": "https://i.postimg.cc/wBMPSRqj/tim.webp"
+        }
       ]
     }
   ],
   "biến_thể": [
     {
-      "id": "phantom-xanh",
-      "category": "pickleball",
-      "Giá": 2100000,
-      "Giá gốc": 2900000
-    },
-    {
-      "id": "phantom-tim",
+      "id": "phantom",
       "category": "pickleball",
       "Giá": 2100000,
       "Giá gốc": 2900000
