@@ -1,15 +1,16 @@
 .fake-notify {
   position: fixed;
-  bottom: 60px;           /* ✅ nằm ngay trên sticky footer */
-  left: -400px;
-  background: rgba(50, 50, 50, 0.85);  /* ✅ nền xám đậm hơn */
-  color: #fff;            /* ✅ chữ chuyển sang trắng cho nổi bật */
-  padding: 10px 16px;
-  border-radius: 8px;
+  bottom: 40px;                  /* 60 x 2/3 = 40 */
+  left: -267px;                  /* 400 x 2/3 ≈ 267 */
+  background: rgba(200, 200, 200, 0.9);   /* ✅ nền xám nhạt hơn */
+  color: #333;                   /* ✅ chữ xám đậm để nổi trên nền nhạt */
+  padding: 7px 10px;             /* 10/16 x 2/3 ≈ 7/10 */
+  border-radius: 5px;            /* 8 x 2/3 ≈ 5 */
   font-family: 'Be Vietnam Pro', sans-serif;
-  font-size: 14px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  font-size: 9px;                /* 14 x 2/3 ≈ 9 */
+  box-shadow: 0 3px 8px rgba(0,0,0,0.2);
   white-space: nowrap;
   transition: left 0.6s ease;
   z-index: 9999;
+  transform: scale(1);           /* scale mặc định giữ nguyên vì đã giảm thủ công */
 }
