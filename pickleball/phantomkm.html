@@ -13,7 +13,6 @@
   <link rel="stylesheet" href="../css/slideshow.css" />
   <link rel="icon" type="image/png" href="/favicon.png" />
 
-  <!-- ✅ JS định nghĩa -->
   <script>
     window.loai = "pickleball";
     window.productCategory = "pickleball";
@@ -22,17 +21,17 @@
   </script>
 
   <style>
-    /* ✅ Voucher bar sticky */
+    /* ✅ Voucher bar: hạ z-index để icon nổi lên */
     .voucher-bar {
       position: sticky;
       top: 0;
-      background: #118C4F; /* xanh lá đậm */
+      background: #118C4F;
       color: white;
       font-family: 'Be Vietnam Pro', sans-serif;
       text-align: center;
       padding: 6px 8px;
       font-size: 14px;
-      z-index: 9999;
+      z-index: 500; /* 🔽 hạ xuống */
       overflow: hidden;
     }
 
@@ -54,21 +53,16 @@
       100% { left: 125%; }
     }
 
-    /* ✅ Text chính */
     .voucher-main-text {
       font-weight: 600;
       font-size: 16px;
       position: relative;
       z-index: 2;
     }
-
-    /* ✅ Số 111K nổi bật */
     .voucher-main-text strong {
       font-size: 18px;
       color: #fff;
     }
-
-    /* ✅ Text phụ */
     .voucher-sub-text {
       font-size: 14px;
       display: block;
@@ -77,8 +71,6 @@
       position: relative;
       z-index: 2;
     }
-
-    /* ✅ Countdown */
     #countdownTimer {
       font-weight: bold;
       font-size: 18px;
@@ -87,6 +79,14 @@
       border-radius: 4px;
       margin-left: 4px;
       color: #fff;
+    }
+
+    /* ✅ Đảm bảo icon giỏ hàng nổi trên voucher bar */
+    #cartIcon {
+      position: fixed;
+      top: 12px;
+      right: 12px;
+      z-index: 9999; /* 🔼 icon luôn ở trên cùng */
     }
   </style>
 </head>
@@ -107,7 +107,7 @@
 
   </div> <!-- 🔚 đóng page-container tạm thời -->
 
-  <!-- ✅ Voucher bar: ĐẶT NGOÀI page-container để sticky hoạt động chuẩn -->
+  <!-- ✅ Voucher bar sticky -->
   <div class="voucher-bar">
     <div class="voucher-main-text">
       Voucher <strong>111K</strong> cho Vợt Phantom
@@ -117,9 +117,8 @@
     </span>
   </div>
 
-  <!-- ✅ Mở lại page-container để tiếp tục nội dung trang -->
+  <!-- ✅ Mở lại page-container -->
   <div class="page-container">
-
     <!-- ✅ Tiêu đề + Shipping -->
     <div class="product-hero">
       <h1 style="font-size: 14px; font-weight: bold; margin-top: 8px; font-family: 'Be Vietnam Pro', sans-serif;">
@@ -268,7 +267,7 @@
   <!-- ✅ Base script -->
   <script src="/js/base.js"></script>
 
-  <!-- ✅ JS Đếm ngược Voucher -->
+  <!-- ✅ JS Countdown -->
   <script>
     const COUNTDOWN_KEY = "voucherCountdownEnd";
     let endTime = localStorage.getItem(COUNTDOWN_KEY);
