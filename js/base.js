@@ -131,3 +131,8 @@ function showFakeNotification() {
 document.addEventListener("DOMContentLoaded", () => {
   setTimeout(showFakeNotification, 5000);
 });
+// ✅ KEEP TAB ALIVE – tránh Safari unload tab gây about:blank
+setInterval(() => {
+  fetch('/favicon.ico', { cache: "no-store" })
+    .catch(err => console.log("Ping lỗi:", err));
+}, 5 * 60 * 1000);
