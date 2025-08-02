@@ -1,6 +1,6 @@
 .fake-notify {
   position: fixed;
-  bottom: 40px;                  /* giữ 2/3 so với bản gốc */
+  bottom: 60px;                  /* giữ 2/3 so với bản gốc */
   left: -267px;                  /* 400 x 2/3 ≈ 267 */
   background: #f2f2f2;           /* ✅ xám rất nhạt, không opacity */
   color: #000;                   /* ✅ chữ đen */
