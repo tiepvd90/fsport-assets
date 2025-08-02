@@ -22,60 +22,62 @@
   </script>
 
   <style>
-    /* ✅ Voucher bar sticky */
+    /* ✅ Voucher bar gọn */
     .voucher-bar {
       position: sticky;
       top: 0;
       width: 100%;
-      background: linear-gradient(90deg, #1e9600, #79c000, #a8e063); /* xanh lá gradient */
+      background: #118C4F; /* xanh lá đậm rõ nét */
       color: white;
       font-family: 'Be Vietnam Pro', sans-serif;
       text-align: center;
-      padding: 14px 10px;
-      font-size: 18px;
+      padding: 6px 8px;
+      font-size: 14px;
       z-index: 1000;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-      animation: gentleShake 3s infinite ease-in-out;
+      overflow: hidden;
+      /* Hiệu ứng ánh sáng quét */
+      position: relative;
     }
 
-    /* ✅ Dòng chữ chính */
-    .voucher-main-text {
-      font-weight: bold;
-      font-size: 22px;
-      text-transform: uppercase;
+    /* ✅ Nội dung chữ */
+    .voucher-bar .voucher-main-text {
+      font-weight: 600;
     }
 
-    /* ✅ Chữ 111K nổi bật */
-    .voucher-main-text strong {
-      font-size: 28px;
-      color: #fff700;
-      text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
-    }
-
-    /* ✅ Dòng chữ phụ “Kết thúc sau…” */
-    .voucher-sub-text {
+    /* ✅ Con số 111K nổi bật hơn một chút */
+    .voucher-bar .voucher-main-text strong {
       font-size: 16px;
-      margin-top: 6px;
-      display: block;
-      font-weight: 500;
+      color: #fff;
     }
 
-    /* ✅ Đồng hồ đếm ngược nổi bật */
+    /* ✅ Countdown nhỏ gọn */
     #countdownTimer {
       font-weight: bold;
-      font-size: 26px;
-      background: rgba(255,255,255,0.2);
-      padding: 3px 10px;
-      border-radius: 6px;
-      margin-left: 6px;
-      color: #fff700;
+      font-size: 16px;
+      background: rgba(255,255,255,0.15);
+      padding: 1px 6px;
+      border-radius: 4px;
+      margin-left: 4px;
+      color: #fff;
     }
 
-    /* ✅ Hiệu ứng lắc nhẹ */
-    @keyframes gentleShake {
-      0%, 100% { transform: translateX(0); }
-      50% { transform: translateX(-2px); }
-      75% { transform: translateX(2px); }
+    /* ✅ Shine Effect */
+    .voucher-bar::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -75%;
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(120deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.5) 50%, rgba(255,255,255,0) 100%);
+      transform: skewX(-20deg);
+      animation: shine 3s infinite;
+    }
+
+    @keyframes shine {
+      0% { left: -75%; }
+      50% { left: 125%; }
+      100% { left: 125%; }
     }
   </style>
 </head>
@@ -94,14 +96,11 @@
     </div>
     <script src="../js/slideshow.js"></script>
 
-    <!-- ✅ Voucher bar sticky -->
+    <!-- ✅ Voucher bar -->
     <div class="voucher-bar">
       <div class="voucher-main-text">
-        Voucher <strong>111K</strong> cho Vợt Phantom
+        Voucher <strong>111K</strong> cho Vợt Phantom – kết thúc sau <span id="countdownTimer">60:00</span>
       </div>
-      <span class="voucher-sub-text">
-        Kết thúc sau <span id="countdownTimer">60:00</span>
-      </span>
     </div>
 
     <!-- ✅ Tiêu đề + Shipping -->
