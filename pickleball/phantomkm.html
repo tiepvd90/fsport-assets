@@ -22,85 +22,30 @@
   </script>
 
   <style>
-    /* ✅ Sticky header voucher */
-    #voucherHeader {
+    /* ✅ Sticky voucher bar */
+    .voucher-bar {
       position: sticky;
       top: 0;
-      width: 100%;
       background: linear-gradient(90deg, #ff3b30, #ff6f61);
       color: white;
-      text-align: center;
       font-family: 'Be Vietnam Pro', sans-serif;
-      z-index: 9999;
-      padding: 12px 0;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-      animation: headerPulse 2s infinite alternate;
-    }
-
-    .voucher-content {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      max-width: 480px;
-      margin: auto;
-    }
-
-    .voucher-icon {
-      font-size: 20px;
-      animation: iconBounce 1.2s infinite;
-    }
-
-    .voucher-text-wrapper {
-      text-align: center;
-      line-height: 1.3;
-    }
-
-    .voucher-main-text {
-      font-size: 18px;
       font-weight: bold;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
+      text-align: center;
+      padding: 12px;
+      font-size: 16px;
+      z-index: 1000;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
     }
-
-    .voucher-sub-text {
-      font-size: 14px;
-      margin-top: 4px;
+    .voucher-bar span {
       background: rgba(255,255,255,0.2);
       padding: 2px 6px;
       border-radius: 4px;
-      display: inline-block;
-    }
-
-    #countdownTimer {
-      font-weight: bold;
+      margin-left: 6px;
       color: #fff700;
-    }
-
-    @keyframes headerPulse {
-      from { background: linear-gradient(90deg, #ff3b30, #ff6f61); }
-      to { background: linear-gradient(90deg, #ff6f61, #ff3b30); }
-    }
-
-    @keyframes iconBounce {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-3px); }
     }
   </style>
 </head>
 <body>
-
-  <!-- ✅ STICKY HEADER VOUCHER -->
-  <div id="voucherHeader">
-    <div class="voucher-content">
-      <span class="voucher-icon">🎁</span>
-      <div class="voucher-text-wrapper">
-        <div class="voucher-main-text">Voucher 111K cho Vợt Phantom</div>
-        <div class="voucher-sub-text">Chỉ còn lại trong <span id="countdownTimer">60:00</span></div>
-      </div>
-      <span class="voucher-icon">🎁</span>
-    </div>
-  </div>
 
   <div class="page-container">
 
@@ -115,18 +60,11 @@
     </div>
     <script src="../js/slideshow.js"></script>
 
-    <!-- ✅ Flash Banner -->
-    <div id="flashbanner-placeholder"></div>
-    <script>
-      fetch("/html/flashsalebanner/template01.html")
-        .then(res => res.text())
-        .then(html => {
-          document.getElementById("flashbanner-placeholder").innerHTML = html;
-          const s = document.createElement("script");
-          s.src = "/js/flashsalebanner/template01.js";
-          document.body.appendChild(s);
-        });
-    </script>
+    <!-- ✅ Voucher sticky bar ngay dưới slideshow -->
+    <div class="voucher-bar">
+      🎁 <strong>Voucher 111K cho Vợt Phantom</strong> – Kết thúc sau
+      <span id="countdownTimer">60:00</span>
+    </div>
 
     <!-- ✅ Tiêu đề + Shipping -->
     <div class="product-hero">
@@ -143,7 +81,7 @@
       </div>
     </div>
 
-    <!-- ✅ KHỐI 3: Video sản phẩm -->
+    <!-- ✅ KHỐI VIDEO -->
     <div class="product-hero" style="margin-top: 12px;">
       <div id="video-placeholder">Đang tải video...</div>
     </div>
@@ -156,7 +94,6 @@
           const script = document.createElement("script");
           script.src = "/js/productvideo.js";
           script.onload = () => {
-            console.log("✅ Đã load JS, gọi init...");
             if (typeof initProductVideo === "function") {
               initProductVideo();
             }
@@ -166,7 +103,7 @@
         .catch(err => console.warn("❌ Lỗi khi chèn productvideo.html:", err));
     </script>
 
-    <!-- ✅ KHỐI 2: Reviews -->
+    <!-- ✅ Reviews -->
     <div class="product-hero" style="margin-top: 12px;">
       <div id="review-placeholder"></div>
     </div>
@@ -282,7 +219,7 @@
     const COUNTDOWN_KEY = "voucherCountdownEnd";
     let endTime = localStorage.getItem(COUNTDOWN_KEY);
     if (!endTime) {
-      endTime = Date.now() + 60 * 60 * 1000; 
+      endTime = Date.now() + 60 * 60 * 1000;
       localStorage.setItem(COUNTDOWN_KEY, endTime);
     } else {
       endTime = parseInt(endTime);
@@ -293,14 +230,13 @@
       let diff = Math.floor((endTime - now) / 1000);
       if (diff <= 0) {
         document.getElementById("countdownTimer").textContent = "00:00";
-        document.querySelector(".voucher-main-text").textContent = "🎉 Hết giờ nhận Voucher 🎉";
-        document.querySelector(".voucher-sub-text").style.display = "none";
         clearInterval(timer);
         return;
       }
       const minutes = Math.floor(diff / 60);
       const seconds = diff % 60;
-      document.getElementById("countdownTimer").textContent = `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+      document.getElementById("countdownTimer").textContent = 
+        `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
     }
 
     const timer = setInterval(updateCountdown, 1000);
