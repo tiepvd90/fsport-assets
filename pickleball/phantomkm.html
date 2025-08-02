@@ -22,46 +22,24 @@
   </script>
 
   <style>
-    /* ✅ Voucher bar gọn */
+    /* ✅ Voucher bar sticky trên cùng */
     .voucher-bar {
       position: sticky;
       top: 0;
+      left: 0;
       width: 100%;
-      background: #118C4F; /* xanh lá đậm rõ nét */
+      background: #118C4F; /* xanh lá đậm */
       color: white;
       font-family: 'Be Vietnam Pro', sans-serif;
       text-align: center;
       padding: 6px 8px;
       font-size: 14px;
-      z-index: 1000;
+      z-index: 9999;
       overflow: hidden;
-      /* Hiệu ứng ánh sáng quét */
       position: relative;
     }
 
-    /* ✅ Nội dung chữ */
-    .voucher-bar .voucher-main-text {
-      font-weight: 600;
-    }
-
-    /* ✅ Con số 111K nổi bật hơn một chút */
-    .voucher-bar .voucher-main-text strong {
-      font-size: 16px;
-      color: #fff;
-    }
-
-    /* ✅ Countdown nhỏ gọn */
-    #countdownTimer {
-      font-weight: bold;
-      font-size: 16px;
-      background: rgba(255,255,255,0.15);
-      padding: 1px 6px;
-      border-radius: 4px;
-      margin-left: 4px;
-      color: #fff;
-    }
-
-    /* ✅ Shine Effect */
+    /* ✅ Hiệu ứng ánh sáng lướt */
     .voucher-bar::before {
       content: "";
       position: absolute;
@@ -69,19 +47,59 @@
       left: -75%;
       width: 50%;
       height: 100%;
-      background: linear-gradient(120deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.5) 50%, rgba(255,255,255,0) 100%);
+      background: linear-gradient(120deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0) 100%);
       transform: skewX(-20deg);
       animation: shine 3s infinite;
     }
-
     @keyframes shine {
       0% { left: -75%; }
       50% { left: 125%; }
       100% { left: 125%; }
     }
+
+    /* ✅ Chữ chính */
+    .voucher-main-text {
+      font-weight: 600;
+      font-size: 16px;
+    }
+
+    /* ✅ Chữ 111K nổi bật */
+    .voucher-main-text strong {
+      font-size: 18px;
+      color: #fff;
+    }
+
+    /* ✅ Dòng phụ */
+    .voucher-sub-text {
+      font-size: 14px;
+      display: block;
+      margin-top: 4px;
+      font-weight: 400;
+    }
+
+    /* ✅ Countdown nổi bật hơn chữ */
+    #countdownTimer {
+      font-weight: bold;
+      font-size: 18px;
+      background: rgba(255,255,255,0.15);
+      padding: 1px 8px;
+      border-radius: 4px;
+      margin-left: 4px;
+      color: #fff;
+    }
   </style>
 </head>
 <body>
+
+  <!-- ✅ Voucher bar trên cùng -->
+  <div class="voucher-bar">
+    <div class="voucher-main-text">
+      Voucher <strong>111K</strong> cho Vợt Phantom
+    </div>
+    <span class="voucher-sub-text">
+      Kết thúc sau <span id="countdownTimer">60:00</span>
+    </span>
+  </div>
 
   <div class="page-container">
 
@@ -95,13 +113,6 @@
       <div class="slide-counter" id="slideCounter">1/1</div>
     </div>
     <script src="../js/slideshow.js"></script>
-
-    <!-- ✅ Voucher bar -->
-    <div class="voucher-bar">
-      <div class="voucher-main-text">
-        Voucher <strong>111K</strong> cho Vợt Phantom – kết thúc sau <span id="countdownTimer">60:00</span>
-      </div>
-    </div>
 
     <!-- ✅ Tiêu đề + Shipping -->
     <div class="product-hero">
@@ -272,7 +283,7 @@
       }
       const minutes = Math.floor(diff / 60);
       const seconds = diff % 60;
-      document.getElementById("countdownTimer").textContent = 
+      document.getElementById("countdownTimer").textContent =
         `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
     }
 
