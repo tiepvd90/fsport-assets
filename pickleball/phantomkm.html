@@ -22,26 +22,60 @@
   </script>
 
   <style>
-    /* ✅ Sticky voucher bar */
+    /* ✅ Voucher bar sticky */
     .voucher-bar {
       position: sticky;
       top: 0;
-      background: linear-gradient(90deg, #ff3b30, #ff6f61);
+      width: 100%;
+      background: linear-gradient(90deg, #1e9600, #79c000, #a8e063); /* xanh lá gradient */
       color: white;
       font-family: 'Be Vietnam Pro', sans-serif;
-      font-weight: bold;
       text-align: center;
-      padding: 12px;
-      font-size: 16px;
+      padding: 14px 10px;
+      font-size: 18px;
       z-index: 1000;
       box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      animation: gentleShake 3s infinite ease-in-out;
     }
-    .voucher-bar span {
+
+    /* ✅ Dòng chữ chính */
+    .voucher-main-text {
+      font-weight: bold;
+      font-size: 22px;
+      text-transform: uppercase;
+    }
+
+    /* ✅ Chữ 111K nổi bật */
+    .voucher-main-text strong {
+      font-size: 28px;
+      color: #fff700;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+    }
+
+    /* ✅ Dòng chữ phụ “Kết thúc sau…” */
+    .voucher-sub-text {
+      font-size: 16px;
+      margin-top: 6px;
+      display: block;
+      font-weight: 500;
+    }
+
+    /* ✅ Đồng hồ đếm ngược nổi bật */
+    #countdownTimer {
+      font-weight: bold;
+      font-size: 26px;
       background: rgba(255,255,255,0.2);
-      padding: 2px 6px;
-      border-radius: 4px;
+      padding: 3px 10px;
+      border-radius: 6px;
       margin-left: 6px;
       color: #fff700;
+    }
+
+    /* ✅ Hiệu ứng lắc nhẹ */
+    @keyframes gentleShake {
+      0%, 100% { transform: translateX(0); }
+      50% { transform: translateX(-2px); }
+      75% { transform: translateX(2px); }
     }
   </style>
 </head>
@@ -60,10 +94,14 @@
     </div>
     <script src="../js/slideshow.js"></script>
 
-    <!-- ✅ Voucher sticky bar ngay dưới slideshow -->
+    <!-- ✅ Voucher bar sticky -->
     <div class="voucher-bar">
-      🎁 <strong>Voucher 111K cho Vợt Phantom</strong> – Kết thúc sau
-      <span id="countdownTimer">60:00</span>
+      <div class="voucher-main-text">
+        Voucher <strong>111K</strong> cho Vợt Phantom
+      </div>
+      <span class="voucher-sub-text">
+        Kết thúc sau <span id="countdownTimer">60:00</span>
+      </span>
     </div>
 
     <!-- ✅ Tiêu đề + Shipping -->
@@ -81,7 +119,7 @@
       </div>
     </div>
 
-    <!-- ✅ KHỐI VIDEO -->
+    <!-- ✅ Video sản phẩm -->
     <div class="product-hero" style="margin-top: 12px;">
       <div id="video-placeholder">Đang tải video...</div>
     </div>
