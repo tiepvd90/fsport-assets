@@ -1,16 +1,15 @@
 .fake-notify {
   position: fixed;
-  bottom: 40px;                  /* 60 x 2/3 = 40 */
+  bottom: 40px;                  /* giữ 2/3 so với bản gốc */
   left: -267px;                  /* 400 x 2/3 ≈ 267 */
-  background: rgba(200, 200, 200, 0.9);   /* ✅ nền xám nhạt hơn */
-  color: #333;                   /* ✅ chữ xám đậm để nổi trên nền nhạt */
-  padding: 7px 10px;             /* 10/16 x 2/3 ≈ 7/10 */
-  border-radius: 5px;            /* 8 x 2/3 ≈ 5 */
+  background: #f2f2f2;           /* ✅ xám rất nhạt, không opacity */
+  color: #000;                   /* ✅ chữ đen */
+  padding: 7px 10px;             /* giảm padding theo tỉ lệ */
+  border-radius: 5px;            /* bo góc nhẹ */
   font-family: 'Be Vietnam Pro', sans-serif;
-  font-size: 9px;                /* 14 x 2/3 ≈ 9 */
-  box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+  font-size: 12px;               /* ✅ chữ to hơn một chút */
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
   white-space: nowrap;
   transition: left 0.6s ease;
   z-index: 9999;
-  transform: scale(1);           /* scale mặc định giữ nguyên vì đã giảm thủ công */
 }
