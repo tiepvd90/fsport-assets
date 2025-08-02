@@ -36,19 +36,6 @@
     </div>
     <script src="../js/slideshow.js"></script>
 
-    <!-- ✅ Flash Banner -->
-    <div id="flashbanner-placeholder"></div>
-    <script>
-      fetch("/html/flashsalebanner/template01.html")
-        .then(res => res.text())
-        .then(html => {
-          document.getElementById("flashbanner-placeholder").innerHTML = html;
-          const s = document.createElement("script");
-          s.src = "/js/flashsalebanner/template01.js";
-          document.body.appendChild(s);
-        });
-    </script>
-
     <!-- ✅ Tiêu đề + Shipping -->
     <div class="product-hero">
       <h1 style="font-size: 14px; font-weight: bold; margin-top: 8px; font-family: 'Be Vietnam Pro', sans-serif;">
