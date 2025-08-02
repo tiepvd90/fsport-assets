@@ -22,19 +22,17 @@
   </script>
 
   <style>
-    /* ✅ Voucher bar sticky trên cùng */
+    /* ✅ Voucher bar (nằm dưới slideshow nhưng sticky khi cuộn tới) */
     .voucher-bar {
       position: sticky;
       top: 0;
-      left: 0;
-      width: 100%;
       background: #118C4F; /* xanh lá đậm */
       color: white;
       font-family: 'Be Vietnam Pro', sans-serif;
       text-align: center;
       padding: 6px 8px;
       font-size: 14px;
-      z-index: 9999;
+      z-index: 999;
       overflow: hidden;
       position: relative;
     }
@@ -91,16 +89,6 @@
 </head>
 <body>
 
-  <!-- ✅ Voucher bar trên cùng -->
-  <div class="voucher-bar">
-    <div class="voucher-main-text">
-      Voucher <strong>111K</strong> cho Vợt Phantom
-    </div>
-    <span class="voucher-sub-text">
-      Kết thúc sau <span id="countdownTimer">60:00</span>
-    </span>
-  </div>
-
   <div class="page-container">
 
     <!-- ✅ Placeholders -->
@@ -113,6 +101,16 @@
       <div class="slide-counter" id="slideCounter">1/1</div>
     </div>
     <script src="../js/slideshow.js"></script>
+
+    <!-- ✅ Voucher bar: nằm dưới slideshow -->
+    <div class="voucher-bar">
+      <div class="voucher-main-text">
+        Voucher <strong>111K</strong> cho Vợt Phantom
+      </div>
+      <span class="voucher-sub-text">
+        Kết thúc sau <span id="countdownTimer">60:00</span>
+      </span>
+    </div>
 
     <!-- ✅ Tiêu đề + Shipping -->
     <div class="product-hero">
