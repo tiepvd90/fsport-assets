@@ -31,7 +31,7 @@
       text-align: center;
       padding: 6px 8px;
       font-size: 14px;
-      z-index: 500; /* 🔽 hạ xuống */
+      z-index: 500;
       overflow: hidden;
     }
 
@@ -86,7 +86,7 @@
       position: fixed;
       top: 12px;
       right: 12px;
-      z-index: 9999; /* 🔼 icon luôn ở trên cùng */
+      z-index: 9999;
     }
   </style>
 </head>
@@ -267,12 +267,13 @@
   <!-- ✅ Base script -->
   <script src="/js/base.js"></script>
 
-  <!-- ✅ JS Countdown -->
+  <!-- ✅ JS Countdown – Lưu localStorage nhưng reset mỗi 60p -->
   <script>
     const COUNTDOWN_KEY = "voucherCountdownEnd";
     let endTime = localStorage.getItem(COUNTDOWN_KEY);
+
     if (!endTime) {
-      endTime = Date.now() + 60 * 60 * 1000;
+      endTime = Date.now() + 60 * 60 * 1000; // 60 phút
       localStorage.setItem(COUNTDOWN_KEY, endTime);
     } else {
       endTime = parseInt(endTime);
@@ -281,11 +282,14 @@
     function updateCountdown() {
       const now = Date.now();
       let diff = Math.floor((endTime - now) / 1000);
+
+      // ✅ Nếu hết giờ -> reset thêm 60 phút nữa
       if (diff <= 0) {
-        document.getElementById("countdownTimer").textContent = "00:00";
-        clearInterval(timer);
-        return;
+        endTime = Date.now() + 60 * 60 * 1000;
+        localStorage.setItem(COUNTDOWN_KEY, endTime);
+        diff = 60 * 60; // reset diff để đếm lại
       }
+
       const minutes = Math.floor(diff / 60);
       const seconds = diff % 60;
       document.getElementById("countdownTimer").textContent =
