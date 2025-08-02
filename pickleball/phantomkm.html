@@ -22,7 +22,7 @@
   </script>
 
   <style>
-    /* ✅ Voucher bar (nằm dưới slideshow nhưng sticky khi cuộn tới) */
+    /* ✅ Voucher bar sticky */
     .voucher-bar {
       position: sticky;
       top: 0;
@@ -32,12 +32,11 @@
       text-align: center;
       padding: 6px 8px;
       font-size: 14px;
-      z-index: 999;
+      z-index: 9999;
       overflow: hidden;
-      position: relative;
     }
 
-    /* ✅ Hiệu ứng ánh sáng lướt */
+    /* ✅ Shine effect */
     .voucher-bar::before {
       content: "";
       position: absolute;
@@ -55,27 +54,31 @@
       100% { left: 125%; }
     }
 
-    /* ✅ Chữ chính */
+    /* ✅ Text chính */
     .voucher-main-text {
       font-weight: 600;
       font-size: 16px;
+      position: relative;
+      z-index: 2;
     }
 
-    /* ✅ Chữ 111K nổi bật */
+    /* ✅ Số 111K nổi bật */
     .voucher-main-text strong {
       font-size: 18px;
       color: #fff;
     }
 
-    /* ✅ Dòng phụ */
+    /* ✅ Text phụ */
     .voucher-sub-text {
       font-size: 14px;
       display: block;
       margin-top: 4px;
       font-weight: 400;
+      position: relative;
+      z-index: 2;
     }
 
-    /* ✅ Countdown nổi bật hơn chữ */
+    /* ✅ Countdown */
     #countdownTimer {
       font-weight: bold;
       font-size: 18px;
@@ -102,15 +105,20 @@
     </div>
     <script src="../js/slideshow.js"></script>
 
-    <!-- ✅ Voucher bar: nằm dưới slideshow -->
-    <div class="voucher-bar">
-      <div class="voucher-main-text">
-        Voucher <strong>111K</strong> cho Vợt Phantom
-      </div>
-      <span class="voucher-sub-text">
-        Kết thúc sau <span id="countdownTimer">60:00</span>
-      </span>
+  </div> <!-- 🔚 đóng page-container tạm thời -->
+
+  <!-- ✅ Voucher bar: ĐẶT NGOÀI page-container để sticky hoạt động chuẩn -->
+  <div class="voucher-bar">
+    <div class="voucher-main-text">
+      Voucher <strong>111K</strong> cho Vợt Phantom
     </div>
+    <span class="voucher-sub-text">
+      Kết thúc sau <span id="countdownTimer">60:00</span>
+    </span>
+  </div>
+
+  <!-- ✅ Mở lại page-container để tiếp tục nội dung trang -->
+  <div class="page-container">
 
     <!-- ✅ Tiêu đề + Shipping -->
     <div class="product-hero">
