@@ -1,0 +1,24 @@
+{
+  "thuộc_tính": [
+    {
+      "label": "Màu Sắc",
+      "key": "Màu Sắc",
+      "type": "option",
+      "display": "thumbnail",
+      "values": [
+        {
+          "text": "Viền Trắng",
+          "image": "https://i.postimg.cc/852FtJrV/1.jpg"
+        }
+      ]
+    }
+  ],
+  "biến_thể": [
+    {
+      "id": "tera",
+      "category": "pickleball",
+      "Giá": 1900000,
+      "Giá gốc": 2700000
+    }
+  ]
+}
