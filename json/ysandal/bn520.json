@@ -1,0 +1,40 @@
+{
+  "thuộc_tính": [
+    {
+      "label": "Màu Sắc",
+      "key": "Màu Sắc",
+      "type": "option",
+      "display": "thumbnail",
+      "values": [
+        { "text": "Xanh", "image": "https://fun-sport.co/assets/images/thumb/ysandal/bn520/xanh.JPG" },
+        { "text": "Đen", "image": "https://fun-sport.co/assets/images/thumb/ysandal/bn520/den.JPG" },
+        { "text": "Hồng", "image": "https://fun-sport.co/assets/images/thumb/ysandal/bn520/hong.JPG" },
+        { "text": "Xám", "image": "https://fun-sport.co/assets/images/thumb/ysandal/bn520/xam.JPG" },
+        { "text": "Trắng", "image": "https://fun-sport.co/assets/images/thumb/ysandal/bn520/trang.JPG" }
+      ]
+    },
+    {
+      "label": "Size",
+      "key": "Size",
+      "type": "option",
+      "display": "button",
+      "values": [
+        "35",
+        "36",
+        "37",
+        "38",
+        "39",
+        "40",
+        "41/42"
+      ]
+    }
+  ],
+  "biến_thể": [
+    {
+      "id": "bn520",
+      "category": "ysandal",
+      "Giá": 560000,
+      "Giá gốc": 900000
+    }
+  ]
+}
