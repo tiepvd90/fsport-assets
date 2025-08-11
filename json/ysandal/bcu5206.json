@@ -1,0 +1,39 @@
+{
+  "thuộc_tính": [
+    {
+      "label": "Màu Sắc",
+      "key": "Màu Sắc",
+      "type": "option",
+      "display": "thumbnail",
+      "values": [
+        { "text": "Vàng Chanh", "image": "https://fun-sport.co/assets/images/thumb/ysandal/bcu5206/vangchanh.JPG" },
+        { "text": "Trắng", "image": "https://fun-sport.co/assets/images/thumb/ysandal/bcu5206/trang.JPG" },
+        { "text": "Xám", "image": "https://fun-sport.co/assets/images/thumb/ysandal/bcu5206/xam.JPG" },
+        { "text": "Đen", "image": "https://fun-sport.co/assets/images/thumb/ysandal/bcu5206/den.JPG" },
+        { "text": "Be", "image": "https://fun-sport.co/assets/images/thumb/ysandal/bcu5206/be.JPG" },
+        { "text": "Hồng", "image": "https://fun-sport.co/assets/images/thumb/ysandal/bcu5206/hong.JPG" }
+      ]
+    },
+    {
+      "label": "Size",
+      "key": "Size",
+      "type": "option",
+      "display": "button",
+      "values": [
+        "36",
+        "37",
+        "38",
+        "39",
+        "40"
+      ]
+    }
+  ],
+  "biến_thể": [
+    {
+      "id": "bcu5206",
+      "category": "ysandal",
+      "Giá": 670000,
+      "Giá gốc": 1000000
+    }
+  ]
+}
