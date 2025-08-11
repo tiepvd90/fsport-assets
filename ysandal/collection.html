@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Bộ Sưu Tập Dép Chạy Ysandal: Dép Chạy & Phụ Kiện Chính Hãng</title>
+
+  <!-- Fonts & CSS -->
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/base.css" />
+  <link rel="stylesheet" href="https://friendly-kitten-d760ff.netlify.app/css/checkoutpopup.css" />
+  <link rel="icon" type="image/png" href="/favicon.png" />
+
+  <style>
+    body {
+      background: #fff;
+      font-family: 'Be Vietnam Pro', sans-serif;
+      padding: 8px;
+    }
+
+    h1 {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+
+    h2 {
+      font-size: 18px;
+      font-weight: 600;
+      margin: 24px 0 12px;
+    }
+
+    .product-horizontal {
+      display: flex;
+      align-items: flex-start;
+      background: #fff;
+      padding: 16px 0;
+      gap: 14px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .product-image {
+      width: 130px;
+      height: 130px;
+      object-fit: cover;
+      border-radius: 8px;
+      flex-shrink: 0;
+    }
+
+    .product-info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .product-title {
+      font-size: 15px;
+      font-weight: 500;
+      line-height: 1.3;
+      color: #000;
+    }
+
+    .product-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .price-sale {
+      color: #e53935;
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .price-original {
+      color: #999;
+      text-decoration: line-through;
+      font-size: 13px;
+      margin-left: 6px;
+    }
+
+    .price-wrap {
+      display: flex;
+      align-items: baseline;
+    }
+
+    .buy-btn {
+      background: #000;
+      color: #fff;
+      font-size: 13px;
+      font-weight: 600;
+      text-decoration: none;
+      padding: 6px 12px;
+      border-radius: 4px;
+      white-space: nowrap;
+    }
+  </style>
+
+  <script>
+    window.loai = "ysandal";
+    window.productCategory = "ysandal";
+    window.productPage = "collection";
+  </script>
+</head>
+<body>
+  <div class="page-container">
+    <div id="paddle-list"></div>
+
+    <div id="checkoutPopup-placeholder"></div>
+  </div>
+
+  <!-- Khai báo mảng + render JS -->
+  <script>
+    const paddles = [
+      {
+        title: "Dép Chạy Ysandal Đài Loan Có Quai Hậu BCU5568",
+        image: "https://i.postimg.cc/br8JLvnp/2.jpg",
+        price: "549.000đ",
+        originalPrice: "800.000đ",
+        link: "/product/ysandal5568"
+      },
+      {
+        title: "Dép Chạy Ysandal Đài Loan BN68",
+        image: "https://i.postimg.cc/NFcDrktw/Capture.jpg",
+        price: "449.000đ",
+        originalPrice: "700.000đ",
+        link: "/product/ysandalbn68"
+      },
+      {
+        title: "Dép Chạy Ysandal Đài Loan BCU5560 Quai Hậu Siêu Nhẹ",
+        image: "https://i.postimg.cc/28P6dcJv/Capture.jpg",
+        price: "599.000đ",
+        originalPrice: "900.000đ",
+        link: "/product/ysandal5560"
+      },
+      {
+        title: "Ysandal BN520 – Dép Chạy Bộ EVA Oyster Tech, Siêu Nhẹ & Chống Trượt",
+        image: "https://i.postimg.cc/ZR105wrJ/vangchanh.jpg",
+        price: "560.000đ",
+        originalPrice: "900.000đ",
+        link: "/ysandal/bn520"
+      },
+      {
+        title: "Ysandal BCU5206 – Dép Chạy Bộ/Thời Trang EVA Nguyên Khối, Siêu Nhẹ & Chống Trượt",
+        image: "https://i.postimg.cc/G3jgyt7n/2.jpg",
+        price: "670.000đ",
+        originalPrice: "1.000.000đ",
+        link: "/ysandal/bcu5206"
+      },
+      {
+        title: "Khăn Ống Đa Năng Đi Phượt Thể Thao Chạy Bộ Leo Núi Chống Nắng Hè Giữ Ấm Đông Thoáng Khí",
+        image: "https://i.postimg.cc/sDrFMnQh/1.jpg",
+        price: "49.000đ",
+        originalPrice: "60.000đ",
+        link: "/product/gaiter"
+      },
+      {
+        title: "Tất Vớ Chạy Bộ Xỏ Ngón Đạp Xe Thể Thao Chính Hãng Meikan",
+        image: "https://i.postimg.cc/TPMGmq4F/vang.webp",
+        price: "80.000đ",
+        originalPrice: "130.000đ",
+        link: "/product/meikan"
+      },
+      {
+        title: "Quần Tập Đùi Nữ Chạy Bộ – 2 Lớp Kín Đáo, Co Giãn 4 Chiều, Siêu Thoải Mái",
+        image: "https://i.postimg.cc/0jpWWT6J/xanhcom.webp",
+        price: "189.000đ",
+        originalPrice: "240.000đ",
+        link: "/product/shorts"
+      }
+    ];
+
+    const container = document.getElementById("paddle-list");
+
+    paddles.forEach(p => {
+      const html = `
+        <div class="product-horizontal">
+          <a href="${p.link}">
+            <img src="${p.image}" alt="${p.title}" class="product-image" />
+          </a>
+          <div class="product-info">
+            <div class="product-title">${p.title}</div>
+            <div class="product-meta">
+              <div class="price-wrap">
+                <span class="price-sale">${p.price}</span>
+                <span class="price-original">${p.originalPrice}</span>
+              </div>
+              <a href="${p.link}" class="buy-btn">XEM SẢN PHẨM</a>
+            </div>
+          </div>
+        </div>
+      `;
+      container.insertAdjacentHTML("beforeend", html);
+    });
+  </script>
+
+  <!-- Giữ lại checkoutpopup -->
+  <script>
+    async function injectHTML(file, placeholderId) {
+      const res = await fetch(file);
+      const html = await res.text();
+      const container = document.getElementById(placeholderId);
+      const temp = document.createElement("div");
+      temp.innerHTML = html;
+
+      Array.from(temp.children).forEach(el => {
+        if (el.tagName === "SCRIPT") {
+          const script = document.createElement("script");
+          if (el.src) {
+            script.src = el.src;
+            script.async = false;
+          } else {
+            script.textContent = el.textContent;
+          }
+          document.body.appendChild(script);
+        } else {
+          container.appendChild(el);
+        }
+      });
+    }
+
+    async function setupPage() {
+      await injectHTML("/html/checkoutpopup.html", "checkoutPopup-placeholder");
+      await loadScript("https://friendly-kitten-d760ff.netlify.app/js/checkoutpopup.js");
+    }
+
+    function loadScript(src) {
+      return new Promise(resolve => {
+        const s = document.createElement("script");
+        s.src = src;
+        s.onload = resolve;
+        document.body.appendChild(s);
+      });
+    }
+
+    setupPage();
+  </script>
+
+  <!-- Tracking -->
+  <script src="https://friendly-kitten-d760ff.netlify.app/js/tracking.js"></script>
+  <div id="base-placeholder"></div>
+  <script>
+    fetch("/html/base.html")
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById("base-placeholder").outerHTML = html;
+        if (typeof trackBothPixels === "function") {
+          trackBothPixels("ViewContent", {
+            content_id: window.productPage,
+            content_name: window.productPage,
+            content_category: window.productCategory,
+            value: 0,
+            currency: "VND"
+          });
+        }
+      });
+  </script>
+  <script src="/js/base.js"></script>
+</body>
+</html>
