@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Ysandal BN520 – Dép Chạy Bộ EVA Oyster Tech, Siêu Nhẹ & Chống Trượt</title>
+
+  <!-- ✅ CSS -->
+  <link rel="stylesheet" href="/css/base.css" />
+  <link rel="stylesheet" href="https://friendly-kitten-d760ff.netlify.app/css/cartpopup.css" />
+  <link rel="stylesheet" href="https://friendly-kitten-d760ff.netlify.app/css/checkoutpopup.css" />
+  <link rel="stylesheet" href="/css/productdescription.css" />
+  <link rel="stylesheet" href="../css/slideshow.css" />
+  <link rel="icon" type="image/png" href="/favicon.png" />
+
+  <!-- ✅ JS định nghĩa -->
+  <script>
+    window.loai = "ysandal";
+    window.productCategory = "ysandal";
+    window.productPage = "bn520";
+  </script>
+</head>
+<body>
+
+  <div class="page-container">
+
+    <!-- ✅ Placeholders -->
+    <div id="cartPopup-placeholder"></div>
+    <div id="checkoutPopup-placeholder"></div>
+    <div id="sticky-footer-placeholder"></div>
+
+    <!-- ✅ Slideshow -->
+    <div class="lazy-slideshow" id="lazySlideshow">
+      <div class="slide-counter" id="slideCounter">1/1</div>
+    </div>
+    <script src="../js/slideshow.js"></script>
+
+    <!-- ✅ Flash Banner -->
+    <div id="flashbanner-placeholder"></div>
+    <script>
+      fetch("/html/flashsalebanner/template01.html")
+        .then(res => res.text())
+        .then(html => {
+          document.getElementById("flashbanner-placeholder").innerHTML = html;
+          const s = document.createElement("script");
+          s.src = "/js/flashsalebanner/template01.js";
+          document.body.appendChild(s);
+        });
+    </script>
+
+    <!-- ✅ Tiêu đề + Shipping -->
+    <div class="product-hero">
+      <h1 style="font-size: 14px; font-weight: bold; margin-top: 8px; font-family: 'Be Vietnam Pro', sans-serif;">
+        <span style="background: black; color: white; font-size: 11px; padding: 2px 6px; border-radius: 4px; margin-right: 4px;">Mall</span>
+        <span style="background: #007BFF; color: white; font-size: 11px; padding: 2px 6px; border-radius: 4px; margin-right: 6px; text-transform: uppercase;">Hàng Chính Hãng</span>
+        Ysandal BN520 – Dép Chạy Bộ EVA Oyster Tech, Siêu Nhẹ & Chống Trượt
+      </h1>
+      <div class="shipping-wrapper">
+        <div class="shipping-info">
+          <div class="shipping-line"><span class="icon">🚚</span>Ship từ Hà Nội – Giao Hàng Toàn Quốc, Nhận Hàng Trong Vòng 3 Ngày</div>
+          <div class="shipping-line"><span class="icon">🔍</span>Kiểm Tra Hàng Trước Khi Thanh Toán</div>
+        </div>
+      </div>
+    </div>
+<!-- ✅ KHỐI 3: Video sản phẩm -->
+<div class="product-hero" style="margin-top: 12px;">
+  <div id="video-placeholder">Đang tải video...</div>
+</div>
+
+<script>
+  // ✅ Gọi file HTML video (gồm khung & ID #videoSlider)
+  fetch("/html/productvideo.html")
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById("video-placeholder").innerHTML = html;
+
+      // ✅ Gọi JS sau khi HTML có mặt
+      const script = document.createElement("script");
+      script.src = "/js/productvideo.js";
+      script.onload = () => {
+        console.log("✅ Đã load JS, gọi init...");
+        if (typeof initProductVideo === "function") {
+          initProductVideo();
+        } else {
+          console.warn("❌ Không tìm thấy initProductVideo()");
+        }
+      };
+      document.body.appendChild(script);
+    })
+    .catch(err => console.warn("❌ Lỗi khi chèn productvideo.html:", err));
+</script>
+<!-- 🔚 Hết KHỐI 3 -->
+    <!-- ✅ KHỐI 2: Reviews -->
+    <div class="product-hero" style="margin-top: 12px;">
+      <div id="review-placeholder"></div>
+    </div>
+    <script>
+  fetch("/html/reviewblock/ysandal5568.html")
+    .then(res => res.text())
+    .then(html => {
+      const container = document.getElementById("review-placeholder");
+      container.innerHTML = html;
+      // ✅ Kích hoạt lại các <script> thủ công
+      const scripts = container.querySelectorAll("script");
+      scripts.forEach(oldScript => {
+        const newScript = document.createElement("script");
+        if (oldScript.src) {
+          newScript.src = oldScript.src;
+        } else {
+          newScript.textContent = oldScript.textContent;
+        }
+        document.body.appendChild(newScript);
+      });
+    });
+</script>
+<!-- HẾT KHỐI 2: review -->
+    <!-- ✅ Mô tả sản phẩm -->
+    <div class="product-hero" style="margin-top: 12px;">
+      <div id="productdescription-placeholder" data-src="/html/productdescription/ysandal/bn520.html"></div>
+    </div>
+    <script src="/js/productdescription.js"></script>
+
+    <!-- ✅ FreeFlow -->
+    <h2 class="freeflow-heading" style="font-size: 18px; margin: 24px 12px 12px;">CÓ THỂ BẠN SẼ THÍCH</h2>
+    <script src="/js/freeflow-loader.js"></script>
+
+  </div>
+
+  <!-- ✅ Inject popup + footer -->
+  <script>
+    async function loadScript(src) {
+      return new Promise(resolve => {
+        const s = document.createElement("script");
+        s.src = src;
+        s.onload = resolve;
+        document.body.appendChild(s);
+      });
+    }
+
+    async function injectHTML(file, placeholderId) {
+      const res = await fetch(file);
+      const html = await res.text();
+      const container = document.getElementById(placeholderId);
+      const temp = document.createElement("div");
+      temp.innerHTML = html;
+
+      Array.from(temp.children).forEach(el => {
+        if (el.tagName === "SCRIPT") {
+          const script = document.createElement("script");
+          if (el.src) {
+            script.src = el.src;
+            script.async = false;
+          } else {
+            script.textContent = el.textContent;
+          }
+          document.body.appendChild(script);
+        } else {
+          container.appendChild(el);
+        }
+      });
+    }
+
+    async function setupPage() {
+      await injectHTML("/html/cartpopup.html", "cartPopup-placeholder");
+      await injectHTML("/html/checkoutpopup.html", "checkoutPopup-placeholder");
+      await injectHTML("/html/stickyfooter.html", "sticky-footer-placeholder");
+
+      await loadScript("https://friendly-kitten-d760ff.netlify.app/js/voucherpopup.js");
+      await loadScript("https://friendly-kitten-d760ff.netlify.app/js/cartpopup-3p.js");
+      await loadScript("https://friendly-kitten-d760ff.netlify.app/js/checkoutpopup.js");
+
+      setTimeout(async () => {
+        const map = await fetchVoucherMap();
+        window.__vouchersRaw = map[window.loai] || {};
+        window.voucherByProduct = {};
+        initCartPopup();
+      }, 100);
+    }
+
+    setupPage();
+  </script>
+
+  <!-- ✅ Tracking -->
+  <script src="https://friendly-kitten-d760ff.netlify.app/js/tracking.js"></script>
+  <div id="base-placeholder"></div>
+  <script>
+    fetch("/html/base.html")
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById("base-placeholder").outerHTML = html;
+        if (typeof trackBothPixels === "function") {
+          trackBothPixels("ViewContent", {
+            content_id: window.productPage,
+            content_name: window.productPage,
+            content_category: window.productCategory,
+            value: 0,
+            currency: "VND"
+          });
+        }
+      });
+  </script>
+
+  <!-- ✅ Base script -->
+  <script src="/js/base.js"></script>
+</body>
+</html>
