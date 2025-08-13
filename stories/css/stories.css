@@ -65,7 +65,7 @@ body {
 .story-article {
   max-width: 680px;
   margin: 0 auto;
-  padding: 24px 0 80px; /* chừa chỗ cho footer */
+  padding: 24px 0 10px;/
 }
 
 .story-article h1 {
