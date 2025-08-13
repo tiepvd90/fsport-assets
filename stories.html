@@ -76,69 +76,83 @@
 
   <!-- Lazyload dữ liệu -->
   <script>
-    const storiesData = [
-      {
-        title: "Forrest Gump và tinh thần chạy không ngừng nghỉ",
-        excerpt: "Khi tham gia một cuộc chạy bộ, chiến thắng vinh quang nhất không hẳn là về đích, mà là vượt qua rào cản của bản thân, là mỗi bước chân giúp bạn “thăng hạng” chính mình trên đường đua....",
-        image: "https://i.postimg.cc/VNDxDFZ8/forrestgump.jpg",
-        link: "/stories/forrest-gump.html"
-      },
-      {
-        title: "Ben Baltz – Cậu bé chạy bằng chân giả",
-        excerpt: "Thậm chí, câu chuyện của cậu ấy cảm động đến mức mỗi một bài viết đều có thể đánh sập trang web của chúng tôi” – theo Runner World....",
-        image: "https://i.postimg.cc/j22vtpb8/2-1.jpg",
-        link: "/stories/BenBaltz.html"
-      },
-      {
-  title: "Dép chạy bộ – Giải phóng đôi chân hay nguy cơ tiềm ẩn?",
-  excerpt: "Chạy bằng dép không tốt hơn giày, cũng không tệ hơn – nó chỉ phù hợp với người phù hợp. Vậy khi nào nên dùng? Khi nào không?",
-  image: "https://i.postimg.cc/X7wyL4pP/2.jpg",
-  link: "/stories/ysandal"
+const API_URL = "https://script.google.com/macros/s/AKfycbyh33sEGcoURPCnYw34NKnDMEIJe9D_x04f4cwExYxQXV_RWZWfSPJbZjOMk_SK6f2o/exec"; // ← thay bằng link API của bạn nếu khác
+
+let storiesData = [];
+let batchSize = 6;
+let currentIndex = 0;
+let observer;
+
+function getIdNumber(id) {
+  return parseInt(String(id || '').replace(/\D/g, ''), 10) || 0;
 }
-      // ✅ Thêm bài tại đây...
-    ];
 
-    let batchSize = 6;
-    let currentIndex = 0;
+function renderNextBatch() {
+  const container = document.getElementById('storyFeed');
+  const nextItems = storiesData.slice(currentIndex, currentIndex + batchSize);
 
-    function loadStories() {
-      const container = document.getElementById('storyFeed');
-      const nextItems = storiesData.slice(currentIndex, currentIndex + batchSize);
+  nextItems.forEach(item => {
+    const html = `
+      <div class="story-item">
+        ${item.link ? `<a href="${item.link}" style="text-decoration: none;">` : ''}
+          <h2>${item.title}</h2>
+          <p>${item.intro}</p>
+          <img src="${item.image}" loading="lazy" alt="${item.title}">
+        ${item.link ? `</a>` : ''}
+      </div>
+    `;
+    container.insertAdjacentHTML('beforeend', html);
+  });
 
-      nextItems.forEach(item => {
-        const html = `
-          <div class="story-item">
-            <a href="${item.link}" style="text-decoration: none;">
-              <h2>${item.title}</h2>
-              <p>${item.excerpt}</p>
-              <img src="${item.image}" loading="lazy" alt="${item.title}">
-            </a>
-          </div>
-        `;
-        container.insertAdjacentHTML('beforeend', html);
-      });
+  currentIndex += batchSize;
 
-      currentIndex += batchSize;
+  if (currentIndex >= storiesData.length && observer) {
+    observer.disconnect();
+  }
+}
 
-      if (currentIndex >= storiesData.length) {
-        document.getElementById('loadMoreBtn').style.display = 'none';
-      }
+function setupLazyLoad() {
+  const sentinel = document.createElement('div');
+  sentinel.id = 'lazySentinel';
+  document.getElementById('storyFeed').appendChild(sentinel);
+
+  observer = new IntersectionObserver((entries) => {
+    if (entries[0].isIntersecting) {
+      renderNextBatch();
     }
+  }, {
+    rootMargin: '100px'
+  });
 
-    document.getElementById('loadMoreBtn').addEventListener('click', loadStories);
-    window.addEventListener('DOMContentLoaded', loadStories);
-  </script>
+  observer.observe(sentinel);
+}
 
-<div id="footerContainer"></div>
-<script src="https://unpkg.com/lucide@latest"></script>
-<script>
-  fetch('/stories/html/stickyfooter-stories.html')
-    .then(res => res.text())
-    .then(html => {
-      document.getElementById('footerContainer').innerHTML = html;
-      lucide.createIcons(); // ⚠️ Phải gọi sau khi gắn HTML vào DOM
-    });
+async function fetchStories() {
+  try {
+    const res = await fetch(API_URL);
+    const data = await res.json();
+
+    storiesData = data
+      .filter(item => item.id && item.title && item.image && item.intro)
+      .sort((a, b) => getIdNumber(b.id) - getIdNumber(a.id)); // bài mới lên đầu
+
+    renderNextBatch();
+    setupLazyLoad();
+  } catch (err) {
+    console.error("Lỗi khi tải dữ liệu stories:", err);
+    document.getElementById('storyFeed').innerHTML = "<p style='color:red;'>Không thể tải dữ liệu bài viết.</p>";
+  }
+}
+
+window.addEventListener('DOMContentLoaded', fetchStories);
+
+// Ẩn nút Xem thêm nếu có
+document.addEventListener('DOMContentLoaded', () => {
+  const btn = document.getElementById('loadMoreBtn');
+  if (btn) btn.style.display = 'none';
+});
 </script>
+
 
 
 </body>
