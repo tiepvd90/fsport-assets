@@ -152,8 +152,16 @@ document.addEventListener('DOMContentLoaded', () => {
   if (btn) btn.style.display = 'none';
 });
 </script>
-
-
-
+<!-- ✅ Sticky footer -->
+<div id="footerContainer"></div>
+<script src="https://unpkg.com/lucide@latest"></script>
+<script>
+  fetch('/stories/html/stickyfooter-stories.html')
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById('footerContainer').innerHTML = html;
+      lucide.createIcons();
+    });
+</script>
 </body>
 </html>
