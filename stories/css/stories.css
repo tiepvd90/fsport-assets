@@ -144,4 +144,13 @@ body {
       height: auto;
       margin: 20px 0;
       border-radius: 8px;
-    }
+}
+.more-stories { margin: 24px 0 8px; text-align: center; }
+  .more-stories__link {
+    color: #2563eb; /* xanh dương */
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .more-stories__link:hover, .more-stories__link:focus {
+    text-decoration: underline;
+  }
