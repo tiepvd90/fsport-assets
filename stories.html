@@ -76,7 +76,9 @@
 
   <!-- Lazyload dữ liệu -->
   <script>
-const API_URL = "https://script.google.com/macros/s/AKfycbyh33sEGcoURPCnYw34NKnDMEIJe9D_x04f4cwExYxQXV_RWZWfSPJbZjOMk_SK6f2o/exec"; // ← thay bằng link API của bạn nếu khác
+const API_URL = "https://script.google.com/macros/s/AKfycbyh33sEGcoURPCnYw34NKnDMEIJe9D_x04f4cwExYxQXV_RWZWfSPJbZjOMk_SK6f2o/exec"; // ← thay bằng link của bạn nếu cần
+const CACHE_KEY = "storiesCache";
+const CACHE_TTL = 30 * 60 * 1000; // 30 phút
 
 let storiesData = [];
 let batchSize = 6;
@@ -127,15 +129,48 @@ function setupLazyLoad() {
   observer.observe(sentinel);
 }
 
+function loadCache() {
+  try {
+    const raw = localStorage.getItem(CACHE_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    if (Date.now() - parsed.timestamp > CACHE_TTL) return null;
+    return parsed.data;
+  } catch {
+    return null;
+  }
+}
+
+function saveCache(data) {
+  try {
+    const payload = {
+      timestamp: Date.now(),
+      data
+    };
+    localStorage.setItem(CACHE_KEY, JSON.stringify(payload));
+  } catch {}
+}
+
 async function fetchStories() {
+  const cached = loadCache();
+  if (cached) {
+    storiesData = cached
+      .filter(item => item.id && item.title && item.image && item.intro)
+      .sort((a, b) => getIdNumber(b.id) - getIdNumber(a.id));
+    renderNextBatch();
+    setupLazyLoad();
+    return;
+  }
+
   try {
     const res = await fetch(API_URL);
     const data = await res.json();
 
     storiesData = data
       .filter(item => item.id && item.title && item.image && item.intro)
-      .sort((a, b) => getIdNumber(b.id) - getIdNumber(a.id)); // bài mới lên đầu
+      .sort((a, b) => getIdNumber(b.id) - getIdNumber(a.id));
 
+    saveCache(storiesData);
     renderNextBatch();
     setupLazyLoad();
   } catch (err) {
@@ -152,6 +187,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (btn) btn.style.display = 'none';
 });
 </script>
+
 <!-- ✅ Sticky footer -->
 <div id="footerContainer"></div>
 <script src="https://unpkg.com/lucide@latest"></script>
