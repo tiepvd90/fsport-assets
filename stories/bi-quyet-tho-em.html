@@ -9,6 +9,19 @@
   <script>
     window.productCategory = "ysandal";
   </script>
+  <style>
+    .breath-box{
+      margin:16px 0; padding:14px 16px; border:1px solid #e5e7eb; border-radius:10px;
+      background:#f9fafb; font-size:15px; line-height:1.6
+    }
+    .breath-steps{display:flex; gap:8px; flex-wrap:wrap; margin-top:8px}
+    .chip{
+      padding:6px 10px; border-radius:999px; border:1px dashed #d1d5db; background:#fff; font-weight:600
+    }
+    .note{color:#6b7280; font-size:14px}
+    figure{margin:16px 0}
+    figure figcaption{font-size:13px; color:#6b7280; margin-top:6px}
+  </style>
 </head>
 <body>
 <article class="story-article">
@@ -16,10 +29,21 @@
     
     <p>Trong thế giới điền kinh, giữ được tốc độ cao mà vẫn duy trì hơi thở ổn định là chìa khóa để kéo dài sức bền và đạt hiệu suất tối đa. Đây không chỉ là vấn đề thể lực, mà còn là nghệ thuật kiểm soát hô hấp. Các chuyên gia đã nghiên cứu và phát triển nhiều phương pháp, trong đó nổi bật là kỹ thuật thở 3:2 và thở bằng mũi khi tăng tốc – những bí quyết được nhiều vận động viên chuyên nghiệp áp dụng.</p>
 
-    <img src="https://i.postimg.cc/dQSTrZPS/037555bc-6f75-4b78-98a0-fa225db1d93c.png" alt="Hình minh họa">
+    <figure>
+      <img src="https://i.postimg.cc/dQSTrZPS/037555bc-6f75-4b78-98a0-fa225db1d93c.png" alt="Minh họa nhịp thở khi chạy bộ">
+      <figcaption>Giữ nhịp thở đều giúp cơ thể ổn định ở cường độ cao.</figcaption>
+    </figure>
 
-    <p>Kỹ thuật thở 3:2 – Kiểm soát nhịp tim và tối ưu oxy
-    Với kỹ thuật thở 3:2, bạn hít vào trong ba bước chạy và thở ra trong hai bước tiếp theo. Cách này giúp phân bổ oxy đều hơn đến các cơ, giảm tích tụ carbon dioxide và axit lactic – nguyên nhân gây mỏi cơ và hụt hơi. Nhờ vậy, bạn có thể duy trì tốc độ cao lâu hơn mà không bị kiệt sức quá sớm.</p>
+    <div class="breath-box">
+      <strong>Kỹ thuật thở 3:2 – Kiểm soát nhịp tim và tối ưu oxy</strong>
+      <p>Ý nghĩa các con số trong “3:2” như sau:</p>
+      <div class="breath-steps">
+        <span class="chip">3 bước hít vào</span>
+        <span class="chip">2 bước thở ra</span>
+      </div>
+      <p class="note">Bạn hít sâu và đều trong đúng <b>ba bước chạy liên tiếp</b>, sau đó thở ra trọn vẹn trong <b>hai bước chạy tiếp theo</b>. Chu kỳ này lặp lại liên tục theo nhịp chân.</p>
+      <p>Cách thở theo bước chân giúp phân bổ oxy đồng đều tới các nhóm cơ, hạn chế tích tụ carbon dioxide và axit lactic – những yếu tố gây mỏi cơ và hụt hơi. Nhờ vậy, bạn có thể duy trì tốc độ cao lâu hơn mà không bị kiệt sức quá sớm.</p>
+    </div>
 
     <p>Thở bằng mũi – Tăng hiệu quả khi tăng tốc
     Thở bằng mũi khi chạy nước rút giúp không khí được làm ấm, làm ẩm và lọc sạch trước khi vào phổi. Điều này vừa bảo vệ đường hô hấp, vừa cải thiện khả năng hấp thụ oxy, giúp cơ thể vận hành trơn tru ngay cả ở giai đoạn căng sức nhất.</p>
@@ -38,16 +62,18 @@
 
     <p>Khi nắm vững những kỹ thuật này, bạn sẽ nhận ra mỗi hơi thở đều có thể trở thành động lực đưa mình về đích nhanh hơn – và quan trọng hơn, mạnh mẽ hơn.</p>
 </article>
+
 <div id="footerContainer"></div>
 <script src="https://unpkg.com/lucide@latest"></script>
 <script>
   fetch('/stories/html/stickyfooter-stories.html')
     .then(res => res.text())
     .then(html => {
-   document.getElementById('footerContainer').innerHTML = html;
+      document.getElementById('footerContainer').innerHTML = html;
       lucide.createIcons();
     });
 </script>
+
 <h2 class="freeflow-heading" style="font-size: 18px; margin: 24px 12px 12px;">CÓ THỂ BẠN SẼ THÍCH</h2>
 <script src="/js/freeflow-loader.js"></script>
 
