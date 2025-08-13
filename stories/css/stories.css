@@ -139,4 +139,9 @@ body {
   margin-bottom: 4px;
   stroke-width: 1.5;
 }
-
+.story-article img.full-width {
+      width: 100%;
+      height: auto;
+      margin: 20px 0;
+      border-radius: 8px;
+    }
