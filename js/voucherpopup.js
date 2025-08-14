@@ -4,10 +4,17 @@ if (typeof fetchVoucherMap !== "function") {
 }
 
 function getProductPageFromUrl() {
-  const path = window.location.pathname;
+  // Ưu tiên lấy từ biến window.productPage nếu có
+  if (typeof window.productPage === "string" && window.productPage.trim() !== "") {
+    return window.productPage.trim().toLowerCase();
+  }
+
+  // Fallback lấy theo URL như cũ
+  const path = window.location.pathname.toLowerCase();
   const filename = path.substring(path.lastIndexOf("/") + 1);
-  return filename.split(".")[0];
+  return filename.split(".")[0] || "homepage";
 }
+
 
 const simpleVoucherMap = {
   "30k": 30000,
