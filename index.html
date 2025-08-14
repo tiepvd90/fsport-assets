@@ -15,19 +15,43 @@
       font-family: 'Be Vietnam Pro', sans-serif;
     }
 
-    .cover-img {
-  display: block;
-  width: 100%;
-  max-width: 1080px;  /* Giới hạn ngang giống FreeFlow */
-  margin: 0 auto;
-  border-radius: 12px; /* tuỳ chọn: cho bo góc đẹp */
+    .shine-wrapper {
+  background: #000;
+  padding: 48px 0;
+  text-align: center;
 }
-@media screen and (max-width: 600px) {
-  .cover-img {
-    padding: 0 12px;
-    box-sizing: border-box;
+
+.shine-text {
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-size: 42px;
+  font-weight: 700;
+  color: #fff;
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+}
+
+.shine-text::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -75%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(120deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.35) 50%, rgba(255,255,255,0) 100%);
+  transform: skewX(-20deg);
+  animation: shine 2.5s infinite ease-in-out;
+}
+
+@keyframes shine {
+  0% {
+    left: -75%;
+  }
+  100% {
+    left: 125%;
   }
 }
+
   </style>
   <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-RXC205951M"></script>
@@ -40,6 +64,10 @@
 </script>
 </head>
 <body>
+  <div class="shine-wrapper">
+  <h1 class="shine-text">Fun Sport</h1>
+</div>
+
   <!-- ✅ collection trượt ngang -->
  <div class="cps-container">
 
