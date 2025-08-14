@@ -1,52 +1,42 @@
-/* 🎆 Hiệu ứng pháo hoa */
-@keyframes fireworks {
-  0% { transform: scale(0.5); opacity: 0; }
-  50% { transform: scale(1.2); opacity: 1; }
-  100% { transform: scale(0); opacity: 0; }
-}
-
-.firework {
-  position: absolute;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  animation: fireworks 3s ease-out forwards;
-  pointer-events: none;
-}
-
-.firework.gold   { background: gold; }
-.firework.red    { background: red; }
-.firework.blue   { background: #2196f3; }
-.firework.green  { background: #4caf50; }
-.firework.purple { background: #9c27b0; }
-.firework.orange { background: orange; }
-
 /* 🎁 Popup voucher chính */
 .voucher-popup {
   position: fixed;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%) scale(0.6);
   background: linear-gradient(to bottom right, #e6f5fb, #d4effa);
-  padding: 48px 36px;
-  border-radius: 16px;
-  box-shadow: 0 0 20px rgba(0,0,0,0.2);
+  padding: 28px 20px;
+  border-radius: 12px;
+  box-shadow: 0 0 16px rgba(0,0,0,0.2);
   z-index: 9999;
   text-align: center;
-  width: 400px;
-  max-width: 90%;
+  width: 280px;
+  max-width: 85%;
   border: 1px solid #a4d4ec;
+  opacity: 0;
+  animation: zoomIn 1s ease forwards;
+}
+
+@keyframes zoomIn {
+  0% {
+    transform: translate(-50%, -50%) scale(0.6);
+    opacity: 0;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
 }
 
 .voucher-popup h2 {
   color: #0b7fab;
-  font-size: 24px;
-  margin-bottom: 14px;
+  font-size: 20px;
+  margin-bottom: 12px;
 }
 
 .voucher-popup p {
-  font-size: 18px;
-  margin-bottom: 20px;
+  font-size: 14px;
+  margin-bottom: 16px;
   color: #333;
 }
 
@@ -54,20 +44,20 @@
   background: #000;
   color: #fff;
   border: none;
-  padding: 12px 28px;
+  padding: 10px 22px;
   font-weight: bold;
-  border-radius: 8px;
+  border-radius: 6px;
   cursor: pointer;
   text-transform: uppercase;
-  font-size: 16px;
+  font-size: 14px;
 }
 
 /* ❌ Nút đóng popup */
 .voucher-close {
   position: absolute;
-  top: 10px;
-  right: 16px;
-  font-size: 45px;
+  top: 6px;
+  right: 10px;
+  font-size: 28px;
   cursor: pointer;
   color: #666;
   font-weight: bold;
