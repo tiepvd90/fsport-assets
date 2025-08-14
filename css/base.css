@@ -342,3 +342,20 @@ body {
   pointer-events: none;
 }
 
+/* ⛑ Bảo hiểm: nếu #videoOverlay tồn tại nhưng đang hidden, đừng chặn click toàn trang */
+#videoOverlay[aria-hidden="true"],
+#videoOverlay[style*="display: none"] {
+  pointer-events: none !important;
+}
+
+/* Khi hiện overlay, chỉ phần nội dung nhận click */
+#videoOverlay {
+  pointer-events: none;         /* nền không bắt click */
+}
+#videoOverlay .overlay-content,
+#videoOverlay .content,
+#videoOverlay .inner,
+#videoOverlay .modal {
+  pointer-events: auto;         /* chỉ hộp nội dung bắt click */
+}
+
