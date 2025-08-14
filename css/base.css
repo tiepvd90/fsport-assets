@@ -261,8 +261,8 @@ body {
 .cps-track {
   display: grid;
   grid-auto-flow: column;
-  grid-auto-columns: 32%;
-  gap: 12px;
+  grid-auto-columns: 33.3%;
+  gap: 8px;
   scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
   padding: 0 2px;
