@@ -244,7 +244,7 @@ function ytCmd(iframe, func) {
 function ytPlay(iframe) { ytCmd(iframe, "playVideo"); }
 function ytPause(iframe) { ytCmd(iframe, "pauseVideo"); }
 
-// ✅ Tự động phát YouTube — KHÔNG đổi/clear src để tránh đơ back/next
+// ✅ Tự động phát YouTube — KHÔNG đổi/clear src & đảm bảo lần đầu vào viewport sẽ phát
 function setupAutoplayObserver() {
   const iframes = document.querySelectorAll('iframe[data-video-id]');
   const observer = new IntersectionObserver(entries => {
@@ -259,9 +259,22 @@ function setupAutoplayObserver() {
           `?enablejsapi=1&autoplay=0&mute=1&playsinline=1&controls=0&rel=0&origin=${location.origin}`;
         iframe.src = initSrc;
         iframe.dataset.inited = "1";
+
+        // 🔔 Đợi player sẵn sàng rồi play (tránh tình trạng lần đầu không chạy)
+        const onLoadOnce = () => {
+          // delay rất ngắn để đảm bảo API trong iframe đã init
+          setTimeout(() => { ytPlay(iframe); }, 50);
+          iframe.removeEventListener("load", onLoadOnce);
+        };
+        iframe.addEventListener("load", onLoadOnce);
+
+        // ⛑ Fallback: nếu onload đến sớm/không tới, vẫn nỗ lực play sau một nhịp
+        setTimeout(() => { ytPlay(iframe); }, 300);
+
+        return; // tránh gọi tiếp phía dưới trong vòng lặp này
       }
 
-      // Khi vào/ra khung hình: play/pause bằng API (không đụng src)
+      // Khi đã init: vào/ra khung hình chỉ play/pause (không đụng src)
       if (entry.isIntersecting) {
         ytPlay(iframe);
       } else if (iframe.dataset.inited === "1") {
