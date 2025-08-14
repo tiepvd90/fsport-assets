@@ -4,12 +4,10 @@ if (typeof fetchVoucherMap !== "function") {
 }
 
 function getProductPageFromUrl() {
-  // Ưu tiên từ biến truyền vào
   if (typeof window.productPage === "string" && window.productPage.trim() !== "") {
     return window.productPage.trim().toLowerCase();
   }
 
-  // Fallback từ URL
   const path = window.location.pathname.toLowerCase();
   const filename = path.substring(path.lastIndexOf("/") + 1);
   return filename.split(".")[0] || "homepage";
@@ -21,7 +19,7 @@ const simpleVoucherMap = {
 
 const allowedPages = [
   "ysandal5568", "ysandalbn68", "firstpickleball",
-  "secpickleball", "teflon", "phantom", "gen4", "tera", "ysandal5560","bcu5206", "bn520",
+  "secpickleball", "teflon", "phantom", "gen4", "tera", "ysandal5560", "bcu5206", "bn520",
   "collection", "pickleball-airforce", "homepage"
 ];
 
@@ -47,7 +45,7 @@ function showVoucherPopup(refCode, amount) {
     if (atcBtn) {
       atcBtn.click();
     } else {
-      popup.remove(); // ✅ Trang không có nút ATC thì chỉ đóng lại
+      popup.remove();
     }
   });
 
@@ -101,29 +99,28 @@ function startVoucherCountdown(seconds) {
   }, 1000);
 }
 
-// 🚀 Khởi động sau khi DOM sẵn sàng
-document.addEventListener("DOMContentLoaded", () => {
+// 🚀 Khởi động: luôn chạy khi DOM đã sẵn
+function runVoucherImmediately() {
   const urlParams = new URLSearchParams(window.location.search);
   const refRaw = urlParams.get("ref") || "";
   const matchedCode = Object.keys(simpleVoucherMap).find(k => refRaw.startsWith(k));
   const amount = matchedCode ? simpleVoucherMap[matchedCode] : 0;
   const currentPage = getProductPageFromUrl();
 
+  console.log("🎯 Voucher script running", { refRaw, amount, currentPage });
+
   window.voucherByProduct = window.voucherByProduct || {};
 
   if (amount > 0 && allowedPages.includes(currentPage)) {
-    // ✅ Lưu voucher để sử dụng sau
+    // ✅ Áp dụng voucher mới
     localStorage.setItem("savedVoucher", JSON.stringify({ code: refRaw, amount }));
     window.currentVoucherValue = amount;
     window.__voucherWaiting = { amount };
 
-    if (!document.getElementById("voucherPopup")) {
-      createVoucherFloatingIcon(amount, refRaw);
-    }
-
+    createVoucherFloatingIcon(amount, refRaw);
     showVoucherPopup(refRaw, amount);
   } else {
-    // ✅ Reuse voucher đã lưu
+    // ✅ Tải lại voucher cũ nếu có
     const saved = JSON.parse(localStorage.getItem("savedVoucher") || "{}");
     const reusedAmount = saved?.amount;
     const reusedCode = saved?.code || "";
@@ -132,9 +129,14 @@ document.addEventListener("DOMContentLoaded", () => {
       window.currentVoucherValue = reusedAmount;
       window.__voucherWaiting = { amount: reusedAmount };
 
-      if (!document.getElementById("voucherPopup")) {
-        createVoucherFloatingIcon(reusedAmount, reusedCode);
-      }
+      createVoucherFloatingIcon(reusedAmount, reusedCode);
     }
   }
-});
+}
+
+// ✅ Đảm bảo chỉ chạy sau khi DOM và window.productPage sẵn sàng
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", runVoucherImmediately);
+} else {
+  runVoucherImmediately();
+}
