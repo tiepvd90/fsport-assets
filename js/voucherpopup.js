@@ -4,12 +4,12 @@ if (typeof fetchVoucherMap !== "function") {
 }
 
 function getProductPageFromUrl() {
-  // Ưu tiên lấy từ window.productPage nếu có
+  // Ưu tiên từ biến truyền vào
   if (typeof window.productPage === "string" && window.productPage.trim() !== "") {
     return window.productPage.trim().toLowerCase();
   }
 
-  // Fallback lấy từ URL
+  // Fallback từ URL
   const path = window.location.pathname.toLowerCase();
   const filename = path.substring(path.lastIndexOf("/") + 1);
   return filename.split(".")[0] || "homepage";
@@ -21,7 +21,7 @@ const simpleVoucherMap = {
 
 const allowedPages = [
   "ysandal5568", "ysandalbn68", "firstpickleball",
-  "secpickleball", "teflon", "phantom", "gen4", "tera", "ysandal5560","bcu5206", "bn52",
+  "secpickleball", "teflon", "phantom", "gen4", "tera", "ysandal5560","bcu5206", "bn520",
   "collection", "pickleball-airforce", "homepage"
 ];
 
@@ -43,16 +43,15 @@ function showVoucherPopup(refCode, amount) {
   document.getElementById("closeVoucherBtn")?.addEventListener("click", () => popup.remove());
 
   document.getElementById("applyVoucherBtn")?.addEventListener("click", () => {
-    // ✅ Đã lưu rồi, không cần lặp lại — chỉ xử lý nút
     const atcBtn = document.querySelector("#btn-atc");
     if (atcBtn) {
-      atcBtn.click(); // ✅ Trang có nút Add to cart
+      atcBtn.click();
     } else {
-      popup.remove(); // ✅ Trang không có nút → đóng popup thôi
+      popup.remove(); // ✅ Trang không có nút ATC thì chỉ đóng lại
     }
   });
 
-  startVoucherCountdown(600); // 600 giây = 10 phút
+  startVoucherCountdown(600); // 10 phút
 }
 
 function createVoucherFloatingIcon(amount, refCode) {
@@ -102,8 +101,8 @@ function startVoucherCountdown(seconds) {
   }, 1000);
 }
 
-// 🚀 Khởi động
-(function runVoucherImmediately() {
+// 🚀 Khởi động sau khi DOM sẵn sàng
+document.addEventListener("DOMContentLoaded", () => {
   const urlParams = new URLSearchParams(window.location.search);
   const refRaw = urlParams.get("ref") || "";
   const matchedCode = Object.keys(simpleVoucherMap).find(k => refRaw.startsWith(k));
@@ -113,7 +112,7 @@ function startVoucherCountdown(seconds) {
   window.voucherByProduct = window.voucherByProduct || {};
 
   if (amount > 0 && allowedPages.includes(currentPage)) {
-    // ✅ Luôn lưu vào localStorage và bộ nhớ tạm
+    // ✅ Lưu voucher để sử dụng sau
     localStorage.setItem("savedVoucher", JSON.stringify({ code: refRaw, amount }));
     window.currentVoucherValue = amount;
     window.__voucherWaiting = { amount };
@@ -124,6 +123,7 @@ function startVoucherCountdown(seconds) {
 
     showVoucherPopup(refRaw, amount);
   } else {
+    // ✅ Reuse voucher đã lưu
     const saved = JSON.parse(localStorage.getItem("savedVoucher") || "{}");
     const reusedAmount = saved?.amount;
     const reusedCode = saved?.code || "";
@@ -137,4 +137,4 @@ function startVoucherCountdown(seconds) {
       }
     }
   }
-})();
+});
