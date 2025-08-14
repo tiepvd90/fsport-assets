@@ -14,13 +14,22 @@
       margin: 0;
       font-family: 'Be Vietnam Pro', sans-serif;
     }
-.cover-img { display: block; width: 100%; max-width: 1080px; 
-/* Giới hạn ngang giống FreeFlow */ 
-margin: 0 auto; border-radius: 12px; 
-/* tuỳ chọn: cho bo góc đẹp */ } 
-@media screen and (max-width: 600px) 
-{ .cover-img { padding: 0 12px; box-sizing: border-box; 
+.cover-img {
+  display: block;
+  width: 100%;
+  max-width: 1080px;         /* ✅ Giới hạn ngang giống FreeFlow */
+  margin: 16px auto 0;       /* ✅ Thêm khoảng cách phía trên */
+  border-radius: 12px;       /* ✅ Bo góc nhẹ cho ảnh */
 }
+
+/* ✅ Trên mobile: thêm padding ngang */
+@media screen and (max-width: 600px) {
+  .cover-img {
+    padding: 0 12px;
+    box-sizing: border-box;
+  }
+}
+
   </style>
   <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-RXC205951M"></script>
