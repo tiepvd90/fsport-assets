@@ -8,134 +8,167 @@ let itemsLoaded = 0;
 let productCategory = window.productCategory || "0";
 const renderedIds = new Set();
 
-let _autoplayObserver = null;
-
-// ──────────────────────────────────────────────────────────────
-// Helpers: cache
+// ✅ Load cache nếu còn hạn
 function loadCachedFreeFlow() {
   try {
     const cached = JSON.parse(localStorage.getItem(CACHE_KEY));
-    if (cached && Date.now() - cached.timestamp < CACHE_DURATION_MS) return cached.data;
+    if (cached && Date.now() - cached.timestamp < CACHE_DURATION_MS) {
+      return cached.data;
+    }
   } catch (e) {}
   return null;
 }
+
+// ✅ Lưu cache dữ liệu gốc
 function saveCache(data) {
   const payload = { timestamp: Date.now(), data };
   localStorage.setItem(CACHE_KEY, JSON.stringify(payload));
 }
 
-// ──────────────────────────────────────────────────────────────
-// Process & sort (giữ nguyên logic)
+// ✅ Trộn & sắp xếp dữ liệu
 function processAndSortData(data) {
   const random = () => Math.floor(Math.random() * 20) + 1;
 
-  const preferred = data.filter(i => i.productCategory === productCategory)
-    .map(i => ({ ...i, finalPriority: (i.basePriority || 0) + random() + 75 }));
-  const others = data.filter(i => i.productCategory !== productCategory)
-    .map(i => ({ ...i, finalPriority: (i.basePriority || 0) + random() }));
+  const preferred = data
+    .filter(item => item.productCategory === productCategory)
+    .map(item => ({
+      ...item,
+      finalPriority: (item.basePriority || 0) + random() + 75
+    }));
 
-  function interleaveBalanced(a, b) {
-    const out = []; let i = 0, j = 0; const total = a.length + b.length;
+  const others = data
+    .filter(item => item.productCategory !== productCategory)
+    .map(item => ({
+      ...item,
+      finalPriority: (item.basePriority || 0) + random()
+    }));
+
+  // Trộn preferred và others luân phiên
+  function interleaveBalanced(preferred, others) {
+    const result = [];
+    let i = 0, j = 0;
+    const total = preferred.length + others.length;
     for (let k = 0; k < total; k++) {
-      if ((k % 2 === 0 && i < a.length) || j >= b.length) out.push(a[i++]);
-      else out.push(b[j++]);
+      if ((k % 2 === 0 && i < preferred.length) || j >= others.length) {
+        result.push(preferred[i++]);
+      } else {
+        result.push(others[j++]);
+      }
     }
-    return out;
+    return result;
   }
 
-  const combined = interleaveBalanced(preferred, others).sort((x, y) => y.finalPriority - x.finalPriority);
+  const combined = interleaveBalanced(preferred, others);
+  combined.sort((a, b) => b.finalPriority - a.finalPriority);
+
   const images = combined.filter(i => i.contentType === "image");
   const videos = combined.filter(i => i.contentType === "youtube");
 
   const mixed = [];
-  let img = 0, vid = 0;
-  while (img < images.length) {
-    for (let k = 0; k < 6 && img < images.length; k++) mixed.push(images[img++]);
-    if (vid < videos.length) mixed.push(videos[vid++]);
+  let imgIndex = 0, vidIndex = 0;
+  while (imgIndex < images.length) {
+    for (let k = 0; k < 6 && imgIndex < images.length; k++) {
+      mixed.push(images[imgIndex++]);
+    }
+    if (vidIndex < videos.length) mixed.push(videos[vidIndex++]);
   }
 
-  function reorderForVisualMasonry(arr, cols = 2) {
-    const rows = Math.ceil(arr.length / cols);
-    const out = [];
-    for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) {
-      const idx = c * rows + r; if (idx < arr.length) out.push(arr[idx]);
+  // ✅ Sắp xếp lại để masonry chia đều trái phải
+  function reorderForVisualMasonry(data, columns = 2) {
+    const rows = Math.ceil(data.length / columns);
+    const reordered = [];
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < columns; c++) {
+        const index = c * rows + r;
+        if (index < data.length) reordered.push(data[index]);
+      }
     }
-    return out;
+    return reordered;
   }
+
   freeflowData = reorderForVisualMasonry(mixed, 2);
 }
 
-// ──────────────────────────────────────────────────────────────
-// Fetch pipeline
+// ✅ Tải dữ liệu chính
 async function fetchFreeFlowData() {
   const cached = loadCachedFreeFlow();
-  if (cached) { processAndSortData(cached); renderInitialAndLoadRest(); }
+  if (cached) {
+    processAndSortData(cached); // luôn tính lại theo productCategory
+    renderInitialAndLoadRest();
+  }
 
   try {
     const res = await fetch("/json/freeflow.json");
     const localData = await res.json();
-    const valid = Array.isArray(localData) ? localData : [];
-    processAndSortData(valid);
-    saveCache(valid);
+    const validData = Array.isArray(localData) ? localData : [];
+
+    processAndSortData(validData);
+    saveCache(validData);
     renderInitialAndLoadRest();
-    fetchFromGoogleSheet(valid);
+
+    fetchFromGoogleSheet(validData);
   } catch (e) {
-    console.warn("Lỗi local JSON:", e);
+    console.warn("Lỗi khi tải local JSON:", e);
     fetchFromGoogleSheet([]);
   }
 }
 
-async function fetchFromGoogleSheet(existing) {
+// ✅ Gọi Google Sheet
+async function fetchFromGoogleSheet(existingData) {
   try {
     const res = await fetch(fallbackUrl);
-    const sheet = await res.json();
-    if (!Array.isArray(sheet)) return;
-    const existingIds = new Set(existing.map(i => i.itemId));
-    const newItems = sheet.filter(i => !existingIds.has(i.itemId));
-    if (!newItems.length) return;
+    const sheetData = await res.json();
+    if (!Array.isArray(sheetData)) return;
 
-    const combined = [...existing, ...newItems];
+    const existingIds = new Set(existingData.map(i => i.itemId));
+    const newItems = sheetData.filter(i => !existingIds.has(i.itemId));
+    if (newItems.length === 0) return;
+
+    const combined = [...existingData, ...newItems];
     processAndSortData(combined);
     saveCache(combined);
 
     const container = document.getElementById("freeflowFeed");
-    freeflowData.slice(itemsLoaded).forEach(it => renderFeedItem(it, container));
+    const moreItems = freeflowData.slice(itemsLoaded);
+    moreItems.forEach(item => renderFeedItem(item, container));
     itemsLoaded = freeflowData.length;
     setupAutoplayObserver();
   } catch (e) {
-    console.error("Sheet fetch fail:", e);
+    console.error("Không thể fetch từ Google Sheet:", e);
   }
 }
 
-// ──────────────────────────────────────────────────────────────
-// Render
+// ✅ Render ban đầu
 function renderInitialAndLoadRest() {
   const container = document.getElementById("freeflowFeed");
   if (!container) return;
 
-  freeflowData.slice(0, 4).forEach(i => renderFeedItem(i, container));
+  const firstBatch = freeflowData.slice(0, 4);
+  firstBatch.forEach(item => renderFeedItem(item, container));
   itemsLoaded = 4;
   setupAutoplayObserver();
 
   setTimeout(() => {
-    freeflowData.slice(4).forEach(i => renderFeedItem(i, container));
+    const remaining = freeflowData.slice(4);
+    remaining.forEach(item => renderFeedItem(item, container));
     itemsLoaded = freeflowData.length;
     setupAutoplayObserver();
   }, 300);
 }
 
+// ✅ Render từng item
 function renderFeedItem(item, container) {
   if (renderedIds.has(item.itemId)) return;
   renderedIds.add(item.itemId);
 
   const div = document.createElement("div");
   div.className = `feed-item ${item.contentType || ""}`;
-  div.style.position = "relative"; // đảm bảo overlay con không “tràn” ra ngoài
 
-  let html = "";
+  let mediaHtml = "";
+
   if (item.contentType === "image") {
-    html = `
-      <img loading="lazy" src="${item.image}" alt="${item.title || ""}" />
+    mediaHtml = `
+      <img loading="lazy" src="${item.image}" alt="${item.title || ''}" />
       ${item.title ? `<h4 class="one-line-title">${item.title}</h4>` : ""}
       ${item.price ? `
         <div class="price-line">
@@ -144,7 +177,7 @@ function renderFeedItem(item, container) {
         </div>` : ""}
     `;
   } else if (item.contentType === "youtube") {
-    html = `
+    mediaHtml = `
       <div class="video-wrapper" style="position: relative;">
         <img class="video-thumb" src="https://fun-sport.co/assets/images/thumb/vid-thumb.webp"
              style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; border-radius: 8px; z-index: 1;" />
@@ -158,139 +191,104 @@ function renderFeedItem(item, container) {
           muted
           style="width: 100%; aspect-ratio: 9/16; border-radius: 8px; position: relative; z-index: 2;">
         </iframe>
-        <!-- ⛑ Overlay CHỈ nằm trong card, không full page -->
-        <div class="video-overlay"
-             data-video="${item.youtube}"
-             style="position: absolute; inset: 0; cursor: pointer; z-index: 3; pointer-events: auto;"></div>
+        <div class="video-overlay" data-video="${item.youtube}" style="position: absolute; inset: 0; cursor: pointer; z-index: 3;"></div>
       </div>
       <div class="video-info" style="display: flex; align-items: center; gap: 8px; padding: 4px 8px 0;">
         <a href="${item.productPage}">
           <img src="${item.image}" style="width: 36px; height: 36px; object-fit: cover; border-radius: 6px;" />
         </a>
         <div style="flex: 1; min-width: 0;">
-          <h4 style="font-size: 13px; line-height: 1.3; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${item.title || ""}</h4>
-          ${item.price ? `<div style="font-size: 13px; color: #f53d2d; font-weight: bold;">${Number(item.price).toLocaleString()}đ</div>` : ""}
+          <h4 style="font-size: 13px; line-height: 1.3; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+            ${item.title}
+          </h4>
+          <div style="font-size: 13px; color: #f53d2d; font-weight: bold;">
+            ${Number(item.price).toLocaleString()}đ
+          </div>
         </div>
       </div>
     `;
   }
 
-  div.innerHTML = html;
+  div.innerHTML = mediaHtml;
 
   if (item.contentType === "image") {
-    div.addEventListener("click", () => (window.location.href = item.productPage), { passive: true });
+    div.onclick = () => window.location.href = item.productPage;
   } else if (item.contentType === "youtube") {
-    const overlay = div.querySelector(".video-overlay");
-    overlay.addEventListener("click", (ev) => {
-      ev.stopPropagation();
-      // 🚪 Mở popup video cục bộ, KHÔNG tạo overlay toàn trang “vĩnh viễn”
-      const id = overlay.getAttribute("data-video");
-      const popup = document.getElementById("videoOverlay");
-      const frame = document.getElementById("videoFrame");
-      if (frame) frame.src = `https://www.youtube.com/embed/${id}?autoplay=1&mute=0&playsinline=1&controls=1`;
-      if (popup) {
+    setTimeout(() => {
+      const overlay = div.querySelector(".video-overlay");
+      overlay.onclick = () => {
+        const id = overlay.getAttribute("data-video");
+        const popup = document.getElementById("videoOverlay");
+        const frame = document.getElementById("videoFrame");
+        frame.src = `https://www.youtube.com/embed/${id}?autoplay=1&mute=0&playsinline=1&controls=1`;
         popup.style.display = "flex";
-        popup.setAttribute("aria-hidden", "false");
-      }
-      const viewBtn = document.getElementById("viewProductBtn");
-      if (viewBtn) viewBtn.onclick = () => (window.location.href = item.productPage);
-
-      // 🧹 Khi mở popup, đảm bảo BODY không bị lock vĩnh viễn
-      document.body.style.overflow = "hidden";
-      setTimeout(() => { document.body.style.overflow = ""; }, 400); // auto-unlock an toàn
-    }, { passive: true });
+        const viewBtn = document.getElementById("viewProductBtn");
+        if (viewBtn) viewBtn.onclick = () => window.location.href = item.productPage;
+      };
+    }, 0);
   }
 
   container.appendChild(div);
 }
 
-// ──────────────────────────────────────────────────────────────
-// Autoplay
-function setupAutoplayObserver() {
-  if (_autoplayObserver) { _autoplayObserver.disconnect(); _autoplayObserver = null; }
-  const iframes = document.querySelectorAll('iframe[data-video-id]');
-  if (!iframes.length) return;
+// ▶️ Helpers cho autoplay YouTube bằng postMessage (không đổi/clear src)
+function ytCmd(iframe, func) {
+  try {
+    iframe.contentWindow?.postMessage(JSON.stringify({
+      event: "command",
+      func,
+      args: []
+    }), "*");
+  } catch (e) {}
+}
+function ytPlay(iframe) { ytCmd(iframe, "playVideo"); }
+function ytPause(iframe) { ytCmd(iframe, "pauseVideo"); }
 
-  _autoplayObserver = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
+// ✅ Tự động phát YouTube — KHÔNG đổi/clear src để tránh đơ back/next
+function setupAutoplayObserver() {
+  const iframes = document.querySelectorAll('iframe[data-video-id]');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
       const iframe = entry.target;
-      const id = iframe.getAttribute("data-video-id");
-      const target = `https://www.youtube.com/embed/${id}?autoplay=1&mute=1&playsinline=1&controls=1&loop=1&playlist=${id}`;
+      const id = iframe.getAttribute('data-video-id');
+
+      // Gán src đúng 1 lần (lần đầu khi vào viewport) với enablejsapi
+      if (entry.isIntersecting && !iframe.dataset.inited) {
+        const initSrc =
+          `https://www.youtube.com/embed/${id}` +
+          `?enablejsapi=1&autoplay=0&mute=1&playsinline=1&controls=0&rel=0&origin=${location.origin}`;
+        iframe.src = initSrc;
+        iframe.dataset.inited = "1";
+      }
+
+      // Khi vào/ra khung hình: play/pause bằng API (không đụng src)
       if (entry.isIntersecting) {
-        if (iframe.src !== target) iframe.src = target;
-      } else {
-        if (iframe.src) iframe.src = "";
+        ytPlay(iframe);
+      } else if (iframe.dataset.inited === "1") {
+        ytPause(iframe);
       }
     });
   }, { threshold: 0.75 });
 
-  iframes.forEach((iframe) => _autoplayObserver.observe(iframe));
+  iframes.forEach(iframe => observer.observe(iframe));
 }
 
-// ──────────────────────────────────────────────────────────────
-// ⛑ Cleanup cứng tay để không còn “lá chắn vô hình”
-function hideGlobalVideoOverlay() {
-  const popup = document.getElementById("videoOverlay");
-  if (popup) {
-    popup.style.display = "none";
-    popup.setAttribute("aria-hidden", "true");
-  }
-  const frame = document.getElementById("videoFrame");
-  if (frame) frame.src = "";
-}
-function stopAllIframes() {
-  document.querySelectorAll('iframe[data-video-id]').forEach(ifr => { if (ifr.src) ifr.src = ""; });
-}
-function teardownAutoplayObserver() {
-  if (_autoplayObserver) { _autoplayObserver.disconnect(); _autoplayObserver = null; }
-}
-
-// Dọn khi rời trang (bfcache-friendly)
-window.addEventListener("pagehide", () => {
-  hideGlobalVideoOverlay();
-  stopAllIframes();
-  teardownAutoplayObserver();
-}, { passive: true });
-
-// Khi tab ẩn: dọn tối thiểu
-document.addEventListener("visibilitychange", () => {
-  if (document.hidden) {
-    hideGlobalVideoOverlay();
-    stopAllIframes();
-  }
-}, { passive: true });
-
-// Khi trang quay lại từ bfcache: chỉ cleanup overlay, KHÔNG reload
-window.addEventListener("pageshow", () => {
-  hideGlobalVideoOverlay();
-}, { passive: true });
-
-// Popstate (ấn Back trong lịch sử): đóng overlay thay vì cản trở
-window.addEventListener("popstate", () => {
-  hideGlobalVideoOverlay();
-}, { passive: true });
-
-// ──────────────────────────────────────────────────────────────
-// Init an toàn
+// ✅ Init
 document.addEventListener("DOMContentLoaded", () => {
-  const hasFeed = !!document.getElementById("freeflowFeed");
-  if (!hasFeed) return;
-
-  // đảm bảo overlay toàn trang có thể đóng được bất cứ lúc nào
   const closeBtn = document.getElementById("videoCloseBtn");
-  if (closeBtn) closeBtn.onclick = () => hideGlobalVideoOverlay();
-
-  // tránh overlay toàn trang che vĩnh viễn
-  const globalOverlay = document.getElementById("videoOverlay");
-  if (globalOverlay) {
-    globalOverlay.style.pointerEvents = "none"; // lớp nền không ăn click
-    // chỉ bật pointer-events cho hộp nội dung bên trong
-    const content = globalOverlay.querySelector(".overlay-content, .content, .inner, .modal");
-    if (content) content.style.pointerEvents = "auto";
-    globalOverlay.style.zIndex = "9999"; // vẫn nổi trên freeflow nhưng không che UI ngoài khi ẩn
-  }
+  if (closeBtn) closeBtn.onclick = () => {
+    const popup = document.getElementById("videoOverlay");
+    const frame = document.getElementById("videoFrame");
+    if (popup) popup.style.display = "none";
+    if (frame) frame.src = "";
+  };
 
   fetchFreeFlowData();
-}, { passive: true });
+});
 
-// ❌ Không còn bất kỳ reload cưỡng bức nào ở pageshow
+window.addEventListener("pageshow", function (event) {
+  if (event.persisted || performance.getEntriesByType("navigation")[0]?.type === "back_forward") {
+    // ❗ Reload lại nếu quay lại từ nút back trên Safari (chỉ dành cho trang có FreeFlow)
+    location.reload();
+  }
+});
