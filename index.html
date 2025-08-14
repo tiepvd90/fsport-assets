@@ -59,41 +59,9 @@
   </script>
 
   <!-- ✅ Load FreeFlow -->
-  <script src="https://friendly-kitten-d760ff.netlify.app/js/freeflow.js"></script>
-  <script>
-    fetch("/html/freeflow.html")
-      .then(res => res.text())
-      .then(html => {
-        const container = document.getElementById("freeflow-placeholder");
-        const temp = document.createElement("div");
-        temp.innerHTML = html;
-        Array.from(temp.children).forEach(el => {
-  if (el.id === "videoOverlay") {
-    document.body.appendChild(el); // Đảm bảo overlay ở cuối
-  } else {
-    container.appendChild(el);
-  }
-});
-
-// Gắn lại sự kiện đóng popup video
-const btn = document.getElementById("videoCloseBtn");
-if (btn) btn.onclick = function () {
-  const frame = document.getElementById("videoFrame");
-  const popup = document.getElementById("videoOverlay");
-  if (frame) frame.src = "";
-  if (popup) popup.style.display = "none";
-};
-
-
-        setTimeout(() => {
-          if (typeof fetchFreeFlowData === "function") {
-            fetchFreeFlowData("https://script.google.com/macros/s/AKfycbwuEh9sP65vyQL0XzU8gY1Os0QYV_K5egKJgm8OhImAPjvdyrQiU7XCY909N99TnltP/exec");
-          }
-        }, 200);
-      });
-  </script>
-  <script src="/js/base.js"></script>
-
+  <h2 class="freeflow-heading" style="font-size: 18px; margin: 24px 12px 12px;">CÓ THỂ BẠN SẼ THÍCH</h2>
+<script src="/js/freeflow-loader.js"></script>
+<script src="/js/base.js"></script>
   <!-- ✅ Sticky footer -->
 <div id="footerContainer"></div>
 <script src="https://unpkg.com/lucide@latest"></script>
