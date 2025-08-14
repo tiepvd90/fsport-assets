@@ -4,17 +4,16 @@ if (typeof fetchVoucherMap !== "function") {
 }
 
 function getProductPageFromUrl() {
-  // Ưu tiên lấy từ biến window.productPage nếu có
+  // Ưu tiên lấy từ window.productPage nếu có
   if (typeof window.productPage === "string" && window.productPage.trim() !== "") {
     return window.productPage.trim().toLowerCase();
   }
 
-  // Fallback lấy theo URL như cũ
+  // Fallback lấy từ URL
   const path = window.location.pathname.toLowerCase();
   const filename = path.substring(path.lastIndexOf("/") + 1);
   return filename.split(".")[0] || "homepage";
 }
-
 
 const simpleVoucherMap = {
   "30k": 30000,
@@ -22,7 +21,8 @@ const simpleVoucherMap = {
 
 const allowedPages = [
   "ysandal5568", "ysandalbn68", "firstpickleball",
-  "secpickleball", "teflon","phantom", "gen4","collection", "pickleball-airforce", "homepage"
+  "secpickleball", "teflon", "phantom", "gen4", "tera", "ysandal5560","bcu5206", "bn52",
+  "collection", "pickleball-airforce", "homepage"
 ];
 
 function showVoucherPopup(refCode, amount) {
@@ -43,11 +43,13 @@ function showVoucherPopup(refCode, amount) {
   document.getElementById("closeVoucherBtn")?.addEventListener("click", () => popup.remove());
 
   document.getElementById("applyVoucherBtn")?.addEventListener("click", () => {
-    localStorage.setItem("savedVoucher", JSON.stringify({ code: refCode, amount }));
-    window.currentVoucherValue = amount;
-    window.__voucherWaiting = { amount };
-    popup.remove();
-    document.querySelector("#btn-atc")?.click();
+    // ✅ Đã lưu rồi, không cần lặp lại — chỉ xử lý nút
+    const atcBtn = document.querySelector("#btn-atc");
+    if (atcBtn) {
+      atcBtn.click(); // ✅ Trang có nút Add to cart
+    } else {
+      popup.remove(); // ✅ Trang không có nút → đóng popup thôi
+    }
   });
 
   startVoucherCountdown(600); // 600 giây = 10 phút
@@ -111,6 +113,7 @@ function startVoucherCountdown(seconds) {
   window.voucherByProduct = window.voucherByProduct || {};
 
   if (amount > 0 && allowedPages.includes(currentPage)) {
+    // ✅ Luôn lưu vào localStorage và bộ nhớ tạm
     localStorage.setItem("savedVoucher", JSON.stringify({ code: refRaw, amount }));
     window.currentVoucherValue = amount;
     window.__voucherWaiting = { amount };
