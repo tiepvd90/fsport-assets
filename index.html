@@ -40,9 +40,15 @@
 </script>
 </head>
 <body>
-  <!-- ✅ Ảnh cover -->
-  <img src="https://i.postimg.cc/bYHVx94t/cover1.webp" alt="Cover 1" class="cover-img" />
+  <h2 class="cps-section-title">Vợt Pickleball & Phụ Kiện</h2>
+<section class="cps-slider">
+  <div class="cps-track" id="slider-pickleball"></div>
+</section>
 
+<h2 class="cps-section-title">Dép Chạy Đài Loan Ysandal</h2>
+<section class="cps-slider">
+  <div class="cps-track" id="slider-ysandal"></div>
+</section>
   <!-- ✅ Checkout Popup -->
   <div id="checkoutPopup-placeholder"></div>
   <script>
@@ -69,6 +75,36 @@
     .then(html => {
       document.getElementById('footerContainer').innerHTML = html;
       lucide.createIcons();
+    });
+</script>
+ <!-- ✅ horizontal product slider
+  <script>
+  function renderSliderItems(data, containerId) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+
+    data.forEach(item => {
+      const el = document.createElement("a");
+      el.className = "cps-item";
+      el.href = item.link;
+      el.innerHTML = `
+        <img src="${item.image}" alt="${item.title}">
+        <div class="cps-info">
+          <div class="cps-title">${item.title}</div>
+          <div class="cps-price">${Number(item.price).toLocaleString()}đ</div>
+        </div>
+      `;
+      container.appendChild(el);
+    });
+  }
+
+  fetch("/json/collection.json")
+    .then(res => res.json())
+    .then(data => {
+      const pickleballItems = data.filter(p => p.category === "pickleball");
+      const ysandalItems = data.filter(p => p.category === "ysandal");
+      renderSliderItems(pickleballItems, "slider-pickleball");
+      renderSliderItems(ysandalItems, "slider-ysandal");
     });
 </script>
 
