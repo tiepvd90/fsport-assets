@@ -8,7 +8,10 @@ let itemsLoaded = 0;
 let productCategory = window.productCategory || "0";
 const renderedIds = new Set();
 
-// ✅ Load cache nếu còn hạn
+let _autoplayObserver = null;
+
+// ──────────────────────────────────────────────────────────────
+// ✅ Helpers: cache
 function loadCachedFreeFlow() {
   try {
     const cached = JSON.parse(localStorage.getItem(CACHE_KEY));
@@ -19,13 +22,13 @@ function loadCachedFreeFlow() {
   return null;
 }
 
-// ✅ Lưu cache dữ liệu gốc
 function saveCache(data) {
   const payload = { timestamp: Date.now(), data };
   localStorage.setItem(CACHE_KEY, JSON.stringify(payload));
 }
 
-// ✅ Trộn & sắp xếp dữ liệu
+// ──────────────────────────────────────────────────────────────
+// ✅ Xử lý & sắp xếp dữ liệu (masonry + 6 ảnh : 1 video)
 function processAndSortData(data) {
   const random = () => Math.floor(Math.random() * 20) + 1;
 
@@ -43,23 +46,19 @@ function processAndSortData(data) {
       finalPriority: (item.basePriority || 0) + random()
     }));
 
-  // Trộn preferred và others luân phiên
-  function interleaveBalanced(preferred, others) {
+  function interleaveBalanced(a, b) {
     const result = [];
     let i = 0, j = 0;
-    const total = preferred.length + others.length;
+    const total = a.length + b.length;
     for (let k = 0; k < total; k++) {
-      if ((k % 2 === 0 && i < preferred.length) || j >= others.length) {
-        result.push(preferred[i++]);
-      } else {
-        result.push(others[j++]);
-      }
+      if ((k % 2 === 0 && i < a.length) || j >= b.length) result.push(a[i++]);
+      else result.push(b[j++]);
     }
     return result;
   }
 
-  const combined = interleaveBalanced(preferred, others);
-  combined.sort((a, b) => b.finalPriority - a.finalPriority);
+  const combined = interleaveBalanced(preferred, others)
+    .sort((x, y) => y.finalPriority - x.finalPriority);
 
   const images = combined.filter(i => i.contentType === "image");
   const videos = combined.filter(i => i.contentType === "youtube");
@@ -67,33 +66,31 @@ function processAndSortData(data) {
   const mixed = [];
   let imgIndex = 0, vidIndex = 0;
   while (imgIndex < images.length) {
-    for (let k = 0; k < 6 && imgIndex < images.length; k++) {
-      mixed.push(images[imgIndex++]);
-    }
+    for (let k = 0; k < 6 && imgIndex < images.length; k++) mixed.push(images[imgIndex++]);
     if (vidIndex < videos.length) mixed.push(videos[vidIndex++]);
   }
 
-  // ✅ Sắp xếp lại để masonry chia đều trái phải
-  function reorderForVisualMasonry(data, columns = 2) {
-    const rows = Math.ceil(data.length / columns);
-    const reordered = [];
+  function reorderForVisualMasonry(arr, columns = 2) {
+    const rows = Math.ceil(arr.length / columns);
+    const out = [];
     for (let r = 0; r < rows; r++) {
       for (let c = 0; c < columns; c++) {
         const index = c * rows + r;
-        if (index < data.length) reordered.push(data[index]);
+        if (index < arr.length) out.push(arr[index]);
       }
     }
-    return reordered;
+    return out;
   }
 
   freeflowData = reorderForVisualMasonry(mixed, 2);
 }
 
-// ✅ Tải dữ liệu chính
+// ──────────────────────────────────────────────────────────────
+// ✅ Fetch data: local → render → sheet (merge)
 async function fetchFreeFlowData() {
   const cached = loadCachedFreeFlow();
   if (cached) {
-    processAndSortData(cached); // luôn tính lại theo productCategory
+    processAndSortData(cached);
     renderInitialAndLoadRest();
   }
 
@@ -113,7 +110,6 @@ async function fetchFreeFlowData() {
   }
 }
 
-// ✅ Gọi Google Sheet
 async function fetchFromGoogleSheet(existingData) {
   try {
     const res = await fetch(fallbackUrl);
@@ -138,7 +134,8 @@ async function fetchFromGoogleSheet(existingData) {
   }
 }
 
-// ✅ Render ban đầu
+// ──────────────────────────────────────────────────────────────
+// ✅ Render
 function renderInitialAndLoadRest() {
   const container = document.getElementById("freeflowFeed");
   if (!container) return;
@@ -156,7 +153,6 @@ function renderInitialAndLoadRest() {
   }, 300);
 }
 
-// ✅ Render từng item
 function renderFeedItem(item, container) {
   if (renderedIds.has(item.itemId)) return;
   renderedIds.add(item.itemId);
@@ -168,7 +164,7 @@ function renderFeedItem(item, container) {
 
   if (item.contentType === "image") {
     mediaHtml = `
-      <img loading="lazy" src="${item.image}" alt="${item.title || ''}" />
+      <img loading="lazy" src="${item.image}" alt="${item.title || ""}" />
       ${item.title ? `<h4 class="one-line-title">${item.title}</h4>` : ""}
       ${item.price ? `
         <div class="price-line">
@@ -198,12 +194,8 @@ function renderFeedItem(item, container) {
           <img src="${item.image}" style="width: 36px; height: 36px; object-fit: cover; border-radius: 6px;" />
         </a>
         <div style="flex: 1; min-width: 0;">
-          <h4 style="font-size: 13px; line-height: 1.3; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-            ${item.title}
-          </h4>
-          <div style="font-size: 13px; color: #f53d2d; font-weight: bold;">
-            ${Number(item.price).toLocaleString()}đ
-          </div>
+          <h4 style="font-size: 13px; line-height: 1.3; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${item.title || ""}</h4>
+          ${item.price ? `<div style="font-size: 13px; color: #f53d2d; font-weight: bold;">${Number(item.price).toLocaleString()}đ</div>` : ""}
         </div>
       </div>
     `;
@@ -212,46 +204,89 @@ function renderFeedItem(item, container) {
   div.innerHTML = mediaHtml;
 
   if (item.contentType === "image") {
-    div.onclick = () => window.location.href = item.productPage;
+    div.addEventListener("click", () => (window.location.href = item.productPage));
   } else if (item.contentType === "youtube") {
-    setTimeout(() => {
-      const overlay = div.querySelector(".video-overlay");
-      overlay.onclick = () => {
-        const id = overlay.getAttribute("data-video");
-        const popup = document.getElementById("videoOverlay");
-        const frame = document.getElementById("videoFrame");
-        frame.src = `https://www.youtube.com/embed/${id}?autoplay=1&mute=0&playsinline=1&controls=1`;
-        popup.style.display = "flex";
-        const viewBtn = document.getElementById("viewProductBtn");
-        if (viewBtn) viewBtn.onclick = () => window.location.href = item.productPage;
-      };
-    }, 0);
+    // đảm bảo overlay chỉ click video popup, không chặn các vùng khác
+    const overlay = div.querySelector(".video-overlay");
+    overlay.addEventListener("click", (ev) => {
+      ev.stopPropagation();
+      const id = overlay.getAttribute("data-video");
+      const popup = document.getElementById("videoOverlay");
+      const frame = document.getElementById("videoFrame");
+      if (frame) frame.src = `https://www.youtube.com/embed/${id}?autoplay=1&mute=0&playsinline=1&controls=1`;
+      if (popup) popup.style.display = "flex";
+      const viewBtn = document.getElementById("viewProductBtn");
+      if (viewBtn) viewBtn.onclick = () => (window.location.href = item.productPage);
+    });
   }
 
   container.appendChild(div);
 }
 
-// ✅ Tự động phát YouTube
+// ──────────────────────────────────────────────────────────────
+// ✅ Autoplay khi thấy 75% khung hình
 function setupAutoplayObserver() {
+  // Hủy observer cũ (nếu có) để tránh leak & nhân bản callback
+  if (_autoplayObserver) {
+    _autoplayObserver.disconnect();
+    _autoplayObserver = null;
+  }
+
   const iframes = document.querySelectorAll('iframe[data-video-id]');
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
+  if (!iframes.length) return;
+
+  _autoplayObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
       const iframe = entry.target;
-      const id = iframe.getAttribute('data-video-id');
+      const id = iframe.getAttribute("data-video-id");
       const targetSrc = `https://www.youtube.com/embed/${id}?autoplay=1&mute=1&playsinline=1&controls=1&loop=1&playlist=${id}`;
       if (entry.isIntersecting) {
         if (iframe.src !== targetSrc) iframe.src = targetSrc;
       } else {
-        if (iframe.src !== "") iframe.src = "";
+        if (iframe.src) iframe.src = "";
       }
     });
   }, { threshold: 0.75 });
 
-  iframes.forEach(iframe => observer.observe(iframe));
+  iframes.forEach((iframe) => _autoplayObserver.observe(iframe));
 }
 
-// ✅ Init
+// ──────────────────────────────────────────────────────────────
+// ✅ Cleanup (thay cho reload pageshow)
+// Ngăn đơ back/next do reload cưỡng bức
+function stopAllIframes() {
+  document.querySelectorAll('iframe[data-video-id]').forEach(ifr => {
+    if (ifr.src) ifr.src = "";
+  });
+}
+
+function teardownAutoplayObserver() {
+  if (_autoplayObserver) {
+    _autoplayObserver.disconnect();
+    _autoplayObserver = null;
+  }
+}
+
+// Safari bfcache: dùng pagehide để dọn dẹp, KHÔNG reload
+window.addEventListener("pagehide", () => {
+  stopAllIframes();
+  teardownAutoplayObserver();
+});
+
+// Khi tab ẩn đi cũng dọn dẹp
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden) {
+    stopAllIframes();
+  }
+});
+
+// ──────────────────────────────────────────────────────────────
+// ✅ Init an toàn: chỉ chạy trên trang có #freeflowFeed
 document.addEventListener("DOMContentLoaded", () => {
+  const hasFeed = !!document.getElementById("freeflowFeed");
+  // Đừng chạm trang khác – tránh ảnh hưởng back/next ở toàn site
+  if (!hasFeed) return;
+
   const closeBtn = document.getElementById("videoCloseBtn");
   if (closeBtn) closeBtn.onclick = () => {
     const popup = document.getElementById("videoOverlay");
@@ -263,9 +298,9 @@ document.addEventListener("DOMContentLoaded", () => {
   fetchFreeFlowData();
 });
 
-window.addEventListener("pageshow", function (event) {
-  if (event.persisted || performance.getEntriesByType("navigation")[0]?.type === "back_forward") {
-    // ❗ Reload lại nếu quay lại từ nút back trên Safari (chỉ dành cho trang có FreeFlow)
-    location.reload();
-  }
-});
+// ❌ ĐÃ GỠ bỏ hoàn toàn đoạn gây lỗi back/next:
+// window.addEventListener("pageshow", function (event) {
+//   if (event.persisted || performance.getEntriesByType("navigation")[0]?.type === "back_forward") {
+//     location.reload();
+//   }
+// });
