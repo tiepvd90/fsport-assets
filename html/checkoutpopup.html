@@ -69,30 +69,37 @@
 </div>
 
 <!-- ✅ POPUP CẢM ƠN -->
-<div id="thankyouPopup" class="hidden" style="position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 9999; display: flex; align-items: center; justify-content: center; font-family: 'Be Vietnam Pro', sans-serif;">
-  <div style="background: white; padding: 24px; border-radius: 12px; max-width: 90%; width: 360px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.2);">
-    <h3 style="color: green; font-size: 20px; margin-bottom: 12px;">🎉 CẢM ƠN BẠN ĐÃ ĐẶT HÀNG!</h3>
-    <p style="margin-bottom: 20px;">Nếu Bạn Cần Liên Hệ Hoặc Giục Giao Hàng Hỏa Tốc, Vui Lòng Liên Hệ Zalo/Messenger Của Fun-Sport.</p>
-    <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 12px;">
-  <!-- Nút Zalo -->
-  <a href="https://zalo.me/0384735980" target="_blank"
-     style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: #0084ff; color: white; padding: 10px 16px; border-radius: 8px; text-decoration: none; font-weight: 600; min-width: 140px;">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Icon_of_Zalo.svg" alt="Zalo" style="width: 20px; height: 20px;">
-    Chat Zalo
-  </a>
+<div id="thankyouPopup" class="hidden"
+     style="position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 9999; display: flex; align-items: center; justify-content: center; font-family: 'Be Vietnam Pro', sans-serif;">
+  <div style="background: white; padding: 24px 20px; border-radius: 12px; max-width: 90%; width: 360px; text-align: center; position: relative; box-shadow: 0 4px 12px rgba(0,0,0,0.2);">
 
-  <!-- Nút Messenger -->
-  <a href="https://m.me/funsport1" target="_blank"
-     style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: #0078ff; color: white; padding: 10px 16px; border-radius: 8px; text-decoration: none; font-weight: 600; min-width: 140px;">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/8/83/Facebook_Messenger_4_Logo.svg" alt="Messenger" style="width: 20px; height: 20px;">
-    Chat Messenger
-  </a>
+    <!-- ❌ Nút đóng -->
+    <button onclick="hideThankyouPopup()" style="position: absolute; top: 10px; right: 12px; background: none; border: none; font-size: 20px; font-weight: bold; cursor: pointer;">×</button>
+
+    <!-- 🎉 Tiêu đề -->
+    <h3 style="color: green; font-size: 20px; margin-bottom: 12px;">🎉 CẢM ƠN BẠN ĐÃ ĐẶT HÀNG!</h3>
+    <p style="margin-bottom: 20px;">Nếu Bạn Cần Liên Hệ Hoặc Giục Giao Hàng Hỏa Tốc, Vui Lòng Liên Hệ Qua Zalo Hoặc Messenger.</p>
+
+    <!-- 🔗 Nút liên hệ -->
+    <div style="display: flex; justify-content: center; gap: 12px;">
+      <!-- Zalo -->
+      <a href="https://zalo.me/0384735980" target="_blank"
+         style="display: inline-flex; align-items: center; gap: 6px; background: #0084ff; color: white; padding: 8px 12px; border-radius: 8px; text-decoration: none; font-weight: 500; font-size: 14px;">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Icon_of_Zalo.svg" alt="Zalo" style="width: 18px; height: 18px;">
+        Zalo
+      </a>
+
+      <!-- Messenger -->
+      <a href="https://m.me/funsport1" target="_blank"
+         style="display: inline-flex; align-items: center; gap: 6px; background: #006AFF; color: white; padding: 8px 12px; border-radius: 8px; text-decoration: none; font-weight: 500; font-size: 14px;">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/8/83/Facebook_Messenger_4_Logo.svg" alt="Messenger" style="width: 18px; height: 18px;">
+        Messenger
+      </a>
+    </div>
+
+  </div>
 </div>
-    <br />
-    <button onclick="hideThankyouPopup()" 
-        style="margin-top: 16px; background: #333; color: white; border: none; padding: 12px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 16px; text-transform: uppercase;">
-  ĐÓNG
-</button>
+
 
   </div>
 </div>
