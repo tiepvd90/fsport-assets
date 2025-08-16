@@ -167,6 +167,12 @@ function submitOrder() {
   if (!name || !phone || !address) {
   return alert("Vui lòng nhập đầy đủ thông tin.");
 }
+// ✅ Lưu thông tin vào localStorage
+localStorage.setItem("checkoutInfo", JSON.stringify({
+  name,
+  phone,
+  address
+}));
 
 if (!window.cart.length) {
   return alert("Giỏ hàng của bạn đang trống.");
@@ -254,6 +260,18 @@ function bindCheckoutEvents() {
 window.addEventListener("DOMContentLoaded", () => {
   loadCart();
   bindCheckoutEvents();
+  // ✅ Tự động điền lại nếu có thông tin lưu trước đó
+  const savedInfo = JSON.parse(localStorage.getItem("checkoutInfo") || "{}");
+
+  if (savedInfo.name && document.getElementById("checkoutName")) {
+    document.getElementById("checkoutName").value = savedInfo.name;
+  }
+  if (savedInfo.phone && document.getElementById("checkoutPhone")) {
+    document.getElementById("checkoutPhone").value = savedInfo.phone;
+  }
+  if (savedInfo.address && document.getElementById("checkoutAddress")) {
+    document.getElementById("checkoutAddress").value = savedInfo.address;
+  }
 });
 function updateCartItemCount() {
   const badge = document.getElementById("cartItemCount");
