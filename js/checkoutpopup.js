@@ -25,6 +25,8 @@ function showCheckoutPopup() {
   document.body.style.overflow = "hidden";
 
   bindCheckoutEvents();
+  setupLiveSaveCheckoutInfo();
+
 }
 
 // ✅ ẨN CHECKOUT POPUP
@@ -167,12 +169,6 @@ function submitOrder() {
   if (!name || !phone || !address) {
   return alert("Vui lòng nhập đầy đủ thông tin.");
 }
-// ✅ Lưu thông tin vào localStorage
-localStorage.setItem("checkoutInfo", JSON.stringify({
-  name,
-  phone,
-  address
-}));
 
 if (!window.cart.length) {
   return alert("Giỏ hàng của bạn đang trống.");
@@ -260,7 +256,7 @@ function bindCheckoutEvents() {
 window.addEventListener("DOMContentLoaded", () => {
   loadCart();
   bindCheckoutEvents();
-  // ✅ Tự động điền lại nếu có thông tin lưu trước đó
+    // ✅ Tự động điền lại thông tin nếu đã lưu
   const savedInfo = JSON.parse(localStorage.getItem("checkoutInfo") || "{}");
 
   if (savedInfo.name && document.getElementById("checkoutName")) {
@@ -289,4 +285,22 @@ function showThankyouPopup() {
 function hideThankyouPopup() {
   document.getElementById("thankyouPopup").classList.add("hidden");
   document.body.style.overflow = "auto";
+}
+function setupLiveSaveCheckoutInfo() {
+  const nameEl = document.getElementById("checkoutName");
+  const phoneEl = document.getElementById("checkoutPhone");
+  const addressEl = document.getElementById("checkoutAddress");
+
+  [nameEl, phoneEl, addressEl].forEach((el) => {
+    if (el) {
+      el.addEventListener("input", () => {
+        const newInfo = {
+          name: nameEl?.value.trim(),
+          phone: phoneEl?.value.trim(),
+          address: addressEl?.value.trim()
+        };
+        localStorage.setItem("checkoutInfo", JSON.stringify(newInfo));
+      });
+    }
+  });
 }
