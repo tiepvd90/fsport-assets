@@ -1,3 +1,16 @@
+// ===============================================
+// ✅ CHECKOUT POPUP + AUTOSAVE THÔNG TIN NGƯỜI NHẬN
+// ===============================================
+
+// ✅ CẬP NHẬT BADGE SỐ LƯỢNG TRÊN ICON GIỎ HÀNG
+function updateCartItemCount() {
+  const badge = document.getElementById("cartItemCount");
+  if (!badge) return;
+  const cart = Array.isArray(window.cart) ? window.cart : [];
+  const totalQty = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+  badge.textContent = totalQty;
+}
+
 // ✅ TẢI GIỎ HÀNG TỪ localStorage NGAY LÚC KHỞI TẠO
 function loadCart() {
   try {
@@ -10,11 +23,76 @@ function loadCart() {
 }
 loadCart();
 updateCartItemCount();
+
 let shippingFee = 0;
 let shippingFeeOriginal = 0;
 let voucherValue = 0;
 
-// ✅ HIỆN CHECKOUT POPUP
+// ------------------------
+// 🔹 AUTOSAVE – TRỢ GIÚP
+// ------------------------
+
+// ✅ Điền lại form từ localStorage (nếu đã lưu)
+function hydrateCheckoutInfo() {
+  try {
+    const saved = JSON.parse(localStorage.getItem("checkoutInfo") || "{}");
+    const nameEl = document.getElementById("checkoutName");
+    const phoneEl = document.getElementById("checkoutPhone");
+    const addressEl = document.getElementById("checkoutAddress");
+
+    if (nameEl && typeof saved.name === "string") nameEl.value = saved.name;
+    if (phoneEl && typeof saved.phone === "string") phoneEl.value = saved.phone;
+    if (addressEl && typeof saved.address === "string") addressEl.value = saved.address;
+  } catch (e) {
+    console.warn("Không parse được checkoutInfo:", e);
+  }
+}
+
+// ✅ Gắn listener để lưu mỗi lần người dùng gõ / đổi
+function setupLiveSaveCheckoutInfo() {
+  const nameEl = document.getElementById("checkoutName");
+  const phoneEl = document.getElementById("checkoutPhone");
+  const addressEl = document.getElementById("checkoutAddress");
+
+  [nameEl, phoneEl, addressEl].forEach((el) => {
+    if (el && !el.dataset.autosaveBound) {
+      const handler = () => {
+        const newInfo = {
+          name: (document.getElementById("checkoutName")?.value || "").trim(),
+          phone: (document.getElementById("checkoutPhone")?.value || "").trim(),
+          address: (document.getElementById("checkoutAddress")?.value || "").trim(),
+        };
+        localStorage.setItem("checkoutInfo", JSON.stringify(newInfo));
+      };
+      el.addEventListener("input", handler);
+      el.addEventListener("change", handler); // backup khi user nhập xong
+      el.dataset.autosaveBound = "1";
+    }
+  });
+}
+
+// ✅ Chờ khi input được inject vào DOM rồi mới hydrate + bind
+function whenCheckoutInputsReady(run) {
+  const ready = () =>
+    document.getElementById("checkoutName") &&
+    document.getElementById("checkoutPhone") &&
+    document.getElementById("checkoutAddress");
+
+  if (ready()) return run();
+
+  const obs = new MutationObserver(() => {
+    if (ready()) {
+      obs.disconnect();
+      run();
+    }
+  });
+  obs.observe(document.body, { childList: true, subtree: true });
+}
+
+// ------------------------
+// 🔹 POPUP HIỂN/ẨN
+// ------------------------
+
 function showCheckoutPopup() {
   loadShippingFee();
   renderCheckoutCart();
@@ -25,18 +103,25 @@ function showCheckoutPopup() {
   document.body.style.overflow = "hidden";
 
   bindCheckoutEvents();
-  setupLiveSaveCheckoutInfo();
 
+  // ✅ Điền lại trước rồi mới gắn listener (DOM đã sẵn vì popup vừa mở)
+  hydrateCheckoutInfo();
+  setupLiveSaveCheckoutInfo();
 }
 
-// ✅ ẨN CHECKOUT POPUP
 function hideCheckoutPopup() {
-  document.getElementById("checkoutPopup").classList.add("hidden");
-  document.getElementById("checkoutPopup").style.display = "none";
+  const popup = document.getElementById("checkoutPopup");
+  if (popup) {
+    popup.classList.add("hidden");
+    popup.style.display = "none";
+  }
   document.body.style.overflow = "auto";
 }
 
-// ✅ RENDER DANH SÁCH SẢN PHẨM
+// ------------------------
+// 🔹 RENDER GIỎ HÀNG + TỔNG KẾT
+// ------------------------
+
 function renderCheckoutCart() {
   const list = document.getElementById("checkoutCartList");
   list.innerHTML = "";
@@ -79,7 +164,6 @@ function renderCheckoutCart() {
   updateCheckoutSummary();
 }
 
-// ✅ CẬP NHẬT TỔNG KẾT ĐƠN HÀNG
 function updateCheckoutSummary() {
   const subtotal = window.cart.reduce((sum, item) => sum + item.Giá * item.quantity, 0);
   const totalQty = window.cart.reduce((sum, item) => sum + item.quantity, 0);
@@ -110,17 +194,23 @@ function updateCheckoutSummary() {
   }
 
   const voucherTextEl = document.getElementById("voucherText");
-  if (voucherValue > 0) {
-    voucherTextEl.textContent = `-${voucherValue.toLocaleString()}₫`;
-    voucherTextEl.style.display = "block";
-  } else {
-    voucherTextEl.style.display = "none";
+  if (voucherTextEl) {
+    if (voucherValue > 0) {
+      voucherTextEl.textContent = `-${voucherValue.toLocaleString()}₫`;
+      voucherTextEl.style.display = "block";
+    } else {
+      voucherTextEl.style.display = "none";
+    }
   }
 
-  document.getElementById("totalText").textContent = `${total.toLocaleString()}₫`;
+  const totalEl = document.getElementById("totalText");
+  if (totalEl) totalEl.textContent = `${total.toLocaleString()}₫`;
 }
 
-// ✅ THÊM / BỚT SỐ LƯỢNG
+// ------------------------
+// 🔹 SỬA SỐ LƯỢNG / XOÁ / LƯU CART
+// ------------------------
+
 function changeItemQty(index, delta) {
   const item = window.cart[index];
   item.quantity = Math.max(1, item.quantity + delta);
@@ -128,21 +218,21 @@ function changeItemQty(index, delta) {
   renderCheckoutCart();
 }
 
-// ✅ XOÁ ITEM
 function removeItem(index) {
   window.cart.splice(index, 1);
   saveCart();
   renderCheckoutCart();
 }
 
-// ✅ LƯU GIỎ HÀNG VÀO localStorage
 function saveCart() {
   localStorage.setItem("cart", JSON.stringify(window.cart));
   updateCartItemCount();
 }
 
+// ------------------------
+// 🔹 PHÍ VẬN CHUYỂN
+// ------------------------
 
-// ✅ TẢI PHÍ VẬN CHUYỂN
 function loadShippingFee() {
   fetch("https://friendly-kitten-d760ff.netlify.app/json/shippingfee.json")
     .then(res => res.json())
@@ -161,19 +251,21 @@ function loadShippingFee() {
     });
 }
 
-// ✅ GỬI ĐƠN HÀNG
+// ------------------------
+// 🔹 GỬI ĐƠN HÀNG
+// ------------------------
+
 function submitOrder() {
   const name = document.getElementById("checkoutName")?.value.trim();
   const phone = document.getElementById("checkoutPhone")?.value.trim();
   const address = document.getElementById("checkoutAddress")?.value.trim();
+
   if (!name || !phone || !address) {
-  return alert("Vui lòng nhập đầy đủ thông tin.");
-}
-
-if (!window.cart.length) {
-  return alert("Giỏ hàng của bạn đang trống.");
-}
-
+    return alert("Vui lòng nhập đầy đủ thông tin.");
+  }
+  if (!window.cart.length) {
+    return alert("Giỏ hàng của bạn đang trống.");
+  }
 
   const firstItem = window.cart[0] || {};
   const category = firstItem.category || "unknown";
@@ -184,33 +276,29 @@ if (!window.cart.length) {
     address,
     category,
     items: window.cart.map(item => {
-  const baseItem = {
-    id: item.id || null,
-    category: item.category || "unknown",
-    "Phân loại": item["Phân loại"],
-    Giá: item.Giá,
-    Ảnh: item.Ảnh,
-    quantity: item.quantity
-  };
-
-  if (item.voucher && typeof item.voucher.amount === "number" && item.voucher.amount > 0) {
-    baseItem.voucher = {
-      amount: item.voucher.amount,
-      label: item.voucher.label || ""
-    };
-  }
-
-  return baseItem;
-}),
-
+      const baseItem = {
+        id: item.id || null,
+        category: item.category || "unknown",
+        "Phân loại": item["Phân loại"],
+        Giá: item.Giá,
+        Ảnh: item.Ảnh,
+        quantity: item.quantity
+      };
+      if (item.voucher && typeof item.voucher.amount === "number" && item.voucher.amount > 0) {
+        baseItem.voucher = {
+          amount: item.voucher.amount,
+          label: item.voucher.label || ""
+        };
+      }
+      return baseItem;
+    }),
     shippingFee,
     voucherValue,
     total: window.cart.reduce((sum, i) => sum + i.Giá * i.quantity, 0) + shippingFee - voucherValue
   };
-// ✅ Log ra console để kiểm tra trước khi gửi
-console.log("📦 Sending orderData:", orderData);
 
-// ✅ Gửi về Make
+  console.log("📦 Sending orderData:", orderData);
+
   fetch("https://hook.eu2.make.com/m9o7boye6fl1hstehst7waysmt38b2ul", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -232,6 +320,7 @@ console.log("📦 Sending orderData:", orderData);
         });
       }
 
+      // ❗ KHÔNG xóa checkoutInfo — giữ lại cho lần sau
       showThankyouPopup();
       window.cart = [];
       saveCart();
@@ -243,7 +332,10 @@ console.log("📦 Sending orderData:", orderData);
     });
 }
 
-// ✅ GẮN SỰ KIỆN CHO NÚT ĐẶT HÀNG
+// ------------------------
+// 🔹 GẮN SỰ KIỆN
+// ------------------------
+
 function bindCheckoutEvents() {
   const btn = document.getElementById("checkoutSubmitBtn");
   if (btn && !btn.dataset.bound) {
@@ -252,57 +344,41 @@ function bindCheckoutEvents() {
   }
 }
 
-// ✅ KHI LOAD TRANG
-window.addEventListener("DOMContentLoaded", () => {
-  loadCart();
-  bindCheckoutEvents();
-    // ✅ Tự động điền lại thông tin nếu đã lưu
-  const savedInfo = JSON.parse(localStorage.getItem("checkoutInfo") || "{}");
+// ------------------------
+// 🔹 THANK YOU POPUP
+// ------------------------
 
-  if (savedInfo.name && document.getElementById("checkoutName")) {
-    document.getElementById("checkoutName").value = savedInfo.name;
-  }
-  if (savedInfo.phone && document.getElementById("checkoutPhone")) {
-    document.getElementById("checkoutPhone").value = savedInfo.phone;
-  }
-  if (savedInfo.address && document.getElementById("checkoutAddress")) {
-    document.getElementById("checkoutAddress").value = savedInfo.address;
-  }
-    setupLiveSaveCheckoutInfo();  // ✅ Gắn lắng nghe input ngay khi trang load
-
-});
-function updateCartItemCount() {
-  const badge = document.getElementById("cartItemCount");
-  if (!badge) return;
-
-  const cart = Array.isArray(window.cart) ? window.cart : [];
-  const totalQty = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
-  badge.textContent = totalQty;
-}
 function showThankyouPopup() {
-  document.getElementById("thankyouPopup").classList.remove("hidden");
-  document.body.style.overflow = "hidden"; // Ngăn scroll
+  const el = document.getElementById("thankyouPopup");
+  if (el) {
+    el.classList.remove("hidden");
+    document.body.style.overflow = "hidden";
+  }
 }
 
 function hideThankyouPopup() {
-  document.getElementById("thankyouPopup").classList.add("hidden");
-  document.body.style.overflow = "auto";
+  const el = document.getElementById("thankyouPopup");
+  if (el) {
+    el.classList.add("hidden");
+    document.body.style.overflow = "auto";
+  }
 }
-function setupLiveSaveCheckoutInfo() {
-  const nameEl = document.getElementById("checkoutName");
-  const phoneEl = document.getElementById("checkoutPhone");
-  const addressEl = document.getElementById("checkoutAddress");
 
-  [nameEl, phoneEl, addressEl].forEach((el) => {
-    if (el) {
-      el.addEventListener("input", () => {
-        const newInfo = {
-          name: nameEl?.value.trim(),
-          phone: phoneEl?.value.trim(),
-          address: addressEl?.value.trim()
-        };
-        localStorage.setItem("checkoutInfo", JSON.stringify(newInfo));
-      });
-    }
+// ------------------------
+// 🔹 KHI LOAD TRANG
+// ------------------------
+
+window.addEventListener("DOMContentLoaded", () => {
+  loadCart();
+  bindCheckoutEvents();
+
+  // ✅ Nếu input đã có sẵn trong DOM: điền + gắn listener ngay
+  hydrateCheckoutInfo();
+  setupLiveSaveCheckoutInfo();
+
+  // ✅ Nếu input được inject muộn (qua injectHTML): chờ xong rồi thực hiện
+  whenCheckoutInputsReady(() => {
+    hydrateCheckoutInfo();
+    setupLiveSaveCheckoutInfo();
   });
-}
+});
