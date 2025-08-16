@@ -268,6 +268,8 @@ window.addEventListener("DOMContentLoaded", () => {
   if (savedInfo.address && document.getElementById("checkoutAddress")) {
     document.getElementById("checkoutAddress").value = savedInfo.address;
   }
+    setupLiveSaveCheckoutInfo();  // ✅ Gắn lắng nghe input ngay khi trang load
+
 });
 function updateCartItemCount() {
   const badge = document.getElementById("cartItemCount");
