@@ -136,3 +136,5 @@ setInterval(() => {
   fetch('/favicon.ico', { cache: "no-store" })
     .catch(err => console.log("Ping lỗi:", err));
 }, 5 * 60 * 1000);
+
+<script src="/js/supportchat.js"></script>
