@@ -595,8 +595,8 @@
   },
   {
     "itemId": "pickleball-010",
-    "title": "Rẻ Vô Địch: Vợt Pickleball Titan",
-    "price": 499000,
+    "title": "Vợt Pickleball Titan",
+    "price": 599000,
     "originalPrice": 699000,
     "contentType": "image",
     "image": "https://i.postimg.cc/63hPKxHd/Untitled-2.jpg",
@@ -643,8 +643,8 @@
   },
   {
     "itemId": "pickleball-013",
-    "title": "Rẻ Vô Địch: Vợt Pickleball Titan",
-    "price": 499000,
+    "title": " Vợt Pickleball Titan",
+    "price": 599000,
     "originalPrice": 699000,
     "contentType": "youtube",
     "image": "https://i.postimg.cc/63hPKxHd/Untitled-2.jpg",
@@ -654,22 +654,6 @@
       "pickleball"
     ],
     "basePriority": 22,
-    "productCategory": "pickleball",
-    "sellerID": "huyenle"
-  },
-  {
-    "itemId": "pickleball-014",
-    "title": "Lõi chống ồn vợt teflon",
-    "price": 1590000,
-    "originalPrice": 220000,
-    "contentType": "youtube",
-    "image": "https://i.postimg.cc/QNvGWJ32/Untitled-2.jpg",
-    "youtube": "Cz_teoKmZZg",
-    "productPage": "/pickleball/teflon",
-    "tags": [
-      "pickleball"
-    ],
-    "basePriority": 16,
     "productCategory": "pickleball",
     "sellerID": "huyenle"
   },
@@ -981,26 +965,9 @@
     "sellerID": "huyenle"
   },
   {
-    "itemId": "teflon",
-    "title": "Vợt Chuẩn Thi Đấu",
-    "price": 1450000,
-    "originalPrice": null,
-    "contentType": "youtube",
-    "image": "https://i.postimg.cc/L5ZgFDgr/trang.webp",
-    "youtube": "hWCb2FseWT4",
-    "productPage": "/pickleball/teflon",
-    "tags": [
-      "pickleball",
-      "teflon"
-    ],
-    "basePriority": 16,
-    "productCategory": "pickleball",
-    "sellerID": "huyenle"
-  },
-  {
     "itemId": "titan16mm",
-    "title": "[Rẻ Vô Địch} Vợt Titan 16mm",
-    "price": 499000,
+    "title": " Vợt Titan 16mm",
+    "price": 599000,
     "originalPrice": null,
     "contentType": "youtube",
     "image": "https://i.postimg.cc/Prk55WrK/titan16.jpg",
@@ -1117,8 +1084,8 @@
   },
   {
     "itemId": "titan1007",
-    "title": "[Rẻ Vô Địch] Titan Pickleball Paddle",
-    "price": 499000,
+    "title": "Titan Pickleball Paddle",
+    "price": 599000,
     "originalPrice": 900000,
     "contentType": "image",
     "image": "https://i.postimg.cc/GtS1WsFR/titan16.webp",
