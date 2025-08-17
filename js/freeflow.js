@@ -1,13 +1,14 @@
+// ✅ FREEFLOW CONFIG
 const CACHE_KEY = "freeflowCache";
 const CACHE_DURATION_MS = 30 * 60 * 1000;
 const fallbackUrl = "https://script.google.com/macros/s/AKfycbwuEh9sP65vyQL0XzU8gY1Os0QYV_K5egKJgm8OhImAPjvdyrQiU7XCY909N99TnltP/exec";
-const CHUNK_SIZE = 8;
 
 let freeflowData = [];
 let itemsLoaded = 0;
+let productCategory = window.productCategory || "0";
 const renderedIds = new Set();
-const productCategory = window.productCategory || "0";
 
+// ✅ Load cache nếu còn hạn
 function loadCachedFreeFlow() {
   try {
     const cached = JSON.parse(localStorage.getItem(CACHE_KEY));
@@ -18,22 +19,31 @@ function loadCachedFreeFlow() {
   return null;
 }
 
+// ✅ Lưu cache dữ liệu gốc
 function saveCache(data) {
   const payload = { timestamp: Date.now(), data };
   localStorage.setItem(CACHE_KEY, JSON.stringify(payload));
 }
 
+// ✅ Trộn & sắp xếp dữ liệu
 function processAndSortData(data) {
   const random = () => Math.floor(Math.random() * 20) + 1;
 
   const preferred = data
     .filter(item => item.productCategory === productCategory)
-    .map(item => ({ ...item, finalPriority: (item.basePriority || 0) + random() + 75 }));
+    .map(item => ({
+      ...item,
+      finalPriority: (item.basePriority || 0) + random() + 75
+    }));
 
   const others = data
     .filter(item => item.productCategory !== productCategory)
-    .map(item => ({ ...item, finalPriority: (item.basePriority || 0) + random() }));
+    .map(item => ({
+      ...item,
+      finalPriority: (item.basePriority || 0) + random()
+    }));
 
+  // Trộn preferred và others luân phiên
   function interleaveBalanced(preferred, others) {
     const result = [];
     let i = 0, j = 0;
@@ -48,7 +58,9 @@ function processAndSortData(data) {
     return result;
   }
 
-  const combined = interleaveBalanced(preferred, others).sort((a, b) => b.finalPriority - a.finalPriority);
+  const combined = interleaveBalanced(preferred, others);
+  combined.sort((a, b) => b.finalPriority - a.finalPriority);
+
   const images = combined.filter(i => i.contentType === "image");
   const videos = combined.filter(i => i.contentType === "youtube");
 
@@ -61,7 +73,8 @@ function processAndSortData(data) {
     if (vidIndex < videos.length) mixed.push(videos[vidIndex++]);
   }
 
-  function reorderForMasonry(data, columns = 2) {
+  // ✅ Sắp xếp lại để masonry chia đều trái phải
+  function reorderForVisualMasonry(data, columns = 2) {
     const rows = Math.ceil(data.length / columns);
     const reordered = [];
     for (let r = 0; r < rows; r++) {
@@ -73,23 +86,26 @@ function processAndSortData(data) {
     return reordered;
   }
 
-  freeflowData = reorderForMasonry(mixed);
+  freeflowData = reorderForVisualMasonry(mixed, 2);
 }
 
+// ✅ Tải dữ liệu chính
 async function fetchFreeFlowData() {
   const cached = loadCachedFreeFlow();
   if (cached) {
-    processAndSortData(cached);
-    setupFeedTrigger();
+    processAndSortData(cached); // luôn tính lại theo productCategory
+    renderInitialAndLoadRest();
   }
 
   try {
     const res = await fetch("/json/freeflow.json");
     const localData = await res.json();
     const validData = Array.isArray(localData) ? localData : [];
+
     processAndSortData(validData);
     saveCache(validData);
-    setupFeedTrigger();
+    renderInitialAndLoadRest();
+
     fetchFromGoogleSheet(validData);
   } catch (e) {
     console.warn("Lỗi khi tải local JSON:", e);
@@ -97,6 +113,7 @@ async function fetchFreeFlowData() {
   }
 }
 
+// ✅ Gọi Google Sheet
 async function fetchFromGoogleSheet(existingData) {
   try {
     const res = await fetch(fallbackUrl);
@@ -110,56 +127,36 @@ async function fetchFromGoogleSheet(existingData) {
     const combined = [...existingData, ...newItems];
     processAndSortData(combined);
     saveCache(combined);
+
+    const container = document.getElementById("freeflowFeed");
+    const moreItems = freeflowData.slice(itemsLoaded);
+    moreItems.forEach(item => renderFeedItem(item, container));
+    itemsLoaded = freeflowData.length;
+    setupAutoplayObserver();
   } catch (e) {
     console.error("Không thể fetch từ Google Sheet:", e);
   }
 }
 
-function renderNextChunk() {
+// ✅ Render ban đầu
+function renderInitialAndLoadRest() {
   const container = document.getElementById("freeflowFeed");
   if (!container) return;
 
-  const nextItems = freeflowData.slice(itemsLoaded, itemsLoaded + CHUNK_SIZE);
-  nextItems.forEach(item => renderFeedItem(item, container));
-  itemsLoaded += nextItems.length;
+  const firstBatch = freeflowData.slice(0, 4);
+  firstBatch.forEach(item => renderFeedItem(item, container));
+  itemsLoaded = 4;
   setupAutoplayObserver();
+
+  setTimeout(() => {
+    const remaining = freeflowData.slice(4);
+    remaining.forEach(item => renderFeedItem(item, container));
+    itemsLoaded = freeflowData.length;
+    setupAutoplayObserver();
+  }, 300);
 }
 
-function setupFeedTrigger() {
-  const feedContainer = document.getElementById("freeflowFeed");
-  if (!feedContainer) return;
-
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        observer.unobserve(entry.target);
-        renderNextChunk(); // lô đầu tiên
-        setupNextPageObserver(); // bắt đầu trigger cuộn tiếp
-      }
-    });
-  }, { rootMargin: "800px 0px" });
-
-  observer.observe(feedContainer);
-}
-
-function setupNextPageObserver() {
-  const sentinel = document.createElement("div");
-  sentinel.style.height = "1px";
-  document.getElementById("freeflowFeed")?.appendChild(sentinel);
-
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        observer.unobserve(entry.target);
-        renderNextChunk();
-        setupNextPageObserver();
-      }
-    });
-  }, { rootMargin: "800px 0px" });
-
-  observer.observe(sentinel);
-}
-
+// ✅ Render từng item
 function renderFeedItem(item, container) {
   if (renderedIds.has(item.itemId)) return;
   renderedIds.add(item.itemId);
@@ -173,16 +170,17 @@ function renderFeedItem(item, container) {
     mediaHtml = `
       <img loading="lazy" src="${item.image}" alt="${item.title || ''}" />
       ${item.title ? `<h4 class="one-line-title">${item.title}</h4>` : ""}
-      ${item.price ? `<div class="price-line">
-        <span class="price">${Number(item.price).toLocaleString()}đ</span>
-        ${item.originalPrice > item.price ? `<span class="original-price">${Number(item.originalPrice).toLocaleString()}đ</span>` : ""}
-      </div>` : ""}
+      ${item.price ? `
+        <div class="price-line">
+          <span class="price">${Number(item.price).toLocaleString()}đ</span>
+          ${item.originalPrice > item.price ? `<span class="original-price">${Number(item.originalPrice).toLocaleString()}đ</span>` : ""}
+        </div>` : ""}
     `;
-    div.onclick = () => window.location.href = item.productPage;
   } else if (item.contentType === "youtube") {
     mediaHtml = `
-      <div class="video-wrapper">
-        <img class="video-thumb" src="https://fun-sport.co/assets/images/thumb/vid-thumb.webp" />
+      <div class="video-wrapper" style="position: relative;">
+        <img class="video-thumb" src="https://fun-sport.co/assets/images/thumb/vid-thumb.webp"
+             style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; border-radius: 8px; z-index: 1;" />
         <iframe
           data-video-id="${item.youtube}"
           src=""
@@ -190,21 +188,32 @@ function renderFeedItem(item, container) {
           allow="autoplay; encrypted-media"
           allowfullscreen
           playsinline
-          muted>
+          muted
+          style="width: 100%; aspect-ratio: 9/16; border-radius: 8px; position: relative; z-index: 2;">
         </iframe>
-        <div class="video-overlay" data-video="${item.youtube}"></div>
+        <div class="video-overlay" data-video="${item.youtube}" style="position: absolute; inset: 0; cursor: pointer; z-index: 3;"></div>
       </div>
-      <div class="video-info">
+      <div class="video-info" style="display: flex; align-items: center; gap: 8px; padding: 4px 8px 0;">
         <a href="${item.productPage}">
-          <img src="${item.image}" />
+          <img src="${item.image}" style="width: 36px; height: 36px; object-fit: cover; border-radius: 6px;" />
         </a>
-        <div style="flex:1; min-width:0">
-          <h4>${item.title}</h4>
-          <div class="price">${Number(item.price).toLocaleString()}đ</div>
+        <div style="flex: 1; min-width: 0;">
+          <h4 style="font-size: 13px; line-height: 1.3; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+            ${item.title}
+          </h4>
+          <div style="font-size: 13px; color: #f53d2d; font-weight: bold;">
+            ${Number(item.price).toLocaleString()}đ
+          </div>
         </div>
       </div>
     `;
+  }
 
+  div.innerHTML = mediaHtml;
+
+  if (item.contentType === "image") {
+    div.onclick = () => window.location.href = item.productPage;
+  } else if (item.contentType === "youtube") {
     setTimeout(() => {
       const overlay = div.querySelector(".video-overlay");
       overlay.onclick = () => {
@@ -219,11 +228,10 @@ function renderFeedItem(item, container) {
     }, 0);
   }
 
-  div.innerHTML = mediaHtml;
   container.appendChild(div);
 }
 
-// ✅ YouTube autoplay
+// ▶️ Helpers cho autoplay YouTube bằng postMessage (không đổi/clear src)
 function ytCmd(iframe, func) {
   try {
     iframe.contentWindow?.postMessage(JSON.stringify({
@@ -236,6 +244,7 @@ function ytCmd(iframe, func) {
 function ytPlay(iframe) { ytCmd(iframe, "playVideo"); }
 function ytPause(iframe) { ytCmd(iframe, "pauseVideo"); }
 
+// ✅ Tự động phát YouTube — KHÔNG đổi/clear src & đảm bảo lần đầu vào viewport sẽ phát
 function setupAutoplayObserver() {
   const iframes = document.querySelectorAll('iframe[data-video-id]');
   const observer = new IntersectionObserver(entries => {
@@ -243,20 +252,29 @@ function setupAutoplayObserver() {
       const iframe = entry.target;
       const id = iframe.getAttribute('data-video-id');
 
+      // Gán src đúng 1 lần (lần đầu khi vào viewport) với enablejsapi
       if (entry.isIntersecting && !iframe.dataset.inited) {
-        const initSrc = `https://www.youtube.com/embed/${id}?enablejsapi=1&autoplay=0&mute=1&playsinline=1&controls=0&rel=0&origin=${location.origin}`;
+        const initSrc =
+          `https://www.youtube.com/embed/${id}` +
+          `?enablejsapi=1&autoplay=0&mute=1&playsinline=1&controls=0&rel=0&origin=${location.origin}`;
         iframe.src = initSrc;
         iframe.dataset.inited = "1";
 
+        // 🔔 Đợi player sẵn sàng rồi play (tránh tình trạng lần đầu không chạy)
         const onLoadOnce = () => {
+          // delay rất ngắn để đảm bảo API trong iframe đã init
           setTimeout(() => { ytPlay(iframe); }, 50);
           iframe.removeEventListener("load", onLoadOnce);
         };
         iframe.addEventListener("load", onLoadOnce);
+
+        // ⛑ Fallback: nếu onload đến sớm/không tới, vẫn nỗ lực play sau một nhịp
         setTimeout(() => { ytPlay(iframe); }, 300);
-        return;
+
+        return; // tránh gọi tiếp phía dưới trong vòng lặp này
       }
 
+      // Khi đã init: vào/ra khung hình chỉ play/pause (không đụng src)
       if (entry.isIntersecting) {
         ytPlay(iframe);
       } else if (iframe.dataset.inited === "1") {
@@ -283,6 +301,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 window.addEventListener("pageshow", function (event) {
   if (event.persisted || performance.getEntriesByType("navigation")[0]?.type === "back_forward") {
+    // ❗ Reload lại nếu quay lại từ nút back trên Safari (chỉ dành cho trang có FreeFlow)
     location.reload();
   }
 });
