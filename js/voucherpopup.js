@@ -146,45 +146,61 @@ if (document.readyState === "loading") {
 } else {
   runVoucherImmediately();
 }
-// ✅ nếu khách hàng đã checkout nhưng không mua mà ấn close checkout thì hiện voucher
-document.addEventListener("DOMContentLoaded", () => {
-  const closeBtn = document.querySelector(".checkout-close");
-  if (!closeBtn) return;
-
-  closeBtn.addEventListener("click", () => {
-    setTimeout(() => {
-      const cart = JSON.parse(localStorage.getItem("cart") || "[]");
-      if (!cart.length) {
-        console.log("❌ Giỏ hàng trống – không hiển thị voucher khi đóng.");
-        return;
+// ✅ nếu khách hàng đã checkout nhưng không mua mà ấn close checkout thì hiện voucher 30k
+(function setupVoucherAfterCheckoutClose() {
+  // Đợi DOM đủ vì có thể .checkout-close chưa sẵn sàng khi DOMContentLoaded
+  function waitForCloseButton(retries = 20) {
+    const closeBtn = document.querySelector(".checkout-close");
+    if (!closeBtn) {
+      if (retries > 0) {
+        setTimeout(() => waitForCloseButton(retries - 1), 300);
+      } else {
+        console.warn("❌ Không tìm thấy .checkout-close sau nhiều lần thử.");
       }
+      return;
+    }
 
-      const lastShown = Number(sessionStorage.getItem("voucherShownAfterClose") || 0);
-      const COOLDOWN_MS = 1 * 60 * 60 * 1000;
-      if (Date.now() - lastShown < COOLDOWN_MS) {
-        console.log("⏳ Trong cooldown – không hiện lại voucher.");
-        return;
-      }
+    closeBtn.addEventListener("click", () => {
+      setTimeout(() => {
+        const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+        if (!cart.length) {
+          console.log("❌ Giỏ hàng trống – bỏ qua popup voucher.");
+          return;
+        }
 
-      const currentPage = getProductPageFromUrl();
-      if (!allowedPages.includes(currentPage)) {
-        console.log("🚫 Không nằm trong allowedPages.");
-        return;
-      }
+        const currentPage = getProductPageFromUrl();
+        if (!allowedPages.includes(currentPage)) {
+          console.log("🚫 Không nằm trong allowedPages:", currentPage);
+          return;
+        }
 
-      // ✅ Mặc định tặng voucher 30K khi ấn X lần đầu
-      const refCode = "30k";
-      const amount = 30000;
+        const lastShown = Number(sessionStorage.getItem("voucherShownAfterClose") || 0);
+        const COOLDOWN_MS = 10 * 1000;
+        if (Date.now() - lastShown < COOLDOWN_MS) {
+          console.log("⏳ Đang trong cooldown – không hiện lại.");
+          return;
+        }
 
-      // 👉 Ghi nhận vào session để tránh lặp
-      sessionStorage.setItem("voucherShownAfterClose", String(Date.now()));
-      localStorage.setItem("savedVoucher", JSON.stringify({ code: refCode, amount }));
-      window.currentVoucherValue = amount;
-      window.__voucherWaiting = { amount };
+        // ✅ Điều kiện đủ → hiện popup voucher mặc định 30K
+        const refCode = "30k";
+        const amount = 30000;
 
-      console.log("🎉 Hiện popup voucher 30K sau khi đóng checkoutpopup.");
-      showVoucherPopup(refCode, amount);
-    }, 300);
-  });
-});
+        localStorage.setItem("savedVoucher", JSON.stringify({ code: refCode, amount }));
+        sessionStorage.setItem("voucherShownAfterClose", String(Date.now()));
+        window.currentVoucherValue = amount;
+        window.__voucherWaiting = { amount };
+
+        console.log("🎉 Hiển thị voucher popup 30K khi đóng giỏ hàng.");
+        showVoucherPopup(refCode, amount);
+      }, 300); // Cho chắc chắn popup đã ẩn
+    });
+  }
+
+  // Gọi khi DOM đã sẵn sàng
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", () => waitForCloseButton());
+  } else {
+    waitForCloseButton();
+  }
+})();
 
