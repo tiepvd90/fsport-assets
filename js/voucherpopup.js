@@ -166,26 +166,25 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      sessionStorage.setItem("voucherShownAfterClose", String(Date.now()));
-
       const currentPage = getProductPageFromUrl();
       if (!allowedPages.includes(currentPage)) {
         console.log("🚫 Không nằm trong allowedPages.");
         return;
       }
 
-      const saved = JSON.parse(localStorage.getItem("savedVoucher") || "{}");
-      const reusedAmount = saved?.amount;
-      const reusedCode = saved?.code || "";
+      // ✅ Mặc định tặng voucher 30K khi ấn X lần đầu
+      const refCode = "30k";
+      const amount = 30000;
 
-      if (reusedAmount > 0) {
-        console.log("🎯 Hiện voucher sau khi khách đóng giỏ hàng");
-        window.currentVoucherValue = reusedAmount;
-        window.__voucherWaiting = { amount: reusedAmount };
-        showVoucherPopup(reusedCode, reusedAmount);
-      } else {
-        console.log("🚫 Không có voucher đã lưu.");
-      }
+      // 👉 Ghi nhận vào session để tránh lặp
+      sessionStorage.setItem("voucherShownAfterClose", String(Date.now()));
+      localStorage.setItem("savedVoucher", JSON.stringify({ code: refCode, amount }));
+      window.currentVoucherValue = amount;
+      window.__voucherWaiting = { amount };
+
+      console.log("🎉 Hiện popup voucher 30K sau khi đóng checkoutpopup.");
+      showVoucherPopup(refCode, amount);
     }, 300);
   });
 });
+
