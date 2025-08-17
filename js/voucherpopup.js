@@ -191,6 +191,7 @@ if (document.readyState === "loading") {
         window.__voucherWaiting = { amount };
 
         console.log("🎉 Hiển thị voucher popup 30K khi đóng giỏ hàng.");
+        createVoucherFloatingIcon(amount, refCode);
         showVoucherPopup(refCode, amount);
       }, 300); // Cho chắc chắn popup đã ẩn
     });
