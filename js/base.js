@@ -137,4 +137,8 @@ setInterval(() => {
     .catch(err => console.log("Ping lỗi:", err));
 }, 5 * 60 * 1000);
 
-<script src="/js/supportchat.js"></script>
+// ✅ Gọi supportchat nếu có
+const sc = document.createElement("script");
+sc.src = "/js/supportchat.js";
+document.body.appendChild(sc);
+
