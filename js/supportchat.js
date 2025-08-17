@@ -1,38 +1,53 @@
-// ✅ supportchat.js - hỗ trợ khách khi đóng checkoutpopup
-
-(function () {
+// supportchat.js – Tự động hiện popup tư vấn khi khách đóng giỏ hàng
+(function supportChatInit() {
   const WEBHOOK_URL = "https://hook.eu2.make.com/jxjqljoheym4735mevg8fedk93x74301";
-  const COOLDOWN_MS = 4 * 60 * 60 * 1000; // 4 giờ
+  const COOLDOWN_MS = 10 * 1000;
+  //const COOLDOWN_MS = 4 * 60 * 60 * 1000;
+  const MAX_RETRIES = 20;
 
-  // Lắng sự kiện đóng checkoutpopup
-  document.addEventListener("DOMContentLoaded", () => {
-    const closeBtn = document.querySelector(".checkout-close");
+  let retryCount = 0;
 
-    if (closeBtn) {
-      closeBtn.addEventListener("click", () => {
-        setTimeout(() => {
-          if (shouldShowSupportPopup()) {
-            showSupportChatPopup();
-            markSupportPopupShown();
-          }
-        }, 300);
-      });
+  function waitForCloseButton() {
+    const btn = document.querySelector(".checkout-close");
+    if (btn) {
+      console.log("✅ Found .checkout-close, binding click handler");
+      btn.addEventListener("click", onCloseClicked);
+    } else if (retryCount < MAX_RETRIES) {
+      retryCount++;
+      console.log("🔄 Waiting for .checkout-close… retry", retryCount);
+      setTimeout(waitForCloseButton, 500);
+    } else {
+      console.warn("❌ Could not find .checkout-close after retries.");
     }
-  });
-
-  function shouldShowSupportPopup() {
-    const cart = JSON.parse(localStorage.getItem("cart") || "[]");
-    if (!cart.length) return false;
-
-    const lastShown = Number(sessionStorage.getItem("supportLastShown") || 0);
-    return Date.now() - lastShown > COOLDOWN_MS;
   }
 
-  function markSupportPopupShown() {
-    sessionStorage.setItem("supportLastShown", String(Date.now()));
+  function onCloseClicked() {
+    console.log("🛑 User clicked close on checkoutpopup");
+
+    setTimeout(() => {
+      const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+      console.log("🧾 Current cart:", cart);
+
+      if (!cart.length) {
+        console.log("❌ Cart is empty – not showing support popup.");
+        return;
+      }
+
+      const lastShown = Number(sessionStorage.getItem("supportLastShown") || 0);
+      const timeSince = Date.now() - lastShown;
+
+      console.log("⏱ Last shown", timeSince / 1000, "seconds ago");
+
+      if (timeSince < COOLDOWN_MS) {
+        console.log("⏳ Still within 4h cooldown.");
+        return;
+      }
+
+      sessionStorage.setItem("supportLastShown", String(Date.now()));
+      showSupportChatPopup();
+    }, 300);
   }
 
-  // Tạo và hiển thị popup hỗ trợ
   function showSupportChatPopup() {
     if (document.getElementById("supportChatPopup")) return;
 
@@ -49,7 +64,7 @@
         z-index: 9999;
         font-family: 'Be Vietnam Pro', sans-serif;
         overflow: hidden;
-        animation: slideUp 0.4s ease;
+        animation: slideUp 0.3s ease;
       }
 
       @keyframes slideUp {
@@ -115,7 +130,7 @@
         <button onclick="document.getElementById('supportChatPopup').remove()" style="background: none; border: none; font-size: 16px;">×</button>
       </div>
       <div style="padding: 10px 12px;">
-        <textarea id="supportMessage" rows="3" placeholder="Câu hỏi của anh/chị..."></textarea>
+        <textarea id="supportMessage" rows="3" placeholder="Câu hỏi:"></textarea>
         <input id="supportPhone" type="tel" placeholder="SĐT (không bắt buộc)">
       </div>
       <div class="btnRow">
@@ -126,14 +141,13 @@
     document.body.appendChild(box);
   }
 
-  // Gửi dữ liệu về Make.com
+  // Gửi về Make.com webhook
   window.sendSupportMessage = function () {
     const msg = (document.getElementById("supportMessage")?.value || "").trim();
     const phone = (document.getElementById("supportPhone")?.value || "").trim();
-    const cart = JSON.parse(localStorage.getItem("cart") || "[]");
 
     if (!msg) {
-      alert("Anh/chị vui lòng nhập nội dung cần hỗ trợ!");
+      alert("Vui lòng nhập nội dung hỗ trợ!");
       return;
     }
 
@@ -144,20 +158,24 @@
         reason: "checkout_close_support",
         message: msg,
         phone: phone,
-        cart: cart,
+        cart: JSON.parse(localStorage.getItem("cart") || "[]"),
         timestamp: new Date().toLocaleString()
       })
     });
 
-    // Cảm ơn và đóng
-    document.getElementById("supportChatPopup").innerHTML = `
-      <div style="padding: 16px; font-size: 14px; text-align: center;">
-        ✅ Bên em đã nhận được câu hỏi và sẽ phản hồi sớm ạ.<br>
-        Nếu cần gấp, anh/chị có thể gọi trực tiếp: <strong>0868.xxx.xxx</strong>
-      </div>
-    `;
-    setTimeout(() => {
-      document.getElementById("supportChatPopup")?.remove();
-    }, 6000);
+    // Thông báo đã gửi
+    const box = document.getElementById("supportChatPopup");
+    if (box) {
+      box.innerHTML = `
+        <div style="padding: 16px; font-size: 14px; text-align: center;">
+          ✅ Bên em đã nhận được câu hỏi và sẽ phản hồi sớm ạ.<br>
+          Nếu cần gấp, vui lòng gọi <strong>038.4735.980</strong>
+        </div>
+      `;
+      setTimeout(() => box.remove(), 6000);
+    }
   };
+
+  // Bắt đầu tìm nút
+  waitForCloseButton();
 })();
