@@ -1,8 +1,8 @@
 // supportchat.js – Tự động hiện popup tư vấn khi khách đóng giỏ hàng
 (function supportChatInit() {
   const WEBHOOK_URL = "https://hook.eu2.make.com/jxjqljoheym4735mevg8fedk93x74301";
-  const COOLDOWN_MS = 10 * 1000;
-  //const COOLDOWN_MS = 4 * 60 * 60 * 1000;
+  //const COOLDOWN_MS = 10 * 1000;
+  const COOLDOWN_MS = 1 * 60 * 60 * 1000;
   const MAX_RETRIES = 20;
 
   let retryCount = 0;
@@ -130,7 +130,7 @@
         <button onclick="document.getElementById('supportChatPopup').remove()" style="background: none; border: none; font-size: 16px;">×</button>
       </div>
       <div style="padding: 10px 12px;">
-        <textarea id="supportMessage" rows="3" placeholder="Câu hỏi:"></textarea>
+        <textarea id="supportMessage" rows="3" placeholder="Câu hỏi của anh/chị..."></textarea>
         <input id="supportPhone" type="tel" placeholder="SĐT/Email(không bắt buộc)">
       </div>
       <div class="btnRow">
