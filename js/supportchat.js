@@ -131,7 +131,7 @@
       </div>
       <div style="padding: 10px 12px;">
         <textarea id="supportMessage" rows="3" placeholder="Câu hỏi:"></textarea>
-        <input id="supportPhone" type="tel" placeholder="SĐT (không bắt buộc)">
+        <input id="supportPhone" type="tel" placeholder="SĐT/Email(không bắt buộc)">
       </div>
       <div class="btnRow">
         <button class="closeBtn" onclick="document.getElementById('supportChatPopup').remove()">Đóng</button>
@@ -167,7 +167,13 @@
     const box = document.getElementById("supportChatPopup");
     if (box) {
       box.innerHTML = `
-        <div style="padding: 16px; font-size: 14px; text-align: center;">
+        padding: 16px;
+  font-size: 14px;
+  text-align: center;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background: #f9f9f9;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
           ✅ Bên em đã nhận được câu hỏi và sẽ phản hồi sớm ạ.<br>
           Nếu cần gấp, vui lòng gọi <strong>038.4735.980</strong>
         </div>
