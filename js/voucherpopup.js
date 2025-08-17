@@ -146,3 +146,46 @@ if (document.readyState === "loading") {
 } else {
   runVoucherImmediately();
 }
+// ✅ nếu khách hàng đã checkout nhưng không mua mà ấn close checkout thì hiện voucher
+document.addEventListener("DOMContentLoaded", () => {
+  const closeBtn = document.querySelector(".checkout-close");
+  if (!closeBtn) return;
+
+  closeBtn.addEventListener("click", () => {
+    setTimeout(() => {
+      const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+      if (!cart.length) {
+        console.log("❌ Giỏ hàng trống – không hiển thị voucher khi đóng.");
+        return;
+      }
+
+      const lastShown = Number(sessionStorage.getItem("voucherShownAfterClose") || 0);
+      const COOLDOWN_MS = 1 * 60 * 60 * 1000;
+      if (Date.now() - lastShown < COOLDOWN_MS) {
+        console.log("⏳ Trong cooldown – không hiện lại voucher.");
+        return;
+      }
+
+      sessionStorage.setItem("voucherShownAfterClose", String(Date.now()));
+
+      const currentPage = getProductPageFromUrl();
+      if (!allowedPages.includes(currentPage)) {
+        console.log("🚫 Không nằm trong allowedPages.");
+        return;
+      }
+
+      const saved = JSON.parse(localStorage.getItem("savedVoucher") || "{}");
+      const reusedAmount = saved?.amount;
+      const reusedCode = saved?.code || "";
+
+      if (reusedAmount > 0) {
+        console.log("🎯 Hiện voucher sau khi khách đóng giỏ hàng");
+        window.currentVoucherValue = reusedAmount;
+        window.__voucherWaiting = { amount: reusedAmount };
+        showVoucherPopup(reusedCode, reusedAmount);
+      } else {
+        console.log("🚫 Không có voucher đã lưu.");
+      }
+    }, 300);
+  });
+});
