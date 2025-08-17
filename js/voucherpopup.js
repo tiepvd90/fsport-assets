@@ -175,7 +175,7 @@ if (document.readyState === "loading") {
         }
 
         const lastShown = Number(sessionStorage.getItem("voucherShownAfterClose") || 0);
-        const COOLDOWN_MS = 10 * 1000;
+        const COOLDOWN_MS = 60 * 60 * 1000;
         if (Date.now() - lastShown < COOLDOWN_MS) {
           console.log("⏳ Đang trong cooldown – không hiện lại.");
           return;
