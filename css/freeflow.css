@@ -5,6 +5,7 @@
   padding: 12px;
   margin: auto;
   max-width: 100%;
+  box-sizing: border-box;
 }
 
 @media screen and (min-width: 600px) {
@@ -37,7 +38,7 @@
   transform: translateY(-4px);
 }
 
-/* ==== Ảnh tự do (image + story) ==== */
+/* ==== Ảnh (image + story) ==== */
 .feed-item.image img,
 .feed-item.story img {
   width: 100%;
@@ -48,12 +49,36 @@
 }
 
 /* ==== Video ==== */
-.feed-item iframe {
+.video-wrapper {
+  position: relative;
+  aspect-ratio: 9/16;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.video-wrapper iframe {
   width: 100%;
-  aspect-ratio: 9 / 16;
-  object-fit: cover;
+  height: 100%;
+  border: none;
   display: block;
-  border-bottom: 1px solid #eee;
+  border-radius: 8px;
+}
+
+.video-wrapper .video-thumb {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+  border-radius: 8px;
+}
+
+.video-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  cursor: pointer;
 }
 
 /* ==== Tiêu đề ngắn 1 dòng ==== */
@@ -70,7 +95,11 @@
 
 /* ==== Dòng giá ==== */
 .price-line {
-  padding: 0 8px 8px 8px;
+  padding: 0 8px 8px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .price {
@@ -83,5 +112,34 @@
   color: #999;
   font-size: 13px;
   text-decoration: line-through;
-  margin-left: 6px;
+}
+
+/* ==== Info bên dưới video (avatar + tên + giá) ==== */
+.video-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px 8px;
+}
+
+.video-info img {
+  width: 36px;
+  height: 36px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.video-info h4 {
+  font-size: 13px;
+  line-height: 1.3;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.video-info .price {
+  font-size: 13px;
+  font-weight: bold;
+  color: #f53d2d;
 }
