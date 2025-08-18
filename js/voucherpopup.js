@@ -49,7 +49,7 @@ function showVoucherPopup(refCode, amount) {
     document.querySelector("#btn-atc")?.click();
   });
 
-  startVoucherCountdown(600); // 600 giây = 10 phút
+  startVoucherCountdown(600);
 }
 
 function createVoucherFloatingIcon(amount, refCode) {
@@ -107,15 +107,16 @@ function runVoucherImmediately() {
   const amount = matchedCode ? simpleVoucherMap[matchedCode] : 0;
   const currentPage = getProductPageFromUrl();
 
+  const lastPurchaseTime = Number(localStorage.getItem("lastPurchaseTime") || 0);
+  const recentPurchaseWithin24h = Date.now() - lastPurchaseTime < 24 * 60 * 60 * 1000;
+
   console.log("🎯 Voucher check:", {
-    refRaw, amount, currentPage, productPage: window.productPage
+    refRaw, amount, currentPage, productPage: window.productPage, recentPurchaseWithin24h
   });
 
   window.voucherByProduct = window.voucherByProduct || {};
 
-  if (amount > 0 && allowedPages.includes(currentPage)) {
-    console.log("✅ Áp dụng voucher mới", amount);
-
+  if (amount > 0 && allowedPages.includes(currentPage) && !recentPurchaseWithin24h) {
     localStorage.setItem("savedVoucher", JSON.stringify({ code: refRaw, amount }));
     window.currentVoucherValue = amount;
     window.__voucherWaiting = { amount };
@@ -128,12 +129,15 @@ function runVoucherImmediately() {
     const reusedCode = saved?.code || "";
 
     if (reusedAmount > 0 && allowedPages.includes(currentPage)) {
-      console.log("♻️ Tái sử dụng voucher đã lưu:", reusedAmount);
-
       window.currentVoucherValue = reusedAmount;
       window.__voucherWaiting = { amount: reusedAmount };
 
-      createVoucherFloatingIcon(reusedAmount, reusedCode);
+      // ⚠️ Nếu khách mới mua → không hiện lại popup/icon
+      if (!recentPurchaseWithin24h) {
+        createVoucherFloatingIcon(reusedAmount, reusedCode);
+      }
+
+      console.log("♻️ Áp dụng lại voucher đã lưu:", reusedAmount);
     } else {
       console.log("🚫 Không đủ điều kiện hiển thị voucher.");
     }
@@ -146,9 +150,9 @@ if (document.readyState === "loading") {
 } else {
   runVoucherImmediately();
 }
+
 // ✅ nếu khách hàng đã checkout nhưng không mua mà ấn close checkout thì hiện voucher 30k
 (function setupVoucherAfterCheckoutClose() {
-  // Đợi DOM đủ vì có thể .checkout-close chưa sẵn sàng khi DOMContentLoaded
   function waitForCloseButton(retries = 20) {
     const closeBtn = document.querySelector(".checkout-close");
     if (!closeBtn) {
@@ -174,6 +178,13 @@ if (document.readyState === "loading") {
           return;
         }
 
+        const lastPurchaseTime = Number(localStorage.getItem("lastPurchaseTime") || 0);
+        const recentPurchaseWithin24h = Date.now() - lastPurchaseTime < 24 * 60 * 60 * 1000;
+        if (recentPurchaseWithin24h) {
+          console.log("⏳ Khách mới mua hàng – không hiển popup.");
+          return;
+        }
+
         const lastShown = Number(sessionStorage.getItem("voucherShownAfterClose") || 0);
         const COOLDOWN_MS = 60 * 60 * 1000;
         if (Date.now() - lastShown < COOLDOWN_MS) {
@@ -181,7 +192,6 @@ if (document.readyState === "loading") {
           return;
         }
 
-        // ✅ Điều kiện đủ → hiện popup voucher mặc định 30K
         const refCode = "30k";
         const amount = 30000;
 
@@ -193,15 +203,13 @@ if (document.readyState === "loading") {
         console.log("🎉 Hiển thị voucher popup 30K khi đóng giỏ hàng.");
         createVoucherFloatingIcon(amount, refCode);
         showVoucherPopup(refCode, amount);
-      }, 300); // Cho chắc chắn popup đã ẩn
+      }, 300);
     });
   }
 
-  // Gọi khi DOM đã sẵn sàng
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", () => waitForCloseButton());
   } else {
     waitForCloseButton();
   }
 })();
-
