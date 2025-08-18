@@ -27,20 +27,6 @@
   "productCategory": "pickleball",
   "sellerID": "huyenle"
 },
-{
-  "itemId": "pickleball-phantom2",
-  "title": "Vợt Carbon Tràn Viền Phantom",
-  "price": 2100000,
-  "originalPrice": 3000000,
-  "contentType": "youtube",
-  "image": "https://i.postimg.cc/852FtJrV/1.jpg",
-  "youtube": "5csY-HNpJ1k",
-  "productPage": "/pickleball/phantom",
-  "tags": ["pickleball", "phantom"],
-  "basePriority": 18,
-  "productCategory": "pickleball",
-  "sellerID": "huyenle"
-},
   {
     "itemId": "sup010",
     "title": "Thuyền SUP Bơm Hơi FA",
@@ -137,20 +123,6 @@
     "tags": ["ghế", "ghế fa", "ghế chỉnh dáng ngồi"],
     "basePriority": 15,
     "productCategory": "chair",
-    "sellerID": "huyenle"
-  },
-  {
-    "itemId": "sup",
-    "title": "Thuyền SUP 2 Lớp",
-    "price": 3279115,
-    "originalPrice": null,
-    "contentType": "youtube",
-    "image": "https://i.postimg.cc/Yq3vZgfJ/4.jpg",
-    "youtube": "-qDapgXdyoA",
-    "productPage": "/product/sup",
-    "tags": ["SUP", "thuyền", "bơm"],
-    "basePriority": 15,
-    "productCategory": "sup",
     "sellerID": "huyenle"
   },
   {
@@ -770,22 +742,6 @@
     "sellerID": "huyenle"
   },
   {
-    "itemId": "pickleball-bag2",
-    "title": "Túi Trống Pickleball Chống Nước",
-    "price": 269000,
-    "originalPrice": null,
-    "contentType": "youtube",
-    "image": "https://i.postimg.cc/L63ttgmT/Capture.jpg",
-    "youtube": "ZHhJspf6qzE",
-    "productPage": "/pickleball/bag",
-    "tags": [
-      "pickleball"
-    ],
-    "basePriority": 20,
-    "productCategory": "pickleball",
-    "sellerID": "huyenle"
-  },
-  {
     "itemId": "pickleball-bag3",
     "title": "Túi Trống Pickleball Chống Nước",
     "price": 269000,
@@ -869,22 +825,6 @@
     "sellerID": "huyenle"
   },
   {
-    "itemId": "sup251",
-    "title": "Thuyền SUP Made In VietNam",
-    "price": 3100000,
-    "originalPrice": null,
-    "contentType": "youtube",
-    "image": "https://i.postimg.cc/VNPpr6Cp/z5877726978291-e407e7717db9548c3d68b7124fd31735.jpg",
-    "youtube": "8bvPXroXLuY",
-    "productPage": "/product/sup",
-    "tags": [
-      "sup"
-    ],
-    "basePriority": 16,
-    "productCategory": "sup",
-    "sellerID": "huyenle"
-  },
-  {
     "itemId": "pickleball-air2606",
     "title": "Carbon 3K - Chuẩn Thi Đấu",
     "price": 1200000,
@@ -917,22 +857,6 @@
     "sellerID": "huyenle"
   },
   {
-    "itemId": "chair2605",
-    "title": "Ghế chống gù cao cấp",
-    "price": 399000,
-    "originalPrice": 600000.0,
-    "contentType": "youtube",
-    "image": "https://i.postimg.cc/Twt9WhLy/KZ98-VL3-Imgur.jpg",
-    "youtube": "5kdg92uNp2k",
-    "productPage": "/product/chair",
-    "tags": [
-      "chair"
-    ],
-    "basePriority": 16,
-    "productCategory": "chair",
-    "sellerID": "huyenle"
-  },
-  {
     "itemId": "chair2605-2",
     "title": "Bí kíp chữa đau lưng",
     "price": 399000,
@@ -940,22 +864,6 @@
     "contentType": "youtube",
     "image": "https://i.postimg.cc/Twt9WhLy/KZ98-VL3-Imgur.jpg",
     "youtube": "GiJ0PijF7nE",
-    "productPage": "/product/chair",
-    "tags": [
-      "chair"
-    ],
-    "basePriority": 16,
-    "productCategory": "chair",
-    "sellerID": "huyenle"
-  },
-  {
-    "itemId": "chair2605-3",
-    "title": "Ghế công thái học",
-    "price": 399000,
-    "originalPrice": 600000.0,
-    "contentType": "youtube",
-    "image": "https://i.postimg.cc/Twt9WhLy/KZ98-VL3-Imgur.jpg",
-    "youtube": "R_MNOwJA1LA",
     "productPage": "/product/chair",
     "tags": [
       "chair"
