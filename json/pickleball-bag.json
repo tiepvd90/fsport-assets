@@ -35,6 +35,7 @@
   "biến_thể": [
     { "Màu Sắc": "Màu Hồng", "id": "mauhong", "category": "pickleball" },
     { "Màu Sắc": "Màu Xám", "id": "mauxam", "category": "pickleball" },
-    { "Màu Sắc": "Màu Đen Quai Xám", "id": "maudenquaixam", "category": "pickleball" }
+    { "Màu Sắc": "Màu Đen Quai Xám", "id": "maudenquaixam", "category": "pickleball" },
+    { "Màu Sắc": "Màu Đen Quai Vàng", "id": "maudenquaivang", "category": "pickleball" }
   ]
 }
