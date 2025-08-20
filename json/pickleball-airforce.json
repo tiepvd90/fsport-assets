@@ -3,6 +3,7 @@
     {
       "key": "Màu Sắc",
       "label": "Màu Sắc",
+      "type": "option",
       "display": "thumbnail",
       "values": [
         {
@@ -21,15 +22,7 @@
     }
   ],
   "biến_thể": [
-    {
-      "Màu Sắc": "den",
-      "id": "airforce-den",
-      "category": "pickleball"
-    },
-    {
-      "Màu Sắc": "xam",
-      "id": "airforce-xam",
-      "category": "pickleball"
-    }
+    { "Màu Sắc": "Vợt Đen Tặng 10 Bóng Thi Đấu", "id": "airforce-den", "category": "pickleball" },
+    { "Màu Sắc": "Vợt Xám Tặng 10 Bóng Thi Đấu", "id": "airforce-xam", "category": "pickleball" }
   ]
 }
