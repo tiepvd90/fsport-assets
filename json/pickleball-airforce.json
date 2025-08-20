@@ -22,12 +22,12 @@
   ],
   "biến_thể": [
     {
-      "Màu Sắc": "Vợt Đen Tặng 10 Bóng Thi Đấu",
+      "Màu Sắc": "den",
       "id": "airforce-den",
       "category": "pickleball"
     },
     {
-      "Màu Sắc": "Vợt Xám Tặng 10 Bóng Thi Đấu",
+      "Màu Sắc": "xam",
       "id": "airforce-xam",
       "category": "pickleball"
     }
