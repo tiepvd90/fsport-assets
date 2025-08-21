@@ -12,7 +12,7 @@
           "Giá gốc": 1470000
         },
         {
-          "text": "Rồng Trắng (Tặng 5 Bóng Thi Đấu)",
+          "text": "Rồng Trắng",
           "image": "https://i.postimg.cc/rw8sQVST/rongtrang.jpg",
           "Giá": 1020000,
           "Giá gốc": 1500000
@@ -52,7 +52,7 @@
   ],
   "biến_thể": [
     { "Màu Sắc": "Rồng Đen", "id": "pickleball-rongden", "category": "pickleball" },
-    { "Màu Sắc": "Rồng Trắng (Tặng 5 Bóng Thi Đấu)", "id": "pickleball-rongtrang", "category": "pickleball" },
+    { "Màu Sắc": "Rồng Trắng", "id": "pickleball-rongtrang", "category": "pickleball" },
     { "Màu Sắc": "Jusain Black", "id": "pickleball-jusainblack", "category": "pickleball" },
     { "Màu Sắc": "Jusain Mint", "id": "pickleball-jusainmint", "category": "pickleball" },
     { "Màu Sắc": "Phantom", "id": "pickleball-phantom", "category": "pickleball" },
