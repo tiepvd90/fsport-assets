@@ -156,22 +156,24 @@ body {
     text-decoration: underline;
   }
 /* Mặc định trong khung bài viết */
+/* Khung hero */
 .story-hero {
-  width: 100%;
-  margin: 0 auto;      /* căn giữa */
-  padding: 0 16px;     /* tạo khoảng cách 2 bên */
-  border-radius: 0;    /* bỏ bo góc */
+  margin: 0 auto;
+  border-radius: 0; /* bỏ bo góc */
 }
 
+/* Ảnh bên trong */
 .story-hero img {
   width: 100%;
   height: auto;
   display: block;
-  border-radius: 0;    /* bỏ bo góc */
+  border-radius: 0; /* bỏ bo góc */
 }
-/* Trên mobile: ảnh full chiều ngang màn hình */
-@media screen and (max-width: 768px) {
+
+/* Desktop: thêm khoảng cách 2 bên để cân đối */
+@media screen and (min-width: 769px) {
   .story-hero {
-    width: 100vw;
-    margin-left: calc(-50vw + 50%); /* kéo ảnh tràn sát mép */
+    max-width: 960px;   /* khung nội dung chuẩn */
+    padding: 0 24px;    /* margin 2 bên */
   }
+}
