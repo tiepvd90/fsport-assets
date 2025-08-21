@@ -155,3 +155,24 @@ body {
   .more-stories__link:hover, .more-stories__link:focus {
     text-decoration: underline;
   }
+/* Mặc định trong khung bài viết */
+.story-hero img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+/* Trên mobile: ảnh full chiều ngang màn hình */
+@media screen and (max-width: 768px) {
+  .story-hero {
+    width: 100vw;
+    margin-left: calc(-50vw + 50%); /* kéo ảnh tràn sát mép */
+  }
+
+  .story-hero img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
+}
