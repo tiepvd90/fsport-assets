@@ -6,7 +6,7 @@
       "display": "thumbnail",
       "values": [
         {
-          "text": "Titan 16mm Tặng 5 Bóng Thi Đấu",
+          "text": "Titan 16mm",
           "image": "https://i.postimg.cc/Prk55WrK/titan16.jpg",
           "Giá": 599000,
           "Giá gốc": 900000
@@ -45,7 +45,7 @@
     }
   ],
   "biến_thể": [
-    { "Màu Sắc": "Titan 16mm Tặng 5 Bóng Thi Đấu", "id": "pickleball-titan16", "category": "pickleball" },
+    { "Màu Sắc": "Titan 16mm", "id": "pickleball-titan16", "category": "pickleball" },
     { "Màu Sắc": "T700 Pro Xám", "id": "pickleball-t700pro-xam", "category": "pickleball" },
     { "Màu Sắc": "T700 Pro Hồng", "id": "pickleball-t700pro-hong", "category": "pickleball" },
     { "Màu Sắc": "Flexion Xám", "id": "pickleball-flexion-xam", "category": "pickleball" },
