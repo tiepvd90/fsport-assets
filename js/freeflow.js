@@ -1,26 +1,31 @@
 /* ============================== *
- *   FREEFLOW (lazy blocks + AF)  *
+ *   FREEFLOW (loader-friendly)   *
  *  1s fetch-all (no render yet)  *
  *  Render 4 on approach, then    *
- *  lazy-load 12/item block       *
- *  Auto-fill near bottom         *
+ *  lazy-load 12/item block + AF  *
  *  Keep autoplay logic as-is     *
  * ============================== */
 
-// ✅ FREEFLOW CONFIG
+// ====== CONFIG (override via freeflowInit) ======
+let fallbackUrl = "https://script.google.com/macros/s/AKfycbwuEh9sP65vyQL0XzU8gY1Os0QYV_K5egKJgm8OhImAPjvdyrQiU7XCY909N99TnltP/exec";
 const CACHE_KEY = "freeflowCache";
-const CACHE_DURATION_MS = 30 * 60 * 1000;
-const fallbackUrl = "https://script.google.com/macros/s/AKfycbwuEh9sP65vyQL0XzU8gY1Os0QYV_K5egKJgm8OhImAPjvdyrQiU7XCY909N99TnltP/exec";
+const CACHE_DURATION_MS = 30 * 60 * 1000; // 30 phút
+const INITIAL_DELAY_MS_DEFAULT = 1000;    // 1 giây
+const FIRST_BATCH_SIZE = 4;
+const BLOCK_SIZE = 12;
+const FEED_ID = "freeflowFeed";
 
+// ====== State ======
 let freeflowData = [];
 let itemsLoaded = 0;
 let productCategory = window.productCategory || "0";
 const renderedIds = new Set();
 
-// trạng thái
-let dataReady = false;        // đã có dữ liệu (đã process & cache)
-let initialRendered = false;  // đã render đợt đầu (4 item) chưa
+let dataReady = false;        // dữ liệu đã process xong
+let initialRendered = false;  // đã render 4 item đầu chưa
 let pagerObserver = null;     // IO cho sentinel
+let bootstrapped = false;     // đã init UI chưa
+let scrollTick = null;        // throttle scroll
 
 // =================== Cache helpers ===================
 function loadCachedFreeFlow() {
@@ -68,20 +73,16 @@ function processAndSortData(data) {
   const images = combined.filter(i => i.contentType === "image");
   const videos = combined.filter(i => i.contentType === "youtube");
 
-  // ✅ Trộn theo tỷ lệ 10 ảnh : 1 video
-  //    Nếu nhịp cuối <10 ảnh thì KHÔNG thêm video (video dư bỏ)
+  // ✅ 10 ảnh : 1 video, bỏ video dư ở cuối
   const mixed = [];
   let imgIndex = 0, vidIndex = 0;
-
   while (imgIndex < images.length) {
     let added = 0;
     while (imgIndex < images.length && added < 10) {
       mixed.push(images[imgIndex++]);
       added++;
     }
-    if (added === 10 && vidIndex < videos.length) {
-      mixed.push(videos[vidIndex++]);
-    }
+    if (added === 10 && vidIndex < videos.length) mixed.push(videos[vidIndex++]);
     if (imgIndex >= images.length) break;
   }
 
@@ -175,7 +176,7 @@ function renderFeedItem(item, container) {
 
   container.appendChild(div);
 
-  // ✅ Ảnh load xong có thể co giãn layout → kiểm tra lại đáy để auto-fill nếu cần
+  // 🔁 Ảnh load xong có thể giãn layout → auto-fill nếu gần đáy
   if (item.contentType === "image") {
     const img = div.querySelector('img');
     if (img) {
@@ -217,7 +218,6 @@ function setupAutoplayObserver() {
       else if (iframe.dataset.inited === "1") ytPause(iframe);
     });
   }, { threshold: 0.75 });
-
   iframes.forEach(iframe => observer.observe(iframe));
 }
 
@@ -235,29 +235,26 @@ function ensureSentinel(container) {
   return sentinel;
 }
 
-function renderNextBlock(blockSize = 12) {
-  const container = document.getElementById("freeflowFeed");
+function renderNextBlock(blockSize = BLOCK_SIZE) {
+  const container = document.getElementById(FEED_ID);
   if (!container) return;
 
   const slice = freeflowData.slice(itemsLoaded, itemsLoaded + blockSize);
   slice.forEach(item => renderFeedItem(item, container));
   itemsLoaded += slice.length;
 
-  // Mỗi lần thêm block mới thì cập nhật observer autoplay cho các iframe mới
   setupAutoplayObserver();
 
-  // Nếu đã hết dữ liệu thì ngắt pagerObserver
   if (itemsLoaded >= freeflowData.length && pagerObserver) {
     pagerObserver.disconnect();
     pagerObserver = null;
   } else {
-    // ✅ Vừa thêm block xong mà vẫn gần đáy → nạp tiếp (tối đa vài lượt)
     setTimeout(() => { autofillToViewport(); }, 30);
   }
 }
 
 function setupLazyPager() {
-  const container = document.getElementById("freeflowFeed");
+  const container = document.getElementById(FEED_ID);
   if (!container) return;
 
   const sentinel = ensureSentinel(container);
@@ -265,21 +262,15 @@ function setupLazyPager() {
 
   pagerObserver = new IntersectionObserver(entries => {
     entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        // Render thêm 1 block 12 item khi chạm sentinel
-        renderNextBlock(12);
-      }
+      if (entry.isIntersecting) renderNextBlock(BLOCK_SIZE);
     });
   }, { root: null, rootMargin: "800px 0px", threshold: 0 });
 
   pagerObserver.observe(sentinel);
-
-  // ✅ Vừa setup xong thử lấp đầy nếu đang gần đáy
   setTimeout(() => { autofillToViewport(); }, 30);
 }
 
 // =================== Auto-fill helpers ===================
-// Gần chạm đáy trang chưa?
 function nearBottom(offset = 900) {
   const doc = document.documentElement;
   const scrollY = window.scrollY || doc.scrollTop || 0;
@@ -292,7 +283,6 @@ function nearBottom(offset = 900) {
   return (scrollY + vh) >= (docH - offset);
 }
 
-// Tự nạp thêm cho đầy viewport (loop nhỏ, tránh xả hết)
 function autofillToViewport(maxPasses = 3) {
   let passes = 0;
   while (
@@ -300,12 +290,12 @@ function autofillToViewport(maxPasses = 3) {
     itemsLoaded < freeflowData.length &&
     nearBottom(900)
   ) {
-    renderNextBlock(12); // vẫn block 12 như hiện tại
+    renderNextBlock(BLOCK_SIZE);
     passes++;
   }
 }
 
-// =================== Initial kick ===================
+// =================== Kick & gating ===================
 function isNearViewport(el, margin = 800) {
   if (!el) return false;
   const rect = el.getBoundingClientRect();
@@ -314,25 +304,21 @@ function isNearViewport(el, margin = 800) {
 }
 
 function renderInitialAndStartPager() {
-  const container = document.getElementById("freeflowFeed");
+  const container = document.getElementById(FEED_ID);
   if (!container) return;
 
-  // Render 4 item đầu (như cũ)
-  const firstBatch = freeflowData.slice(0, 4);
+  const firstBatch = freeflowData.slice(0, FIRST_BATCH_SIZE);
   firstBatch.forEach(item => renderFeedItem(item, container));
-  itemsLoaded = 4;
+  itemsLoaded = FIRST_BATCH_SIZE;
   setupAutoplayObserver();
 
-  // Bắt đầu lazy pager (12/item block khi cuộn tới)
   setupLazyPager();
-
-  // ✅ Nếu trang còn chỗ trống gần đáy, tự nạp thêm để không tạo cảm giác "hết trang"
   setTimeout(() => { autofillToViewport(); }, 30);
 }
 
 function maybeStartRender() {
   if (initialRendered) return;
-  const container = document.getElementById("freeflowFeed");
+  const container = document.getElementById(FEED_ID);
   if (!container) return;
   if (dataReady && isNearViewport(container, 800)) {
     initialRendered = true;
@@ -341,7 +327,9 @@ function maybeStartRender() {
 }
 
 // =================== Data fetching ===================
-async function fetchFreeFlowData() {
+async function fetchFreeFlowData(sheetUrlOverride) {
+  if (sheetUrlOverride) fallbackUrl = sheetUrlOverride; // ✅ cho loader override
+
   const cached = loadCachedFreeFlow();
   if (cached) {
     processAndSortData(cached);
@@ -381,7 +369,6 @@ async function fetchFromGoogleSheet(existingData) {
     saveCache(combined);
     dataReady = true;
 
-    // Nếu đã render đợt đầu thì pager sẽ tự nạp block tiếp theo khi chạm sentinel
     if (!initialRendered) maybeStartRender();
     else setTimeout(() => { autofillToViewport(); }, 30);
   } catch (e) {
@@ -389,8 +376,8 @@ async function fetchFromGoogleSheet(existingData) {
   }
 }
 
-// =================== Init ===================
-document.addEventListener("DOMContentLoaded", () => {
+// =================== Bootstrap (works with loader) ===================
+function bindClosePopup() {
   const closeBtn = document.getElementById("videoCloseBtn");
   if (closeBtn) closeBtn.onclick = () => {
     const popup = document.getElementById("videoOverlay");
@@ -398,35 +385,76 @@ document.addEventListener("DOMContentLoaded", () => {
     if (popup) popup.style.display = "none";
     if (frame) frame.src = "";
   };
+}
 
-  // Chờ gần viewport mới render 4 item đầu
-  const container = document.getElementById("freeflowFeed");
-  if (container) {
-    const io = new IntersectionObserver(() => {
-      maybeStartRender();
-    }, { root: null, rootMargin: "800px 0px", threshold: 0 });
-    io.observe(container);
-  }
+function observeFeedApproach() {
+  const container = document.getElementById(FEED_ID);
+  if (!container) return;
+  const io = new IntersectionObserver(() => { maybeStartRender(); }, { root: null, rootMargin: "800px 0px", threshold: 0 });
+  io.observe(container);
+}
 
-  // Sau 1 giây mới bắt đầu fetch all (chỉ xử lý & cache, không render ngay)
-  setTimeout(() => { fetchFreeFlowData(); }, 1000);
-
-  // ✅ Throttle scroll: nếu người dùng kéo gần đáy mà sentinel chưa kịp bắn → tự nạp
-  let __ffScrollTick = null;
+function attachScrollAutofill() {
   window.addEventListener('scroll', () => {
     if (!initialRendered) return;
-    if (__ffScrollTick) return;
-    __ffScrollTick = setTimeout(() => {
-      __ffScrollTick = null;
+    if (scrollTick) return;
+    scrollTick = setTimeout(() => {
+      scrollTick = null;
       autofillToViewport();
     }, 120);
   }, { passive: true });
+}
 
-  // Fallback an toàn nếu vì lý do nào đó IO bị miss
+/**
+ * Bootstrap UI & (optionally) start fetching
+ * options:
+ *  - sheetUrl: string (override Google Sheet URL)
+ *  - startNow: boolean (bắt đầu fetch ngay, bỏ delay 1s)
+ *  - initialDelayMs: number (ms) (mặc định 1000)
+ */
+function bootstrapFreeflow(options = {}) {
+  if (bootstrapped) return; // tránh gắn 2 lần
+  bootstrapped = true;
+
+  if (options.sheetUrl) fallbackUrl = options.sheetUrl;
+
+  bindClosePopup();
+  observeFeedApproach();
+  attachScrollAutofill();
+
+  const delay = options.startNow ? 0 : (options.initialDelayMs ?? INITIAL_DELAY_MS_DEFAULT);
+  setTimeout(() => { fetchFreeFlowData(); }, delay);
+
+  // Fallback nếu IO bị miss
   setTimeout(() => { maybeStartRender(); }, 5000);
-});
+}
 
-// Safari back-forward cache: reload lại để đảm bảo init đúng
+// ✅ Public API cho loader
+window.freeflowInit = bootstrapFreeflow;
+
+// ✅ Tương thích loader cũ: nếu họ chỉ gọi fetchFreeFlowData(url) sau khi script load
+//    thì vẫn chạy được vì ta đã export hàm toàn cục:
+window.fetchFreeFlowData = fetchFreeFlowData;
+
+// ✅ Auto-bootstrap nếu file được nhúng trực tiếp (không qua loader) và DOM đã sẵn
+(function autoBootstrapIfNeeded() {
+  // Chỉ auto nếu:
+  // 1) Không có loader gọi freeflowInit trong vòng 1 tick
+  // 2) Đã có container FEED_ID trong DOM
+  const tryStart = () => {
+    if (bootstrapped) return;
+    if (document.getElementById(FEED_ID)) {
+      bootstrapFreeflow(); // dùng delay mặc định 1s
+    }
+  };
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", () => setTimeout(tryStart, 0));
+  } else {
+    setTimeout(tryStart, 0);
+  }
+})();
+
+// ✅ Safari back-forward cache: reload lại để đảm bảo init đúng
 window.addEventListener("pageshow", function (event) {
   if (event.persisted || performance.getEntriesByType("navigation")[0]?.type === "back_forward") {
     location.reload();
