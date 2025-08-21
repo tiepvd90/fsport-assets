@@ -2,7 +2,10 @@
 // ✅ CHECKOUT POPUP + AUTOSAVE THÔNG TIN NGƯỜI NHẬN
 // ===============================================
 
-// ✅ CẬP NHẬT BADGE SỐ LƯỢNG TRÊN ICON GIỎ HÀNG
+// ------------------------
+// 🔹 CART STATE
+// ------------------------
+
 function updateCartItemCount() {
   const badge = document.getElementById("cartItemCount");
   if (!badge) return;
@@ -11,7 +14,6 @@ function updateCartItemCount() {
   badge.textContent = totalQty;
 }
 
-// ✅ TẢI GIỎ HÀNG TỪ localStorage NGAY LÚC KHỞI TẠO
 function loadCart() {
   try {
     const data = JSON.parse(localStorage.getItem("cart"));
@@ -29,10 +31,9 @@ let shippingFeeOriginal = 0;
 let voucherValue = 0;
 
 // ------------------------
-// 🔹 AUTOSAVE – TRỢ GIÚP
+// 🔹 AUTOSAVE – THÔNG TIN NGƯỜI NHẬN
 // ------------------------
 
-// ✅ Điền lại form từ localStorage (nếu đã lưu)
 function hydrateCheckoutInfo() {
   try {
     const saved = JSON.parse(localStorage.getItem("checkoutInfo") || "{}");
@@ -48,7 +49,6 @@ function hydrateCheckoutInfo() {
   }
 }
 
-// ✅ Gắn listener để lưu mỗi lần người dùng gõ / đổi
 function setupLiveSaveCheckoutInfo() {
   const nameEl = document.getElementById("checkoutName");
   const phoneEl = document.getElementById("checkoutPhone");
@@ -65,13 +65,12 @@ function setupLiveSaveCheckoutInfo() {
         localStorage.setItem("checkoutInfo", JSON.stringify(newInfo));
       };
       el.addEventListener("input", handler);
-      el.addEventListener("change", handler); // backup khi user nhập xong
+      el.addEventListener("change", handler);
       el.dataset.autosaveBound = "1";
     }
   });
 }
 
-// ✅ Chờ khi input được inject vào DOM rồi mới hydrate + bind
 function whenCheckoutInputsReady(run) {
   const ready = () =>
     document.getElementById("checkoutName") &&
@@ -90,7 +89,7 @@ function whenCheckoutInputsReady(run) {
 }
 
 // ------------------------
-// 🔹 POPUP HIỂN/ẨN
+// 🔹 POPUP CHECKOUT HIỂN/ẨN
 // ------------------------
 
 function showCheckoutPopup() {
@@ -98,13 +97,15 @@ function showCheckoutPopup() {
   renderCheckoutCart();
 
   const popup = document.getElementById("checkoutPopup");
-  popup.classList.remove("hidden");
-  popup.style.display = "flex";
+  if (popup) {
+    popup.classList.remove("hidden");
+    popup.style.display = "flex";
+  }
   document.body.style.overflow = "hidden";
 
   bindCheckoutEvents();
 
-  // ✅ Điền lại trước rồi mới gắn listener (DOM đã sẵn vì popup vừa mở)
+  // Điền lại trước rồi mới gắn listener
   hydrateCheckoutInfo();
   setupLiveSaveCheckoutInfo();
 }
@@ -124,10 +125,13 @@ function hideCheckoutPopup() {
 
 function renderCheckoutCart() {
   const list = document.getElementById("checkoutCartList");
+  if (!list) return;
+
   list.innerHTML = "";
 
   if (!window.cart.length) {
     list.innerHTML = '<div class="cart-empty">Giỏ hàng của bạn hiện đang trống</div>';
+    updateCheckoutSummary();
     return;
   }
 
@@ -136,9 +140,9 @@ function renderCheckoutCart() {
     el.className = "cart-item";
 
     const hasVoucher = item.voucher?.amount;
-    const priceText = item.Giá.toLocaleString() + "₫";
+    const priceText = Number(item.Giá || 0).toLocaleString() + "₫";
     const voucherHtml = hasVoucher
-      ? `<span class="voucher-tag" style="background: rgba(0,160,230,0.6); color: white; font-size: 9px; padding: 2px 6px; margin-left: 6px; border-radius: 4px; vertical-align: middle;">Voucher: -${item.voucher.amount.toLocaleString()}₫</span>`
+      ? `<span class="voucher-tag" style="background: rgba(0,160,230,0.6); color: white; font-size: 9px; padding: 2px 6px; margin-left: 6px; border-radius: 4px; vertical-align: middle;">Voucher: -${Number(item.voucher.amount).toLocaleString()}₫</span>`
       : "";
 
     el.innerHTML = `
@@ -165,9 +169,9 @@ function renderCheckoutCart() {
 }
 
 function updateCheckoutSummary() {
-  const subtotal = window.cart.reduce((sum, item) => sum + item.Giá * item.quantity, 0);
-  const totalQty = window.cart.reduce((sum, item) => sum + item.quantity, 0);
-  voucherValue = window.cart.reduce((sum, item) => sum + (item.voucher?.amount || 0) * item.quantity, 0);
+  const subtotal = window.cart.reduce((sum, item) => sum + (item.Giá || 0) * (item.quantity || 1), 0);
+  const totalQty = window.cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+  voucherValue = window.cart.reduce((sum, item) => sum + (item.voucher?.amount || 0) * (item.quantity || 1), 0);
 
   const shipping = shippingFee;
   const total = subtotal + shipping - voucherValue;
@@ -213,7 +217,7 @@ function updateCheckoutSummary() {
 
 function changeItemQty(index, delta) {
   const item = window.cart[index];
-  item.quantity = Math.max(1, item.quantity + delta);
+  item.quantity = Math.max(1, (item.quantity || 1) + delta);
   saveCart();
   renderCheckoutCart();
 }
@@ -294,7 +298,7 @@ function submitOrder() {
     }),
     shippingFee,
     voucherValue,
-    total: window.cart.reduce((sum, i) => sum + i.Giá * i.quantity, 0) + shippingFee - voucherValue
+    total: window.cart.reduce((sum, i) => sum + (i.Giá || 0) * (i.quantity || 1), 0) + shippingFee - voucherValue
   };
 
   console.log("📦 Sending orderData:", orderData);
@@ -320,7 +324,7 @@ function submitOrder() {
         });
       }
 
-      // ❗ KHÔNG xóa checkoutInfo — giữ lại cho lần sau
+      // ❗ Không xóa checkoutInfo — giữ lại cho lần sau
       showThankyouPopup();
       window.cart = [];
       saveCart();
@@ -345,23 +349,21 @@ function bindCheckoutEvents() {
 }
 
 // ------------------------
-// 🔹 THANK YOU POPUP
+// 🔹 THANK YOU POPUP (anti-flash)
 // ------------------------
 
 function showThankyouPopup() {
   const el = document.getElementById("thankyouPopup");
-  if (el) {
-    el.classList.remove("hidden");
-    document.body.style.overflow = "hidden";
-  }
+  if (!el) return;
+  el.style.display = "flex";   // chỉ điều khiển bằng inline style để tránh xung đột
+  document.body.style.overflow = "hidden";
 }
 
 function hideThankyouPopup() {
   const el = document.getElementById("thankyouPopup");
-  if (el) {
-    el.classList.add("hidden");
-    document.body.style.overflow = "auto";
-  }
+  if (!el) return;
+  el.style.display = "none";
+  document.body.style.overflow = "auto";
 }
 
 // ------------------------
@@ -372,11 +374,19 @@ window.addEventListener("DOMContentLoaded", () => {
   loadCart();
   bindCheckoutEvents();
 
-  // ✅ Nếu input đã có sẵn trong DOM: điền + gắn listener ngay
+  // ✅ Ensure thankyouPopup khởi tạo ẩn tuyệt đối (anti-flash)
+  const ty = document.getElementById("thankyouPopup");
+  if (ty) {
+    ty.style.display = "none";
+    // Nếu HTML cũ còn class hidden, dọn cho sạch:
+    if (ty.classList) ty.classList.remove("hidden");
+  }
+
+  // Nếu input đã sẵn trong DOM
   hydrateCheckoutInfo();
   setupLiveSaveCheckoutInfo();
 
-  // ✅ Nếu input được inject muộn (qua injectHTML): chờ xong rồi thực hiện
+  // Nếu input được inject muộn (injectHTML)
   whenCheckoutInputsReady(() => {
     hydrateCheckoutInfo();
     setupLiveSaveCheckoutInfo();
