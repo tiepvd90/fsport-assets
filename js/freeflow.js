@@ -64,14 +64,26 @@ function processAndSortData(data) {
 
   const combined = interleaveBalanced(preferred, others).sort((a, b) => b.finalPriority - a.finalPriority);
 
-  const images = combined.filter(i => i.contentType === "image");
+    const images = combined.filter(i => i.contentType === "image");
   const videos = combined.filter(i => i.contentType === "youtube");
 
+  // ✅ Trộn theo tỷ lệ 10 ảnh : 1 video
+  //    Nếu nhịp cuối <10 ảnh thì KHÔNG thêm video (video dư bỏ)
   const mixed = [];
   let imgIndex = 0, vidIndex = 0;
+
   while (imgIndex < images.length) {
-    for (let k = 0; k < 6 && imgIndex < images.length; k++) mixed.push(images[imgIndex++]);
-    if (vidIndex < videos.length) mixed.push(videos[vidIndex++]);
+    let added = 0;
+    while (imgIndex < images.length && added < 10) {
+      mixed.push(images[imgIndex++]);
+      added++;
+    }
+
+    if (added === 10 && vidIndex < videos.length) {
+      mixed.push(videos[vidIndex++]);
+    }
+
+    if (imgIndex >= images.length) break;
   }
 
   function reorderForVisualMasonry(data, columns = 2) {
