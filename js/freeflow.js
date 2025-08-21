@@ -1,8 +1,9 @@
 /* ============================== *
- *   FREEFLOW (lazy blocks)       *
+ *   FREEFLOW (lazy blocks + AF)  *
  *  1s fetch-all (no render yet)  *
  *  Render 4 on approach, then    *
  *  lazy-load 12/item block       *
+ *  Auto-fill near bottom         *
  *  Keep autoplay logic as-is     *
  * ============================== */
 
@@ -64,7 +65,7 @@ function processAndSortData(data) {
 
   const combined = interleaveBalanced(preferred, others).sort((a, b) => b.finalPriority - a.finalPriority);
 
-    const images = combined.filter(i => i.contentType === "image");
+  const images = combined.filter(i => i.contentType === "image");
   const videos = combined.filter(i => i.contentType === "youtube");
 
   // ✅ Trộn theo tỷ lệ 10 ảnh : 1 video
@@ -78,11 +79,9 @@ function processAndSortData(data) {
       mixed.push(images[imgIndex++]);
       added++;
     }
-
     if (added === 10 && vidIndex < videos.length) {
       mixed.push(videos[vidIndex++]);
     }
-
     if (imgIndex >= images.length) break;
   }
 
@@ -175,6 +174,19 @@ function renderFeedItem(item, container) {
   }
 
   container.appendChild(div);
+
+  // ✅ Ảnh load xong có thể co giãn layout → kiểm tra lại đáy để auto-fill nếu cần
+  if (item.contentType === "image") {
+    const img = div.querySelector('img');
+    if (img) {
+      const onDone = () => { setTimeout(() => { autofillToViewport(); }, 20); };
+      if (img.complete) onDone();
+      else {
+        img.addEventListener('load', onDone, { once: true });
+        img.addEventListener('error', onDone, { once: true });
+      }
+    }
+  }
 }
 
 // ▶️ YouTube autoplay (GIỮ NGUYÊN)
@@ -238,6 +250,9 @@ function renderNextBlock(blockSize = 12) {
   if (itemsLoaded >= freeflowData.length && pagerObserver) {
     pagerObserver.disconnect();
     pagerObserver = null;
+  } else {
+    // ✅ Vừa thêm block xong mà vẫn gần đáy → nạp tiếp (tối đa vài lượt)
+    setTimeout(() => { autofillToViewport(); }, 30);
   }
 }
 
@@ -258,6 +273,36 @@ function setupLazyPager() {
   }, { root: null, rootMargin: "800px 0px", threshold: 0 });
 
   pagerObserver.observe(sentinel);
+
+  // ✅ Vừa setup xong thử lấp đầy nếu đang gần đáy
+  setTimeout(() => { autofillToViewport(); }, 30);
+}
+
+// =================== Auto-fill helpers ===================
+// Gần chạm đáy trang chưa?
+function nearBottom(offset = 900) {
+  const doc = document.documentElement;
+  const scrollY = window.scrollY || doc.scrollTop || 0;
+  const vh = window.innerHeight || doc.clientHeight || 0;
+  const docH = Math.max(
+    doc.scrollHeight, doc.offsetHeight, doc.clientHeight,
+    document.body?.scrollHeight || 0,
+    document.body?.offsetHeight || 0
+  );
+  return (scrollY + vh) >= (docH - offset);
+}
+
+// Tự nạp thêm cho đầy viewport (loop nhỏ, tránh xả hết)
+function autofillToViewport(maxPasses = 3) {
+  let passes = 0;
+  while (
+    passes < maxPasses &&
+    itemsLoaded < freeflowData.length &&
+    nearBottom(900)
+  ) {
+    renderNextBlock(12); // vẫn block 12 như hiện tại
+    passes++;
+  }
 }
 
 // =================== Initial kick ===================
@@ -280,6 +325,9 @@ function renderInitialAndStartPager() {
 
   // Bắt đầu lazy pager (12/item block khi cuộn tới)
   setupLazyPager();
+
+  // ✅ Nếu trang còn chỗ trống gần đáy, tự nạp thêm để không tạo cảm giác "hết trang"
+  setTimeout(() => { autofillToViewport(); }, 30);
 }
 
 function maybeStartRender() {
@@ -333,8 +381,9 @@ async function fetchFromGoogleSheet(existingData) {
     saveCache(combined);
     dataReady = true;
 
-    // Nếu đã render đợt đầu thì không “xả hết”; pager sẽ tự nạp block tiếp theo khi chạm sentinel
+    // Nếu đã render đợt đầu thì pager sẽ tự nạp block tiếp theo khi chạm sentinel
     if (!initialRendered) maybeStartRender();
+    else setTimeout(() => { autofillToViewport(); }, 30);
   } catch (e) {
     console.error("Không thể fetch từ Google Sheet:", e);
   }
@@ -361,6 +410,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Sau 1 giây mới bắt đầu fetch all (chỉ xử lý & cache, không render ngay)
   setTimeout(() => { fetchFreeFlowData(); }, 1000);
+
+  // ✅ Throttle scroll: nếu người dùng kéo gần đáy mà sentinel chưa kịp bắn → tự nạp
+  let __ffScrollTick = null;
+  window.addEventListener('scroll', () => {
+    if (!initialRendered) return;
+    if (__ffScrollTick) return;
+    __ffScrollTick = setTimeout(() => {
+      __ffScrollTick = null;
+      autofillToViewport();
+    }, 120);
+  }, { passive: true });
 
   // Fallback an toàn nếu vì lý do nào đó IO bị miss
   setTimeout(() => { maybeStartRender(); }, 5000);
