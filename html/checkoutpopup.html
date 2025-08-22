@@ -1,125 +1,106 @@
 <!-- ✅ CHECKOUT POPUP -->
-<div id="checkoutPopup" class="hidden">
+<div id="checkoutPopup" class="hidden" style="display: none;">
   <div class="checkout-overlay" onclick="hideCheckoutPopup()"></div>
 
   <div class="checkout-content">
-    <div class="checkout-panel">
-      
-      <!-- ❌ Nút đóng -->
-      <button class="checkout-close" onclick="hideCheckoutPopup()" aria-label="Đóng">
-        &times;
-      </button>
+    <!-- ❌ Nút đóng cố định -->
+    <button class="checkout-close" onclick="hideCheckoutPopup()">&times;</button>
 
-      <!-- Header -->
-      <div class="checkout-header">
-        <div>Giỏ Hàng Của Bạn</div>
+    <!-- 🔄 Nội dung có thể cuộn -->
+    <div class="checkout-inner-scroll">
+
+      <!-- === MỤC 1: DANH SÁCH SẢN PHẨM === -->
+      <div class="checkout-section-title">1. Danh sách sản phẩm</div>
+      <div id="checkoutCartList"></div>
+      <div id="emptyCartText" style="display: none; color: #888; font-size: 14px; margin-bottom: 12px;">
+        Giỏ hàng của bạn hiện đang trống.
       </div>
 
-      <!-- 🔄 Scrollable Body -->
-      <div class="checkout-inner-scroll">
-
-        <!-- === MỤC 1: DANH SÁCH SẢN PHẨM === -->
-        <div class="checkout-section-title">1. Danh sách sản phẩm</div>
-        <div id="checkoutCartList"></div>
-        <div id="emptyCartText" class="cart-empty" style="display:none;">
-          Giỏ hàng của bạn hiện đang trống.
+      <!-- === MỤC 2: TỔNG KẾT ĐƠN HÀNG === -->
+      <div class="checkout-section-title">2. Thông tin đơn hàng</div>
+      <div class="checkout-summary">
+        <div class="row">
+          <span>
+            Tạm tính <span id="itemQuantityText"></span>
+          </span>
+          <span id="subtotalText">0₫</span>
         </div>
 
-        <!-- === MỤC 2: TỔNG KẾT ĐƠN HÀNG === -->
-        <div class="checkout-section-title">2. Thông tin đơn hàng</div>
-        <div class="checkout-summary">
-          <div class="row">
-            <span>Tạm tính <span id="itemQuantityText" style="color:#666;"></span></span>
-            <span id="subtotalText">0₫</span>
-          </div>
-
-          <div class="row">
-            <span>Phí vận chuyển</span>
-            <span id="shippingFeeText">0₫</span>
-          </div>
-
-          <div class="row">
-            <span>Voucher</span>
-            <span id="voucherText">-0₫</span>
-          </div>
-
-          <div class="row total-row">
-            <span>Tổng</span>
-            <span id="totalText">0₫</span>
-          </div>
-
-          <div class="note">
-            <span class="red-dot-icon" aria-hidden="true">💯</span>
-            <em>kiểm tra hàng trước khi thanh toán</em>
-          </div>
+        <div class="row">
+          <span>Phí vận chuyển</span>
+          <span id="shippingFeeText">0₫</span>
         </div>
 
-        <!-- === MỤC 3: THÔNG TIN NGƯỜI NHẬN === -->
-        <div class="checkout-section-title">3. Thông tin người nhận</div>
-        <div class="checkout-form">
-          <div class="form-row">
-            <input type="text" id="checkoutName" placeholder="Họ và Tên" />
-            <input type="tel" id="checkoutPhone" placeholder="Số điện thoại" />
-          </div>
-          <input type="text" id="checkoutAddress" placeholder="Địa chỉ nhận hàng" />
+        <div class="row">
+          <span>Voucher</span>
+          <span id="voucherText" style="color: red;">-0₫</span>
         </div>
 
-        <!-- 🔘 Nút đặt hàng -->
-        <button id="checkoutSubmitBtn">ĐẶT HÀNG NGAY</button>
+        <div class="row total-row">
+          <span>Tổng</span>
+          <span id="totalText">0₫</span>
+        </div>
+
+        <div class="note">
+          <span class="red-dot-icon">💯</span>
+          <em>kiểm tra hàng trước khi thanh toán</em>
+        </div>
       </div>
+
+      <!-- === MỤC 3: THÔNG TIN NGƯỜI NHẬN === -->
+      <div class="checkout-section-title">3. Thông tin người nhận</div>
+      <div class="checkout-form">
+        <div class="form-row">
+          <input type="text" id="checkoutName" placeholder="Họ và Tên" />
+          <input type="tel" id="checkoutPhone" placeholder="Số điện thoại" />
+        </div>
+        <input type="text" id="checkoutAddress" placeholder="Địa chỉ nhận hàng" />
+      </div>
+
+      <!-- 🔘 Nút đặt hàng -->
+      <button id="checkoutSubmitBtn">ĐẶT HÀNG NGAY</button>
     </div>
   </div>
 </div>
 
-<!-- ✅ ICON GIỎ HÀNG GÓC PHẢI DƯỚI -->
+<!-- ✅ ICON GIỎ HÀNG GÓC PHẢI TRÊN -->
 <div id="cartIcon" onclick="showCheckoutPopup()">
-  <div>
-    <img src="/assets/images/carticon.png" alt="Giỏ hàng" class="cart-icon-img">
-    <div id="cartItemCount">0</div>
-  </div>
+  <img src="/assets/images/carticon.png" alt="Giỏ hàng" class="cart-icon-img">
+  <div id="cartItemCount">0</div>
 </div>
 
 <!-- ✅ POPUP CẢM ƠN -->
-<div id="thankyouPopup">
-  <div class="ty-card">
+<div id="thankyouPopup"
+     style="position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 9999; display: none; align-items: center; justify-content: center; font-family: 'Be Vietnam Pro', sans-serif;">
+  <div style="background: white; padding: 24px 20px; border-radius: 12px; max-width: 90%; width: 360px; text-align: center; position: relative; box-shadow: 0 4px 12px rgba(0,0,0,0.2);">
 
     <!-- ❌ Nút đóng -->
-    <button class="ty-close" onclick="hideThankyouPopup()" aria-label="Đóng">&times;</button>
+    <button onclick="hideThankyouPopup()" 
+            style="position: absolute; top: 10px; right: 12px; background: none; border: none; font-size: 26px; font-weight: bold; color: #000; cursor: pointer;">
+      ×
+    </button>
 
     <!-- 🎉 Tiêu đề -->
-    <h3 class="ty-title">🎉 CẢM ƠN BẠN ĐÃ ĐẶT HÀNG!</h3>
+    <h3 style="color: green; font-size: 20px; margin-bottom: 12px;">🎉 CẢM ƠN BẠN ĐÃ ĐẶT HÀNG!</h3>
 
     <!-- 📝 Nội dung -->
-    <p class="ty-desc">Nếu bạn cần hỗ trợ hoặc muốn giao hàng nhanh hơn, vui lòng liên hệ qua:</p>
+    <p style="margin-bottom: 20px;">Nếu bạn cần hỗ trợ hoặc muốn giao hàng nhanh hơn, vui lòng liên hệ qua:</p>
 
     <!-- 🔗 Nút liên hệ -->
-    <div class="ty-contacts">
-      <a class="zalo" href="https://zalo.me/0384735980" target="_blank">
-        <img src="https://i.postimg.cc/76jKxxfM/zalo-2.webp" alt="Zalo"> Zalo
+    <div style="display: flex; justify-content: center; gap: 12px;">
+      <!-- Zalo -->
+      <a href="https://zalo.me/0384735980" target="_blank"
+         style="display: inline-flex; align-items: center; gap: 6px; background: #0084ff; color: white; padding: 8px 14px; border-radius: 8px; text-decoration: none; font-weight: 500; font-size: 14px;">
+        <img src="https://i.postimg.cc/76jKxxfM/zalo-2.webp" alt="Zalo" style="width: 22px; height: 22px;">
+        Zalo
       </a>
-      <a class="messenger" href="https://m.me/funsport1" target="_blank">
-        <img src="https://i.postimg.cc/4y2DGCpz/icon-mess.webp" alt="Messenger"> Messenger
+
+      <!-- Messenger -->
+      <a href="https://m.me/funsport1" target="_blank"
+         style="display: inline-flex; align-items: center; gap: 6px; background: #006AFF; color: white; padding: 8px 14px; border-radius: 8px; text-decoration: none; font-weight: 500; font-size: 14px;">
+        <img src="https://i.postimg.cc/4y2DGCpz/icon-mess.webp" alt="Messenger" style="width: 22px; height: 22px;">
+        Messenger
       </a>
     </div>
-
-    <!-- 🟡 UPSELL (ẩn mặc định – JS sẽ bật nếu đủ điều kiện) -->
-    <div id="upsellBlock">
-      <div class="upsell-title">Combo 5 bóng dạ quang chuẩn thi đấu</div>
-
-      <div class="upsell-price">
-        <span class="price">Giá ưu đãi: 130.000đ</span>
-        <span class="save"> (Tiết kiệm 10%)</span>
-      </div>
-
-      <img class="upsell-img" src="https://i.postimg.cc/N0mGVKsP/1.webp" loading="lazy" alt="Bóng pickleball">
-
-      <div class="upsell-actions">
-        <button id="upsellBuyBallsBtn">MUA 5 BÓNG</button>
-        <button id="upsellDismissBtn">Để sau</button>
-      </div>
-
-      <div id="upsellStatus"></div>
-    </div>
-
   </div>
 </div>
