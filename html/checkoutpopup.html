@@ -1,106 +1,164 @@
 <!-- ✅ CHECKOUT POPUP -->
-<div id="checkoutPopup" class="hidden" style="display: none;">
-  <div class="checkout-overlay" onclick="hideCheckoutPopup()"></div>
+<div id="checkoutPopup" class="hidden" style="display:none;">
+  <div class="checkout-overlay" onclick="hideCheckoutPopup()"
+       style="position:fixed; inset:0; background:rgba(0,0,0,0.5);"></div>
 
-  <div class="checkout-content">
-    <!-- ❌ Nút đóng cố định -->
-    <button class="checkout-close" onclick="hideCheckoutPopup()">&times;</button>
+  <div class="checkout-content"
+       style="position:fixed; inset:0; display:flex; align-items:center; justify-content:center; z-index:9998;">
+    <div class="checkout-panel"
+         style="width:min(92vw, 520px); max-height:88vh; background:#fff; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.25); position:relative; overflow:hidden; font-family:'Be Vietnam Pro', system-ui, -apple-system, Segoe UI, Roboto, Arial;">
+      
+      <!-- ❌ Close -->
+      <button class="checkout-close" onclick="hideCheckoutPopup()"
+              aria-label="Đóng"
+              style="position:absolute; top:10px; right:10px; width:32px; height:32px; line-height:28px; border-radius:50%; background:#f3f3f3; border:none; font-size:18px; font-weight:700; color:#333; cursor:pointer; display:flex; align-items:center; justify-content:center;">
+        &times;
+      </button>
 
-    <!-- 🔄 Nội dung có thể cuộn -->
-    <div class="checkout-inner-scroll">
-
-      <!-- === MỤC 1: DANH SÁCH SẢN PHẨM === -->
-      <div class="checkout-section-title">1. Danh sách sản phẩm</div>
-      <div id="checkoutCartList"></div>
-      <div id="emptyCartText" style="display: none; color: #888; font-size: 14px; margin-bottom: 12px;">
-        Giỏ hàng của bạn hiện đang trống.
+      <!-- Header -->
+      <div style="padding:14px 16px 10px; border-bottom:1px solid #eee;">
+        <div style="font-weight:800; font-size:16px; letter-spacing:.2px;">Giỏ Hàng Của Bạn</div>
       </div>
 
-      <!-- === MỤC 2: TỔNG KẾT ĐƠN HÀNG === -->
-      <div class="checkout-section-title">2. Thông tin đơn hàng</div>
-      <div class="checkout-summary">
-        <div class="row">
-          <span>
-            Tạm tính <span id="itemQuantityText"></span>
-          </span>
-          <span id="subtotalText">0₫</span>
+      <!-- 🔄 Scrollable Body -->
+      <div class="checkout-inner-scroll" style="padding:14px 16px 16px; overflow:auto; max-height:calc(88vh - 64px);">
+
+        <!-- === MỤC 1: DANH SÁCH SẢN PHẨM === -->
+        <div class="checkout-section-title" style="font-weight:700; font-size:14px; margin:6px 0 10px;">1. Danh sách sản phẩm</div>
+        <div id="checkoutCartList"></div>
+        <div id="emptyCartText" style="display:none; color:#888; font-size:13px; margin:6px 0 12px;">
+          Giỏ hàng của bạn hiện đang trống.
         </div>
 
-        <div class="row">
-          <span>Phí vận chuyển</span>
-          <span id="shippingFeeText">0₫</span>
+        <!-- === MỤC 2: TỔNG KẾT ĐƠN HÀNG === -->
+        <div class="checkout-section-title" style="font-weight:700; font-size:14px; margin:12px 0 8px;">2. Thông tin đơn hàng</div>
+        <div class="checkout-summary" style="border:1px solid #eee; border-radius:10px; padding:10px 12px;">
+          <div class="row" style="display:flex; justify-content:space-between; align-items:center; padding:6px 0;">
+            <span style="font-size:13px;">Tạm tính <span id="itemQuantityText" style="color:#666;"></span></span>
+            <span id="subtotalText" style="font-weight:700; font-size:14px;">0₫</span>
+          </div>
+
+          <div class="row" style="display:flex; justify-content:space-between; align-items:center; padding:6px 0;">
+            <span style="font-size:13px;">Phí vận chuyển</span>
+            <span id="shippingFeeText" style="font-weight:600; font-size:13px;">0₫</span>
+          </div>
+
+          <div class="row" style="display:flex; justify-content:space-between; align-items:center; padding:6px 0;">
+            <span style="font-size:13px;">Voucher</span>
+            <span id="voucherText" style="color:#d32f2f; font-weight:700; font-size:13px;">-0₫</span>
+          </div>
+
+          <div class="row total-row" style="display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-top:1px dashed #eee; margin-top:6px;">
+            <span style="font-size:14px; font-weight:800;">Tổng</span>
+            <span id="totalText" style="font-size:16px; font-weight:800;">0₫</span>
+          </div>
+
+          <div class="note" style="display:flex; align-items:center; gap:6px; margin-top:6px; font-size:12px; color:#444;">
+            <span class="red-dot-icon" aria-hidden="true">💯</span>
+            <em>kiểm tra hàng trước khi thanh toán</em>
+          </div>
         </div>
 
-        <div class="row">
-          <span>Voucher</span>
-          <span id="voucherText" style="color: red;">-0₫</span>
+        <!-- === MỤC 3: THÔNG TIN NGƯỜI NHẬN === -->
+        <div class="checkout-section-title" style="font-weight:700; font-size:14px; margin:14px 0 8px;">3. Thông tin người nhận</div>
+        <div class="checkout-form" style="display:flex; flex-direction:column; gap:8px;">
+          <div class="form-row" style="display:flex; gap:8px;">
+            <input type="text" id="checkoutName" placeholder="Họ và Tên"
+                   style="flex:1; height:40px; border:1px solid #ddd; border-radius:10px; padding:0 12px; font-size:14px; outline:none;">
+            <input type="tel" id="checkoutPhone" placeholder="Số điện thoại"
+                   style="flex:1; height:40px; border:1px solid #ddd; border-radius:10px; padding:0 12px; font-size:14px; outline:none;">
+          </div>
+          <input type="text" id="checkoutAddress" placeholder="Địa chỉ nhận hàng"
+                 style="height:40px; border:1px solid #ddd; border-radius:10px; padding:0 12px; font-size:14px; outline:none;">
         </div>
 
-        <div class="row total-row">
-          <span>Tổng</span>
-          <span id="totalText">0₫</span>
-        </div>
-
-        <div class="note">
-          <span class="red-dot-icon">💯</span>
-          <em>kiểm tra hàng trước khi thanh toán</em>
-        </div>
+        <!-- 🔘 Nút đặt hàng -->
+        <button id="checkoutSubmitBtn"
+                style="margin-top:12px; width:100%; height:44px; background:#000; color:#fff; border:none; border-radius:10px; font-weight:800; letter-spacing:.2px; font-size:14px; cursor:pointer;">
+          ĐẶT HÀNG NGAY
+        </button>
       </div>
-
-      <!-- === MỤC 3: THÔNG TIN NGƯỜI NHẬN === -->
-      <div class="checkout-section-title">3. Thông tin người nhận</div>
-      <div class="checkout-form">
-        <div class="form-row">
-          <input type="text" id="checkoutName" placeholder="Họ và Tên" />
-          <input type="tel" id="checkoutPhone" placeholder="Số điện thoại" />
-        </div>
-        <input type="text" id="checkoutAddress" placeholder="Địa chỉ nhận hàng" />
-      </div>
-
-      <!-- 🔘 Nút đặt hàng -->
-      <button id="checkoutSubmitBtn">ĐẶT HÀNG NGAY</button>
     </div>
   </div>
 </div>
 
 <!-- ✅ ICON GIỎ HÀNG GÓC PHẢI TRÊN -->
-<div id="cartIcon" onclick="showCheckoutPopup()">
-  <img src="/assets/images/carticon.png" alt="Giỏ hàng" class="cart-icon-img">
-  <div id="cartItemCount">0</div>
+<div id="cartIcon" onclick="showCheckoutPopup()"
+     style="position:fixed; right:14px; bottom:18px; z-index:9997; display:flex; align-items:center; justify-content:center; gap:6px; cursor:pointer;">
+  <div style="position:relative;">
+    <img src="/assets/images/carticon.png" alt="Giỏ hàng" class="cart-icon-img"
+         style="width:42px; height:42px; object-fit:contain; filter:drop-shadow(0 2px 4px rgba(0,0,0,0.15));">
+    <div id="cartItemCount"
+         style="position:absolute; top:-6px; right:-6px; min-width:18px; height:18px; padding:0 5px; background:#ff3b30; color:#fff; border-radius:999px; font-size:12px; font-weight:800; display:flex; align-items:center; justify-content:center;">
+      0
+    </div>
+  </div>
 </div>
 
 <!-- ✅ POPUP CẢM ƠN -->
 <div id="thankyouPopup"
-     style="position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 9999; display: none; align-items: center; justify-content: center; font-family: 'Be Vietnam Pro', sans-serif;">
-  <div style="background: white; padding: 24px 20px; border-radius: 12px; max-width: 90%; width: 360px; text-align: center; position: relative; box-shadow: 0 4px 12px rgba(0,0,0,0.2);">
+     style="position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:9999; display:none; align-items:center; justify-content:center; font-family:'Be Vietnam Pro', system-ui, -apple-system, Segoe UI, Roboto, Arial;">
+  <div style="background:#fff; padding:18px 16px 16px; border-radius:14px; width:min(92vw, 380px); text-align:center; position:relative; box-shadow:0 10px 30px rgba(0,0,0,0.25);">
 
     <!-- ❌ Nút đóng -->
-    <button onclick="hideThankyouPopup()" 
-            style="position: absolute; top: 10px; right: 12px; background: none; border: none; font-size: 26px; font-weight: bold; color: #000; cursor: pointer;">
-      ×
+    <button onclick="hideThankyouPopup()" aria-label="Đóng"
+            style="position:absolute; top:10px; right:10px; width:30px; height:30px; line-height:26px; border-radius:50%; background:#f3f3f3; border:none; font-size:18px; font-weight:700; color:#333; cursor:pointer; display:flex; align-items:center; justify-content:center;">
+      &times;
     </button>
 
     <!-- 🎉 Tiêu đề -->
-    <h3 style="color: green; font-size: 20px; margin-bottom: 12px;">🎉 CẢM ƠN BẠN ĐÃ ĐẶT HÀNG!</h3>
+    <h3 style="color:#2e7d32; font-size:18px; margin:0 0 8px; font-weight:800;">🎉 CẢM ƠN BẠN ĐÃ ĐẶT HÀNG!</h3>
 
     <!-- 📝 Nội dung -->
-    <p style="margin-bottom: 20px;">Nếu bạn cần hỗ trợ hoặc muốn giao hàng nhanh hơn, vui lòng liên hệ qua:</p>
+    <p style="margin:0 0 14px; font-size:13px; color:#444;">Nếu bạn cần hỗ trợ hoặc muốn giao hàng nhanh hơn, vui lòng liên hệ qua:</p>
 
     <!-- 🔗 Nút liên hệ -->
-    <div style="display: flex; justify-content: center; gap: 12px;">
+    <div style="display:flex; justify-content:center; gap:10px; margin-bottom:10px;">
       <!-- Zalo -->
       <a href="https://zalo.me/0384735980" target="_blank"
-         style="display: inline-flex; align-items: center; gap: 6px; background: #0084ff; color: white; padding: 8px 14px; border-radius: 8px; text-decoration: none; font-weight: 500; font-size: 14px;">
-        <img src="https://i.postimg.cc/76jKxxfM/zalo-2.webp" alt="Zalo" style="width: 22px; height: 22px;">
+         style="display:inline-flex; align-items:center; gap:6px; background:#0084ff; color:#fff; padding:8px 12px; border-radius:10px; text-decoration:none; font-weight:700; font-size:13px;">
+        <img src="https://i.postimg.cc/76jKxxfM/zalo-2.webp" alt="Zalo" style="width:20px; height:20px;">
         Zalo
       </a>
 
       <!-- Messenger -->
       <a href="https://m.me/funsport1" target="_blank"
-         style="display: inline-flex; align-items: center; gap: 6px; background: #006AFF; color: white; padding: 8px 14px; border-radius: 8px; text-decoration: none; font-weight: 500; font-size: 14px;">
-        <img src="https://i.postimg.cc/4y2DGCpz/icon-mess.webp" alt="Messenger" style="width: 22px; height: 22px;">
+         style="display:inline-flex; align-items:center; gap:6px; background:#006AFF; color:#fff; padding:8px 12px; border-radius:10px; text-decoration:none; font-weight:700; font-size:13px;">
+        <img src="https://i.postimg.cc/4y2DGCpz/icon-mess.webp" alt="Messenger" style="width:20px; height:20px;">
         Messenger
       </a>
     </div>
+
+    <!-- ─────────────────────────────────────────────── -->
+    <!-- 🟡 UPSELL (ẩn mặc định – JS sẽ bật nếu thỏa điều kiện) -->
+    <div id="upsellBlock" style="display:none; margin-top:10px; padding-top:10px; border-top:1px dashed #ececec;">
+      <div style="font-weight:800; font-size:15px; margin-bottom:6px; letter-spacing:.2px;">
+        Combo 5 bóng dạ quang chuẩn thi đấu
+      </div>
+
+      <div style="font-size:14px; margin-bottom:10px;">
+        <span style="font-weight:800; color:#d32f2f;">Giá ưu đãi: 130.000đ</span>
+        <span style="font-size:12px; color:#777;"> (Tiết kiệm 10%)</span>
+      </div>
+
+      <img src="https://i.postimg.cc/N0mGVKsP/1.webp" loading="lazy" alt="Bóng pickleball"
+           style="width:112px; height:112px; object-fit:cover; border-radius:10px; margin:0 auto 10px auto; display:block; box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+
+      <div style="display:flex; gap:8px; justify-content:center;">
+        <button id="upsellBuyBallsBtn"
+                style="flex:1; min-width:0; background:#000; color:#fff; border:none; border-radius:10px; padding:10px 12px; font-weight:800; font-size:13px; letter-spacing:.2px; cursor:pointer;">
+          MUA 5 BÓNG
+        </button>
+        <button id="upsellDismissBtn"
+                style="background:#f3f3f3; color:#333; border:none; border-radius:10px; padding:10px 12px; font-weight:700; font-size:13px; cursor:pointer;">
+          Để sau
+        </button>
+      </div>
+
+      <!-- Trạng thái gửi -->
+      <div id="upsellStatus" style="display:none; font-size:12px; color:#555; margin-top:8px;"></div>
+    </div>
+    <!-- ─────────────────────────────────────────────── -->
+
   </div>
 </div>
