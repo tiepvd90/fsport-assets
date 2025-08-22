@@ -325,7 +325,7 @@ function submitOrder() {
       }
 
       // ❗ Không xóa checkoutInfo — giữ lại cho lần sau
-      showThankyouPopup();
+      thanksAndUpsell.show({ category, name, phone, address });
       window.cart = [];
       saveCart();
       hideCheckoutPopup();
