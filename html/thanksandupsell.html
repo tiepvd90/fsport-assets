@@ -1,0 +1,42 @@
+<!-- ✅ THANK YOU + UPSELL POPUP -->
+<div id="thankyouPopup"
+     style="position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 9999; display: none; align-items: center; justify-content: center; font-family: 'Be Vietnam Pro', sans-serif;">
+  <div class="thankyou-box">
+    
+    <!-- ❌ Nút đóng -->
+    <button onclick="hideThankyouPopup()" class="thankyou-close">&times;</button>
+
+    <!-- 🎉 Tiêu đề -->
+    <h3 class="thankyou-title">🎉 CẢM ƠN BẠN ĐÃ ĐẶT HÀNG!</h3>
+
+    <!-- 📝 Nội dung -->
+    <p class="thankyou-subtitle">Nếu bạn cần hỗ trợ hoặc muốn giao hàng nhanh hơn, vui lòng liên hệ:</p>
+
+    <!-- 🔗 Nút liên hệ -->
+    <div class="thankyou-contact">
+      <a href="https://zalo.me/0384735980" target="_blank" class="contact-btn zalo-btn">
+        <img src="https://i.postimg.cc/76jKxxfM/zalo-2.webp" alt="Zalo" />
+        Zalo
+      </a>
+      <a href="https://m.me/funsport1" target="_blank" class="contact-btn mess-btn">
+        <img src="https://i.postimg.cc/4y2DGCpz/icon-mess.webp" alt="Messenger" />
+        Messenger
+      </a>
+    </div>
+
+    <!-- 🎁 Block Upsell -->
+    <div id="upsellBlock" class="upsell-block hidden">
+      <div class="upsell-flex">
+        <img src="https://i.postimg.cc/N0mGVKsP/1.webp" alt="Bóng thi đấu" class="upsell-img" />
+        <div class="upsell-info">
+          <div class="upsell-title">Combo 5 bóng dạ quang</div>
+          <div class="upsell-desc">Chuẩn thi đấu - Giá ưu đãi chỉ</div>
+          <div class="upsell-price">130.000đ</div>
+          <button id="upsellBtn" onclick="handleUpsellOrder()" class="upsell-btn">MUA THÊM 5 BÓNG</button>
+          <div id="upsellStatus" class="upsell-status hidden">✅ Đã thêm thành công!</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
