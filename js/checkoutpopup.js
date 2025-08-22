@@ -87,33 +87,40 @@ function whenCheckoutInputsReady(run) {
 }
 
 // ------------------------
-// 🔹 POPUP CHECKOUT HIỂN/ẨN
+// 🔹 POPUP CHECKOUT HIỂN/ẨN (fix overlay)
 // ------------------------
+function setCheckoutPopupOpen(open) {
+  const popup = document.getElementById("checkoutPopup");
+  if (!popup) return;
+
+  const overlay = popup.querySelector(".checkout-overlay");
+  const content = popup.querySelector(".checkout-content");
+
+  if (open) {
+    popup.classList.add("is-open");
+    if (overlay) overlay.style.display = "block";
+    if (content) content.style.display = "block";
+    document.body.style.overflow = "hidden";
+  } else {
+    popup.classList.remove("is-open");
+    if (overlay) overlay.style.display = "none";
+    if (content) content.style.display = "none";
+    document.body.style.overflow = "auto";
+  }
+}
+
 function showCheckoutPopup() {
   loadShippingFee();
   renderCheckoutCart();
-
-  const popup = document.getElementById("checkoutPopup");
-  if (popup) {
-    popup.classList.remove("hidden");
-    popup.style.display = "flex";
-  }
-  document.body.style.overflow = "hidden";
+  setCheckoutPopupOpen(true);
 
   bindCheckoutEvents();
-
-  // Điền lại trước rồi mới gắn listener
   hydrateCheckoutInfo();
   setupLiveSaveCheckoutInfo();
 }
 
 function hideCheckoutPopup() {
-  const popup = document.getElementById("checkoutPopup");
-  if (popup) {
-    popup.classList.add("hidden");
-    popup.style.display = "none";
-  }
-  document.body.style.overflow = "auto";
+  setCheckoutPopupOpen(false);
 }
 
 // ------------------------
@@ -530,11 +537,20 @@ window.addEventListener("DOMContentLoaded", () => {
   loadCart();
   bindCheckoutEvents();
 
-  // ✅ Ensure thankyouPopup khởi tạo ẩn tuyệt đối (anti-flash)
+  // ✅ Bảo đảm checkoutPopup & overlay ẩn hoàn toàn khi khởi tạo
+  const popup = document.getElementById("checkoutPopup");
+  if (popup) {
+    popup.classList.remove("is-open");
+    const overlay = popup.querySelector(".checkout-overlay");
+    const content  = popup.querySelector(".checkout-content");
+    if (overlay) overlay.style.display = "none";
+    if (content)  content.style.display = "none";
+  }
+
+  // ✅ Ensure thankyouPopup khởi tạo ẩn (anti-flash)
   const ty = document.getElementById("thankyouPopup");
   if (ty) {
     ty.style.display = "none";
-    // Nếu HTML cũ còn class hidden, dọn cho sạch:
     if (ty.classList) ty.classList.remove("hidden");
   }
 
