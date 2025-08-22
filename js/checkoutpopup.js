@@ -392,3 +392,26 @@ window.addEventListener("DOMContentLoaded", () => {
     setupLiveSaveCheckoutInfo();
   });
 });
+
+// ✅ Inject HTML thankyouPopup từ file riêng
+fetch("/html/thanksandupsell.html")
+  .then(res => res.text())
+  .then(html => {
+    const temp = document.createElement("div");
+    temp.innerHTML = html;
+    const popup = temp.querySelector("#thankyouPopup");
+    if (popup) {
+      document.body.appendChild(popup);
+    }
+    // Inject script trong file
+    temp.querySelectorAll("script").forEach(s => {
+      const newScript = document.createElement("script");
+      if (s.src) {
+        newScript.src = s.src;
+      } else {
+        newScript.textContent = s.textContent;
+      }
+      document.body.appendChild(newScript);
+    });
+  })
+  .catch(err => console.warn("Không load được thankyouPopup:", err));
