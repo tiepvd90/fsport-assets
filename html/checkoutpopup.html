@@ -69,10 +69,10 @@
   <div id="cartItemCount">0</div>
 </div>
 
-<!-- ✅ POPUP CẢM ƠN -->
+<!-- ✅ POPUP CẢM ƠN + UPSELL -->
 <div id="thankyouPopup"
      style="position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 9999; display: none; align-items: center; justify-content: center; font-family: 'Be Vietnam Pro', sans-serif;">
-  <div style="background: white; padding: 24px 20px; border-radius: 12px; max-width: 90%; width: 360px; text-align: center; position: relative; box-shadow: 0 4px 12px rgba(0,0,0,0.2);">
+  <div style="background: white; padding: 24px 20px; border-radius: 12px; max-width: 90%; width: 380px; text-align: center; position: relative; box-shadow: 0 4px 12px rgba(0,0,0,0.2);">
 
     <!-- ❌ Nút đóng -->
     <button onclick="hideThankyouPopup()" 
@@ -86,7 +86,29 @@
     <!-- 📝 Nội dung -->
     <p style="margin-bottom: 20px;">Nếu bạn cần hỗ trợ hoặc muốn giao hàng nhanh hơn, vui lòng liên hệ qua:</p>
 
-    <!-- 🔗 Nút liên hệ -->
+    <!-- ⚡ UPSELL BÓNG -->
+    <div style="border: 1px solid #eee; border-radius: 10px; padding: 16px; margin-bottom: 20px; text-align: center;">
+      <img src="https://i.postimg.cc/N0mGVKsP/1.webp" alt="Bóng Pickleball"
+           style="width: 120px; margin: 0 auto 12px auto; display: block;">
+      <p style="font-size: 15px; margin-bottom: 14px; line-height: 1.4;">
+        Bạn đang được <b>giảm 10%</b> khi mua <b>combo 5 bóng thi đấu dạ quang</b>, chỉ còn <b>130k</b>.<br>
+        Bạn có muốn mua luôn không?
+      </p>
+      <div style="display: flex; justify-content: center; gap: 12px;">
+        <button onclick="buyUpsellBalls()" 
+                style="flex: 1; background: #e63946; color: #fff; padding: 10px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">
+          Mua 5 bóng
+        </button>
+        <button onclick="hideThankyouPopup()" 
+                style="flex: 1; background: #ccc; color: #000; padding: 10px; border: none; border-radius: 8px; cursor: pointer; font-weight: 500;">
+          Để sau
+        </button>
+      </div>
+    </div>
+
+    <!-- 🔗 Liên hệ -->
+    <hr style="margin: 16px 0; border: none; border-top: 1px solid #eee;">
+    <p style="margin-bottom: 12px; font-weight: 500;">Liên hệ hỗ trợ:</p>
     <div style="display: flex; justify-content: center; gap: 12px;">
       <!-- Zalo -->
       <a href="https://zalo.me/0384735980" target="_blank"
@@ -94,7 +116,6 @@
         <img src="https://i.postimg.cc/76jKxxfM/zalo-2.webp" alt="Zalo" style="width: 22px; height: 22px;">
         Zalo
       </a>
-
       <!-- Messenger -->
       <a href="https://m.me/funsport1" target="_blank"
          style="display: inline-flex; align-items: center; gap: 6px; background: #006AFF; color: white; padding: 8px 14px; border-radius: 8px; text-decoration: none; font-weight: 500; font-size: 14px;">
@@ -104,3 +125,46 @@
     </div>
   </div>
 </div>
+
+<script>
+function showThankyouPopup() {
+  document.getElementById("thankyouPopup").style.display = "flex";
+  document.body.style.overflow = "hidden"; // chặn scroll nền
+}
+
+function hideThankyouPopup() {
+  document.getElementById("thankyouPopup").style.display = "none";
+  document.body.style.overflow = ""; // khôi phục scroll
+}
+
+// ✅ Gửi thông tin upsell + checkoutInfo
+function buyUpsellBalls() {
+  const saved = JSON.parse(localStorage.getItem("checkoutInfo") || "{}");
+
+  fetch("https://hook.eu2.make.com/nesjrnsxqti4h10pncwkq6zkohstmlx1", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      product: "Combo 5 bóng pickleball dạ quang",
+      offer: "Giảm 10%",
+      price: "130000",
+      source: "thankyouPopup",
+      customer: {
+        name: saved.name || "",
+        phone: saved.phone || "",
+        address: saved.address || ""
+      }
+    })
+  })
+  .then(res => {
+    console.log("Upsell đã gửi:", res.status);
+    alert("✅ Đã thêm combo 5 bóng vào đơn hàng!");
+    hideThankyouPopup();
+  })
+  .catch(err => {
+    console.error("Lỗi upsell:", err);
+    hideThankyouPopup();
+  });
+}
+</script>
+
