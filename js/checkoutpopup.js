@@ -303,25 +303,37 @@ function submitOrder() {
 
   console.log("📦 Sending orderData:", orderData);
 
-  fetch("https://hook.eu2.make.com/...", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify(orderData)
-})
-.then(() => {
-  // ✅ Không xử lý response gì cả — chỉ cần gửi thành công là xong
-  thanksAndUpsell.show({ category, name, phone, address });
-  window.cart = [];
-  saveCart();
-  hideCheckoutPopup();
-})
-.catch((err) => {
-  console.warn("⚠️ Có thể đơn đã được gửi nhưng phản hồi từ Make không hợp lệ (CORS hoặc trống)");
-  console.error("❌ Lỗi khi gửi về Make.com:", err);
-  alert("Đơn hàng có thể đã được gửi, nhưng gặp lỗi phản hồi. Vui lòng liên hệ kiểm tra lại.");
-});
+  fetch("https://hook.eu2.make.com/m9o7boye6fl1hstehst7waysmt38b2ul", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(orderData)
+  })
+    .then(res => {
+      if (!res.ok) throw new Error("Gửi đơn hàng thất bại");
+      return res.text();
+    })
+    .then(() => {
+      if (typeof trackBothPixels === "function" && firstItem) {
+        trackBothPixels("Purchase", {
+          content_id: firstItem.id || "unknown",
+          content_name: firstItem["Phân loại"] || "unknown",
+          content_category: firstItem.category || "unknown",
+          content_page: window.productPage || "unknown",
+          value: orderData.total,
+          currency: "VND"
+        });
+      }
 
-
+      // ❗ Không xóa checkoutInfo — giữ lại cho lần sau
+      showThankyouPopup();
+      window.cart = [];
+      saveCart();
+      hideCheckoutPopup();
+    })
+    .catch(err => {
+      console.error("❌ Lỗi khi gửi về Make.com:", err);
+      alert("Có lỗi xảy ra khi gửi đơn hàng, vui lòng thử lại sau.");
+    });
 }
 
 // ------------------------
