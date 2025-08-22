@@ -303,42 +303,24 @@ function submitOrder() {
 
   console.log("📦 Sending orderData:", orderData);
 
-  fetch("https://hook.eu2.make.com/m9o7boye6fl1hstehst7waysmt38b2ul", {
+  fetch("https://hook.eu2.make.com/...", {
   method: "POST",
   headers: { "Content-Type": "application/json" },
   body: JSON.stringify(orderData)
 })
 .then(() => {
-  // Không kiểm tra .ok hoặc res.status nữa
-  if (typeof thanksAndUpsell?.show === "function") {
-    thanksAndUpsell.show({ category, name, phone, address });
-  } else {
-    console.warn("⚠️ thanksAndUpsell chưa sẵn sàng");
-  }
+  // ✅ Không xử lý response gì cả — chỉ cần gửi thành công là xong
+  thanksAndUpsell.show({ category, name, phone, address });
   window.cart = [];
   saveCart();
   hideCheckoutPopup();
 })
-.catch(err => {
-  // Hiển thị lỗi ngay trên giao diện (nếu đang test trên điện thoại)
-  const errorBox = document.createElement("div");
-  errorBox.style.position = "fixed";
-  errorBox.style.bottom = "10px";
-  errorBox.style.left = "10px";
-  errorBox.style.background = "red";
-  errorBox.style.color = "white";
-  errorBox.style.padding = "10px";
-  errorBox.style.zIndex = "9999";
-  errorBox.textContent = "❌ Lỗi: " + err.message;
-  document.body.appendChild(errorBox);
-
-  // Log chi tiết vào console (nếu mở được)
+.catch((err) => {
+  console.warn("⚠️ Có thể đơn đã được gửi nhưng phản hồi từ Make không hợp lệ (CORS hoặc trống)");
   console.error("❌ Lỗi khi gửi về Make.com:", err);
-  console.log("📦 orderData:", orderData);
-
-  // Alert vẫn giữ nguyên
-  alert("Có lỗi xảy ra khi gửi đơn hàng, vui lòng thử lại sau.");
+  alert("Đơn hàng có thể đã được gửi, nhưng gặp lỗi phản hồi. Vui lòng liên hệ kiểm tra lại.");
 });
+
 
 }
 
