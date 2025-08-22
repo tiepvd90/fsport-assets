@@ -5,6 +5,18 @@
 // ------------------------
 // 🔹 CART STATE
 // ------------------------
+// ✅ Inject HTML thankyouPopup từ file riêng
+fetch("/html/thanksandupsell.html")
+  .then(res => res.text())
+  .then(html => {
+    const temp = document.createElement("div");
+    temp.innerHTML = html;
+    const popup = temp.querySelector("#thankyouPopup");
+    if (popup) {
+      document.body.appendChild(popup);
+    }
+  })
+  .catch(err => console.warn("Không load được thankyouPopup:", err));
 
 function updateCartItemCount() {
   const badge = document.getElementById("cartItemCount");
@@ -352,8 +364,10 @@ function bindCheckoutEvents() {
 // 🔹 THANK YOU POPUP (anti-flash)
 // ------------------------
 
-function showThankyouPopup() {
-  const el = document.getElementById("thankyouPopup");
+-function showThankyouPopup() {
+-  const el = document.getElementById("thankyouPopup");
++function showThankyouPopup() {
++  const el = document.querySelector("#thankyouPopup");
   if (!el) return;
   el.style.display = "flex";   // chỉ điều khiển bằng inline style để tránh xung đột
   document.body.style.overflow = "hidden";
@@ -373,14 +387,6 @@ function hideThankyouPopup() {
 window.addEventListener("DOMContentLoaded", () => {
   loadCart();
   bindCheckoutEvents();
-
-  // ✅ Ensure thankyouPopup khởi tạo ẩn tuyệt đối (anti-flash)
-  const ty = document.getElementById("thankyouPopup");
-  if (ty) {
-    ty.style.display = "none";
-    // Nếu HTML cũ còn class hidden, dọn cho sạch:
-    if (ty.classList) ty.classList.remove("hidden");
-  }
 
   // Nếu input đã sẵn trong DOM
   hydrateCheckoutInfo();
