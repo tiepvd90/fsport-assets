@@ -320,7 +320,23 @@ function submitOrder() {
   hideCheckoutPopup();
 })
 .catch(err => {
+  // Hiển thị lỗi ngay trên giao diện (nếu đang test trên điện thoại)
+  const errorBox = document.createElement("div");
+  errorBox.style.position = "fixed";
+  errorBox.style.bottom = "10px";
+  errorBox.style.left = "10px";
+  errorBox.style.background = "red";
+  errorBox.style.color = "white";
+  errorBox.style.padding = "10px";
+  errorBox.style.zIndex = "9999";
+  errorBox.textContent = "❌ Lỗi: " + err.message;
+  document.body.appendChild(errorBox);
+
+  // Log chi tiết vào console (nếu mở được)
   console.error("❌ Lỗi khi gửi về Make.com:", err);
+  console.log("📦 orderData:", orderData);
+
+  // Alert vẫn giữ nguyên
   alert("Có lỗi xảy ra khi gửi đơn hàng, vui lòng thử lại sau.");
 });
 
