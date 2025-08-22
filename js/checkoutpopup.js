@@ -1,11 +1,10 @@
 // ===============================================
-// ✅ CHECKOUT POPUP + AUTOSAVE THÔNG TIN NGƯỜI NHẬN
+// ✅ CHECKOUT POPUP + AUTOSAVE THÔNG TIN + UPSELL BÓNG
 // ===============================================
 
 // ------------------------
 // 🔹 CART STATE
 // ------------------------
-
 function updateCartItemCount() {
   const badge = document.getElementById("cartItemCount");
   if (!badge) return;
@@ -33,7 +32,6 @@ let voucherValue = 0;
 // ------------------------
 // 🔹 AUTOSAVE – THÔNG TIN NGƯỜI NHẬN
 // ------------------------
-
 function hydrateCheckoutInfo() {
   try {
     const saved = JSON.parse(localStorage.getItem("checkoutInfo") || "{}");
@@ -91,7 +89,6 @@ function whenCheckoutInputsReady(run) {
 // ------------------------
 // 🔹 POPUP CHECKOUT HIỂN/ẨN
 // ------------------------
-
 function showCheckoutPopup() {
   loadShippingFee();
   renderCheckoutCart();
@@ -122,7 +119,6 @@ function hideCheckoutPopup() {
 // ------------------------
 // 🔹 RENDER GIỎ HÀNG + TỔNG KẾT
 // ------------------------
-
 function renderCheckoutCart() {
   const list = document.getElementById("checkoutCartList");
   if (!list) return;
@@ -214,7 +210,6 @@ function updateCheckoutSummary() {
 // ------------------------
 // 🔹 SỬA SỐ LƯỢNG / XOÁ / LƯU CART
 // ------------------------
-
 function changeItemQty(index, delta) {
   const item = window.cart[index];
   item.quantity = Math.max(1, (item.quantity || 1) + delta);
@@ -236,7 +231,6 @@ function saveCart() {
 // ------------------------
 // 🔹 PHÍ VẬN CHUYỂN
 // ------------------------
-
 function loadShippingFee() {
   fetch("https://friendly-kitten-d760ff.netlify.app/json/shippingfee.json")
     .then(res => res.json())
@@ -256,9 +250,8 @@ function loadShippingFee() {
 }
 
 // ------------------------
-// 🔹 GỬI ĐƠN HÀNG
+// 🔹 GỬI ĐƠN HÀNG (CHÍNH)
 // ------------------------
-
 function submitOrder() {
   const name = document.getElementById("checkoutName")?.value.trim();
   const phone = document.getElementById("checkoutPhone")?.value.trim();
@@ -339,7 +332,6 @@ function submitOrder() {
 // ------------------------
 // 🔹 GẮN SỰ KIỆN
 // ------------------------
-
 function bindCheckoutEvents() {
   const btn = document.getElementById("checkoutSubmitBtn");
   if (btn && !btn.dataset.bound) {
@@ -349,13 +341,53 @@ function bindCheckoutEvents() {
 }
 
 // ------------------------
-// 🔹 THANK YOU POPUP (anti-flash)
+// 🔹 THANK YOU POPUP + UPSELL
 // ------------------------
+function shouldShowUpsellBalls() {
+  const productCategoryOk = (window.productCategory === "pickleball");
+  const page = (typeof window.productPage === "string" && window.productPage.trim() !== "")
+    ? window.productPage.trim().toLowerCase()
+    : getProductPageFromUrl();
+
+  const notBallPage = (page !== "pickleball-ball");
+  return productCategoryOk && notBallPage;
+}
+
+function getProductPageFromUrl() {
+  try {
+    const path = window.location.pathname.toLowerCase();
+    const filename = path.substring(path.lastIndexOf("/") + 1);
+    return filename.split(".")[0] || "homepage";
+  } catch {
+    return "homepage";
+  }
+}
 
 function showThankyouPopup() {
   const el = document.getElementById("thankyouPopup");
   if (!el) return;
-  el.style.display = "flex";   // chỉ điều khiển bằng inline style để tránh xung đột
+
+  // Quyết định hiển thị block upsell
+  const upsell = document.getElementById("upsellBlock");
+  if (upsell) {
+    upsell.style.display = shouldShowUpsellBalls() ? "block" : "none";
+    // Reset trạng thái upsell mỗi lần mở
+    const statusEl = document.getElementById("upsellStatus");
+    if (statusEl) {
+      statusEl.style.display = "none";
+      statusEl.textContent = "";
+    }
+    const buyBtn = document.getElementById("upsellBuyBallsBtn");
+    if (buyBtn) {
+      buyBtn.disabled = false;
+      buyBtn.textContent = "MUA 5 BÓNG";
+    }
+  }
+
+  // Gắn sự kiện nút upsell (một lần)
+  bindUpsellEvents();
+
+  el.style.display = "flex"; // anti-flash
   document.body.style.overflow = "hidden";
 }
 
@@ -367,9 +399,133 @@ function hideThankyouPopup() {
 }
 
 // ------------------------
+// 🔹 UPSELL HANDLERS
+// ------------------------
+let __upsellBound = false;
+function bindUpsellEvents() {
+  if (__upsellBound) return;
+
+  const dismissBtn = document.getElementById("upsellDismissBtn");
+  if (dismissBtn) {
+    dismissBtn.addEventListener("click", () => {
+      const block = document.getElementById("upsellBlock");
+      if (block) block.style.display = "none";
+    });
+  }
+
+  const buyBtn = document.getElementById("upsellBuyBallsBtn");
+  if (buyBtn) {
+    buyBtn.addEventListener("click", () => {
+      upsellBuyBalls();
+    });
+  }
+
+  __upsellBound = true;
+}
+
+let __upsellSending = false;
+function upsellBuyBalls() {
+  if (__upsellSending) return;
+
+  // Chỉ gửi khi block đang hiển thị (tức là đã thỏa điều kiện)
+  const upsell = document.getElementById("upsellBlock");
+  if (!upsell || upsell.style.display === "none") return;
+
+  // Lấy thông tin người nhận từ checkoutInfo
+  const info = JSON.parse(localStorage.getItem("checkoutInfo") || "{}");
+  const name = (info.name || "").trim();
+  const phone = (info.phone || "").trim();
+  const address = (info.address || "").trim();
+
+  if (!name || !phone || !address) {
+    alert("Thiếu thông tin người nhận. Vui lòng cung cấp đầy đủ trước khi mua thêm bóng.");
+    return;
+  }
+
+  const orderData = {
+    name,
+    phone,
+    address,
+    category: "pickleball",
+    items: [
+      {
+        id: "pickleball-ball-std",
+        category: "pickleball",
+        "Phân loại": "Combo 5 Bóng Ưu Đãi",
+        Giá: 26000, // đơn giá
+        Ảnh: "https://i.postimg.cc/N0mGVKsP/1.webp",
+        quantity: 5
+      }
+    ],
+    shippingFee: 0,
+    voucherValue: 0,
+    total: 130000
+  };
+
+  const statusEl = document.getElementById("upsellStatus");
+  const buyBtn = document.getElementById("upsellBuyBallsBtn");
+
+  __upsellSending = true;
+  if (buyBtn) {
+    buyBtn.disabled = true;
+    buyBtn.textContent = "ĐANG XỬ LÝ…";
+  }
+  if (statusEl) {
+    statusEl.style.display = "block";
+    statusEl.style.color = "#555";
+    statusEl.textContent = "Đang gửi yêu cầu mua thêm...";
+  }
+
+  fetch("https://hook.eu2.make.com/m9o7boye6fl1hstehst7waysmt38b2ul", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(orderData)
+  })
+    .then(res => {
+      if (!res.ok) throw new Error("Gửi upsell thất bại");
+      return res.text();
+    })
+    .then(() => {
+      if (typeof trackBothPixels === "function") {
+        trackBothPixels("Purchase", {
+          content_id: "pickleball-ball-std",
+          content_name: "Combo 5 Bóng Ưu Đãi",
+          content_category: "pickleball",
+          content_page: window.productPage || "unknown",
+          value: 130000,
+          currency: "VND"
+        });
+      }
+
+      if (statusEl) {
+        statusEl.style.display = "block";
+        statusEl.style.color = "#2e7d32";
+        statusEl.textContent = "✅ Đã thêm 5 bóng thành công!";
+      }
+      if (buyBtn) {
+        buyBtn.textContent = "ĐÃ THÊM 5 BÓNG ✅";
+      }
+    })
+    .catch(err => {
+      console.error("❌ Lỗi upsell:", err);
+      if (statusEl) {
+        statusEl.style.display = "block";
+        statusEl.style.color = "#d32f2f";
+        statusEl.textContent = "❌ Có lỗi khi mua thêm. Vui lòng thử lại.";
+      }
+      if (buyBtn) {
+        buyBtn.disabled = false;
+        buyBtn.textContent = "MUA 5 BÓNG";
+      }
+    })
+    .finally(() => {
+      __upsellSending = false;
+    });
+}
+
+// ------------------------
 // 🔹 KHI LOAD TRANG
 // ------------------------
-
 window.addEventListener("DOMContentLoaded", () => {
   loadCart();
   bindCheckoutEvents();
