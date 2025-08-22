@@ -309,9 +309,9 @@ function submitOrder() {
     body: JSON.stringify(orderData)
   })
     .then(res => {
-      if (!res.ok) throw new Error("Gửi đơn hàng thất bại");
-      return res.text();
-    })
+  if (res.status !== 200) throw new Error("Gửi đơn hàng thất bại");
+  return res.text();
+})
     .then(() => {
       if (typeof trackBothPixels === "function" && firstItem) {
         trackBothPixels("Purchase", {
