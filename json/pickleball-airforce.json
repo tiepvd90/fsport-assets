@@ -1,28 +1,37 @@
 {
   "thuộc_tính": [
     {
-      "key": "Màu Sắc",
       "label": "Màu Sắc",
+      "key": "Màu Sắc",
       "type": "option",
       "display": "thumbnail",
       "values": [
-        {
-          "text": "Vợt Đen Tặng 10 Bóng Thi Đấu",
-          "image": "https://i.postimg.cc/TYcMS812/den.webp",
-          "Giá": 1300000,
-          "Giá gốc": 2100000
-        },
-        {
-          "text": "Vợt Xám Tặng 10 Bóng Thi Đấu",
-          "image": "https://i.postimg.cc/2S8RNHLQ/xam.webp",
-          "Giá": 1200000,
-          "Giá gốc": 2000000
-        }
+        { "text": "Đen", "image": "https://i.postimg.cc/TYcMS812/den.webp" },
+        { "text": "Xám", "image": "https://i.postimg.cc/2S8RNHLQ/xam.webp" }
+      ]
+    },
+    {
+      "label": "Quà Tặng",
+      "key": "Quà Tặng",
+      "type": "option",
+      "display": "button",
+      "values": [
+        "Túi Pick Màu Xám",
+        "Túi Pick Màu Hồng",
+        "Túi Pick Màu Đen",
+        "10 Bóng Thi Đấu"
       ]
     }
   ],
   "biến_thể": [
-    { "Màu Sắc": "Vợt Đen Tặng 10 Bóng Thi Đấu", "id": "airforce-den", "category": "pickleball" },
-    { "Màu Sắc": "Vợt Xám Tặng 10 Bóng Thi Đấu", "id": "airforce-xam", "category": "pickleball" }
+    { "id": "airforce-den-tui-xam", "category": "pickleball", "Màu Sắc": "Đen", "Quà Tặng": "Túi Pick Màu Xám", "Giá": 1300000, "Giá gốc": 2100000 },
+    { "id": "airforce-den-tui-hong", "category": "pickleball", "Màu Sắc": "Đen", "Quà Tặng": "Túi Pick Màu Hồng", "Giá": 1300000, "Giá gốc": 2100000 },
+    { "id": "airforce-den-tui-den", "category": "pickleball", "Màu Sắc": "Đen", "Quà Tặng": "Túi Pick Màu Đen", "Giá": 1300000, "Giá gốc": 2100000 },
+    { "id": "airforce-den-bong", "category": "pickleball", "Màu Sắc": "Đen", "Quà Tặng": "10 Bóng Thi Đấu", "Giá": 1300000, "Giá gốc": 2100000 },
+
+    { "id": "airforce-xam-tui-xam", "category": "pickleball", "Màu Sắc": "Xám", "Quà Tặng": "Túi Pick Màu Xám", "Giá": 1200000, "Giá gốc": 2000000 },
+    { "id": "airforce-xam-tui-hong", "category": "pickleball", "Màu Sắc": "Xám", "Quà Tặng": "Túi Pick Màu Hồng", "Giá": 1200000, "Giá gốc": 2000000 },
+    { "id": "airforce-xam-tui-den", "category": "pickleball", "Màu Sắc": "Xám", "Quà Tặng": "Túi Pick Màu Đen", "Giá": 1200000, "Giá gốc": 2000000 },
+    { "id": "airforce-xam-bong", "category": "pickleball", "Màu Sắc": "Xám", "Quà Tặng": "10 Bóng Thi Đấu", "Giá": 1200000, "Giá gốc": 2000000 }
   ]
 }
