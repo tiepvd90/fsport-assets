@@ -1,0 +1,128 @@
+.thankyou-box {
+  background: white;
+  padding: 24px 20px;
+  border-radius: 12px;
+  max-width: 90%;
+  width: 360px;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.thankyou-close {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  background: none;
+  border: none;
+  font-size: 26px;
+  font-weight: bold;
+  color: #000;
+  cursor: pointer;
+}
+
+.thankyou-title {
+  color: green;
+  font-size: 20px;
+  margin-bottom: 12px;
+}
+
+.thankyou-subtitle {
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+.thankyou-contact {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.contact-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 14px;
+  color: white;
+  text-decoration: none;
+}
+
+.contact-btn img {
+  width: 22px;
+  height: 22px;
+}
+
+.zalo-btn {
+  background: #0084ff;
+}
+
+.mess-btn {
+  background: #006AFF;
+}
+
+/* === UPSALE BLOCK === */
+.upsell-block {
+  border-top: 1px dashed #ccc;
+  padding-top: 16px;
+  text-align: left;
+}
+
+.upsell-flex {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.upsell-img {
+  width: 72px;
+  height: 72px;
+  border-radius: 8px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.upsell-info {
+  flex-grow: 1;
+}
+
+.upsell-title {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.upsell-desc {
+  font-size: 13px;
+  color: #333;
+}
+
+.upsell-price {
+  font-size: 15px;
+  color: red;
+  font-weight: bold;
+}
+
+.upsell-btn {
+  margin-top: 6px;
+  background: black;
+  color: white;
+  padding: 6px 10px;
+  font-size: 13px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.upsell-status {
+  font-size: 12px;
+  margin-top: 6px;
+  color: green;
+}
+
+.hidden {
+  display: none !important;
+}
