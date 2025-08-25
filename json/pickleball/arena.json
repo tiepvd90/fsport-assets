@@ -1,0 +1,28 @@
+{
+  "thuộc_tính": [
+    {
+      "label": "Màu Sắc",
+      "key": "Màu Sắc",
+      "type": "option",
+      "display": "thumbnail",
+      "values": [
+        {
+          "text": "Xanh",
+          "image": "https://fun-sport.co/assets/images/thumb/pickleball/arena/xanh.webp"
+        },
+        {
+          "text": "Hồng",
+          "image": "https://fun-sport.co/assets/images/thumb/pickleball/arena/hong.webp"
+        }
+      ]
+    }
+  ],
+  "biến_thể": [
+    {
+      "id": "arena",
+      "category": "pickleball",
+      "Giá": 1250000,
+      "Giá gốc": 1800000
+    }
+  ]
+}
