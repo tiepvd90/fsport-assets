@@ -10,12 +10,12 @@
     "tags": []
   },
   {
-    "id": "phantom-carbon",
-    "title": "Vợt Pickleball Phantom – 14mm- carbon Tràn Viền, lõi gen4",
-    "image": "https://i.postimg.cc/xCMjLbDC/Capture.jpg",
-    "price": 2100000,
-    "originalPrice": 3000000,
-    "link": "/pickleball/phantom",
+    "id": "arena",
+    "title": "Vợt Pickleball Arena – Lõi Gen 3 Foam, Kiểm Soát Chuẩn Xác, Độ Bền Vượt Trội",
+    "image": "https://fun-sport.co/assets/images/thumb/pickleball/arena/xanh.webp",
+    "price": 1250000,
+    "originalPrice": 1800000,
+    "link": "/pickleball/arena",
     "category": "pickleball",
     "tags": []
   },
@@ -86,6 +86,16 @@
     "price": 399000,
     "originalPrice": 500000,
     "link": "/product/secpickleball",
+    "category": "pickleball",
+    "tags": []
+  },
+  {
+    "id": "phantom-carbon",
+    "title": "Vợt Pickleball Phantom – 14mm- carbon Tràn Viền, lõi gen4",
+    "image": "https://i.postimg.cc/xCMjLbDC/Capture.jpg",
+    "price": 2100000,
+    "originalPrice": 3000000,
+    "link": "/pickleball/phantom",
     "category": "pickleball",
     "tags": []
   },
