@@ -12,24 +12,25 @@
   <link rel="icon" type="image/png" href="/favicon.png" />
 
   <style>
-    .cover-img {
-  display: block;
-  width: 100%;
-  max-width: 1080px;         /* ✅ Giới hạn ngang giống FreeFlow */
-  margin: 1px auto 0;       /* ✅ Thêm khoảng cách phía trên */
-  border-radius: 12px;       /* ✅ Bo góc nhẹ cho ảnh */
-}
-
-/* ✅ Trên mobile: thêm padding ngang */
-@media screen and (max-width: 600px) {
-  .cover-img {
-    padding: 0 12px;
-    box-sizing: border-box;
-  }
     body {
       background: #fff;
       font-family: 'Be Vietnam Pro', sans-serif;
       padding: 8px;
+    }
+
+    .cover-img {
+      display: block;
+      width: 100%;
+      max-width: 1080px;
+      margin: 1px auto 0;
+      border-radius: 12px;
+    }
+
+    @media screen and (max-width: 600px) {
+      .cover-img {
+        padding: 0 12px;
+        box-sizing: border-box;
+      }
     }
 
     h1 {
@@ -121,155 +122,117 @@
 </head>
 <body>
   <img src="https://i.postimg.cc/MZcDkGHQ/funsport-cover.jpg" alt="Fun Sport Cover" class="cover-img" />
-  <div class="page-container">
-    <!-- Túi -->
-    <div class="product-horizontal">
-      <a href="https://fun-sport.co/pickleball/bag">
-        <img src="https://i.postimg.cc/L63ttgmT/Capture.jpg" alt="Túi Pickleball" class="product-image" />
-      </a>
-      <div class="product-info">
-        <div class="product-title">Túi Pickleball Nam Nữ – Vải Dù Chống Thấm</div>
-        <div class="product-meta">
-          <div class="price-wrap">
-            <span class="price-sale">269.000đ</span>
-            <span class="price-original">425.000đ</span>
-          </div>
-          <a href="https://fun-sport.co/pickleball/bag" class="buy-btn">XEM SẢN PHẨM</a>
-        </div>
-      </div>
-    </div>
 
-    <!-- Bóng -->
-    <div class="product-horizontal">
-      <a href="https://fun-sport.co/pickleball/ball">
-        <img src="https://i.postimg.cc/N0mGVKsP/1.webp" alt="Bóng Pickleball" class="product-image" />
-      </a>
-      <div class="product-info">
-        <div class="product-title">Bóng Pickleball Chuẩn Thi Đấu – Dạ Quang</div>
-        <div class="product-meta">
-          <div class="price-wrap">
-            <span class="price-sale">9.000đ</span>
-            <span class="price-original">50.000đ</span>
-          </div>
-          <a href="https://fun-sport.co/pickleball/ball" class="buy-btn">XEM SẢN PHẨM</a>
-        </div>
-      </div>
-    </div>
-<!-- bvmv -->
-    <div class="product-horizontal">
-      <a href="https://fun-sport.co/pickleball/cover">
-        <img src="https://i.postimg.cc/2SsWKtMJ/1.webp" alt="túi bảo vệ mặt vợt" class="product-image" />
-      </a>
-      <div class="product-info">
-        <div class="product-title">Túi Bảo Vệ Mặt Vợt</div>
-        <div class="product-meta">
-          <div class="price-wrap">
-            <span class="price-sale">50.000đ</span>
-            <span class="price-original">70.000đ</span>
-          </div>
-          <a href="https://fun-sport.co/pickleball/cover" class="buy-btn">XEM SẢN PHẨM</a>
-        </div>
-      </div>
-    </div>
+  <div class="page-container">
+    <!-- 🔹 Featured: Túi + Bóng + Cover -->
+    <div id="featured-list"></div>
+
+    <!-- 🔸 Vợt -->
     <h2>Vợt Pickleball</h2>
     <div id="paddle-list"></div>
 
     <div id="checkoutPopup-placeholder"></div>
   </div>
 
-  <!-- Khai báo mảng + render JS -->
+  <!-- ✅ JS render từ collection.json -->
   <script>
-    const paddles = [
-      {
-        title: "F-Sport AirForce Đúc nguyên khối – 14mm - thiên công",
-        image: "https://i.postimg.cc/2S8RNHLQ/xam.webp",
-        price: "1.200.000đ",
-        originalPrice: "1.750.000đ",
-        link: "/product/pickleball-airforce"
-      },
-      {
-        title: "F-Sport Titan – 16mm- sợi titanium siêu bền",
-        image: "https://i.postimg.cc/Prk55WrK/titan16.jpg",
-        price: "599.000đ",
-        originalPrice: "900.000đ",
-        link: "/product/secpickleball"
-      },
-      {
-        title: "Vợt Pickleball Phantom – 14mm- carbon Tràn Viền, lõi gen4",
-        image: "https://i.postimg.cc/xCMjLbDC/Capture.jpg",
-        price: "2.100.000đ",
-        originalPrice: "3.000.000đ",
-        link: "/pickleball/phantom"
-      },
-      {
-        title: "Vợt Pickleball Tera – 16mm- lõi gen4 siêu trợ lực",
-        image: "https://i.postimg.cc/26c1VD3m/3.webp",
-        price: "1.900.000đ",
-        originalPrice: "2.700.000đ",
-        link: "/pickleball/tera"
-      },
-      {
-        title: "F-Sport Gen4 - Vợt Ép Nóng- Carbon 3 Lớp- dầy 16mm",
-        image: "https://i.postimg.cc/vZbZfHrc/trangnho.jpg",
-        price: "850.000đ",
-        originalPrice: "1.200.000đ",
-        link: "/pickleball/gen4"
-      },
-      {
-        title: "Jusain Black - 14mm - Đúc nguyên khối- thiên công",
-        image: "https://i.postimg.cc/MZVF3k4k/3.jpg",
-        price: "799.000đ",
-        originalPrice: "1.400.000đ",
-        link: "/product/firstpickleball"
-      },
-      {
-        title: "Rồng Đen - 14mm - Đúc nguyên khối- thiên công",
-        image: "https://i.postimg.cc/Y06dCv4z/IMG-8564.jpg",
-        price: "849.000đ",
-        originalPrice: "1.500.000đ",
-        link: "/product/firstpickleball"
-      },
-      {
-        title: "T700 Pro - 16mm - Mặt Vợt Nhám tiêu chuẩn",
-        image: "https://i.postimg.cc/tJNDPd0W/1.webp",
-        price: "435.000đ",
-        originalPrice: "699.000đ",
-        link: "/product/secpickleball"
-      },
-      {
-        title: "F-Sport-Flexion - 16mm - Mặt Vợt Nhám",
-        image: "https://i.postimg.cc/1zSt7Dbf/4.webp",
-        price: "399.000đ",
-        originalPrice: "500.000đ",
-        link: "/product/secpickleball"
-      }
-    ];
+    function formatVND(n) {
+      const num = Number(String(n).replace(/[^\d]/g, ""));
+      return isNaN(num) ? "" : num.toLocaleString("vi-VN") + "đ";
+    }
 
-    const container = document.getElementById("paddle-list");
+    function normalizeLink(p) {
+      const s = String(p || "").trim();
+      if (s.startsWith("http") || s.startsWith("/")) return s;
+      return "/" + s;
+    }
 
-    paddles.forEach(p => {
-      const html = `
+    function createProductRow({ title, image, price, originalPrice, productPage }) {
+      const link = normalizeLink(productPage);
+      return `
         <div class="product-horizontal">
-          <a href="${p.link}">
-            <img src="${p.image}" alt="${p.title}" class="product-image" />
+          <a href="${link}">
+            <img src="${image}" alt="${title}" class="product-image" />
           </a>
           <div class="product-info">
-            <div class="product-title">${p.title}</div>
+            <div class="product-title">${title}</div>
             <div class="product-meta">
               <div class="price-wrap">
-                <span class="price-sale">${p.price}</span>
-                <span class="price-original">${p.originalPrice}</span>
+                <span class="price-sale">${formatVND(price)}</span>
+                ${originalPrice ? `<span class="price-original">${formatVND(originalPrice)}</span>` : ""}
               </div>
-              <a href="${p.link}" class="buy-btn">XEM SẢN PHẨM</a>
+              <a href="${link}" class="buy-btn">XEM SẢN PHẨM</a>
             </div>
           </div>
         </div>
       `;
-      container.insertAdjacentHTML("beforeend", html);
-    });
+    }
+
+    function pickByAny(data, { ids = [], tags = [], titleIncludes = [] }) {
+      for (const id of ids) {
+        const match = data.find(x => (x.itemId || "").toLowerCase() === id.toLowerCase());
+        if (match) return match;
+      }
+      if (tags.length) {
+        const match = data.find(x => Array.isArray(x.tags) && x.tags.some(t => tags.includes(String(t).toLowerCase())));
+        if (match) return match;
+      }
+      if (titleIncludes.length) {
+        const match = data.find(x => (x.title || "").toLowerCase() && titleIncludes.some(t => x.title.toLowerCase().includes(t)));
+        if (match) return match;
+      }
+      return null;
+    }
+
+    function renderFeatured(data) {
+      const container = document.getElementById("featured-list");
+      if (!container) return;
+
+      const picks = [
+        pickByAny(data, {
+          ids: ["pickleball-bag"],
+          tags: ["bag"],
+          titleIncludes: ["túi pickleball", "túi"]
+        }),
+        pickByAny(data, {
+          ids: ["pickleball-ball"],
+          tags: ["ball"],
+          titleIncludes: ["bóng"]
+        }),
+        pickByAny(data, {
+          ids: ["pickleball-cover"],
+          tags: ["cover", "bảo vệ"],
+          titleIncludes: ["bảo vệ"]
+        })
+      ].filter(Boolean);
+
+      container.innerHTML = picks.map(createProductRow).join("");
+    }
+
+    function renderPaddles(data) {
+      const container = document.getElementById("paddle-list");
+      if (!container) return;
+
+      const paddles = data
+        .filter(x => (x.productCategory || x.category) === "pickleball")
+        .filter(x =>
+          (Array.isArray(x.tags) && x.tags.includes("paddle")) ||
+          (x.title || "").toLowerCase().includes("vợt")
+        )
+        .sort((a, b) => (b.basePriority || 0) - (a.basePriority || 0));
+
+      container.innerHTML = paddles.map(createProductRow).join("");
+    }
+
+    fetch("/json/collection.json")
+      .then(res => res.json())
+      .then(data => {
+        renderFeatured(data);
+        renderPaddles(data);
+      });
   </script>
 
-  <!-- Giữ lại checkoutpopup -->
+  <!-- ✅ Giữ lại checkout popup -->
   <script>
     async function injectHTML(file, placeholderId) {
       const res = await fetch(file);
@@ -311,7 +274,7 @@
     setupPage();
   </script>
 
-  <!-- Tracking -->
+  <!-- Tracking & Base -->
   <script src="https://friendly-kitten-d760ff.netlify.app/js/tracking.js"></script>
   <div id="base-placeholder"></div>
   <script>
