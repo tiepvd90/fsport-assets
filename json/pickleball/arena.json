@@ -15,6 +15,18 @@
           "image": "https://fun-sport.co/assets/images/thumb/pickleball/arena/hong.webp"
         }
       ]
+    },
+    {
+      "label": "Quà Tặng",
+      "key": "Quà Tặng",
+      "type": "option",
+      "display": "button",
+      "values": [
+        "Túi Pick Màu Xám",
+        "Túi Pick Màu Hồng",
+        "Túi Pick Màu Đen",
+        "10 Bóng Thi Đấu"
+      ]
     }
   ],
   "biến_thể": [
