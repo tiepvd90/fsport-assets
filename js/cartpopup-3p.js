@@ -90,32 +90,94 @@ function renderOptions(attributes) {
 }
 
 function updateSelectedVariant() {
+  // 1) Thu thập lựa chọn hiện tại
   const selected = {};
   document.querySelectorAll(".variant-thumb.selected").forEach(btn => {
     selected[btn.dataset.key] = btn.dataset.value;
   });
 
-  window.allAttributes.forEach(attr => {
+  // Thu thập input text (nếu có)
+  (window.allAttributes || []).forEach(attr => {
     if (attr.input === "text") {
       const val = document.getElementById(`input-${attr.key}`)?.value || "";
       selected[attr.key] = val;
     }
   });
 
+  // 2) Tạo variant tạm từ baseVariant + selections
   const variant = {
-    ...window.baseVariant,
+    ...(window.baseVariant || {}),
     ...selected
   };
 
+  // 3) Ảnh chính theo mainImageKey (giữ nguyên hành vi cũ)
   if (window.mainImageKey) {
     const mainVal = selected[window.mainImageKey];
-    const mainAttr = window.allAttributes.find(a => a.key === window.mainImageKey);
-    const matchedValue = mainAttr?.values?.find(v => typeof v === "object" && v.text === mainVal);
-    variant["Ảnh"] = matchedValue?.image || "";
+    const mainAttr = (window.allAttributes || []).find(a => a.key === window.mainImageKey);
+    const matchedValue = mainAttr?.values?.find(v => {
+      if (typeof v === "object") return v.text === mainVal;
+      return v === mainVal;
+    });
+    // Ưu tiên image trong value object; nếu không có giữ nguyên hoặc rỗng
+    if (matchedValue && typeof matchedValue === "object" && matchedValue.image) {
+      variant["Ảnh"] = matchedValue.image;
+    } else if (!variant["Ảnh"]) {
+      variant["Ảnh"] = "";
+    }
   }
 
+  // 4) Tính giá: mặc định lấy từ baseVariant (giữ tương thích cũ)
+  let price = Number((window.baseVariant || {})["Giá"]) || 0;
+  let priceOrig = Number((window.baseVariant || {})["Giá gốc"]) || price || 0;
+
+  // 5) Áp override giá theo từng thuộc tính (nếu có)
+  (window.allAttributes || []).forEach(attr => {
+    const selVal = selected[attr.key];
+    if (!selVal || !Array.isArray(attr?.values)) return;
+
+    const matched = attr.values.find(v => {
+      if (typeof v === "object") return v.text === selVal;
+      return v === selVal;
+    });
+
+    if (matched && typeof matched === "object") {
+      // Cách 1: set giá tuyệt đối
+      if (typeof matched.GiaOverride === "number") price = matched.GiaOverride;
+      if (typeof matched.GiaGocOverride === "number") priceOrig = matched.GiaGocOverride;
+
+      // Cách 2: cộng/trừ chênh lệch
+      if (typeof matched.priceDelta === "number") price += matched.priceDelta;
+      if (typeof matched.priceOrigDelta === "number") priceOrig += matched.priceOrigDelta;
+
+      // Cách 3: map theo key (ví dụ size S/M/L)
+      if (matched.priceMap && typeof matched.priceMap === "object") {
+        const mapKey = matched.priceKey || selVal;
+        if (typeof matched.priceMap[mapKey] === "number") {
+          price = matched.priceMap[mapKey];
+        }
+      }
+    }
+  });
+
+  // Đảm bảo không âm & gán lại vào variant để selectVariant() hiển thị đúng
+  price = Math.max(0, price);
+  priceOrig = Math.max(price, priceOrig); // giá gốc >= giá bán (an toàn)
+  variant["Giá"] = price;
+  variant["Giá gốc"] = priceOrig;
+
+  // 6) (Tuỳ chọn) cập nhật id theo thuộc tính phân biệt (ví dụ Kích cỡ) để tách SKU
+  // Giữ nguyên nếu không muốn đổi
+  const sizeKey = (window.sizeKeyOverride || "Kích cỡ");
+  if (selected[sizeKey]) {
+    variant.id = `${(window.baseVariant?.id || "item")}-${selected[sizeKey]}`
+      .replace(/\s+/g, "")
+      .toLowerCase();
+  }
+
+  // 7) Kết thúc: chuyển cho renderer
   selectVariant(variant);
 }
+
 
 function selectVariant(data) {
     // ✅ Nếu có __voucherWaiting → gán vào voucherByProduct
