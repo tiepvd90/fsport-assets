@@ -45,7 +45,6 @@
     fetchFreeFlowData("https://script.google.com/macros/s/AKfycbwuEh9sP65vyQL0XzU8gY1Os0QYV_K5egKJgm8OhImAPjvdyrQiU7XCY909N99TnltP/exec");
   }
 };
-
       document.body.appendChild(ffScript);
     });
 
