@@ -614,22 +614,6 @@
     "sellerID": "huyenle"
   },
   {
-    "itemId": "pickleball-013",
-    "title": " Vợt Pickleball Titan",
-    "price": 599000,
-    "originalPrice": 699000,
-    "contentType": "youtube",
-    "image": "https://i.postimg.cc/63hPKxHd/Untitled-2.jpg",
-    "youtube": "3YOeWTL1TvA",
-    "productPage": "/product/secpickleball",
-    "tags": [
-      "pickleball"
-    ],
-    "basePriority": 22,
-    "productCategory": "pickleball",
-    "sellerID": "huyenle"
-  },
-  {
     "itemId": "pickleball-cover",
     "title": "Túi bảo vệ mặt vợt pickleball",
     "price": 37000,
@@ -854,22 +838,6 @@
     ],
     "basePriority": 16,
     "productCategory": "pickleball",
-    "sellerID": "huyenle"
-  },
-  {
-    "itemId": "chair2605-2",
-    "title": "Bí kíp chữa đau lưng",
-    "price": 399000,
-    "originalPrice": 600000.0,
-    "contentType": "youtube",
-    "image": "https://i.postimg.cc/Twt9WhLy/KZ98-VL3-Imgur.jpg",
-    "youtube": "GiJ0PijF7nE",
-    "productPage": "/product/chair",
-    "tags": [
-      "chair"
-    ],
-    "basePriority": 16,
-    "productCategory": "chair",
     "sellerID": "huyenle"
   },
   {
