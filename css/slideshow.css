@@ -46,49 +46,47 @@
 
 /* Zoom overlay toàn màn hình */
 #fullscreenZoom {
-  position: fixed; inset: 0;
-  background: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  position: fixed;
   z-index: 9999;
-  overflow: hidden;
-  touch-action: none;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.85);
+  display: none;
+  overflow: auto; /* ✅ Cho phép cuộn khi ảnh lớn */
+  touch-action: pan-x pan-y; /* ✅ Cho phép kéo bằng tay */
 }
 
 #zoomWrapper {
   position: relative;
-  max-width: none;
-  max-height: none;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
+  width: fit-content;
+  height: fit-content;
+  margin: auto;
+  padding: 24px;
 }
 
 #zoomedImg {
-  position: absolute;
-  top: 0; left: 0;
-  width: auto;
+  max-width: none; /* ✅ Không giới hạn để ảnh vượt khung */
+  width: 130vw;     /* ✅ Lớn hơn khung để tạo điều kiện kéo */
   height: auto;
-  max-width: none;
-  max-height: none;
-  user-select: none;
+  display: block;
   cursor: grab;
-  transform: translate(0px, 0px);
+  border-radius: 6px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.4);
 }
 
 #zoomCloseBtn {
-  position: absolute;
-  top: 14px;
-  right: 14px;
-  background: rgba(200, 200, 200, 0.8); /* xám nhạt hơn */
-  color: black;
-  border: none;
-  font-size: 16px;
-  font-weight: bold;
-  padding: 6px 12px;
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  background: rgba(230,230,230,0.5);
+  font-size: 20px;
+  padding: 6px 14px;
   border-radius: 6px;
+  border: none;
   cursor: pointer;
+  font-weight: bold;
+  color: #000;
   z-index: 10000;
 }
 #zoomCloseBtn:hover {
