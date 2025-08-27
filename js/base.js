@@ -79,7 +79,27 @@ fakenotifyScript.src = "/js/fakenotify.js";
 fakenotifyScript.defer = true;
 document.body.appendChild(fakenotifyScript);
 
+/* ===========================
+   ✅ FAKE NOTIFY LOADER (tách riêng)
+   – Không fetch text, không inline; load như script chuẩn
+   – fakenotify.js tự inject CSS/HTML và tự wait DOM
+   =========================== */
+(function loadFakeNotify() {
+  if (window.disableFakeNotify) return;           // Cho phép tắt qua global flag
+  if (window.__fakeNotifyInjected) return;
+  window.__fakeNotifyInjected = true;
 
+  const s = document.createElement('script');
+  s.src = '/js/fakenotify.js?v=1';
+  s.async = true;                                  // tải song song, thực thi khi tải xong
+  s.onerror = (e) => console.warn('Không load được fakenotify.js', e);
+  document.head.appendChild(s);
+})();
+
+// ✅ KEEP TAB ALIVE – tránh Safari unload tab gây about:blank (tuỳ chọn)
+setInterval(() => {
+  fetch('/favicon.ico', { cache: "no-store" }).catch(() => {});
+}, 5 * 60 * 1000);
 
 // ✅ Gọi supportchat nếu có
 //const sc = document.createElement("script");
