@@ -1,4 +1,3 @@
-<script>
 /* =========================================
  *  GALLERY đa cấu hình (page map)
  *  - Mỗi page có: count + format
@@ -159,4 +158,3 @@ function stepZoom(dir) {
   document.getElementById("zoomImg").src =
     `${ORIGIN}/assets/images/gallery/${LOAI}/${PAGE}/${_zoomIndex}.${cfg.format}`;
 }
-</script>
