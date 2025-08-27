@@ -115,28 +115,23 @@
     }
     isDragging = false;
   });
-  // ✅ Zoom tại chỗ + nút đóng "×"
-const zoomBtn = document.getElementById("zoomCloseBtn");
+  // ✅ Zoom toàn màn hình khi click vào ảnh đang hiển thị
+const zoomOverlay = document.getElementById("fullscreenZoom");
+const zoomImg = document.getElementById("zoomedImg");
+const zoomClose = document.getElementById("zoomCloseBtn");
 
-container.addEventListener("click", (e) => {
-  // Click vào ảnh hiện tại => toggle zoom
+container.addEventListener("click", () => {
   const currentSlide = slides[current];
   if (!currentSlide.classList.contains("show")) return;
 
-  const isZoomed = currentSlide.classList.toggle("zoomed");
-  if (isZoomed) {
-    zoomBtn.classList.add("show");
-  } else {
-    zoomBtn.classList.remove("show");
-  }
+  zoomImg.src = currentSlide.src;
+  zoomOverlay.style.display = "flex";
+  document.body.style.overflow = "hidden";
 });
 
-// ✅ Nút đóng zoom
-zoomBtn.addEventListener("click", (e) => {
-  e.stopPropagation(); // không lan sang container click
-  const currentSlide = slides[current];
-  currentSlide.classList.remove("zoomed");
-  zoomBtn.classList.remove("show");
+zoomClose.addEventListener("click", () => {
+  zoomOverlay.style.display = "none";
+  zoomImg.src = "";
+  document.body.style.overflow = "";
 });
-
 })();
