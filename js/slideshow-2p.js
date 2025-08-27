@@ -1,160 +1,118 @@
-/* =========================================
- *  GALLERY đa cấu hình (page map)
- *  - Mỗi page có: count + format
- *  - Fallback: 5 ảnh .jpg
- *  - Ép dùng HTTPS/đường dẫn tuyệt đối từ origin
- *  - Lazy load + Zoom prev/next
- * ========================================= */
+(function () {
+  const PAGE = (window.productPage || "").toLowerCase();
+  const LOAI = (window.productCategory || "art").toLowerCase();
+  const CONTAINER_ID = "lazySlideshow";
+  const COUNTER_ID = "slideCounter";
+  const ORIGIN = location.origin.replace("http://", "https://");
 
-const PAGE = (window.productPage || "").toLowerCase();   // ví dụ: "zen"
-const LOAI = (window.loai || "art").toLowerCase();       // ví dụ: "art"
-const CONTAINER_ID = "lazySlideshow";
-const ORIGIN = location.origin.replace("http://", "https://");
-
-// Khai báo map cấu hình tại đây
-const IMAGE_CONFIG = {
-  zen:    { count: 8, format: "jpg" },
-  // ví dụ sau này:
-  // dragon: { count: 15, format: "webp" },
-};
-
-// Fallback nếu không có trong map
-const TOTAL_IMAGES = IMAGE_CONFIG[PAGE]?.count  || 5;
-const IMAGE_FORMAT = IMAGE_CONFIG[PAGE]?.format || "jpg";
-
-// Base path: luôn dùng https cùng origin để tránh mixed content
-const BASE_PATH = `${ORIGIN}/assets/images/gallery/${LOAI}/${PAGE}`;
-
-(function initGallery() {
-  const container = document.getElementById(CONTAINER_ID);
-  if (!container) {
-    console.warn(`❌ Không tìm thấy #${CONTAINER_ID}`);
-    return;
-  }
-
-  // Kiểm tra nhanh ảnh đầu tiên: nếu 404 → log chỉ đường
-  const testImg = new Image();
-  testImg.onload = () => renderAll();
-  testImg.onerror = () => {
-    console.warn(`⚠️ Không tìm thấy ảnh đầu: ${BASE_PATH}/1.${IMAGE_FORMAT}`);
-    renderAll(); // vẫn render để bạn nhìn đường dẫn cụ thể trên network
+  const IMAGE_CONFIG = {
+    zen: { count: 10, format: "jpg" },
+    // thêm cấu hình khác nếu cần
   };
-  testImg.src = `${BASE_PATH}/1.${IMAGE_FORMAT}`;
 
-  function renderAll() {
-    ensureZoomOverlay();
+  const config = IMAGE_CONFIG[PAGE] || { count: 5, format: "jpg" };
+  const TOTAL_IMAGES = config.count;
+  const FORMAT = config.format;
+  const BASE_PATH = `${ORIGIN}/assets/images/gallery/${LOAI}/${PAGE}`;
 
-    const io = new IntersectionObserver(onIntersect, {
-      root: null,
-      rootMargin: "300px 0px",
-      threshold: 0.01,
-    });
+  const container = document.getElementById(CONTAINER_ID);
+  const counterEl = document.getElementById(COUNTER_ID);
+  if (!container || !counterEl) return;
 
-    for (let i = 1; i <= TOTAL_IMAGES; i++) {
-      const img = document.createElement("img");
-      img.className = "gallery-img";
-      img.alt = `${PAGE} - ${i}`;
-      img.decoding = "async";
+  let current = 0;
+  const slides = [];
 
-      if (i === 1) {
-        img.loading = "eager";
-        img.src = `${BASE_PATH}/${i}.${IMAGE_FORMAT}`;
-        img.decode?.().catch(() => {});
-      } else {
-        img.loading = "lazy";
-        img.dataset.src = `${BASE_PATH}/${i}.${IMAGE_FORMAT}`;
-        io.observe(img);
+  // IntersectionObserver for lazy load
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      const el = entry.target;
+      if (el.dataset.src && !el.src) {
+        el.src = el.dataset.src;
+        el.decode?.().catch(() => {});
+        io.unobserve(el);
+        delete el.dataset.src;
       }
+    });
+  }, {
+    root: null,
+    rootMargin: "300px 0px",
+    threshold: 0.01,
+  });
 
-      img.addEventListener("click", () => openZoom(i));
-      container.appendChild(img);
+  // Tạo và gắn tất cả ảnh 1 → N
+  for (let i = 1; i <= TOTAL_IMAGES; i++) {
+    const img = document.createElement("img");
+    img.className = "slide";
+    img.alt = `${PAGE} - ${i}`;
+    img.decoding = "async";
+    img.loading = i === 1 ? "eager" : "lazy";
+
+    if (i === 1) {
+      img.classList.add("show");
+      img.src = `${BASE_PATH}/${i}.${FORMAT}`;
+    } else {
+      img.dataset.src = `${BASE_PATH}/${i}.${FORMAT}`;
+      io.observe(img);
     }
 
-    function onIntersect(entries) {
-      entries.forEach((entry) => {
-        if (!entry.isIntersecting) return;
-        const el = entry.target;
-        if (el.dataset.src && !el.src) {
-          el.src = el.dataset.src;
-          el.decode?.().catch(() => {});
-          io.unobserve(el);
-          delete el.dataset.src;
-        }
-      });
-    }
+    container.insertBefore(img, counterEl); // gắn trước counter
+    slides.push(img);
   }
-})();
 
-/* ========== ZOOM OVERLAY ========== */
-function ensureZoomOverlay() {
-  if (document.getElementById("imageZoomOverlay")) return;
+  updateCounter();
 
-  const style = document.createElement("style");
-  style.textContent = `
-    #imageZoomOverlay { position: fixed; inset: 0; background: rgba(0,0,0,.9);
-      display: none; align-items: center; justify-content: center; z-index: 9999; }
-    #imageZoomOverlay.show { display: flex; }
-    #zoomImg { max-width: 90vw; max-height: 90vh; object-fit: contain;
-      box-shadow: 0 8px 30px rgba(0,0,0,.6); border-radius: 8px; cursor: zoom-out; }
-    .zoom-btn { position: absolute; top: 50%; transform: translateY(-50%);
-      font-size: 28px; font-weight: 700; padding: 12px 14px; background: rgba(255,255,255,.15);
-      color: #fff; border: 0; border-radius: 10px; cursor: pointer; }
-    .zoom-prev { left: 16px; } .zoom-next { right: 16px; }
-    .zoom-close { position: absolute; top: 14px; right: 14px; font-size: 24px; font-weight: 700;
-      padding: 10px 12px; background: rgba(255,255,255,.15); color: #fff; border: 0; border-radius: 10px; cursor: pointer; }
-  `;
-  document.head.appendChild(style);
+  // Auto slideshow
+  let interval = setInterval(nextSlide, 4000);
 
-  const overlay = document.createElement("div");
-  overlay.id = "imageZoomOverlay";
-  overlay.innerHTML = `
-    <button class="zoom-close">✕</button>
-    <button class="zoom-btn zoom-prev">‹</button>
-    <img id="zoomImg" alt="zoom">
-    <button class="zoom-btn zoom-next">›</button>
-  `;
-  document.body.appendChild(overlay);
+  function nextSlide() {
+    slides[current].classList.remove("show");
+    current = (current + 1) % TOTAL_IMAGES;
+    slides[current].classList.add("show");
+    updateCounter();
+  }
 
-  overlay.addEventListener("click", (e) => {
-    if (e.target.id === "imageZoomOverlay" || e.target.classList.contains("zoom-close") || e.target.id === "zoomImg") {
-      closeZoom();
+  function prevSlide() {
+    slides[current].classList.remove("show");
+    current = (current - 1 + TOTAL_IMAGES) % TOTAL_IMAGES;
+    slides[current].classList.add("show");
+    updateCounter();
+  }
+
+  function updateCounter() {
+    counterEl.textContent = `${current + 1}/${TOTAL_IMAGES}`;
+  }
+
+  // Swipe support (touch & mouse)
+  let startX = 0;
+  let isDragging = false;
+
+  container.addEventListener("touchstart", (e) => {
+    startX = e.touches[0].clientX;
+  });
+
+  container.addEventListener("touchend", (e) => {
+    const delta = e.changedTouches[0].clientX - startX;
+    if (Math.abs(delta) > 50) {
+      clearInterval(interval);
+      delta < 0 ? nextSlide() : prevSlide();
+      interval = setInterval(nextSlide, 4000);
     }
   });
-  overlay.querySelector(".zoom-prev").addEventListener("click", (e) => { e.stopPropagation(); stepZoom(-1); });
-  overlay.querySelector(".zoom-next").addEventListener("click", (e) => { e.stopPropagation(); stepZoom(1); });
-  document.addEventListener("keydown", (e) => {
-    const open = overlay.classList.contains("show");
-    if (!open) return;
-    if (e.key === "Escape") closeZoom();
-    if (e.key === "ArrowLeft") stepZoom(-1);
-    if (e.key === "ArrowRight") stepZoom(1);
-  });
-}
 
-let _zoomIndex = 1;
-function openZoom(index) {
-  _zoomIndex = index;
-  const overlay = document.getElementById("imageZoomOverlay");
-  const img = document.getElementById("zoomImg");
-  const PAGE = (window.productPage || "").toLowerCase();
-  const LOAI = (window.loai || "art").toLowerCase();
-  const cfg = IMAGE_CONFIG[PAGE] || { count: 5, format: "jpg" };
-  img.src = `${ORIGIN}/assets/images/gallery/${LOAI}/${PAGE}/${_zoomIndex}.${cfg.format}`;
-  overlay.classList.add("show");
-  document.body.style.overflow = "hidden";
-}
-function closeZoom() {
-  document.getElementById("imageZoomOverlay").classList.remove("show");
-  document.getElementById("zoomImg").src = "";
-  document.body.style.overflow = "";
-}
-function stepZoom(dir) {
-  const PAGE = (window.productPage || "").toLowerCase();
-  const cfg = IMAGE_CONFIG[PAGE] || { count: 5, format: "jpg" };
-  const LOAI = (window.loai || "art").toLowerCase();
-  _zoomIndex += dir;
-  if (_zoomIndex < 1) _zoomIndex = cfg.count;
-  if (_zoomIndex > cfg.count) _zoomIndex = 1;
-  document.getElementById("zoomImg").src =
-    `${ORIGIN}/assets/images/gallery/${LOAI}/${PAGE}/${_zoomIndex}.${cfg.format}`;
-}
+  container.addEventListener("mousedown", (e) => {
+    isDragging = true;
+    startX = e.clientX;
+  });
+
+  document.addEventListener("mouseup", (e) => {
+    if (!isDragging) return;
+    const delta = e.clientX - startX;
+    if (Math.abs(delta) > 50) {
+      clearInterval(interval);
+      delta < 0 ? nextSlide() : prevSlide();
+      interval = setInterval(nextSlide, 4000);
+    }
+    isDragging = false;
+  });
+})();
