@@ -22,15 +22,15 @@
 
   // ── Pools (có thể override qua window.FAKE_NOTIFY = { users, products, actions })
   const NAME_POOL = (window.FAKE_NOTIFY && window.FAKE_NOTIFY.users) || [
-    "TuanVu","M**n","H***e","AnhT***","B***C","HoangA***","L***Huong","Q***Khanh","P***Thao","KimL***",
-    "MyLinh","ThanhT***","NgocA***","VanK***","HaiD***","ThuT***","DucH***","NhatM***","B***Tram","GiaB***",
+    "T**u","M**n","H***e","AnhT***","B***C","HoangA***","L***Huong","Q***Khanh","P**4","KimL***",
+    "MyLinh","T***3","N***A","VanK***","H***a","ThuT***","DucH***","Nhat553","B***m","G***4",
     "K***T","LienH***","Phuoc***","ThaoN***","Vuong***","N***U","HieuT***","T***h","L***D","Phat***",
-    "T***Trang","BaoN***","Quynh***","D***Tien","HoaiA***","AnK***","PhongL***","Dieu***","H***Phat","MaiL***",
-    "Khang***","SonT***","YenL***","Toan***","Huong***","Kiet***","VyL***","LocT***","Trang***","Trung***"
+    "T***Trang","BaoN***","Q***7","D***Tien","HoaiA***","AnK***","PhongL***","Dieu***","H***Phat","MaiL***",
+    "K***e","SonT***","Y***e","T***n","H***u","Kiet***","VyL***","LocT***","Trang***","Trung***"
   ];
 
   const PRODUCT_POOL = (window.FAKE_NOTIFY && window.FAKE_NOTIFY.products) || [
-    "Vợt Phantom","Vợt Gen4 Hồng","Vợt AirForce","Vợt Teflon",
+    "Dép Chạy BCU5568","Vợt Gen4 Hồng","Vợt AirForce","Dép Chạy BN68", "Set Tranh Decor",
     "Vợt Rồng Đen","Vợt Gen4 Xám","Vợt T700 Pro","Thuyền SUP","Vợt Rồng Trắng"
   ];
 
