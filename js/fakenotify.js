@@ -1,53 +1,82 @@
-// ✅ Fake Notification Script
+// ✅ FAKE NOTIFY – HTML + CSS + LOGIC trong 1 file
+
+const style = document.createElement("style");
+style.textContent = `
+#fakeNotification {
+  position: fixed;
+  bottom: 60px;
+  left: -400px;
+  z-index: 9999;
+  background: #fff;
+  padding: 10px 16px;
+  border-radius: 99px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.6s ease;
+  pointer-events: none;
+  font-family: 'Be Vietnam Pro', sans-serif;
+}
+`;
+document.head.appendChild(style);
+
+// ✅ Tạo phần tử thông báo
+const notifyDiv = document.createElement("div");
+notifyDiv.id = "fakeNotification";
+notifyDiv.textContent = "Vừa đặt hàng thành công";
+document.body.appendChild(notifyDiv);
+
+// 🟢 Danh sách user
 const userPool = [
-  "TuanTran", "MinhNguyen", "HuyenLe", "AnhT***", "B***Ngoc", 
-"HoangA***", "L***Huong", "Q***Khanh", "P***Thao", "KimL***", 
-"MyLinh", "ThanhT***", "NgocA***", "VanK***", "HaiD***", 
-"ThuT***", "DucH***", "NhatM***", "B***Tram", "GiaB***",
-"KhanhL***", "LienH***", "Phuoc***", "ThaoN***", "Vuong***",
-"NamPh***", "HieuT***", "T***Anh", "LinhD***", "Phat***",
-"T***Trang", "BaoN***", "Quynh***", "D***Tien", "HoaiA***",
-"AnK***", "PhongL***", "Dieu***", "H***Phat", "MaiL***",
-"Khang***", "SonT***", "YenL***", "Toan***", "Huong***",
-"Kiet***", "VyL***", "LocT***", "Trang***", "Trung***"
+  "TuanVu", "M**n", "H***e", "AnhT***", "B***C",
+  "HoangA***", "L***Huong", "Q***Khanh", "P***Thao", "KimL***",
+  "MyLinh", "ThanhT***", "NgocA***", "VanK***", "HaiD***",
+  "ThuT***", "DucH***", "NhatM***", "B***Tram", "GiaB***",
+  "K***T", "LienH***", "Phuoc***", "ThaoN***", "Vuong***",
+  "N***U", "HieuT***", "T***h", "L***D", "Phat***",
+  "T***Trang", "BaoN***", "Quynh***", "D***Tien", "HoaiA***",
+  "AnK***", "PhongL***", "Dieu***", "H***Phat", "MaiL***",
+  "Khang***", "SonT***", "YenL***", "Toan***", "Huong***",
+  "Kiet***", "VyL***", "LocT***", "Trang***", "Trung***"
 ];
 
+// 🟠 Danh sách sản phẩm
 const productPool = [
-  "Vợt Phantom", "Vợt Gen4 Hồng", "Vợt AirForce Xám", "Vợt Teflon", 
-  "Vợt Rồng Đen", "Vợt Gen4 Xám", "Vợt T700 Pro", "Vợt AirForce Đen", "Thuyền SUP", "Vợt Rồng Trắng"
+  "Vợt Phantom", "Vợt Gen4 Hồng", "Vợt AirForce", "Vợt Teflon", 
+  "Vợt Rồng Đen", "Vợt Gen4 Xám", "Vợt T700 Pro", "Vợt AirForce", "Thuyền SUP", "Vợt Rồng Trắng"
 ];
 
+// 🔵 Danh sách hành động
 const actionPool = [
-  "Vừa Đặt Mua", "Vừa Thêm Vào Giỏ Hàng"
+  "Vừa Đặt Mua", "Vừa Thêm Vào Giỏ"
 ];
 
-// ✅ Lấy 1 phần tử ngẫu nhiên từ mảng
+// ✅ Hàm chọn ngẫu nhiên
 function randomItem(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
 }
 
+// ✅ Hiển thị popup
 function showFakeNotification() {
   const user = randomItem(userPool);
   const product = randomItem(productPool);
   const action = randomItem(actionPool);
 
   const popup = document.getElementById("fakeNotification");
-  popup.textContent = `${user} ${action} ${product}`;
+  if (!popup) return;
 
-  // ➡ Trượt vào màn hình
+  popup.textContent = `${user} ${action} ${product}`;
   popup.style.left = "20px";
 
-  // ➡ Sau 5s thì trượt ra ngoài
   setTimeout(() => {
     popup.style.left = "-400px";
   }, 5000);
 
-  // ➡ Random thời gian cho lần tiếp theo (20–40s)
-  const nextTime = Math.floor(Math.random() * 20000) + 20000;
+  const nextTime = Math.floor(Math.random() * 15000) + 10000;
   setTimeout(showFakeNotification, nextTime);
 }
 
-// ✅ Bắt đầu chạy sau khi load trang
-window.addEventListener("DOMContentLoaded", () => {
-  setTimeout(showFakeNotification, 5000); // Hiện popup đầu tiên sau 5s
+// ✅ Khởi động khi DOM ready
+document.addEventListener("DOMContentLoaded", () => {
+  setTimeout(showFakeNotification, 5000);
 });
