@@ -210,25 +210,8 @@
 </script>
  <!-- HẾT KHỐI 4: Mô tả sản phẩm -->
     <!-- ✅ FreeFlow -->
-<h2 style="font-size: 18px; margin: 24px 12px 12px;">CÓ THỂ BẠN SẼ THÍCH</h2>
-<div id="freeflow-placeholder"></div>
-<script>
-  fetch("/html/freeflow.html")
-    .then(res => res.text())
-    .then(html => {
-      document.getElementById("freeflow-placeholder").innerHTML = html;
-
-      // ✅ Gắn lại sự kiện close popup vì DOM mới được thêm
-      const btn = document.getElementById("videoCloseBtn");
-      if (btn) btn.onclick = function () {
-        const frame = document.getElementById("videoFrame");
-        const popup = document.getElementById("videoOverlay");
-        if (frame) frame.src = "";
-        if (popup) popup.style.display = "none";
-      };
-    });
-</script>
-
+    <h2 class="freeflow-heading" style="font-size: 18px; margin: 24px 12px 12px;">CÓ THỂ BẠN SẼ THÍCH</h2>
+    <script src="/js/freeflow-loader.js"></script>
 <!-- END FreeFlow -->
   <!-- ✅ Inject popup + footer -->
   <script>
