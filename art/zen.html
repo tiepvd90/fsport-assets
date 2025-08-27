@@ -115,7 +115,59 @@
     <h2 class="freeflow-heading" style="font-size: 18px; margin: 24px 12px 12px;">CÓ THỂ BẠN SẼ THÍCH</h2>
     <script src="/js/freeflow-loader.js"></script>
   </div>
+<!-- ✅ Inject popup + footer -->
+  <script>
+    async function loadScript(src) {
+      return new Promise(resolve => {
+        const s = document.createElement("script");
+        s.src = src;
+        s.onload = resolve;
+        document.body.appendChild(s);
+      });
+    }
 
+    async function injectHTML(file, placeholderId) {
+      const res = await fetch(file);
+      const html = await res.text();
+      const container = document.getElementById(placeholderId);
+      const temp = document.createElement("div");
+      temp.innerHTML = html;
+
+      Array.from(temp.children).forEach(el => {
+        if (el.tagName === "SCRIPT") {
+          const script = document.createElement("script");
+          if (el.src) {
+            script.src = el.src;
+            script.async = false;
+          } else {
+            script.textContent = el.textContent;
+          }
+          document.body.appendChild(script);
+        } else {
+          container.appendChild(el);
+        }
+      });
+    }
+
+    async function setupPage() {
+      await injectHTML("/html/cartpopup.html", "cartPopup-placeholder");
+      await injectHTML("/html/checkoutpopup.html", "checkoutPopup-placeholder");
+      await injectHTML("/html/stickyfooter.html", "sticky-footer-placeholder");
+
+      await loadScript("https://friendly-kitten-d760ff.netlify.app/js/voucherpopup.js");
+      await loadScript("https://friendly-kitten-d760ff.netlify.app/js/cartpopup.js");
+      await loadScript("https://friendly-kitten-d760ff.netlify.app/js/checkoutpopup.js");
+
+      setTimeout(async () => {
+        const map = await fetchVoucherMap();
+        window.__vouchersRaw = map[window.loai] || {};
+        window.voucherByProduct = {};
+        initCartPopup();
+      }, 100);
+    }
+
+    setupPage();
+  </script>
   <!-- ✅ Tracking -->
   <script src="https://friendly-kitten-d760ff.netlify.app/js/tracking.js"></script>
   <div id="base-placeholder"></div>
