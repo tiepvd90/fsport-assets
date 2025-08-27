@@ -45,30 +45,32 @@
   // ── Inject CSS (gọn, không cần file riêng)
   const style = document.createElement('style');
   style.textContent = `
-    #fakeNotification {
-      position: fixed;
-      bottom: ${CONFIG.bottom}px;
-      left: ${CONFIG.leftHidden}px;
-      z-index: 9999;
-      background: #fff;
-      padding: 10px 16px;
-      border-radius: 999px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-      font-size: 14px;
-      font-weight: 600;
-      transition: left 0.6s ease;
-      pointer-events: none;
-      color: #111;
-      font-family: 'Be Vietnam Pro', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      max-width: min(90vw, 360px);
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      overflow: hidden;
-    }
-    @media (max-width: 380px) {
-      #fakeNotification { font-size: 13px; padding: 8px 14px; }
-    }
-  `;
+  #fakeNotification {
+    position: fixed;
+    bottom: ${CONFIG.bottom}px;
+    left: ${CONFIG.leftHidden}px;
+    z-index: 9999;
+    background: #fff;
+    padding: 8px 14px;
+    border-radius: 999px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    font-size: 12px; /* ✅ nhỏ lại còn 2/3 */
+    font-weight: normal; /* ✅ bỏ bold */
+    transition: left 0.6s ease;
+    pointer-events: none;
+    color: #111;
+    font-family: 'Be Vietnam Pro', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    max-width: min(90vw, 360px);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+
+  @media (max-width: 380px) {
+    #fakeNotification { font-size: 11px; padding: 7px 12px; }
+  }
+`;
+
   document.head.appendChild(style);
 
   // ── Tạo node
