@@ -40,3 +40,35 @@
   z-index: 3;
   font-family: Arial, sans-serif;
 }
+.lazy-slideshow .slide {
+  transition: opacity 1s ease, transform 0.3s ease;
+}
+
+/* Khi zoom */
+.lazy-slideshow .slide.zoomed {
+  transform: scale(1.3);
+  z-index: 10;
+}
+
+/* Nút đóng zoom */
+.zoom-close-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  font-size: 16px;
+  font-weight: bold;
+  width: 28px;
+  height: 28px;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 11;
+  cursor: pointer;
+}
+.zoom-close-btn.show {
+  display: flex;
+}
