@@ -40,7 +40,7 @@
     threshold: 0.01,
   });
 
-  // Tạo và gắn tất cả ảnh 1 → N
+  // Tạo và gắn ảnh 1 → N
   for (let i = 1; i <= TOTAL_IMAGES; i++) {
     const img = document.createElement("img");
     img.className = "slide";
@@ -56,7 +56,7 @@
       io.observe(img);
     }
 
-    container.insertBefore(img, counterEl); // gắn trước counter
+    container.insertBefore(img, counterEl);
     slides.push(img);
   }
 
@@ -83,7 +83,7 @@
     counterEl.textContent = `${current + 1}/${TOTAL_IMAGES}`;
   }
 
-  // Swipe support (touch & mouse)
+  // Swipe support
   let startX = 0;
   let isDragging = false;
 
@@ -115,23 +115,73 @@
     }
     isDragging = false;
   });
-  // ✅ Zoom toàn màn hình khi click vào ảnh đang hiển thị
-const zoomOverlay = document.getElementById("fullscreenZoom");
-const zoomImg = document.getElementById("zoomedImg");
-const zoomClose = document.getElementById("zoomCloseBtn");
 
-container.addEventListener("click", () => {
-  const currentSlide = slides[current];
-  if (!currentSlide.classList.contains("show")) return;
+  // ✅ Zoom toàn màn hình khi click
+  const zoomOverlay = document.getElementById("fullscreenZoom");
+  const zoomImg = document.getElementById("zoomedImg");
+  const zoomClose = document.getElementById("zoomCloseBtn");
 
-  zoomImg.src = currentSlide.src;
-  zoomOverlay.style.display = "flex";
-  document.body.style.overflow = "hidden";
-});
+  container.addEventListener("click", () => {
+    const currentSlide = slides[current];
+    if (!currentSlide.classList.contains("show")) return;
 
-zoomClose.addEventListener("click", () => {
-  zoomOverlay.style.display = "none";
-  zoomImg.src = "";
-  document.body.style.overflow = "";
-});
+    zoomImg.src = currentSlide.src;
+    zoomOverlay.style.display = "flex";
+    zoomImg.style.transform = "translate(0, 0)";
+    originX = 0;
+    originY = 0;
+    document.body.style.overflow = "hidden";
+  });
+
+  zoomClose.addEventListener("click", () => {
+    zoomOverlay.style.display = "none";
+    zoomImg.src = "";
+    zoomImg.style.transform = "translate(0, 0)";
+    document.body.style.overflow = "";
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && zoomOverlay.style.display === "flex") {
+      zoomOverlay.style.display = "none";
+      zoomImg.src = "";
+      zoomImg.style.transform = "translate(0, 0)";
+      document.body.style.overflow = "";
+    }
+  });
+
+  // ✅ Kéo ảnh trong chế độ zoom
+  let isDraggingZoom = false;
+  let startXZoom = 0;
+  let startYZoom = 0;
+  let originX = 0;
+  let originY = 0;
+
+  zoomImg.onmousedown = (e) => {
+    isDraggingZoom = true;
+    startXZoom = e.clientX;
+    startYZoom = e.clientY;
+    zoomImg.style.cursor = "grabbing";
+    e.preventDefault();
+  };
+
+  document.onmouseup = () => {
+    isDraggingZoom = false;
+    zoomImg.style.cursor = "grab";
+    originX = getTranslate(zoomImg).x;
+    originY = getTranslate(zoomImg).y;
+  };
+
+  document.onmousemove = (e) => {
+    if (!isDraggingZoom) return;
+    const dx = e.clientX - startXZoom;
+    const dy = e.clientY - startYZoom;
+    zoomImg.style.transform = `translate(${originX + dx}px, ${originY + dy}px)`;
+  };
+
+  // Helper: lấy giá trị transform hiện tại
+  function getTranslate(el) {
+    const style = window.getComputedStyle(el);
+    const matrix = new DOMMatrixReadOnly(style.transform);
+    return { x: matrix.m41, y: matrix.m42 };
+  }
 })();
