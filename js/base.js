@@ -72,70 +72,17 @@ window.onpopstate = function () {
   document.getElementById("productVideoPopup")?.classList.remove("show");
   document.getElementById("slideForm")?.classList.add("hidden"); // nếu đang dùng popup trượt
 };
-/* ===========================
-   ✅ FAKE NOTIFY BẮT ĐẦU Ở ĐÂY
-   =========================== */
 
-// 🟢 Danh sách user
-const userPool = [
-  "TuanVu", "M**n", "H***e", "AnhT***", "B***C",
-  "HoangA***", "L***Huong", "Q***Khanh", "P***Thao", "KimL***",
-  "MyLinh", "ThanhT***", "NgocA***", "VanK***", "HaiD***",
-  "ThuT***", "DucH***", "NhatM***", "B***Tram", "GiaB***",
-  "K***T", "LienH***", "Phuoc***", "ThaoN***", "Vuong***",
-  "N***U", "HieuT***", "T***h", "L***D", "Phat***",
-  "T***Trang", "BaoN***", "Quynh***", "D***Tien", "HoaiA***",
-  "AnK***", "PhongL***", "Dieu***", "H***Phat", "MaiL***",
-  "Khang***", "SonT***", "YenL***", "Toan***", "Huong***",
-  "Kiet***", "VyL***", "LocT***", "Trang***", "Trung***"
-];
+// ✅ Load fake notify
+fetch('/js/fakenotify.js')
+  .then(res => res.text())
+  .then(script => {
+    const wrapper = document.createElement("script");
+    wrapper.textContent = script;
+    document.body.appendChild(wrapper);
+  })
+  .catch(err => console.warn("Không load được fakenotify:", err));
 
-// 🟠 Danh sách sản phẩm
-const productPool = [
-  "Vợt Phantom", "Vợt Gen4 Hồng", "Vợt AirForce", "Vợt Teflon", 
-  "Vợt Rồng Đen", "Vợt Gen4 Xám", "Vợt T700 Pro", "Vợt AirForce", "Thuyền SUP", "Vợt Rồng Trắng"
-];
-
-// 🔵 Danh sách hành động
-const actionPool = [
-    "Vừa Đặt Mua", "Vừa Thêm Vào Giỏ"
-];
-
-// ✅ Hàm chọn ngẫu nhiên
-function randomItem(arr) {
-  return arr[Math.floor(Math.random() * arr.length)];
-}
-
-// ✅ Hiển thị popup
-function showFakeNotification() {
-  const user = randomItem(userPool);
-  const product = randomItem(productPool);
-  const action = randomItem(actionPool);
-
-  const popup = document.getElementById("fakeNotification");
-  if (!popup) return; // nếu chưa có div thì thoát
-
-  popup.textContent = `${user} ${action} ${product}`;
-  popup.style.left = "20px"; // trượt vào
-
-  setTimeout(() => {
-    popup.style.left = "-400px"; // trượt ra
-  }, 5000);
-
-  // Random lại thời gian hiển thị tiếp theo (15–25 giây)
-  const nextTime = Math.floor(Math.random() * 15000) + 10000;
-  setTimeout(showFakeNotification, nextTime);
-}
-
-// ✅ Khởi động fake notify sau khi DOM load
-document.addEventListener("DOMContentLoaded", () => {
-  setTimeout(showFakeNotification, 5000);
-});
-// ✅ KEEP TAB ALIVE – tránh Safari unload tab gây about:blank
-setInterval(() => {
-  fetch('/favicon.ico', { cache: "no-store" })
-    .catch(err => console.log("Ping lỗi:", err));
-}, 5 * 60 * 1000);
 
 // ✅ Gọi supportchat nếu có
 //const sc = document.createElement("script");
