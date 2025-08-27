@@ -1,82 +1,122 @@
-// ✅ FAKE NOTIFY – HTML + CSS + LOGIC trong 1 file
+/* =========================================================
+   FAKE NOTIFY (self-contained) – inject CSS + DOM + logic
+   Chỉ cần được load (bởi base.js), không cần sửa HTML/CSS
+   ========================================================= */
+(function () {
+  'use strict';
 
-const style = document.createElement("style");
-style.textContent = `
-#fakeNotification {
-  position: fixed;
-  bottom: 60px;
-  left: -400px;
-  z-index: 9999;
-  background: #fff;
-  padding: 10px 16px;
-  border-radius: 99px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-  font-size: 14px;
-  font-weight: 500;
-  transition: all 0.6s ease;
-  pointer-events: none;
-  font-family: 'Be Vietnam Pro', sans-serif;
-}
-`;
-document.head.appendChild(style);
+  // Tránh load trùng
+  if (window.__fakeNotifyLoaded) return;
+  window.__fakeNotifyLoaded = true;
 
-// ✅ Tạo phần tử thông báo
-const notifyDiv = document.createElement("div");
-notifyDiv.id = "fakeNotification";
-notifyDiv.textContent = "Vừa đặt hàng thành công";
-document.body.appendChild(notifyDiv);
+  // ── Config nhanh
+  const CONFIG = {
+    bottom: 60,          // px vị trí cách đáy
+    leftHidden: -400,    // px khi ẩn (trượt ra ngoài)
+    leftVisible: 16,     // px khi hiện
+    firstDelay: 5000,    // ms lần đầu xuất hiện
+    showMs: 5000,        // ms hiển thị mỗi lần
+    minGapMs: 10000,     // ms tối thiểu giữa 2 lần
+    maxGapMs: 25000      // ms tối đa giữa 2 lần
+  };
 
-// 🟢 Danh sách user
-const userPool = [
-  "TuanVu", "M**n", "H***e", "AnhT***", "B***C",
-  "HoangA***", "L***Huong", "Q***Khanh", "P***Thao", "KimL***",
-  "MyLinh", "ThanhT***", "NgocA***", "VanK***", "HaiD***",
-  "ThuT***", "DucH***", "NhatM***", "B***Tram", "GiaB***",
-  "K***T", "LienH***", "Phuoc***", "ThaoN***", "Vuong***",
-  "N***U", "HieuT***", "T***h", "L***D", "Phat***",
-  "T***Trang", "BaoN***", "Quynh***", "D***Tien", "HoaiA***",
-  "AnK***", "PhongL***", "Dieu***", "H***Phat", "MaiL***",
-  "Khang***", "SonT***", "YenL***", "Toan***", "Huong***",
-  "Kiet***", "VyL***", "LocT***", "Trang***", "Trung***"
-];
+  // ── Pools (có thể override qua window.FAKE_NOTIFY = { users, products, actions })
+  const NAME_POOL = (window.FAKE_NOTIFY && window.FAKE_NOTIFY.users) || [
+    "TuanVu","M**n","H***e","AnhT***","B***C","HoangA***","L***Huong","Q***Khanh","P***Thao","KimL***",
+    "MyLinh","ThanhT***","NgocA***","VanK***","HaiD***","ThuT***","DucH***","NhatM***","B***Tram","GiaB***",
+    "K***T","LienH***","Phuoc***","ThaoN***","Vuong***","N***U","HieuT***","T***h","L***D","Phat***",
+    "T***Trang","BaoN***","Quynh***","D***Tien","HoaiA***","AnK***","PhongL***","Dieu***","H***Phat","MaiL***",
+    "Khang***","SonT***","YenL***","Toan***","Huong***","Kiet***","VyL***","LocT***","Trang***","Trung***"
+  ];
 
-// 🟠 Danh sách sản phẩm
-const productPool = [
-  "Vợt Phantom", "Vợt Gen4 Hồng", "Vợt AirForce", "Vợt Teflon", 
-  "Vợt Rồng Đen", "Vợt Gen4 Xám", "Vợt T700 Pro", "Vợt AirForce", "Thuyền SUP", "Vợt Rồng Trắng"
-];
+  const PRODUCT_POOL = (window.FAKE_NOTIFY && window.FAKE_NOTIFY.products) || [
+    "Vợt Phantom","Vợt Gen4 Hồng","Vợt AirForce","Vợt Teflon",
+    "Vợt Rồng Đen","Vợt Gen4 Xám","Vợt T700 Pro","Thuyền SUP","Vợt Rồng Trắng"
+  ];
 
-// 🔵 Danh sách hành động
-const actionPool = [
-  "Vừa Đặt Mua", "Vừa Thêm Vào Giỏ"
-];
+  const ACTION_POOL = (window.FAKE_NOTIFY && window.FAKE_NOTIFY.actions) || [
+    "Vừa Đặt Mua","Vừa Thêm Vào Giỏ"
+  ];
 
-// ✅ Hàm chọn ngẫu nhiên
-function randomItem(arr) {
-  return arr[Math.floor(Math.random() * arr.length)];
-}
+  // ── Utils
+  const rand = (arr) => arr[Math.floor(Math.random() * arr.length)];
+  const nextGap = () => Math.floor(Math.random() * (CONFIG.maxGapMs - CONFIG.minGapMs)) + CONFIG.minGapMs;
 
-// ✅ Hiển thị popup
-function showFakeNotification() {
-  const user = randomItem(userPool);
-  const product = randomItem(productPool);
-  const action = randomItem(actionPool);
+  // ── Inject CSS (gọn, không cần file riêng)
+  const style = document.createElement('style');
+  style.textContent = `
+    #fakeNotification {
+      position: fixed;
+      bottom: ${CONFIG.bottom}px;
+      left: ${CONFIG.leftHidden}px;
+      z-index: 9999;
+      background: #fff;
+      padding: 10px 16px;
+      border-radius: 999px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      font-size: 14px;
+      font-weight: 600;
+      transition: left 0.6s ease;
+      pointer-events: none;
+      color: #111;
+      font-family: 'Be Vietnam Pro', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      max-width: min(90vw, 360px);
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+    @media (max-width: 380px) {
+      #fakeNotification { font-size: 13px; padding: 8px 14px; }
+    }
+  `;
+  document.head.appendChild(style);
 
-  const popup = document.getElementById("fakeNotification");
-  if (!popup) return;
+  // ── Tạo node
+  function ensureNode() {
+    let el = document.getElementById('fakeNotification');
+    if (!el) {
+      el = document.createElement('div');
+      el.id = 'fakeNotification';
+      el.textContent = 'Vừa đặt hàng thành công';
+      document.body.appendChild(el);
+    }
+    return el;
+  }
 
-  popup.textContent = `${user} ${action} ${product}`;
-  popup.style.left = "20px";
+  let _timer = 0;
+  function showOnce() {
+    const el = ensureNode();
+    el.textContent = `${rand(NAME_POOL)} ${rand(ACTION_POOL)} ${rand(PRODUCT_POOL)}`;
+    el.style.left = CONFIG.leftVisible + 'px';
 
-  setTimeout(() => {
-    popup.style.left = "-400px";
-  }, 5000);
+    // Ẩn sau showMs
+    setTimeout(() => {
+      el.style.left = CONFIG.leftHidden + 'px';
+    }, CONFIG.showMs);
 
-  const nextTime = Math.floor(Math.random() * 15000) + 10000;
-  setTimeout(showFakeNotification, nextTime);
-}
+    // Lịch lần tiếp theo
+    _timer = setTimeout(showOnce, nextGap());
+  }
 
-// ✅ Khởi động khi DOM ready
-document.addEventListener("DOMContentLoaded", () => {
-  setTimeout(showFakeNotification, 5000);
-});
+  function start() {
+    // dọn timer cũ (nếu có)
+    if (_timer) clearTimeout(_timer);
+    setTimeout(showOnce, CONFIG.firstDelay);
+  }
+
+  // Pause khi tab ẩn để khỏi spam
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      if (_timer) clearTimeout(_timer);
+    } else {
+      start();
+    }
+  });
+
+  // Bắt đầu sau DOM ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', start);
+  } else {
+    start();
+  }
+})();
