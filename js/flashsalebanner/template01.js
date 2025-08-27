@@ -6,6 +6,7 @@
 
   // ✅ Danh sách giá theo trang sản phẩm
   const priceMap = {
+    "zen": "99.000đ- 149.000đ",
     "pickleball-bag": "269.000đ",
     "pickleball-ball": "9.000đ - 39000đ",
     "pickleball-grip": "9.000đ",
