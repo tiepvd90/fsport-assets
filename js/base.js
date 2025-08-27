@@ -73,15 +73,12 @@ window.onpopstate = function () {
   document.getElementById("slideForm")?.classList.add("hidden"); // nếu đang dùng popup trượt
 };
 
-// ✅ Load fake notify
-fetch('/js/fakenotify.js')
-  .then(res => res.text())
-  .then(script => {
-    const wrapper = document.createElement("script");
-    wrapper.textContent = script;
-    document.body.appendChild(wrapper);
-  })
-  .catch(err => console.warn("Không load được fakenotify:", err));
+// ✅ Load fake notify (gọi như script thật để tránh lỗi CORS/textContent)
+const fakenotifyScript = document.createElement("script");
+fakenotifyScript.src = "/js/fakenotify.js";
+fakenotifyScript.defer = true;
+document.body.appendChild(fakenotifyScript);
+
 
 
 // ✅ Gọi supportchat nếu có
