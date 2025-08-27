@@ -31,7 +31,7 @@
 }
 
 .review-image {
-  width: calc(25% - 4.5px);
+  width: calc(33.333% - 4px);
   aspect-ratio: 1 / 1;
   object-fit: cover;
   border-radius: 6px;
