@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="https://friendly-kitten-d760ff.netlify.app/css/checkoutpopup.css" />
   <link rel="stylesheet" href="/css/productdescription.css" />
   <link rel="stylesheet" href="../css/slideshow.css" />
+  <link rel="stylesheet" href="/css/review.css" />
   <link rel="icon" type="image/png" href="/favicon.png" />
 
   <!-- ✅ JS định nghĩa -->
@@ -81,30 +82,9 @@
     </div>
 
     <!-- ✅ KHỐI 2: Reviews -->
-    <div class="product-hero" style="margin-top: 12px;">
-      <div id="review-placeholder"></div>
-    </div>
-    <script>
-      fetch("/html/reviewblock/pickleball.html")
-        .then(res => res.text())
-        .then(html => {
-          const container = document.getElementById("review-placeholder");
-          container.innerHTML = html;
-          // ✅ Kích hoạt lại các <script> thủ công
-          const scripts = container.querySelectorAll("script");
-          scripts.forEach(oldScript => {
-            const newScript = document.createElement("script");
-            if (oldScript.src) {
-              newScript.src = oldScript.src;
-            } else {
-              newScript.textContent = oldScript.textContent;
-            }
-            document.body.appendChild(newScript);
-          });
-        });
-    </script>
-    <!-- HẾT KHỐI 2: review -->
-
+    <div id="review-placeholder"></div>
+    <script src="/js/review.js"></script>
+    
     <!-- ✅ Mô tả sản phẩm -->
     <div class="product-hero" style="margin-top: 12px;">
       <div id="productdescription-placeholder" data-src="/html/productdescription/art/zen.html"></div>
