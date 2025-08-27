@@ -20,8 +20,8 @@
     window.productPage = "zen";
   </script>
 </head>
-<body>
 
+<body>
   <div class="page-container">
 
     <!-- ✅ Placeholders -->
@@ -29,30 +29,29 @@
     <div id="checkoutPopup-placeholder"></div>
     <div id="sticky-footer-placeholder"></div>
 
-<!-- ============================== -->
-<!-- ✅ SLIDESHOW SẢN PHẨM CÓ ZOOM -->
-<!-- ============================== -->
+    <!-- ============================== -->
+    <!-- ✅ SLIDESHOW SẢN PHẨM CÓ ZOOM -->
+    <!-- ============================== -->
 
-<!-- Slideshow chính -->
-<div class="lazy-slideshow" id="lazySlideshow">
-  <div class="slide-counter" id="slideCounter">1/1</div>
-</div>
+    <!-- Slideshow chính -->
+    <div class="lazy-slideshow" id="lazySlideshow">
+      <div class="slide-counter" id="slideCounter">1/1</div>
+    </div>
 
-<!-- Zoom toàn màn hình khi click ảnh -->
-<div id="fullscreenZoom" style="display: none;">
-  <div id="zoomWrapper">
-    <img id="zoomedImg" src="" alt="Zoomed" />
-    <button id="zoomCloseBtn">×</button>
-  </div>
-</div>
+    <!-- Zoom toàn màn hình khi click ảnh -->
+    <div id="fullscreenZoom" style="display: none;">
+      <div id="zoomWrapper">
+        <img id="zoomedImg" src="" alt="Zoomed" />
+        <button id="zoomCloseBtn">×</button>
+      </div>
+    </div>
 
-<!-- Script xử lý slideshow + zoom -->
-<script src="/js/slideshow-2p.js"></script>
+    <!-- Script xử lý slideshow + zoom -->
+    <script src="/js/slideshow-2p.js"></script>
 
-<!-- ============================== -->
-<!-- ✅ END SLIDESHOW -->
-<!-- ============================== -->
-
+    <!-- ============================== -->
+    <!-- ✅ END SLIDESHOW -->
+    <!-- ============================== -->
 
     <!-- ✅ Flash Banner -->
     <div id="flashbanner-placeholder"></div>
@@ -86,25 +85,26 @@
       <div id="review-placeholder"></div>
     </div>
     <script>
-  fetch("/html/reviewblock/pickleball.html")
-    .then(res => res.text())
-    .then(html => {
-      const container = document.getElementById("review-placeholder");
-      container.innerHTML = html;
-      // ✅ Kích hoạt lại các <script> thủ công
-      const scripts = container.querySelectorAll("script");
-      scripts.forEach(oldScript => {
-        const newScript = document.createElement("script");
-        if (oldScript.src) {
-          newScript.src = oldScript.src;
-        } else {
-          newScript.textContent = oldScript.textContent;
-        }
-        document.body.appendChild(newScript);
-      });
-    });
-</script>
-<!-- HẾT KHỐI 2: review -->
+      fetch("/html/reviewblock/pickleball.html")
+        .then(res => res.text())
+        .then(html => {
+          const container = document.getElementById("review-placeholder");
+          container.innerHTML = html;
+          // ✅ Kích hoạt lại các <script> thủ công
+          const scripts = container.querySelectorAll("script");
+          scripts.forEach(oldScript => {
+            const newScript = document.createElement("script");
+            if (oldScript.src) {
+              newScript.src = oldScript.src;
+            } else {
+              newScript.textContent = oldScript.textContent;
+            }
+            document.body.appendChild(newScript);
+          });
+        });
+    </script>
+    <!-- HẾT KHỐI 2: review -->
+
     <!-- ✅ Mô tả sản phẩm -->
     <div class="product-hero" style="margin-top: 12px;">
       <div id="productdescription-placeholder" data-src="/html/productdescription/art/zen.html"></div>
@@ -114,8 +114,10 @@
     <!-- ✅ FreeFlow -->
     <h2 class="freeflow-heading" style="font-size: 18px; margin: 24px 12px 12px;">CÓ THỂ BẠN SẼ THÍCH</h2>
     <script src="/js/freeflow-loader.js"></script>
+
   </div>
-<!-- ✅ Inject popup + footer -->
+
+  <!-- ✅ Inject popup + footer -->
   <script>
     async function loadScript(src) {
       return new Promise(resolve => {
@@ -155,7 +157,7 @@
       await injectHTML("/html/stickyfooter.html", "sticky-footer-placeholder");
 
       await loadScript("https://friendly-kitten-d760ff.netlify.app/js/voucherpopup.js");
-      await loadScript("https://friendly-kitten-d760ff.netlify.app/js/cartpopup.js");
+      await loadScript("https://friendly-kitten-d760ff.netlify.app/js/cartpopup-3p.js");
       await loadScript("https://friendly-kitten-d760ff.netlify.app/js/checkoutpopup.js");
 
       setTimeout(async () => {
@@ -168,8 +170,10 @@
 
     setupPage();
   </script>
+
   <!-- ✅ Tracking -->
   <script src="https://friendly-kitten-d760ff.netlify.app/js/tracking.js"></script>
+
   <div id="base-placeholder"></div>
   <script>
     fetch("/html/base.html")
