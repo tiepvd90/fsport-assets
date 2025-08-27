@@ -142,3 +142,42 @@ setInterval(() => {
 //sc.src = "/js/supportchat.js";
 //document.body.appendChild(sc);
 
+// ✅ Inject popup + footer vào các trang product-->
+(async () => {
+  const inject = async (file, id) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    try {
+      const html = await (await fetch(file)).text();
+      el.innerHTML = html;
+    } catch (e) {
+      console.warn(`Không inject được ${file}:`, e);
+    }
+  };
+
+  await inject("/html/cartpopup.html", "cartPopup-placeholder");
+  await inject("/html/checkoutpopup.html", "checkoutPopup-placeholder");
+  await inject("/html/stickyfooter.html", "sticky-footer-placeholder");
+
+  const loadScript = src => new Promise((r) => {
+    const s = document.createElement("script");
+    s.src = src;
+    s.onload = r;
+    document.body.appendChild(s);
+  });
+
+  await loadScript("https://friendly-kitten-d760ff.netlify.app/js/voucherpopup.js");
+  await loadScript("https://friendly-kitten-d760ff.netlify.app/js/cartpopup-3p.js");
+  await loadScript("https://friendly-kitten-d760ff.netlify.app/js/checkoutpopup.js");
+
+  if (typeof fetchVoucherMap === "function") {
+    const map = await fetchVoucherMap();
+    window.__vouchersRaw = map?.[window.loai] || {};
+    window.voucherByProduct = {};
+  }
+
+  if (typeof initCartPopup === "function") {
+    initCartPopup();
+  }
+})();
+
