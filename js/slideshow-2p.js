@@ -115,4 +115,28 @@
     }
     isDragging = false;
   });
+  // ✅ Zoom tại chỗ + nút đóng "×"
+const zoomBtn = document.getElementById("zoomCloseBtn");
+
+container.addEventListener("click", (e) => {
+  // Click vào ảnh hiện tại => toggle zoom
+  const currentSlide = slides[current];
+  if (!currentSlide.classList.contains("show")) return;
+
+  const isZoomed = currentSlide.classList.toggle("zoomed");
+  if (isZoomed) {
+    zoomBtn.classList.add("show");
+  } else {
+    zoomBtn.classList.remove("show");
+  }
+});
+
+// ✅ Nút đóng zoom
+zoomBtn.addEventListener("click", (e) => {
+  e.stopPropagation(); // không lan sang container click
+  const currentSlide = slides[current];
+  currentSlide.classList.remove("zoomed");
+  zoomBtn.classList.remove("show");
+});
+
 })();
