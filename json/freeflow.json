@@ -956,6 +956,34 @@
     "sellerID": "huyenle"
   },
   {
+    "itemId": "art-zen8",
+    "title": "Bộ 6 Tranh Hoa Sen Decor Dán Tường",
+    "price": 99000,
+    "originalPrice": 150000,
+    "contentType": "image",
+    "image": "/assets/images/gallery/art/zen/8.jpg",
+    "youtube": "",
+    "productPage": "/art/zen",
+    "tags": ["art", "decor", "tranh dán tường", "set 6 tranh", "phật", "tranh phật", "hoa sen"],
+    "basePriority": 16,
+    "productCategory": "art",
+    "sellerID": "huyenle"
+  },
+  {
+    "itemId": "art-zen9",
+    "title": "Tranh Hoa Sen An Nhiên- Bộ 6 Tranh",
+    "price": 99000,
+    "originalPrice": 150000,
+    "contentType": "image",
+    "image": "/assets/images/gallery/art/zen/9.jpg",
+    "youtube": "",
+    "productPage": "/art/zen",
+    "tags": ["art", "decor", "tranh dán tường", "set 6 tranh", "phật", "tranh phật", "hoa sen"],
+    "basePriority": 16,
+    "productCategory": "art",
+    "sellerID": "huyenle"
+  },
+  {
     "itemId": "art-zen3",
     "title": "",
     "price": 0,
