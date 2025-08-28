@@ -1,12 +1,11 @@
 /* ============================== *
- *   FREEFLOW (loader-friendly)   *
- *  1s fetch-all (no render yet)  *
- *  Render 4 on approach, then    *
- *  lazy-load 12/item block + AF  *
- *  Keep autoplay logic as-is     *
+ *   FREEFLOW (stable ordering)   *
+ *  Placeholders + slot rendering *
+ *  1–10 random, strong cat boost *
+ *  10 images : 1 video           *
  * ============================== */
 
-// ====== CONFIG (override via freeflowInit) ======
+/* ====== CONFIG (override via freeflowInit) ====== */
 let fallbackUrl = "https://script.google.com/macros/s/AKfycbwuEh9sP65vyQL0XzU8gY1Os0QYV_K5egKJgm8OhImAPjvdyrQiU7XCY909N99TnltP/exec";
 const CACHE_KEY = "freeflowCache";
 const CACHE_DURATION_MS = 30 * 60 * 1000; // 30 phút
@@ -14,20 +13,24 @@ const INITIAL_DELAY_MS_DEFAULT = 1000;    // 1 giây
 const FIRST_BATCH_SIZE = 4;
 const BLOCK_SIZE = 12;
 const FEED_ID = "freeflowFeed";
+const CAT_BOOST = 75; // giữ nguyên như bản cũ (có thể tăng nếu muốn “đè” mạnh hơn)
 
-// ====== State ======
+/* ====== State ====== */
 let freeflowData = [];
 let itemsLoaded = 0;
-let productCategory = window.productCategory || "0";
-const renderedIds = new Set();
+let renderedIds = new Set();
+let productCategory = (window.productCategory ?? "0").toString().trim().toLowerCase();
 
-let dataReady = false;        // dữ liệu đã process xong
-let initialRendered = false;  // đã render 4 item đầu chưa
-let pagerObserver = null;     // IO cho sentinel
-let bootstrapped = false;     // đã init UI chưa
-let scrollTick = null;        // throttle scroll
+let dataReady = false;
+let initialRendered = false;
+let pagerObserver = null;
+let bootstrapped = false;
+let scrollTick = null;
 
-// =================== Cache helpers ===================
+// map: itemId -> slot index (giữ vị trí cố định trong DOM)
+let positionById = Object.create(null);
+
+/* =================== Helpers =================== */
 function loadCachedFreeFlow() {
   try {
     const cached = JSON.parse(localStorage.getItem(CACHE_KEY));
@@ -41,39 +44,58 @@ function saveCache(data) {
   const payload = { timestamp: Date.now(), data };
   localStorage.setItem(CACHE_KEY, JSON.stringify(payload));
 }
+function normCat(val) {
+  return (val ?? "").toString().trim().toLowerCase();
+}
+function random10() {
+  // 1..10
+  return Math.floor(Math.random() * 10) + 1;
+}
 
-// =================== Process & sort ===================
+/* =================== Process & sort =================== */
 function processAndSortData(data) {
-  const random = () => Math.floor(Math.random() * 5) + 1;
+  // Chuẩn hóa category hiện tại
+  productCategory = normCat(window.productCategory ?? productCategory);
 
+  // Tính finalPriority (giảm random còn 1..10)
   const preferred = data
-    .filter(item => item.productCategory === productCategory)
-    .map(item => ({ ...item, finalPriority: (item.basePriority || 0) + random() + 75 }));
+    .filter(item => normCat(item.productCategory) === productCategory)
+    .map(item => ({
+      ...item,
+      finalPriority: (item.basePriority || 0) + random10() + CAT_BOOST
+    }));
 
   const others = data
-    .filter(item => item.productCategory !== productCategory)
-    .map(item => ({ ...item, finalPriority: (item.basePriority || 0) + random() }));
+    .filter(item => normCat(item.productCategory) !== productCategory)
+    .map(item => ({
+      ...item,
+      finalPriority: (item.basePriority || 0) + random10()
+    }));
 
-  function interleaveBalanced(preferred, others) {
+  // Trộn nhóm (có thể bỏ interleave nếu muốn ưu tiên thuần)
+  function interleaveBalanced(a, b) {
     const result = [];
     let i = 0, j = 0;
-    const total = preferred.length + others.length;
+    const total = a.length + b.length;
     for (let k = 0; k < total; k++) {
-      if ((k % 2 === 0 && i < preferred.length) || j >= others.length) {
-        result.push(preferred[i++]);
-      } else {
-        result.push(others[j++]);
-      }
+      if ((k % 2 === 0 && i < a.length) || j >= b.length) result.push(a[i++]);
+      else result.push(b[j++]);
     }
     return result;
   }
 
-  const combined = interleaveBalanced(preferred, others).sort((a, b) => b.finalPriority - a.finalPriority);
+  const combined = interleaveBalanced(preferred, others)
+    .sort((x, y) =>
+      (y.finalPriority - x.finalPriority) ||
+      ((y.basePriority || 0) - (x.basePriority || 0)) ||
+      (x.title || "").localeCompare(y.title || "") ||
+      (x.itemId || "").localeCompare(y.itemId || "")
+    );
 
+  // 10 ảnh : 1 video
   const images = combined.filter(i => i.contentType === "image");
   const videos = combined.filter(i => i.contentType === "youtube");
 
-  // ✅ 10 ảnh : 1 video, bỏ video dư ở cuối
   const mixed = [];
   let imgIndex = 0, vidIndex = 0;
   while (imgIndex < images.length) {
@@ -83,36 +105,42 @@ function processAndSortData(data) {
       added++;
     }
     if (added === 10 && vidIndex < videos.length) mixed.push(videos[vidIndex++]);
-    if (imgIndex >= images.length) break;
   }
 
-  function reorderForVisualMasonry(data, columns = 2) {
-    const rows = Math.ceil(data.length / columns);
-    const reordered = [];
-    for (let r = 0; r < rows; r++) {
-      for (let c = 0; c < columns; c++) {
-        const index = c * rows + r;
-        if (index < data.length) reordered.push(data[index]);
-      }
-    }
-    return reordered;
-  }
+  // Không reorder nữa để giữ đúng thứ tự ưu tiên
+  freeflowData = mixed;
 
-  freeflowData = reorderForVisualMasonry(mixed, 2);
+  // Map vị trí cố định theo slot
+  positionById = Object.create(null);
+  freeflowData.forEach((item, idx) => { positionById[item.itemId] = idx; });
 }
 
-// =================== Rendering ===================
-function renderFeedItem(item, container) {
-  if (renderedIds.has(item.itemId)) return;
-  renderedIds.add(item.itemId);
+/* =================== Placeholders =================== */
+function ensurePlaceholders() {
+  const container = document.getElementById(FEED_ID);
+  if (!container) return;
 
-  const div = document.createElement("div");
-  div.className = `feed-item ${item.contentType || ""}`;
+  // Nếu đã có đủ placeholder rồi thì bỏ qua
+  if (container.dataset.placeholders === "1" && container.children.length >= freeflowData.length) return;
 
-  let mediaHtml = "";
+  const frag = document.createDocumentFragment();
+  for (let i = 0; i < freeflowData.length; i++) {
+    const ph = document.createElement("div");
+    ph.className = "feed-item placeholder";
+    ph.dataset.slot = i.toString();
+    ph.innerHTML = `<span class="skeleton"></span>`;
+    frag.appendChild(ph);
+  }
+  container.innerHTML = "";
+  container.appendChild(frag);
+  container.dataset.placeholders = "1";
+}
+
+/* =================== Rendering =================== */
+function buildMediaHtml(item) {
   if (item.contentType === "image") {
-    mediaHtml = `
-      <img loading="lazy" src="${item.image}" alt="${item.title || ''}" />
+    return `
+      <img loading="lazy" src="${item.image}" alt="${item.title || ""}" />
       ${item.title ? `<h4 class="one-line-title">${item.title}</h4>` : ""}
       ${item.price ? `
         <div class="price-line">
@@ -120,8 +148,9 @@ function renderFeedItem(item, container) {
           ${item.originalPrice > item.price ? `<span class="original-price">${Number(item.originalPrice).toLocaleString()}đ</span>` : ""}
         </div>` : ""}
     `;
-  } else if (item.contentType === "youtube") {
-    mediaHtml = `
+  }
+  if (item.contentType === "youtube") {
+    return `
       <div class="video-wrapper" style="position: relative;">
         <img class="video-thumb" src="https://fun-sport.co/assets/images/thumb/vid-thumb.webp"
              style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; border-radius: 8px; z-index: 1;" />
@@ -143,20 +172,32 @@ function renderFeedItem(item, container) {
         </a>
         <div style="flex: 1; min-width: 0;">
           <h4 style="font-size: 13px; line-height: 1.3; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-            ${item.title}
+            ${item.title || ""}
           </h4>
-          <div style="font-size: 13px; color: #f53d2d; font-weight: bold;">
-            ${Number(item.price).toLocaleString()}đ
-          </div>
+          ${item.price ? `<div style="font-size: 13px; color: #f53d2d; font-weight: bold;">${Number(item.price).toLocaleString()}đ</div>` : ""}
         </div>
       </div>
     `;
   }
+  return "";
+}
 
-  div.innerHTML = mediaHtml;
+function renderFeedItemToSlot(item) {
+  if (renderedIds.has(item.itemId)) return;
+  const container = document.getElementById(FEED_ID);
+  if (!container) return;
 
+  const idx = positionById[item.itemId];
+  const slot = container.querySelector(`.feed-item.placeholder[data-slot="${idx}"]`);
+  if (!slot) return;
+
+  const div = document.createElement("div");
+  div.className = `feed-item ${item.contentType || ""}`;
+  div.innerHTML = buildMediaHtml(item);
+
+  // gắn hành vi
   if (item.contentType === "image") {
-    div.onclick = () => window.location.href = item.productPage;
+    div.onclick = () => { window.location.href = item.productPage; };
   } else if (item.contentType === "youtube") {
     setTimeout(() => {
       const overlay = div.querySelector(".video-overlay");
@@ -174,23 +215,25 @@ function renderFeedItem(item, container) {
     }, 0);
   }
 
-  container.appendChild(div);
+  // thay placeholder bằng item thực
+  container.replaceChild(div, slot);
+  renderedIds.add(item.itemId);
 
-  // 🔁 Ảnh load xong có thể giãn layout → auto-fill nếu gần đáy
+  // ảnh load xong → autofill để lấp viewport
   if (item.contentType === "image") {
-    const img = div.querySelector('img');
+    const img = div.querySelector("img");
     if (img) {
       const onDone = () => { setTimeout(() => { autofillToViewport(); }, 20); };
       if (img.complete) onDone();
       else {
-        img.addEventListener('load', onDone, { once: true });
-        img.addEventListener('error', onDone, { once: true });
+        img.addEventListener("load", onDone, { once: true });
+        img.addEventListener("error", onDone, { once: true });
       }
     }
   }
 }
 
-// ▶️ YouTube autoplay (GIỮ NGUYÊN)
+/* =================== YouTube autoplay (GIỮ NGUYÊN) =================== */
 function ytCmd(iframe, func) {
   try {
     iframe.contentWindow?.postMessage(JSON.stringify({ event: "command", func, args: [] }), "*");
@@ -221,7 +264,7 @@ function setupAutoplayObserver() {
   iframes.forEach(iframe => observer.observe(iframe));
 }
 
-// =================== Lazy pager ===================
+/* =================== Lazy pager =================== */
 function ensureSentinel(container) {
   let sentinel = document.getElementById("freeflowSentinel");
   if (!sentinel) {
@@ -240,7 +283,7 @@ function renderNextBlock(blockSize = BLOCK_SIZE) {
   if (!container) return;
 
   const slice = freeflowData.slice(itemsLoaded, itemsLoaded + blockSize);
-  slice.forEach(item => renderFeedItem(item, container));
+  slice.forEach(item => renderFeedItemToSlot(item));
   itemsLoaded += slice.length;
 
   setupAutoplayObserver();
@@ -270,7 +313,7 @@ function setupLazyPager() {
   setTimeout(() => { autofillToViewport(); }, 30);
 }
 
-// =================== Auto-fill helpers ===================
+/* =================== Auto-fill helpers =================== */
 function nearBottom(offset = 900) {
   const doc = document.documentElement;
   const scrollY = window.scrollY || doc.scrollTop || 0;
@@ -295,7 +338,7 @@ function autofillToViewport(maxPasses = 3) {
   }
 }
 
-// =================== Kick & gating ===================
+/* =================== Kick & gating =================== */
 function isNearViewport(el, margin = 800) {
   if (!el) return false;
   const rect = el.getBoundingClientRect();
@@ -307,11 +350,14 @@ function renderInitialAndStartPager() {
   const container = document.getElementById(FEED_ID);
   if (!container) return;
 
-  const firstBatch = freeflowData.slice(0, FIRST_BATCH_SIZE);
-  firstBatch.forEach(item => renderFeedItem(item, container));
-  itemsLoaded = FIRST_BATCH_SIZE;
-  setupAutoplayObserver();
+  // tạo placeholder TRƯỚC khi render
+  ensurePlaceholders();
 
+  const firstBatch = freeflowData.slice(0, FIRST_BATCH_SIZE);
+  firstBatch.forEach(item => renderFeedItemToSlot(item));
+  itemsLoaded = Math.min(FIRST_BATCH_SIZE, freeflowData.length);
+
+  setupAutoplayObserver();
   setupLazyPager();
   setTimeout(() => { autofillToViewport(); }, 30);
 }
@@ -326,14 +372,15 @@ function maybeStartRender() {
   }
 }
 
-// =================== Data fetching ===================
+/* =================== Data fetching =================== */
 async function fetchFreeFlowData(sheetUrlOverride) {
-  if (sheetUrlOverride) fallbackUrl = sheetUrlOverride; // ✅ cho loader override
+  if (sheetUrlOverride) fallbackUrl = sheetUrlOverride;
 
   const cached = loadCachedFreeFlow();
   if (cached) {
     processAndSortData(cached);
     dataReady = true;
+    ensurePlaceholders();
     maybeStartRender();
   }
 
@@ -345,6 +392,7 @@ async function fetchFreeFlowData(sheetUrlOverride) {
     processAndSortData(validData);
     saveCache(validData);
     dataReady = true;
+    ensurePlaceholders();
     maybeStartRender();
 
     fetchFromGoogleSheet(validData);
@@ -369,6 +417,7 @@ async function fetchFromGoogleSheet(existingData) {
     saveCache(combined);
     dataReady = true;
 
+    ensurePlaceholders();
     if (!initialRendered) maybeStartRender();
     else setTimeout(() => { autofillToViewport(); }, 30);
   } catch (e) {
@@ -376,7 +425,7 @@ async function fetchFromGoogleSheet(existingData) {
   }
 }
 
-// =================== Bootstrap (works with loader) ===================
+/* =================== Bootstrap (works with loader) =================== */
 function bindClosePopup() {
   const closeBtn = document.getElementById("videoCloseBtn");
   if (closeBtn) closeBtn.onclick = () => {
@@ -413,10 +462,13 @@ function attachScrollAutofill() {
  *  - initialDelayMs: number (ms) (mặc định 1000)
  */
 function bootstrapFreeflow(options = {}) {
-  if (bootstrapped) return; // tránh gắn 2 lần
+  if (bootstrapped) return;
   bootstrapped = true;
 
   if (options.sheetUrl) fallbackUrl = options.sheetUrl;
+
+  // Cập nhật lại productCategory nếu trang set sau
+  productCategory = normCat(window.productCategory ?? productCategory);
 
   bindClosePopup();
   observeFeedApproach();
@@ -429,22 +481,16 @@ function bootstrapFreeflow(options = {}) {
   setTimeout(() => { maybeStartRender(); }, 5000);
 }
 
-// ✅ Public API cho loader
+/* ✅ Public API cho loader */
 window.freeflowInit = bootstrapFreeflow;
-
-// ✅ Tương thích loader cũ: nếu họ chỉ gọi fetchFreeFlowData(url) sau khi script load
-//    thì vẫn chạy được vì ta đã export hàm toàn cục:
 window.fetchFreeFlowData = fetchFreeFlowData;
 
-// ✅ Auto-bootstrap nếu file được nhúng trực tiếp (không qua loader) và DOM đã sẵn
+/* ✅ Auto-bootstrap nếu được nhúng trực tiếp và DOM đã sẵn */
 (function autoBootstrapIfNeeded() {
-  // Chỉ auto nếu:
-  // 1) Không có loader gọi freeflowInit trong vòng 1 tick
-  // 2) Đã có container FEED_ID trong DOM
   const tryStart = () => {
     if (bootstrapped) return;
     if (document.getElementById(FEED_ID)) {
-      bootstrapFreeflow(); // dùng delay mặc định 1s
+      bootstrapFreeflow(); // delay mặc định 1s
     }
   };
   if (document.readyState === "loading") {
@@ -454,7 +500,7 @@ window.fetchFreeFlowData = fetchFreeFlowData;
   }
 })();
 
-// ✅ Safari back-forward cache: reload lại để đảm bảo init đúng
+/* ✅ Safari back-forward cache: reload lại để đảm bảo init đúng */
 window.addEventListener("pageshow", function (event) {
   if (event.persisted || performance.getEntriesByType("navigation")[0]?.type === "back_forward") {
     location.reload();
