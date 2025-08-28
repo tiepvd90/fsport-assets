@@ -1,0 +1,47 @@
+{
+  "category": "art",
+  "mainImageKey": "Thiết Kế",
+  "thuộc_tính": [
+    {
+      "label": "Thiết Kế",
+      "key": "Thiết Kế",
+      "display": "thumbnail",
+      "values": [
+        {
+          "text": "Phật01",
+          "image": "/assets/images/gallery/art/zen2/1.jpg"
+        }
+      ]
+    },
+    {
+      "label": "Kích cỡ",
+      "key": "Kích cỡ",
+      "display": "button",
+      "values": [
+        {
+          "text": "Nhỏ 30x40cm",
+          "GiaOverride": 65000,
+          "GiaGocOverride": 100000
+        },
+        {
+          "text": "Vừa 40x60cm",
+          "GiaOverride": 79000,
+          "GiaGocOverride": 120000
+        },
+		{
+          "text": "To 5x70cm",
+          "GiaOverride": 119000,
+          "GiaGocOverride": 170000
+        }
+      ]
+    }
+  ],
+  "biến_thể": [
+    {
+      "id": "zen2",
+      "category": "art",
+      "Giá": 65000,
+      "Giá gốc": 100000
+    }
+  ]
+}
