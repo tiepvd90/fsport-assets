@@ -44,7 +44,7 @@ function saveCache(data) {
 
 // =================== Process & sort ===================
 function processAndSortData(data) {
-  const random = () => Math.floor(Math.random() * 20) + 1;
+  const random = () => Math.floor(Math.random() * 5) + 1;
 
   const preferred = data
     .filter(item => item.productCategory === productCategory)
