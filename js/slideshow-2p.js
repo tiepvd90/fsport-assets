@@ -7,6 +7,7 @@
 
   const IMAGE_CONFIG = {
     zen: { count: 10, format: "jpg" },
+    girl: { count: 6, format: "jpg" },
     // thêm cấu hình khác nếu cần
   };
 
