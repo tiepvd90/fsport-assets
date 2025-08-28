@@ -6,7 +6,7 @@
   const ORIGIN = location.origin.replace("http://", "https://");
 
   const IMAGE_CONFIG = {
-    zen: { count: 6, format: "jpg" },
+    zen: { count: 9, format: "jpg" },
     girl: { count: 6, format: "jpg" },
     // thêm cấu hình khác nếu cần
   };
