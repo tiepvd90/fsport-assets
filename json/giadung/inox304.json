@@ -1,0 +1,24 @@
+{
+  "thuộc_tính": [
+    {
+      "label": "Màu Sắc",
+      "key": "Màu Sắc",
+      "type": "option",
+      "display": "thumbnail",
+      "values": [
+        {
+          "text": "1 Bộ",
+          "image": "/assets/images/gallery/giadung/inox304/1.JPG"
+        }
+      ]
+    }
+  ],
+  "biến_thể": [
+    {
+      "id": "inox403",
+      "category": "giadung",
+      "Giá": 79000,
+      "Giá gốc": 130000
+    }
+  ]
+}
