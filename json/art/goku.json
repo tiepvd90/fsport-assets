@@ -11,7 +11,7 @@
           "text": "GK01",
           "image": "/assets/images/gallery/art/goku/8.jpg"
         },
-		    {
+        {
           "text": "GK02",
           "image": "/assets/images/gallery/art/goku/3.jpg"
         },
@@ -30,6 +30,10 @@
         {
           "text": "GK06",
           "image": "/assets/images/gallery/art/goku/7.jpg"
+        },
+        {
+          "text": "Set 6 Tranh",
+          "image": "/assets/images/gallery/art/goku/1.jpg"
         }
       ]
     },
@@ -48,12 +52,31 @@
           "GiaOverride": 79000,
           "GiaGocOverride": 120000
         },
-		{
+        {
           "text": "To 50x70cm",
           "GiaOverride": 119000,
           "GiaGocOverride": 170000
         }
-      ]
+      ],
+      "when": { "Thiết Kế": ["GK01","GK02","GK03","GK04","GK05","GK06"] }
+    },
+    {
+      "label": "Kích cỡ Set",
+      "key": "Kích cỡ Set",
+      "display": "button",
+      "values": [
+        {
+          "text": "Set Tranh Vừa",
+          "GiaOverride": 99000,
+          "GiaGocOverride": 130000
+        },
+        {
+          "text": "Set Tranh To",
+          "GiaOverride": 149000,
+          "GiaGocOverride": 200000
+        }
+      ],
+      "when": { "Thiết Kế": ["Set 6 Tranh"] }
     }
   ],
   "biến_thể": [
