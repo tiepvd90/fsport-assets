@@ -510,5 +510,16 @@ if (document.readyState === "loading") {
   // Nếu file được nạp sau DOMContentLoaded, vẫn init được
   initCartPopup();
 }
+// ✓ Cho HTML gọi được các hàm cũ
+window.initCartPopup = initCartPopup;
+window.toggleCartPopup = toggleCartPopup;
+window.changeQuantity = changeQuantity;
+
+// (tuỳ chọn) expose object tiện dùng
+window.cartpopup = {
+  init: initCartPopup,
+  toggle: toggleCartPopup,
+  qty: changeQuantity,
+};
 
 })();
