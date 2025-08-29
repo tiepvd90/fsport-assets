@@ -58,7 +58,7 @@
   }
 
   // ====== Fetch JSON & khởi tạo ======
-  function initCartPopupV4() {
+  function initCartPopup() {
     fetch(jsonUrl)
       .then(res => res.json())
       .then(data => {
@@ -71,7 +71,7 @@
             data["thuộc_tính"].find(a => a.display === "thumbnail")?.key || null
           );
 
-          renderOptionsV4(window.allAttributes);
+          renderOptions(window.allAttributes);
           bindAddToCartButtonV4();
         } else {
           console.error("❌ JSON không đúng định dạng.", data);
@@ -81,7 +81,7 @@
   }
 
   // ====== Render nhóm thuộc tính ======
-  function renderOptionsV4(attributes) {
+  function renderOptions(attributes) {
     const container = $("#variantList");
     if (!container) return;
     container.innerHTML = "";
@@ -102,7 +102,7 @@
         input.id = `input-${attr.key}`;
         input.placeholder = attr.placeholder || "Nhập nội dung...";
         input.style.cssText = "width:100%;padding:8px;font-size:14px;box-sizing:border-box;border:1px solid #ccc;border-radius:6px;";
-        input.addEventListener("input", () => updateSelectedVariantV4());
+        input.addEventListener("input", () => updateSelectedVariant());
         group.appendChild(input);
       } else if (Array.isArray(attr.values)) {
         const displayMode = attr.display || "button";
@@ -130,7 +130,7 @@
           thumb.addEventListener("click", () => {
             $$('.variant-thumb[data-key="' + attr.key + '"]').forEach(el => el.classList.remove("selected"));
             thumb.classList.add("selected");
-            updateSelectedVariantV4();
+            updateSelectedVariant();
           });
 
           wrapper.appendChild(thumb);
@@ -143,11 +143,11 @@
     });
 
     // Gọi 1 lần để tính visible & auto-pick cho nhóm đang hiện
-    updateSelectedVariantV4(true); // true = allowAutoPickFirst
+    updateSelectedVariant(true); // true = allowAutoPickFirst
   }
 
   // ====== Áp visibility + dọn selections không hợp lệ ======
-  function applyVisibilityV4(selections) {
+  function applyVisibility(selections) {
     (window.allAttributes || []).forEach(attr => {
       const groupEl = $(`.variant-group[data-key="${attr.key}"]`);
       if (!groupEl) return;
@@ -170,7 +170,7 @@
   }
 
   // ====== Auto pick lựa chọn đầu tiên cho nhóm đang hiển thị (nếu chưa chọn) ======
-  function autoPickFirstForVisibleV4(selections) {
+  function autoPickFirstForVisible(selections) {
     (window.allAttributes || []).forEach(attr => {
       if (!isAttrVisible(attr, selections)) return;
 
@@ -191,7 +191,7 @@
   }
 
   // ====== Thu thập selections sạch từ DOM (chỉ nhóm đang hiển thị) ======
-  function collectCleanSelectionsV4() {
+  function collectCleanSelections() {
     const out = {};
     (window.allAttributes || []).forEach(attr => {
       if (!isAttrVisible(attr, window.currentSelections)) return;
@@ -207,7 +207,7 @@
   }
 
   // ====== Main update: selections → visibility → variant → render ======
-  function updateSelectedVariantV4(allowAutoPickFirst = false) {
+  function updateSelectedVariant(allowAutoPickFirst = false) {
     // 1) Thu thập các chọn hiện tại (thô)
     const raw = {};
     $$(".variant-thumb.selected").forEach(btn => {
@@ -220,17 +220,17 @@
     });
 
     // 2) Áp điều kiện hiển thị & dọn selections ẩn
-    applyVisibilityV4(raw);
+    applyVisibility(raw);
 
     // 3) Auto pick cho nhóm đang hiển thị nhưng chưa có chọn (tuỳ chọn)
     if (allowAutoPickFirst) {
-      autoPickFirstForVisibleV4(raw);
+      autoPickFirstForVisible(raw);
       // Sau auto pick cần re-apply visibility (phòng nhóm con phụ thuộc)
-      applyVisibilityV4(raw);
+      applyVisibility(raw);
     }
 
     // 4) Lấy selections sạch theo nhóm đang hiển thị
-    const clean = collectCleanSelectionsV4();
+    const clean = collectCleanSelections();
     window.currentSelections = clean;
 
     // 5) Tạo variant từ base + selections
@@ -284,11 +284,11 @@
     }
 
     // 9) Render ra UI (giá, ảnh, text…)
-    selectVariantV4(variant);
+    selectVariant(variant);
   }
 
   // ====== Render giá/ảnh/nhãn voucher ======
-  function selectVariantV4(data) {
+  function selectVariant(data) {
     // ✅ Nếu có __voucherWaiting → gán vào voucherByProduct
     if (window.__voucherWaiting?.amount) {
       window.voucherByProduct = window.voucherByProduct || {};
@@ -359,13 +359,13 @@
   }
 
   // ====== ATC / Cart / Popup ======
-  function changeQuantityV4(delta) {
+  function changeQuantity(delta) {
     const input = $("#quantityInput");
     const value = parseInt(input?.value || "1", 10);
     if (input) input.value = Math.max(1, value + delta);
   }
 
-  function toggleCartPopupV4(show = true) {
+  function toggleCartPopup(show = true) {
     const popup = $("#cartPopup");
     const content = popup?.querySelector(".cart-popup-content");
     if (!popup || !content) return;
@@ -396,7 +396,7 @@
         e.stopImmediatePropagation();
 
         if (!isCartPopupOpen) {
-          toggleCartPopupV4(true);
+          toggleCartPopup(true);
           return;
         }
 
@@ -467,7 +467,7 @@
           })
         }).catch(err => console.warn("⚠️ Không thể gửi Make:", err));
 
-        toggleCartPopupV4(false);
+        toggleCartPopup(false);
         if (typeof window.showCheckoutPopup === "function") window.showCheckoutPopup();
       });
     }
@@ -483,32 +483,32 @@
 
   // ====== expose minimal APIs (tuỳ trang có thể gọi) ======
   window.cartpopupV4 = {
-    changeQuantity: changeQuantityV4,
-    toggle: toggleCartPopupV4,
-    refresh: updateSelectedVariantV4
+    changeQuantity: changeQuantity,
+    toggle: toggleCartPopup,
+    refresh: updateSelectedVariant
   };
 
   // ====== Wireup ======
   document.addEventListener("DOMContentLoaded", () => {
     // Close buttons
     $$(".cart-popup-close, .cart-popup-overlay").forEach(btn =>
-      btn.addEventListener("click", () => toggleCartPopupV4(false))
+      btn.addEventListener("click", () => toggleCartPopup(false))
     );
 
     // Form toggle alias
-    window.toggleForm = () => toggleCartPopupV4(true);
+    window.toggleForm = () => toggleCartPopup(true);
 
     // Init
-    initCartPopupV4();
+    initCartPopup();
   });
 // --- Expose & auto-init ---
-window.initCartPopupV4 = initCartPopupV4; // cho phép trang gọi trực tiếp
+window.initCartPopup = initCartPopup; // cho phép trang gọi trực tiếp
 
 if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", () => initCartPopupV4());
+  document.addEventListener("DOMContentLoaded", () => initCartPopup());
 } else {
   // Nếu file được nạp sau DOMContentLoaded, vẫn init được
-  initCartPopupV4();
+  initCartPopup();
 }
 
 })();
