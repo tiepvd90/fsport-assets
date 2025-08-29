@@ -501,5 +501,14 @@
     // Init
     initCartPopupV4();
   });
+// --- Expose & auto-init ---
+window.initCartPopupV4 = initCartPopupV4; // cho phép trang gọi trực tiếp
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", () => initCartPopupV4());
+} else {
+  // Nếu file được nạp sau DOMContentLoaded, vẫn init được
+  initCartPopupV4();
+}
 
 })();
