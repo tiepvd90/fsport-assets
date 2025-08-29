@@ -1,5 +1,5 @@
 /* =========================================================================
- * cartpopup-4p.js — v4 (multi-variant with conditional visibility)
+ * cartpopup-4p.js —  (multi-variant with conditional visibility)
  * - Hỗ trợ thuộc tính phụ thuộc "when"
  * - "when" có thể là object {Key:[...]} hoặc string "Key=Value"
  * - Chỉ bắt buộc chọn các nhóm đang hiển thị
@@ -72,7 +72,7 @@
           );
 
           renderOptions(window.allAttributes);
-          bindAddToCartButtonV4();
+          bindAddToCartButton();
         } else {
           console.error("❌ JSON không đúng định dạng.", data);
         }
@@ -377,7 +377,7 @@
       content.classList.add("animate-slideup");
       popup.classList.remove("hidden");
       isCartPopupOpen = true;
-      setTimeout(() => bindAddToCartButtonV4(), 100);
+      setTimeout(() => bindAddToCartButton(), 100);
     } else {
       content.classList.remove("animate-slideup");
       popup.classList.add("hidden");
@@ -386,7 +386,7 @@
     }
   }
 
-  function bindAddToCartButtonV4() {
+  function bindAddToCartButton() {
     const atcBtn = $("#btn-atc");
     if (atcBtn && !isCartEventBound) {
       isCartEventBound = true;
@@ -438,7 +438,7 @@
           loai,
           voucher: voucherAmount > 0 ? { amount: voucherAmount } : undefined
         });
-        saveCartV4();
+        saveCart();
 
         // Pixels (nếu có)
         if (typeof window.trackBothPixels === "function") {
@@ -473,7 +473,7 @@
     }
   }
 
-  function saveCartV4() {
+  function saveCart() {
     try {
       localStorage.setItem("cart", JSON.stringify(window.cart));
     } catch (e) {
@@ -482,7 +482,7 @@
   }
 
   // ====== expose minimal APIs (tuỳ trang có thể gọi) ======
-  window.cartpopupV4 = {
+  window.cartpopup = {
     changeQuantity: changeQuantity,
     toggle: toggleCartPopup,
     refresh: updateSelectedVariant
