@@ -1,0 +1,67 @@
+{
+  "category": "art",
+  "mainImageKey": "Thiết Kế",
+  "thuộc_tính": [
+    {
+      "label": "Thiết Kế",
+      "key": "Thiết Kế",
+      "display": "thumbnail",
+      "values": [
+        {
+          "text": "GK01",
+          "image": "/assets/images/gallery/art/goku/8.jpg"
+        },
+		    {
+          "text": "GK02",
+          "image": "/assets/images/gallery/art/goku/3.jpg"
+        },
+        {
+          "text": "GK03",
+          "image": "/assets/images/gallery/art/goku/4.jpg"
+        },
+        {
+          "text": "GK04",
+          "image": "/assets/images/gallery/art/goku/5.jpg"
+        },
+        {
+          "text": "GK05",
+          "image": "/assets/images/gallery/art/goku/6.jpg"
+        },
+        {
+          "text": "GK06",
+          "image": "/assets/images/gallery/art/goku/7.jpg"
+        }
+      ]
+    },
+    {
+      "label": "Kích cỡ",
+      "key": "Kích cỡ",
+      "display": "button",
+      "values": [
+        {
+          "text": "Nhỏ 30x40cm",
+          "GiaOverride": 65000,
+          "GiaGocOverride": 100000
+        },
+        {
+          "text": "Vừa 40x60cm",
+          "GiaOverride": 79000,
+          "GiaGocOverride": 120000
+        },
+		{
+          "text": "To 50x70cm",
+          "GiaOverride": 119000,
+          "GiaGocOverride": 170000
+        }
+      ]
+    }
+  ],
+  "biến_thể": [
+    {
+      "id": "goku",
+      "category": "art",
+      "Giá": 65000,
+      "Giá gốc": 100000
+    }
+  ]
+}
