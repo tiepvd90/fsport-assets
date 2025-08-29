@@ -9,6 +9,7 @@
     zen: { count: 10, format: "jpg" },
     girl: { count: 6, format: "jpg" },
     zen2: { count: 9, format: "jpg" },
+    goku: { count: 8, format: "jpg" },
     // thêm cấu hình khác nếu cần
   };
 
