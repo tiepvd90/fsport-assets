@@ -152,7 +152,7 @@
         const map = await fetchVoucherMap();
         window.__vouchersRaw = map[window.loai] || {};
         window.voucherByProduct = {};
-        initCartPopupV4();
+        initCartPopup();
       }, 100);
     }
 
