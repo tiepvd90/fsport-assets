@@ -5,6 +5,10 @@
 // - Tương thích việc inject HTML muộn qua fetch("/html/thanksandupsell.html")
 // - Giữ tương thích với code cũ: showThankyouPopup()/hideThankyouPopup()
 // ===================================================
+(function () {
+  console.log("[thanksandupsell] JS module loaded");
+  // ... phần còn lại giữ nguyên bản FINAL trước đó ...
+})();
 
 (function () {
   // ====== Cấu hình nhanh ======
