@@ -3,7 +3,7 @@
      style="position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 9999; display: none; align-items: center; justify-content: center; font-family: 'Be Vietnam Pro', sans-serif;">
   <div style="background: white; padding: 28px 24px; border-radius: 14px; max-width: 90%; width: 380px; text-align: center; position: relative; box-shadow: 0 6px 16px rgba(0,0,0,0.25);">
 
-    <!-- ❌ Nút đóng -->
+    <!-- ❌ Nút đóng góc -->
     <button onclick="hideThankyouPopup()" 
             style="position: absolute; top: 12px; right: 14px; background: none; border: none; font-size: 28px; font-weight: bold; color: #000; cursor: pointer; line-height: 1;">
       ×
@@ -15,7 +15,7 @@
     </h3>
 
     <!-- =============================== -->
-    <!-- ⚡ UPSELL: hiện chỉ khi pickleball -->
+    <!-- ⚡ UPSELL: chỉ hiện khi productCategory = 'pickleball' -->
     <!-- =============================== -->
     <div id="upsellBlock" style="display:none; border: 1px solid #eee; border-radius: 12px; padding: 18px; text-align: center; margin-bottom: 16px;">
       <img src="https://i.postimg.cc/N0mGVKsP/1.webp" alt="Bóng Pickleball"
@@ -41,6 +41,7 @@
     <!-- ✅ THANKS: luôn hiển thị -->
     <!-- =============================== -->
     <div id="thanksBlock" style="border: 1px dashed #e0e0e0; border-radius: 12px; padding: 16px; text-align: left;">
+      <!-- (ĐÃ BỎ ICON ZALO) -->
       <p style="margin:0; font-size:15px; line-height:1.55; color:#333;">
         <b>Fun-Sport</b> đã nhận được thông tin đơn hàng.<br>
         Nếu cần vận chuyển hàng sớm hơn, vui lòng liên hệ Zalo/SĐT:
@@ -53,10 +54,60 @@
         </a>
         <button onclick="hideThankyouPopup()"
                 style="flex:1; background:#000; color:#fff; border:none; text-align:center; padding:10px 0; border-radius:10px; font-weight:700; cursor:pointer;">
-          Đóng
+          ĐÓNG
         </button>
       </div>
     </div>
 
   </div>
 </div>
+
+<script>
+// Hiển thị popup
+function showThankyouPopup() {
+  // Điều kiện hiển thị upsell theo productCategory
+  var cat = (window.productCategory || "").toLowerCase();
+  var showUpsell = (cat === "pickleball");
+  var upsellEl = document.getElementById("upsellBlock");
+  if (upsellEl) upsellEl.style.display = showUpsell ? "block" : "none";
+
+  document.getElementById("thankyouPopup").style.display = "flex";
+  document.body.style.overflow = "hidden";
+}
+
+// Ẩn popup
+function hideThankyouPopup() {
+  document.getElementById("thankyouPopup").style.display = "none";
+  document.body.style.overflow = "";
+}
+
+// ✅ Gửi thông tin upsell + checkoutInfo (giữ NGUYÊN xử lý qua Make)
+function buyUpsellBalls() {
+  const saved = JSON.parse(localStorage.getItem("checkoutInfo") || "{}");
+
+  fetch("https://hook.eu2.make.com/nesjrnsxqti4h10pncwkq6zkohstmlx1", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      product: "Combo 5 bóng pickleball dạ quang",
+      offer: "Giảm 10%",
+      price: "130000",
+      source: "thankyouPopup",
+      customer: {
+        name: saved.name || "",
+        phone: saved.phone || "",
+        address: saved.address || ""
+      }
+    })
+  })
+  .then(res => {
+    console.log("Upsell đã gửi:", res.status);
+    alert("✅ Đã thêm combo 5 bóng vào đơn hàng!");
+    hideThankyouPopup();
+  })
+  .catch(err => {
+    console.error("Lỗi upsell:", err);
+    hideThankyouPopup();
+  });
+}
+</script>
