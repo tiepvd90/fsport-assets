@@ -1,80 +1,72 @@
-<!-- ✅ POPUP CẢM ƠN + UPSELL -->
-<div id="thankyouPopup"
-     style="position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 9999; display: none; align-items: center; justify-content: center; font-family: 'Be Vietnam Pro', sans-serif;">
-  <div style="background: white; padding: 28px 24px; border-radius: 14px; max-width: 90%; width: 380px; text-align: center; position: relative; box-shadow: 0 6px 16px rgba(0,0,0,0.25);">
+<!-- ✅ POPUP CẢM ƠN + (UPSSELL nếu pickleball) -->
+<div id="thankyouPopup" class="thankyou-overlay" role="dialog" aria-modal="true" style="display:none;">
+  <div class="thankyou-box">
+    <!-- Nút đóng -->
+    <button class="thankyou-close" onclick="window.thanksAndUpsell?.hide()" aria-label="Đóng">×</button>
 
-    <!-- ❌ Nút đóng -->
-    <button onclick="hideThankyouPopup()" 
-            style="position: absolute; top: 12px; right: 14px; background: none; border: none; font-size: 28px; font-weight: bold; color: #000; cursor: pointer; line-height: 1;">
-      ×
-    </button>
+    <!-- ===== UPSSELL BLOCK (đặt TRÊN CÙNG) =====
+         Module sẽ ẩn/hiện khối này tuỳ theo category -->
+    <div id="upsellBlock" class="upsell-block">
+      <div class="upsell-flex">
+        <img
+          class="upsell-img"
+          src="https://i.postimg.cc/N0mGVKsP/1.webp"
+          alt="Combo 5 bóng pickleball dạ quang"
+          loading="lazy"
+        />
+        <div class="upsell-info">
+          <div class="upsell-title">Ưu Đãi Thêm Cho Đơn Pickleball</div>
+          <p class="upsell-desc">
+            Giảm <strong>10%</strong> combo <strong>5 bóng thi đấu dạ quang</strong> – chỉ còn
+            <span class="upsell-price">130.000₫</span>.
+          </p>
 
-    <!-- 🎉 Tiêu đề -->
-    <h3 style="color: #2e7d32; font-size: 22px; margin-bottom: 20px; font-weight: 700;">
-      🎉 CẢM ƠN BẠN ĐÃ ĐẶT HÀNG!
-    </h3>
+          <div class="upsell-actions">
+            <button id="upsellBtn" class="upsell-btn" onclick="window.thanksAndUpsell?.handleUpsellOrder()">
+              THÊM COMBO 5 BÓNG – 130.000₫
+            </button>
+            <button class="upsell-secondary" onclick="window.thanksAndUpsell?.hide()">
+              ĐỂ SAU
+            </button>
+          </div>
 
-    <!-- ⚡ UPSELL BÓNG -->
-    <div style="border: 1px solid #eee; border-radius: 12px; padding: 18px; text-align: center;">
-      <img src="https://i.postimg.cc/N0mGVKsP/1.webp" alt="Bóng Pickleball"
-           style="width: 160px; margin: 0 auto 16px auto; display: block; border-radius: 8px;">
-      <p style="font-size: 16px; margin-bottom: 18px; line-height: 1.6; color: #333; font-weight: 500;">
-        Bạn đang được <b style="color:#e63946;">giảm 10%</b> khi mua<br>
-        <b>combo 5 bóng thi đấu dạ quang</b>, chỉ còn <b style="color:#e63946;">130k</b>.<br>
-        Bạn có muốn mua luôn không?
-      </p>
-      <div style="display: flex; justify-content: center; gap: 14px;">
-        <button onclick="buyUpsellBalls()" 
-                style="flex: 1; background: #e63946; color: #fff; padding: 12px 0; border: none; border-radius: 10px; cursor: pointer; font-weight: 700; font-size: 16px;">
-          MUA 5 BÓNG
-        </button>
-        <button onclick="hideThankyouPopup()" 
-                style="flex: 1; background: #ccc; color: #000; padding: 12px 0; border: none; border-radius: 10px; cursor: pointer; font-weight: 600; font-size: 16px;">
-          ĐỂ SAU
-        </button>
+          <div id="upsellStatus" class="upsell-status hidden">✅ Đã thêm combo 5 bóng vào đơn!</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== KHỐI CẢM ƠN (đặt BÊN DƯỚI, luôn hiển thị) ===== -->
+    <div id="thankyouMessage" class="thankyou-minimal" aria-live="polite">
+      <div class="thankyou-text">
+        <h3 class="thankyou-title">Đặt Hàng Thành Công</h3>
+        <p class="thankyou-note">
+          Cảm ơn bạn đã đặt hàng, chúng tôi đã nhận được thông tin và sẽ liên hệ lại.
+          Nếu cần hỗ trợ gửi hàng sớm, vui lòng liên hệ:
+        </p>
+      </div>
+
+      <!-- Liên hệ nhanh: icon-only -->
+      <div class="contact-icons">
+        <a
+          class="contact-icon"
+          href="https://m.me/funsport1"
+          target="_blank"
+          rel="noopener"
+          aria-label="Liên hệ qua Messenger"
+        >
+          <img src="https://i.postimg.cc/4y2DGCpz/icon-mess.webp" alt="Messenger" />
+        </a>
+
+        <a
+          class="contact-icon"
+          href="https://zalo.me/0384735980"
+          target="_blank"
+          rel="noopener"
+          aria-label="Liên hệ qua Zalo"
+        >
+          <img src="https://i.postimg.cc/76jKxxfM/zalo-2.webp" alt="Zalo" />
+        </a>
       </div>
     </div>
   </div>
 </div>
-
-<script>
-function showThankyouPopup() {
-  document.getElementById("thankyouPopup").style.display = "flex";
-  document.body.style.overflow = "hidden";
-}
-
-function hideThankyouPopup() {
-  document.getElementById("thankyouPopup").style.display = "none";
-  document.body.style.overflow = "";
-}
-
-// ✅ Gửi thông tin upsell + checkoutInfo
-function buyUpsellBalls() {
-  const saved = JSON.parse(localStorage.getItem("checkoutInfo") || "{}");
-
-  fetch("https://hook.eu2.make.com/nesjrnsxqti4h10pncwkq6zkohstmlx1", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      product: "Combo 5 bóng pickleball dạ quang",
-      offer: "Giảm 10%",
-      price: "130000",
-      source: "thankyouPopup",
-      customer: {
-        name: saved.name || "",
-        phone: saved.phone || "",
-        address: saved.address || ""
-      }
-    })
-  })
-  .then(res => {
-    console.log("Upsell đã gửi:", res.status);
-    alert("✅ Đã thêm combo 5 bóng vào đơn hàng!");
-    hideThankyouPopup();
-  })
-  .catch(err => {
-    console.error("Lỗi upsell:", err);
-    hideThankyouPopup();
-  });
-}
-</script>
