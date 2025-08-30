@@ -1,89 +1,132 @@
 // ===================================================
-// ✅ THANKS AND UPSELL MODULE
+// ✅ THANKS & UPSELL MODULE (v2)
+// - 1 popup duy nhất: luôn có khối "Cảm ơn" tối giản
+// - Nếu category === "pickleball" → hiển thị thêm khối upsell bóng ở TRÊN
+// - Tương thích inject HTML muộn (refresh refs mỗi lần gọi)
 // ===================================================
 
-window.thanksAndUpsell = (function () {
-  const popup = document.getElementById("thankyouPopup");
-  const upsellBlock = document.getElementById("upsellBlock");
-  const upsellBtn = document.getElementById("upsellBtn");
-  const upsellStatus = document.getElementById("upsellStatus");
+(function () {
+  // ---- Config có thể chỉnh nhanh tại đây ----
+  const CONFIG = {
+    UPSOLD_ID: "bongthidau",
+    UNIT_PRICE: 26000,          // giá 1 bóng
+    QUANTITY: 5,                // combo 5 bóng
+    TOTAL_PRICE: 130000,        // giá sau ưu đãi
+    HOOK_URL: "https://hook.eu2.make.com/your-upsell-hook-id", // 🔁 THAY bằng hook thực tế
+    BTN_LABEL_DEFAULT: "THÊM COMBO 5 BÓNG – 130.000₫",
+    BTN_LABEL_DONE: "ĐÃ THÊM COMBO",
+  };
 
+  // ---- Ref DOM: luôn làm tươi để hỗ trợ inject HTML muộn ----
+  const refs = {};
+  function refreshRefs() {
+    refs.popup = document.getElementById("thankyouPopup");
+    refs.upsellBlock = document.getElementById("upsellBlock");
+    refs.upsellBtn = document.getElementById("upsellBtn");
+    refs.upsellStatus = document.getElementById("upsellStatus");
+  }
+
+  // ---- State ----
   let hasUpsellBeenClicked = false;
 
-  // 🧠 Hàm chính để hiển thị popup cảm ơn + upsell nếu cần
+  // ---- Helper: lấy category hiệu lực theo trang ----
+  function getEffectiveCategory(category) {
+    return (category || window.productCategory || "").toLowerCase();
+  }
+
+  // ---------------------------------------------------
+  // 🧠 SHOW: mở popup cảm ơn, và tùy theo category sẽ bật upsell
+  // ---------------------------------------------------
   function show({ category = "", name = "", phone = "", address = "" } = {}) {
+    refreshRefs();
+    const popup = refs.popup;
+    const upsellBlock = refs.upsellBlock;
+    const upsellBtn = refs.upsellBtn;
+    const upsellStatus = refs.upsellStatus;
+
     if (!popup) return;
 
-    // Reset trạng thái
-    if (upsellBlock) upsellBlock.style.display = "none";
+    const effectiveCategory = getEffectiveCategory(category);
+
+    // Reset UI
+    if (upsellBlock) upsellBlock.classList.add("hidden");
     if (upsellStatus) upsellStatus.classList.add("hidden");
     if (upsellBtn) {
       upsellBtn.disabled = false;
-      upsellBtn.innerText = "MUA THÊM 5 BÓNG";
+      upsellBtn.innerText = CONFIG.BTN_LABEL_DEFAULT;
     }
     hasUpsellBeenClicked = false;
 
-    // Nếu là đơn hàng pickleball → hiện upsell
-    if (category.toLowerCase() === "pickleball") {
-      if (upsellBlock) upsellBlock.style.display = "block";
+    // Chỉ hiện upsell nếu là pickleball
+    if (effectiveCategory === "pickleball" && upsellBlock) {
+      upsellBlock.classList.remove("hidden");
     }
 
-    // Hiển thị popup
+    // Mở popup
     popup.style.display = "flex";
     document.body.style.overflow = "hidden";
 
-    // (Tuỳ chọn) lưu thông tin nếu cần sau này
+    // Lưu info khách cho đơn upsell
     window._lastCustomerInfo = { name, phone, address };
   }
 
-  // 🧼 Đóng popup cảm ơn
+  // ---------------------------------------------------
+  // 🧼 HIDE: đóng popup
+  // ---------------------------------------------------
   function hide() {
+    refreshRefs();
+    const popup = refs.popup;
     if (popup) popup.style.display = "none";
     document.body.style.overflow = "auto";
   }
 
-  // 🚀 Khi khách nhấn MUA THÊM 5 BÓNG
+  // ---------------------------------------------------
+  // 🚀 HANDLE UPSELL ORDER: gửi yêu cầu mua combo bóng
+  // ---------------------------------------------------
   function handleUpsellOrder() {
+    refreshRefs();
+    const upsellBtn = refs.upsellBtn;
+    const upsellStatus = refs.upsellStatus;
+
     if (hasUpsellBeenClicked) return;
     hasUpsellBeenClicked = true;
 
-    // Dữ liệu đơn upsell
     const upsellData = {
-      id: "bongthidau",
+      id: CONFIG.UPSOLD_ID,
       name: window._lastCustomerInfo?.name || "",
       phone: window._lastCustomerInfo?.phone || "",
       address: window._lastCustomerInfo?.address || "",
-      quantity: 5,
-      price: 26000,
-      total: 130000,
-      source: "upsell"
+      quantity: CONFIG.QUANTITY,
+      price: CONFIG.UNIT_PRICE,
+      total: CONFIG.TOTAL_PRICE,
+      source: "thankyouPopup-upsell",
     };
 
-    fetch("https://hook.eu2.make.com/your-upsell-hook-id", {
+    fetch(CONFIG.HOOK_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(upsellData)
+      body: JSON.stringify(upsellData),
     })
       .then(() => {
         if (upsellBtn) {
-          upsellBtn.innerText = "ĐÃ MUA";
+          upsellBtn.innerText = CONFIG.BTN_LABEL_DONE;
           upsellBtn.disabled = true;
         }
-        if (upsellStatus) {
-          upsellStatus.classList.remove("hidden");
-        }
+        if (upsellStatus) upsellStatus.classList.remove("hidden");
       })
-      .catch(err => {
+      .catch((err) => {
         console.error("❌ Lỗi gửi đơn upsell:", err);
         alert("Có lỗi khi thêm sản phẩm upsell. Vui lòng thử lại sau.");
         hasUpsellBeenClicked = false;
       });
   }
 
-  // Export
-  return {
+  // ---------------------------------------------------
+  // 🌐 Export ra global
+  // ---------------------------------------------------
+  window.thanksAndUpsell = {
     show,
     hide,
-    handleUpsellOrder
+    handleUpsellOrder,
   };
 })();
