@@ -10,7 +10,7 @@
     <!-- Nút đóng -->
     <button class="thankyou-close" onclick="hideThankyouPopup()" aria-label="Đóng">×</button>
 
-    <!-- ===== UPSSELL BLOCK (đặt TRÊN CÙNG) ===== -->
+    <!-- ===== UPSELL BLOCK (TRÊN CÙNG) ===== -->
     <div id="upsellBlock" class="upsell-block">
       <div class="upsell-flex">
         <img
@@ -42,7 +42,7 @@
       </div>
     </div>
 
-    <!-- ===== KHỐI CẢM ƠN (đặt BÊN DƯỚI, luôn hiển thị) ===== -->
+    <!-- ===== KHỐI CẢM ƠN (DƯỚI, luôn hiển thị) ===== -->
     <div id="thankyouMessage" class="thankyou-minimal" aria-live="polite">
       <div class="thankyou-text">
         <h3 class="thankyou-title">Đặt Hàng Thành Công</h3>
@@ -52,127 +52,17 @@
         </p>
       </div>
 
-      <!-- Liên hệ nhanh: icon-only -->
       <div class="contact-icons">
-        <a
-          class="contact-icon"
-          href="https://m.me/funsport1"
-          target="_blank"
-          rel="noopener"
-          aria-label="Liên hệ qua Messenger"
-        >
+        <a class="contact-icon" href="https://m.me/funsport1" target="_blank" rel="noopener" aria-label="Messenger">
           <img src="https://i.postimg.cc/4y2DGCpz/icon-mess.webp" alt="Messenger" />
         </a>
-
-        <a
-          class="contact-icon"
-          href="https://zalo.me/0384735980"
-          target="_blank"
-          rel="noopener"
-          aria-label="Liên hệ qua Zalo"
-        >
+        <a class="contact-icon" href="https://zalo.me/0384735980" target="_blank" rel="noopener" aria-label="Zalo">
           <img src="https://i.postimg.cc/76jKxxfM/zalo-2.webp" alt="Zalo" />
         </a>
       </div>
     </div>
   </div>
-
-  <!-- ⚙️ Inline script gói toàn bộ logic để chắc chắn chạy -->
-  <script>
-  (function () {
-    console.log("[thanksandupsell] HTML injected & self-contained bridge ready");
-
-    // ===== Config (sửa nếu cần) =====
-    const HOOK_URL = "https://hook.eu2.make.com/your-upsell-hook-id"; // 🔁 thay bằng hook thực
-    const COMBO_PRICE = 130000;
-    const UNIT_PRICE = 26000;
-    const QUANTITY = 5;
-
-    // ===== Cache refs =====
-    function $(id) { return document.getElementById(id); }
-    const popup = $("thankyouPopup");
-    const upsellBlock = $("upsellBlock");
-    const upsellBtn = $("upsellBtn");
-    const upsellStatus = $("upsellStatus");
-
-    // 🔧 Critical inline styles để overlay luôn hiện kể cả khi CSS ngoài chưa load
-    function applyCriticalOverlayStyles() {
-      popup.style.position = "fixed";
-      popup.style.inset = "0";
-      popup.style.background = "rgba(0,0,0,.6)";
-      popup.style.zIndex = "99999";
-      popup.style.display = "flex";
-      popup.style.alignItems = "center";
-      popup.style.justifyContent = "center";
-    }
-
-    // ===== API cũ (bridge) – được checkoutpopup.js gọi =====
-    window.showThankyouPopup = function () {
-      if (!popup) { console.warn("[thanksandupsell] #thankyouPopup not found"); return; }
-
-      // Reset UI lần mở mới
-      if (upsellStatus) upsellStatus.classList.add("hidden");
-      if (upsellBtn) {
-        upsellBtn.disabled = false;
-        upsellBtn.textContent = "THÊM COMBO 5 BÓNG – 130.000₫";
-      }
-
-      // Quyết định ẩn/hiện upsell theo category trang
-      const pageCat = (window.productCategory || "").toLowerCase();
-      if (pageCat === "pickleball") {
-        upsellBlock && upsellBlock.classList.remove("hidden");
-      } else {
-        upsellBlock && upsellBlock.classList.add("hidden");
-      }
-
-      // Bật overlay (critical style)
-      applyCriticalOverlayStyles();
-      document.body.style.overflow = "hidden";
-
-      // Lưu thông tin khách (nếu có) để gửi upsell
-      try {
-        window._lastCustomerInfo = JSON.parse(localStorage.getItem("checkoutInfo") || "{}");
-      } catch {
-        window._lastCustomerInfo = {};
-      }
-    };
-
-    window.hideThankyouPopup = function () {
-      if (!popup) return;
-      popup.style.display = "none";
-      document.body.style.overflow = "auto";
-    };
-
-    // ===== Nút mua upsell =====
-    upsellBtn && upsellBtn.addEventListener("click", function () {
-      if (upsellBtn.disabled) return;
-
-      const payload = {
-        id: "bongthidau",
-        name: (window._lastCustomerInfo && window._lastCustomerInfo.name) || "",
-        phone: (window._lastCustomerInfo && window._lastCustomerInfo.phone) || "",
-        address: (window._lastCustomerInfo && window._lastCustomerInfo.address) || "",
-        quantity: QUANTITY,
-        price: UNIT_PRICE,
-        total: COMBO_PRICE,
-        source: "thankyouPopup-upsell"
-      };
-
-      fetch(HOOK_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
-      })
-      .then(function () {
-        upsellBtn.textContent = "ĐÃ THÊM COMBO";
-        upsellBtn.disabled = true;
-        upsellStatus && upsellStatus.classList.remove("hidden");
-      })
-      .catch(function (err) {
-        console.error("❌ Lỗi upsell:", err);
-        alert("Có lỗi khi thêm sản phẩm upsell. Vui lòng thử lại sau.");
-      });
-    });
-  })();
-  </script>
 </div>
+
+<!-- ❗ ĐỂ NGOÀI #thankyouPopup để checkoutpopup.js có thể "queryAll('script')" và thực thi -->
+<script src="/js/thanksandupsell.js"></script>
