@@ -70,3 +70,42 @@
     </div>
   </div>
 </div>
+<script>
+(function () {
+  console.log("[thanksandupsell] HTML injected & bridge ready");
+
+  // Bridge: giữ tương thích với code cũ
+  window.showThankyouPopup = function () {
+    var el = document.getElementById("thankyouPopup");
+    if (!el) {
+      console.warn("[thanksandupsell] #thankyouPopup not found");
+      return;
+    }
+
+    // Bật popup ngay (fallback cơ bản)
+    el.style.display = "flex";
+    document.body.style.overflow = "hidden";
+
+    // Nếu module mới đã load → giao quyền cho module để xử lý upsell theo category
+    if (window.thanksAndUpsell && typeof window.thanksAndUpsell.show === "function") {
+      try {
+        const saved = JSON.parse(localStorage.getItem("checkoutInfo") || "{}");
+        window.thanksAndUpsell.show({
+          // category sẽ tự lấy từ window.productCategory nếu bạn không truyền
+          name: saved.name || "",
+          phone: saved.phone || "",
+          address: saved.address || "",
+        });
+      } catch (e) {
+        window.thanksAndUpsell.show();
+      }
+    }
+  };
+
+  window.hideThankyouPopup = function () {
+    var el = document.getElementById("thankyouPopup");
+    if (el) el.style.display = "none";
+    document.body.style.overflow = "auto";
+  };
+})();
+</script>
