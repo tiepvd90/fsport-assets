@@ -1,23 +1,26 @@
 // ===================================================
-// ✅ THANKS & UPSELL MODULE (v2)
-// - 1 popup duy nhất: luôn có khối "Cảm ơn" tối giản
-// - Nếu category === "pickleball" → hiển thị thêm khối upsell bóng ở TRÊN
-// - Tương thích inject HTML muộn (refresh refs mỗi lần gọi)
+// ✅ THANKS & UPSELL MODULE (FINAL)
+// - Popup duy nhất: luôn có khối "Cảm ơn" tối giản (bên dưới)
+// - Nếu category === "pickleball" → hiển thị thêm khối upsell bóng (ở TRÊN)
+// - Tương thích việc inject HTML muộn qua fetch("/html/thanksandupsell.html")
+// - Giữ tương thích với code cũ: showThankyouPopup()/hideThankyouPopup()
 // ===================================================
 
 (function () {
-  // ---- Config có thể chỉnh nhanh tại đây ----
+  // ====== Cấu hình nhanh ======
   const CONFIG = {
     UPSOLD_ID: "bongthidau",
-    UNIT_PRICE: 26000,          // giá 1 bóng
-    QUANTITY: 5,                // combo 5 bóng
-    TOTAL_PRICE: 130000,        // giá sau ưu đãi
-    HOOK_URL: "https://hook.eu2.make.com/your-upsell-hook-id", // 🔁 THAY bằng hook thực tế
+    UNIT_PRICE: 26000,        // giá 1 bóng
+    QUANTITY: 5,              // combo 5 bóng
+    TOTAL_PRICE: 130000,      // giá combo sau ưu đãi
+    // 🔁 THAY bằng hook upsell thực tế của bạn:
+    HOOK_URL: "https://hook.eu2.make.com/your-upsell-hook-id",
     BTN_LABEL_DEFAULT: "THÊM COMBO 5 BÓNG – 130.000₫",
     BTN_LABEL_DONE: "ĐÃ THÊM COMBO",
+    INJECT_TIMEOUT_MS: 2500,  // thời gian đợi HTML được inject (ms)
   };
 
-  // ---- Ref DOM: luôn làm tươi để hỗ trợ inject HTML muộn ----
+  // ====== Tham chiếu DOM (luôn làm tươi khi dùng) ======
   const refs = {};
   function refreshRefs() {
     refs.popup = document.getElementById("thankyouPopup");
@@ -26,29 +29,35 @@
     refs.upsellStatus = document.getElementById("upsellStatus");
   }
 
-  // ---- State ----
+  // Chờ HTML đã được inject vào DOM (nếu load muộn)
+  function ensureInjected(timeoutMs = CONFIG.INJECT_TIMEOUT_MS) {
+    return new Promise((resolve) => {
+      refreshRefs();
+      if (refs.popup) return resolve(true);
+
+      const start = Date.now();
+      const iv = setInterval(() => {
+        refreshRefs();
+        const ok = !!refs.popup;
+        const expired = Date.now() - start > timeoutMs;
+        if (ok || expired) {
+          clearInterval(iv);
+          resolve(ok);
+        }
+      }, 50);
+    });
+  }
+
+  // ====== State ======
   let hasUpsellBeenClicked = false;
 
-  // ---- Helper: lấy category hiệu lực theo trang ----
+  // ====== Helpers ======
   function getEffectiveCategory(category) {
     return (category || window.productCategory || "").toLowerCase();
   }
 
-  // ---------------------------------------------------
-  // 🧠 SHOW: mở popup cảm ơn, và tùy theo category sẽ bật upsell
-  // ---------------------------------------------------
-  function show({ category = "", name = "", phone = "", address = "" } = {}) {
-    refreshRefs();
-    const popup = refs.popup;
-    const upsellBlock = refs.upsellBlock;
-    const upsellBtn = refs.upsellBtn;
-    const upsellStatus = refs.upsellStatus;
-
-    if (!popup) return;
-
-    const effectiveCategory = getEffectiveCategory(category);
-
-    // Reset UI
+  function resetUpsellUI() {
+    const { upsellBlock, upsellBtn, upsellStatus } = refs;
     if (upsellBlock) upsellBlock.classList.add("hidden");
     if (upsellStatus) upsellStatus.classList.add("hidden");
     if (upsellBtn) {
@@ -56,8 +65,26 @@
       upsellBtn.innerText = CONFIG.BTN_LABEL_DEFAULT;
     }
     hasUpsellBeenClicked = false;
+  }
 
-    // Chỉ hiện upsell nếu là pickleball
+  // ===================================================
+  // 🧠 SHOW: mở popup cảm ơn + upsell (nếu pickleball)
+  // ===================================================
+  async function show({ category = "", name = "", phone = "", address = "" } = {}) {
+    const injected = await ensureInjected();
+    if (!injected) {
+      console.warn("[thanksAndUpsell] Không tìm thấy #thankyouPopup. Kiểm tra /html/thanksandupsell.html đã được inject.");
+      return;
+    }
+
+    const popup = refs.popup;
+    const upsellBlock = refs.upsellBlock;
+
+    // Reset UI mỗi lần mở
+    resetUpsellUI();
+
+    // Chỉ hiện upsell khi đúng category
+    const effectiveCategory = getEffectiveCategory(category);
     if (effectiveCategory === "pickleball" && upsellBlock) {
       upsellBlock.classList.remove("hidden");
     }
@@ -66,23 +93,22 @@
     popup.style.display = "flex";
     document.body.style.overflow = "hidden";
 
-    // Lưu info khách cho đơn upsell
+    // Lưu thông tin khách để gửi upsell
     window._lastCustomerInfo = { name, phone, address };
   }
 
-  // ---------------------------------------------------
+  // ===================================================
   // 🧼 HIDE: đóng popup
-  // ---------------------------------------------------
+  // ===================================================
   function hide() {
     refreshRefs();
-    const popup = refs.popup;
-    if (popup) popup.style.display = "none";
+    if (refs.popup) refs.popup.style.display = "none";
     document.body.style.overflow = "auto";
   }
 
-  // ---------------------------------------------------
-  // 🚀 HANDLE UPSELL ORDER: gửi yêu cầu mua combo bóng
-  // ---------------------------------------------------
+  // ===================================================
+  // 🚀 HANDLE UPSELL ORDER: gửi mua combo bóng
+  // ===================================================
   function handleUpsellOrder() {
     refreshRefs();
     const upsellBtn = refs.upsellBtn;
@@ -121,12 +147,29 @@
       });
   }
 
-  // ---------------------------------------------------
-  // 🌐 Export ra global
-  // ---------------------------------------------------
-  window.thanksAndUpsell = {
-    show,
-    hide,
-    handleUpsellOrder,
+  // ===================================================
+  // 🌉 Bridge tương thích: giữ nguyên code cũ gọi showThankyouPopup()
+  // ===================================================
+  window.showThankyouPopup = function () {
+    try {
+      const saved = JSON.parse(localStorage.getItem("checkoutInfo") || "{}");
+      window.thanksAndUpsell?.show({
+        // category sẽ tự lấy từ window.productCategory nếu không truyền
+        name: saved.name || "",
+        phone: saved.phone || "",
+        address: saved.address || "",
+      });
+    } catch {
+      window.thanksAndUpsell?.show();
+    }
   };
+
+  window.hideThankyouPopup = function () {
+    window.thanksAndUpsell?.hide();
+  };
+
+  // ===================================================
+  // 🔁 Export module
+  // ===================================================
+  window.thanksAndUpsell = { show, hide, handleUpsellOrder };
 })();
