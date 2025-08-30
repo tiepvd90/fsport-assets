@@ -1,10 +1,9 @@
 // ===================================================
-// ✅ THANKS & UPSELL BRIDGE (TƯƠNG THÍCH checkoutpopup.js)
-// - Không sửa checkoutpopup.js
-// - Tự động "bọc" showThankyouPopup()/hideThankyouPopup() để:
-//   + Bật/tắt upsell theo window.productCategory
-//   + Gửi upsell khi bấm nút
-// - Có critical inline styles để overlay luôn hiện nếu CSS chưa tải
+// ✅ THANKS & UPSELL BRIDGE (V3 - Wait for Inject)
+// - KHÔNG sửa checkoutpopup.js
+// - Đảm bảo: nếu showThankyouPopup() bị gọi TRƯỚC khi HTML inject xong,
+//   sẽ đợi #thankyouPopup xuất hiện rồi mới hiển thị.
+// - Upsell chỉ hiện khi window.productCategory === "pickleball"
 // ===================================================
 
 (function () {
@@ -53,31 +52,54 @@
     }
   }
 
+  // ---- Đợi #thankyouPopup xuất hiện (do inject async) ----
+  function waitForPopup(timeoutMs = 3000) {
+    return new Promise((resolve) => {
+      const { popup } = refreshRefs();
+      if (popup) return resolve(true);
+
+      const start = Date.now();
+      const iv = setInterval(() => {
+        const ok = !!$id("thankyouPopup");
+        const expired = Date.now() - start > timeoutMs;
+        if (ok || expired) {
+          clearInterval(iv);
+          resolve(ok);
+        }
+      }, 40);
+    });
+  }
+
   // ---- Bọc các hàm global cũ nếu tồn tại, nếu chưa có thì tạo ----
   const originalShow = window.showThankyouPopup;
   const originalHide = window.hideThankyouPopup;
 
-  window.showThankyouPopup = function () {
+  window.showThankyouPopup = async function () {
+    // 1) Đợi HTML inject xong
+    const ready = await waitForPopup();
     const refs = refreshRefs();
-    if (!refs.popup) {
-      console.warn("[thanksandupsell] #thankyouPopup not found in DOM");
-      return originalShow ? originalShow() : void 0;
+
+    if (!ready || !refs.popup) {
+      console.warn("[thanksandupsell] #thankyouPopup not found after waiting");
+      // fallback: nếu có hàm cũ thì gọi, nếu không thì thôi
+      if (typeof originalShow === "function") originalShow();
+      return;
     }
 
-    // 1) Gọi hàm cũ (giữ hành vi: set display:flex, lock scroll)
+    // 2) Gọi hàm cũ để giữ hành vi (inline display:flex + lock scroll)
     if (typeof originalShow === "function") {
       originalShow();
     } else {
-      // Fallback nếu chưa định nghĩa: tự bật overlay + lock scroll
+      // hoặc tự bật nếu chưa có hàm cũ
       applyCriticalOverlayStyles(refs.popup);
       document.body.style.overflow = "hidden";
     }
 
-    // 2) Áp logic mới: upsell theo category + reset UI
+    // 3) Áp logic upsell + reset UI
     resetUpsellUI(refs);
     showUpsellAccordingToCategory(refs);
 
-    // 3) Lưu info khách để gửi upsell (nếu có)
+    // 4) Lưu info khách (dùng cho upsell)
     try {
       window._lastCustomerInfo = JSON.parse(localStorage.getItem("checkoutInfo") || "{}");
     } catch { window._lastCustomerInfo = {}; }
@@ -94,40 +116,54 @@
   };
 
   // ---- Gắn handler cho nút upsell (sau khi HTML đã inject) ----
-  // Vì file này được load SAU khi checkoutpopup.js append popup + script,
-  // nên tại thời điểm này DOM đã có #thankyouPopup.
-  (function bindUpsellButton() {
-    const refs = refreshRefs();
-    if (!refs.upsellBtn) return; // phòng khi HTML lỗi
-    refs.upsellBtn.addEventListener("click", function () {
-      if (refs.upsellBtn.disabled) return;
+  (function bindUpsellButtonWithRetry() {
+    // Gắn ngay nếu đã có
+    let refs = refreshRefs();
+    if (refs.upsellBtn) {
+      attach();
+      return;
+    }
+    // Nếu chưa có (do inject muộn), retry ngắn
+    const start = Date.now();
+    const iv = setInterval(() => {
+      refs = refreshRefs();
+      if (refs.upsellBtn || Date.now() - start > 3000) {
+        clearInterval(iv);
+        if (refs.upsellBtn) attach();
+      }
+    }, 60);
 
-      const payload = {
-        id: "bongthidau",
-        name: (window._lastCustomerInfo && window._lastCustomerInfo.name) || "",
-        phone: (window._lastCustomerInfo && window._lastCustomerInfo.phone) || "",
-        address: (window._lastCustomerInfo && window._lastCustomerInfo.address) || "",
-        quantity: QUANTITY,
-        price: UNIT_PRICE,
-        total: COMBO_PRICE,
-        source: "thankyouPopup-upsell",
-      };
+    function attach() {
+      refs.upsellBtn.addEventListener("click", function () {
+        if (refs.upsellBtn.disabled) return;
 
-      fetch(HOOK_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      })
-      .then(function () {
-        refs.upsellBtn.textContent = "ĐÃ THÊM COMBO";
-        refs.upsellBtn.disabled = true;
-        refs.upsellStatus && refs.upsellStatus.classList.remove("hidden");
-      })
-      .catch(function (err) {
-        console.error("❌ Lỗi upsell:", err);
-        alert("Có lỗi khi thêm sản phẩm upsell. Vui lòng thử lại sau.");
+        const payload = {
+          id: "bongthidau",
+          name: (window._lastCustomerInfo && window._lastCustomerInfo.name) || "",
+          phone: (window._lastCustomerInfo && window._lastCustomerInfo.phone) || "",
+          address: (window._lastCustomerInfo && window._lastCustomerInfo.address) || "",
+          quantity: QUANTITY,
+          price: UNIT_PRICE,
+          total: COMBO_PRICE,
+          source: "thankyouPopup-upsell",
+        };
+
+        fetch(HOOK_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        })
+        .then(function () {
+          refs.upsellBtn.textContent = "ĐÃ THÊM COMBO";
+          refs.upsellBtn.disabled = true;
+          refs.upsellStatus && refs.upsellStatus.classList.remove("hidden");
+        })
+        .catch(function (err) {
+          console.error("❌ Lỗi upsell:", err);
+          alert("Có lỗi khi thêm sản phẩm upsell. Vui lòng thử lại sau.");
+        });
       });
-    });
+    }
   })();
 
 })();
