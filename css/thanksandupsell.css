@@ -1,14 +1,27 @@
-.thankyou-box {
-  background: white;
-  padding: 24px 20px;
-  border-radius: 12px;
-  max-width: 90%;
-  width: 360px;
-  text-align: center;
-  position: relative;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+/* ===== Overlay (tùy chọn, nếu dùng class thay vì inline) ===== */
+.thankyou-overlay {
+  position: fixed;
+  inset: 0;
+  display: none;                 /* hiển thị bằng JS: flex */
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,0.6);
+  z-index: 9999;
 }
 
+/* ===== Card chính ===== */
+.thankyou-box {
+  background: #fff;
+  padding: 18px 16px;            /* giảm padding để gọn chiều cao */
+  border-radius: 14px;
+  width: min(380px, 92vw);
+  text-align: left;
+  position: relative;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+  font-family: 'Be Vietnam Pro', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+}
+
+/* Nút đóng */
 .thankyou-close {
   position: absolute;
   top: 10px;
@@ -16,59 +29,17 @@
   background: none;
   border: none;
   font-size: 26px;
-  font-weight: bold;
+  font-weight: 700;
   color: #000;
   cursor: pointer;
+  line-height: 1;
 }
 
-.thankyou-title {
-  color: green;
-  font-size: 20px;
-  margin-bottom: 12px;
-}
-
-.thankyou-subtitle {
-  margin-bottom: 20px;
-  font-size: 14px;
-}
-
-.thankyou-contact {
-  display: flex;
-  justify-content: center;
-  gap: 12px;
-  margin-bottom: 16px;
-}
-
-.contact-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 8px 14px;
-  border-radius: 8px;
-  font-weight: 500;
-  font-size: 14px;
-  color: white;
-  text-decoration: none;
-}
-
-.contact-btn img {
-  width: 22px;
-  height: 22px;
-}
-
-.zalo-btn {
-  background: #0084ff;
-}
-
-.mess-btn {
-  background: #006AFF;
-}
-
-/* === UPSALE BLOCK === */
+/* ===== Khối UPSELL (đặt ở TRÊN) ===== */
 .upsell-block {
-  border-top: 1px dashed #ccc;
-  padding-top: 16px;
-  text-align: left;
+  margin-bottom: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px dashed #e5e5e5; /* phân tách với khối cảm ơn bên dưới */
 }
 
 .upsell-flex {
@@ -78,51 +49,139 @@
 }
 
 .upsell-img {
-  width: 72px;
-  height: 72px;
-  border-radius: 8px;
+  width: 88px;
+  height: 88px;
+  border-radius: 10px;
   object-fit: cover;
   flex-shrink: 0;
 }
 
 .upsell-info {
-  flex-grow: 1;
+  flex: 1;
+  min-width: 0;
 }
 
 .upsell-title {
-  font-size: 14px;
-  font-weight: 600;
-  margin-bottom: 4px;
+  font-size: 15px;
+  font-weight: 700;
+  margin: 0 0 2px 0;
+  color: #111;
 }
 
 .upsell-desc {
   font-size: 13px;
-  color: #333;
+  color: #444;
+  margin: 0 0 6px 0;
+  line-height: 1.45;
 }
 
 .upsell-price {
-  font-size: 15px;
-  color: red;
-  font-weight: bold;
+  font-size: 16px;
+  font-weight: 800;
+  color: #e53935;
+}
+
+.upsell-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 8px;
 }
 
 .upsell-btn {
-  margin-top: 6px;
-  background: black;
-  color: white;
-  padding: 6px 10px;
-  font-size: 13px;
+  flex: 1;
+  background: #111;
+  color: #fff;
+  padding: 10px 12px;
+  font-size: 14px;
+  font-weight: 700;
   border: none;
-  border-radius: 6px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.upsell-secondary {
+  flex: 1;
+  background: #eee;
+  color: #111;
+  padding: 10px 12px;
+  font-size: 14px;
+  font-weight: 600;
+  border: none;
+  border-radius: 10px;
   cursor: pointer;
 }
 
 .upsell-status {
   font-size: 12px;
   margin-top: 6px;
-  color: green;
+  color: #2e7d32;
 }
 
+/* ===== Khối CẢM ƠN (đặt BÊN DƯỚI, tối giản chiều cao) ===== */
+.thankyou-minimal {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.thankyou-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.thankyou-title {
+  margin: 0 0 4px 0;
+  font-size: 18px;               /* nhỏ gọn hơn */
+  font-weight: 800;
+  color: #111;
+  line-height: 1.2;
+}
+
+.thankyou-note {
+  margin: 0;
+  font-size: 13px;
+  color: #333;
+  line-height: 1.45;
+}
+
+/* Hàng icon liên hệ (icon-only) */
+.contact-icons,
+.thankyou-contact {               /* alias để tương thích */
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.contact-icon {
+  width: 28px;
+  height: 28px;
+  display: inline-flex;
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+  transition: transform 0.08s ease;
+}
+
+.contact-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.contact-icon:active {
+  transform: scale(0.96);
+}
+
+/* ===== Trạng thái ẩn ===== */
 .hidden {
   display: none !important;
+}
+
+/* ===== Nhỏ hơn 340px: co giãn gọn hơn ===== */
+@media (max-width: 340px) {
+  .thankyou-box { padding: 16px 12px; }
+  .upsell-img { width: 80px; height: 80px; }
+  .thankyou-title { font-size: 17px; }
+  .contact-icon { width: 26px; height: 26px; }
 }
