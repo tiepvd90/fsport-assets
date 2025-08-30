@@ -1,4 +1,4 @@
-<!-- ✅ POPUP CẢM ƠN + UPSELL -->
+<!-- ✅ POPUP CẢM ƠN -->
 <div id="thankyouPopup"
      style="position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 9999; display: none; align-items: center; justify-content: center; font-family: 'Be Vietnam Pro', sans-serif;">
   <div style="background: white; padding: 28px 24px; border-radius: 14px; max-width: 90%; width: 380px; text-align: center; position: relative; box-shadow: 0 6px 16px rgba(0,0,0,0.25);">
@@ -10,12 +10,14 @@
     </button>
 
     <!-- 🎉 Tiêu đề -->
-    <h3 style="color: #2e7d32; font-size: 22px; margin-bottom: 20px; font-weight: 700;">
+    <h3 style="color: #2e7d32; font-size: 22px; margin-bottom: 16px; font-weight: 700;">
       🎉 CẢM ƠN BẠN ĐÃ ĐẶT HÀNG!
     </h3>
 
-    <!-- ⚡ UPSELL BÓNG -->
-    <div style="border: 1px solid #eee; border-radius: 12px; padding: 18px; text-align: center;">
+    <!-- =============================== -->
+    <!-- ⚡ UPSELL: hiện chỉ khi pickleball -->
+    <!-- =============================== -->
+    <div id="upsellBlock" style="display:none; border: 1px solid #eee; border-radius: 12px; padding: 18px; text-align: center; margin-bottom: 16px;">
       <img src="https://i.postimg.cc/N0mGVKsP/1.webp" alt="Bóng Pickleball"
            style="width: 160px; margin: 0 auto 16px auto; display: block; border-radius: 8px;">
       <p style="font-size: 16px; margin-bottom: 18px; line-height: 1.6; color: #333; font-weight: 500;">
@@ -35,12 +37,11 @@
       </div>
     </div>
 
-    <!-- ───────────────────────────────────────────── -->
-    <!-- ✅ THANKS POPUP (bên dưới phần upsell) -->
-    <!-- ───────────────────────────────────────────── -->
-    <div style="margin-top: 16px; border: 1px dashed #e0e0e0; border-radius: 12px; padding: 16px; text-align: left;">
+    <!-- =============================== -->
+    <!-- ✅ THANKS: luôn hiển thị -->
+    <!-- =============================== -->
+    <div id="thanksBlock" style="border: 1px dashed #e0e0e0; border-radius: 12px; padding: 16px; text-align: left;">
       <div style="display:flex; align-items:flex-start; gap:12px;">
-        <!-- Icon Zalo (tuỳ chọn) -->
         <img src="https://i.postimg.cc/76jKxxfM/zalo-2.webp" alt="Zalo" 
              style="width:36px; height:36px; flex:0 0 36px; object-fit:contain;">
         <div style="flex:1;">
@@ -49,8 +50,6 @@
             Nếu cần vận chuyển hàng sớm hơn, vui lòng liên hệ Zalo/SĐT:
             <b>0384735980</b>.
           </p>
-
-          <!-- Hành động nhanh -->
           <div style="display:flex; gap:10px; margin-top:12px;">
             <a href="https://zalo.me/0384735980" 
                style="flex:1; text-decoration:none; text-align:center; border:1px solid #2e7d32; color:#2e7d32; padding:10px 0; border-radius:10px; font-weight:600;">
@@ -69,11 +68,19 @@
 </div>
 
 <script>
+// Hiển thị popup
 function showThankyouPopup() {
+  // Điều kiện hiển thị upsell theo productCategory
+  var cat = (window.productCategory || "").toLowerCase();
+  var showUpsell = (cat === "pickleball");
+  var upsellEl = document.getElementById("upsellBlock");
+  if (upsellEl) upsellEl.style.display = showUpsell ? "block" : "none";
+
   document.getElementById("thankyouPopup").style.display = "flex";
   document.body.style.overflow = "hidden";
 }
 
+// Ẩn popup
 function hideThankyouPopup() {
   document.getElementById("thankyouPopup").style.display = "none";
   document.body.style.overflow = "";
