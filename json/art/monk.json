@@ -1,0 +1,90 @@
+{
+  "category": "art",
+  "mainImageKey": "Thiết Kế",
+  "thuộc_tính": [
+    {
+      "label": "Thiết Kế",
+      "key": "Thiết Kế",
+      "display": "thumbnail",
+      "values": [
+	  {
+          "text": "Set 6 Tranh",
+          "image": "/assets/images/gallery/art/monk/1.jpg"
+    },
+    {
+          "text": "MK01",
+          "image": "/assets/images/gallery/art/monk/2.jpg"
+    },
+		{
+          "text": "MK02",
+          "image": "/assets/images/gallery/art/monk/3.jpg"
+    },
+		{
+          "text": "MK03",
+          "image": "/assets/images/gallery/art/monk/4.jpg"
+    },
+		{
+          "text": "MK04",
+          "image": "/assets/images/gallery/art/monk/5.jpg"
+    },
+		{
+          "text": "MK05",
+          "image": "/assets/images/gallery/art/monk/6.jpg"
+    },
+		{
+          "text": "MK06",
+          "image": "/assets/images/gallery/art/monk/7.jpg"
+    } 
+      ]
+    },
+    {
+      "label": "Kích cỡ",
+      "key": "Kích cỡ",
+      "display": "button",
+      "values": [
+        {
+          "text": "Nhỏ 30x45cm",
+          "GiaOverride": 65000,
+          "GiaGocOverride": 100000
+        },
+        {
+          "text": "Vừa 40x60cm",
+          "GiaOverride": 79000,
+          "GiaGocOverride": 120000
+        },
+        {
+          "text": "To 50x75cm",
+          "GiaOverride": 119000,
+          "GiaGocOverride": 170000
+        }
+      ],
+      "when": { "Thiết Kế": ["MK01","MK02","MK03","MK04","MK05","MK06"] }
+    },
+    {
+      "label": "Kích cỡ Set Tranh",
+      "key": "Kích cỡ Set",
+      "display": "button",
+      "values": [
+        {
+          "text": "Set Tranh Vừa",
+          "GiaOverride": 99000,
+          "GiaGocOverride": 130000
+        },
+        {
+          "text": "Set Tranh Lớn",
+          "GiaOverride": 149000,
+          "GiaGocOverride": 200000
+        }
+      ],
+      "when": { "Thiết Kế": ["Set 6 Tranh"] }
+    }
+  ],
+  "biến_thể": [
+    {
+      "id": "monk",
+      "category": "art",
+      "Giá": 65000,
+      "Giá gốc": 100000
+    }
+  ]
+}
