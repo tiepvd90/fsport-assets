@@ -11,6 +11,7 @@
     zen2: { count: 9, format: "jpg" },
     goku: { count: 8, format: "jpg" },
     zen4: { count: 6, format: "jpg" },
+    monk: { count: 7, format: "jpg" },
     // thêm cấu hình khác nếu cần
   };
 
