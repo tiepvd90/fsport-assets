@@ -1,5 +1,75 @@
 [
   {
+  "itemId": "art-blossom-1",
+  "title": "Tranh Phong Cảnh Decor",
+  "price": 65000,
+  "originalPrice": 150000,
+  "contentType": "image",
+  "image": "https://i.postimg.cc/5NWkZ53D/1.jpg",
+  "youtube": "",
+  "productPage": "/art/blossom",
+  "tags": ["art", "decor", "tranh dán tường", "set 6 tranh", "phong cảnh", "hoa đào","blossom"],
+  "basePriority": 16,
+  "productCategory": "art",
+  "sellerID": "huyenle"
+},
+{
+  "itemId": "art-blossom-2",
+  "title": "Tranh Phong Cảnh Decor",
+  "price": 65000,
+  "originalPrice": 150000,
+  "contentType": "image",
+  "image": "https://i.postimg.cc/X7KD3Z1q/2.jpg",
+  "youtube": "",
+  "productPage": "/art/blossom",
+  "tags": ["art", "decor", "tranh dán tường", "set 6 tranh", "phong cảnh", "hoa đào","blossom"],
+  "basePriority": 16,
+  "productCategory": "art",
+  "sellerID": "huyenle"
+},
+{
+  "itemId": "art-blossom-3",
+  "title": "6 Tranh Phong Cảnh Decor",
+  "price": 65000,
+  "originalPrice": 150000,
+  "contentType": "image",
+  "image": "/assets/images/gallery/art/blossom/1.webp",
+  "youtube": "",
+  "productPage": "/art/blossom",
+  "tags": ["art", "decor", "tranh dán tường", "set 6 tranh", "phong cảnh", "hoa đào","blossom"],
+  "basePriority": 16,
+  "productCategory": "art",
+  "sellerID": "huyenle"
+},
+{
+  "itemId": "art-blossom-4",
+  "title": "Tranh Decor Phong Cảnh – Sự Hài Hòa Từ Thiên Nhiên",
+  "price": 65000,
+  "originalPrice": 150000,
+  "contentType": "image",
+  "image": "https://i.postimg.cc/wj0fyCpd/3.jpg",
+  "youtube": "",
+  "productPage": "/art/blossom",
+  "tags": ["art", "decor", "tranh dán tường", "set 6 tranh", "phong cảnh", "hoa đào","blossom"],
+  "basePriority": 16,
+  "productCategory": "art",
+  "sellerID": "huyenle"
+},
+{
+  "itemId": "art-blossom-5",
+  "title": "Bộ Tranh Phong Cảnh Nghệ Thuật – Sống Giữa Mây Trời",
+  "price": 65000,
+  "originalPrice": 150000,
+  "contentType": "image",
+  "image": "https://i.postimg.cc/3xKfwKzB/5.jpg",
+  "youtube": "",
+  "productPage": "/art/blossom",
+  "tags": ["art", "decor", "tranh dán tường", "set 6 tranh", "phong cảnh", "hoa đào","blossom"],
+  "basePriority": 16,
+  "productCategory": "art",
+  "sellerID": "huyenle"
+},
+{
   "itemId": "art-zen4",
   "title": "Bộ 6 Tranh Đức Phật Trí Tuệ",
   "price": 99000,
@@ -13,6 +83,7 @@
   "productCategory": "art",
   "sellerID": "huyenle"
 },
+
 {
   "itemId": "art-zen5",
   "title": "Bộ 6 Tranh Đức Phật Bình An",
