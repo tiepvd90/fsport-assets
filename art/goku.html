@@ -89,32 +89,16 @@
   });
 </script>
     <!-- ✅ KHỐI 3: Video sản phẩm -->
-<div class="product-hero" style="margin-top: 12px;">
-  <div id="video-placeholder">Đang tải video...</div>
+<div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;max-width:100%;background:#000;">
+  <iframe 
+    src="https://www.youtube.com/embed/YwNz9ypxql4?autoplay=1&mute=1&playsinline=1&rel=0&modestbranding=1" 
+    title="YouTube video player"
+    frameborder="0"
+    allow="autoplay; encrypted-media; picture-in-picture"
+    allowfullscreen
+    style="position:absolute;top:0;left:0;width:100%;height:100%;">
+  </iframe>
 </div>
-
-<script>
-  // ✅ Gọi file HTML video (gồm khung & ID #videoSlider)
-  fetch("/html/productvideo.html")
-    .then(res => res.text())
-    .then(html => {
-      document.getElementById("video-placeholder").innerHTML = html;
-
-      // ✅ Gọi JS sau khi HTML có mặt
-      const script = document.createElement("script");
-      script.src = "/js/productvideo.js";
-      script.onload = () => {
-        console.log("✅ Đã load JS, gọi init...");
-        if (typeof initProductVideo === "function") {
-          initProductVideo();
-        } else {
-          console.warn("❌ Không tìm thấy initProductVideo()");
-        }
-      };
-      document.body.appendChild(script);
-    })
-    .catch(err => console.warn("❌ Lỗi khi chèn productvideo.html:", err));
-</script>
 <!-- 🔚 Hết KHỐI 3 -->
     <!-- ✅ KHỐI 2: Reviews -->
     <div id="review-placeholder"></div>
