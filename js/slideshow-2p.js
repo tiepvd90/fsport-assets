@@ -13,6 +13,7 @@
     goku: { count: 7, format: "jpg" },
     zen4: { count: 6, format: "jpg" },
     monk: { count: 7, format: "jpg" },
+    blossom: { count: 7, format: "webp" },
     // thêm cấu hình khác nếu cần
   };
 
