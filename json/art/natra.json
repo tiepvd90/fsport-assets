@@ -1,0 +1,90 @@
+{
+  "category": "art",
+  "mainImageKey": "Thiết Kế",
+  "thuộc_tính": [
+    {
+      "label": "Thiết Kế",
+      "key": "Thiết Kế",
+      "display": "thumbnail",
+      "values": [
+        {
+          "text": "Set 6 Tranh",
+          "image": "/assets/images/gallery/art/natra/1.webp"
+        },
+        {
+          "text": "NT01",
+          "image": "/assets/images/gallery/art/natra/2.webp"
+        },
+        {
+          "text": "NT02",
+          "image": "/assets/images/gallery/art/natra/3.webp"
+        },
+        {
+          "text": "NT03",
+          "image": "/assets/images/gallery/art/natra/4.webp"
+        },
+        {
+          "text": "NT04",
+          "image": "/assets/images/gallery/art/natra/5.webp"
+        },
+        {
+          "text": "NT05",
+          "image": "/assets/images/gallery/art/natra/6.webp"
+        },
+        {
+          "text": "NT06",
+          "image": "/assets/images/gallery/art/natra/7.webp"
+        }
+      ]
+    },
+    {
+      "label": "Kích cỡ",
+      "key": "Kích cỡ",
+      "display": "button",
+      "values": [
+        {
+          "text": "Nhỏ 30x40cm",
+          "GiaOverride": 65000,
+          "GiaGocOverride": 100000
+        },
+        {
+          "text": "Vừa 40x60cm",
+          "GiaOverride": 79000,
+          "GiaGocOverride": 120000
+        },
+        {
+          "text": "To 50x70cm",
+          "GiaOverride": 119000,
+          "GiaGocOverride": 170000
+        }
+      ],
+      "when": { "Thiết Kế": ["NT01","NT02","NT03","NT04","NT05","NT06"] }
+    },
+    {
+      "label": "Kích cỡ Set",
+      "key": "Kích cỡ Set",
+      "display": "button",
+      "values": [
+        {
+          "text": "Set Tranh Vừa",
+          "GiaOverride": 99000,
+          "GiaGocOverride": 130000
+        },
+        {
+          "text": "Set Tranh To",
+          "GiaOverride": 149000,
+          "GiaGocOverride": 200000
+        }
+      ],
+      "when": { "Thiết Kế": ["Set 6 Tranh"] }
+    }
+  ],
+  "biến_thể": [
+    {
+      "id": "natra",
+      "category": "art",
+      "Giá": 65000,
+      "Giá gốc": 100000
+    }
+  ]
+}
