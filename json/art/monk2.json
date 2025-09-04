@@ -1,0 +1,82 @@
+{
+  "category": "art",
+  "mainImageKey": "Thiết Kế",
+  "thuộc_tính": [
+    {
+      "label": "Thiết Kế",
+      "key": "Thiết Kế",
+      "display": "thumbnail",
+      "values": [
+	  {
+          "text": "Set 6 Tranh",
+          "image": "/assets/images/gallery/art/monk2/1.webp"
+    },
+    {
+          "text": "MK01",
+          "image": "/assets/images/gallery/art/monk2/2.webp"
+    },
+		{
+          "text": "MK02",
+          "image": "/assets/images/gallery/art/monk2/3.webp"
+    },
+		{
+          "text": "MK03",
+          "image": "/assets/images/gallery/art/monk2/4.webp"
+    },
+		{
+          "text": "MK04",
+          "image": "/assets/images/gallery/art/monk2/5.webp"
+    } 
+      ]
+    },
+    {
+      "label": "Kích cỡ",
+      "key": "Kích cỡ",
+      "display": "button",
+      "values": [
+        {
+          "text": "Nhỏ 30x45cm",
+          "GiaOverride": 65000,
+          "GiaGocOverride": 100000
+        },
+        {
+          "text": "Vừa 40x60cm",
+          "GiaOverride": 79000,
+          "GiaGocOverride": 120000
+        },
+        {
+          "text": "To 50x75cm",
+          "GiaOverride": 119000,
+          "GiaGocOverride": 170000
+        }
+      ],
+      "when": { "Thiết Kế": ["MK01","MK02","MK03","MK04"] }
+    },
+    {
+      "label": "Kích cỡ Set Tranh",
+      "key": "Kích cỡ Set",
+      "display": "button",
+      "values": [
+        {
+          "text": "Set Tranh Vừa",
+          "GiaOverride": 99000,
+          "GiaGocOverride": 130000
+        },
+        {
+          "text": "Set Tranh Lớn",
+          "GiaOverride": 149000,
+          "GiaGocOverride": 200000
+        }
+      ],
+      "when": { "Thiết Kế": ["Set 6 Tranh"] }
+    }
+  ],
+  "biến_thể": [
+    {
+      "id": "monk2",
+      "category": "art",
+      "Giá": 65000,
+      "Giá gốc": 100000
+    }
+  ]
+}
