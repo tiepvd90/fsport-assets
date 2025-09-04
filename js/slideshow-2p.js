@@ -5,19 +5,24 @@
   const COUNTER_ID = "slideCounter";
   const ORIGIN = location.origin.replace("http://", "https://");
 
+  // Config mặc định theo từng PAGE
   const IMAGE_CONFIG = {
     zen: { count: 10, format: "jpg" },
     girl: { count: 6, format: "jpg" },
     zen2: { count: 9, format: "jpg" },
-    goku: { count: 8, format: "jpg" },
-    goku: { count: 7, format: "jpg" },
+    goku: { count: 7, format: "jpg" }, // chỉ giữ 1 key goku
     zen4: { count: 6, format: "jpg" },
     monk: { count: 7, format: "jpg" },
     blossom: { count: 7, format: "webp" },
     // thêm cấu hình khác nếu cần
   };
 
-  const config = IMAGE_CONFIG[PAGE] || { count: 5, format: "jpg" };
+  // Ưu tiên lấy từ trang sản phẩm (window.imageCount, window.imageFormat)
+  const config = {
+    count: window.imageCount || (IMAGE_CONFIG[PAGE]?.count ?? 5),
+    format: window.imageFormat || (IMAGE_CONFIG[PAGE]?.format ?? "jpg"),
+  };
+
   const TOTAL_IMAGES = config.count;
   const FORMAT = config.format;
   const BASE_PATH = `${ORIGIN}/assets/images/gallery/${LOAI}/${PAGE}`;
