@@ -1,0 +1,82 @@
+{
+  "category": "art",
+  "mainImageKey": "Thiết Kế",
+  "thuộc_tính": [
+    {
+      "label": "Thiết Kế",
+      "key": "Thiết Kế",
+      "display": "thumbnail",
+      "values": [
+        {
+          "text": "Set 6 Tranh",
+          "image": "/assets/images/gallery/art/blossom2/1.webp"
+        },
+        {
+          "text": "BL01",
+          "image": "/assets/images/gallery/art/blossom2/2.webp"
+        },
+        {
+          "text": "BL02",
+          "image": "/assets/images/gallery/art/blossom2/3.webp"
+        },
+        {
+          "text": "BL03",
+          "image": "/assets/images/gallery/art/blossom2/4.webp"
+        },
+        {
+          "text": "BL04",
+          "image": "/assets/images/gallery/art/blossom2/5.webp"
+        }
+      ]
+    },
+    {
+      "label": "Kích cỡ",
+      "key": "Kích cỡ",
+      "display": "button",
+      "values": [
+        {
+          "text": "Nhỏ 30x40cm",
+          "GiaOverride": 65000,
+          "GiaGocOverride": 100000
+        },
+        {
+          "text": "Vừa 40x60cm",
+          "GiaOverride": 79000,
+          "GiaGocOverride": 120000
+        },
+        {
+          "text": "To 50x70cm",
+          "GiaOverride": 119000,
+          "GiaGocOverride": 170000
+        }
+      ],
+      "when": { "Thiết Kế": ["BL01","BL02","BL03","BL04"] }
+    },
+    {
+      "label": "Kích cỡ Set",
+      "key": "Kích cỡ Set",
+      "display": "button",
+      "values": [
+        {
+          "text": "Set Tranh Vừa",
+          "GiaOverride": 99000,
+          "GiaGocOverride": 130000
+        },
+        {
+          "text": "Set Tranh To",
+          "GiaOverride": 149000,
+          "GiaGocOverride": 200000
+        }
+      ],
+      "when": { "Thiết Kế": ["Set 6 Tranh"] }
+    }
+  ],
+  "biến_thể": [
+    {
+      "id": "blossom2",
+      "category": "art",
+      "Giá": 65000,
+      "Giá gốc": 100000
+    }
+  ]
+}
