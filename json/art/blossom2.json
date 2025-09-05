@@ -35,19 +35,14 @@
       "display": "button",
       "values": [
         {
-          "text": "Nhỏ 30x40cm",
+          "text": "30x45cm",
           "GiaOverride": 65000,
           "GiaGocOverride": 100000
         },
         {
-          "text": "Vừa 40x60cm",
-          "GiaOverride": 79000,
+          "text": "40x60cm",
+          "GiaOverride": 99000,
           "GiaGocOverride": 120000
-        },
-        {
-          "text": "To 50x70cm",
-          "GiaOverride": 119000,
-          "GiaGocOverride": 170000
         }
       ],
       "when": { "Thiết Kế": ["BL01","BL02","BL03","BL04"] }
