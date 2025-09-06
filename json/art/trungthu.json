@@ -1,0 +1,58 @@
+{
+  "category": "art",
+  "mainImageKey": "Thiết Kế",
+  "thuộc_tính": [
+    {
+      "label": "Thiết Kế",
+      "key": "Thiết Kế",
+      "display": "thumbnail",
+      "values": [
+        {
+          "text": "01",
+          "image": "/assets/images/gallery/art/trungthu/1.webp"
+        },
+        {
+          "text": "02",
+          "image": "/assets/images/gallery/art/trungthu/2.webp"
+        },
+        {
+          "text": "03",
+          "image": "/assets/images/gallery/art/trungthu/3.webp"
+        },
+        {
+          "text": "04",
+          "image": "/assets/images/gallery/art/trungthu/4.webp"
+        },
+        {
+          "text": "05",
+          "image": "/assets/images/gallery/art/trungthu/5.webp"
+        }
+      ]
+    },
+    {
+      "label": "Kích cỡ",
+      "key": "Kích cỡ",
+      "display": "button",
+      "values": [
+        {
+          "text": "Set Tranh Vừa",
+          "GiaOverride": 99000,
+          "GiaGocOverride": 130000
+        },
+        {
+          "text": "Set Tranh To",
+          "GiaOverride": 169000,
+          "GiaGocOverride": 200000
+        }
+      ]
+    }
+  ],
+  "biến_thể": [
+    {
+      "id": "trungthu",
+      "category": "art",
+      "Giá": 99000,
+      "Giá gốc": 130000
+    }
+  ]
+}
