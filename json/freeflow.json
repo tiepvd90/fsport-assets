@@ -1,5 +1,33 @@
 [
   {
+  "itemId": "art-trungthu-1",
+  "title": "Bộ Tranh Trung Thu",
+  "price": 99000,
+  "originalPrice": 130000,
+  "contentType": "image",
+  "image": "/assets/images/gallery/art/natra/1.webp",
+  "youtube": "",
+  "productPage": "/art/natra",
+  "tags": ["art", "decor", "tranh dán tường", "set 6 tranh", "trungthu","trung thu"],
+  "basePriority": 16,
+  "productCategory": "art",
+  "sellerID": "huyenle"
+},
+ {
+  "itemId": "art-trungthu-2",
+  "title": "Bộ Tranh Trung Thu",
+  "price": 99000,
+  "originalPrice": 130000,
+  "contentType": "image",
+  "image": "/assets/images/gallery/art/natra/2.webp",
+  "youtube": "",
+  "productPage": "/art/natra",
+  "tags": ["art", "decor", "tranh dán tường", "set 6 tranh", "trungthu","trung thu"],
+  "basePriority": 16,
+  "productCategory": "art",
+  "sellerID": "huyenle"
+}, 
+  {
   "itemId": "art-natra-1",
   "title": "Tranh Natra Decor Phòng Học",
   "price": 65000,
