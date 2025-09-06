@@ -67,7 +67,7 @@
 
 #zoomedImg {
   max-width: none; /* ✅ Không giới hạn để ảnh vượt khung */
-  width: 130vw;     /* ✅ Lớn hơn khung để tạo điều kiện kéo */
+  width: 150vw;     /* ✅ Lớn hơn khung để tạo điều kiện kéo */
   height: auto;
   display: block;
   cursor: grab;
