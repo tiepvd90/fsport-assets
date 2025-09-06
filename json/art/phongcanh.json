@@ -8,53 +8,39 @@
       "display": "thumbnail",
       "values": [
         {
-          "text": "Set 6 Tranh",
-          "image": "/assets/images/gallery/art/phongcanh/1.webp"
+          "text": "01",
+          "image": "/assets/images/gallery/art/trungthu/3.webp"
         },
         {
-          "text": "PC01",
-          "image": "/assets/images/gallery/art/phongcanh/2.webp"
+          "text": "02",
+          "image": "/assets/images/gallery/art/trungthu/4.webp"
         },
         {
-          "text": "PC02",
-          "image": "/assets/images/gallery/art/phongcanh/3.webp"
+          "text": "03",
+          "image": "/assets/images/gallery/art/trungthu/5.webp"
         },
         {
-          "text": "PC03",
-          "image": "/assets/images/gallery/art/phongcanh/4.webp"
+          "text": "04",
+          "image": "/assets/images/gallery/art/phongcanh2/1.webp"
         },
         {
-          "text": "PC04",
-          "image": "/assets/images/gallery/art/phongcanh/5.webp"
+          "text": "05",
+          "image": "/assets/images/gallery/art/trungthu/1.webp"
+        },
+        {
+          "text": "06",
+          "image": "/assets/images/gallery/art/trungthu/2.webp"
+        },
+        {
+          "text": "07",
+          "image": "/assets/images/gallery/art/trungthu/6.webp"
         }
+        
       ]
     },
     {
       "label": "Kích cỡ",
       "key": "Kích cỡ",
-      "display": "button",
-      "values": [
-        {
-          "text": "Nhỏ 30x40cm",
-          "GiaOverride": 65000,
-          "GiaGocOverride": 100000
-        },
-        {
-          "text": "Vừa 40x60cm",
-          "GiaOverride": 79000,
-          "GiaGocOverride": 120000
-        },
-        {
-          "text": "To 50x70cm",
-          "GiaOverride": 119000,
-          "GiaGocOverride": 170000
-        }
-      ],
-      "when": { "Thiết Kế": ["PC01","PC02","PC03","PC04"] }
-    },
-    {
-      "label": "Kích cỡ Set",
-      "key": "Kích cỡ Set",
       "display": "button",
       "values": [
         {
@@ -64,19 +50,18 @@
         },
         {
           "text": "Set Tranh To",
-          "GiaOverride": 149000,
+          "GiaOverride": 169000,
           "GiaGocOverride": 200000
         }
-      ],
-      "when": { "Thiết Kế": ["Set 6 Tranh"] }
+      ]
     }
   ],
   "biến_thể": [
     {
       "id": "phongcanh",
       "category": "art",
-      "Giá": 65000,
-      "Giá gốc": 100000
+      "Giá": 99000,
+      "Giá gốc": 130000
     }
   ]
 }
