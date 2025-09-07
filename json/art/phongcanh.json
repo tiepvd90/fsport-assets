@@ -8,31 +8,31 @@
       "display": "thumbnail",
       "values": [
         {
-          "text": "01",
+          "text": "PC01",
           "image": "/assets/images/gallery/art/phongcanh/1.webp"
         },
         {
-          "text": "02",
+          "text": "PC02",
           "image": "/assets/images/gallery/art/phongcanh/4.webp"
         },
         {
-          "text": "03",
+          "text": "PC03",
           "image": "/assets/images/gallery/art/phongcanh/5.webp"
         },
         {
-          "text": "04",
+          "text": "PC04",
           "image": "/assets/images/gallery/art/phongcanh/6.webp"
         },
         {
-          "text": "05",
+          "text": "PC05",
           "image": "/assets/images/gallery/art/phongcanh/7.webp"
         },
         {
-          "text": "06",
+          "text": "PC06",
           "image": "/assets/images/gallery/art/phongcanh/8.webp"
         },
         {
-          "text": "07",
+          "text": "PC07",
           "image": "/assets/images/gallery/art/phongcanh/9.webp"
         }
       ]
