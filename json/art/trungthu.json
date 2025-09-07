@@ -8,31 +8,31 @@
       "display": "thumbnail",
       "values": [
         {
-          "text": "01",
+          "text": "TT01",
           "image": "/assets/images/gallery/art/trungthu/1.webp"
         },
         {
-          "text": "02",
+          "text": "TT02",
           "image": "/assets/images/gallery/art/trungthu/2.webp"
         },
         {
-          "text": "03",
+          "text": "TT03",
           "image": "/assets/images/gallery/art/trungthu/3.webp"
         },
         {
-          "text": "04",
+          "text": "TT04",
           "image": "/assets/images/gallery/art/trungthu/4.webp"
         },
         {
-          "text": "05",
+          "text": "TT05",
           "image": "/assets/images/gallery/art/trungthu/5.webp"
         },
         {
-          "text": "06",
+          "text": "TT06",
           "image": "/assets/images/gallery/art/trungthu/6.webp"
         },
         {
-          "text": "07",
+          "text": "TT07",
           "image": "/assets/images/gallery/art/trungthu/7.webp"
         }
         
