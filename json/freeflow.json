@@ -813,20 +813,6 @@
     "sellerID": "huyenle"
   },
   {
-  "itemId": "pickleball-phantom",
-  "title": "Vợt Phantom 14mm",
-  "price": 2100000,
-  "originalPrice": 3000000,
-  "contentType": "image",
-  "image": "https://i.postimg.cc/852FtJrV/1.jpg",
-  "youtube": "",
-  "productPage": "/pickleball/phantom",
-  "tags": ["pickleball", "phantom"],
-  "basePriority": 18,
-  "productCategory": "pickleball",
-  "sellerID": "huyenle"
-},
-  {
     "itemId": "sup010",
     "title": "Thuyền SUP Bơm Hơi FA",
     "price": 3358696,
