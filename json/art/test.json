@@ -1,0 +1,63 @@
+{
+  "category": "art",
+  "mainImageKey": "Chọn Tranh",
+  "thuộc_tính": [
+    {
+      "label": "Số Tranh",
+      "key": "Số Tranh",
+      "display": "button",
+      "values": ["2", "3", "4", "5", "6"]
+    },
+    {
+      "label": "Chọn Tranh",
+      "key": "Chọn Tranh",
+      "display": "thumbnail",
+      "multiple": true,
+      "values": [
+        { "text": "HD01", "image": "/assets/images/gallery/art/hoadao/1.webp" },
+        { "text": "HD02", "image": "/assets/images/gallery/art/hoadao/2.webp" },
+        { "text": "HD03", "image": "/assets/images/gallery/art/hoadao/3.webp" },
+        { "text": "HD04", "image": "/assets/images/gallery/art/hoadao/4.webp" },
+        { "text": "HD05", "image": "/assets/images/gallery/art/hoadao/5.webp" },
+        { "text": "HD06", "image": "/assets/images/gallery/art/hoadao/6.webp" },
+        { "text": "HD07", "image": "/assets/images/gallery/art/hoadao/7.webp" },
+        { "text": "HD08", "image": "/assets/images/gallery/art/hoadao/8.webp" },
+        { "text": "HD09", "image": "/assets/images/gallery/art/hoadao/9.webp" },
+        { "text": "HD10", "image": "/assets/images/gallery/art/hoadao/10.webp" },
+        { "text": "Tên Bạn", "image": "/assets/images/gallery/art/hoadao/tenban.webp" }
+      ]
+    },
+    {
+      "label": "Tên Cá Nhân Hóa",
+      "key": "Tên",
+      "input": "text",
+      "placeholder": "Nhập tên muốn in lên tranh",
+      "when": "Chọn Tranh=Tên Bạn"
+    },
+    {
+      "label": "Kích Cỡ",
+      "key": "Kích Cỡ",
+      "display": "button",
+      "values": [
+        {
+          "text": "Set Vừa (2 tranh 15x20, 2 tranh 20x30)",
+          "GiaOverride": 99000,
+          "GiaGocOverride": 130000
+        },
+        {
+          "text": "Set Lớn (2 tranh 20x30, 2 tranh 30x40)",
+          "GiaOverride": 169000,
+          "GiaGocOverride": 200000
+        }
+      ]
+    }
+  ],
+  "biến_thể": [
+    {
+      "id": "hoadao",
+      "category": "art",
+      "Giá": 99000,
+      "Giá gốc": 130000
+    }
+  ]
+}
