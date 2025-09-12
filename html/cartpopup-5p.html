@@ -1,0 +1,60 @@
+<!-- ✅ HTML CHUẨN CHO CARTPOPUP SET TRANH -->
+<div id="cartContainer"></div>
+
+<script>
+  function initCartContainer() {
+    const container = document.getElementById("cartContainer");
+    const productPage = window.productPage || "default";
+    const category = window.productCategory || "art";
+    if (container) {
+      fetch(`/json/${productPage}.json`)
+        .then(res => {
+          if (!res.ok) throw new Error("Primary JSON not found");
+          container.setAttribute("data-json", `/json/${productPage}.json`);
+        })
+        .catch(() => {
+          container.setAttribute("data-json", `/json/${category}/${productPage}.json`);
+        });
+    }
+  }
+</script>
+
+<!-- ✅ POPUP ĐẶT HÀNG SET TRANH -->
+<div id="cartPopup" class="cart-popup hidden" style="display: none;">
+  <div class="cart-popup-overlay" onclick="toggleCartPopup(false)"></div>
+  <div class="cart-popup-content animate-slideup">
+    <button class="cart-popup-close" onclick="toggleCartPopup(false)">&times;</button>
+
+    <div class="product-header">
+      <img id="mainImage" src="" alt="Ảnh sản phẩm" />
+      <div class="product-info">
+        <div>
+          <div class="product-price">
+            <span class="price-original" id="productOriginalPrice">0đ</span>
+            <span class="price-sale" id="productPrice">0đ</span>
+          </div>
+          <div id="voucherLabel"></div>
+          <div id="finalPriceLine"></div>
+        </div>
+        <div style="flex: 1;"></div>
+        <div class="product-variant" id="productVariantText"></div>
+      </div>
+    </div>
+
+    <!-- ✅ DANH SÁCH PHÂN LOẠI -->
+    <div class="variant-list" id="variantList"></div>
+
+    <!-- ✅ CHỌN SỐ LƯỢNG -->
+    <div class="quantity-wrapper">
+      <label for="quantityInput">Số lượng:</label>
+      <div class="quantity-control">
+        <button type="button" onclick="changeQuantity(-1)">−</button>
+        <input type="number" id="quantityInput" min="1" value="1" />
+        <button type="button" onclick="changeQuantity(1)">+</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ✅ NÚT ĐẶT HÀNG LUÔN HIỆN DƯỚI CÙNG -->
+<button class="cart-submit-btn" id="btn-atc">ĐẶT HÀNG NGAY</button>
