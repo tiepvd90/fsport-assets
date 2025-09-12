@@ -171,24 +171,26 @@
 
   // ====== Auto pick lựa chọn đầu tiên cho nhóm đang hiển thị (nếu chưa chọn) ======
   function autoPickFirstForVisible(selections) {
-    (window.allAttributes || []).forEach(attr => {
-      if (!isAttrVisible(attr, selections)) return;
+  const mainKey = window.mainImageKey;
 
-      // Chỉ auto-pick cho nhóm button/thumbnail, không auto cho input text
-      if (attr.input === "text") return;
+  (window.allAttributes || []).forEach(attr => {
+    if (!isAttrVisible(attr, selections)) return;
 
-      const already = selections[attr.key];
-      if (already) return;
+    // ✅ Chỉ auto-pick nếu là nhóm chính (mainImageKey)
+    if (attr.key !== mainKey) return;
 
-      const groupEl = $(`.variant-group[data-key="${attr.key}"]`);
-      if (!groupEl) return;
-      const firstBtn = groupEl.querySelector(".variant-thumb");
-      if (firstBtn) {
-        firstBtn.classList.add("selected");
-        selections[attr.key] = firstBtn.dataset.value;
-      }
-    });
-  }
+    const already = selections[attr.key];
+    if (already) return;
+
+    const groupEl = $(`.variant-group[data-key="${attr.key}"]`);
+    if (!groupEl) return;
+    const firstBtn = groupEl.querySelector(".variant-thumb");
+    if (firstBtn) {
+      firstBtn.classList.add("selected");
+      selections[attr.key] = firstBtn.dataset.value;
+    }
+  });
+}
 
   // ====== Thu thập selections sạch từ DOM (chỉ nhóm đang hiển thị) ======
   function collectCleanSelections() {
@@ -413,14 +415,13 @@
 
         const selectedKeys = Object.keys(window.selectedVariant);
         const isComplete = requiredKeys.every(key => {
-          const attr = (window.allAttributes || []).find(a => a.key === key);
-          if (attr?.input === "text") {
-            // text: cho phép rỗng nếu không required? -> ở đây coi là required
-            const v = window.currentSelections[key] ?? "";
-            return typeof v === "string"; // có tồn tại (rỗng cũng là string)
-          }
-          return selectedKeys.includes(key);
-        });
+  const attr = (window.allAttributes || []).find(a => a.key === key);
+  if (attr?.input === "text") {
+    const v = window.currentSelections[key]?.trim() || "";
+    return v.length > 0; // ✅ bắt buộc phải có nội dung
+  }
+  return selectedKeys.includes(key);
+});
         if (!isComplete) {
           alert("Vui lòng chọn đầy đủ phân loại sản phẩm.");
           return;
