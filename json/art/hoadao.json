@@ -23,7 +23,7 @@
       "label": "Chữ In Lên Tranh (*)",
       "key": "ChuIn",
       "input": "text",
-      "placeholder": "Tên Hoặc Chữ Bạn Muốn In Lên Tranh"
+      "placeholder": "Điền Tên Hoặc Chữ Bạn Muốn In Lên Tranh"
     },
     {
       "label": "Kích cỡ",
@@ -36,7 +36,7 @@
           "GiaGocOverride": 130000
         },
         {
-          "text": "Set Tranh (2 tranh 20x30 và 2 tranh 30x40cm)",
+          "text": "Set Lớn (2 tranh 20x30 và 2 tranh 30x40cm)",
           "GiaOverride": 169000,
           "GiaGocOverride": 200000
         }
