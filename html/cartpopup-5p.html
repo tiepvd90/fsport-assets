@@ -1,26 +1,16 @@
-<!-- Container để gắn data-json từ productPage/productCategory -->
+<!-- Container để gắn data-json -->
 <div id="cartContainer"></div>
 
 <script>
-  // Set context (tuỳ trang bạn có thể gán trước ở <head>)
+  // (tuỳ trang) đặt context dự phòng
   window.productPage = window.productPage || "test";
   window.productCategory = window.productCategory || "art";
 
-  // Gắn data-json cho #cartContainer theo quy ước của bạn
+  // Chỉ định thẳng URL JSON public để tránh 404
   function initCartContainer() {
     const container = document.getElementById("cartContainer");
-    const productPage = window.productPage || "default";
-    const category = window.productCategory || "tshirt";
     if (!container) return;
-
-    fetch(`/json/${productPage}.json`)
-      .then(res => {
-        if (!res.ok) throw new Error("Primary JSON not found");
-        container.setAttribute("data-json", `/json/${productPage}.json`);
-      })
-      .catch(() => {
-        container.setAttribute("data-json", `/json/${category}/${productPage}.json`);
-      });
+    container.setAttribute("data-json", "/json/art/test.json");
   }
 
   if (document.readyState === "loading") {
@@ -72,9 +62,13 @@
       </div>
     </div>
 
-    <!-- Thanh hành động trong popup (nếu bạn không dùng nút ngoài) -->
+    <!-- Thanh hành động -->
     <div class="action-bar">
       <button id="btn-atc" disabled>ĐẶT HÀNG</button>
     </div>
   </div>
 </div>
+
+<!-- (Gợi ý) đảm bảo bạn đã nhúng CSS và script engine sau khối HTML này -->
+<!-- <link rel="stylesheet" href="/path/to/cartpopup.css"> -->
+<!-- <script src="/path/to/cartpopup-5p.js" defer></script> -->
