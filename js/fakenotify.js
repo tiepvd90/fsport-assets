@@ -49,7 +49,7 @@
     position: fixed;
     bottom: ${CONFIG.bottom}px;
     left: ${CONFIG.leftHidden}px;
-    z-index: 9999;
+    z-index: 100;
     background: #fff;
     padding: 8px 14px;
     border-radius: 999px;
