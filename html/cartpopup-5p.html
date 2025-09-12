@@ -1,114 +1,80 @@
-<!doctype html>
-<html lang="vi">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Cart Popup 5p — Set Tranh</title>
+<!-- Container để gắn data-json từ productPage/productCategory -->
+<div id="cartContainer"></div>
 
-  <!-- CSS dùng chung -->
-  <link rel="stylesheet" href="/css/cartpopup.css" />
-  <style>
-    /* Có thể giữ nguyên file cartpopup.css của bạn; block này chỉ đảm bảo tối thiểu */
-    .hidden{display:none}
-    .cart-popup{position:fixed;inset:0;display:none;justify-content:center;align-items:flex-end;z-index:9999}
-    .cart-popup-overlay{position:absolute;inset:0;background:rgba(0,0,0,.5)}
-    .cart-popup-content{position:relative;background:#fff;width:100%;max-height:77vh;overflow-y:auto;padding:16px;box-sizing:border-box}
-    .product-header{display:flex;gap:12px;margin-bottom:16px}
-    #mainImage{max-width:150px;max-height:150px;object-fit:contain;border-radius:10px}
-    .product-price{display:flex;flex-direction:column;gap:2px}
-    #productOriginalPrice{color:#aaa;text-decoration:line-through;font-size:13px}
-    #productPrice{color:#e53935;font-weight:700;font-size:17px}
-    .variant-list{margin-top:8px}
-    .variant-group{margin-bottom:16px}
-    .variant-label{font-size:13px;margin-bottom:6px;font-weight:500}
-    .variant-thumbnails,.variant-buttons{display:flex;flex-wrap:wrap;gap:8px}
-    .variant-thumb{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border:1px solid #ccc;border-radius:6px;cursor:pointer;user-select:none}
-    .variant-thumb.selected{border:2px solid #e53935}
-    .variant-thumb img{width:28px;height:28px;border-radius:4px;object-fit:cover}
-    .variant-title{font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    .quantity-wrapper{display:flex;justify-content:space-between;align-items:center;margin-top:12px}
-    .quantity-control{display:flex;align-items:center;border:1px solid #ccc;border-radius:6px;overflow:hidden;height:28px}
-    .quantity-control button{width:32px;height:100%;border:none;background:#fff;cursor:pointer;font-size:18px}
-    .quantity-control input{width:40px;border:none;text-align:center;font-size:14px}
-    .cart-submit-btn{position:fixed;left:0;right:0;bottom:0;width:100%;padding:14px;background:#e53935;color:#fff;border:0;font-weight:700;font-size:15px}
-    .cart-popup-close{position:absolute;top:8px;right:8px;border:0;background:transparent;font-size:32px;cursor:pointer}
-  </style>
-</head>
-<body>
+<script>
+  // Set context (tuỳ trang bạn có thể gán trước ở <head>)
+  window.productPage = window.productPage || "test";
+  window.productCategory = window.productCategory || "art";
 
-  <!-- Nơi gắn cờ dữ liệu (không bắt buộc, để tương thích) -->
-  <div id="cartContainer"></div>
+  // Gắn data-json cho #cartContainer theo quy ước của bạn
+  function initCartContainer() {
+    const container = document.getElementById("cartContainer");
+    const productPage = window.productPage || "default";
+    const category = window.productCategory || "tshirt";
+    if (!container) return;
 
-  <!-- POPUP -->
-  <div id="cartPopup" class="cart-popup hidden" style="display:none;">
-    <div class="cart-popup-overlay" onclick="toggleCartPopup(false)"></div>
-    <div class="cart-popup-content">
-      <button class="cart-popup-close" onclick="toggleCartPopup(false)">&times;</button>
+    fetch(`/json/${productPage}.json`)
+      .then(res => {
+        if (!res.ok) throw new Error("Primary JSON not found");
+        container.setAttribute("data-json", `/json/${productPage}.json`);
+      })
+      .catch(() => {
+        container.setAttribute("data-json", `/json/${category}/${productPage}.json`);
+      });
+  }
 
-      <!-- Ảnh + Giá -->
-      <div class="product-header">
-        <img id="mainImage" src="" alt="Ảnh sản phẩm" />
-        <div class="product-info" style="display:flex;flex-direction:column;gap:8px;flex:1;">
-          <div>
-            <div class="product-price">
-              <span id="productOriginalPrice">0đ</span>
-              <span id="productPrice">0đ</span>
-            </div>
-            <div id="voucherLabel" style="display:none;"></div>
-            <div id="finalPriceLine" style="display:none;"></div>
-          </div>
-          <div id="productVariantText" style="font-size:14px;color:#333;"></div>
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initCartContainer);
+  } else {
+    initCartContainer();
+  }
+</script>
+
+<!-- ✅ Popup giỏ hàng (HTML cho 5p) -->
+<div id="cartPopup" class="cart-popup hidden" style="display:none;">
+  <div class="cart-popup-overlay" onclick="toggleCartPopup(false)"></div>
+
+  <div class="cart-popup-content" role="dialog" aria-modal="true" aria-labelledby="productVariantText">
+    <button class="cart-popup-close" onclick="toggleCartPopup(false)" aria-label="Đóng">&times;</button>
+
+    <!-- Header: Ảnh + Giá + Mô tả biến thể -->
+    <div class="product-header" style="display:flex; gap:12px;">
+      <img id="mainImage" src="" alt="Ảnh sản phẩm" decoding="async" />
+      <div class="product-info" style="display:flex; flex-direction:column; flex:1;">
+        <div class="product-price" aria-live="polite">
+          <span class="price-original" id="productOriginalPrice">0đ</span>
+          <span class="price-sale" id="productPrice">0đ</span>
         </div>
-      </div>
-
-      <!-- Danh sách thuộc tính sẽ render từ JSON -->
-      <div class="variant-list" id="variantList"></div>
-
-      <!-- Số lượng -->
-      <div class="quantity-wrapper">
-        <label for="quantityInput">Số lượng:</label>
-        <div class="quantity-control">
-          <button type="button" onclick="changeQuantity(-1)">−</button>
-          <input type="number" id="quantityInput" min="1" value="1" />
-          <button type="button" onclick="changeQuantity(1)">+</button>
+        <div id="voucherLabel"
+             style="display:none; background-color:rgba(0,160,230,0.6); color:#fff; font-weight:bold; padding:4px 10px; border-radius:8px; font-size:13px; margin-top:6px; width:fit-content;">
         </div>
+        <div id="finalPriceLine" style="display:none; font-weight:bold; color:#d32f2f; margin-top:4px;"></div>
+
+        <div style="flex:1;"></div>
+        <div class="product-variant" id="productVariantText" style="font-size:14px; color:#333;"></div>
       </div>
     </div>
+
+    <!-- Khu render thuộc tính -->
+    <div class="variant-list" id="variantList"></div>
+
+    <!-- Bộ đếm multiselect & thông báo lỗi theo rule -->
+    <div id="designCounter" class="multiselect-counter" aria-live="polite"></div>
+    <div id="formError" class="form-error" aria-live="polite"></div>
+
+    <!-- Số lượng bộ set đặt mua -->
+    <div class="quantity-wrapper">
+      <label for="quantityInput" style="margin-right:8px;">Số lượng:</label>
+      <div class="quantity-control">
+        <button type="button" onclick="changeQuantity(-1)" aria-label="Giảm">−</button>
+        <input type="number" id="quantityInput" min="1" value="1" inputmode="numeric" />
+        <button type="button" onclick="changeQuantity(1)" aria-label="Tăng">+</button>
+      </div>
+    </div>
+
+    <!-- Thanh hành động trong popup (nếu bạn không dùng nút ngoài) -->
+    <div class="action-bar">
+      <button id="btn-atc" disabled>ĐẶT HÀNG</button>
+    </div>
   </div>
-
-  <!-- Nút hành động cố định -->
-  <button class="cart-submit-btn" id="btn-atc">ĐẶT HÀNG NGAY</button>
-
-  <!-- CONFIG: đặt tên file JSON của bạn (không có .json) -->
-  <script>
-    // Đổi "test" thành tên file JSON thực tế (ví dụ: hoadao, pubg, v.v.)
-    window.productPage = "test";             // => /json/art/test.json
-    window.productCategory = "art";
-  </script>
-
-  <!-- JS logic 5p (bản bạn đang dùng) -->
-  <script src="/js/cartpopup-5p.js"></script>
-
-  <!-- (Không bắt buộc) Nếu bạn dùng logic gắn data-json -->
-  <script>
-    function initCartContainer() {
-      const container = document.getElementById("cartContainer");
-      const productPage = window.productPage || "default";
-      const category = window.productCategory || "art";
-      if (container) {
-        fetch(`/json/${productPage}.json`)
-          .then(res => {
-            if (!res.ok) throw new Error("Primary JSON not found");
-            container.setAttribute("data-json", `/json/${productPage}.json`);
-          })
-          .catch(() => {
-            container.setAttribute("data-json", `/json/${category}/${productPage}.json`);
-          });
-      }
-    }
-    // Gọi nếu bạn cần gắn data-json để tương thích code cũ
-    initCartContainer();
-  </script>
-
-</body>
-</html>
+</div>
