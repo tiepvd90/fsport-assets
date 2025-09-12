@@ -1,0 +1,78 @@
+{
+  "category": "art",
+  "mainImageKey": "Thiết Kế",
+  "thuộc_tính": [
+    {
+      "label": "Thiết Kế",
+      "key": "Thiết Kế",
+      "display": "thumbnail",
+      "values": [
+        {
+          "text": "PG01",
+          "image": "/assets/images/gallery/art/pubg/1.webp"
+        },
+        {
+          "text": "PG02",
+          "image": "/assets/images/gallery/art/pubg/2.webp"
+        },
+        {
+          "text": "PG03",
+          "image": "/assets/images/gallery/art/pubg/3.webp"
+        },
+        {
+          "text": "PG04",
+          "image": "/assets/images/gallery/art/pubg/4.webp"
+        },
+        {
+          "text": "PG05",
+          "image": "/assets/images/gallery/art/pubg/5.webp"
+        },
+        {
+          "text": "PG06",
+          "image": "/assets/images/gallery/art/pubg/6.webp"
+        },
+        {
+          "text": "PG07",
+          "image": "/assets/images/gallery/art/pubg/7.webp"
+        },
+        {
+          "text": "PG08",
+          "image": "/assets/images/gallery/art/pubg/8.webp"
+        },
+        {
+          "text": "PG09",
+          "image": "/assets/images/gallery/art/pubg/9.webp"
+        },
+        {
+          "text": "PG10",
+          "image": "/assets/images/gallery/art/pubg/10.webp"
+        }
+      ]
+    },
+    {
+      "label": "Kích cỡ",
+      "key": "Kích cỡ",
+      "display": "button",
+      "values": [
+        {
+          "text": "Set Tranh Vừa",
+          "GiaOverride": 89000,
+          "GiaGocOverride": 120000
+        },
+        {
+          "text": "Set Tranh To",
+          "GiaOverride": 159000,
+          "GiaGocOverride": 200000
+        }
+      ]
+    }
+  ],
+  "biến_thể": [
+    {
+      "id": "pubg",
+      "category": "art",
+      "Giá": 89000,
+      "Giá gốc": 120000
+    }
+  ]
+}
