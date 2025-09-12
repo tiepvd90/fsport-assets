@@ -275,4 +275,17 @@
   font-size: 12px;
   margin-left: 4px;
 }
+.variant-group input[type="text"]{
+  width: 100%;
+  padding: 10px 12px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  outline: none;
+  box-sizing: border-box;
+  background: #fff;
+}
+.variant-group input[type="text"]::placeholder{ color:#666; }
+
+.variant-label{ font-weight: 600; } /* label đậm như ảnh */
 
