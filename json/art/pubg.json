@@ -55,12 +55,12 @@
       "display": "button",
       "values": [
         {
-          "text": "Set Tranh Vừa",
+          "text": "Set Vừa(2 trạnh 15x20 và 2 tranh 20x30cm)",
           "GiaOverride": 89000,
           "GiaGocOverride": 120000
         },
         {
-          "text": "Set Tranh To",
+          "text": "Set Lớn(2 trạnh 20x30 và 2 tranh 30x40cm)",
           "GiaOverride": 159000,
           "GiaGocOverride": 200000
         }
