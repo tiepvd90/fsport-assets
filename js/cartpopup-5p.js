@@ -1,61 +1,86 @@
-// cartpopup-5p.js — dành cho set tranh chọn 2–6 tranh với kiểm tra bắt buộc số tranh được chọn
+/* =========================================================================
+ * cartpopup-4p.js —  (multi-variant with conditional visibility)
+ * - Hỗ trợ thuộc tính phụ thuộc "when"
+ * - "when" có thể là object {Key:[...]} hoặc string "Key=Value"
+ * - Chỉ bắt buộc chọn các nhóm đang hiển thị
+ * - Giữ nguyên hành vi: voucher, pixel, Make webhook, ảnh theo mainImageKey
+ * ========================================================================= */
+
 (function () {
   "use strict";
 
-  function injectCartPopupHTML() {
-    if (document.getElementById("cartPopup")) return;
-    const div = document.createElement("div");
-    div.innerHTML = `...`; // ✅ dùng HTML từ file cartpopup-art.html như bạn đã cấu hình
-    document.body.appendChild(div);
-  }
-
+  // ====== Public-ish state (giữ tương thích cũ) ======
   window.selectedVariant = null;
   window.cart = window.cart || [];
-  window.currentSelections = {};
+  window.currentSelections = {}; // selections sạch sau khi ẩn/hiện
+  let isCartEventBound = false;
+  let isCartPopupOpen = false;
 
+  // ====== Config đường dẫn JSON ======
   const productPage = (window.productPage || "default").toLowerCase();
-  const category = (window.productCategory || "art").toLowerCase();
+  const category = (window.productCategory || "tshirt").toLowerCase();
   const jsonUrl = `/json/${category}/${productPage}.json`;
 
+  // ====== DOM helpers ======
   const $ = (sel, root = document) => root.querySelector(sel);
   const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
 
+  // ====== Utils: parse when ======
+  // - Nếu when là string: "Key=Value" -> { Key: "Value" }
+  // - Nếu when là object: giữ nguyên { Key: "Value" | [values] }
   function normalizeWhen(when) {
     if (!when) return null;
     if (typeof when === "string") {
       const idx = when.indexOf("=");
       if (idx === -1) return null;
-      return { [when.slice(0, idx).trim()]: when.slice(idx + 1).trim() };
+      const k = when.slice(0, idx).trim();
+      const v = when.slice(idx + 1).trim();
+      return { [k]: v };
     }
-    return typeof when === "object" ? when : null;
+    if (typeof when === "object") return when;
+    return null;
   }
 
+  function getSelectionValue(selections, key) {
+    return selections ? selections[key] : undefined;
+  }
+
+  // Kiểm tra thuộc tính có hiển thị với selections hiện tại hay không
   function isAttrVisible(attr, selections) {
     const rule = normalizeWhen(attr.when);
     if (!rule) return true;
+    // Tất cả điều kiện trong "when" phải đúng
     return Object.entries(rule).every(([depKey, allowed]) => {
-      const sel = selections?.[depKey];
-      return Array.isArray(allowed) ? allowed.includes(sel) : sel === allowed;
+      const sel = getSelectionValue(selections, depKey);
+      if (Array.isArray(allowed)) return allowed.includes(sel);
+      return sel === allowed;
     });
   }
 
+  // ====== Fetch JSON & khởi tạo ======
   function initCartPopup() {
-    injectCartPopupHTML();
     fetch(jsonUrl)
       .then(res => res.json())
       .then(data => {
+        // Validate định dạng
         if (data["thuộc_tính"] && data["biến_thể"]?.length === 1) {
           window.allAttributes = data["thuộc_tính"];
           window.baseVariant = data["biến_thể"][0];
-          window.mainImageKey = data["mainImageKey"] || null;
+          window.productCategory = data["category"] || data["biến_thể"][0]?.category || category;
+          window.mainImageKey = data["mainImageKey"] || (
+            data["thuộc_tính"].find(a => a.display === "thumbnail")?.key || null
+          );
+
           renderOptions(window.allAttributes);
           bindAddToCartButton();
         } else {
           console.error("❌ JSON không đúng định dạng.", data);
         }
-      });
+      })
+      .catch(err => console.warn("⚠️ Không thể tải JSON:", err));
   }
 
+  // ====== Render nhóm thuộc tính ======
   function renderOptions(attributes) {
     const container = $("#variantList");
     if (!container) return;
@@ -76,11 +101,13 @@
         input.type = "text";
         input.id = `input-${attr.key}`;
         input.placeholder = attr.placeholder || "Nhập nội dung...";
-        input.addEventListener("input", updateSelectedVariant);
+        input.style.cssText = "width:100%;padding:8px;font-size:14px;box-sizing:border-box;border:1px solid #ccc;border-radius:6px;";
+        input.addEventListener("input", () => updateSelectedVariant());
         group.appendChild(input);
       } else if (Array.isArray(attr.values)) {
+        const displayMode = attr.display || "button";
         const wrapper = document.createElement("div");
-        wrapper.className = attr.display === "thumbnail" ? "variant-thumbnails" : "variant-buttons";
+        wrapper.className = displayMode === "thumbnail" ? "variant-thumbnails" : "variant-buttons";
 
         attr.values.forEach(val => {
           const value = typeof val === "string" ? val : val.text;
@@ -91,26 +118,30 @@
           thumb.dataset.key = attr.key;
           thumb.dataset.value = value;
 
-          if (attr.display === "thumbnail") {
-            thumb.innerHTML = `<img src="${image || ''}" alt="${value}"><div class="variant-title">${value}</div>`;
+          if (displayMode === "thumbnail") {
+            thumb.innerHTML = `
+              <img src="${image || ""}" alt="${value}" />
+              <div class="variant-title">${value}</div>
+            `;
           } else {
             thumb.textContent = value;
           }
 
           thumb.addEventListener("click", () => {
-            if (attr.multiple) {
-              const selected = wrapper.querySelectorAll(".variant-thumb.selected");
-              const max = parseInt(window.currentSelections["Số Tranh"] || "0", 10);
-              if (!thumb.classList.contains("selected")) {
-                if (selected.length >= max) return;
-              }
-              thumb.classList.toggle("selected");
-            } else {
-              wrapper.querySelectorAll(".variant-thumb").forEach(el => el.classList.remove("selected"));
-              thumb.classList.add("selected");
-            }
-            updateSelectedVariant();
-          });
+  if (attr.multiple) {
+    const selected = wrapper.querySelectorAll(".variant-thumb.selected");
+    const max = parseInt(window.currentSelections["Số Tranh"] || "0", 10);
+    if (!thumb.classList.contains("selected")) {
+      if (selected.length >= max) return; // Giới hạn số tranh
+    }
+    thumb.classList.toggle("selected");
+  } else {
+    $$('.variant-thumb[data-key="' + attr.key + '"]').forEach(el => el.classList.remove("selected"));
+    thumb.classList.add("selected");
+  }
+  updateSelectedVariant();
+});
+
 
           wrapper.appendChild(thumb);
         });
@@ -121,9 +152,57 @@
       container.appendChild(group);
     });
 
-    updateSelectedVariant(true);
+    // Gọi 1 lần để tính visible & auto-pick cho nhóm đang hiện
+    updateSelectedVariant(true); // true = allowAutoPickFirst
   }
 
+  // ====== Áp visibility + dọn selections không hợp lệ ======
+  function applyVisibility(selections) {
+    (window.allAttributes || []).forEach(attr => {
+      const groupEl = $(`.variant-group[data-key="${attr.key}"]`);
+      if (!groupEl) return;
+
+      const visible = isAttrVisible(attr, selections);
+      groupEl.style.display = visible ? "" : "none";
+
+      if (!visible) {
+        // Xoá chọn cũ nếu có
+        groupEl.querySelectorAll(".variant-thumb.selected").forEach(el => el.classList.remove("selected"));
+        if (selections && selections[attr.key] != null) delete selections[attr.key];
+        // Nếu input text
+        const input = $(`#input-${attr.key}`);
+        if (input && selections) {
+          input.value = "";
+          delete selections[attr.key];
+        }
+      }
+    });
+  }
+
+  // ====== Auto pick lựa chọn đầu tiên cho nhóm đang hiển thị (nếu chưa chọn) ======
+  function autoPickFirstForVisible(selections) {
+  const mainKey = window.mainImageKey;
+
+  (window.allAttributes || []).forEach(attr => {
+    if (!isAttrVisible(attr, selections)) return;
+
+    // ✅ Chỉ auto-pick nếu là nhóm chính (mainImageKey)
+    if (attr.key !== mainKey) return;
+
+    const already = selections[attr.key];
+    if (already) return;
+
+    const groupEl = $(`.variant-group[data-key="${attr.key}"]`);
+    if (!groupEl) return;
+    const firstBtn = groupEl.querySelector(".variant-thumb");
+    if (firstBtn) {
+      firstBtn.classList.add("selected");
+      selections[attr.key] = firstBtn.dataset.value;
+    }
+  });
+}
+
+  // ====== Thu thập selections sạch từ DOM (chỉ nhóm đang hiển thị) ======
   function collectCleanSelections() {
     const out = {};
     (window.allAttributes || []).forEach(attr => {
@@ -132,102 +211,361 @@
       if (attr.input === "text") {
         out[attr.key] = $(`#input-${attr.key}`)?.value || "";
       } else {
-        const group = $(`.variant-group[data-key='${attr.key}']`);
-        if (!group) return;
-        const selected = group.querySelectorAll(".variant-thumb.selected");
-        out[attr.key] = attr.multiple ? Array.from(selected).map(el => el.dataset.value) : selected[0]?.dataset.value;
+        const group = $(`.variant-group[data-key="${attr.key}"]`);
+if (!group) return;
+const selected = group.querySelectorAll(".variant-thumb.selected");
+out[attr.key] = attr.multiple
+  ? Array.from(selected).map(el => el.dataset.value)
+  : selected[0]?.dataset.value;
+
       }
     });
     return out;
   }
 
-  function updateSelectedVariant() {
-    const raw = collectCleanSelections();
-    applyVisibility(raw);
-    window.currentSelections = raw;
+  // ====== Main update: selections → visibility → variant → render ======
+  function updateSelectedVariant(allowAutoPickFirst = false) {
+    // 1) Thu thập các chọn hiện tại (thô)
+    const raw = {};
+    $$(".variant-thumb.selected").forEach(btn => {
+      raw[btn.dataset.key] = btn.dataset.value;
+    });
+    (window.allAttributes || []).forEach(attr => {
+      if (attr.input === "text") {
+        raw[attr.key] = $(`#input-${attr.key}`)?.value || "";
+      }
+    });
 
-    if (raw["Chọn Tranh"]?.includes("Tên Bạn")) {
-      $(`.variant-group[data-key='Tên']`)?.classList.remove("hidden");
-    } else {
-      $(`.variant-group[data-key='Tên']`)?.classList.add("hidden");
+    // 2) Áp điều kiện hiển thị & dọn selections ẩn
+    applyVisibility(raw);
+
+    // 3) Auto pick cho nhóm đang hiển thị nhưng chưa có chọn (tuỳ chọn)
+    if (allowAutoPickFirst) {
+      autoPickFirstForVisible(raw);
+      // Sau auto pick cần re-apply visibility (phòng nhóm con phụ thuộc)
+      applyVisibility(raw);
     }
 
-    const variant = { ...(window.baseVariant || {}), ...raw };
-    window.selectedVariant = variant;
-    renderVariantUI(variant);
-  }
+    // 4) Lấy selections sạch theo nhóm đang hiển thị
+    const clean = collectCleanSelections();
+    window.currentSelections = clean;
 
-  function applyVisibility(selections) {
+    // 5) Tạo variant từ base + selections
+    const variant = { ...(window.baseVariant || {}), ...clean };
+
+    // 6) Ảnh theo mainImageKey
+    if (window.mainImageKey) {
+      const mainVal = clean[window.mainImageKey];
+      const mainAttr = (window.allAttributes || []).find(a => a.key === window.mainImageKey);
+      const matchedValue = mainAttr?.values?.find(v => (typeof v === "object" ? v.text === mainVal : v === mainVal));
+      if (matchedValue && typeof matchedValue === "object" && matchedValue.image) {
+        variant["Ảnh"] = matchedValue.image;
+      } else if (!variant["Ảnh"]) {
+        variant["Ảnh"] = "";
+      }
+    }
+
+    // 7) Tính giá (giữ nguyên hành vi + override)
+    let price = Number((window.baseVariant || {})["Giá"]) || 0;
+    let priceOrig = Number((window.baseVariant || {})["Giá gốc"]) || price || 0;
+
     (window.allAttributes || []).forEach(attr => {
-      const group = $(`.variant-group[data-key='${attr.key}']`);
-      if (!group) return;
-      const visible = isAttrVisible(attr, selections);
-      group.style.display = visible ? "" : "none";
+      if (!isAttrVisible(attr, clean)) return; // chỉ tính những nhóm đang hiển thị
+      const selVal = clean[attr.key];
+      if (!selVal || !Array.isArray(attr?.values)) return;
+
+      const matched = attr.values.find(v => (typeof v === "object" ? v.text === selVal : v === selVal));
+      if (matched && typeof matched === "object") {
+        if (typeof matched.GiaOverride === "number") price = matched.GiaOverride;
+        if (typeof matched.GiaGocOverride === "number") priceOrig = matched.GiaGocOverride;
+        if (typeof matched.priceDelta === "number") price += matched.priceDelta;
+        if (typeof matched.priceOrigDelta === "number") priceOrig += matched.priceOrigDelta;
+        if (matched.priceMap && typeof matched.priceMap === "object") {
+          const mapKey = matched.priceKey || selVal;
+          if (typeof matched.priceMap[mapKey] === "number") price = matched.priceMap[mapKey];
+        }
+      }
     });
+
+    price = Math.max(0, price);
+    priceOrig = Math.max(price, priceOrig);
+    variant["Giá"] = price;
+    variant["Giá gốc"] = priceOrig;
+
+    // 8) SKU id theo 1 key tuỳ chọn (ví dụ "Kích cỡ")
+    const sizeKey = (window.sizeKeyOverride || "Kích cỡ");
+    if (clean[sizeKey]) {
+      variant.id = `${(window.baseVariant?.id || "item")}-${clean[sizeKey]}`
+        .replace(/\s+/g, "")
+        .toLowerCase();
+    }
+const tenGroup = $(`.variant-group[data-key="Tên"]`);
+if (tenGroup) {
+  if (Array.isArray(clean["Chọn Tranh"]) && clean["Chọn Tranh"].includes("Tên Bạn")) {
+    tenGroup.style.display = "";
+  } else {
+    tenGroup.style.display = "none";
+    const input = tenGroup.querySelector("input[type='text']");
+    if (input) input.value = "";
+    delete clean["Tên"];
+  }
+}
+
+    // 9) Render ra UI (giá, ảnh, text…)
+    selectVariant(variant);
   }
 
-  function renderVariantUI(data) {
+  // ====== Render giá/ảnh/nhãn voucher ======
+  function selectVariant(data) {
+    // ✅ Nếu có __voucherWaiting → gán vào voucherByProduct
+    if (window.__voucherWaiting?.amount) {
+      window.voucherByProduct = window.voucherByProduct || {};
+      if (!window.voucherByProduct[data.id]) {
+        window.voucherByProduct[data.id] = window.__voucherWaiting.amount;
+      }
+    }
+
+    window.selectedVariant = data;
+
     const mainImage = $("#mainImage");
     const productPrice = $("#productPrice");
     const productOriginalPrice = $("#productOriginalPrice");
     const productVariantText = $("#productVariantText");
+    const voucherLabel = $("#voucherLabel");
 
-    if (mainImage && data.Ảnh) mainImage.src = data.Ảnh;
-    if (productPrice) productPrice.textContent = (data.Giá || 0).toLocaleString() + "đ";
-    if (productOriginalPrice) productOriginalPrice.textContent = (data["Giá gốc"] || 0).toLocaleString() + "đ";
+    if (mainImage) mainImage.src = data.Ảnh || "";
+
+    const voucherAmount = window.voucherByProduct?.[data.id] || 0;
+    const finalPrice = Math.max(0, data.Giá - voucherAmount);
+
+    const oldFinal = $("#finalPriceLine");
+    if (oldFinal) oldFinal.remove();
+
+    if (voucherAmount > 0) {
+      if (productPrice) {
+        productPrice.textContent = data.Giá.toLocaleString() + "đ";
+        productPrice.style.color = "black";
+        productPrice.style.textDecoration = "line-through";
+      }
+      if (productOriginalPrice) productOriginalPrice.style.display = "none";
+      if (voucherLabel) {
+        voucherLabel.textContent = `Voucher: ${voucherAmount.toLocaleString()}đ`;
+        voucherLabel.style.display = "block";
+      }
+
+      const finalLine = document.createElement("div");
+      finalLine.id = "finalPriceLine";
+      finalLine.textContent = finalPrice.toLocaleString() + "đ";
+      finalLine.style.color = "#d0021b";
+      finalLine.style.fontWeight = "bold";
+      finalLine.style.marginTop = "6px";
+      finalLine.style.fontSize = "21px";
+      voucherLabel?.parentElement?.appendChild(finalLine);
+    } else {
+      if (productPrice) {
+        productPrice.textContent = data.Giá.toLocaleString() + "đ";
+        productPrice.style.color = "#d0021b";
+        productPrice.style.textDecoration = "none";
+      }
+      if (productOriginalPrice) {
+        productOriginalPrice.textContent = data["Giá gốc"].toLocaleString() + "đ";
+        productOriginalPrice.style.display = "inline";
+      }
+      if (voucherLabel) voucherLabel.style.display = "none";
+    }
 
     if (productVariantText) {
       const ignore = new Set(["Ảnh", "Giá", "Giá gốc", "id", "category"]);
-      const parts = [];
+      const selectedText = [];
       for (let key in data) {
-        if (!ignore.has(key)) parts.push(data[key]);
-      }
-      productVariantText.textContent = parts.join(", ");
+  if (ignore.has(key)) continue;
+  const val = data[key];
+  if (Array.isArray(val)) {
+    selectedText.push(val.join(", "));
+  } else if (val) {
+    selectedText.push(val);
+  }
+}
+
+      productVariantText.textContent = selectedText.join(", ");
+      productVariantText.style.marginTop = "16px";
     }
   }
 
-  function bindAddToCartButton() {
-    const btn = $("#btn-atc");
-    if (!btn) return;
-    btn.addEventListener("click", () => {
-      const v = window.selectedVariant;
-      if (!v) return alert("Vui lòng chọn đầy đủ phân loại");
-
-      const q = parseInt($("#quantityInput")?.value || "1") || 1;
-      const required = (window.allAttributes || []).filter(a => isAttrVisible(a, window.currentSelections));
-      const ok = required.every(attr => {
-        const val = window.currentSelections[attr.key];
-        if (attr.input === "text" && attr.key === "Tên" && v["Chọn Tranh"]?.includes("Tên Bạn")) {
-          return val?.trim().length > 0;
-        }
-        if (attr.key === "Chọn Tranh" && Array.isArray(val)) {
-          const expect = parseInt(window.currentSelections["Số Tranh"] || "0", 10);
-          return val.length === expect;
-        }
-        return val && (Array.isArray(val) ? val.length > 0 : true);
-      });
-
-      if (!ok) return alert("⚠️ Vui lòng chọn đúng số thiết kế và điền đủ thông tin!");
-
-      const item = { ...v, quantity: q };
-      window.cart.push(item);
-      localStorage.setItem("cart", JSON.stringify(window.cart));
-
-      if (typeof window.showCheckoutPopup === "function") window.showCheckoutPopup();
-    });
-  }
-
+  // ====== ATC / Cart / Popup ======
   function changeQuantity(delta) {
     const input = $("#quantityInput");
     const value = parseInt(input?.value || "1", 10);
     if (input) input.value = Math.max(1, value + delta);
   }
 
-  document.addEventListener("DOMContentLoaded", initCartPopup);
-  window.initCartPopup = initCartPopup;
-  window.toggleCartPopup = (show = true) => {
+  function toggleCartPopup(show = true) {
     const popup = $("#cartPopup");
-    if (popup) popup.style.display = show ? "flex" : "none";
+    const content = popup?.querySelector(".cart-popup-content");
+    if (!popup || !content) return;
+
+    if (show) {
+      popup.style.display = "flex";
+      content.classList.remove("animate-slideup");
+      void content.offsetWidth; // reflow
+      content.classList.add("animate-slideup");
+      popup.classList.remove("hidden");
+      isCartPopupOpen = true;
+      setTimeout(() => bindAddToCartButton(), 100);
+    } else {
+      content.classList.remove("animate-slideup");
+      popup.classList.add("hidden");
+      setTimeout(() => { popup.style.display = "none"; }, 300);
+      isCartPopupOpen = false;
+    }
+  }
+
+  function bindAddToCartButton() {
+    const atcBtn = $("#btn-atc");
+    if (atcBtn && !isCartEventBound) {
+      isCartEventBound = true;
+
+      atcBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+
+        if (!isCartPopupOpen) {
+          toggleCartPopup(true);
+          return;
+        }
+
+        const quantity = parseInt($("#quantityInput")?.value || "1", 10) || 1;
+        if (!window.selectedVariant) {
+          alert("Vui lòng chọn phân loại sản phẩm.");
+          return;
+        }
+
+        // Chỉ bắt buộc những nhóm đang hiển thị
+        const requiredKeys = (window.allAttributes || [])
+          .filter(a => isAttrVisible(a, window.currentSelections))
+          .map(a => a.key);
+
+        const selectedKeys = Object.keys(window.selectedVariant);
+        const isComplete = requiredKeys.every(key => {
+  const attr = (window.allAttributes || []).find(a => a.key === key);
+  const val = window.currentSelections[key];
+
+  // ✅ Nếu có chọn 'Tên Bạn' thì phải điền Tên
+  if (key === "Tên") {
+    if (window.currentSelections["Chọn Tranh"]?.includes("Tên Bạn")) {
+      return (val || "").trim().length > 0;
+    }
+    return true;
+  }
+
+  // ✅ Phải chọn đúng số tranh
+  if (key === "Chọn Tranh" && Array.isArray(val)) {
+    const expect = parseInt(window.currentSelections["Số Tranh"] || "0", 10);
+    return val.length === expect;
+  }
+
+  return val && (Array.isArray(val) ? val.length > 0 : true);
+});
+
+        if (!isComplete) {
+          alert("Vui lòng chọn đầy đủ phân loại sản phẩm.");
+          return;
+        }
+
+        const product = window.selectedVariant;
+        const loai = window.productCategory || "unknown";
+        const voucherAmount = window.voucherByProduct?.[product.id] || 0;
+        const phanLoaiText = requiredKeys.map(key => product[key]).join(" - ");
+        product["Phân loại"] = phanLoaiText;
+
+        window.cart.push({
+          ...product,
+          quantity,
+          loai,
+          voucher: voucherAmount > 0 ? { amount: voucherAmount } : undefined
+        });
+        saveCart();
+
+        // Pixels (nếu có)
+        if (typeof window.trackBothPixels === "function") {
+          window.trackBothPixels("AddToCart", {
+            content_id: product.id,
+            content_name: phanLoaiText,
+            content_category: product.category || loai,
+            content_page: window.productPage || "unknown",
+            value: product.Giá,
+            currency: "VND"
+          });
+        }
+
+        // Make webhook (nếu có)
+        fetch("https://hook.eu2.make.com/31c0jdh2vkvkjcnaenbm3kyze8fp3us3", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            content_id: product.id,
+            content_name: phanLoaiText,
+            content_category: product.category || loai,
+            content_page: window.productPage || "unknown",
+            value: product.Giá,
+            currency: "VND",
+            timestamp: new Date().toISOString()
+          })
+        }).catch(err => console.warn("⚠️ Không thể gửi Make:", err));
+
+        toggleCartPopup(false);
+        if (typeof window.showCheckoutPopup === "function") window.showCheckoutPopup();
+      });
+    }
+  }
+
+  function saveCart() {
+    try {
+      localStorage.setItem("cart", JSON.stringify(window.cart));
+    } catch (e) {
+      console.warn("⚠️ Lưu cart thất bại:", e);
+    }
+  }
+
+  // ====== expose minimal APIs (tuỳ trang có thể gọi) ======
+  window.cartpopup = {
+    changeQuantity: changeQuantity,
+    toggle: toggleCartPopup,
+    refresh: updateSelectedVariant
   };
-  window.changeQuantity = changeQuantity;
+
+  // ====== Wireup ======
+  document.addEventListener("DOMContentLoaded", () => {
+    // Close buttons
+    $$(".cart-popup-close, .cart-popup-overlay").forEach(btn =>
+      btn.addEventListener("click", () => toggleCartPopup(false))
+    );
+
+    // Form toggle alias
+    window.toggleForm = () => toggleCartPopup(true);
+
+    // Init
+    initCartPopup();
+  });
+// --- Expose & auto-init ---
+window.initCartPopup = initCartPopup; // cho phép trang gọi trực tiếp
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", () => initCartPopup());
+} else {
+  // Nếu file được nạp sau DOMContentLoaded, vẫn init được
+  initCartPopup();
+}
+// ✓ Cho HTML gọi được các hàm cũ
+window.initCartPopup = initCartPopup;
+window.toggleCartPopup = toggleCartPopup;
+window.changeQuantity = changeQuantity;
+
+// (tuỳ chọn) expose object tiện dùng
+window.cartpopup = {
+  init: initCartPopup,
+  toggle: toggleCartPopup,
+  qty: changeQuantity,
+};
+
 })();
