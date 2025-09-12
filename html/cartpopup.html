@@ -1,11 +1,6 @@
+<!-- 🔃 Container để JS tự fetch JSON -->
 <div id="cartContainer"></div>
-``>
 
----
-
-#### ✅ **2. Thêm đoạn JS sau ngay bên dưới (nếu chưa có):**
-
-```html
 <script>
   function initCartContainer() {
     const container = document.getElementById("cartContainer");
@@ -24,40 +19,44 @@
   }
 </script>
 
-
 <!-- ✅ Popup giỏ hàng -->
 <div id="cartPopup" class="cart-popup hidden" style="display: none;">
   <div class="cart-popup-overlay" onclick="toggleCartPopup(false)"></div>
-  <div class="cart-popup-content">
+
+  <div class="cart-popup-content animate-slideup">
     <button class="cart-popup-close" onclick="toggleCartPopup(false)">&times;</button>
 
-    <div class="product-header" style="display: flex; gap: 12px;">
-      <img id="mainImage" src="" alt="Ảnh sản phẩm" />
-      <div class="product-info" style="display: flex; flex-direction: column; flex: 1;">
-        <div>
-          <div class="product-price">          
-            <span class="price-original" id="productOriginalPrice">0đ</span>
-            <span class="price-sale" id="productPrice">0đ</span>
+    <!-- ✅ PHẦN CỐ ĐỊNH: Ảnh + Giá + Mô tả -->
+    <div class="cart-fixed-header">
+      <div class="product-header">
+        <img id="mainImage" src="" alt="Ảnh sản phẩm" />
+        <div class="product-info">
+          <div>
+            <div class="product-price">
+              <span class="price-original" id="productOriginalPrice">0đ</span>
+              <span class="price-sale" id="productPrice">0đ</span>
+            </div>
+            <div id="voucherLabel" style="display: none;">Voucher</div>
+            <div id="finalPriceLine" style="display: none;">Giá sau giảm</div>
           </div>
-          <div id="voucherLabel" style="display: none; background-color: rgba(0, 160, 230, 0.6); color: white; font-weight: bold; padding: 4px 10px; border-radius: 8px; font-size: 13px; margin-top: 6px; width: fit-content;"></div>
-          <div id="finalPriceLine" style="display: none; font-weight: bold; color: #d32f2f; margin-top: 4px;"></div>
+          <div style="flex: 1;"></div>
+          <div class="product-variant" id="productVariantText"></div>
         </div>
-        <div style="flex: 1;"></div>
-        <div class="product-variant" id="productVariantText" style="font-size: 14px; color: #333;"></div>
       </div>
     </div>
 
-    <div class="variant-list" id="variantList"></div>
+    <!-- ✅ PHẦN CUỘN ĐƯỢC -->
+    <div class="cart-scroll-body">
+      <div class="variant-list" id="variantList"></div>
 
-    <div class="quantity-wrapper">
-      <label for="quantityInput" style="margin-right: 8px;">Số lượng:</label>
-      <div class="quantity-control">
-        <button type="button" onclick="changeQuantity(-1)">−</button>
-        <input type="number" id="quantityInput" min="1" value="1" />
-        <button type="button" onclick="changeQuantity(1)">+</button>
+      <div class="quantity-wrapper">
+        <label for="quantityInput">Số lượng:</label>
+        <div class="quantity-control">
+          <button type="button" onclick="changeQuantity(-1)">−</button>
+          <input type="number" id="quantityInput" min="1" value="1" />
+          <button type="button" onclick="changeQuantity(1)">+</button>
+        </div>
       </div>
     </div>
-
-    <!-- ❌ Đã xoá nút "THÊM VÀO GIỎ HÀNG" khỏi popup -->
   </div>
 </div>
