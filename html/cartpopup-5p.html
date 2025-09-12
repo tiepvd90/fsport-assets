@@ -19,12 +19,13 @@
   }
 </script>
 
-<!-- ✅ POPUP ĐẶT HÀNG SET TRANH -->
+<!-- ✅ POPUP ĐẶT HÀNG -->
 <div id="cartPopup" class="cart-popup hidden" style="display: none;">
   <div class="cart-popup-overlay" onclick="toggleCartPopup(false)"></div>
   <div class="cart-popup-content animate-slideup">
     <button class="cart-popup-close" onclick="toggleCartPopup(false)">&times;</button>
 
+    <!-- ✅ ẢNH + GIÁ -->
     <div class="product-header">
       <img id="mainImage" src="" alt="Ảnh sản phẩm" />
       <div class="product-info">
@@ -33,8 +34,8 @@
             <span class="price-original" id="productOriginalPrice">0đ</span>
             <span class="price-sale" id="productPrice">0đ</span>
           </div>
-          <div id="voucherLabel"></div>
-          <div id="finalPriceLine"></div>
+          <div id="voucherLabel" style="display:none;"></div>
+          <div id="finalPriceLine" style="display:none;"></div>
         </div>
         <div style="flex: 1;"></div>
         <div class="product-variant" id="productVariantText"></div>
@@ -43,6 +44,12 @@
 
     <!-- ✅ DANH SÁCH PHÂN LOẠI -->
     <div class="variant-list" id="variantList"></div>
+
+    <!-- ✅ NHÓM TÊN (ẩn mặc định) -->
+    <div class="variant-group" data-key="Tên" style="display: none;">
+      <div class="variant-label">Tên Cá Nhân Hóa:</div>
+      <input type="text" id="input-Tên" placeholder="Nhập tên muốn in lên tranh" />
+    </div>
 
     <!-- ✅ CHỌN SỐ LƯỢNG -->
     <div class="quantity-wrapper">
@@ -56,5 +63,5 @@
   </div>
 </div>
 
-<!-- ✅ NÚT ĐẶT HÀNG LUÔN HIỆN DƯỚI CÙNG -->
+<!-- ✅ NÚT ĐẶT HÀNG LUÔN DƯỚI CÙNG -->
 <button class="cart-submit-btn" id="btn-atc">ĐẶT HÀNG NGAY</button>
