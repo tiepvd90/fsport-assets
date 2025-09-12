@@ -24,7 +24,7 @@
         { "text": "HD08", "image": "/assets/images/gallery/art/hoadao/8.webp" },
         { "text": "HD09", "image": "/assets/images/gallery/art/hoadao/9.webp" },
         { "text": "HD10", "image": "/assets/images/gallery/art/hoadao/10.webp" },
-        { "text": "Tên Bạn", "image": "/assets/images/gallery/art/hoadao/tenban.webp" }
+        { "text": "Tên Bạn", "image": "/assets/images/gallery/art/pubg/1.webp" }
       ]
     },
     {
@@ -54,7 +54,7 @@
   ],
   "biến_thể": [
     {
-      "id": "hoadao",
+      "id": "test",
       "category": "art",
       "Giá": 99000,
       "Giá gốc": 130000
