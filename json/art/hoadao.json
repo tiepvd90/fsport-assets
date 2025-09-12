@@ -1,0 +1,54 @@
+{
+  "category": "art",
+  "mainImageKey": "Thiết Kế",
+  "thuộc_tính": [
+    {
+      "label": "Thiết Kế",
+      "key": "Thiết Kế",
+      "display": "thumbnail",
+      "values": [
+        { "text": "PC01", "image": "/assets/images/gallery/art/hoadao/1.webp" },
+        { "text": "PC02", "image": "/assets/images/gallery/art/hoadao/2.webp" },
+        { "text": "PC03", "image": "/assets/images/gallery/art/hoadao/3.webp" },
+        { "text": "PC04", "image": "/assets/images/gallery/art/hoadao/4.webp" },
+        { "text": "PC05", "image": "/assets/images/gallery/art/hoadao/5.webp" },
+        { "text": "PC06", "image": "/assets/images/gallery/art/hoadao/6.webp" },
+        { "text": "PC07", "image": "/assets/images/gallery/art/hoadao/7.webp" },
+        { "text": "PC08", "image": "/assets/images/gallery/art/hoadao/8.webp" },
+        { "text": "PC09", "image": "/assets/images/gallery/art/hoadao/9.webp" },
+        { "text": "PC10", "image": "/assets/images/gallery/art/hoadao/10.webp" }
+      ]
+    },
+    {
+      "label": "Chữ In Lên Tranh",
+      "key": "ChuIn",
+      "input": "text",
+      "placeholder": "tên bạn hoặc bất kỳ chữ muốn in lên"
+    },
+    {
+      "label": "Kích cỡ",
+      "key": "Kích cỡ",
+      "display": "button",
+      "values": [
+        {
+          "text": "Set Vừa(2 tranh 15x20 và 2 tranh 20x30cm)",
+          "GiaOverride": 99000,
+          "GiaGocOverride": 130000
+        },
+        {
+          "text": "Set Tranh To(2 tranh 20x30 và 2 tranh 30x40cm)",
+          "GiaOverride": 169000,
+          "GiaGocOverride": 200000
+        }
+      ]
+    }
+  ],
+  "biến_thể": [
+    {
+      "id": "hoadao",
+      "category": "art",
+      "Giá": 99000,
+      "Giá gốc": 130000
+    }
+  ]
+}
