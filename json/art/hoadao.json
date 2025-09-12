@@ -7,23 +7,23 @@
       "key": "Thiết Kế",
       "display": "thumbnail",
       "values": [
-        { "text": "PC01", "image": "/assets/images/gallery/art/hoadao/1.webp" },
-        { "text": "PC02", "image": "/assets/images/gallery/art/hoadao/2.webp" },
-        { "text": "PC03", "image": "/assets/images/gallery/art/hoadao/3.webp" },
-        { "text": "PC04", "image": "/assets/images/gallery/art/hoadao/4.webp" },
-        { "text": "PC05", "image": "/assets/images/gallery/art/hoadao/5.webp" },
-        { "text": "PC06", "image": "/assets/images/gallery/art/hoadao/6.webp" },
-        { "text": "PC07", "image": "/assets/images/gallery/art/hoadao/7.webp" },
-        { "text": "PC08", "image": "/assets/images/gallery/art/hoadao/8.webp" },
-        { "text": "PC09", "image": "/assets/images/gallery/art/hoadao/9.webp" },
-        { "text": "PC10", "image": "/assets/images/gallery/art/hoadao/10.webp" }
+        { "text": "HD01", "image": "/assets/images/gallery/art/hoadao/1.webp" },
+        { "text": "HD02", "image": "/assets/images/gallery/art/hoadao/2.webp" },
+        { "text": "HD03", "image": "/assets/images/gallery/art/hoadao/3.webp" },
+        { "text": "HD04", "image": "/assets/images/gallery/art/hoadao/4.webp" },
+        { "text": "HD05", "image": "/assets/images/gallery/art/hoadao/5.webp" },
+        { "text": "HD06", "image": "/assets/images/gallery/art/hoadao/6.webp" },
+        { "text": "HD07", "image": "/assets/images/gallery/art/hoadao/7.webp" },
+        { "text": "HD08", "image": "/assets/images/gallery/art/hoadao/8.webp" },
+        { "text": "HD09", "image": "/assets/images/gallery/art/hoadao/9.webp" },
+        { "text": "HD10", "image": "/assets/images/gallery/art/hoadao/10.webp" }
       ]
     },
     {
-      "label": "Chữ In Lên Tranh",
+      "label": "Tên Hoặc Chữ Bạn Muốn In Lên Tranh",
       "key": "ChuIn",
       "input": "text",
-      "placeholder": "tên bạn hoặc bất kỳ chữ muốn in lên"
+      "placeholder": ""
     },
     {
       "label": "Kích cỡ",
@@ -36,7 +36,7 @@
           "GiaGocOverride": 130000
         },
         {
-          "text": "Set Tranh To(2 tranh 20x30 và 2 tranh 30x40cm)",
+          "text": "Set Tranh (2 tranh 20x30 và 2 tranh 30x40cm)",
           "GiaOverride": 169000,
           "GiaGocOverride": 200000
         }
