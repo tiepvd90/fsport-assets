@@ -1,9 +1,10 @@
 /* =========================================================================
- * cartpopup-4p.js —  (multi-variant with conditional visibility)
- * - Hỗ trợ thuộc tính phụ thuộc "when"
+ * cartpopup-5p.js —  (multi-variant with conditional visibility)
+ * - Hỗ trợ thuộc tính phụ thuộc "when" (kể cả khi selections là mảng)
  * - "when" có thể là object {Key:[...]} hoặc string "Key=Value"
  * - Chỉ bắt buộc chọn các nhóm đang hiển thị
  * - Giữ nguyên hành vi: voucher, pixel, Make webhook, ảnh theo mainImageKey
+ * - Bổ sung 5p: multi-select + giới hạn đúng số thiết kế theo "Số Tranh"
  * ========================================================================= */
 
 (function () {
@@ -46,12 +47,20 @@
   }
 
   // Kiểm tra thuộc tính có hiển thị với selections hiện tại hay không
+  // ✅ Bổ sung hỗ trợ selections dạng mảng (multi-select)
   function isAttrVisible(attr, selections) {
     const rule = normalizeWhen(attr.when);
     if (!rule) return true;
     // Tất cả điều kiện trong "when" phải đúng
     return Object.entries(rule).every(([depKey, allowed]) => {
       const sel = getSelectionValue(selections, depKey);
+
+      // sel là mảng (multi-select)
+      if (Array.isArray(sel)) {
+        if (Array.isArray(allowed)) return allowed.some(v => sel.includes(v));
+        return sel.includes(allowed);
+      }
+      // sel là string/primitive
       if (Array.isArray(allowed)) return allowed.includes(sel);
       return sel === allowed;
     });
@@ -67,9 +76,9 @@
           window.allAttributes = data["thuộc_tính"];
           window.baseVariant = data["biến_thể"][0];
           window.productCategory = data["category"] || data["biến_thể"][0]?.category || category;
-          window.mainImageKey = data["mainImageKey"] || (
-            data["thuộc_tính"].find(a => a.display === "thumbnail")?.key || null
-          );
+          window.mainImageKey =
+            data["mainImageKey"] ||
+            (data["thuộc_tính"].find(a => a.display === "thumbnail")?.key || null);
 
           renderOptions(window.allAttributes);
           bindAddToCartButton();
@@ -101,13 +110,15 @@
         input.type = "text";
         input.id = `input-${attr.key}`;
         input.placeholder = attr.placeholder || "Nhập nội dung...";
-        input.style.cssText = "width:100%;padding:8px;font-size:14px;box-sizing:border-box;border:1px solid #ccc;border-radius:6px;";
+        input.style.cssText =
+          "width:100%;padding:8px;font-size:14px;box-sizing:border-box;border:1px solid #ccc;border-radius:6px;";
         input.addEventListener("input", () => updateSelectedVariant());
         group.appendChild(input);
       } else if (Array.isArray(attr.values)) {
         const displayMode = attr.display || "button";
         const wrapper = document.createElement("div");
-        wrapper.className = displayMode === "thumbnail" ? "variant-thumbnails" : "variant-buttons";
+        wrapper.className =
+          displayMode === "thumbnail" ? "variant-thumbnails" : "variant-buttons";
 
         attr.values.forEach(val => {
           const value = typeof val === "string" ? val : val.text;
@@ -127,21 +138,27 @@
             thumb.textContent = value;
           }
 
+          // ✅ Multi-select + giới hạn bởi "Số Tranh"
           thumb.addEventListener("click", () => {
-  if (attr.multiple) {
-    const selected = wrapper.querySelectorAll(".variant-thumb.selected");
-    const max = parseInt(window.currentSelections["Số Tranh"] || "0", 10);
-    if (!thumb.classList.contains("selected")) {
-      if (selected.length >= max) return; // Giới hạn số tranh
-    }
-    thumb.classList.toggle("selected");
-  } else {
-    $$('.variant-thumb[data-key="' + attr.key + '"]').forEach(el => el.classList.remove("selected"));
-    thumb.classList.add("selected");
-  }
-  updateSelectedVariant();
-});
-
+            if (attr.multiple) {
+              let max = parseInt(window.currentSelections["Số Tranh"] || "0", 10);
+              if (!max || max <= 0) {
+                alert('Vui lòng chọn "Số Tranh" trước khi chọn thiết kế.');
+                return;
+              }
+              const selected = wrapper.querySelectorAll(".variant-thumb.selected");
+              if (!thumb.classList.contains("selected") && selected.length >= max) {
+                return; // không cho vượt quá
+              }
+              thumb.classList.toggle("selected");
+            } else {
+              $$('.variant-thumb[data-key="' + attr.key + '"]').forEach(el =>
+                el.classList.remove("selected")
+              );
+              thumb.classList.add("selected");
+            }
+            updateSelectedVariant();
+          });
 
           wrapper.appendChild(thumb);
         });
@@ -167,7 +184,9 @@
 
       if (!visible) {
         // Xoá chọn cũ nếu có
-        groupEl.querySelectorAll(".variant-thumb.selected").forEach(el => el.classList.remove("selected"));
+        groupEl.querySelectorAll(".variant-thumb.selected").forEach(el =>
+          el.classList.remove("selected")
+        );
         if (selections && selections[attr.key] != null) delete selections[attr.key];
         // Nếu input text
         const input = $(`#input-${attr.key}`);
@@ -181,26 +200,26 @@
 
   // ====== Auto pick lựa chọn đầu tiên cho nhóm đang hiển thị (nếu chưa chọn) ======
   function autoPickFirstForVisible(selections) {
-  const mainKey = window.mainImageKey;
+    const mainKey = window.mainImageKey;
 
-  (window.allAttributes || []).forEach(attr => {
-    if (!isAttrVisible(attr, selections)) return;
+    (window.allAttributes || []).forEach(attr => {
+      if (!isAttrVisible(attr, selections)) return;
 
-    // ✅ Chỉ auto-pick nếu là nhóm chính (mainImageKey)
-    if (attr.key !== mainKey) return;
+      // ✅ Chỉ auto-pick nếu là nhóm chính (mainImageKey) và KHÔNG phải multi-select
+      if (attr.key !== mainKey || attr.multiple === true) return;
 
-    const already = selections[attr.key];
-    if (already) return;
+      const already = selections[attr.key];
+      if (already) return;
 
-    const groupEl = $(`.variant-group[data-key="${attr.key}"]`);
-    if (!groupEl) return;
-    const firstBtn = groupEl.querySelector(".variant-thumb");
-    if (firstBtn) {
-      firstBtn.classList.add("selected");
-      selections[attr.key] = firstBtn.dataset.value;
-    }
-  });
-}
+      const groupEl = $(`.variant-group[data-key="${attr.key}"]`);
+      if (!groupEl) return;
+      const firstBtn = groupEl.querySelector(".variant-thumb");
+      if (firstBtn) {
+        firstBtn.classList.add("selected");
+        selections[attr.key] = firstBtn.dataset.value;
+      }
+    });
+  }
 
   // ====== Thu thập selections sạch từ DOM (chỉ nhóm đang hiển thị) ======
   function collectCleanSelections() {
@@ -212,12 +231,11 @@
         out[attr.key] = $(`#input-${attr.key}`)?.value || "";
       } else {
         const group = $(`.variant-group[data-key="${attr.key}"]`);
-if (!group) return;
-const selected = group.querySelectorAll(".variant-thumb.selected");
-out[attr.key] = attr.multiple
-  ? Array.from(selected).map(el => el.dataset.value)
-  : selected[0]?.dataset.value;
-
+        if (!group) return;
+        const selected = group.querySelectorAll(".variant-thumb.selected");
+        out[attr.key] = attr.multiple
+          ? Array.from(selected).map(el => el.dataset.value)
+          : selected[0]?.dataset.value;
       }
     });
     return out;
@@ -228,7 +246,14 @@ out[attr.key] = attr.multiple
     // 1) Thu thập các chọn hiện tại (thô)
     const raw = {};
     $$(".variant-thumb.selected").forEach(btn => {
-      raw[btn.dataset.key] = btn.dataset.value;
+      const k = btn.dataset.key;
+      const v = btn.dataset.value;
+      if (window.allAttributes?.find(a => a.key === k)?.multiple) {
+        if (!raw[k]) raw[k] = [];
+        if (!raw[k].includes(v)) raw[k].push(v);
+      } else {
+        raw[k] = v;
+      }
     });
     (window.allAttributes || []).forEach(attr => {
       if (attr.input === "text") {
@@ -253,15 +278,30 @@ out[attr.key] = attr.multiple
     // 5) Tạo variant từ base + selections
     const variant = { ...(window.baseVariant || {}), ...clean };
 
-    // 6) Ảnh theo mainImageKey
+    // 6) Ảnh theo mainImageKey (hỗ trợ mảng)
     if (window.mainImageKey) {
       const mainVal = clean[window.mainImageKey];
-      const mainAttr = (window.allAttributes || []).find(a => a.key === window.mainImageKey);
-      const matchedValue = mainAttr?.values?.find(v => (typeof v === "object" ? v.text === mainVal : v === mainVal));
-      if (matchedValue && typeof matchedValue === "object" && matchedValue.image) {
-        variant["Ảnh"] = matchedValue.image;
-      } else if (!variant["Ảnh"]) {
-        variant["Ảnh"] = "";
+      const mainAttr = (window.allAttributes || []).find(
+        a => a.key === window.mainImageKey
+      );
+
+      let chosenValue = null;
+      if (Array.isArray(mainVal)) {
+        // Ưu tiên cái chọn cuối
+        chosenValue = mainVal[mainVal.length - 1] || mainVal[0] || null;
+      } else {
+        chosenValue = mainVal || null;
+      }
+
+      if (chosenValue && mainAttr?.values?.length) {
+        const matchedValue = mainAttr.values.find(v =>
+          typeof v === "object" ? v.text === chosenValue : v === chosenValue
+        );
+        if (matchedValue && typeof matchedValue === "object" && matchedValue.image) {
+          variant["Ảnh"] = matchedValue.image;
+        } else if (!variant["Ảnh"]) {
+          variant["Ảnh"] = "";
+        }
       }
     }
 
@@ -274,15 +314,22 @@ out[attr.key] = attr.multiple
       const selVal = clean[attr.key];
       if (!selVal || !Array.isArray(attr?.values)) return;
 
-      const matched = attr.values.find(v => (typeof v === "object" ? v.text === selVal : v === selVal));
-      if (matched && typeof matched === "object") {
-        if (typeof matched.GiaOverride === "number") price = matched.GiaOverride;
-        if (typeof matched.GiaGocOverride === "number") priceOrig = matched.GiaGocOverride;
-        if (typeof matched.priceDelta === "number") price += matched.priceDelta;
-        if (typeof matched.priceOrigDelta === "number") priceOrig += matched.priceOrigDelta;
-        if (matched.priceMap && typeof matched.priceMap === "object") {
-          const mapKey = matched.priceKey || selVal;
-          if (typeof matched.priceMap[mapKey] === "number") price = matched.priceMap[mapKey];
+      // Với multi-select, không có override theo từng phần tử (trừ khi anh tự thêm map),
+      // ở đây vẫn giữ logic cũ: match theo string.
+      const selForMatch = Array.isArray(selVal) ? null : selVal;
+      if (selForMatch) {
+        const matched = attr.values.find(v =>
+          typeof v === "object" ? v.text === selForMatch : v === selForMatch
+        );
+        if (matched && typeof matched === "object") {
+          if (typeof matched.GiaOverride === "number") price = matched.GiaOverride;
+          if (typeof matched.GiaGocOverride === "number") priceOrig = matched.GiaGocOverride;
+          if (typeof matched.priceDelta === "number") price += matched.priceDelta;
+          if (typeof matched.priceOrigDelta === "number") priceOrig += matched.priceOrigDelta;
+          if (matched.priceMap && typeof matched.priceMap === "object") {
+            const mapKey = matched.priceKey || selForMatch;
+            if (typeof matched.priceMap[mapKey] === "number") price = matched.priceMap[mapKey];
+          }
         }
       }
     });
@@ -293,23 +340,25 @@ out[attr.key] = attr.multiple
     variant["Giá gốc"] = priceOrig;
 
     // 8) SKU id theo 1 key tuỳ chọn (ví dụ "Kích cỡ")
-    const sizeKey = (window.sizeKeyOverride || "Kích cỡ");
+    const sizeKey = window.sizeKeyOverride || "Kích cỡ";
     if (clean[sizeKey]) {
       variant.id = `${(window.baseVariant?.id || "item")}-${clean[sizeKey]}`
         .replace(/\s+/g, "")
         .toLowerCase();
     }
-const tenGroup = $(`.variant-group[data-key="Tên"]`);
-if (tenGroup) {
-  if (Array.isArray(clean["Chọn Tranh"]) && clean["Chọn Tranh"].includes("Tên Bạn")) {
-    tenGroup.style.display = "";
-  } else {
-    tenGroup.style.display = "none";
-    const input = tenGroup.querySelector("input[type='text']");
-    if (input) input.value = "";
-    delete clean["Tên"];
-  }
-}
+
+    // 8.1) Hiện/ẩn nhóm "Tên" theo lựa chọn "Chọn Tranh"
+    const tenGroup = $(`.variant-group[data-key="Tên"]`);
+    if (tenGroup) {
+      if (Array.isArray(clean["Chọn Tranh"]) && clean["Chọn Tranh"].includes("Tên Bạn")) {
+        tenGroup.style.display = "";
+      } else {
+        tenGroup.style.display = "none";
+        const input = tenGroup.querySelector("input[type='text']");
+        if (input) input.value = "";
+        delete clean["Tên"];
+      }
+    }
 
     // 9) Render ra UI (giá, ảnh, text…)
     selectVariant(variant);
@@ -378,15 +427,14 @@ if (tenGroup) {
       const ignore = new Set(["Ảnh", "Giá", "Giá gốc", "id", "category"]);
       const selectedText = [];
       for (let key in data) {
-  if (ignore.has(key)) continue;
-  const val = data[key];
-  if (Array.isArray(val)) {
-    selectedText.push(val.join(", "));
-  } else if (val) {
-    selectedText.push(val);
-  }
-}
-
+        if (ignore.has(key)) continue;
+        const val = data[key];
+        if (Array.isArray(val)) {
+          selectedText.push(val.join(", "));
+        } else if (val) {
+          selectedText.push(val);
+        }
+      }
       productVariantText.textContent = selectedText.join(", ");
       productVariantText.style.marginTop = "16px";
     }
@@ -415,7 +463,9 @@ if (tenGroup) {
     } else {
       content.classList.remove("animate-slideup");
       popup.classList.add("hidden");
-      setTimeout(() => { popup.style.display = "none"; }, 300);
+      setTimeout(() => {
+        popup.style.display = "none";
+      }, 300);
       isCartPopupOpen = false;
     }
   }
@@ -445,37 +495,39 @@ if (tenGroup) {
           .filter(a => isAttrVisible(a, window.currentSelections))
           .map(a => a.key);
 
-        const selectedKeys = Object.keys(window.selectedVariant);
         const isComplete = requiredKeys.every(key => {
-  const attr = (window.allAttributes || []).find(a => a.key === key);
-  const val = window.currentSelections[key];
+          const attr = (window.allAttributes || []).find(a => a.key === key);
+          const val = window.currentSelections[key];
 
-  // ✅ Nếu có chọn 'Tên Bạn' thì phải điền Tên
-  if (key === "Tên") {
-    if (window.currentSelections["Chọn Tranh"]?.includes("Tên Bạn")) {
-      return (val || "").trim().length > 0;
-    }
-    return true;
-  }
+          // ✅ Nếu có chọn 'Tên Bạn' thì phải điền Tên
+          if (key === "Tên") {
+            if (window.currentSelections["Chọn Tranh"]?.includes("Tên Bạn")) {
+              return (val || "").trim().length > 0;
+            }
+            return true;
+          }
 
-  // ✅ Phải chọn đúng số tranh
-  if (key === "Chọn Tranh" && Array.isArray(val)) {
-    const expect = parseInt(window.currentSelections["Số Tranh"] || "0", 10);
-    return val.length === expect;
-  }
+          // ✅ Phải chọn đúng số tranh
+          if (key === "Chọn Tranh" && Array.isArray(val)) {
+            const expect = parseInt(window.currentSelections["Số Tranh"] || "0", 10);
+            return val.length === expect;
+          }
 
-  return val && (Array.isArray(val) ? val.length > 0 : true);
-});
+          return val && (Array.isArray(val) ? val.length > 0 : true);
+        });
 
         if (!isComplete) {
-          alert("Vui lòng chọn đầy đủ phân loại sản phẩm.");
+          alert("Vui lòng chọn đúng số thiết kế và điền đầy đủ thông tin bắt buộc.");
           return;
         }
 
         const product = window.selectedVariant;
         const loai = window.productCategory || "unknown";
         const voucherAmount = window.voucherByProduct?.[product.id] || 0;
-        const phanLoaiText = requiredKeys.map(key => product[key]).join(" - ");
+        const phanLoaiText = requiredKeys.map(key => {
+          const v = product[key];
+          return Array.isArray(v) ? v.join(", ") : v;
+        }).join(" - ");
         product["Phân loại"] = phanLoaiText;
 
         window.cart.push({
@@ -547,25 +599,25 @@ if (tenGroup) {
     // Init
     initCartPopup();
   });
-// --- Expose & auto-init ---
-window.initCartPopup = initCartPopup; // cho phép trang gọi trực tiếp
 
-if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", () => initCartPopup());
-} else {
-  // Nếu file được nạp sau DOMContentLoaded, vẫn init được
-  initCartPopup();
-}
-// ✓ Cho HTML gọi được các hàm cũ
-window.initCartPopup = initCartPopup;
-window.toggleCartPopup = toggleCartPopup;
-window.changeQuantity = changeQuantity;
+  // --- Expose & auto-init ---
+  window.initCartPopup = initCartPopup; // cho phép trang gọi trực tiếp
 
-// (tuỳ chọn) expose object tiện dùng
-window.cartpopup = {
-  init: initCartPopup,
-  toggle: toggleCartPopup,
-  qty: changeQuantity,
-};
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", () => initCartPopup());
+  } else {
+    // Nếu file được nạp sau DOMContentLoaded, vẫn init được
+    initCartPopup();
+  }
+  // ✓ Cho HTML gọi được các hàm cũ
+  window.initCartPopup = initCartPopup;
+  window.toggleCartPopup = toggleCartPopup;
+  window.changeQuantity = changeQuantity;
 
+  // (tuỳ chọn) expose object tiện dùng
+  window.cartpopup = {
+    init: initCartPopup,
+    toggle: toggleCartPopup,
+    qty: changeQuantity,
+  };
 })();
