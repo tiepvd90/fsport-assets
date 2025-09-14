@@ -571,7 +571,6 @@ if (attrMulti && Array.isArray(window.currentSelections[attrMulti.key])) {
     window.toggleForm = () => toggleCartPopup(true);
 
     // Init
-    <script>
   document.addEventListener("DOMContentLoaded", () => {
     if (typeof initCartPopup === "function") {
       initCartPopup();
@@ -579,7 +578,6 @@ if (attrMulti && Array.isArray(window.currentSelections[attrMulti.key])) {
       console.warn("⚠️ initCartPopup chưa sẵn sàng.");
     }
   });
-</script>
 
   });
 // --- Expose & auto-init ---
