@@ -431,18 +431,6 @@ priceOrig = priceOrig * numTranh;
   }
 
   function bindAddToCartButton() {
-  const isChoseTenBan = Array.isArray(window.currentSelections["Thiết Kế"]) &&
-  window.currentSelections["Thiết Kế"].includes("Tên Bạn");
-
-if (isChoseTenBan) {
-  const input = document.querySelector(`#input-Tên Bạn`);
-  const value = input?.value?.trim();
-  if (!value) {
-    alert("Vui lòng nhập tên để in lên tranh.");
-    return;
-  }
-  product["Tên In"] = value;
-}
 
     const atcBtn = $("#btn-atc");
     if (atcBtn && !isCartEventBound) {
@@ -497,6 +485,21 @@ if (attrMulti) {
         }
 
         const product = window.selectedVariant;
+// Kiểm tra nếu người dùng chọn "Tên Bạn"
+const attrMulti = window.allAttributes.find(a => a.multiSelect);
+if (attrMulti && Array.isArray(window.currentSelections[attrMulti.key])) {
+  const hasTenBan = window.currentSelections[attrMulti.key].includes("Tên Bạn");
+
+  if (hasTenBan) {
+    const input = document.querySelector(`#input-Tên Bạn`);
+    const value = input?.value?.trim();
+    if (!value) {
+      alert("Vui lòng nhập tên để in lên tranh.");
+      return;
+    }
+    product["Tên In"] = value;
+  }
+}
         const loai = window.productCategory || "unknown";
         const voucherAmount = window.voucherByProduct?.[product.id] || 0;
         const phanLoaiText = requiredKeys.map(key => product[key]).join(" - ");
