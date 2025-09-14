@@ -572,7 +572,16 @@ if (attrMulti && Array.isArray(window.currentSelections[attrMulti.key])) {
     window.toggleForm = () => toggleCartPopup(true);
 
     // Init
-    initCartPopup();
+    <script>
+  document.addEventListener("DOMContentLoaded", () => {
+    if (typeof initCartPopup === "function") {
+      initCartPopup();
+    } else {
+      console.warn("⚠️ initCartPopup chưa sẵn sàng.");
+    }
+  });
+</script>
+
   });
 // --- Expose & auto-init ---
 window.initCartPopup = initCartPopup; // cho phép trang gọi trực tiếp
