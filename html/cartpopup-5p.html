@@ -19,6 +19,43 @@
   }
 </script>
 
+<!-- ✅ POPUP CART -->
+<div id="cartPopup" class="cart-popup hidden" style="display: none;">
+  <div class="cart-popup-overlay" onclick="toggleCartPopup(false)"></div>
+  <div class="cart-popup-content">
+    <button class="cart-popup-close" onclick="toggleCartPopup(false)">&times;</button>
+
+    <!-- ✅ Ảnh + Giá + Voucher -->
+    <div class="product-header">
+      <img id="mainImage" src="" alt="Ảnh sản phẩm" />
+      <div class="product-info">
+        <div>
+          <div class="product-price">
+            <span class="price-original" id="productOriginalPrice">0đ</span>
+            <span class="price-sale" id="productPrice">0đ</span>
+          </div>
+          <div id="voucherLabel"></div>
+          <div id="finalPriceLine"></div>
+        </div>
+        <div class="product-variant" id="productVariantText" style="font-size: 14px; color: #333;"></div>
+      </div>
+    </div>
+
+    <!-- ✅ PHÂN LOẠI -->
+    <div class="variant-list" id="variantList"></div>
+
+    <!-- ✅ SỐ LƯỢNG -->
+    <div class="quantity-wrapper">
+      <label for="quantityInput">Số lượng:</label>
+      <div class="quantity-control">
+        <button type="button" onclick="changeQuantity(-1)">−</button>
+        <input type="number" id="quantityInput" min="1" value="1" />
+        <button type="button" onclick="changeQuantity(1)">+</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- ✅ CSS GẮN TRỰC TIẾP -->
 <style>
   .cart-popup {
@@ -146,6 +183,7 @@
     text-align: center;
     font-size: 12px;
     background: #fff;
+    position: relative;
   }
 
   .variant-thumb img {
@@ -166,18 +204,21 @@
     font-weight: normal;
   }
 
-  .variant-group input[type="text"] {
+  .variant-input-text {
+    margin-top: 6px;
+  }
+
+  .variant-input-text input[type="text"] {
     width: 100%;
-    padding: 8px;
-    font-size: 14px;
-    box-sizing: border-box;
+    padding: 6px 8px;
+    font-size: 13px;
     border: 1px solid #ccc;
     border-radius: 6px;
     font-style: italic;
     color: #333;
   }
 
-  .variant-group input[type="text"]::placeholder {
+  .variant-input-text input::placeholder {
     color: #888;
     font-style: italic;
   }
@@ -235,43 +276,3 @@
     font-size: 18px;
   }
 </style>
-
-<!-- ✅ POPUP CART -->
-<div id="cartPopup" class="cart-popup hidden" style="display: none;">
-  <div class="cart-popup-overlay" onclick="toggleCartPopup(false)"></div>
-  <div class="cart-popup-content">
-    <button class="cart-popup-close" onclick="toggleCartPopup(false)">&times;</button>
-
-    <!-- ✅ Ảnh + Giá + Voucher -->
-    <div class="product-header">
-      <img id="mainImage" src="" alt="Ảnh sản phẩm" />
-      <div class="product-info">
-        <div>
-          <div class="product-price">
-            <span class="price-original" id="productOriginalPrice">0đ</span>
-            <span class="price-sale" id="productPrice">0đ</span>
-          </div>
-          <div id="voucherLabel"></div>
-          <div id="finalPriceLine"></div>
-        </div>
-        <div style="flex: 1;"></div>
-        <div class="product-variant" id="productVariantText" style="font-size: 14px; color: #333;"></div>
-      </div>
-    </div>
-
-    <!-- ✅ PHÂN LOẠI -->
-    <div class="variant-list" id="variantList"></div>
-
-    <!-- ✅ SỐ LƯỢNG -->
-    <div class="quantity-wrapper">
-      <label for="quantityInput">Số lượng:</label>
-      <div class="quantity-control">
-        <button type="button" onclick="changeQuantity(-1)">−</button>
-        <input type="number" id="quantityInput" min="1" value="1" />
-        <button type="button" onclick="changeQuantity(1)">+</button>
-      </div>
-    </div>
-
-    <!-- ❌ Không có nút ATC ở đây, dùng sticky footer riêng -->
-  </div>
-</div>
