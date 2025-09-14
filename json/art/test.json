@@ -1,66 +1,21 @@
 {
   "category": "art",
-  "productPage": "test",
-  "mainImageKey": "Chọn Tranh",
-
-  "priceMatrix": {
-    "currency": "VND",
-    "base": [
-      { "Số Tranh": 2, "Kích Thước": "20x30", "Giá": 99000,  "Giá gốc": 150000 },
-      { "Số Tranh": 2, "Kích Thước": "30x40", "Giá": 149000, "Giá gốc": 220000 },
-      { "Số Tranh": 3, "Kích Thước": "20x30", "Giá": 139000, "Giá gốc": 210000 },
-      { "Số Tranh": 3, "Kích Thước": "30x40", "Giá": 199000, "Giá gốc": 300000 },
-      { "Số Tranh": 4, "Kích Thước": "20x30", "Giá": 179000, "Giá gốc": 260000 },
-      { "Số Tranh": 4, "Kích Thước": "30x40", "Giá": 259000, "Giá gốc": 360000 },
-      { "Số Tranh": 5, "Kích Thước": "20x30", "Giá": 219000, "Giá gốc": 320000 },
-      { "Số Tranh": 5, "Kích Thước": "30x40", "Giá": 309000, "Giá gốc": 430000 },
-      { "Số Tranh": 6, "Kích Thước": "20x30", "Giá": 259000, "Giá gốc": 380000 },
-      { "Số Tranh": 6, "Kích Thước": "30x40", "Giá": 359000, "Giá gốc": 510000 }
-    ],
-    "surcharge": [
-      { "appliesTo": "Chọn Tranh", "includes": ["Tên Bạn"], "priceDelta": 10000 }
-    ]
-  },
-
-  "rules": {
-    "multiSelect": {
-      "key": "Chọn Tranh",
-      "exactCountFrom": "Số Tranh",
-      "errorText": "Vui lòng chọn đúng số tranh theo số lượng đã chọn."
-    },
-    "requireTextIf": [
-      {
-        "key": "Tên",
-        "whenIncludes": { "Chọn Tranh": ["Tên Bạn"] },
-        "placeholder": "Nhập tên để in lên tranh",
-        "errorText": "Vui lòng nhập tên để in lên tranh."
-      }
-    ],
-    "visibility": [
-      { "show": "Tên", "whenIncludes": { "Chọn Tranh": ["Tên Bạn"] } }
-    ]
-  },
-
+  "mainImageKey": "Thiết Kế",
   "thuộc_tính": [
     {
-      "label": "Số Tranh",
-      "key": "Số Tranh",
-      "display": "button",
-      "values": [2, 3, 4, 5, 6]
-    },
-    {
-      "label": "Kích Thước",
-      "key": "Kích Thước",
-      "display": "button",
-      "values": ["20x30", "30x40"]
-    },
-    {
-      "label": "Chọn Tranh",
-      "key": "Chọn Tranh",
+      "label": "Thiết Kế (Chọn từ 2 đến 10)",
+      "key": "Thiết Kế",
       "display": "thumbnail",
-      "multiple": true,
+      "multiSelect": true,
+      "minSelect": 2,
+      "maxSelect": 10,
       "values": [
-        { "text": "HD01", "image": "/assets/images/gallery/art/hoadao/1.webp" },
+        {
+          "text": "Tên Bạn",
+          "image": "/assets/images/gallery/art/hoadao/1.webp",
+          "textinput": true,
+          "placeholder": "Nhập tên hoặc chữ bạn muốn in lên tranh"
+        },
         { "text": "HD02", "image": "/assets/images/gallery/art/hoadao/2.webp" },
         { "text": "HD03", "image": "/assets/images/gallery/art/hoadao/3.webp" },
         { "text": "HD04", "image": "/assets/images/gallery/art/hoadao/4.webp" },
@@ -69,25 +24,33 @@
         { "text": "HD07", "image": "/assets/images/gallery/art/hoadao/7.webp" },
         { "text": "HD08", "image": "/assets/images/gallery/art/hoadao/8.webp" },
         { "text": "HD09", "image": "/assets/images/gallery/art/hoadao/9.webp" },
-        { "text": "HD10", "image": "/assets/images/gallery/art/hoadao/10.webp" },
-        { "text": "Tên Bạn", "image": "/assets/images/gallery/art/pubg/1.webp", "customizable": true }
+        { "text": "HD10", "image": "/assets/images/gallery/art/hoadao/10.webp" }
       ]
     },
     {
-      "label": "Tên Cá Nhân Hóa",
-      "key": "Tên",
-      "input": "text",
-      "placeholder": "Nhập tên muốn in lên tranh",
-      "when": "Chọn Tranh=Tên Bạn"
+      "label": "Kích Cỡ 1 Tranh",
+      "key": "Kích Cỡ",
+      "display": "button",
+      "values": [
+        {
+          "text": "20x30cm",
+          "GiaOverride": 29000,
+          "GiaGocOverride": 50000
+        },
+        {
+          "text": "30x45cm",
+          "GiaOverride": 59000,
+          "GiaGocOverride": 100000
+        }
+      ]
     }
   ],
-
   "biến_thể": [
     {
       "id": "test",
       "category": "art",
-      "Giá": 0,
-      "Giá gốc": 0
+      "Giá": 29000,
+      "Giá gốc": 50000
     }
   ]
 }
