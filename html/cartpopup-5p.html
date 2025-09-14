@@ -1,74 +1,277 @@
-<!-- Container để gắn data-json -->
+<!-- ✅ BỘ KHỞI TẠO -->
 <div id="cartContainer"></div>
 
 <script>
-  // (tuỳ trang) đặt context dự phòng
-  window.productPage = window.productPage || "test";
-  window.productCategory = window.productCategory || "art";
-
-  // Chỉ định thẳng URL JSON public để tránh 404
   function initCartContainer() {
     const container = document.getElementById("cartContainer");
-    if (!container) return;
-    container.setAttribute("data-json", "/json/art/test.json");
-  }
-
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initCartContainer);
-  } else {
-    initCartContainer();
+    const productPage = window.productPage || "default";
+    const category = window.productCategory || "tshirt";
+    if (container) {
+      fetch(`/json/${productPage}.json`)
+        .then(res => {
+          if (!res.ok) throw new Error("Primary JSON not found");
+          container.setAttribute("data-json", `/json/${productPage}.json`);
+        })
+        .catch(() => {
+          container.setAttribute("data-json", `/json/${category}/${productPage}.json`);
+        });
+    }
   }
 </script>
 
-<!-- ✅ Popup giỏ hàng (HTML cho 5p) -->
-<div id="cartPopup" class="cart-popup hidden" style="display:none;">
+<!-- ✅ CSS GẮN TRỰC TIẾP -->
+<style>
+  .cart-popup {
+    position: fixed;
+    inset: 0;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    font-family: 'Be Vietnam Pro', sans-serif;
+  }
+
+  .cart-popup.hidden {
+    display: none;
+  }
+
+  .cart-popup-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+  }
+
+  .cart-popup-content {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    max-height: 77vh;
+    overflow-y: auto;
+    background: #fff;
+    padding: 16px;
+    padding-bottom: 80px;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    animation: slideUp 0.3s ease-out forwards;
+    transform: translateY(100%);
+  }
+
+  .cart-popup-content.animate-slideup {
+    transform: translateY(0);
+  }
+
+  @keyframes slideUp {
+    from {
+      transform: translateY(100%);
+    }
+    to {
+      transform: translateY(0%);
+    }
+  }
+
+  .cart-popup-close {
+    position: absolute;
+    top: 8px;
+    right: 12px;
+    font-size: 26px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+  }
+
+  .product-header {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .product-header img {
+    width: 100px;
+    height: auto;
+    object-fit: contain;
+    border-radius: 8px;
+  }
+
+  .product-info {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+
+  .product-price {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .price-original {
+    color: #888;
+    text-decoration: line-through;
+    font-size: 14px;
+  }
+
+  .price-sale {
+    color: #d0021b;
+    font-weight: bold;
+    font-size: 16px;
+  }
+
+  .variant-list {
+    margin-top: 12px;
+  }
+
+  .variant-group {
+    margin-bottom: 16px;
+  }
+
+  .variant-label {
+    font-weight: 600;
+    margin-bottom: 6px;
+    font-size: 14px;
+  }
+
+  .variant-thumbnails {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 6px;
+  }
+
+  .variant-thumb {
+    cursor: pointer;
+    border: 1px solid #ccc;
+    padding: 4px;
+    border-radius: 6px;
+    text-align: center;
+    font-size: 12px;
+    background: #fff;
+  }
+
+  .variant-thumb img {
+    width: 100%;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+    border-radius: 4px;
+  }
+
+  .variant-thumb.selected {
+    border-color: #d0021b;
+    box-shadow: 0 0 0 2px rgba(208, 2, 27, 0.3);
+  }
+
+  .variant-title {
+    margin-top: 4px;
+    font-size: 12px;
+    font-weight: normal;
+  }
+
+  .variant-group input[type="text"] {
+    width: 100%;
+    padding: 8px;
+    font-size: 14px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-style: italic;
+    color: #333;
+  }
+
+  .variant-group input[type="text"]::placeholder {
+    color: #888;
+    font-style: italic;
+  }
+
+  .quantity-wrapper {
+    display: flex;
+    align-items: center;
+    margin-top: 12px;
+    gap: 10px;
+  }
+
+  .quantity-control {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .quantity-control button {
+    width: 28px;
+    height: 28px;
+    font-size: 18px;
+    background: #000;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+
+  .quantity-control input {
+    width: 48px;
+    height: 28px;
+    text-align: center;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+  }
+
+  #voucherLabel {
+    display: none;
+    background-color: rgba(0, 160, 230, 0.6);
+    color: white;
+    font-weight: bold;
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-size: 13px;
+    margin-top: 6px;
+    width: fit-content;
+  }
+
+  #finalPriceLine {
+    display: none;
+    font-weight: bold;
+    color: #d32f2f;
+    margin-top: 4px;
+    font-size: 18px;
+  }
+</style>
+
+<!-- ✅ POPUP CART -->
+<div id="cartPopup" class="cart-popup hidden" style="display: none;">
   <div class="cart-popup-overlay" onclick="toggleCartPopup(false)"></div>
+  <div class="cart-popup-content">
+    <button class="cart-popup-close" onclick="toggleCartPopup(false)">&times;</button>
 
-  <div class="cart-popup-content" role="dialog" aria-modal="true" aria-labelledby="productVariantText">
-    <button class="cart-popup-close" onclick="toggleCartPopup(false)" aria-label="Đóng">&times;</button>
-
-    <!-- Header: Ảnh + Giá + Mô tả biến thể -->
-    <div class="product-header" style="display:flex; gap:12px;">
-      <img id="mainImage" src="" alt="Ảnh sản phẩm" decoding="async" />
-      <div class="product-info" style="display:flex; flex-direction:column; flex:1;">
-        <div class="product-price" aria-live="polite">
-          <span class="price-original" id="productOriginalPrice">0đ</span>
-          <span class="price-sale" id="productPrice">0đ</span>
+    <!-- ✅ Ảnh + Giá + Voucher -->
+    <div class="product-header">
+      <img id="mainImage" src="" alt="Ảnh sản phẩm" />
+      <div class="product-info">
+        <div>
+          <div class="product-price">
+            <span class="price-original" id="productOriginalPrice">0đ</span>
+            <span class="price-sale" id="productPrice">0đ</span>
+          </div>
+          <div id="voucherLabel"></div>
+          <div id="finalPriceLine"></div>
         </div>
-        <div id="voucherLabel"
-             style="display:none; background-color:rgba(0,160,230,0.6); color:#fff; font-weight:bold; padding:4px 10px; border-radius:8px; font-size:13px; margin-top:6px; width:fit-content;">
-        </div>
-        <div id="finalPriceLine" style="display:none; font-weight:bold; color:#d32f2f; margin-top:4px;"></div>
-
-        <div style="flex:1;"></div>
-        <div class="product-variant" id="productVariantText" style="font-size:14px; color:#333;"></div>
+        <div style="flex: 1;"></div>
+        <div class="product-variant" id="productVariantText" style="font-size: 14px; color: #333;"></div>
       </div>
     </div>
 
-    <!-- Khu render thuộc tính -->
+    <!-- ✅ PHÂN LOẠI -->
     <div class="variant-list" id="variantList"></div>
 
-    <!-- Bộ đếm multiselect & thông báo lỗi theo rule -->
-    <div id="designCounter" class="multiselect-counter" aria-live="polite"></div>
-    <div id="formError" class="form-error" aria-live="polite"></div>
-
-    <!-- Số lượng bộ set đặt mua -->
+    <!-- ✅ SỐ LƯỢNG -->
     <div class="quantity-wrapper">
-      <label for="quantityInput" style="margin-right:8px;">Số lượng:</label>
+      <label for="quantityInput">Số lượng:</label>
       <div class="quantity-control">
-        <button type="button" onclick="changeQuantity(-1)" aria-label="Giảm">−</button>
-        <input type="number" id="quantityInput" min="1" value="1" inputmode="numeric" />
-        <button type="button" onclick="changeQuantity(1)" aria-label="Tăng">+</button>
+        <button type="button" onclick="changeQuantity(-1)">−</button>
+        <input type="number" id="quantityInput" min="1" value="1" />
+        <button type="button" onclick="changeQuantity(1)">+</button>
       </div>
     </div>
 
-    <!-- Thanh hành động -->
-    <div class="action-bar">
-      <button id="btn-atc" disabled>ĐẶT HÀNG</button>
-    </div>
+    <!-- ❌ Không có nút ATC ở đây, dùng sticky footer riêng -->
   </div>
 </div>
-
-<!-- (Gợi ý) đảm bảo bạn đã nhúng CSS và script engine sau khối HTML này -->
-<!-- <link rel="stylesheet" href="/path/to/cartpopup.css"> -->
-<!-- <script src="/path/to/cartpopup-5p.js" defer></script> -->
