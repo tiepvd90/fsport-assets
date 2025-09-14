@@ -1,40 +1,40 @@
 /* =========================================================================
- * cartpopup-5p.js — multi-variant (exact-count multiselect + priceMatrix)
- * - Hỗ trợ thuộc tính phụ thuộc "when" (chuẩn 4p) và "whenIncludes" (mở rộng)
- * - Multi-select bắt buộc chọn đúng số lượng (exactCountFrom)
- * - Giá theo priceMatrix.base (Số Tranh x Kích Thước) + surcharge (includes)
- * - "Tên Bạn" bật input text & bắt buộc nhập nếu có trong danh sách chọn
- * - Ảnh chính đổi theo bức vừa click gần nhất (mainImageKey)
- * - Giữ nguyên: voucher, pixel, Make webhook, localStorage, API public
+ * cartpopup-5p.js — (multi-variant + multi-select + conditional input)
+ * 
+ * ✅ Hỗ trợ chọn nhiều giá trị (multi-select) trong 1 thuộc tính (ví dụ: chọn 2–10 tranh)
+ * ✅ Tự động tính giá = số lựa chọn × giá của từng lựa chọn (theo kích cỡ)
+ * ✅ Hỗ trợ thuộc tính phụ thuộc (sử dụng "when")
+ * ✅ Hỗ trợ text input riêng cho từng giá trị nếu có "textinput": true (ví dụ: "Tên Bạn")
+ * ✅ Chỉ bắt buộc chọn các nhóm đang hiển thị (ẩn thì không cần)
+ * ✅ Giữ nguyên các hành vi cũ: 
+ *    - Gắn voucher riêng từng sản phẩm (voucherByProduct)
+ *    - Tự động hiển thị ảnh theo mainImageKey
+ *    - Pixel Facebook (AddToCart), Make.com webhook
  * ========================================================================= */
+
 
 (function () {
   "use strict";
 
-  // ====== Public-ish state (tương thích cũ) ======
+  // ====== Public-ish state (giữ tương thích cũ) ======
   window.selectedVariant = null;
   window.cart = window.cart || [];
   window.currentSelections = {}; // selections sạch sau khi ẩn/hiện
   let isCartEventBound = false;
   let isCartPopupOpen = false;
 
-  // ====== JSON url (ưu tiên từ #cartContainer[data-json]) ======
+  // ====== Config đường dẫn JSON ======
+  const productPage = (window.productPage || "default").toLowerCase();
+  const category = (window.productCategory || "tshirt").toLowerCase();
+  const jsonUrl = `/json/${category}/${productPage}.json`;
+
+  // ====== DOM helpers ======
   const $ = (sel, root = document) => root.querySelector(sel);
   const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
-  const container = $("#cartContainer");
-  const dataJsonAttr = container?.getAttribute("data-json");
-  const page = (window.productPage || "default").toLowerCase();
-  const cat = (window.productCategory || "tshirt").toLowerCase();
-  const jsonUrl = dataJsonAttr || `/json/${cat}/${page}.json`;
 
-  // ====== Runtime holders ======
-  let ALL_ATTRS = [];
-  let BASE_VARIANT = null;
-  let MAIN_IMAGE_KEY = null;
-  let PRICE_MATRIX = null; // { currency, base:[], surcharge:[] }
-  let RULES = { multiSelect: null, requireTextIf: [], visibility: [] };
-
-  // ====== Utils: parse when / whenIncludes ======
+  // ====== Utils: parse when ======
+  // - Nếu when là string: "Key=Value" -> { Key: "Value" }
+  // - Nếu when là object: giữ nguyên { Key: "Value" | [values] }
   function normalizeWhen(when) {
     if (!when) return null;
     if (typeof when === "string") {
@@ -47,66 +47,39 @@
     if (typeof when === "object") return when;
     return null;
   }
-  function getSel(selections, key) {
+
+  function getSelectionValue(selections, key) {
     return selections ? selections[key] : undefined;
   }
+
+  // Kiểm tra thuộc tính có hiển thị với selections hiện tại hay không
   function isAttrVisible(attr, selections) {
-    // 4p: "when"
     const rule = normalizeWhen(attr.when);
-    let ok = true;
-    if (rule) {
-      ok = Object.entries(rule).every(([depKey, allowed]) => {
-        const sel = getSel(selections, depKey);
-        if (Array.isArray(allowed)) return allowed.includes(sel);
-        return sel === allowed;
-      });
-    }
-    // 5p mở rộng: RULES.visibility (whenIncludes)
-    if (ok && RULES?.visibility?.length) {
-      // Nếu có item visibility nhắm tới attr.key → áp tiếp (nếu khớp)
-      const visRules = RULES.visibility.filter(v => v.show === attr.key && v.whenIncludes);
-      if (visRules.length) {
-        // Nếu KHÔNG đạt bất kỳ whenIncludes nào thì ẩn
-        const anyPass = visRules.some(v => matchWhenIncludes(v.whenIncludes, selections));
-        ok = anyPass;
-      }
-    }
-    return ok;
-  }
-  function matchWhenIncludes(whenIncludes, selections) {
-    // { Key:[values] } → đúng nếu selections[Key] chứa ÍT NHẤT MỘT value
-    if (!whenIncludes || typeof whenIncludes !== "object") return false;
-    return Object.entries(whenIncludes).every(([k, includes]) => {
-      const sel = getSel(selections, k);
-      if (Array.isArray(sel)) {
-        // multi-select (danh sách)
-        return sel.some(s => includes.includes(s));
-      }
-      // đơn trị
-      return includes.includes(sel);
+    if (!rule) return true;
+    // Tất cả điều kiện trong "when" phải đúng
+    return Object.entries(rule).every(([depKey, allowed]) => {
+      const sel = getSelectionValue(selections, depKey);
+      if (Array.isArray(allowed)) return allowed.includes(sel);
+      return sel === allowed;
     });
   }
 
-  // ====== Fetch JSON & init ======
+  // ====== Fetch JSON & khởi tạo ======
   function initCartPopup() {
     fetch(jsonUrl)
       .then(res => res.json())
       .then(data => {
+        // Validate định dạng
         if (data["thuộc_tính"] && data["biến_thể"]?.length === 1) {
-          ALL_ATTRS = data["thuộc_tính"];
-          BASE_VARIANT = data["biến_thể"][0];
-          window.productCategory = data["category"] || BASE_VARIANT?.category || cat;
+          window.allAttributes = data["thuộc_tính"];
+          window.baseVariant = data["biến_thể"][0];
+          window.productCategory = data["category"] || data["biến_thể"][0]?.category || category;
+          window.mainImageKey = data["mainImageKey"] || (
+            data["thuộc_tính"].find(a => a.display === "thumbnail")?.key || null
+          );
 
-          MAIN_IMAGE_KEY =
-            data["mainImageKey"] ||
-            ALL_ATTRS.find(a => a.display === "thumbnail")?.key || null;
-
-          PRICE_MATRIX = data["priceMatrix"] || null;
-          RULES = data["rules"] || { multiSelect: null, requireTextIf: [], visibility: [] };
-
-          renderOptions(ALL_ATTRS);
+          renderOptions(window.allAttributes);
           bindAddToCartButton();
-          refreshActionState(); // đầu tiên
         } else {
           console.error("❌ JSON không đúng định dạng.", data);
         }
@@ -130,27 +103,18 @@
       label.textContent = `${attr.label}:`;
       group.appendChild(label);
 
-      // input text
       if (attr.input === "text") {
         const input = document.createElement("input");
         input.type = "text";
         input.id = `input-${attr.key}`;
         input.placeholder = attr.placeholder || "Nhập nội dung...";
-        input.addEventListener("input", () => {
-          // clear lỗi nếu có
-          input.classList.remove("input-error");
-          updateStateFromDOM();
-        });
+        input.style.cssText = "width:100%;padding:8px;font-size:14px;box-sizing:border-box;border:1px solid #ccc;border-radius:6px;";
+        input.addEventListener("input", () => updateSelectedVariant());
         group.appendChild(input);
-      }
-      // button / thumbnail
-      else if (Array.isArray(attr.values)) {
+      } else if (Array.isArray(attr.values)) {
         const displayMode = attr.display || "button";
-        const isThumb = displayMode === "thumbnail";
-        const isMulti = !!(attr.multiple || attr.multi); // hỗ trợ cả "multiple" & "multi"
-
         const wrapper = document.createElement("div");
-        wrapper.className = isThumb ? "variant-thumbnails grid" : "variant-buttons";
+        wrapper.className = displayMode === "thumbnail" ? "variant-thumbnails" : "variant-buttons";
 
         attr.values.forEach(val => {
           const value = typeof val === "string" ? val : val.text;
@@ -160,28 +124,31 @@
           thumb.className = "variant-thumb";
           thumb.dataset.key = attr.key;
           thumb.dataset.value = value;
-          if (isThumb) {
+
+          if (displayMode === "thumbnail") {
             thumb.innerHTML = `
-              <img src="${image || ""}" alt="${value || ""}" loading="lazy" />
+              <img src="${image || ""}" alt="${value}" />
               <div class="variant-title">${value}</div>
             `;
           } else {
             thumb.textContent = value;
           }
 
-          thumb.addEventListener("click", () => {
-            if (isMulti) {
-              toggleMulti(attr.key, value, image);
-            } else {
-              // single-select
-              $$('.variant-thumb[data-key="' + attr.key + '"]').forEach(el => el.classList.remove("selected"));
-              thumb.classList.add("selected");
-              window.currentSelections[attr.key] = value;
-              // cập nhật main image nếu là nhóm chính
-              if (MAIN_IMAGE_KEY === attr.key) setMainImageFromValue(attr.key, value);
-              postChange();
-            }
-          });
+          if (attr.multiSelect) {
+  // MULTI SELECT: toggle nhiều lựa chọn
+  thumb.addEventListener("click", () => {
+    thumb.classList.toggle("selected");
+    updateSelectedVariant();
+  });
+} else {
+  // SINGLE SELECT: giữ như cũ
+  thumb.addEventListener("click", () => {
+    $$('.variant-thumb[data-key="' + attr.key + '"]').forEach(el => el.classList.remove("selected"));
+    thumb.classList.add("selected");
+    updateSelectedVariant();
+  });
+}
+
 
           wrapper.appendChild(thumb);
         });
@@ -192,80 +159,13 @@
       container.appendChild(group);
     });
 
-    // Gọi 1 lần để tính visible + auto init state rỗng
-    window.currentSelections = {};
-    applyVisibility(window.currentSelections);
-    // Auto-pick cho mainImageKey (chỉ nếu single-select và chưa có gì)
-    autoPickFirstOfMainKey();
-    // Sau render lần đầu → đồng bộ UI
-    updateVariantAndUI();
+    // Gọi 1 lần để tính visible & auto-pick cho nhóm đang hiện
+    updateSelectedVariant(true); // true = allowAutoPickFirst
   }
 
-  // ====== Multi-select manager ("Chọn Tranh") ======
-  const selectionOrder = []; // nhớ thứ tự click gần nhất (để chọn ảnh & fallback)
-  function toggleMulti(key, value, imageUrl) {
-    const list = ensureArray(window.currentSelections[key]);
-    const idx = list.indexOf(value);
-
-    // exact count rule
-    const exactRule = RULES?.multiSelect;
-    const limitFromKey = exactRule?.exactCountFrom;
-    const limit =
-      limitFromKey ? toIntSafe(window.currentSelections[limitFromKey]) : null;
-
-    if (idx >= 0) {
-      // bỏ chọn
-      list.splice(idx, 1);
-      removeSelectionOrder(key, value);
-      // cập nhật main image nếu bỏ đúng ảnh đang hiển thị
-      if (MAIN_IMAGE_KEY === key) {
-        // nếu vừa bỏ ảnh đang hiển thị → lấy ảnh của mục được chọn gần nhất còn lại
-        const fallback = getLastClickedChosen(key);
-        setMainImageFromValue(key, fallback || "");
-      }
-    } else {
-      // chọn thêm
-      if (typeof limit === "number" && list.length >= limit) {
-        // đã đủ → không cho chọn thêm
-        // (JS có thể hiển thị lỗi/counter; ở đây chỉ bỏ qua click)
-        flashLimit();
-        return;
-      }
-      list.push(value);
-      pushSelectionOrder(key, value);
-      // luôn đổi main image sang bức vừa click
-      if (MAIN_IMAGE_KEY === key) setMainImage(imageUrl);
-    }
-
-    window.currentSelections[key] = list;
-    postChange();
-  }
-  function ensureArray(val) { return Array.isArray(val) ? val.slice() : (val ? [val] : []); }
-  function pushSelectionOrder(key, value) {
-    const k = `${key}::${value}`;
-    const i = selectionOrder.indexOf(k);
-    if (i >= 0) selectionOrder.splice(i, 1);
-    selectionOrder.push(k);
-  }
-  function removeSelectionOrder(key, value) {
-    const k = `${key}::${value}`;
-    const i = selectionOrder.indexOf(k);
-    if (i >= 0) selectionOrder.splice(i, 1);
-  }
-  function getLastClickedChosen(key) {
-    // từ cuối mảng selectionOrder tìm mục còn đang được chọn
-    const chosen = new Set(ensureArray(window.currentSelections[key]));
-    for (let i = selectionOrder.length - 1; i >= 0; i--) {
-      const item = selectionOrder[i];
-      const [k, v] = item.split("::");
-      if (k === key && chosen.has(v)) return v;
-    }
-    return null;
-  }
-
-  // ====== Visibility / Auto pick main image key ======
+  // ====== Áp visibility + dọn selections không hợp lệ ======
   function applyVisibility(selections) {
-    (ALL_ATTRS || []).forEach(attr => {
+    (window.allAttributes || []).forEach(attr => {
       const groupEl = $(`.variant-group[data-key="${attr.key}"]`);
       if (!groupEl) return;
 
@@ -273,9 +173,10 @@
       groupEl.style.display = visible ? "" : "none";
 
       if (!visible) {
-        // dọn chọn cũ nếu ẩn
-        $$('.variant-thumb.selected', groupEl).forEach(el => el.classList.remove("selected"));
+        // Xoá chọn cũ nếu có
+        groupEl.querySelectorAll(".variant-thumb.selected").forEach(el => el.classList.remove("selected"));
         if (selections && selections[attr.key] != null) delete selections[attr.key];
+        // Nếu input text
         const input = $(`#input-${attr.key}`);
         if (input && selections) {
           input.value = "";
@@ -284,218 +185,149 @@
       }
     });
   }
-  function autoPickFirstOfMainKey() {
-    if (!MAIN_IMAGE_KEY) return;
-    const mainAttr = (ALL_ATTRS || []).find(a => a.key === MAIN_IMAGE_KEY);
-    if (!mainAttr || mainAttr.multiple || mainAttr.multi) return; // chỉ auto-pick với single
-    const groupEl = $(`.variant-group[data-key="${MAIN_IMAGE_KEY}"]`);
-    const firstBtn = groupEl?.querySelector(".variant-thumb");
+
+  // ====== Auto pick lựa chọn đầu tiên cho nhóm đang hiển thị (nếu chưa chọn) ======
+  function autoPickFirstForVisible(selections) {
+  const mainKey = window.mainImageKey;
+
+  (window.allAttributes || []).forEach(attr => {
+    if (!isAttrVisible(attr, selections)) return;
+
+    // ✅ Chỉ auto-pick nếu là nhóm chính (mainImageKey)
+    if (attr.key !== mainKey) return;
+
+    const already = selections[attr.key];
+    if (already) return;
+
+    const groupEl = $(`.variant-group[data-key="${attr.key}"]`);
+    if (!groupEl) return;
+    const firstBtn = groupEl.querySelector(".variant-thumb");
     if (firstBtn) {
       firstBtn.classList.add("selected");
-      window.currentSelections[MAIN_IMAGE_KEY] = firstBtn.dataset.value;
-      setMainImageFromValue(MAIN_IMAGE_KEY, firstBtn.dataset.value);
+      selections[attr.key] = firstBtn.dataset.value;
     }
-  }
+  });
+}
 
-  // ====== DOM → state sync ======
-  function updateStateFromDOM() {
-    // text inputs
-    (ALL_ATTRS || []).forEach(attr => {
-      if (attr.input === "text") {
-        window.currentSelections[attr.key] = $(`#input-${attr.key}`)?.value || "";
-      }
-    });
-    postChange();
-  }
-
-  // ====== Hậu thay đổi: enforce rules + update UI ======
-  function postChange() {
-    enforceExactCount();
-    enforceRequireText();
-    updateVariantAndUI();
-    refreshActionState();
-  }
-
-  // ----- exact count -----
-  function enforceExactCount() {
-    const rule = RULES?.multiSelect;
-    if (!rule || !rule.key || !rule.exactCountFrom) return;
-
-    const targetKey = rule.key;               // "Chọn Tranh"
-    const countKey = rule.exactCountFrom;     // "Số Tranh"
-    const limit = toIntSafe(window.currentSelections[countKey]);
-    const list = ensureArray(window.currentSelections[targetKey]);
-
-    // Khoá các thumb chưa chọn khi đủ số
-    const groupEl = $(`.variant-group[data-key="${targetKey}"]`);
-    if (groupEl) {
-      const allThumbs = $$('.variant-thumb', groupEl);
-      const chosenSet = new Set(list);
-      allThumbs.forEach(el => {
-        const val = el.dataset.value;
-        const isChosen = chosenSet.has(val);
-        el.classList.toggle("selected", isChosen);
-        // locked nếu đã đủ số và item chưa được chọn
-        const lock = typeof limit === "number" && list.length >= limit && !isChosen;
-        el.classList.toggle("locked", !!lock);
-      });
-    }
-
-    // Nếu vượt quá (có thể do thay "Số Tranh" nhỏ lại) → cắt giữ N đầu
-    if (typeof limit === "number" && list.length > limit) {
-      window.currentSelections[targetKey] = list.slice(0, limit);
-      // cũng cần bỏ thứ tự click của phần dư
-      list.slice(limit).forEach(v => removeSelectionOrder(targetKey, v));
-    }
-
-    // Cập nhật counter
-    const counter = $("#designCounter");
-    if (counter && typeof limit === "number") {
-      counter.textContent = `Đã chọn ${ensureArray(window.currentSelections[targetKey]).length}/${limit}`;
-    } else if (counter) {
-      counter.textContent = "";
-    }
-  }
-
-  // ----- require text if includes -----
-  function enforceRequireText() {
-    // Hiển thị/ẩn input theo RULES.visibility (đã xử lý ở isAttrVisible) + when (cũ)
-    applyVisibility(window.currentSelections);
-    // Không xử lý lỗi ngay ở đây; lỗi hiển thị trong refreshActionState()
-  }
-
-  // ====== Tính giá (priceMatrix + surcharge + fallback 4p) ======
-  function computePricing(clean) {
-    let price = Number(BASE_VARIANT?.["Giá"]) || 0;
-    let orig = Number(BASE_VARIANT?.["Giá gốc"]) || price || 0;
-
-    // Ưu tiên priceMatrix nếu có đủ dữ liệu
-    if (PRICE_MATRIX?.base?.length) {
-      const n = toIntSafe(clean["Số Tranh"]);
-      const size = clean["Kích Thước"] || clean["Kích Cỡ"] || clean["Kích cỡ"] || clean["Kích thước"];
-      if (isFinite(n) && size) {
-        const row = PRICE_MATRIX.base.find(r => Number(r["Số Tranh"]) === Number(n) && String(r["Kích Thước"]) === String(size));
-        if (row) {
-          price = Number(row["Giá"]) || price;
-          orig  = Number(row["Giá gốc"]) || orig || price;
-        }
-      }
-      // surcharge (mỗi rule tính 1 lần nếu includes khớp)
-      if (PRICE_MATRIX?.surcharge?.length) {
-        PRICE_MATRIX.surcharge.forEach(s => {
-          const key = s.appliesTo;
-          const includes = s.includes || [];
-          const delta = Number(s.priceDelta) || 0;
-          const cur = clean[key];
-          if (Array.isArray(cur)) {
-            if (cur.some(v => includes.includes(v))) price += delta;
-          } else if (typeof cur === "string") {
-            if (includes.includes(cur)) price += delta;
-          }
-        });
-      }
-    } else {
-      // Fallback 4p: lấy GiaOverride từ option nếu có
-      (ALL_ATTRS || []).forEach(attr => {
-        if (!isAttrVisible(attr, clean)) return;
-        const selVal = clean[attr.key];
-        if (!selVal || !Array.isArray(attr?.values)) return;
-        const matched = attr.values.find(v => (typeof v === "object" ? v.text === selVal : v === selVal));
-        if (matched && typeof matched === "object") {
-          if (typeof matched.GiaOverride === "number") price = matched.GiaOverride;
-          if (typeof matched.GiaGocOverride === "number") orig = matched.GiaGocOverride;
-          if (typeof matched.priceDelta === "number") price += matched.priceDelta;
-          if (typeof matched.priceOrigDelta === "number") orig += matched.priceOrigDelta;
-        }
-      });
-    }
-
-    price = Math.max(0, price);
-    orig = Math.max(price, orig);
-    return { price, orig };
-  }
-
-  // ====== Tạo variant + cập nhật UI ======
-  function updateVariantAndUI() {
-    const clean = collectCleanSelections();
-    window.currentSelections = clean;
-
-    const variant = { ...(BASE_VARIANT || {}), ...clean };
-
-    // Ảnh theo mainImageKey:
-    if (MAIN_IMAGE_KEY) {
-      const val = clean[MAIN_IMAGE_KEY];
-      // single: val là string; multi: val là array → lấy "bức chọn gần nhất"
-      if (Array.isArray(val)) {
-        const last = getLastClickedChosen(MAIN_IMAGE_KEY);
-        if (last) {
-          const img = findImageOfValue(MAIN_IMAGE_KEY, last);
-          variant["Ảnh"] = img || variant["Ảnh"] || "";
-        } else {
-          variant["Ảnh"] = variant["Ảnh"] || "";
-        }
-      } else if (typeof val === "string") {
-        const img = findImageOfValue(MAIN_IMAGE_KEY, val);
-        variant["Ảnh"] = img || variant["Ảnh"] || "";
-      }
-    }
-
-    // Giá
-    const { price, orig } = computePricing(clean);
-    variant["Giá"] = price;
-    variant["Giá gốc"] = orig;
-
-    // SKU id (thêm cả số tranh + kích thước nếu có)
-    const sizeKey = (window.sizeKeyOverride || "Kích Thước");
-    const n = clean["Số Tranh"];
-    const sizeVal = clean[sizeKey] || clean["Kích Cỡ"] || clean["Kích cỡ"] || clean["Kích thước"];
-    const baseId = (BASE_VARIANT?.id || "item");
-    variant.id = [baseId, n, sizeVal].filter(Boolean).join("-").replace(/\s+/g, "").toLowerCase();
-
-    // Render giá/ảnh/nhãn voucher
-    selectVariant(variant);
-
-    // Render text phân loại (hiển thị ngắn gọn)
-    const productVariantText = $("#productVariantText");
-    if (productVariantText) {
-      const parts = [];
-      if (n) parts.push(`Số Tranh: ${n}`);
-      if (sizeVal) parts.push(`Kích Thước: ${sizeVal}`);
-      const designs = clean["Chọn Tranh"];
-      if (Array.isArray(designs) && designs.length) {
-        const name = (clean["Tên"] || "").trim();
-        const showDesigns = designs.map(d => (d === "Tên Bạn" && name ? `Tên Bạn (${name})` : d));
-        parts.push(`Tranh: ${showDesigns.join(" | ")}`);
-      }
-      productVariantText.textContent = parts.join(" - ");
-    }
-  }
-
+  // ====== Thu thập selections sạch từ DOM (chỉ nhóm đang hiển thị) ======
   function collectCleanSelections() {
     const out = {};
-    (ALL_ATTRS || []).forEach(attr => {
+    (window.allAttributes || []).forEach(attr => {
       if (!isAttrVisible(attr, window.currentSelections)) return;
 
       if (attr.input === "text") {
         out[attr.key] = $(`#input-${attr.key}`)?.value || "";
       } else {
-        const isMulti = !!(attr.multiple || attr.multi);
-        if (isMulti) {
-          const chosen = [];
-          $$('.variant-group[data-key="' + attr.key + '"] .variant-thumb.selected').forEach(el => chosen.push(el.dataset.value));
-          out[attr.key] = chosen;
-        } else {
-          const selEl = $(`.variant-group[data-key="${attr.key}"] .variant-thumb.selected`);
-          if (selEl) out[attr.key] = selEl.dataset.value;
-        }
+        if (attr.multiSelect) {
+  const selectedEls = $$(`.variant-group[data-key="${attr.key}"] .variant-thumb.selected`);
+  const values = selectedEls.map(el => el.dataset.value);
+  if (values.length > 0) out[attr.key] = values;
+} else {
+  const selEl = $(`.variant-group[data-key="${attr.key}"] .variant-thumb.selected`);
+  if (selEl) out[attr.key] = selEl.dataset.value;
+}
+
       }
     });
     return out;
   }
 
-  // ====== UI: giá/ảnh/voucher ======
+  // ====== Main update: selections → visibility → variant → render ======
+  function updateSelectedVariant(allowAutoPickFirst = false) {
+    // 1) Thu thập các chọn hiện tại (thô)
+    const raw = {};
+    $$(".variant-thumb.selected").forEach(btn => {
+      raw[btn.dataset.key] = btn.dataset.value;
+    });
+    (window.allAttributes || []).forEach(attr => {
+      if (attr.input === "text") {
+        raw[attr.key] = $(`#input-${attr.key}`)?.value || "";
+      }
+    });
+
+    // 2) Áp điều kiện hiển thị & dọn selections ẩn
+    applyVisibility(raw);
+
+    // 3) Auto pick cho nhóm đang hiển thị nhưng chưa có chọn (tuỳ chọn)
+    if (allowAutoPickFirst) {
+      autoPickFirstForVisible(raw);
+      // Sau auto pick cần re-apply visibility (phòng nhóm con phụ thuộc)
+      applyVisibility(raw);
+    }
+
+    // 4) Lấy selections sạch theo nhóm đang hiển thị
+    const clean = collectCleanSelections();
+    window.currentSelections = clean;
+
+    // 5) Tạo variant từ base + selections
+    const variant = { ...(window.baseVariant || {}), ...clean };
+
+    // 6) Ảnh theo mainImageKey
+    if (window.mainImageKey) {
+      const mainVal = clean[window.mainImageKey];
+      const mainAttr = (window.allAttributes || []).find(a => a.key === window.mainImageKey);
+      const matchedValue = mainAttr?.values?.find(v => (typeof v === "object" ? v.text === mainVal : v === mainVal));
+      if (matchedValue && typeof matchedValue === "object" && matchedValue.image) {
+        variant["Ảnh"] = matchedValue.image;
+      } else if (!variant["Ảnh"]) {
+        variant["Ảnh"] = "";
+      }
+    }
+
+    // 7) Tính giá (giữ nguyên hành vi + override)
+    let price = Number((window.baseVariant || {})["Giá"]) || 0;
+    let priceOrig = Number((window.baseVariant || {})["Giá gốc"]) || price || 0;
+    // Nếu có multi-select (ví dụ: Thiết Kế), thì nhân số lựa chọn
+const mainAttr = window.allAttributes.find(a => a.multiSelect);
+let numTranh = 1;
+
+if (mainAttr) {
+  const selectedTranh = clean[mainAttr.key];
+  if (Array.isArray(selectedTranh)) numTranh = selectedTranh.length;
+}
+
+// Áp dụng lại giá sau khi lấy giá từ size
+price = price * numTranh;
+priceOrig = priceOrig * numTranh;
+
+    (window.allAttributes || []).forEach(attr => {
+      if (!isAttrVisible(attr, clean)) return; // chỉ tính những nhóm đang hiển thị
+      const selVal = clean[attr.key];
+      if (!selVal || !Array.isArray(attr?.values)) return;
+
+      const matched = attr.values.find(v => (typeof v === "object" ? v.text === selVal : v === selVal));
+      if (matched && typeof matched === "object") {
+        if (typeof matched.GiaOverride === "number") price = matched.GiaOverride;
+        if (typeof matched.GiaGocOverride === "number") priceOrig = matched.GiaGocOverride;
+        if (typeof matched.priceDelta === "number") price += matched.priceDelta;
+        if (typeof matched.priceOrigDelta === "number") priceOrig += matched.priceOrigDelta;
+        if (matched.priceMap && typeof matched.priceMap === "object") {
+          const mapKey = matched.priceKey || selVal;
+          if (typeof matched.priceMap[mapKey] === "number") price = matched.priceMap[mapKey];
+        }
+      }
+    });
+
+    price = Math.max(0, price);
+    priceOrig = Math.max(price, priceOrig);
+    variant["Giá"] = price;
+    variant["Giá gốc"] = priceOrig;
+
+    // 8) SKU id theo 1 key tuỳ chọn (ví dụ "Kích cỡ")
+    const sizeKey = (window.sizeKeyOverride || "Kích cỡ");
+    if (clean[sizeKey]) {
+      variant.id = `${(window.baseVariant?.id || "item")}-${clean[sizeKey]}`
+        .replace(/\s+/g, "")
+        .toLowerCase();
+    }
+
+    // 9) Render ra UI (giá, ảnh, text…)
+    selectVariant(variant);
+  }
+
+  // ====== Render giá/ảnh/nhãn voucher ======
   function selectVariant(data) {
-    // Voucher waiting → attach vào voucherByProduct
+    // ✅ Nếu có __voucherWaiting → gán vào voucherByProduct
     if (window.__voucherWaiting?.amount) {
       window.voucherByProduct = window.voucherByProduct || {};
       if (!window.voucherByProduct[data.id]) {
@@ -508,17 +340,20 @@
     const mainImage = $("#mainImage");
     const productPrice = $("#productPrice");
     const productOriginalPrice = $("#productOriginalPrice");
+    const productVariantText = $("#productVariantText");
     const voucherLabel = $("#voucherLabel");
-    const finalLine = $("#finalPriceLine");
 
     if (mainImage) mainImage.src = data.Ảnh || "";
 
     const voucherAmount = window.voucherByProduct?.[data.id] || 0;
     const finalPrice = Math.max(0, data.Giá - voucherAmount);
 
+    const oldFinal = $("#finalPriceLine");
+    if (oldFinal) oldFinal.remove();
+
     if (voucherAmount > 0) {
       if (productPrice) {
-        productPrice.textContent = Number(data.Giá).toLocaleString() + "đ";
+        productPrice.textContent = data.Giá.toLocaleString() + "đ";
         productPrice.style.color = "black";
         productPrice.style.textDecoration = "line-through";
       }
@@ -527,100 +362,44 @@
         voucherLabel.textContent = `Voucher: ${voucherAmount.toLocaleString()}đ`;
         voucherLabel.style.display = "block";
       }
-      if (finalLine) {
-        finalLine.style.display = "block";
-        finalLine.textContent = finalPrice.toLocaleString() + "đ";
-      }
+
+      const finalLine = document.createElement("div");
+      finalLine.id = "finalPriceLine";
+      finalLine.textContent = finalPrice.toLocaleString() + "đ";
+      finalLine.style.color = "#d0021b";
+      finalLine.style.fontWeight = "bold";
+      finalLine.style.marginTop = "6px";
+      finalLine.style.fontSize = "21px";
+      voucherLabel?.parentElement?.appendChild(finalLine);
     } else {
       if (productPrice) {
-        productPrice.textContent = Number(data.Giá).toLocaleString() + "đ";
+        productPrice.textContent = data.Giá.toLocaleString() + "đ";
         productPrice.style.color = "#d0021b";
         productPrice.style.textDecoration = "none";
       }
       if (productOriginalPrice) {
-        productOriginalPrice.textContent = Number(data["Giá gốc"]).toLocaleString() + "đ";
+        productOriginalPrice.textContent = data["Giá gốc"].toLocaleString() + "đ";
         productOriginalPrice.style.display = "inline";
       }
       if (voucherLabel) voucherLabel.style.display = "none";
-      if (finalLine) finalLine.style.display = "none";
     }
+
+    if (productVariantText) {
+      const ignore = new Set(["Ảnh", "Giá", "Giá gốc", "id", "category"]);
+      const selectedText = [];
+      for (let key in data) {
+  if (ignore.has(key)) continue;
+  const val = data[key];
+  if (Array.isArray(val)) {
+    selectedText.push(val.join(", "));
+  } else if (val) {
+    selectedText.push(val);
   }
+}
 
-  // ====== Main image helpers ======
-  function setMainImage(url) {
-    const mainImage = $("#mainImage");
-    if (mainImage) mainImage.src = url || "";
-  }
-  function setMainImageFromValue(key, value) {
-    if (!value) { setMainImage(""); return; }
-    const img = findImageOfValue(key, value);
-    setMainImage(img);
-  }
-  function findImageOfValue(key, value) {
-    const attr = (ALL_ATTRS || []).find(a => a.key === key);
-    if (!attr || !Array.isArray(attr.values)) return "";
-    const matched = attr.values.find(v => (typeof v === "object" ? v.text === value : v === value));
-    return (matched && typeof matched === "object" && matched.image) ? matched.image : "";
-  }
-
-  // ====== Enable/disable nút ATC + hiển thị lỗi form ======
-  function refreshActionState() {
-    const btn = $("#btn-atc");
-    const err = $("#formError");
-
-    const requiredOk = validateRequiredVisibleGroups();
-    const exactOk = validateExactCount();
-    const textOk = validateRequiredText();
-
-    const allOk = requiredOk && exactOk && textOk;
-
-    if (btn) btn.disabled = !allOk;
-
-    if (err) {
-      const msgs = [];
-      if (!exactOk) msgs.push(RULES?.multiSelect?.errorText || "Vui lòng chọn đúng số tranh theo số lượng đã chọn.");
-      if (!textOk) {
-        const r = RULES?.requireTextIf?.[0];
-        msgs.push(r?.errorText || "Vui lòng nhập tên để in lên tranh.");
-      }
-      if (!requiredOk) msgs.push("Vui lòng chọn đầy đủ phân loại đang hiển thị.");
-      err.textContent = msgs.join(" ");
-      err.style.display = msgs.length ? "block" : "none";
+      productVariantText.textContent = selectedText.join(", ");
+      productVariantText.style.marginTop = "16px";
     }
-  }
-  function validateRequiredVisibleGroups() {
-    const selected = window.currentSelections || {};
-    const visibleKeys = (ALL_ATTRS || []).filter(a => isAttrVisible(a, selected)).map(a => a.key);
-    // với input text, không bắt buộc nếu không có rule (đã check riêng)
-    return visibleKeys.every(k => {
-      const attr = (ALL_ATTRS || []).find(a => a.key === k);
-      const v = selected[k];
-      if (attr?.input === "text") return true; // không check ở đây
-      if (Array.isArray(v)) return v.length > 0;
-      return !!v;
-    });
-  }
-  function validateExactCount() {
-    const rule = RULES?.multiSelect;
-    if (!rule || !rule.key || !rule.exactCountFrom) return true;
-    const list = ensureArray(window.currentSelections[rule.key]);
-    const limit = toIntSafe(window.currentSelections[rule.exactCountFrom]);
-    if (typeof limit !== "number") return false;
-    return list.length === limit;
-  }
-  function validateRequiredText() {
-    // true nếu: không có rule hoặc rule không match; false nếu match nhưng text rỗng
-    const rules = RULES?.requireTextIf || [];
-    if (!rules.length) return true;
-    return rules.every(r => {
-      const shouldRequire = matchWhenIncludes(r.whenIncludes, window.currentSelections);
-      if (!shouldRequire) return true;
-      const val = (window.currentSelections[r.key] || "").trim();
-      const input = $(`#input-${r.key}`);
-      if (!val) { input?.classList.add("input-error"); return false; }
-      input?.classList.remove("input-error");
-      return true;
-    });
   }
 
   // ====== ATC / Cart / Popup ======
@@ -642,7 +421,7 @@
       content.classList.add("animate-slideup");
       popup.classList.remove("hidden");
       isCartPopupOpen = true;
-      setTimeout(() => bindAddToCartButton(), 60);
+      setTimeout(() => bindAddToCartButton(), 100);
     } else {
       content.classList.remove("animate-slideup");
       popup.classList.add("hidden");
@@ -652,6 +431,19 @@
   }
 
   function bindAddToCartButton() {
+  const isChoseTenBan = Array.isArray(window.currentSelections["Thiết Kế"]) &&
+  window.currentSelections["Thiết Kế"].includes("Tên Bạn");
+
+if (isChoseTenBan) {
+  const input = document.querySelector(`#input-Tên Bạn`);
+  const value = input?.value?.trim();
+  if (!value) {
+    alert("Vui lòng nhập tên để in lên tranh.");
+    return;
+  }
+  product["Tên In"] = value;
+}
+
     const atcBtn = $("#btn-atc");
     if (atcBtn && !isCartEventBound) {
       isCartEventBound = true;
@@ -665,31 +457,49 @@
           return;
         }
 
-        // Chặn nếu chưa hợp lệ
-        refreshActionState();
-        if (atcBtn.disabled) return;
-
         const quantity = parseInt($("#quantityInput")?.value || "1", 10) || 1;
         if (!window.selectedVariant) {
           alert("Vui lòng chọn phân loại sản phẩm.");
           return;
         }
 
+        // Chỉ bắt buộc những nhóm đang hiển thị
+        const requiredKeys = (window.allAttributes || [])
+          .filter(a => isAttrVisible(a, window.currentSelections))
+          .map(a => a.key);
+
+        const selectedKeys = Object.keys(window.selectedVariant);
+        const isComplete = requiredKeys.every(key => {
+  const attr = (window.allAttributes || []).find(a => a.key === key);
+  if (attr?.input === "text") {
+    const v = window.currentSelections[key]?.trim() || "";
+    return v.length > 0; // ✅ bắt buộc phải có nội dung
+  }
+  return selectedKeys.includes(key);
+});
+        const attrMulti = window.allAttributes.find(a => a.multiSelect);
+if (attrMulti) {
+  const selected = window.currentSelections[attrMulti.key] || [];
+  const count = Array.isArray(selected) ? selected.length : 0;
+  if (count < attrMulti.minSelect) {
+    alert(`Vui lòng chọn ít nhất ${attrMulti.minSelect} tranh.`);
+    return;
+  }
+  if (count > attrMulti.maxSelect) {
+    alert(`Chỉ được chọn tối đa ${attrMulti.maxSelect} tranh.`);
+    return;
+  }
+}
+
+        if (!isComplete) {
+          alert("Vui lòng chọn đầy đủ phân loại sản phẩm.");
+          return;
+        }
+
         const product = window.selectedVariant;
         const loai = window.productCategory || "unknown";
         const voucherAmount = window.voucherByProduct?.[product.id] || 0;
-
-        // Text phân loại đẹp
-        const n = window.currentSelections["Số Tranh"];
-        const size = window.currentSelections["Kích Thước"] || window.currentSelections["Kích Cỡ"] || window.currentSelections["Kích cỡ"] || window.currentSelections["Kích thước"];
-        const designs = ensureArray(window.currentSelections["Chọn Tranh"]);
-        const name = (window.currentSelections["Tên"] || "").trim();
-        const showDesigns = designs.map(d => (d === "Tên Bạn" && name ? `Tên Bạn (${name})` : d));
-        const phanLoaiText = [
-          n ? `Số Tranh: ${n}` : null,
-          size ? `Kích Thước: ${size}` : null,
-          showDesigns.length ? `Tranh: ${showDesigns.join(" | ")}` : null,
-        ].filter(Boolean).join(" - ");
+        const phanLoaiText = requiredKeys.map(key => product[key]).join(" - ");
         product["Phân loại"] = phanLoaiText;
 
         window.cart.push({
@@ -741,46 +551,45 @@
     }
   }
 
-  // ====== Helpers ======
-  function toIntSafe(v) {
-    if (v == null) return NaN;
-    if (Array.isArray(v)) return NaN;
-    const n = Number(v);
-    return Number.isFinite(n) ? n : NaN;
-  }
-  function flashLimit() {
-    const err = $("#formError");
-    if (!err) return;
-    const old = err.textContent;
-    err.textContent = RULES?.multiSelect?.errorText || "Vui lòng chọn đúng số tranh theo số lượng đã chọn.";
-    err.style.display = "block";
-    setTimeout(() => {
-      // không xoá lỗi nếu các điều kiện vẫn chưa đúng; để refreshActionState xử lý
-      refreshActionState();
-    }, 800);
-  }
-
-  // ====== expose minimal APIs (giữ tương thích) ======
-  function refresh() { updateVariantAndUI(); refreshActionState(); }
+  // ====== expose minimal APIs (tuỳ trang có thể gọi) ======
   window.cartpopup = {
     changeQuantity: changeQuantity,
     toggle: toggleCartPopup,
-    refresh: refresh,
-    init: initCartPopup,
-    qty: changeQuantity,
+    refresh: updateSelectedVariant
   };
 
   // ====== Wireup ======
   document.addEventListener("DOMContentLoaded", () => {
+    // Close buttons
     $$(".cart-popup-close, .cart-popup-overlay").forEach(btn =>
       btn.addEventListener("click", () => toggleCartPopup(false))
     );
+
+    // Form toggle alias
     window.toggleForm = () => toggleCartPopup(true);
+
+    // Init
     initCartPopup();
   });
+// --- Expose & auto-init ---
+window.initCartPopup = initCartPopup; // cho phép trang gọi trực tiếp
 
-  // Expose aliases (nếu file nạp sau DOMContentLoaded vẫn init)
-  window.initCartPopup = initCartPopup;
-  window.toggleCartPopup = toggleCartPopup;
-  window.changeQuantity = changeQuantity;
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", () => initCartPopup());
+} else {
+  // Nếu file được nạp sau DOMContentLoaded, vẫn init được
+  initCartPopup();
+}
+// ✓ Cho HTML gọi được các hàm cũ
+window.initCartPopup = initCartPopup;
+window.toggleCartPopup = toggleCartPopup;
+window.changeQuantity = changeQuantity;
+
+// (tuỳ chọn) expose object tiện dùng
+window.cartpopup = {
+  init: initCartPopup,
+  toggle: toggleCartPopup,
+  qty: changeQuantity,
+};
+
 })();
