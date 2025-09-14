@@ -140,6 +140,25 @@
     thumb.classList.toggle("selected");
     updateSelectedVariant();
   });
+            // Nếu lựa chọn này có textinput: true → tạo input bên trong thumb
+if (val.textinput) {
+  const inputDiv = document.createElement("div");
+  inputDiv.className = "variant-input-text";
+  inputDiv.style.display = "none";
+
+  const input = document.createElement("input");
+  input.type = "text";
+  input.placeholder = val.placeholder || "Nhập nội dung...";
+  input.id = `input-${val.text}`;
+  input.addEventListener("input", () => updateSelectedVariant());
+
+  inputDiv.appendChild(input);
+  thumb.appendChild(inputDiv);
+
+  // Lưu inputDiv để toggle show/hide sau này
+  thumb._inputDiv = inputDiv;
+}
+
 } else {
   // SINGLE SELECT: giữ như cũ
   thumb.addEventListener("click", () => {
@@ -160,7 +179,7 @@
     });
 
     // Gọi 1 lần để tính visible & auto-pick cho nhóm đang hiện
-    updateSelectedVariant(true); // true = allowAutoPickFirst
+    updateSelectedVariant(false); // Không auto-pick, khách phải chọn
   }
 
   // ====== Áp visibility + dọn selections không hợp lệ ======
@@ -236,9 +255,24 @@
   function updateSelectedVariant(allowAutoPickFirst = false) {
     // 1) Thu thập các chọn hiện tại (thô)
     const raw = {};
-    $$(".variant-thumb.selected").forEach(btn => {
-      raw[btn.dataset.key] = btn.dataset.value;
-    });
+    $$(".variant-thumb").forEach(btn => {
+  const key = btn.dataset.key;
+  const val = btn.dataset.value;
+
+  const isSelected = btn.classList.contains("selected");
+  if (isSelected) {
+    if (!raw[key]) raw[key] = attr?.multiSelect ? [] : "";
+    if (Array.isArray(raw[key])) raw[key].push(val);
+    else raw[key] = val;
+
+    // Nếu có input bên trong → hiển thị
+    if (btn._inputDiv) btn._inputDiv.style.display = "block";
+  } else {
+    // Ẩn input nếu không được chọn
+    if (btn._inputDiv) btn._inputDiv.style.display = "none";
+  }
+});
+
     (window.allAttributes || []).forEach(attr => {
       if (attr.input === "text") {
         raw[attr.key] = $(`#input-${attr.key}`)?.value || "";
@@ -264,9 +298,16 @@
 
     // 6) Ảnh theo mainImageKey
     if (window.mainImageKey) {
-      const mainVal = clean[window.mainImageKey];
       const mainAttr = (window.allAttributes || []).find(a => a.key === window.mainImageKey);
-      const matchedValue = mainAttr?.values?.find(v => (typeof v === "object" ? v.text === mainVal : v === mainVal));
+let selectedMainValues = clean[window.mainImageKey];
+
+if (Array.isArray(selectedMainValues)) {
+  // lấy lựa chọn cuối cùng
+  selectedMainValues = selectedMainValues[selectedMainValues.length - 1];
+}
+
+const matchedValue = mainAttr?.values?.find(v => (typeof v === "object" ? v.text === selectedMainValues : v === selectedMainValues));
+
       if (matchedValue && typeof matchedValue === "object" && matchedValue.image) {
         variant["Ảnh"] = matchedValue.image;
       } else if (!variant["Ảnh"]) {
