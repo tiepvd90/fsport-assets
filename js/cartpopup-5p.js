@@ -255,15 +255,21 @@ if (val.textinput) {
   function updateSelectedVariant(allowAutoPickFirst = false) {
     // 1) Thu thập các chọn hiện tại (thô)
     const raw = {};
-    $$(".variant-thumb").forEach(btn => {
+   $$(".variant-thumb").forEach(btn => {
   const key = btn.dataset.key;
   const val = btn.dataset.value;
-
   const isSelected = btn.classList.contains("selected");
+
+  // Lấy attr gốc theo key để biết multiSelect
+  const attrDef = (window.allAttributes || []).find(a => a.key === key);
+
   if (isSelected) {
-    if (!raw[key]) raw[key] = attr?.multiSelect ? [] : "";
-    if (Array.isArray(raw[key])) raw[key].push(val);
-    else raw[key] = val;
+    if (attrDef?.multiSelect) {
+      if (!raw[key]) raw[key] = [];
+      raw[key].push(val);
+    } else {
+      raw[key] = val;
+    }
 
     // Nếu có input bên trong → hiển thị
     if (btn._inputDiv) btn._inputDiv.style.display = "block";
@@ -272,6 +278,7 @@ if (val.textinput) {
     if (btn._inputDiv) btn._inputDiv.style.display = "none";
   }
 });
+
 
     (window.allAttributes || []).forEach(attr => {
       if (attr.input === "text") {
@@ -338,15 +345,26 @@ priceOrig = priceOrig * numTranh;
 
       const matched = attr.values.find(v => (typeof v === "object" ? v.text === selVal : v === selVal));
       if (matched && typeof matched === "object") {
-        if (typeof matched.GiaOverride === "number") price = matched.GiaOverride;
-        if (typeof matched.GiaGocOverride === "number") priceOrig = matched.GiaGocOverride;
-        if (typeof matched.priceDelta === "number") price += matched.priceDelta;
-        if (typeof matched.priceOrigDelta === "number") priceOrig += matched.priceOrigDelta;
-        if (matched.priceMap && typeof matched.priceMap === "object") {
-          const mapKey = matched.priceKey || selVal;
-          if (typeof matched.priceMap[mapKey] === "number") price = matched.priceMap[mapKey];
-        }
-      }
+  if (typeof matched.GiaOverride === "number") {
+    price = matched.GiaOverride * numTranh;
+  }
+  if (typeof matched.GiaGocOverride === "number") {
+    priceOrig = matched.GiaGocOverride * numTranh;
+  }
+  if (typeof matched.priceDelta === "number") {
+    price += matched.priceDelta;
+  }
+  if (typeof matched.priceOrigDelta === "number") {
+    priceOrig += matched.priceOrigDelta;
+  }
+  if (matched.priceMap && typeof matched.priceMap === "object") {
+    const mapKey = matched.priceKey || selVal;
+    if (typeof matched.priceMap[mapKey] === "number") {
+      price = matched.priceMap[mapKey] * numTranh;
+    }
+  }
+}
+
     });
 
     price = Math.max(0, price);
@@ -432,8 +450,10 @@ priceOrig = priceOrig * numTranh;
   if (ignore.has(key)) continue;
   const val = data[key];
   if (Array.isArray(val)) {
-    selectedText.push(val.join(", "));
-  } else if (val) {
+  const numbered = val.map((v, i) => `${i + 1}. ${v}`);
+  selectedText.push(numbered.join(", "));
+}
+ else if (val) {
     selectedText.push(val);
   }
 }
