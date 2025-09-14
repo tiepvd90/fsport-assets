@@ -486,7 +486,6 @@ if (attrMulti) {
 
         const product = window.selectedVariant;
 // Kiểm tra nếu người dùng chọn "Tên Bạn"
-const attrMulti = window.allAttributes.find(a => a.multiSelect);
 if (attrMulti && Array.isArray(window.currentSelections[attrMulti.key])) {
   const hasTenBan = window.currentSelections[attrMulti.key].includes("Tên Bạn");
 
