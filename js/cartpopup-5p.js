@@ -152,48 +152,31 @@ function renderOptions(attributes) {
             updateSelectedVariant();
           });
 
-          // Nếu value này có input kèm theo
-          if (val.inputable || val.textinput) {
-            const extraDiv = document.createElement("div");
-            extraDiv.className = "variant-input-text";
-            extraDiv.id = `group-input-${val.text}`;
+          if (attr.multiSelect) {
+  thumb.addEventListener("click", () => {
+    thumb.classList.toggle("selected");
 
-            const inLabel = document.createElement("div");
-            inLabel.className = "variant-label";
-            inLabel.textContent = (val.textinput?.label || "Nhập thông tin");
-            extraDiv.appendChild(inLabel);
+    if (thumb.classList.contains("selected")) {
+      if (!thumb.dataset.seq) thumb.dataset.seq = String(++window.__thumbSelectSeq);
+    } else {
+      delete thumb.dataset.seq;
+    }
 
-            const input = document.createElement("input");
-            input.type = "text";
-            input.id = `input-${val.text}`;
-            input.placeholder = val.textinput?.placeholder || "Nhập nội dung...";
-            input.disabled = true; // ✅ mặc định disable
-            input.addEventListener("input", () => updateSelectedVariant());
-            extraDiv.appendChild(input);
+    // ✅ Nếu option này có inputable thì bật/tắt input ChuIn
+    if (val.inputable) {
+      const inputEl = document.querySelector(`#input-ChuIn`);
+      if (thumb.classList.contains("selected")) {
+        inputEl.disabled = false;
+      } else {
+        inputEl.disabled = true;
+        inputEl.value = "";
+      }
+    }
 
-            group.appendChild(extraDiv);
+    updateSelectedVariant();
+  });
+}
 
-            // Toggle enable/disable input theo trạng thái selected
-            thumb.addEventListener("click", () => {
-              if (thumb.classList.contains("selected")) {
-                input.disabled = false;
-              } else {
-                input.disabled = true;
-                input.value = "";
-              }
-            });
-          }
-
-        } else {
-          // SINGLE SELECT
-          thumb.addEventListener("click", () => {
-            $$('.variant-thumb[data-key="' + attr.key + '"]').forEach(el =>
-              el.classList.remove("selected")
-            );
-            thumb.classList.add("selected");
-            updateSelectedVariant();
-          });
-        }
 
         wrapper.appendChild(thumb);
       });
