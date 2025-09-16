@@ -163,31 +163,35 @@ window.__thumbSelectSeq = window.__thumbSelectSeq || 0;
     const groupId = `group-input-${val.text}`;
     let extraGroup = document.getElementById(groupId);
 
-    if (isSelected) {
-      if (!extraGroup) {
-        extraGroup = document.createElement("div");
-        extraGroup.className = "variant-group";
-        extraGroup.id = groupId;
+    const mainGroup = document.querySelector(`.variant-group[data-key="${attr.key}"]`);
+if (!extraGroup) {
+  extraGroup = document.createElement("div");
+  extraGroup.className = "variant-group variant-input-text";
+  extraGroup.id = groupId;
 
-        const label = document.createElement("div");
-        label.className = "variant-label";
-        label.textContent = val.inputLabel || "Nhập thông tin";
-        extraGroup.appendChild(label);
+  const label = document.createElement("div");
+  label.className = "variant-label";
+  label.textContent = val.inputLabel || "Nhập thông tin";
+  extraGroup.appendChild(label);
 
-        const input = document.createElement("input");
-        input.type = "text";
-        input.id = `input-${val.text}`;
-        input.placeholder = val.inputPlaceholder || "Nhập nội dung...";
-        input.className = "variant-input";
-        input.addEventListener("input", () => updateSelectedVariant());
-        extraGroup.appendChild(input);
+  const input = document.createElement("input");
+  input.type = "text";
+  input.id = `input-${val.text}`;
+  input.placeholder = val.inputPlaceholder || "Nhập nội dung...";
+  input.disabled = true; // ✅ mặc định khóa
+  input.addEventListener("input", () => updateSelectedVariant());
+  extraGroup.appendChild(input);
 
-        const mainGroup = document.querySelector(`.variant-group[data-key="${attr.key}"]`);
-        if (mainGroup) mainGroup.insertAdjacentElement("afterend", extraGroup);
-      }
-    } else {
-      if (extraGroup) extraGroup.remove();
-    }
+  if (mainGroup) mainGroup.insertAdjacentElement("afterend", extraGroup);
+}
+
+// ✅ Toggle trạng thái input
+const inputEl = document.querySelector(`#input-${val.text}`);
+if (inputEl) {
+  inputEl.disabled = !isSelected;
+  if (!isSelected) inputEl.value = ""; // clear nếu bỏ chọn
+}
+
   });
 });
 
