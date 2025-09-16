@@ -568,14 +568,15 @@
       popup.classList.remove("hidden");
       isCartPopupOpen = true;
       setTimeout(() => bindAddToCartButton(), 100);
-    } else {
-      content.classList.remove("animate-slideup");
-      popup.classList.add("hidden");
-      setTimeout(() => {
-        popup.style.display = "none";
-      }, 300);
-      isCartPopupOpen = false;
-    }
+      } else {
+    content.classList.remove("animate-slideup");
+    popup.classList.add("hidden");
+    setTimeout(() => {
+      popup.style.display = "none";
+      updateCartIcon();   // ✅ thêm dòng này để icon update ngay khi đóng
+    }, 300);
+    isCartPopupOpen = false;
+  }
   }
 
   function bindAddToCartButton() {
