@@ -176,15 +176,6 @@ window.__thumbSelectSeq = window.__thumbSelectSeq || 0;
     updateSelectedVariant();
   });
 }
- else {
-  // SINGLE SELECT: giữ như cũ
-  thumb.addEventListener("click", () => {
-    $$('.variant-thumb[data-key="' + attr.key + '"]').forEach(el => el.classList.remove("selected"));
-    thumb.classList.add("selected");
-    updateSelectedVariant();
-  });
-}
-
 
           wrapper.appendChild(thumb);
         });
@@ -677,24 +668,21 @@ if (attrMulti && Array.isArray(window.currentSelections[attrMulti.key])) {
 
   // ====== Wireup ======
   document.addEventListener("DOMContentLoaded", () => {
-    // Close buttons
-    $$(".cart-popup-close, .cart-popup-overlay").forEach(btn =>
-      btn.addEventListener("click", () => toggleCartPopup(false))
-    );
+  // Close buttons
+  $$(".cart-popup-close, .cart-popup-overlay").forEach(btn =>
+    btn.addEventListener("click", () => toggleCartPopup(false))
+  );
 
-    // Form toggle alias
-    window.toggleForm = () => toggleCartPopup(true);
+  // Form toggle alias
+  window.toggleForm = () => toggleCartPopup(true);
 
-    // Init
-  document.addEventListener("DOMContentLoaded", () => {
-    if (typeof initCartPopup === "function") {
-      initCartPopup();
-    } else {
-      console.warn("⚠️ initCartPopup chưa sẵn sàng.");
-    }
-  });
-
-  });
+  // Init popup
+  if (typeof initCartPopup === "function") {
+    initCartPopup();
+  } else {
+    console.warn("⚠️ initCartPopup chưa sẵn sàng.");
+  }
+});
 // --- Expose & auto-init ---
 window.initCartPopup = initCartPopup; // cho phép trang gọi trực tiếp
 
