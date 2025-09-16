@@ -153,21 +153,44 @@ window.__thumbSelectSeq = window.__thumbSelectSeq || 0;
   });
 
   // Nếu lựa chọn này có textinput: true → tạo input bên trong thumb
-  if (val.textinput) {
-    const inputDiv = document.createElement("div");
-    inputDiv.className = "variant-input-text";
-    inputDiv.style.display = "none";
+  // Nếu lựa chọn này có inputable: true → tạo group input riêng khi được chọn
+if (val.inputable) {
+  thumb.addEventListener("click", () => {
+    thumb.classList.toggle("selected");
 
-    const input = document.createElement("input");
-    input.type = "text";
-    input.placeholder = val.placeholder || "Nhập nội dung...";
-    input.id = `input-${val.text}`;
-    input.addEventListener("input", () => updateSelectedVariant());
+    if (thumb.classList.contains("selected")) {
+      // tạo nhóm input nếu chưa có
+      if (!document.querySelector(`#group-input-${val.text}`)) {
+        const extraGroup = document.createElement("div");
+        extraGroup.className = "variant-group";
+        extraGroup.id = `group-input-${val.text}`;
 
-    inputDiv.appendChild(input);
-    thumb.appendChild(inputDiv);
-    thumb._inputDiv = inputDiv;
-  }
+        const label = document.createElement("div");
+        label.className = "variant-label";
+        label.textContent = val.inputLabel || "Nhập thông tin";
+        extraGroup.appendChild(label);
+
+        const input = document.createElement("input");
+        input.type = "text";
+        input.id = `input-${val.text}`;
+        input.placeholder = val.inputPlaceholder || "Nhập nội dung...";
+        input.className = "variant-input";
+        input.addEventListener("input", () => updateSelectedVariant());
+        extraGroup.appendChild(input);
+
+        // gắn ngay sau nhóm hiện tại
+        group.insertAdjacentElement("afterend", extraGroup);
+      }
+    } else {
+      // bỏ chọn → xoá nhóm input
+      const extraGroup = document.querySelector(`#group-input-${val.text}`);
+      if (extraGroup) extraGroup.remove();
+    }
+
+    updateSelectedVariant();
+  });
+}
+
 } else {
   // SINGLE SELECT: giữ như cũ
   thumb.addEventListener("click", () => {
