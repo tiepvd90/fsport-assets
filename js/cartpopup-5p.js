@@ -220,9 +220,19 @@
       if (!groupEl) return;
       const firstBtn = groupEl.querySelector(".variant-thumb");
       if (firstBtn) {
-        firstBtn.classList.add("selected");
-        selections[attr.key] = firstBtn.dataset.value;
-      }
+  // chỉ set ảnh tạm cho variant, KHÔNG auto-select
+  selections[attr.key] = null;
+  const val = firstBtn.dataset.value;
+  const matchedValue = (window.allAttributes || [])
+    .find(a => a.key === mainKey)
+    ?.values.find(v => (typeof v === "object" ? v.text === val : v === val));
+
+  if (matchedValue && typeof matchedValue === "object" && matchedValue.image) {
+    if (!window.baseVariant["Ảnh"]) {
+      window.baseVariant["Ảnh"] = matchedValue.image;
+    }
+  }
+}
     });
   }
 
