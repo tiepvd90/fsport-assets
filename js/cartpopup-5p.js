@@ -378,9 +378,16 @@ window.__thumbSelectSeq = window.__thumbSelectSeq || 0;
 let selectedMainValues = clean[window.mainImageKey];
 
 if (Array.isArray(selectedMainValues)) {
-  // lấy lựa chọn cuối cùng (gần nhất được click)
-  selectedMainValues = selectedMainValues[selectedMainValues.length - 1];
+  // ✅ lấy lựa chọn có seq lớn nhất (tức là click gần nhất)
+  const groupEl = document.querySelector(`.variant-group[data-key="${window.mainImageKey}"]`);
+  const selectedThumbs = Array.from(groupEl?.querySelectorAll(".variant-thumb.selected") || []);
+  const lastThumb = selectedThumbs.sort((a, b) => {
+    return (parseInt(b.dataset.seq || "0", 10) - parseInt(a.dataset.seq || "0", 10));
+  })[0];
+
+  selectedMainValues = lastThumb ? lastThumb.dataset.value : selectedMainValues[selectedMainValues.length - 1];
 }
+
 
 const matchedValue = mainAttr?.values?.find(v => (typeof v === "object" ? v.text === selectedMainValues : v === selectedMainValues));
 
