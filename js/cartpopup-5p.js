@@ -119,89 +119,90 @@ window.__thumbSelectSeq = window.__thumbSelectSeq || 0;
         wrapper.className = displayMode === "thumbnail" ? "variant-thumbnails" : "variant-buttons";
 
         attr.values.forEach(val => {
-          const value = typeof val === "string" ? val : val.text;
-          const image = typeof val === "object" ? val.image : null;
+  const value = typeof val === "string" ? val : val.text;
+  const image = typeof val === "object" ? val.image : null;
 
-          const thumb = document.createElement("div");
-          thumb.className = "variant-thumb";
-          thumb.dataset.key = attr.key;
-          thumb.dataset.value = value;
+  const thumb = document.createElement("div");
+  thumb.className = "variant-thumb";
+  thumb.dataset.key = attr.key;
+  thumb.dataset.value = value;
 
-          if (displayMode === "thumbnail") {
-            thumb.innerHTML = `
-              <img src="${image || ""}" alt="${value}" />
-              <div class="variant-title">${value}</div>
-            `;
-          } else {
-            thumb.textContent = value;
-          }
-
-          if (attr.multiSelect) {
-  // MULTI SELECT: toggle nhiều lựa chọn + gán thứ tự click bền vững
-  thumb.addEventListener("click", () => {
-    thumb.classList.toggle("selected");
-
-    if (thumb.classList.contains("selected")) {
-      // nếu lần đầu được chọn thì gán số thứ tự (seq) tăng dần
-      if (!thumb.dataset.seq) thumb.dataset.seq = String(++window.__thumbSelectSeq);
-    } else {
-      // bỏ chọn thì xoá seq để khi chọn lại sẽ nhận seq mới (đẩy xuống cuối)
-      delete thumb.dataset.seq;
-    }
-
-    updateSelectedVariant();
-  });
-
-  // ==== Nếu value này có inputable thì tạo input sẵn ====
-if (val.inputable) {
-  const groupId = `group-input-${val.text}`;
-  let extraGroup = document.getElementById(groupId);
-
-  if (!extraGroup) {
-    const mainGroup = document.querySelector(`.variant-group[data-key="${attr.key}"]`);
-    extraGroup = document.createElement("div");
-    extraGroup.className = "variant-group variant-input-text";
-    extraGroup.id = groupId;
-
-    const label = document.createElement("div");
-    label.className = "variant-label";
-    label.textContent = val.inputLabel || "Nhập thông tin";
-    extraGroup.appendChild(label);
-
-    const input = document.createElement("input");
-    input.type = "text";
-    input.id = `input-${val.text}`;
-    input.placeholder = val.inputPlaceholder || "Nhập nội dung...";
-    input.disabled = true; // mặc định khóa
-    input.addEventListener("input", () => updateSelectedVariant());
-    extraGroup.appendChild(input);
-
-    if (mainGroup) mainGroup.insertAdjacentElement("afterend", extraGroup);
+  if (displayMode === "thumbnail") {
+    thumb.innerHTML = `
+      <img src="${image || ""}" alt="${value}" />
+      <div class="variant-title">${value}</div>
+    `;
+  } else {
+    thumb.textContent = value;
   }
 
-  // toggle disable theo trạng thái selected
-  thumb.addEventListener("click", () => {
-    const inputEl = document.querySelector(`#input-${val.text}`);
-    if (thumb.classList.contains("selected")) {
-      inputEl.disabled = false;
-    } else {
-      inputEl.disabled = true;
-      inputEl.value = "";
+  if (attr.multiSelect) {
+    // MULTI SELECT: toggle nhiều lựa chọn + gán thứ tự click bền vững
+    thumb.addEventListener("click", () => {
+      thumb.classList.toggle("selected");
+
+      if (thumb.classList.contains("selected")) {
+        // nếu lần đầu được chọn thì gán số thứ tự (seq) tăng dần
+        if (!thumb.dataset.seq) thumb.dataset.seq = String(++window.__thumbSelectSeq);
+      } else {
+        // bỏ chọn thì xoá seq để khi chọn lại sẽ nhận seq mới (đẩy xuống cuối)
+        delete thumb.dataset.seq;
+      }
+
+      updateSelectedVariant();
+    });
+
+    // ✅ Nếu value này có textinput thì tạo input đi kèm
+    if (val.textinput) {
+      const groupId = `group-input-${val.text}`;
+      let extraGroup = document.getElementById(groupId);
+
+      if (!extraGroup) {
+        const mainGroup = document.querySelector(`.variant-group[data-key="${attr.key}"]`);
+        extraGroup = document.createElement("div");
+        extraGroup.className = "variant-group variant-input-text";
+        extraGroup.id = groupId;
+
+        // Label
+        const label = document.createElement("div");
+        label.className = "variant-label";
+        label.textContent = (val.textinput.label || "Nhập thông tin");
+        extraGroup.appendChild(label);
+
+        // Input
+        const input = document.createElement("input");
+        input.type = "text";
+        input.id = `input-${val.text}`;
+        input.placeholder = val.textinput.placeholder || "Nhập nội dung...";
+        input.disabled = true; // mặc định disable
+        input.addEventListener("input", () => updateSelectedVariant());
+        extraGroup.appendChild(input);
+
+        if (mainGroup) mainGroup.insertAdjacentElement("afterend", extraGroup);
+      }
+
+      // Toggle enable/disable theo trạng thái selected
+      thumb.addEventListener("click", () => {
+        const inputEl = document.querySelector(`#input-${val.text}`);
+        if (thumb.classList.contains("selected")) {
+          inputEl.disabled = false;
+        } else {
+          inputEl.disabled = true;
+          inputEl.value = "";
+        }
+      });
     }
-  });
-}
-} else {
-  // SINGLE SELECT: giữ như cũ
-  thumb.addEventListener("click", () => {
-    $$('.variant-thumb[data-key="' + attr.key + '"]').forEach(el => el.classList.remove("selected"));
-    thumb.classList.add("selected");
-    updateSelectedVariant();
-  });
-}
+  } else {
+    // SINGLE SELECT: giữ như cũ
+    thumb.addEventListener("click", () => {
+      $$('.variant-thumb[data-key="' + attr.key + '"]').forEach(el => el.classList.remove("selected"));
+      thumb.classList.add("selected");
+      updateSelectedVariant();
+    });
+  }
 
-          wrapper.appendChild(thumb);
-        });
-
+  wrapper.appendChild(thumb);
+});
         group.appendChild(wrapper);
       }
 
