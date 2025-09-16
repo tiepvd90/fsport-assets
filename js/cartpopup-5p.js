@@ -105,7 +105,7 @@ function renderOptions(attributes) {
     label.textContent = `${attr.label}:`;
     group.appendChild(label);
 
-    // Nếu là input text độc lập
+    // Nếu là input text độc lập (ví dụ ChuIn)
     if (attr.input === "text") {
       const input = document.createElement("input");
       input.type = "text";
@@ -113,6 +113,7 @@ function renderOptions(attributes) {
       input.placeholder = attr.placeholder || "Nhập nội dung...";
       input.style.cssText =
         "width:100%;padding:8px;font-size:14px;box-sizing:border-box;border:1px solid #ccc;border-radius:6px;";
+      input.disabled = true; // ✅ mặc định disable
       input.addEventListener("input", () => updateSelectedVariant());
       group.appendChild(input);
 
@@ -140,45 +141,22 @@ function renderOptions(attributes) {
           thumb.textContent = value;
         }
 
-        if (attr.multiSelect) {
-  // MULTI SELECT
-  thumb.addEventListener("click", () => {
-    thumb.classList.toggle("selected");
+        // MULTI SELECT / SINGLE SELECT toggle
+        thumb.addEventListener("click", () => {
+          if (attr.multiSelect) {
+            thumb.classList.toggle("selected");
+            if (thumb.classList.contains("selected")) {
+              if (!thumb.dataset.seq) thumb.dataset.seq = String(++window.__thumbSelectSeq);
+            } else {
+              delete thumb.dataset.seq;
+            }
+          } else {
+            wrapper.querySelectorAll(".variant-thumb").forEach(el => el.classList.remove("selected"));
+            thumb.classList.add("selected");
+          }
+          updateSelectedVariant();
+        });
 
-    if (thumb.classList.contains("selected")) {
-      if (!thumb.dataset.seq) thumb.dataset.seq = String(++window.__thumbSelectSeq);
-    } else {
-      delete thumb.dataset.seq;
-    }
-
-    // ✅ Nếu option này có inputable thì bật/tắt input ChuIn
-    if (val.inputable) {
-  const inputWrap = document.createElement("div");
-  inputWrap.className = "variant-input-wrap";
-
-  const input = document.createElement("input");
-  input.type = "text";
-  input.id = `input-${value}`; // id theo tên value
-  input.placeholder = val.placeholder || "Nhập nội dung...";
-  input.disabled = true; // mặc định khóa
-  input.addEventListener("input", () => updateSelectedVariant());
-
-  inputWrap.appendChild(input);
-  group.appendChild(inputWrap);
-
-  // Toggle enable khi click chọn
-  thumb.addEventListener("click", () => {
-    if (thumb.classList.contains("selected")) {
-      input.disabled = false;
-    } else {
-      input.disabled = true;
-      input.value = "";
-    }
-  });
-}
-    updateSelectedVariant();
-  });
-}    
         wrapper.appendChild(thumb);
       });
 
@@ -188,9 +166,10 @@ function renderOptions(attributes) {
     container.appendChild(group);
   });
 
-  // ✅ Gọi 1 lần, cho phép auto-pick option đầu tiên để hiện ảnh chính
+  // ✅ Gọi 1 lần để render mặc định
   updateSelectedVariant(true);
 }
+
 
   // ====== Áp visibility + dọn selections không hợp lệ ======
   function applyVisibility(selections) {
@@ -346,6 +325,13 @@ function renderOptions(attributes) {
     // 4) Lấy selections sạch theo nhóm đang hiển thị
     const clean = collectCleanSelections();
     window.currentSelections = clean;
+    // ✅ Toggle input ChuIn theo lựa chọn "Tên Bạn"
+const chuInInput = document.querySelector("#input-ChuIn");
+if (chuInInput) {
+  const hasTenBan = Array.isArray(clean["Thiết Kế"]) && clean["Thiết Kế"].includes("Tên Bạn");
+  chuInInput.disabled = !hasTenBan;
+  if (!hasTenBan) chuInInput.value = "";
+}
 
     // 5) Tạo variant từ base + selections
     const variant = { ...(window.baseVariant || {}), ...clean };
@@ -605,14 +591,15 @@ if (attrMulti && Array.isArray(window.currentSelections[attrMulti.key])) {
   const hasTenBan = window.currentSelections[attrMulti.key].includes("Tên Bạn");
 
   if (hasTenBan) {
-    const input = document.querySelector(`#input-Tên Bạn`);
-    const value = input?.value?.trim();
-    if (!value) {
-      alert("Vui lòng nhập tên để in lên tranh.");
-      return;
-    }
-    product["Tên In"] = value;
+  const input = document.querySelector(`#input-ChuIn`);
+  const value = input?.value?.trim();
+  if (!value) {
+    alert("Vui lòng nhập tên để in lên tranh.");
+    return;
   }
+  product["Tên In"] = value;
+}
+
 }
         const loai = window.productCategory || "unknown";
         const voucherAmount = window.voucherByProduct?.[product.id] || 0;
