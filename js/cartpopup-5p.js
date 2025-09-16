@@ -22,6 +22,8 @@
   window.currentSelections = {}; // selections sạch sau khi ẩn/hiện
   let isCartEventBound = false;
   let isCartPopupOpen = false;
+  // dùng để gán thứ tự click bền vững cho từng thumbnail
+window.__thumbSelectSeq = window.__thumbSelectSeq || 0;
 
   // ====== Config đường dẫn JSON ======
   const productPage = (window.productPage || "default").toLowerCase();
@@ -135,31 +137,46 @@
           }
 
           if (attr.multiSelect) {
-  // MULTI SELECT: toggle nhiều lựa chọn
+  // MULTI SELECT: toggle nhiều lựa chọn + gán thứ tự click bền vững
   thumb.addEventListener("click", () => {
     thumb.classList.toggle("selected");
+
+    if (thumb.classList.contains("selected")) {
+      // nếu lần đầu được chọn thì gán số thứ tự (seq) tăng dần
+      if (!thumb.dataset.seq) thumb.dataset.seq = String(++window.__thumbSelectSeq);
+    } else {
+      // bỏ chọn thì xoá seq để khi chọn lại sẽ nhận seq mới (đẩy xuống cuối)
+      delete thumb.dataset.seq;
+    }
+
     updateSelectedVariant();
   });
-            // Nếu lựa chọn này có textinput: true → tạo input bên trong thumb
-if (val.textinput) {
-  const inputDiv = document.createElement("div");
-  inputDiv.className = "variant-input-text";
-  inputDiv.style.display = "none";
 
-  const input = document.createElement("input");
-  input.type = "text";
-  input.placeholder = val.placeholder || "Nhập nội dung...";
-  input.id = `input-${val.text}`;
-  input.addEventListener("input", () => updateSelectedVariant());
+  // Nếu lựa chọn này có textinput: true → tạo input bên trong thumb
+  if (val.textinput) {
+    const inputDiv = document.createElement("div");
+    inputDiv.className = "variant-input-text";
+    inputDiv.style.display = "none";
 
-  inputDiv.appendChild(input);
-  thumb.appendChild(inputDiv);
+    const input = document.createElement("input");
+    input.type = "text";
+    input.placeholder = val.placeholder || "Nhập nội dung...";
+    input.id = `input-${val.text}`;
+    input.addEventListener("input", () => updateSelectedVariant());
 
-  // Lưu inputDiv để toggle show/hide sau này
-  thumb._inputDiv = inputDiv;
-}
-
+    inputDiv.appendChild(input);
+    thumb.appendChild(inputDiv);
+    thumb._inputDiv = inputDiv;
+  }
 } else {
+  // SINGLE SELECT: giữ như cũ
+  thumb.addEventListener("click", () => {
+    $$('.variant-thumb[data-key="' + attr.key + '"]').forEach(el => el.classList.remove("selected"));
+    thumb.classList.add("selected");
+    updateSelectedVariant();
+  });
+}
+ else {
   // SINGLE SELECT: giữ như cũ
   thumb.addEventListener("click", () => {
     $$('.variant-thumb[data-key="' + attr.key + '"]').forEach(el => el.classList.remove("selected"));
@@ -255,40 +272,66 @@ if (val.textinput) {
   function updateSelectedVariant(allowAutoPickFirst = false) {
     // 1) Thu thập các chọn hiện tại (thô)
     const raw = {};
-   let orderCounter = 1; // dùng để đánh số theo thứ tự click
 
-$$(".variant-thumb").forEach(btn => {
-  const key = btn.dataset.key;
-  const val = btn.dataset.value;
-  const isSelected = btn.classList.contains("selected");
-  const attrDef = (window.allAttributes || []).find(a => a.key === key);
+// Duyệt theo từng nhóm thuộc tính để xử lý đúng multi-select
+(window.allAttributes || []).forEach(attr => {
+  if (attr.input === "text") return;
 
-  // Badge nhỏ hiển thị số
-  let badge = btn.querySelector(".thumb-badge");
-  if (!badge) {
-    badge = document.createElement("div");
-    badge.className = "thumb-badge";
-    btn.appendChild(badge);
-  }
+  const groupEl = document.querySelector(`.variant-group[data-key="${attr.key}"]`);
+  if (!groupEl) return;
 
-  if (isSelected) {
-    if (attrDef?.multiSelect) {
-      if (!raw[key]) raw[key] = [];
-      raw[key].push(val);
-    } else {
-      raw[key] = val;
+  const thumbs = Array.from(groupEl.querySelectorAll(".variant-thumb"));
+
+  if (attr.multiSelect) {
+    // Lấy các thumb đang được chọn + sắp theo seq tăng dần (thứ tự click)
+    const selectedThumbs = thumbs
+      .filter(t => t.classList.contains("selected"))
+      .sort((a, b) => (parseInt(a.dataset.seq || "0", 10) - parseInt(b.dataset.seq || "0", 10)));
+
+    // Cập nhật badge số thứ tự + hiển thị input nếu có
+    selectedThumbs.forEach((t, idx) => {
+      let badge = t.querySelector(".thumb-badge");
+      if (!badge) {
+        badge = document.createElement("div");
+        badge.className = "thumb-badge";
+        t.appendChild(badge);
+      }
+      badge.textContent = String(idx + 1);
+      badge.style.display = "block";
+      if (t._inputDiv) t._inputDiv.style.display = "block";
+    });
+
+    // Ẩn badge + input của các thumb không được chọn
+    thumbs
+      .filter(t => !t.classList.contains("selected"))
+      .forEach(t => {
+        const b = t.querySelector(".thumb-badge");
+        if (b) b.style.display = "none";
+        if (t._inputDiv) t._inputDiv.style.display = "none";
+      });
+
+    if (selectedThumbs.length) {
+      raw[attr.key] = selectedThumbs.map(t => t.dataset.value);
     }
-
-    // Cập nhật số thứ tự cho badge
-    badge.textContent = orderCounter++;
-    badge.style.display = "block";
-
-    if (btn._inputDiv) btn._inputDiv.style.display = "block";
   } else {
-    badge.style.display = "none";
-    if (btn._inputDiv) btn._inputDiv.style.display = "none";
+    // single-select giữ nguyên
+    const sel = thumbs.find(t => t.classList.contains("selected"));
+    if (sel) raw[attr.key] = sel.dataset.value;
+
+    // (nếu có inputDiv trong single — hiếm) thì toggle theo selected
+    thumbs.forEach(t => {
+      if (t._inputDiv) t._inputDiv.style.display = t.classList.contains("selected") ? "block" : "none";
+    });
   }
 });
+
+// Thu thập các input text độc lập (loại attr.input === "text")
+(window.allAttributes || []).forEach(attr => {
+  if (attr.input === "text") {
+    raw[attr.key] = document.querySelector(`#input-${attr.key}`)?.value || "";
+  }
+});
+
 
 
     (window.allAttributes || []).forEach(attr => {
