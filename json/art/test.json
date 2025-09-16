@@ -13,9 +13,11 @@
         {
           "text": "Tên Bạn",
           "image": "/assets/images/gallery/art/hoadao/1.webp",
-          "inputable": true,
-          "inputLabel": "Chữ In Lên Tranh",
-          "inputPlaceholder": "Nhập tên hoặc chữ bạn muốn in lên tranh"
+          "textinput": {
+            "label": "Chữ In Lên Tranh",
+            "placeholder": "Nhập tên hoặc chữ bạn muốn in lên tranh",
+            "required": true
+          }
         },
         { "text": "HD02", "image": "/assets/images/gallery/art/hoadao/2.webp" },
         { "text": "HD03", "image": "/assets/images/gallery/art/hoadao/3.webp" },
