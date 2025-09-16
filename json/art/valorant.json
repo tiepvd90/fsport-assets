@@ -1,0 +1,78 @@
+{
+  "category": "art",
+  "mainImageKey": "Thiết Kế",
+  "thuộc_tính": [
+    {
+      "label": "Thiết Kế",
+      "key": "Thiết Kế",
+      "display": "thumbnail",
+      "values": [
+        {
+          "text": "VA01",
+          "image": "/assets/images/gallery/art/valorant/1.webp"
+        },
+        {
+          "text": "VA02",
+          "image": "/assets/images/gallery/art/valorant/2.webp"
+        },
+        {
+          "text": "VA03",
+          "image": "/assets/images/gallery/art/valorant/3.webp"
+        },
+        {
+          "text": "VA04",
+          "image": "/assets/images/gallery/art/valorant/4.webp"
+        },
+        {
+          "text": "VA05",
+          "image": "/assets/images/gallery/art/valorant/5.webp"
+        },
+        {
+          "text": "VA06",
+          "image": "/assets/images/gallery/art/valorant/6.webp"
+        },
+        {
+          "text": "VA07",
+          "image": "/assets/images/gallery/art/valorant/7.webp"
+        },
+        {
+          "text": "VA08",
+          "image": "/assets/images/gallery/art/valorant/8.webp"
+        },
+        {
+          "text": "VA09",
+          "image": "/assets/images/gallery/art/valorant/9.webp"
+        },
+        {
+          "text": "VA10",
+          "image": "/assets/images/gallery/art/valorant/10.webp"
+        }
+      ]
+    },
+    {
+      "label": "Kích cỡ",
+      "key": "Kích cỡ",
+      "display": "button",
+      "values": [
+        {
+          "text": "Set Vừa(2 tranh 15x20 và 2 tranh 20x30cm)",
+          "GiaOverride": 89000,
+          "GiaGocOverride": 120000
+        },
+        {
+          "text": "Set Lớn(2 tranh 20x30 và 2 tranh 30x40cm)",
+          "GiaOverride": 159000,
+          "GiaGocOverride": 200000
+        }
+      ]
+    }
+  ],
+  "biến_thể": [
+    {
+      "id": "valorant",
+      "category": "art",
+      "Giá": 89000,
+      "Giá gốc": 120000
+    }
+  ]
+}
