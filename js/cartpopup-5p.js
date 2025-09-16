@@ -605,14 +605,24 @@
 
         const selectedKeys = Object.keys(window.selectedVariant);
         const isComplete = requiredKeys.every((key) => {
-          const attr = (window.allAttributes || []).find((a) => a.key === key);
-          if (attr?.input === "text") {
-            const rawVal = window.currentSelections[key];
-            const v = typeof rawVal === "string" ? rawVal.trim() : "";
-            return v.length > 0;
-          }
-          return selectedKeys.includes(key);
-        });
+  const attr = (window.allAttributes || []).find((a) => a.key === key);
+
+  if (attr?.input === "text") {
+    // chỉ bắt buộc nếu user đã chọn "Tên Bạn"
+    const multiAttr = window.allAttributes.find((a) => a.multiSelect);
+    const selectedList = multiAttr ? window.currentSelections[multiAttr.key] : [];
+    const hasTenBan = Array.isArray(selectedList) && selectedList.includes("Tên Bạn");
+
+    if (hasTenBan) {
+      const rawVal = window.currentSelections[key];
+      const v = typeof rawVal === "string" ? rawVal.trim() : "";
+      return v.length > 0;
+    }
+    return true; // nếu không chọn "Tên Bạn" thì bỏ qua
+  }
+
+  return selectedKeys.includes(key);
+});
         const attrMulti = window.allAttributes.find((a) => a.multiSelect);
         if (attrMulti) {
           const selected = window.currentSelections[attrMulti.key] || [];
