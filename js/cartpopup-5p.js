@@ -141,18 +141,7 @@ function renderOptions(attributes) {
         }
 
         if (attr.multiSelect) {
-          // MULTI SELECT
-          thumb.addEventListener("click", () => {
-            thumb.classList.toggle("selected");
-            if (thumb.classList.contains("selected")) {
-              if (!thumb.dataset.seq) thumb.dataset.seq = String(++window.__thumbSelectSeq);
-            } else {
-              delete thumb.dataset.seq;
-            }
-            updateSelectedVariant();
-          });
-
-          if (attr.multiSelect) {
+  // MULTI SELECT
   thumb.addEventListener("click", () => {
     thumb.classList.toggle("selected");
 
@@ -164,20 +153,32 @@ function renderOptions(attributes) {
 
     // ✅ Nếu option này có inputable thì bật/tắt input ChuIn
     if (val.inputable) {
-      const inputEl = document.querySelector(`#input-ChuIn`);
-      if (thumb.classList.contains("selected")) {
-        inputEl.disabled = false;
-      } else {
-        inputEl.disabled = true;
-        inputEl.value = "";
-      }
-    }
+  const inputWrap = document.createElement("div");
+  inputWrap.className = "variant-input-wrap";
 
-    updateSelectedVariant();
+  const input = document.createElement("input");
+  input.type = "text";
+  input.id = `input-${value}`; // id theo tên value
+  input.placeholder = val.placeholder || "Nhập nội dung...";
+  input.disabled = true; // mặc định khóa
+  input.addEventListener("input", () => updateSelectedVariant());
+
+  inputWrap.appendChild(input);
+  group.appendChild(inputWrap);
+
+  // Toggle enable khi click chọn
+  thumb.addEventListener("click", () => {
+    if (thumb.classList.contains("selected")) {
+      input.disabled = false;
+    } else {
+      input.disabled = true;
+      input.value = "";
+    }
   });
 }
-
-
+    updateSelectedVariant();
+  });
+}    
         wrapper.appendChild(thumb);
       });
 
