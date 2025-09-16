@@ -304,14 +304,6 @@ function renderOptions(attributes) {
   }
 });
 
-
-
-    (window.allAttributes || []).forEach(attr => {
-      if (attr.input === "text") {
-        raw[attr.key] = $(`#input-${attr.key}`)?.value || "";
-      }
-    });
-
     // 2) Áp điều kiện hiển thị & dọn selections ẩn
     applyVisibility(raw);
 
@@ -325,14 +317,16 @@ function renderOptions(attributes) {
     // 4) Lấy selections sạch theo nhóm đang hiển thị
     const clean = collectCleanSelections();
     window.currentSelections = clean;
-    // ✅ Toggle input ChuIn theo lựa chọn "Tên Bạn"
-const chuInInput = document.querySelector("#input-ChuIn");
-if (chuInInput) {
-  const hasTenBan = Array.isArray(clean["Thiết Kế"]) && clean["Thiết Kế"].includes("Tên Bạn");
-  chuInInput.disabled = !hasTenBan;
-  if (!hasTenBan) chuInInput.value = "";
+    // ✅ Toggle input text (attr.input === "text") theo lựa chọn "Tên Bạn"
+const textAttr = (window.allAttributes || []).find(a => a.input === "text");
+const textInput = textAttr ? document.querySelector(`#input-${textAttr.key}`) : null;
+if (textInput) {
+  const multiAttr = (window.allAttributes || []).find(a => a.multiSelect);
+  const list = multiAttr ? clean[multiAttr.key] : [];
+  const hasTenBan = Array.isArray(list) && list.includes("Tên Bạn");
+  textInput.disabled = !hasTenBan;
+  if (!hasTenBan) textInput.value = "";
 }
-
     // 5) Tạo variant từ base + selections
     const variant = { ...(window.baseVariant || {}), ...clean };
 
@@ -366,14 +360,13 @@ const matchedValue = mainAttr?.values?.find(v => (typeof v === "object" ? v.text
     let price = Number((window.baseVariant || {})["Giá"]) || 0;
     let priceOrig = Number((window.baseVariant || {})["Giá gốc"]) || price || 0;
     // Nếu có multi-select (ví dụ: Thiết Kế), thì nhân số lựa chọn
-const mainAttr = window.allAttributes.find(a => a.multiSelect);
+const multiAttr = window.allAttributes.find(a => a.multiSelect);
 let numTranh = 1;
 
-if (mainAttr) {
-  const selectedTranh = clean[mainAttr.key];
+if (multiAttr) {
+  const selectedTranh = clean[multiAttr.key];
   if (Array.isArray(selectedTranh)) numTranh = selectedTranh.length;
 }
-
 // Áp dụng lại giá sau khi lấy giá từ size
 price = price * numTranh;
 priceOrig = priceOrig * numTranh;
@@ -428,12 +421,9 @@ priceOrig = priceOrig * numTranh;
   function selectVariant(data) {
     // ✅ Nếu có __voucherWaiting → gán vào voucherByProduct
     if (window.__voucherWaiting?.amount) {
-      window.voucherByProduct = window.voucherByProduct || {};
-      if (!window.voucherByProduct[data.id]) {
-        window.voucherByProduct[data.id] = window.__voucherWaiting.amount;
-      }
-    }
-
+  window.voucherByProduct = window.voucherByProduct || {};
+  window.voucherByProduct[data.id] = window.__voucherWaiting.amount;
+}
     window.selectedVariant = data;
 
     const mainImage = $("#mainImage");
@@ -561,7 +551,10 @@ priceOrig = priceOrig * numTranh;
         const isComplete = requiredKeys.every(key => {
   const attr = (window.allAttributes || []).find(a => a.key === key);
   if (attr?.input === "text") {
-    const v = window.currentSelections[key]?.trim() || "";
+    const rawVal = window.currentSelections[key];
+const v = typeof rawVal === "string" ? rawVal.trim() : "";
+return v.length > 0;
+
     return v.length > 0; // ✅ bắt buộc phải có nội dung
   }
   return selectedKeys.includes(key);
@@ -591,15 +584,15 @@ if (attrMulti && Array.isArray(window.currentSelections[attrMulti.key])) {
   const hasTenBan = window.currentSelections[attrMulti.key].includes("Tên Bạn");
 
   if (hasTenBan) {
-  const input = document.querySelector(`#input-ChuIn`);
-  const value = input?.value?.trim();
-  if (!value) {
-    alert("Vui lòng nhập tên để in lên tranh.");
-    return;
+    const textAttr = (window.allAttributes || []).find(a => a.input === "text");
+    const input = textAttr ? document.querySelector(`#input-${textAttr.key}`) : null;
+    const value = input?.value?.trim();
+    if (!value) {
+      alert("Vui lòng nhập tên để in lên tranh.");
+      return;
+    }
+    product["Tên In"] = value;
   }
-  product["Tên In"] = value;
-}
-
 }
         const loai = window.productCategory || "unknown";
         const voucherAmount = window.voucherByProduct?.[product.id] || 0;
@@ -655,13 +648,6 @@ if (attrMulti && Array.isArray(window.currentSelections[attrMulti.key])) {
     }
   }
 
-  // ====== expose minimal APIs (tuỳ trang có thể gọi) ======
-  window.cartpopup = {
-    changeQuantity: changeQuantity,
-    toggle: toggleCartPopup,
-    refresh: updateSelectedVariant
-  };
-
   // ====== Wireup ======
   document.addEventListener("DOMContentLoaded", () => {
   // Close buttons
@@ -679,25 +665,15 @@ if (attrMulti && Array.isArray(window.currentSelections[attrMulti.key])) {
     console.warn("⚠️ initCartPopup chưa sẵn sàng.");
   }
 });
-// --- Expose & auto-init ---
-window.initCartPopup = initCartPopup; // cho phép trang gọi trực tiếp
-
-if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", () => initCartPopup());
-} else {
-  // Nếu file được nạp sau DOMContentLoaded, vẫn init được
-  initCartPopup();
-}
-// ✓ Cho HTML gọi được các hàm cũ
+// --- Expose (một lần) ---
 window.initCartPopup = initCartPopup;
 window.toggleCartPopup = toggleCartPopup;
 window.changeQuantity = changeQuantity;
 
-// (tuỳ chọn) expose object tiện dùng
 window.cartpopup = {
   init: initCartPopup,
   toggle: toggleCartPopup,
   qty: changeQuantity,
+  refresh: updateSelectedVariant
 };
-
 })();
