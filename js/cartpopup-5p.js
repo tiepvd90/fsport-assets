@@ -680,7 +680,7 @@
           voucher: voucherAmount > 0 ? { amount: voucherAmount } : undefined,
         });
         saveCart();
-
+        updateCartIcon();
         // Pixels (nếu có)
         if (typeof window.trackBothPixels === "function") {
           window.trackBothPixels("AddToCart", {
@@ -722,9 +722,23 @@
       console.warn("⚠️ Lưu cart thất bại:", e);
     }
   }
+  function updateCartIcon() {
+  try {
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    const count = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+    const icon = document.querySelector("#cartCount");
+    if (icon) {
+      icon.textContent = count;
+      icon.style.display = count > 0 ? "inline-block" : "none";
+    }
+  } catch (e) {
+    console.warn("⚠️ Không thể update cart icon:", e);
+  }
+}
 
   // ====== Wireup ======
   document.addEventListener("DOMContentLoaded", () => {
+    updateCartIcon();
     // Close buttons
     $$(".cart-popup-close, .cart-popup-overlay").forEach((btn) =>
       btn.addEventListener("click", () => toggleCartPopup(false)),
