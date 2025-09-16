@@ -152,48 +152,45 @@ window.__thumbSelectSeq = window.__thumbSelectSeq || 0;
     updateSelectedVariant();
   });
 
-  // ==== Hiển thị group input riêng cho các lựa chọn có inputable ====
-(window.allAttributes || []).forEach(attr => {
-  if (!attr.multiSelect) return;
+  // ==== Nếu value này có inputable thì tạo input sẵn ====
+if (val.inputable) {
+  const groupId = `group-input-${val.text}`;
+  let extraGroup = document.getElementById(groupId);
 
-  attr.values.forEach(val => {
-    if (!val.inputable) return;
+  const mainGroup = document.querySelector(`.variant-group[data-key="${attr.key}"]`);
+  if (!extraGroup) {
+    extraGroup = document.createElement("div");
+    extraGroup.className = "variant-group variant-input-text";
+    extraGroup.id = groupId;
 
-    const isSelected = (window.currentSelections[attr.key] || []).includes(val.text);
-    const groupId = `group-input-${val.text}`;
-    let extraGroup = document.getElementById(groupId);
+    const label = document.createElement("div");
+    label.className = "variant-label";
+    label.textContent = val.inputLabel || "Nhập thông tin";
+    extraGroup.appendChild(label);
 
-    const mainGroup = document.querySelector(`.variant-group[data-key="${attr.key}"]`);
-if (!extraGroup) {
-  extraGroup = document.createElement("div");
-  extraGroup.className = "variant-group variant-input-text";
-  extraGroup.id = groupId;
+    const input = document.createElement("input");
+    input.type = "text";
+    input.id = `input-${val.text}`;
+    input.placeholder = val.inputPlaceholder || "Nhập nội dung...";
+    input.disabled = true; // mặc định khóa
+    input.addEventListener("input", () => updateSelectedVariant());
+    extraGroup.appendChild(input);
 
-  const label = document.createElement("div");
-  label.className = "variant-label";
-  label.textContent = val.inputLabel || "Nhập thông tin";
-  extraGroup.appendChild(label);
+    if (mainGroup) mainGroup.insertAdjacentElement("afterend", extraGroup);
+  }
 
-  const input = document.createElement("input");
-  input.type = "text";
-  input.id = `input-${val.text}`;
-  input.placeholder = val.inputPlaceholder || "Nhập nội dung...";
-  input.disabled = true; // ✅ mặc định khóa
-  input.addEventListener("input", () => updateSelectedVariant());
-  extraGroup.appendChild(input);
-
-  if (mainGroup) mainGroup.insertAdjacentElement("afterend", extraGroup);
-}
-
-// ✅ Toggle trạng thái input
-const inputEl = document.querySelector(`#input-${val.text}`);
-if (inputEl) {
-  inputEl.disabled = !isSelected;
-  if (!isSelected) inputEl.value = ""; // clear nếu bỏ chọn
-}
-
+  // toggle enable/disable khi click
+  thumb.addEventListener("click", () => {
+    const inputEl = document.querySelector(`#input-${val.text}`);
+    if (thumb.classList.contains("selected")) {
+      inputEl.disabled = false;
+    } else {
+      inputEl.disabled = true;
+      inputEl.value = "";
+    }
   });
-});
+}
+
 
 
 } else {
