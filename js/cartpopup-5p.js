@@ -152,18 +152,22 @@ window.__thumbSelectSeq = window.__thumbSelectSeq || 0;
     updateSelectedVariant();
   });
 
-  // Nếu lựa chọn này có textinput: true → tạo input bên trong thumb
-  // Nếu lựa chọn này có inputable: true → tạo group input riêng khi được chọn
-if (val.inputable) {
-  thumb.addEventListener("click", () => {
-    thumb.classList.toggle("selected");
+  // ==== Hiển thị group input riêng cho các lựa chọn có inputable ====
+(window.allAttributes || []).forEach(attr => {
+  if (!attr.multiSelect) return;
 
-    if (thumb.classList.contains("selected")) {
-      // tạo nhóm input nếu chưa có
-      if (!document.querySelector(`#group-input-${val.text}`)) {
-        const extraGroup = document.createElement("div");
+  attr.values.forEach(val => {
+    if (!val.inputable) return;
+
+    const isSelected = (window.currentSelections[attr.key] || []).includes(val.text);
+    const groupId = `group-input-${val.text}`;
+    let extraGroup = document.getElementById(groupId);
+
+    if (isSelected) {
+      if (!extraGroup) {
+        extraGroup = document.createElement("div");
         extraGroup.className = "variant-group";
-        extraGroup.id = `group-input-${val.text}`;
+        extraGroup.id = groupId;
 
         const label = document.createElement("div");
         label.className = "variant-label";
@@ -178,18 +182,15 @@ if (val.inputable) {
         input.addEventListener("input", () => updateSelectedVariant());
         extraGroup.appendChild(input);
 
-        // gắn ngay sau nhóm hiện tại
-        group.insertAdjacentElement("afterend", extraGroup);
+        const mainGroup = document.querySelector(`.variant-group[data-key="${attr.key}"]`);
+        if (mainGroup) mainGroup.insertAdjacentElement("afterend", extraGroup);
       }
     } else {
-      // bỏ chọn → xoá nhóm input
-      const extraGroup = document.querySelector(`#group-input-${val.text}`);
       if (extraGroup) extraGroup.remove();
     }
-
-    updateSelectedVariant();
   });
-}
+});
+
 
 } else {
   // SINGLE SELECT: giữ như cũ
