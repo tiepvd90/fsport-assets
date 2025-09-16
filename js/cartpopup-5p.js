@@ -157,8 +157,8 @@ if (val.inputable) {
   const groupId = `group-input-${val.text}`;
   let extraGroup = document.getElementById(groupId);
 
-  const mainGroup = document.querySelector(`.variant-group[data-key="${attr.key}"]`);
   if (!extraGroup) {
+    const mainGroup = document.querySelector(`.variant-group[data-key="${attr.key}"]`);
     extraGroup = document.createElement("div");
     extraGroup.className = "variant-group variant-input-text";
     extraGroup.id = groupId;
@@ -179,7 +179,7 @@ if (val.inputable) {
     if (mainGroup) mainGroup.insertAdjacentElement("afterend", extraGroup);
   }
 
-  // toggle enable/disable khi click
+  // toggle disable theo trạng thái selected
   thumb.addEventListener("click", () => {
     const inputEl = document.querySelector(`#input-${val.text}`);
     if (thumb.classList.contains("selected")) {
@@ -190,9 +190,6 @@ if (val.inputable) {
     }
   });
 }
-
-
-
 } else {
   // SINGLE SELECT: giữ như cũ
   thumb.addEventListener("click", () => {
