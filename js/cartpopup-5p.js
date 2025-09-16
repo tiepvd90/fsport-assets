@@ -255,13 +255,21 @@ if (val.textinput) {
   function updateSelectedVariant(allowAutoPickFirst = false) {
     // 1) Thu thập các chọn hiện tại (thô)
     const raw = {};
-   $$(".variant-thumb").forEach(btn => {
+   let orderCounter = 1; // dùng để đánh số theo thứ tự click
+
+$$(".variant-thumb").forEach(btn => {
   const key = btn.dataset.key;
   const val = btn.dataset.value;
   const isSelected = btn.classList.contains("selected");
-
-  // Lấy attr gốc theo key để biết multiSelect
   const attrDef = (window.allAttributes || []).find(a => a.key === key);
+
+  // Badge nhỏ hiển thị số
+  let badge = btn.querySelector(".thumb-badge");
+  if (!badge) {
+    badge = document.createElement("div");
+    badge.className = "thumb-badge";
+    btn.appendChild(badge);
+  }
 
   if (isSelected) {
     if (attrDef?.multiSelect) {
@@ -271,10 +279,13 @@ if (val.textinput) {
       raw[key] = val;
     }
 
-    // Nếu có input bên trong → hiển thị
+    // Cập nhật số thứ tự cho badge
+    badge.textContent = orderCounter++;
+    badge.style.display = "block";
+
     if (btn._inputDiv) btn._inputDiv.style.display = "block";
   } else {
-    // Ẩn input nếu không được chọn
+    badge.style.display = "none";
     if (btn._inputDiv) btn._inputDiv.style.display = "none";
   }
 });
@@ -309,7 +320,7 @@ if (val.textinput) {
 let selectedMainValues = clean[window.mainImageKey];
 
 if (Array.isArray(selectedMainValues)) {
-  // lấy lựa chọn cuối cùng
+  // lấy lựa chọn cuối cùng (gần nhất được click)
   selectedMainValues = selectedMainValues[selectedMainValues.length - 1];
 }
 
