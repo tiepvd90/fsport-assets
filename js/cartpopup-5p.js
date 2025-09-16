@@ -90,128 +90,123 @@ window.__thumbSelectSeq = window.__thumbSelectSeq || 0;
   }
 
   // ====== Render nhóm thuộc tính ======
-  function renderOptions(attributes) {
-    const container = $("#variantList");
-    if (!container) return;
-    container.innerHTML = "";
+function renderOptions(attributes) {
+  const container = $("#variantList");
+  if (!container) return;
+  container.innerHTML = "";
 
-    attributes.forEach(attr => {
-      const group = document.createElement("div");
-      group.className = "variant-group";
-      group.setAttribute("data-key", attr.key);
+  attributes.forEach(attr => {
+    const group = document.createElement("div");
+    group.className = "variant-group";
+    group.setAttribute("data-key", attr.key);
 
-      const label = document.createElement("div");
-      label.className = "variant-label";
-      label.textContent = `${attr.label}:`;
-      group.appendChild(label);
+    const label = document.createElement("div");
+    label.className = "variant-label";
+    label.textContent = `${attr.label}:`;
+    group.appendChild(label);
 
-      if (attr.input === "text") {
-        const input = document.createElement("input");
-        input.type = "text";
-        input.id = `input-${attr.key}`;
-        input.placeholder = attr.placeholder || "Nhập nội dung...";
-        input.style.cssText = "width:100%;padding:8px;font-size:14px;box-sizing:border-box;border:1px solid #ccc;border-radius:6px;";
-        input.addEventListener("input", () => updateSelectedVariant());
-        group.appendChild(input);
-      } else if (Array.isArray(attr.values)) {
-        const displayMode = attr.display || "button";
-        const wrapper = document.createElement("div");
-        wrapper.className = displayMode === "thumbnail" ? "variant-thumbnails" : "variant-buttons";
+    // Nếu là input text độc lập
+    if (attr.input === "text") {
+      const input = document.createElement("input");
+      input.type = "text";
+      input.id = `input-${attr.key}`;
+      input.placeholder = attr.placeholder || "Nhập nội dung...";
+      input.style.cssText =
+        "width:100%;padding:8px;font-size:14px;box-sizing:border-box;border:1px solid #ccc;border-radius:6px;";
+      input.addEventListener("input", () => updateSelectedVariant());
+      group.appendChild(input);
 
-        attr.values.forEach(val => {
-  const value = typeof val === "string" ? val : val.text;
-  const image = typeof val === "object" ? val.image : null;
+    // Nếu là list values (thumbnail/button)
+    } else if (Array.isArray(attr.values)) {
+      const displayMode = attr.display || "button";
+      const wrapper = document.createElement("div");
+      wrapper.className = displayMode === "thumbnail" ? "variant-thumbnails" : "variant-buttons";
 
-  const thumb = document.createElement("div");
-  thumb.className = "variant-thumb";
-  thumb.dataset.key = attr.key;
-  thumb.dataset.value = value;
+      attr.values.forEach(val => {
+        const value = typeof val === "string" ? val : val.text;
+        const image = typeof val === "object" ? val.image : null;
 
-  if (displayMode === "thumbnail") {
-    thumb.innerHTML = `
-      <img src="${image || ""}" alt="${value}" />
-      <div class="variant-title">${value}</div>
-    `;
-  } else {
-    thumb.textContent = value;
-  }
+        const thumb = document.createElement("div");
+        thumb.className = "variant-thumb";
+        thumb.dataset.key = attr.key;
+        thumb.dataset.value = value;
 
-  if (attr.multiSelect) {
-    // MULTI SELECT: toggle nhiều lựa chọn + gán thứ tự click bền vững
-    thumb.addEventListener("click", () => {
-      thumb.classList.toggle("selected");
-
-      if (thumb.classList.contains("selected")) {
-        // nếu lần đầu được chọn thì gán số thứ tự (seq) tăng dần
-        if (!thumb.dataset.seq) thumb.dataset.seq = String(++window.__thumbSelectSeq);
-      } else {
-        // bỏ chọn thì xoá seq để khi chọn lại sẽ nhận seq mới (đẩy xuống cuối)
-        delete thumb.dataset.seq;
-      }
-
-      updateSelectedVariant();
-    });
-
-    // ✅ Nếu value này có textinput thì tạo input đi kèm
-    if (val.textinput) {
-      const groupId = `group-input-${val.text}`;
-      let extraGroup = document.getElementById(groupId);
-
-      if (!extraGroup) {
-        const mainGroup = document.querySelector(`.variant-group[data-key="${attr.key}"]`);
-        extraGroup = document.createElement("div");
-        extraGroup.className = "variant-group variant-input-text";
-        extraGroup.id = groupId;
-
-        // Label
-        const label = document.createElement("div");
-        label.className = "variant-label";
-        label.textContent = (val.textinput.label || "Nhập thông tin");
-        extraGroup.appendChild(label);
-
-        // Input
-        const input = document.createElement("input");
-        input.type = "text";
-        input.id = `input-${val.text}`;
-        input.placeholder = val.textinput.placeholder || "Nhập nội dung...";
-        input.disabled = true; // mặc định disable
-        input.addEventListener("input", () => updateSelectedVariant());
-        extraGroup.appendChild(input);
-
-        if (mainGroup) mainGroup.insertAdjacentElement("afterend", extraGroup);
-      }
-
-      // Toggle enable/disable theo trạng thái selected
-      thumb.addEventListener("click", () => {
-        const inputEl = document.querySelector(`#input-${val.text}`);
-        if (thumb.classList.contains("selected")) {
-          inputEl.disabled = false;
+        if (displayMode === "thumbnail") {
+          thumb.innerHTML = `
+            <img src="${image || ""}" alt="${value}" />
+            <div class="variant-title">${value}</div>
+          `;
         } else {
-          inputEl.disabled = true;
-          inputEl.value = "";
+          thumb.textContent = value;
         }
+
+        if (attr.multiSelect) {
+          // MULTI SELECT
+          thumb.addEventListener("click", () => {
+            thumb.classList.toggle("selected");
+            if (thumb.classList.contains("selected")) {
+              if (!thumb.dataset.seq) thumb.dataset.seq = String(++window.__thumbSelectSeq);
+            } else {
+              delete thumb.dataset.seq;
+            }
+            updateSelectedVariant();
+          });
+
+          // Nếu value này có input kèm theo
+          if (val.inputable || val.textinput) {
+            const extraDiv = document.createElement("div");
+            extraDiv.className = "variant-input-text";
+            extraDiv.id = `group-input-${val.text}`;
+
+            const inLabel = document.createElement("div");
+            inLabel.className = "variant-label";
+            inLabel.textContent = (val.textinput?.label || "Nhập thông tin");
+            extraDiv.appendChild(inLabel);
+
+            const input = document.createElement("input");
+            input.type = "text";
+            input.id = `input-${val.text}`;
+            input.placeholder = val.textinput?.placeholder || "Nhập nội dung...";
+            input.disabled = true; // ✅ mặc định disable
+            input.addEventListener("input", () => updateSelectedVariant());
+            extraDiv.appendChild(input);
+
+            group.appendChild(extraDiv);
+
+            // Toggle enable/disable input theo trạng thái selected
+            thumb.addEventListener("click", () => {
+              if (thumb.classList.contains("selected")) {
+                input.disabled = false;
+              } else {
+                input.disabled = true;
+                input.value = "";
+              }
+            });
+          }
+
+        } else {
+          // SINGLE SELECT
+          thumb.addEventListener("click", () => {
+            $$('.variant-thumb[data-key="' + attr.key + '"]').forEach(el =>
+              el.classList.remove("selected")
+            );
+            thumb.classList.add("selected");
+            updateSelectedVariant();
+          });
+        }
+
+        wrapper.appendChild(thumb);
       });
+
+      group.appendChild(wrapper);
     }
-  } else {
-    // SINGLE SELECT: giữ như cũ
-    thumb.addEventListener("click", () => {
-      $$('.variant-thumb[data-key="' + attr.key + '"]').forEach(el => el.classList.remove("selected"));
-      thumb.classList.add("selected");
-      updateSelectedVariant();
-    });
-  }
 
-  wrapper.appendChild(thumb);
-});
-        group.appendChild(wrapper);
-      }
+    container.appendChild(group);
+  });
 
-      container.appendChild(group);
-    });
-
-    // Gọi 1 lần để tính visible & auto-pick cho nhóm đang hiện
-    updateSelectedVariant(false); // Không auto-pick, khách phải chọn
-  }
+  // ✅ Gọi 1 lần, cho phép auto-pick option đầu tiên để hiện ảnh chính
+  updateSelectedVariant(true);
+}
 
   // ====== Áp visibility + dọn selections không hợp lệ ======
   function applyVisibility(selections) {
