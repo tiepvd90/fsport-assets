@@ -10,15 +10,7 @@
       "minSelect": 2,
       "maxSelect": 10,
       "values": [
-        {
-          "text": "Tên Bạn",
-          "image": "/assets/images/gallery/art/hoadao/1.webp",
-          "textinput": {
-            "label": "Chữ In Lên Tranh",
-            "placeholder": "Nhập tên hoặc chữ bạn muốn in lên tranh",
-            "required": true
-          }
-        },
+        { "text": "Tên Bạn", "image": "/assets/images/gallery/art/hoadao/2.webp", "inputable": true },
         { "text": "HD02", "image": "/assets/images/gallery/art/hoadao/2.webp" },
         { "text": "HD03", "image": "/assets/images/gallery/art/hoadao/3.webp" },
         { "text": "HD04", "image": "/assets/images/gallery/art/hoadao/4.webp" },
@@ -29,6 +21,12 @@
         { "text": "HD09", "image": "/assets/images/gallery/art/hoadao/9.webp" },
         { "text": "HD10", "image": "/assets/images/gallery/art/hoadao/10.webp" }
       ]
+    },
+    {
+      "label": "Chữ In Lên Tranh (*)",
+      "key": "ChuIn",
+      "input": "text",
+      "placeholder": "Điền Tên Hoặc Chữ Bạn Muốn In Lên Tranh"
     },
     {
       "label": "Kích Cỡ 1 Tranh",
