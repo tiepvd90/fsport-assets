@@ -4,7 +4,7 @@
  * ✅ Hỗ trợ chọn nhiều giá trị (multi-select) trong 1 thuộc tính (ví dụ: chọn 2–10 tranh)
  * ✅ Tự động tính giá = số lựa chọn × giá của từng lựa chọn (theo kích cỡ)
  * ✅ Hỗ trợ thuộc tính phụ thuộc (sử dụng "when")
- * ✅ Hỗ trợ text input riêng cho từng giá trị nếu có "textinput": true (ví dụ: "Tên Bạn")
+ * ✅ Hỗ trợ text input riêng cho từng giá trị nếu có "textinput": true (ví dụ: "Cá Nhân Hóa")
  * ✅ Chỉ bắt buộc chọn các nhóm đang hiển thị (ẩn thì không cần)
  * ✅ Giữ nguyên các hành vi cũ:
  *    - Gắn voucher riêng từng sản phẩm (voucherByProduct)
@@ -349,7 +349,7 @@
     // 4) Lấy selections sạch theo nhóm đang hiển thị
     const clean = collectCleanSelections();
     window.currentSelections = clean;
-    // ✅ Toggle input text (attr.input === "text") theo lựa chọn "Tên Bạn"
+    // ✅ Toggle input text (attr.input === "text") theo lựa chọn "Cá Nhân Hóa"
     const textAttr = (window.allAttributes || []).find(
       (a) => a.input === "text",
     );
@@ -359,7 +359,7 @@
     if (textInput) {
       const multiAttr = (window.allAttributes || []).find((a) => a.multiSelect);
       const list = multiAttr ? clean[multiAttr.key] : [];
-      const hasTenBan = Array.isArray(list) && list.includes("Tên Bạn");
+      const hasTenBan = Array.isArray(list) && list.includes("Cá Nhân Hóa");
       textInput.disabled = !hasTenBan;
       if (!hasTenBan) textInput.value = "";
     }
@@ -609,17 +609,17 @@
   const attr = (window.allAttributes || []).find((a) => a.key === key);
 
   if (attr?.input === "text") {
-    // chỉ bắt buộc nếu user đã chọn "Tên Bạn"
+    // chỉ bắt buộc nếu user đã chọn "Cá Nhân Hóa"
     const multiAttr = window.allAttributes.find((a) => a.multiSelect);
     const selectedList = multiAttr ? window.currentSelections[multiAttr.key] : [];
-    const hasTenBan = Array.isArray(selectedList) && selectedList.includes("Tên Bạn");
+    const hasTenBan = Array.isArray(selectedList) && selectedList.includes("Cá Nhân Hóa");
 
     if (hasTenBan) {
       const rawVal = window.currentSelections[key];
       const v = typeof rawVal === "string" ? rawVal.trim() : "";
       return v.length > 0;
     }
-    return true; // nếu không chọn "Tên Bạn" thì bỏ qua
+    return true; // nếu không chọn "Cá Nhân Hóa" thì bỏ qua
   }
 
   return selectedKeys.includes(key);
@@ -644,13 +644,13 @@
         }
 
         const product = window.selectedVariant;
-        // Kiểm tra nếu người dùng chọn "Tên Bạn"
+        // Kiểm tra nếu người dùng chọn "Cá Nhân Hóa"
         if (
           attrMulti &&
           Array.isArray(window.currentSelections[attrMulti.key])
         ) {
           const hasTenBan =
-            window.currentSelections[attrMulti.key].includes("Tên Bạn");
+            window.currentSelections[attrMulti.key].includes("Cá Nhân Hóa");
 
           if (hasTenBan) {
             const textAttr = (window.allAttributes || []).find(
