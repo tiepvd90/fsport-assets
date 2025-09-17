@@ -1,0 +1,54 @@
+{
+  "category": "art",
+  "mainImageKey": "Thiết Kế",
+  "thuộc_tính": [
+    {
+      "label": "Chọn Các Thiết Kế Bạn Yêu Thích",
+      "key": "Thiết Kế",
+      "display": "thumbnail",
+      "multiSelect": true,
+      "minSelect": 2,
+      "maxSelect": 100,
+      "values": [
+    { "text": "Cá Nhân Hóa", "image": "/assets/images/thumb/art/m10/custom.webp", "inputable": true },
+		{ "text": "02", "image": "/assets/images/thumb/art/m10/1.webp" }
+      ]
+    },
+    {
+      "label": "Chữ In Lên Tranh Cá Nhân Hóa (*)",
+      "key": "ChuIn",
+      "input": "text",
+      "placeholder": "Điền Tên Hoặc Chữ Bạn Muốn In Lên Tranh"
+    },
+    {
+      "label": "Kích Cỡ 1 Tranh",
+      "key": "Kích Cỡ",
+      "display": "button",
+      "values": [
+	    {
+          "text": "15x22cm",
+          "GiaOverride": 16000,
+          "GiaGocOverride": 30000
+        },
+        {
+          "text": "20x30cm",
+          "GiaOverride": 27000,
+          "GiaGocOverride": 50000
+        },
+        {
+          "text": "30x45cm",
+          "GiaOverride": 54000,
+          "GiaGocOverride": 100000
+        }
+      ]
+    }
+  ],
+  "biến_thể": [
+    {
+      "id": "m10",
+      "category": "art",
+      "Giá": 17000,
+      "Giá gốc": 30000
+    }
+  ]
+}
