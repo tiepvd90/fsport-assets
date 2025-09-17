@@ -11,7 +11,34 @@
       "maxSelect": 100,
       "values": [
     { "text": "Cá Nhân Hóa", "image": "/assets/images/thumb/art/m10/custom.webp", "inputable": true },
-		{ "text": "02", "image": "/assets/images/thumb/art/m10/1.webp" }
+		{ "text": "M01", "image": "/assets/images/thumb/art/m10/1.webp" },
+		{ "text": "M01", "image": "/assets/images/thumb/art/m10/1.webp" },
+{ "text": "M02", "image": "/assets/images/thumb/art/m10/2.webp" },
+{ "text": "M03", "image": "/assets/images/thumb/art/m10/3.webp" },
+{ "text": "M04", "image": "/assets/images/thumb/art/m10/4.webp" },
+{ "text": "M05", "image": "/assets/images/thumb/art/m10/5.webp" },
+{ "text": "M06", "image": "/assets/images/thumb/art/m10/6.webp" },
+{ "text": "M07", "image": "/assets/images/thumb/art/m10/7.webp" },
+{ "text": "M08", "image": "/assets/images/thumb/art/m10/8.webp" },
+{ "text": "M09", "image": "/assets/images/thumb/art/m10/9.webp" },
+{ "text": "M10", "image": "/assets/images/thumb/art/m10/10.webp" },
+{ "text": "M11", "image": "/assets/images/thumb/art/m10/11.webp" },
+{ "text": "M12", "image": "/assets/images/thumb/art/m10/12.webp" },
+{ "text": "M13", "image": "/assets/images/thumb/art/m10/13.webp" },
+{ "text": "M14", "image": "/assets/images/thumb/art/m10/14.webp" },
+{ "text": "M15", "image": "/assets/images/thumb/art/m10/15.webp" },
+{ "text": "M16", "image": "/assets/images/thumb/art/m10/16.webp" },
+{ "text": "M17", "image": "/assets/images/thumb/art/m10/17.webp" },
+{ "text": "M18", "image": "/assets/images/thumb/art/m10/18.webp" },
+{ "text": "M19", "image": "/assets/images/thumb/art/m10/19.webp" },
+{ "text": "M20", "image": "/assets/images/thumb/art/m10/20.webp" },
+{ "text": "M21", "image": "/assets/images/thumb/art/m10/21.webp" },
+{ "text": "M22", "image": "/assets/images/thumb/art/m10/22.webp" },
+{ "text": "M23", "image": "/assets/images/thumb/art/m10/23.webp" },
+{ "text": "M24", "image": "/assets/images/thumb/art/m10/24.webp" },
+{ "text": "M25", "image": "/assets/images/thumb/art/m10/25.webp" },
+{ "text": "M26", "image": "/assets/images/thumb/art/m10/26.webp" },
+{ "text": "M27", "image": "/assets/images/thumb/art/m10/27.webp" }  
       ]
     },
     {
@@ -47,7 +74,7 @@
     {
       "id": "m10",
       "category": "art",
-      "Giá": 17000,
+      "Giá": 16000,
       "Giá gốc": 30000
     }
   ]
