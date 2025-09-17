@@ -3,12 +3,12 @@
   "mainImageKey": "Thiết Kế",
   "thuộc_tính": [
     {
-      "label": "Thiết Kế (Tối Đa 10)",
+      "label": "Chọn Các Thiết Kế Bạn Yêu Thích",
       "key": "Thiết Kế",
       "display": "thumbnail",
       "multiSelect": true,
       "minSelect": 2,
-      "maxSelect": 10,
+      "maxSelect": 100,
       "values": [
         { "text": "Cá Nhân Hóa", "image": "/assets/images/thumb/art/valorant2/28.webp", "inputable": true },
 		{ "text": "02", "image": "/assets/images/thumb/art/valorant2/1.webp" },
