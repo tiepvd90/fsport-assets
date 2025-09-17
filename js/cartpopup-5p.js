@@ -632,9 +632,9 @@
             alert(`Vui lòng chọn ít nhất ${attrMulti.minSelect} tranh.`);
             return;
           }
-          //if (count > attrMulti.maxSelect) {
-            //alert(`Chỉ được chọn tối đa ${attrMulti.maxSelect} tranh.`);
-            //return;
+          if (count > 100) {
+            alert(`Chỉ được chọn tối đa ${attrMulti.maxSelect} tranh.`);
+            return;
           }
         }
 
