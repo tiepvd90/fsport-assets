@@ -1,0 +1,80 @@
+{
+  "category": "art",
+  "mainImageKey": "Thiết Kế",
+  "thuộc_tính": [
+    {
+      "label": "Thiết Kế (Tối Đa 10)",
+      "key": "Thiết Kế",
+      "display": "thumbnail",
+      "multiSelect": true,
+      "minSelect": 2,
+      "maxSelect": 10,
+      "values": [
+        { "text": "Cá Nhân Hóa", "image": "/assets/images/thumb/art/valorant2/28.webp", "inputable": true },
+		{ "text": "02", "image": "/assets/images/thumb/art/valorant2/1.webp" },
+        { "text": "02", "image": "/assets/images/thumb/art/valorant2/2.webp" },
+        { "text": "03", "image": "/assets/images/thumb/art/valorant2/3.webp" },
+        { "text": "04", "image": "/assets/images/thumb/art/valorant2/4.webp" },
+        { "text": "05", "image": "/assets/images/thumb/art/valorant2/5.webp" },
+        { "text": "06", "image": "/assets/images/thumb/art/valorant2/6.webp" },
+        { "text": "07", "image": "/assets/images/thumb/art/valorant2/7.webp" },
+        { "text": "08", "image": "/assets/images/thumb/art/valorant2/8.webp" },
+        { "text": "09", "image": "/assets/images/thumb/art/valorant2/9.webp" },
+        { "text": "10", "image": "/assets/images/thumb/art/valorant2/10.webp" },
+		{ "text": "11", "image": "/assets/images/thumb/art/valorant2/1.webp" },
+        { "text": "12", "image": "/assets/images/thumb/art/valorant2/2.webp" },
+        { "text": "13", "image": "/assets/images/thumb/art/valorant2/3.webp" },
+        { "text": "14", "image": "/assets/images/thumb/art/valorant2/4.webp" },
+        { "text": "15", "image": "/assets/images/thumb/art/valorant2/5.webp" },
+        { "text": "16", "image": "/assets/images/thumb/art/valorant2/6.webp" },
+        { "text": "17", "image": "/assets/images/thumb/art/valorant2/7.webp" },
+        { "text": "18", "image": "/assets/images/thumb/art/valorant2/8.webp" },
+        { "text": "19", "image": "/assets/images/thumb/art/valorant2/9.webp" },
+        { "text": "20", "image": "/assets/images/thumb/art/valorant2/10.webp" },
+		{ "text": "21", "image": "/assets/images/thumb/art/valorant2/1.webp" },
+        { "text": "22", "image": "/assets/images/thumb/art/valorant2/2.webp" },
+        { "text": "23", "image": "/assets/images/thumb/art/valorant2/3.webp" },
+        { "text": "24", "image": "/assets/images/thumb/art/valorant2/4.webp" },
+        { "text": "25", "image": "/assets/images/thumb/art/valorant2/5.webp" },
+        { "text": "26", "image": "/assets/images/thumb/art/valorant2/6.webp" },
+        { "text": "27", "image": "/assets/images/thumb/art/valorant2/7.webp" }
+      ]
+    },
+    {
+      "label": "Chữ In Lên Tranh Cá Nhân Hóa (*)",
+      "key": "ChuIn",
+      "input": "text",
+      "placeholder": "Điền Tên Hoặc Chữ Bạn Muốn In Lên Tranh"
+    },
+    {
+      "label": "Kích Cỡ 1 Tranh",
+      "key": "Kích Cỡ",
+      "display": "button",
+      "values": [
+	    {
+          "text": "15x22cm",
+          "GiaOverride": 17000,
+          "GiaGocOverride": 30000
+        },
+        {
+          "text": "20x30cm",
+          "GiaOverride": 29000,
+          "GiaGocOverride": 50000
+        },
+        {
+          "text": "30x45cm",
+          "GiaOverride": 59000,
+          "GiaGocOverride": 100000
+        }
+      ]
+    }
+  ],
+  "biến_thể": [
+    {
+      "id": "valorant2",
+      "category": "art",
+      "Giá": 17000,
+      "Giá gốc": 30000
+    }
+  ]
+}
