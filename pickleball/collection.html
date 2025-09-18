@@ -100,24 +100,31 @@
     }
 
     /* ==== Banner khuyến mãi ==== */
-    .promo-banner {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      background: linear-gradient(45deg, #ff4d4d, #ff9900);
-      color: #fff;
-      font-size: 14px;
-      font-weight: 600;
-      padding: 6px 10px;
-      border-radius: 6px;
-      animation: pulse 2s infinite;
-    }
+    /* ==== Banner khuyến mãi full chiều rộng ==== */
+.promo-banner {
+  background: linear-gradient(45deg, #ff4d4d, #ff9900);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 10px;
+  border-radius: 6px;
+  text-align: center;
+  animation: pulse 2s infinite;
+  margin-top: 12px; /* cách phần nội dung phía trên */
+}
 
-    @keyframes pulse {
-      0% { transform: scale(1); opacity: 1; }
-      50% { transform: scale(1.05); opacity: 0.9; }
-      100% { transform: scale(1); opacity: 1; }
-    }
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.9; }
+  100% { opacity: 1; }
+}
+
+@media screen and (max-width: 600px) {
+  .promo-banner {
+    font-size: 13px;
+    padding: 8px;
+  }
+}
 
     /* ==== Mobile ==== */
     @media screen and (max-width: 600px) {
@@ -180,21 +187,22 @@
 
     <!-- Vợt Gen4 (đưa lên vị trí thứ 2) -->
     <div class="product-horizontal">
-      <div class="promo-banner">🎁 Mua 1 Vợt Gen4 Tặng Túi 1 Pick 269K</div>
-      <a href="/pickleball/gen4">
-        <img src="https://i.postimg.cc/vZbZfHrc/trangnho.jpg" alt="F-Sport Gen4" class="product-image" />
-      </a>
-      <div class="product-info">
-        <div class="product-title">F-Sport Gen4 - Vợt Ép Nóng- Carbon 3 Lớp- dày 16mm</div>
-        <div class="product-meta">
-          <div class="price-wrap">
-            <span class="price-sale">850.000đ</span>
-            <span class="price-original">1.200.000đ</span>
-          </div>
-          <a href="/pickleball/gen4" class="buy-btn">XEM SẢN PHẨM</a>
-        </div>
+  <a href="/pickleball/gen4">
+    <img src="https://i.postimg.cc/vZbZfHrc/trangnho.jpg" alt="F-Sport Gen4" class="product-image" />
+  </a>
+  <div class="product-info">
+    <div class="product-title">F-Sport Gen4 - Vợt Ép Nóng- Carbon 3 Lớp- dày 16mm</div>
+    <div class="product-meta">
+      <div class="price-wrap">
+        <span class="price-sale">850.000đ</span>
+        <span class="price-original">1.200.000đ</span>
       </div>
+      <a href="/pickleball/gen4" class="buy-btn">XEM SẢN PHẨM</a>
     </div>
+    <!-- ✅ Banner khuyến mãi đặt ngay cuối khung Gen4 -->
+    <div class="promo-banner">🎁 Mua 1 Vợt Gen4 Tặng Túi 1 Pickleball 269K</div>
+  </div>
+</div>
 
     <!-- Bóng -->
     <div class="product-horizontal">
