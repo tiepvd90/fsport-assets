@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>Bộ Sưu Tập Pickleball: Vợt, Túi & Phụ Kiện Chính Hãng</title>
 
-  <!-- Fonts & CSS -->
+  <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;700&display=swap" rel="stylesheet" />
   <link rel="icon" type="image/png" href="/favicon.png" />
 
@@ -37,7 +37,6 @@
       padding: 20px 0;
       gap: 20px;
       border-bottom: 1px solid #eee;
-      position: relative;
     }
 
     .product-image {
@@ -100,34 +99,23 @@
     }
 
     /* ==== Banner khuyến mãi ==== */
-    /* ==== Banner khuyến mãi full chiều rộng ==== */
-.promo-banner {
-  background: linear-gradient(45deg, #ff4d4d, #ff9900);
-  color: #fff;
-  font-size: 14px;
-  font-weight: 600;
-  padding: 10px;
-  border-radius: 6px;
-  text-align: center;
-  animation: pulse 2s infinite;
-  margin-top: 12px; /* cách phần nội dung phía trên */
-}
+    .promo-banner {
+      background: linear-gradient(45deg, #ff4d4d, #ff9900);
+      color: #fff;
+      font-size: 15px;
+      font-weight: 600;
+      padding: 12px;
+      text-align: center;
+      animation: pulse 2s infinite;
+      margin: 0 -16px 16px; /* full chiều ngang, tràn ra ngoài padding body */
+    }
 
-@keyframes pulse {
-  0% { opacity: 1; }
-  50% { opacity: 0.9; }
-  100% { opacity: 1; }
-}
+    @keyframes pulse {
+      0% { opacity: 1; }
+      50% { opacity: 0.9; }
+      100% { opacity: 1; }
+    }
 
-@media screen and (max-width: 600px) {
-  .promo-banner {
-    display: block;
-    width: 100vw;        /* full chiều ngang màn hình */
-    margin-left: -8px;   /* bù lại padding body */
-    margin-right: -8px;
-    border-radius: 0;    /* bỏ bo góc */
-  }
-}
     /* ==== Mobile ==== */
     @media screen and (max-width: 600px) {
       body {
@@ -153,8 +141,8 @@
       }
 
       .promo-banner {
-        font-size: 12px;
-        padding: 4px 8px;
+        font-size: 14px;
+        margin: 0 -8px 12px;
       }
     }
   </style>
@@ -187,24 +175,24 @@
       </div>
     </div>
 
-    <!-- Vợt Gen4 (đưa lên vị trí thứ 2) -->
+    <!-- Vợt Gen4 (vị trí 2) -->
     <div class="product-horizontal">
-  <a href="/pickleball/gen4">
-    <img src="https://i.postimg.cc/vZbZfHrc/trangnho.jpg" alt="F-Sport Gen4" class="product-image" />
-  </a>
-  <div class="product-info">
-    <div class="product-title">F-Sport Gen4 - Vợt Ép Nóng- Carbon 3 Lớp- dày 16mm</div>
-    <div class="product-meta">
-      <div class="price-wrap">
-        <span class="price-sale">850.000đ</span>
-        <span class="price-original">1.200.000đ</span>
+      <a href="/pickleball/gen4">
+        <img src="https://i.postimg.cc/vZbZfHrc/trangnho.jpg" alt="F-Sport Gen4" class="product-image" />
+      </a>
+      <div class="product-info">
+        <div class="product-title">F-Sport Gen4 - Vợt Ép Nóng- Carbon 3 Lớp- dày 16mm</div>
+        <div class="product-meta">
+          <div class="price-wrap">
+            <span class="price-sale">850.000đ</span>
+            <span class="price-original">1.200.000đ</span>
+          </div>
+          <a href="/pickleball/gen4" class="buy-btn">XEM SẢN PHẨM</a>
+        </div>
       </div>
-      <a href="/pickleball/gen4" class="buy-btn">XEM SẢN PHẨM</a>
     </div>
-    <!-- ✅ Banner khuyến mãi đặt ngay cuối khung Gen4 -->
+    <!-- ✅ Banner thoát ra ngoài product-horizontal -->
     <div class="promo-banner">🎁 Mua 1 Vợt Gen4 Tặng Túi 1 Pickleball 269K</div>
-  </div>
-</div>
 
     <!-- Bóng -->
     <div class="product-horizontal">
@@ -246,7 +234,7 @@
     <div id="checkoutPopup-placeholder"></div>
   </div>
 
-  <!-- Render danh sách vợt khác (trừ Gen4 vì đã đặt thủ công lên trên) -->
+  <!-- Render danh sách vợt khác (trừ Gen4) -->
   <script>
     const paddles = [
       {
