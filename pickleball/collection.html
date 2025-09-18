@@ -17,8 +17,8 @@
     }
 
     .page-container {
-      max-width: 1080px;    /* ✅ Giới hạn chiều rộng desktop */
-      margin: 0 auto;       /* ✅ Căn giữa */
+      max-width: 1080px;
+      margin: 0 auto;
     }
 
     .cover-img {
@@ -29,19 +29,7 @@
       border-radius: 12px;
     }
 
-    h1 {
-      font-size: 28px;
-      font-weight: 700;
-      margin-bottom: 24px;
-    }
-
-    h2 {
-      font-size: 22px;
-      font-weight: 600;
-      margin: 32px 0 16px;
-    }
-
-    /* ==== Product horizontal (desktop mặc định) ==== */
+    /* ==== Product horizontal ==== */
     .product-horizontal {
       display: flex;
       align-items: flex-start;
@@ -49,6 +37,7 @@
       padding: 20px 0;
       gap: 20px;
       border-bottom: 1px solid #eee;
+      position: relative;
     }
 
     .product-image {
@@ -110,7 +99,27 @@
       white-space: nowrap;
     }
 
-    /* ==== Mobile override ==== */
+    /* ==== Banner khuyến mãi ==== */
+    .promo-banner {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: linear-gradient(45deg, #ff4d4d, #ff9900);
+      color: #fff;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 6px 10px;
+      border-radius: 6px;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.05); opacity: 0.9; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    /* ==== Mobile ==== */
     @media screen and (max-width: 600px) {
       body {
         padding: 8px;
@@ -132,6 +141,11 @@
       .buy-btn {
         font-size: 13px;
         padding: 6px 12px;
+      }
+
+      .promo-banner {
+        font-size: 12px;
+        padding: 4px 8px;
       }
     }
   </style>
@@ -160,6 +174,24 @@
             <span class="price-original">425.000đ</span>
           </div>
           <a href="https://fun-sport.co/pickleball/bag" class="buy-btn">XEM SẢN PHẨM</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Vợt Gen4 (đưa lên vị trí thứ 2) -->
+    <div class="product-horizontal">
+      <div class="promo-banner">🎁 Mua 1 Vợt Gen4 Tặng Túi 1 Pick 269K</div>
+      <a href="/pickleball/gen4">
+        <img src="https://i.postimg.cc/vZbZfHrc/trangnho.jpg" alt="F-Sport Gen4" class="product-image" />
+      </a>
+      <div class="product-info">
+        <div class="product-title">F-Sport Gen4 - Vợt Ép Nóng- Carbon 3 Lớp- dày 16mm</div>
+        <div class="product-meta">
+          <div class="price-wrap">
+            <span class="price-sale">850.000đ</span>
+            <span class="price-original">1.200.000đ</span>
+          </div>
+          <a href="/pickleball/gen4" class="buy-btn">XEM SẢN PHẨM</a>
         </div>
       </div>
     </div>
@@ -198,14 +230,13 @@
       </div>
     </div>
 
-    <!-- Vợt -->
-    <h2>Vợt Pickleball</h2>
+    <!-- Danh sách vợt khác -->
     <div id="paddle-list"></div>
 
     <div id="checkoutPopup-placeholder"></div>
   </div>
 
-  <!-- Khai báo mảng + render JS -->
+  <!-- Render danh sách vợt khác (trừ Gen4 vì đã đặt thủ công lên trên) -->
   <script>
     const paddles = [
       {
@@ -235,13 +266,6 @@
         price: "1.900.000đ",
         originalPrice: "2.700.000đ",
         link: "/pickleball/tera"
-      },
-      {
-        title: "F-Sport Gen4 - Vợt Ép Nóng- Carbon 3 Lớp- dầy 16mm",
-        image: "https://i.postimg.cc/vZbZfHrc/trangnho.jpg",
-        price: "850.000đ",
-        originalPrice: "1.200.000đ",
-        link: "/pickleball/gen4"
       },
       {
         title: "Jusain Black - 14mm - Đúc nguyên khối- thiên công",
@@ -297,7 +321,7 @@
     });
   </script>
 
-  <!-- ✅ Giữ lại checkoutpopup nếu có -->
+  <!-- Giữ checkoutpopup -->
   <script>
     async function injectHTML(file, placeholderId) {
       const res = await fetch(file);
