@@ -100,15 +100,39 @@
 
     /* ==== Banner khuyến mãi ==== */
     .promo-banner {
-      background: linear-gradient(45deg, #ff4d4d, #ff9900);
-      color: #fff;
-      font-size: 15px;
-      font-weight: 600;
-      padding: 12px;
-      text-align: center;
-      animation: pulse 2s infinite;
-      margin: 0 -16px 16px; /* full chiều ngang, tràn ra ngoài padding body */
-    }
+  background: linear-gradient(90deg, #ff4d4d, #ff9900, #ff4d4d);
+  background-size: 200% 100%; /* để animation chạy */
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  padding: 14px;
+  text-align: center;
+  border-radius: 0;
+  animation: gradientMove 4s linear infinite, pulse 2s infinite;
+  margin: 0 -16px 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  text-shadow: 0 0 6px rgba(255,255,255,0.8);
+}
+
+@keyframes gradientMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+  100% { transform: scale(1); }
+}
+
+@media screen and (max-width: 600px) {
+  .promo-banner {
+    font-size: 14px;
+    padding: 12px;
+    margin: 0 -8px 12px;
+  }
+}
 
     @keyframes pulse {
       0% { opacity: 1; }
