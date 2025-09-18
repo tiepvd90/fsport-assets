@@ -99,16 +99,40 @@
     }
 
     /* ==== Banner khuyến mãi ==== */
-    .promo-banner {
-      background: linear-gradient(45deg, #ff4d4d, #ff9900);
-      color: #fff;
-      font-size: 15px;
-      font-weight: 600;
-      padding: 12px;
-      text-align: center;
-      animation: pulse 2s infinite;
-      margin: 0 -16px 16px; /* full chiều ngang, tràn ra ngoài padding body */
-    }
+    /* ==== Banner khuyến mãi ==== */
+.promo-banner {
+  position: relative;
+  background: linear-gradient(45deg, #ff4d4d, #ff9900);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 12px;
+  text-align: center;
+  overflow: hidden;
+  margin: 0 -16px 16px; /* full chiều ngang */
+}
+
+.promo-banner::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -75%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.6) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: skewX(-20deg);
+  animation: shine 3s infinite;
+}
+
+@keyframes shine {
+  0% { left: -75%; }
+  100% { left: 125%; }
+}
 
     @keyframes pulse {
       0% { opacity: 1; }
@@ -192,7 +216,7 @@
       </div>
     </div>
     <!-- ✅ Banner thoát ra ngoài product-horizontal -->
-    <div class="promo-banner">🎁 Mua 1 Vợt Gen4 Tặng Túi 1 Pickleball 269K</div>
+    <div class="promo-banner">🎁 MUA 1 VỢT GEN 4 TẶNG 1 TÚI PICKLEBALL 269K</div>
 
     <!-- Bóng -->
     <div class="product-horizontal">
