@@ -121,11 +121,13 @@
 
 @media screen and (max-width: 600px) {
   .promo-banner {
-    font-size: 13px;
-    padding: 8px;
+    display: block;
+    width: 100vw;        /* full chiều ngang màn hình */
+    margin-left: -8px;   /* bù lại padding body */
+    margin-right: -8px;
+    border-radius: 0;    /* bỏ bo góc */
   }
 }
-
     /* ==== Mobile ==== */
     @media screen and (max-width: 600px) {
       body {
