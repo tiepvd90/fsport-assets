@@ -1,5 +1,25 @@
 [
   {
+    "id": "gen4-3lop",
+    "title": "F-Sport Gen4 - Vợt Ép Nóng- Carbon 3 Lớp- dầy 16mm",
+    "image": "https://i.postimg.cc/vZbZfHrc/trangnho.jpg",
+    "price": 850000,
+    "originalPrice": 1200000,
+    "link": "/pickleball/gen4",
+    "category": "pickleball",
+    "tags": []
+  },
+  {
+    "id": "titan-16mm",
+    "title": "F-Sport Titan – 16mm- sợi titanium siêu bền",
+    "image": "https://i.postimg.cc/Prk55WrK/titan16.jpg",
+    "price": 599000,
+    "originalPrice": 900000,
+    "link": "/product/secpickleball",
+    "category": "pickleball",
+    "tags": []
+  },
+  {
     "id": "airforce-xam",
     "title": "F-Sport AirForce Đúc nguyên khối – 14mm - thiên công",
     "image": "https://i.postimg.cc/2S8RNHLQ/xam.webp",
@@ -30,32 +50,12 @@
     "tags": []
   },
   {
-    "id": "titan-16mm",
-    "title": "F-Sport Titan – 16mm- sợi titanium siêu bền",
-    "image": "https://i.postimg.cc/Prk55WrK/titan16.jpg",
-    "price": 599000,
-    "originalPrice": 900000,
-    "link": "/product/secpickleball",
-    "category": "pickleball",
-    "tags": []
-  },
-  {
     "id": "tera-16mm",
     "title": "Vợt Pickleball Tera – 16mm- lõi gen4 siêu trợ lực",
     "image": "https://i.postimg.cc/26c1VD3m/3.webp",
     "price": 1900000,
     "originalPrice": 2700000,
     "link": "/pickleball/tera",
-    "category": "pickleball",
-    "tags": []
-  },
-  {
-    "id": "gen4-3lop",
-    "title": "F-Sport Gen4 - Vợt Ép Nóng- Carbon 3 Lớp- dầy 16mm",
-    "image": "https://i.postimg.cc/vZbZfHrc/trangnho.jpg",
-    "price": 850000,
-    "originalPrice": 1200000,
-    "link": "/pickleball/gen4",
     "category": "pickleball",
     "tags": []
   },
