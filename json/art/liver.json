@@ -1,0 +1,70 @@
+{
+  "category": "art",
+  "mainImageKey": "Thiết Kế",
+  "thuộc_tính": [
+    {
+      "label": "Chọn Các Thiết Kế Bạn Yêu Thích",
+      "key": "Thiết Kế",
+      "display": "thumbnail",
+      "multiSelect": true,
+      "minSelect": 2,
+      "maxSelect": 100,
+      "values": [
+{ "text": "D01", "image": "/assets/images/thumb/art/liver/1.webp" },
+{ "text": "D02", "image": "/assets/images/thumb/art/liver/2.webp" },
+{ "text": "D03", "image": "/assets/images/thumb/art/liver/3.webp" },
+{ "text": "D04", "image": "/assets/images/thumb/art/liver/4.webp" },
+{ "text": "D05", "image": "/assets/images/thumb/art/liver/5.webp" },
+{ "text": "D06", "image": "/assets/images/thumb/art/liver/6.webp" },
+{ "text": "D07", "image": "/assets/images/thumb/art/liver/7.webp" },
+{ "text": "D08", "image": "/assets/images/thumb/art/liver/8.webp" },
+{ "text": "D09", "image": "/assets/images/thumb/art/liver/9.webp" },
+{ "text": "D10", "image": "/assets/images/thumb/art/liver/10.webp" },
+{ "text": "D11", "image": "/assets/images/thumb/art/liver/11.webp" },
+{ "text": "D12", "image": "/assets/images/thumb/art/liver/12.webp" },
+{ "text": "D13", "image": "/assets/images/thumb/art/liver/13.webp" },
+{ "text": "D14", "image": "/assets/images/thumb/art/liver/14.webp" },
+{ "text": "D15", "image": "/assets/images/thumb/art/liver/15.webp" },
+{ "text": "D16", "image": "/assets/images/thumb/art/liver/16.webp" },
+{ "text": "D17", "image": "/assets/images/thumb/art/liver/17.webp" },
+{ "text": "D18", "image": "/assets/images/thumb/art/liver/18.webp" },
+{ "text": "D19", "image": "/assets/images/thumb/art/liver/19.webp" },
+{ "text": "D20", "image": "/assets/images/thumb/art/liver/20.webp" },
+{ "text": "D21", "image": "/assets/images/thumb/art/liver/21.webp" },
+{ "text": "D22", "image": "/assets/images/thumb/art/liver/22.webp" },
+{ "text": "D23", "image": "/assets/images/thumb/art/liver/23.webp" },
+{ "text": "D24", "image": "/assets/images/thumb/art/liver/24.webp" }       
+      ]
+    },
+    {
+      "label": "Kích Cỡ 1 Tranh",
+      "key": "Kích Cỡ",
+      "display": "button",
+      "values": [
+	    {
+          "text": "15x22cm",
+          "GiaOverride": 16000,
+          "GiaGocOverride": 30000
+        },
+        {
+          "text": "20x30cm",
+          "GiaOverride": 27000,
+          "GiaGocOverride": 50000
+        },
+        {
+          "text": "30x45cm",
+          "GiaOverride": 54000,
+          "GiaGocOverride": 100000
+        }
+      ]
+    }
+  ],
+  "biến_thể": [
+    {
+      "id": "liver",
+      "category": "art",
+      "Giá": 16000,
+      "Giá gốc": 30000
+    }
+  ]
+}
