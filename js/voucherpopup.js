@@ -20,7 +20,7 @@ const simpleVoucherMap = {
 const allowedPages = [
   "ysandal5568", "ysandalbn68", "firstpickleball",
   "secpickleball", "teflon", "phantom", "gen4", "tera", "ysandal5560", "bcu5206", "bn520",
-  "collection", "pickleball-airforce", "homepage","pickleball-bag"
+  "collection", "pickleball-airforce", "homepage"
 ];
 
 function showVoucherPopup(refCode, amount) {
