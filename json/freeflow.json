@@ -1,7 +1,7 @@
 [
   {
   "itemId": "art-lol-01",
-  "title": "Tranh Bóng Đá lolpool",
+  "title": "Tranh Dán Tường LOL",
   "price": 16000,
   "originalPrice": 30000,
   "contentType": "image",
@@ -15,7 +15,7 @@
 },
 {
   "itemId": "art-lol-02",
-  "title": "Tranh Bóng Đá lolpool",
+  "title": "Tranh Dán Tường LOL",
   "price": 16000,
   "originalPrice": 30000,
   "contentType": "image",
@@ -29,7 +29,7 @@
 },
 {
   "itemId": "art-lol-03",
-  "title": "Tranh Bóng Đá lolpool",
+  "title": "Tranh Dán Tường LOL",
   "price": 16000,
   "originalPrice": 30000,
   "contentType": "image",
@@ -43,7 +43,7 @@
 },
 {
   "itemId": "art-lol-04",
-  "title": "Tranh Bóng Đá lolpool",
+  "title": "Tranh Dán Tường LOL",
   "price": 16000,
   "originalPrice": 30000,
   "contentType": "image",
@@ -57,7 +57,7 @@
 },
 {
   "itemId": "art-lol-05",
-  "title": "Tranh Bóng Đá lolpool",
+  "title": "Tranh Dán Tường LOL",
   "price": 16000,
   "originalPrice": 30000,
   "contentType": "image",
@@ -71,7 +71,7 @@
 },
  {
   "itemId": "art-lol-06",
-  "title": "Tranh Bóng Đá lolpool",
+  "title": "Tranh Dán Tường LOL",
   "price": 16000,
   "originalPrice": 30000,
   "contentType": "image",
@@ -85,7 +85,7 @@
 },
   {
   "itemId": "art-lol-07",
-  "title": "Tranh Bóng Đá lolpool",
+  "title": "Tranh Dán Tường LOL",
   "price": 16000,
   "originalPrice": 30000,
   "contentType": "image",
@@ -99,7 +99,7 @@
 },
   {
   "itemId": "art-lol-08",
-  "title": "Tranh Bóng Đá lolpool",
+  "title": "Tranh Dán Tường LOL",
   "price": 16000,
   "originalPrice": 30000,
   "contentType": "image",
@@ -117,7 +117,7 @@
   "price": 16000,
   "originalPrice": 30000,
   "contentType": "image",
-  "image": "/assets/images/thumb/art/liver/1.webp",
+  "image": "/assets/images/thumb/art/liver/01.webp",
   "youtube": "",
   "productPage": "/art/liver",
   "tags": ["art", "decor", "tranh dán tường", "Liverpool","football","liver"],
@@ -131,7 +131,7 @@
   "price": 16000,
   "originalPrice": 30000,
   "contentType": "image",
-  "image": "/assets/images/thumb/art/liver/3.webp",
+  "image": "/assets/images/thumb/art/liver/03.webp",
   "youtube": "",
   "productPage": "/art/liver",
   "tags": ["art", "decor", "tranh dán tường", "Liverpool","football","liver"],
