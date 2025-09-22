@@ -12,20 +12,14 @@
           "Giá gốc": 330000
         },
         {
-          "text": "Màu Xám",
+          "text": "Màu Ghi Xám",
           "image": "https://i.postimg.cc/B6hF2Y7x/xam.webp",
           "Giá": 269000,
           "Giá gốc": 330000
         },
         {
-          "text": "Màu Đen Quai Xám",
+          "text": "Màu Đen",
           "image": "https://i.postimg.cc/0QKhYq5W/den-thumb.webp",
-          "Giá": 269000,
-          "Giá gốc": 330000
-        },
-        {
-          "text": "Màu Đen Quai Vàng",
-          "image": "https://i.postimg.cc/SsGr3fTs/denquaivang.jpg",
           "Giá": 269000,
           "Giá gốc": 330000
         }
@@ -34,8 +28,7 @@
   ],
   "biến_thể": [
     { "Màu Sắc": "Màu Hồng", "id": "mauhong", "category": "pickleball" },
-    { "Màu Sắc": "Màu Xám", "id": "mauxam", "category": "pickleball" },
-    { "Màu Sắc": "Màu Đen Quai Xám", "id": "maudenquaixam", "category": "pickleball" },
-    { "Màu Sắc": "Màu Đen Quai Vàng", "id": "maudenquaivang", "category": "pickleball" }
+    { "Màu Sắc": "Màu Ghi Xám", "id": "mauxam", "category": "pickleball" },
+    { "Màu Sắc": "Màu Đen", "id": "maudenquaixam", "category": "pickleball" }
   ]
 }
