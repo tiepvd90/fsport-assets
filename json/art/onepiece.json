@@ -29,7 +29,7 @@
 { "text": "D17", "image": "/assets/images/thumb/art/onepiece/17.webp" },
 { "text": "D18", "image": "/assets/images/thumb/art/onepiece/18.webp" },
 { "text": "D19", "image": "/assets/images/thumb/art/onepiece/19.webp" },
-{ "text": "D20", "image": "/assets/images/thumb/art/onepiece/20.webp" }    
+{ "text": "D20", "image": "/assets/images/thumb/art/onepiece/20.webp" }     
       ]
     },
     {
@@ -63,5 +63,4 @@
       "Giá gốc": 30000
     }
   ]
-}
 }
