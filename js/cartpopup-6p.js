@@ -369,88 +369,85 @@
 
   // ====== ATC / Cart / Popup / Pixel / Make ======
   function bindAddToCartButton() {
-    const atcBtn = $("#btn-atc");
-    if (atcBtn && !isCartEventBound) {
-      isCartEventBound = true;
+  const buttons = document.querySelectorAll("#btn-atc"); // có thể trùng ID → vẫn trả về NodeList tất cả
+  if (!buttons.length) return;
 
-      atcBtn.addEventListener("click", (e) => {
-        e.preventDefault();
-        e.stopImmediatePropagation();
+  buttons.forEach((btn) => {
+    if (btn.dataset.bound === "1") return; // tránh bind 2 lần
+    btn.dataset.bound = "1";
 
-        // Nếu popup chưa mở => mở
-        if (!isCartPopupOpen) {
-          toggleCartPopup(true);
-          return;
-        }
+    btn.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopImmediatePropagation();
 
-        // Validate size bắt buộc
-        const sizeKey = "Kích Thước";
-        const sizeSelected = window.currentSelections[sizeKey];
-        if (!sizeSelected) {
-          alert("Vui lòng chọn kích thước bộ tranh.");
-          return;
-        }
+      // Lần bấm từ footer → chỉ mở popup
+      if (!isCartPopupOpen) {
+        toggleCartPopup(true);
+        // sau khi mở, đảm bảo nút trong popup cũng đã được bind (phòng khi popup chưa bind)
+        setTimeout(() => bindAddToCartButton(), 120);
+        return;
+      }
 
-        // uploads optional + note optional
-        const quantity = Math.max(1, parseInt($("#quantityInput")?.value || "1", 10));
-        const product = { ...(window.selectedVariant || {}) };
+      // Lần bấm khi popup đang mở → tiến hành Add to Cart
+      const sizeKey = "Kích Thước";
+      const sizeSelected = window.currentSelections[sizeKey];
+      if (!sizeSelected) {
+        alert("Vui lòng chọn kích thước bộ tranh.");
+        return;
+      }
 
-        // Build minimal clean object
-        const loai = window.productCategory || "art";
-        const voucherAmount = window.voucherByProduct?.[product.id] || 0;
-        const phanLoaiText = sizeSelected;
+      const quantity = Math.max(1, parseInt(document.getElementById("quantityInput")?.value || "1", 10));
+      const product = { ...(window.selectedVariant || {}) };
+      const loai = window.productCategory || "art";
+      const voucherAmount = window.voucherByProduct?.[product.id] || 0;
+      const phanLoaiText = sizeSelected;
 
-        const cartItem = {
-          ...product,
+      const cartItem = {
+        ...product,
+        quantity,
+        loai,
+        voucher: voucherAmount > 0 ? { amount: voucherAmount } : undefined,
+      };
+
+      window.cart.push(cartItem);
+      saveCart();
+      updateCartIcon();
+
+      if (typeof window.trackBothPixels === "function") {
+        window.trackBothPixels("AddToCart", {
+          content_id: product.id,
+          content_name: phanLoaiText,
+          content_category: product.category || loai,
+          content_page: window.productPage || "unknown",
+          value: product["Giá"],
+          currency: "VND",
+        });
+      }
+
+      fetch("https://hook.eu2.make.com/31c0jdh2vkvkjcnaenbm3kyze8fp3us3", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          content_id: product.id,
+          content_name: phanLoaiText,
+          content_category: product.category || loai,
+          content_page: window.productPage || "unknown",
+          value: product["Giá"],
+          currency: "VND",
+          uploads: window.currentSelections["Uploads"] || [],
+          note: window.currentSelections["note"] || "",
           quantity,
-          loai,
-          voucher: voucherAmount > 0 ? { amount: voucherAmount } : undefined
-        };
+          timestamp: new Date().toISOString(),
+        }),
+      }).catch((err) => console.warn("⚠️ Không thể gửi Make:", err));
 
-        // Save cart
-        window.cart.push(cartItem);
-        saveCart();
-        updateCartIcon();
-
-        // Pixel
-        if (typeof window.trackBothPixels === "function") {
-          window.trackBothPixels("AddToCart", {
-            content_id: product.id,
-            content_name: phanLoaiText,
-            content_category: product.category || loai,
-            content_page: window.productPage || "unknown",
-            value: product["Giá"],
-            currency: "VND",
-          });
-        }
-
-        // Make webhook
-        fetch("https://hook.eu2.make.com/31c0jdh2vkvkjcnaenbm3kyze8fp3us3", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            content_id: product.id,
-            content_name: phanLoaiText,
-            content_category: product.category || loai,
-            content_page: window.productPage || "unknown",
-            value: product["Giá"],
-            currency: "VND",
-            uploads: window.currentSelections["Uploads"] || [],
-            note: window.currentSelections["note"] || "",
-            quantity,
-            timestamp: new Date().toISOString(),
-          }),
-        }).catch((err) => console.warn("⚠️ Không thể gửi Make:", err));
-
-        // Close & chuyển checkout
-        toggleCartPopup(false);
-        if (typeof window.showCheckoutPopup === "function") {
-          window.showCheckoutPopup();
-        }
-      });
-    }
-  }
-
+      toggleCartPopup(false);
+      if (typeof window.showCheckoutPopup === "function") {
+        window.showCheckoutPopup();
+      }
+    });
+  });
+}
   function saveCart() {
     try {
       localStorage.setItem("cart", JSON.stringify(window.cart));
