@@ -146,10 +146,6 @@
           input.type = "file";
           input.accept = "image/*";
 
-          const preview = document.createElement("img");
-          preview.className = "upload-preview";
-          preview.style.display = "none";
-
           const hint = document.createElement("div");
           hint.style.fontSize = "12px";
           hint.style.color = "#666";
@@ -167,8 +163,6 @@
             // Preview ngay
             const reader = new FileReader();
             reader.onload = (evt) => {
-              preview.src = evt.target.result;
-              preview.style.display = "block";
             };
             reader.readAsDataURL(file);
 
@@ -189,7 +183,6 @@
           });
 
           slot.appendChild(input);
-          slot.appendChild(preview);
           slot.appendChild(bar);
           slot.appendChild(hint);
           grid.appendChild(slot);
