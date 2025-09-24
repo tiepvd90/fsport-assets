@@ -1,5 +1,19 @@
 [
   {
+  "itemId": "art-custom-01",
+    "title": "Bộ Tranh In Hình Bạn Gửi",
+  "price": 115000,
+  "originalPrice": 150000,
+  "contentType": "image",
+  "image": "/assets/images/thumb/art/custom/1.webp",
+  "youtube": "",
+  "productPage": "/art/custom",
+  "tags": ["art", "decor", "tranh dán tường", "custom","cá nhân hóa"],
+  "basePriority": 36,
+  "productCategory": "art",
+  "sellerID": "huyenle"
+},
+  {
   "itemId": "art-naruto-01",
   "title": "Tranh Dán Tường naruto",
   "price": 16000,
