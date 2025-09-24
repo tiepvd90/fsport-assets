@@ -1,5 +1,22 @@
 <!-- ✅ BỘ KHỞI TẠO -->
 <div id="cartContainer"></div>
+<script>
+  function initCartContainer() {
+    const container = document.getElementById("cartContainer");
+    const productPage = window.productPage || "default";
+    const category = window.productCategory || "art";
+    if (container) {
+      fetch(`/json/${productPage}.json`)
+        .then(res => {
+          if (!res.ok) throw new Error("Primary JSON not found");
+          container.setAttribute("data-json", `/json/${productPage}.json`);
+        })
+        .catch(() => {
+          container.setAttribute("data-json", `/json/${category}/${productPage}.json`);
+        });
+    }
+  }
+</script>
 
 <!-- ✅ POPUP CART -->
 <div id="cartPopup" class="cart-popup hidden" style="display: none;">
@@ -11,12 +28,15 @@
     <div class="product-header">
       <img id="mainImage" src="" alt="Ảnh sản phẩm" />
       <div class="product-info">
-        <div class="product-price">
-          <span class="price-original" id="productOriginalPrice">0đ</span>
-          <span class="price-sale" id="productPrice">0đ</span>
+        <div>
+          <div class="product-price">
+            <span class="price-original" id="productOriginalPrice">0đ</span>
+            <span class="price-sale" id="productPrice">0đ</span>
+          </div>
+          <div id="voucherLabel"></div>
+          <div id="finalPriceLine"></div>
         </div>
-        <div id="voucherLabel"></div>
-        <div id="finalPriceLine"></div>
+        <div class="product-variant" id="productVariantText" style="font-size: 14px; color: #333;"></div>
       </div>
     </div>
 
@@ -38,7 +58,7 @@
   </div>
 </div>
 
-<!-- ✅ CSS CƠ BẢN -->
+<!-- ✅ CSS -->
 <style>
   .cart-popup {
     position: fixed;
@@ -49,27 +69,38 @@
     z-index: 9999;
     font-family: 'Be Vietnam Pro', sans-serif;
   }
-  .cart-popup.hidden {
-    display: none;
-  }
+  .cart-popup.hidden { display: none; }
+
   .cart-popup-overlay {
     position: fixed;
     inset: 0;
     background: rgba(0,0,0,0.5);
   }
+
   .cart-popup-content {
     position: fixed;
-    top: 0;
+    bottom: 0;
     left: 0;
     width: 100%;
-    height: 100vh;
+    max-height: 75vh;     /* ✅ chỉ 75% chiều cao màn hình */
     overflow-y: auto;
     background: #fff;
     padding: 16px;
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
+    border-radius: 12px 12px 0 0;
   }
+
+  .cart-popup-content.animate-slideup {
+    animation: slideUp 0.3s ease-out forwards;
+    transform: translateY(100%);
+  }
+  @keyframes slideUp {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0%); }
+  }
+
   .cart-popup-close {
     position: absolute;
     top: 8px;
@@ -79,6 +110,7 @@
     background: transparent;
     cursor: pointer;
   }
+
   .product-header {
     display: flex;
     gap: 12px;
@@ -110,9 +142,8 @@
     font-weight: bold;
     font-size: 16px;
   }
-  .variant-list {
-    margin-top: 12px;
-  }
+  .variant-list { margin-top: 12px; }
+
   .quantity-wrapper {
     display: flex;
     align-items: center;
@@ -142,6 +173,7 @@
     border: 1px solid #ccc;
     border-radius: 6px;
   }
+
   .btn-atc {
     margin-top: 16px;
     padding: 12px;
