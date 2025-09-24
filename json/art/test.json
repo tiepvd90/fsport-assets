@@ -8,12 +8,12 @@
       "display": "button",
       "values": [
         {
-          "text": "Set Tranh Vừa",
+          "text": "Set Tranh Vừa (2 Tranh 20x30 & 4 Tranh 15x22 cm)",
           "GiaOverride": 115000,
           "GiaGocOverride": 160000
         },
         {
-          "text": "Set Tranh Lớn",
+          "text": "Set Tranh Lớn(2 Tranh 30x45 & 4 Tranh 20x30 cm)",
           "GiaOverride": 169000,
           "GiaGocOverride": 200000
         }
