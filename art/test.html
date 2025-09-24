@@ -169,12 +169,12 @@
     }
 
     async function setupPage() {
-      await injectHTML("/html/cartpopup-5p.html", "cartPopup-placeholder");
+      await injectHTML("/html/cartpopup-6p.html", "cartPopup-placeholder");
       await injectHTML("/html/checkoutpopup.html", "checkoutPopup-placeholder");
       await injectHTML("/html/stickyfooter.html", "sticky-footer-placeholder");
 
       await loadScript("https://friendly-kitten-d760ff.netlify.app/js/voucherpopup.js");
-      await loadScript("https://friendly-kitten-d760ff.netlify.app/js/cartpopup-5p.js");
+      await loadScript("https://friendly-kitten-d760ff.netlify.app/js/cartpopup-6p.js");
       await loadScript("https://friendly-kitten-d760ff.netlify.app/js/checkoutpopup.js");
 
       setTimeout(async () => {
