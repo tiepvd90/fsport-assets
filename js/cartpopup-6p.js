@@ -97,6 +97,11 @@
             wrapper.querySelectorAll(".variant-thumb").forEach((el) => el.classList.remove("selected"));
             btn.classList.add("selected");
             window.currentSelections[attr.key] = text;
+// đổi main image ngay khi chọn (phản hồi tức thì)
+if (val.image) {
+  const mainImage = $("#mainImage");
+  if (mainImage) mainImage.src = val.image;
+}
 
             const gia = typeof val === "object" && typeof val.GiaOverride === "number" ? val.GiaOverride : (window.baseVariant?.["Giá"] || 0);
             const giaGoc = typeof val === "object" && typeof val.GiaGocOverride === "number" ? val.GiaGocOverride : (window.baseVariant?.["Giá gốc"] || gia);
@@ -200,29 +205,47 @@
 
   // ====== Giá & voucher ======
   function applyPriceAndUI(basePrice, basePriceOrig) {
-    const qty = Math.max(1, parseInt($("#quantityInput")?.value || "1", 10));
-    const price = Math.max(0, Number(basePrice || 0)) * qty;
-    const priceOrig = Math.max(price, Number(basePriceOrig || 0) * qty);
+  // 1) Tính giá theo qty
+  const qty = Math.max(1, parseInt($("#quantityInput")?.value || "1", 10));
+  const price = Math.max(0, Number(basePrice || 0)) * qty;
+  const priceOrig = Math.max(price, Number(basePriceOrig || 0) * qty);
 
-    const sizeKey = "Kích Thước";
-    const sizeVal = window.currentSelections[sizeKey] || null;
+  // 2) Lấy size đang chọn
+  const sizeKey = "Kích Thước";
+  const sizeVal = window.currentSelections[sizeKey] || null;
 
-    const idBase = (window.baseVariant?.id || "set-tranh").replace(/\s+/g, "").toLowerCase();
-    const id = sizeVal ? `${idBase}-${sizeVal.replace(/\s+/g, "")}`.toLowerCase() : idBase;
+  // 3) Gắn id theo size
+  const idBase = (window.baseVariant?.id || "set-tranh").replace(/\s+/g, "").toLowerCase();
+  const id = sizeVal ? `${idBase}-${sizeVal.replace(/\s+/g, "")}`.toLowerCase() : idBase;
 
-    const variant = {
-      ...(window.baseVariant || {}),
-      id,
-      [sizeKey]: sizeVal,
-      Uploads: window.currentSelections["Uploads"] || { Big2: [], Small4: [] },
-      note: window.currentSelections["note"] || "",
-      "Giá": price,
-      "Giá gốc": priceOrig
-    };
+  // 4) Tạo variant hiện tại
+  const variant = {
+    ...(window.baseVariant || {}),
+    id,
+    [sizeKey]: sizeVal,
+    Uploads: window.currentSelections["Uploads"] || { Big2: [], Small4: [] },
+    note: window.currentSelections["note"] || "",
+    "Giá": price,
+    "Giá gốc": priceOrig
+  };
 
-    renderPriceVoucherAndText(variant);
-    window.selectedVariant = variant;
+  // 5) ✅ Đổi main image theo size đã chọn (theo JSON mới)
+  const sizeAttr = (window.allAttributes || []).find(a => a.key === sizeKey);
+  if (sizeVal && sizeAttr && Array.isArray(sizeAttr.values)) {
+    const matched = sizeAttr.values.find(v => (typeof v === "object" ? v.text === sizeVal : v === sizeVal));
+    if (matched && typeof matched === "object" && matched.image) {
+      const mainImage = $("#mainImage");
+      if (mainImage) mainImage.src = matched.image;   // đổi ảnh trên UI
+      variant["Ảnh"] = matched.image;                 // lưu vào variant để mang theo vào giỏ
+    } else if (!variant["Ảnh"]) {
+      variant["Ảnh"] = window.baseVariant?.["Ảnh"] || "";
+    }
   }
+
+  // 6) Render giá + voucher + text
+  renderPriceVoucherAndText(variant);
+  window.selectedVariant = variant;
+}
 
   function renderPriceVoucherAndText(variant) {
     if (window.__voucherWaiting?.amount) {
