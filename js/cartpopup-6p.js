@@ -11,8 +11,8 @@
   "use strict";
 
   // ====== Cloudinary config (đổi sang của anh) ======
-  const CLOUD_NAME = "<your_cloud_name>";
-  const UPLOAD_PRESET = "<your_unsigned_upload_preset>";
+  const CLOUD_NAME = "dbtngymwh";
+  const UPLOAD_PRESET = "unsigned_funsport";
   const CLOUD_UPLOAD_URL = `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`;
 
   // ====== Public-ish state ======
