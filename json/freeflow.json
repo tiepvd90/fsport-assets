@@ -1,11 +1,11 @@
 [
   {
   "itemId": "art-custom-01",
-    "title": "Bộ Tranh In Hình Bạn Gửi",
+    "title": "Bộ Tranh In Hình Cá Nhân Của Bạn",
   "price": 115000,
   "originalPrice": 150000,
   "contentType": "image",
-  "image": "/assets/images/thumb/art/custom/1.webp",
+  "image": "/assets/images/gallery/art/custom/1.webp",
   "youtube": "",
   "productPage": "/art/custom",
   "tags": ["art", "decor", "tranh dán tường", "custom","cá nhân hóa"],
