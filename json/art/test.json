@@ -20,7 +20,7 @@
       ]
     },
     {
-      "label": "Upload Ảnh Cho Bộ 6 Tranh",
+      "label": "Upload Ảnh Của Bạn",
       "key": "Uploads",
       "upload": true,
       "uploadCount": 6
@@ -36,7 +36,7 @@
     {
       "id": "set-tranh",
       "category": "art",
-      "Ảnh": "/assets/images/gallery/art/size-custom.webp",
+      "Ảnh": "/assets/images/gallery/art/custom/1.webp",
       "Giá": 115000,
       "Giá gốc": 160000
     }
