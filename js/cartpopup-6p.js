@@ -115,8 +115,8 @@
         window.currentSelections["Uploads"] = { Big2: [], Small4: [] };
 
         const groups = [
-          { key: "Big2", label: "2 Ảnh Lớn Trung Tâm", max: 2 },
-          { key: "Small4", label: "4 Ảnh Nhỏ Xung Quanh", max: 4 }
+          { key: "Big2", label: "Chọn 2 Tranh Lớn Trung Tâm", max: 2 },
+          { key: "Small4", label: "Chọn 4 Tranh Nhỏ Xung Quanh", max: 4 }
         ];
 
         groups.forEach(g => {
