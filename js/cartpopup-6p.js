@@ -52,9 +52,16 @@
       window.baseVariant = data["biến_thể"][0];
       window.productCategory = data["category"] || window.baseVariant?.category || "art";
 
-      const mainImage = $("#mainImage");
-      if (mainImage) mainImage.src = window.baseVariant?.["Ảnh"] || "";
-
+      // ✅ Main image mặc định: lấy ảnh đầu tiên của "Kích Thước"
+const mainImage = $("#mainImage");
+if (mainImage) {
+  const sizeAttr = (data["thuộc_tính"] || []).find(a => a.key === "Kích Thước");
+  if (sizeAttr && Array.isArray(sizeAttr.values) && sizeAttr.values[0]?.image) {
+    mainImage.src = sizeAttr.values[0].image;   // ảnh Set Tranh Vừa
+  } else {
+    mainImage.src = window.baseVariant?.["Ảnh"] || "";
+  }
+}
       renderOptions(window.allAttributes);
       updatePriceUI(window.baseVariant?.["Giá"] || 0, window.baseVariant?.["Giá gốc"] || 0);
       bindAddToCartButton();
