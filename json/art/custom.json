@@ -1,0 +1,44 @@
+{
+  "category": "art",
+  "mainImageKey": "DemoLayout",
+  "thuộc_tính": [
+    {
+      "label": "Kích Thước Bộ Tranh",
+      "key": "Kích Thước",
+      "display": "button",
+      "values": [
+        {
+          "text": "Set Tranh Vừa",
+          "GiaOverride": 115000,
+          "GiaGocOverride": 160000
+        },
+        {
+          "text": "Set Tranh Lớn",
+          "GiaOverride": 149000,
+          "GiaGocOverride": 200000
+        }
+      ]
+    },
+    {
+      "label": "Upload Ảnh Cho Bộ 6 Tranh",
+      "key": "Uploads",
+      "upload": true,
+      "uploadCount": 6
+    },
+    {
+      "label": "Ghi Chú (Không Bắt Buộc)",
+      "key": "note",
+      "input": "text",
+      "placeholder": ""
+    }
+  ],
+  "biến_thể": [
+    {
+      "id": "set-tranh",
+      "category": "art",
+      "Ảnh": "/assets/images/gallery/art/size-custom.webp",
+      "Giá": 115000,
+      "Giá gốc": 160000
+    }
+  ]
+}
