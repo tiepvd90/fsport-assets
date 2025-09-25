@@ -352,20 +352,20 @@ else if (attr.upload === true) {
         }
 
         const sizeKey = "Kích Thước";
-        const sizeSelected = window.currentSelections[sizeKey];
-        if (!sizeSelected) {
-          alert("Vui lòng chọn kích thước bộ tranh.");
-          return;
-        }
+const sizeSelected = window.currentSelections[sizeKey];
+if (!sizeSelected) {
+  alert("Vui lòng chọn kích thước bộ tranh.");
+  return;
+}
 
-        const quantity = Math.max(1, parseInt($("#quantityInput")?.value || "1", 10));
-        const product = { ...(window.selectedVariant || {}) };
+const quantity = Math.max(1, parseInt($("#quantityInput")?.value || "1", 10));
+const product = { ...(window.selectedVariant || {}) };
 
-        const loai = window.productCategory || "art";
-        const voucherAmount = window.voucherByProduct?.[product.id] || 0;
-        const phanLoaiText = sizeSelected;
+const loai = window.productCategory || "art";
+const voucherAmount = window.voucherByProduct?.[product.id] || 0;
 
-        const phanLoaiText = sizeSelected || (product["Kích Thước"] || "Bộ Tranh");
+// ✅ Chỉ giữ lại 1 khai báo phanLoaiText
+const phanLoaiText = sizeSelected || (product["Kích Thước"] || "Bộ Tranh");
 product["Phân loại"] = phanLoaiText;
 
 const cartItem = {
@@ -375,8 +375,6 @@ const cartItem = {
   loai,
   voucher: voucherAmount > 0 ? { amount: voucherAmount } : undefined
 };
-
-
         window.cart.push(cartItem);
         saveCart();
         updateCartIcon();
