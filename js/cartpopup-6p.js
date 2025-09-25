@@ -474,4 +474,9 @@
   window.toggleCartPopup = toggleCartPopup;
   window.changeQuantity = changeQuantity;
 
+  window.cartpopup6p = {
+    init: initCartPopup,
+    toggle: toggleCartPopup,
+    qty: changeQuantity
+  };
 })();
