@@ -31,12 +31,12 @@
       "label": "Ghi Chú (Không Bắt Buộc)",
       "key": "note",
       "input": "text",
-      "placeholder": "Email hoặc Zalo của bạn để xác nhận thiết kế"
+      "placeholder": "Gmail hoặc Zalo của bạn để xác nhận thiết kế"
     }
   ],
   "biến_thể": [
     {
-      "id": "test",
+      "id": "custom",
       "category": "art",
       "Giá": 115000,
       "Giá gốc": 160000
