@@ -129,36 +129,61 @@
         group.appendChild(wrapper);
       }
 
-      // 2) Upload (max 6 ảnh)
-      else if (attr.upload === true) {
-        window.currentSelections["Uploads"] = [];
+      // 2) Upload (tối đa 6 ảnh) — UI Việt hóa
+else if (attr.upload === true) {
+  window.currentSelections["Uploads"] = [];
 
-        const wrapper = document.createElement("div");
-        wrapper.className = "upload-group";
+  const wrapper = document.createElement("div");
+  wrapper.className = "upload-group";
 
-        const input = document.createElement("input");
-        input.type = "file";
-        input.accept = "image/*";
-        input.multiple = true;
+  // Tạo id riêng để label điều khiển input (ẩn)
+  const inputId = `upload-${Math.random().toString(36).slice(2, 8)}`;
 
-        input.addEventListener("change", async (e) => {
-          const files = Array.from(e.target.files).slice(0, 6);
-          const urls = [];
-          for (const f of files) {
-            try {
-              const url = await uploadToCloudinary(f);
-              urls.push(url);
-            } catch (err) {
-              console.warn("⚠️ Upload lỗi:", err);
-            }
-          }
-          window.currentSelections["Uploads"] = urls;
-          console.log(`✅ Uploaded:`, urls);
-        });
+  // Nút "Chọn Ảnh"
+  const labelBtn = document.createElement("label");
+  labelBtn.setAttribute("for", inputId);
+  labelBtn.textContent = "Chọn Ảnh";
+  labelBtn.style.cssText =
+    "display:inline-block;padding:8px 14px;background:#d0021b;color:#fff;border-radius:6px;cursor:pointer;font-size:14px;font-weight:600;";
 
-        wrapper.appendChild(input);
-        group.appendChild(wrapper);
+  // Dòng trạng thái "Chưa Có Ảnh Nào Được Chọn"
+  const status = document.createElement("span");
+  status.textContent = "Chưa Có Ảnh Nào Được Chọn";
+  status.style.cssText = "margin-left:10px;font-size:14px;color:#555;";
+
+  // Input thực sự (ẩn đi)
+  const input = document.createElement("input");
+  input.id = inputId;
+  input.type = "file";
+  input.accept = "image/*";
+  input.multiple = true;
+  input.style.display = "none";
+
+  input.addEventListener("change", async (e) => {
+    const files = Array.from(e.target.files).slice(0, 6);
+    status.textContent = files.length
+      ? `${files.length} ảnh đã chọn`
+      : "Chưa Có Ảnh Nào Được Chọn";
+
+    const urls = [];
+    for (const f of files) {
+      try {
+        const url = await uploadToCloudinary(f);
+        urls.push(url);
+      } catch (err) {
+        console.warn("⚠️ Upload lỗi:", err);
       }
+    }
+    window.currentSelections["Uploads"] = urls;
+    console.log("✅ Uploaded:", urls);
+  });
+
+  wrapper.appendChild(labelBtn);
+  wrapper.appendChild(input);
+  wrapper.appendChild(status);
+  group.appendChild(wrapper);
+}
+
 
       // 3) Text input (note optional)
       else if (attr.input === "text") {
