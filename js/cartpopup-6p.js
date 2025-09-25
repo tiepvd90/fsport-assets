@@ -1,6 +1,6 @@
 /* =========================================================================
  * cartpopup-6p.js — Bộ 6 tranh (size + upload optional + note)
- * - 2 nhóm upload multiple: Big2 (tối đa 2 ảnh), Small4 (tối đa 4 ảnh)
+ * - 1 nhóm upload multiple (tối đa 6 ảnh)
  * - Upload Cloudinary ngay khi chọn file → lưu secure_url vào selections
  * - Tính giá theo size (GiaOverride/GiaGocOverride) × quantity
  * - Voucher/Pixel/Make giữ pattern cũ
@@ -10,14 +10,14 @@
   "use strict";
 
   // ====== Cloudinary config ======
-  const CLOUD_NAME = "dbtngymwh"; // đổi sang của anh
+  const CLOUD_NAME = "dbtngymwh";
   const UPLOAD_PRESET = "unsigned_funsport";
   const CLOUD_UPLOAD_URL = `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`;
 
   // ====== State ======
   window.cart = window.cart || [];
   window.selectedVariant = null;
-  window.currentSelections = {}; // { "Kích Thước": "...", "Uploads": {Big2:[], Small4:[]}, "note": "" }
+  window.currentSelections = {}; // { "Kích Thước": "...", "Uploads": [], "note": "" }
   let isCartEventBound = false;
   let isCartPopupOpen = false;
 
@@ -43,25 +43,21 @@
       if (!res.ok) throw new Error("JSON not found: " + jsonUrl);
       const data = await res.json();
 
-      if (!Array.isArray(data["thuộc_tính"]) || !Array.isArray(data["biến_thể"])) {
-        console.error("❌ JSON sai định dạng", data);
-        return;
-      }
-
       window.allAttributes = data["thuộc_tính"];
       window.baseVariant = data["biến_thể"][0];
       window.productCategory = data["category"] || window.baseVariant?.category || "art";
 
-      // ✅ Main image mặc định: lấy ảnh đầu tiên của "Kích Thước"
-const mainImage = $("#mainImage");
-if (mainImage) {
-  const sizeAttr = (data["thuộc_tính"] || []).find(a => a.key === "Kích Thước");
-  if (sizeAttr && Array.isArray(sizeAttr.values) && sizeAttr.values[0]?.image) {
-    mainImage.src = sizeAttr.values[0].image;   // ảnh Set Tranh Vừa
-  } else {
-    mainImage.src = window.baseVariant?.["Ảnh"] || "";
-  }
-}
+      // ✅ Main image mặc định
+      const mainImage = $("#mainImage");
+      if (mainImage) {
+        const sizeAttr = (data["thuộc_tính"] || []).find(a => a.key === "Kích Thước");
+        if (sizeAttr?.values?.[0]?.image) {
+          mainImage.src = sizeAttr.values[0].image;
+        } else {
+          mainImage.src = window.baseVariant?.["Ảnh"] || "";
+        }
+      }
+
       renderOptions(window.allAttributes);
       updatePriceUI(window.baseVariant?.["Giá"] || 0, window.baseVariant?.["Giá gốc"] || 0);
       bindAddToCartButton();
@@ -104,14 +100,14 @@ if (mainImage) {
             wrapper.querySelectorAll(".variant-thumb").forEach((el) => el.classList.remove("selected"));
             btn.classList.add("selected");
             window.currentSelections[attr.key] = text;
-// đổi main image ngay khi chọn (phản hồi tức thì)
-if (val.image) {
-  const mainImage = $("#mainImage");
-  if (mainImage) mainImage.src = val.image;
-}
 
-            const gia = typeof val === "object" && typeof val.GiaOverride === "number" ? val.GiaOverride : (window.baseVariant?.["Giá"] || 0);
-            const giaGoc = typeof val === "object" && typeof val.GiaGocOverride === "number" ? val.GiaGocOverride : (window.baseVariant?.["Giá gốc"] || gia);
+            if (val.image) {
+              const mainImage = $("#mainImage");
+              if (mainImage) mainImage.src = val.image;
+            }
+
+            const gia = val.GiaOverride ?? window.baseVariant?.["Giá"] || 0;
+            const giaGoc = val.GiaGocOverride ?? window.baseVariant?.["Giá gốc"] || gia;
             applyPriceAndUI(gia, giaGoc);
           });
 
@@ -121,48 +117,35 @@ if (val.image) {
         group.appendChild(wrapper);
       }
 
-      // 2) Upload multiple (Big2 + Small4)
+      // 2) Upload (tối đa 6 ảnh)
       else if (attr.upload === true) {
-        // init uploads object
-        window.currentSelections["Uploads"] = { Big2: [], Small4: [] };
+        window.currentSelections["Uploads"] = [];
 
-        const groups = [
-          { key: "Big2", label: "Chọn 2 Tranh Lớn Trung Tâm", max: 2 },
-          { key: "Small4", label: "Chọn 4 Tranh Nhỏ Xung Quanh", max: 4 }
-        ];
+        const wrapper = document.createElement("div");
+        wrapper.className = "upload-group";
 
-        groups.forEach(g => {
-          const wrapper = document.createElement("div");
-          wrapper.className = "upload-group";
+        const input = document.createElement("input");
+        input.type = "file";
+        input.accept = "image/*";
+        input.multiple = true;
 
-          const title = document.createElement("div");
-          title.className = "variant-label";
-          title.textContent = g.label;
-          wrapper.appendChild(title);
-
-          const input = document.createElement("input");
-          input.type = "file";
-          input.accept = "image/*";
-          input.multiple = true;
-
-          input.addEventListener("change", async (e) => {
-            const files = Array.from(e.target.files).slice(0, g.max);
-            const urls = [];
-            for (const f of files) {
-              try {
-                const url = await uploadToCloudinary(f);
-                urls.push(url);
-              } catch (err) {
-                console.warn("⚠️ Upload lỗi:", err);
-              }
+        input.addEventListener("change", async (e) => {
+          const files = Array.from(e.target.files).slice(0, 6);
+          const urls = [];
+          for (const f of files) {
+            try {
+              const url = await uploadToCloudinary(f);
+              urls.push(url);
+            } catch (err) {
+              console.warn("⚠️ Upload lỗi:", err);
             }
-            window.currentSelections["Uploads"][g.key] = urls;
-            console.log(`✅ Uploaded ${g.key}:`, urls);
-          });
-
-          wrapper.appendChild(input);
-          group.appendChild(wrapper);
+          }
+          window.currentSelections["Uploads"] = urls;
+          console.log("✅ Uploaded:", urls);
         });
+
+        wrapper.appendChild(input);
+        group.appendChild(wrapper);
       }
 
       // 3) Text input (note optional)
@@ -212,47 +195,41 @@ if (val.image) {
 
   // ====== Giá & voucher ======
   function applyPriceAndUI(basePrice, basePriceOrig) {
-  // 1) Tính giá theo qty
-  const qty = Math.max(1, parseInt($("#quantityInput")?.value || "1", 10));
-  const price = Math.max(0, Number(basePrice || 0)) * qty;
-  const priceOrig = Math.max(price, Number(basePriceOrig || 0) * qty);
+    const qty = Math.max(1, parseInt($("#quantityInput")?.value || "1", 10));
+    const price = Math.max(0, Number(basePrice || 0)) * qty;
+    const priceOrig = Math.max(price, Number(basePriceOrig || 0) * qty);
 
-  // 2) Lấy size đang chọn
-  const sizeKey = "Kích Thước";
-  const sizeVal = window.currentSelections[sizeKey] || null;
+    const sizeKey = "Kích Thước";
+    const sizeVal = window.currentSelections[sizeKey] || null;
 
-  // 3) Gắn id theo size
-  const idBase = (window.baseVariant?.id || "set-tranh").replace(/\s+/g, "").toLowerCase();
-  const id = sizeVal ? `${idBase}-${sizeVal.replace(/\s+/g, "")}`.toLowerCase() : idBase;
+    const idBase = (window.baseVariant?.id || "set-tranh").replace(/\s+/g, "").toLowerCase();
+    const id = sizeVal ? `${idBase}-${sizeVal.replace(/\s+/g, "")}`.toLowerCase() : idBase;
 
-  // 4) Tạo variant hiện tại
-  const variant = {
-    ...(window.baseVariant || {}),
-    id,
-    [sizeKey]: sizeVal,
-    Uploads: window.currentSelections["Uploads"] || { Big2: [], Small4: [] },
-    note: window.currentSelections["note"] || "",
-    "Giá": price,
-    "Giá gốc": priceOrig
-  };
+    const variant = {
+      ...(window.baseVariant || {}),
+      id,
+      [sizeKey]: sizeVal,
+      Uploads: window.currentSelections["Uploads"] || [],
+      note: window.currentSelections["note"] || "",
+      "Giá": price,
+      "Giá gốc": priceOrig
+    };
 
-  // 5) ✅ Đổi main image theo size đã chọn (theo JSON mới)
-  const sizeAttr = (window.allAttributes || []).find(a => a.key === sizeKey);
-  if (sizeVal && sizeAttr && Array.isArray(sizeAttr.values)) {
-    const matched = sizeAttr.values.find(v => (typeof v === "object" ? v.text === sizeVal : v === sizeVal));
-    if (matched && typeof matched === "object" && matched.image) {
-      const mainImage = $("#mainImage");
-      if (mainImage) mainImage.src = matched.image;   // đổi ảnh trên UI
-      variant["Ảnh"] = matched.image;                 // lưu vào variant để mang theo vào giỏ
-    } else if (!variant["Ảnh"]) {
-      variant["Ảnh"] = window.baseVariant?.["Ảnh"] || "";
+    const sizeAttr = (window.allAttributes || []).find(a => a.key === sizeKey);
+    if (sizeVal && sizeAttr?.values) {
+      const matched = sizeAttr.values.find(v => (typeof v === "object" ? v.text === sizeVal : v === sizeVal));
+      if (matched && typeof matched === "object" && matched.image) {
+        const mainImage = $("#mainImage");
+        if (mainImage) mainImage.src = matched.image;
+        variant["Ảnh"] = matched.image;
+      } else if (!variant["Ảnh"]) {
+        variant["Ảnh"] = window.baseVariant?.["Ảnh"] || "";
+      }
     }
-  }
 
-  // 6) Render giá + voucher + text
-  renderPriceVoucherAndText(variant);
-  window.selectedVariant = variant;
-}
+    renderPriceVoucherAndText(variant);
+    window.selectedVariant = variant;
+  }
 
   function renderPriceVoucherAndText(variant) {
     if (window.__voucherWaiting?.amount) {
@@ -320,11 +297,11 @@ if (val.image) {
       let basePriceOrig = window.baseVariant?.["Giá gốc"] || basePrice;
 
       const sizeAttr = (window.allAttributes || []).find(a => a.key === sizeKey);
-      if (sizeVal && sizeAttr && Array.isArray(sizeAttr.values)) {
+      if (sizeVal && sizeAttr?.values) {
         const matched = sizeAttr.values.find(v => (typeof v === "object" ? v.text === sizeVal : v === sizeVal));
         if (matched && typeof matched === "object") {
-          basePrice = typeof matched.GiaOverride === "number" ? matched.GiaOverride : basePrice;
-          basePriceOrig = typeof matched.GiaGocOverride === "number" ? matched.GiaGocOverride : basePriceOrig;
+          basePrice = matched.GiaOverride ?? basePrice;
+          basePriceOrig = matched.GiaGocOverride ?? basePriceOrig;
         }
       }
       applyPriceAndUI(basePrice, basePriceOrig);
@@ -392,7 +369,7 @@ if (val.image) {
             content_page: window.productPage || "unknown",
             value: product["Giá"],
             currency: "VND",
-            uploads: window.currentSelections["Uploads"] || { Big2: [], Small4: [] },
+            uploads: window.currentSelections["Uploads"] || [],
             note: window.currentSelections["note"] || "",
             quantity,
             timestamp: new Date().toISOString(),
@@ -480,11 +457,11 @@ if (val.image) {
       let basePrice = window.baseVariant?.["Giá"] || 0;
       let basePriceOrig = window.baseVariant?.["Giá gốc"] || basePrice;
       const sizeAttr = (window.allAttributes || []).find(a => a.key === sizeKey);
-      if (sizeVal && sizeAttr && Array.isArray(sizeAttr.values)) {
+      if (sizeVal && sizeAttr?.values) {
         const matched = sizeAttr.values.find(v => (typeof v === "object" ? v.text === sizeVal : v === sizeVal));
-        if (matched && typeof matched === "object") {
-          basePrice = typeof matched.GiaOverride === "number" ? matched.GiaOverride : basePrice;
-          basePriceOrig = typeof matched.GiaGocOverride === "number" ? matched.GiaGocOverride : basePriceOrig;
+        if (matched) {
+          basePrice = matched.GiaOverride ?? basePrice;
+          basePriceOrig = matched.GiaGocOverride ?? basePriceOrig;
         }
       }
       applyPriceAndUI(basePrice, basePriceOrig);
@@ -497,9 +474,4 @@ if (val.image) {
   window.toggleCartPopup = toggleCartPopup;
   window.changeQuantity = changeQuantity;
 
-  window.cartpopup6p = {
-    init: initCartPopup,
-    toggle: toggleCartPopup,
-    qty: changeQuantity
-  };
 })();
