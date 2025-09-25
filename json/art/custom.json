@@ -9,20 +9,20 @@
       "values": [
         {
           "text": "Set Tranh Vừa",
-          "image": "/assets/images/gallery/art/setvua.jpg",
+          "image": "/assets/images/thumb/art/nho.webp",
           "GiaOverride": 115000,
           "GiaGocOverride": 160000
         },
         {
           "text": "Set Tranh Lớn",
-          "image": "/assets/images/gallery/art/setlon.jpg",
+          "image": "/assets/images/thumb/art/to.webp",
           "GiaOverride": 169000,
           "GiaGocOverride": 200000
         }
       ]
     },
     {
-      "label": "Upload Ảnh Của Bạn",
+      "label": "Tải Lên Bộ Ảnh Của Bạn",
       "key": "Uploads",
       "upload": true,
       "uploadCount": 6
@@ -31,7 +31,7 @@
       "label": "Ghi Chú (Không Bắt Buộc)",
       "key": "note",
       "input": "text",
-      "placeholder": "email hoặc zalo của bạn để xác nhận thiết kế"
+      "placeholder": "Email hoặc Zalo của bạn để xác nhận thiết kế"
     }
   ],
   "biến_thể": [
