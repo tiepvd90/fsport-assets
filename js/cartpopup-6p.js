@@ -365,12 +365,17 @@ else if (attr.upload === true) {
         const voucherAmount = window.voucherByProduct?.[product.id] || 0;
         const phanLoaiText = sizeSelected;
 
-        const cartItem = {
-          ...product,
-          quantity,
-          loai,
-          voucher: voucherAmount > 0 ? { amount: voucherAmount } : undefined,
-        };
+        const phanLoaiText = sizeSelected || (product["Kích Thước"] || "Bộ Tranh");
+product["Phân loại"] = phanLoaiText;
+
+const cartItem = {
+  ...product,
+  title: product.title || phanLoaiText,   // thêm title cho checkoutpopup
+  quantity,
+  loai,
+  voucher: voucherAmount > 0 ? { amount: voucherAmount } : undefined
+};
+
 
         window.cart.push(cartItem);
         saveCart();
