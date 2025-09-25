@@ -1,6 +1,5 @@
 /* =========================================================================
  * cartpopup-6p.js — Bộ 6 tranh (size + upload optional + note)
- * - 1 nhóm upload multiple (tối đa 6 ảnh)
  * - Upload Cloudinary ngay khi chọn file → lưu secure_url vào selections
  * - Tính giá theo size (GiaOverride/GiaGocOverride) × quantity
  * - Voucher/Pixel/Make giữ pattern cũ
@@ -10,7 +9,7 @@
   "use strict";
 
   // ====== Cloudinary config ======
-  const CLOUD_NAME = "dbtngymwh";
+  const CLOUD_NAME = "dbtngymwh"; // đổi sang của anh
   const UPLOAD_PRESET = "unsigned_funsport";
   const CLOUD_UPLOAD_URL = `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`;
 
@@ -43,6 +42,11 @@
       if (!res.ok) throw new Error("JSON not found: " + jsonUrl);
       const data = await res.json();
 
+      if (!Array.isArray(data["thuộc_tính"]) || !Array.isArray(data["biến_thể"])) {
+        console.error("❌ JSON sai định dạng", data);
+        return;
+      }
+
       window.allAttributes = data["thuộc_tính"];
       window.baseVariant = data["biến_thể"][0];
       window.productCategory = data["category"] || window.baseVariant?.category || "art";
@@ -50,8 +54,8 @@
       // ✅ Main image mặc định
       const mainImage = $("#mainImage");
       if (mainImage) {
-        const sizeAttr = (data["thuộc_tính"] || []).find(a => a.key === "Kích Thước");
-        if (sizeAttr?.values?.[0]?.image) {
+        const sizeAttr = (data["thuộc_tính"] || []).find((a) => a.key === "Kích Thước");
+        if (sizeAttr && Array.isArray(sizeAttr.values) && sizeAttr.values[0]?.image) {
           mainImage.src = sizeAttr.values[0].image;
         } else {
           mainImage.src = window.baseVariant?.["Ảnh"] || "";
@@ -97,7 +101,9 @@
           btn.textContent = text;
 
           btn.addEventListener("click", () => {
-            wrapper.querySelectorAll(".variant-thumb").forEach((el) => el.classList.remove("selected"));
+            wrapper.querySelectorAll(".variant-thumb").forEach((el) =>
+              el.classList.remove("selected")
+            );
             btn.classList.add("selected");
             window.currentSelections[attr.key] = text;
 
@@ -106,8 +112,14 @@
               if (mainImage) mainImage.src = val.image;
             }
 
-            const gia = val.GiaOverride ?? window.baseVariant?.["Giá"] || 0;
-            const giaGoc = val.GiaGocOverride ?? window.baseVariant?.["Giá gốc"] || gia;
+            const gia =
+              typeof val === "object" && typeof val.GiaOverride === "number"
+                ? val.GiaOverride
+                : window.baseVariant?.["Giá"] || 0;
+            const giaGoc =
+              typeof val === "object" && typeof val.GiaGocOverride === "number"
+                ? val.GiaGocOverride
+                : window.baseVariant?.["Giá gốc"] || gia;
             applyPriceAndUI(gia, giaGoc);
           });
 
@@ -117,7 +129,7 @@
         group.appendChild(wrapper);
       }
 
-      // 2) Upload (tối đa 6 ảnh)
+      // 2) Upload (max 6 ảnh)
       else if (attr.upload === true) {
         window.currentSelections["Uploads"] = [];
 
@@ -141,7 +153,7 @@
             }
           }
           window.currentSelections["Uploads"] = urls;
-          console.log("✅ Uploaded:", urls);
+          console.log(`✅ Uploaded:`, urls);
         });
 
         wrapper.appendChild(input);
@@ -154,7 +166,8 @@
         input.type = "text";
         input.id = `input-${attr.key}`;
         input.placeholder = attr.placeholder || "";
-        input.style.cssText = "width:100%;padding:8px;font-size:14px;box-sizing:border-box;border:1px solid #ccc;border-radius:6px;";
+        input.style.cssText =
+          "width:100%;padding:8px;font-size:14px;box-sizing:border-box;border:1px solid #ccc;border-radius:6px;";
         input.addEventListener("input", () => {
           window.currentSelections[attr.key] = input.value || "";
         });
@@ -203,7 +216,9 @@
     const sizeVal = window.currentSelections[sizeKey] || null;
 
     const idBase = (window.baseVariant?.id || "set-tranh").replace(/\s+/g, "").toLowerCase();
-    const id = sizeVal ? `${idBase}-${sizeVal.replace(/\s+/g, "")}`.toLowerCase() : idBase;
+    const id = sizeVal
+      ? `${idBase}-${sizeVal.replace(/\s+/g, "")}`.toLowerCase()
+      : idBase;
 
     const variant = {
       ...(window.baseVariant || {}),
@@ -212,12 +227,14 @@
       Uploads: window.currentSelections["Uploads"] || [],
       note: window.currentSelections["note"] || "",
       "Giá": price,
-      "Giá gốc": priceOrig
+      "Giá gốc": priceOrig,
     };
 
-    const sizeAttr = (window.allAttributes || []).find(a => a.key === sizeKey);
-    if (sizeVal && sizeAttr?.values) {
-      const matched = sizeAttr.values.find(v => (typeof v === "object" ? v.text === sizeVal : v === sizeVal));
+    const sizeAttr = (window.allAttributes || []).find((a) => a.key === sizeKey);
+    if (sizeVal && sizeAttr && Array.isArray(sizeAttr.values)) {
+      const matched = sizeAttr.values.find((v) =>
+        typeof v === "object" ? v.text === sizeVal : v === sizeVal
+      );
       if (matched && typeof matched === "object" && matched.image) {
         const mainImage = $("#mainImage");
         if (mainImage) mainImage.src = matched.image;
@@ -261,7 +278,8 @@
       const finalLine = document.createElement("div");
       finalLine.id = "finalPriceLine";
       finalLine.textContent = finalPrice.toLocaleString() + "đ";
-      finalLine.style.cssText = "color:#d0021b;font-weight:bold;margin-top:6px;font-size:21px;";
+      finalLine.style.cssText =
+        "color:#d0021b;font-weight:bold;margin-top:6px;font-size:21px;";
       voucherLabel?.parentElement?.appendChild(finalLine);
     } else {
       if (productPrice) {
@@ -278,7 +296,9 @@
 
     const productVariantText = $("#productVariantText");
     if (productVariantText) {
-      productVariantText.textContent = variant["Kích Thước"] ? `${variant["Kích Thước"]}` : "";
+      productVariantText.textContent = variant["Kích Thước"]
+        ? `${variant["Kích Thước"]}`
+        : "";
       productVariantText.style.marginTop = "16px";
     }
   }
@@ -296,12 +316,18 @@
       let basePrice = window.baseVariant?.["Giá"] || 0;
       let basePriceOrig = window.baseVariant?.["Giá gốc"] || basePrice;
 
-      const sizeAttr = (window.allAttributes || []).find(a => a.key === sizeKey);
-      if (sizeVal && sizeAttr?.values) {
-        const matched = sizeAttr.values.find(v => (typeof v === "object" ? v.text === sizeVal : v === sizeVal));
+      const sizeAttr = (window.allAttributes || []).find((a) => a.key === sizeKey);
+      if (sizeVal && sizeAttr && Array.isArray(sizeAttr.values)) {
+        const matched = sizeAttr.values.find((v) =>
+          typeof v === "object" ? v.text === sizeVal : v === sizeVal
+        );
         if (matched && typeof matched === "object") {
-          basePrice = matched.GiaOverride ?? basePrice;
-          basePriceOrig = matched.GiaGocOverride ?? basePriceOrig;
+          basePrice =
+            typeof matched.GiaOverride === "number" ? matched.GiaOverride : basePrice;
+          basePriceOrig =
+            typeof matched.GiaGocOverride === "number"
+              ? matched.GiaGocOverride
+              : basePriceOrig;
         }
       }
       applyPriceAndUI(basePrice, basePriceOrig);
@@ -341,7 +367,7 @@
           ...product,
           quantity,
           loai,
-          voucher: voucherAmount > 0 ? { amount: voucherAmount } : undefined
+          voucher: voucherAmount > 0 ? { amount: voucherAmount } : undefined,
         };
 
         window.cart.push(cartItem);
@@ -435,10 +461,10 @@
     const o = Number(priceOrig || p);
     renderPriceVoucherAndText({
       ...(window.baseVariant || {}),
-      id: (window.baseVariant?.id || "set-tranh"),
+      id: window.baseVariant?.id || "set-tranh",
       "Giá": p,
       "Giá gốc": o,
-      "Kích Thước": window.currentSelections["Kích Thước"] || null
+      "Kích Thước": window.currentSelections["Kích Thước"] || null,
     });
   }
 
@@ -452,16 +478,24 @@
     $("#quantityInput")?.addEventListener("input", () => {
       const v = Math.max(1, parseInt($("#quantityInput").value || "1", 10));
       $("#quantityInput").value = v;
+
       const sizeKey = "Kích Thước";
       const sizeVal = window.currentSelections[sizeKey];
       let basePrice = window.baseVariant?.["Giá"] || 0;
       let basePriceOrig = window.baseVariant?.["Giá gốc"] || basePrice;
-      const sizeAttr = (window.allAttributes || []).find(a => a.key === sizeKey);
-      if (sizeVal && sizeAttr?.values) {
-        const matched = sizeAttr.values.find(v => (typeof v === "object" ? v.text === sizeVal : v === sizeVal));
-        if (matched) {
-          basePrice = matched.GiaOverride ?? basePrice;
-          basePriceOrig = matched.GiaGocOverride ?? basePriceOrig;
+
+      const sizeAttr = (window.allAttributes || []).find((a) => a.key === sizeKey);
+      if (sizeVal && sizeAttr && Array.isArray(sizeAttr.values)) {
+        const matched = sizeAttr.values.find((v) =>
+          typeof v === "object" ? v.text === sizeVal : v === sizeVal
+        );
+        if (matched && typeof matched === "object") {
+          basePrice =
+            typeof matched.GiaOverride === "number" ? matched.GiaOverride : basePrice;
+          basePriceOrig =
+            typeof matched.GiaGocOverride === "number"
+              ? matched.GiaGocOverride
+              : basePriceOrig;
         }
       }
       applyPriceAndUI(basePrice, basePriceOrig);
@@ -477,6 +511,6 @@
   window.cartpopup6p = {
     init: initCartPopup,
     toggle: toggleCartPopup,
-    qty: changeQuantity
+    qty: changeQuantity,
   };
 })();
