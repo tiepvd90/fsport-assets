@@ -77,7 +77,7 @@ function processAndSortData(data) {
         mixed.push(images[imgIndex++]);
         added++;
       }
-      if (added === 10 && vidIndex < videos.length) {
+      if (added === 7 && vidIndex < videos.length) {
         mixed.push(videos[vidIndex++]);
       }
     }
