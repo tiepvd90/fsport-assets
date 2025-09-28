@@ -2249,22 +2249,6 @@
     "sellerID": "huyenle"
   },
   {
-    "itemId": "pickleball-grip2",
-    "title": " F-sports Quấn cán Vợt Pickleball",
-    "price": 9000,
-    "originalPrice": 18000,
-    "contentType": "image",
-    "image": "https://i.postimg.cc/Hsh4pk5t/hongphan.webp",
-    "youtube": "",
-    "productPage": "/pickleball/grip",
-    "tags": [
-      "pickleball"
-    ],
-    "basePriority": 16,
-    "productCategory": "pickleball",
-    "sellerID": "huyenle"
-  },
-  {
     "itemId": "pickleball-bag",
     "title": "Túi Đựng Vợt Pickleball Balo Đựng Vợt Pickleball",
     "price": 269000,
@@ -2289,22 +2273,6 @@
     "image": "https://i.postimg.cc/L63ttgmT/Capture.jpg",
     "youtube": "GWlux7nXYSA",
     "productPage": "/pickleball/bag",
-    "tags": [
-      "pickleball"
-    ],
-    "basePriority": 16,
-    "productCategory": "pickleball",
-    "sellerID": "huyenle"
-  },
-  {
-    "itemId": "pickleball-grip3",
-    "title": "Quấn Cán Pickleball Cao Su Non",
-    "price": 9000,
-    "originalPrice": 18000,
-    "contentType": "image",
-    "image": "https://i.postimg.cc/hPXW46RV/1.jpg",
-    "youtube": "",
-    "productPage": "/pickleball/grip",
     "tags": [
       "pickleball"
     ],
