@@ -1,71 +1,94 @@
-/* ==== FreeFlow Feed Layout (Masonry bằng CSS Columns) ==== */
+/* ================================
+   FREEFLOW — Equal-height Cards
+   Mục tiêu: hết khoảng trắng, 2 cột bằng nhau
+   Cách làm: card fixed-height, media fill phần còn lại
+   ================================ */
+
+/* ---- Biến chiều cao card theo breakpoint ---- */
+:root {
+  --ff-card-h: 300px;   /* mobile */
+}
+@media (min-width: 600px) {
+  :root { --ff-card-h: 320px; }  /* tablet */
+}
+@media (min-width: 1024px) {
+  :root { --ff-card-h: 340px; }  /* desktop */
+}
+
+/* ---- Layout theo hàng (row-major), 2-3-6 cột ---- */
 #freeflowFeed {
-  column-count: 2;
-  column-gap: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
   padding: 12px;
   margin: auto;
-  max-width: 100%;
+  max-width: 1080px;
   box-sizing: border-box;
+  justify-content: center;
 }
 
-@media screen and (min-width: 600px) {
-  #freeflowFeed {
-    column-count: 3;
-    max-width: 720px;
-  }
-}
-
-@media screen and (min-width: 1024px) {
-  #freeflowFeed {
-    column-count: 6;
-    max-width: 1080px;
-  }
-}
-
-/* ==== Feed Item Card ==== */
+/* Mặc định: 2 cột */
 .feed-item {
-  break-inside: avoid;        /* quan trọng: tránh bị cắt giữa cột */
-  margin-bottom: 12px;
+  box-sizing: border-box;
+  width: calc(50% - 6px);
+  height: var(--ff-card-h);       /* CHIỀU CAO CỐ ĐỊNH */
+  display: flex;
+  flex-direction: column;         /* media fill, meta cố định */
   background: #fff;
   border-radius: 12px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-  overflow: hidden;
+  overflow: hidden;               /* crop phần dư */
   cursor: pointer;
   transition: transform 0.2s ease;
-  display: inline-block;      /* bắt buộc để hoạt động đúng trong columns */
-  width: 100%;
+}
+.feed-item:hover { transform: translateY(-4px); }
+
+/* Tablet: 3 cột */
+@media (min-width: 600px) {
+  .feed-item { width: calc(33.333% - 8px); }
 }
 
-.feed-item:hover {
-  transform: translateY(-4px);
+/* Desktop: 6 cột */
+@media (min-width: 1024px) {
+  .feed-item { width: calc(16.666% - 10px); }
 }
 
-/* ==== Ảnh (image + story) ==== */
+/* =========================
+   MEDIA (ảnh / video) FILL
+   ========================= */
+
+/* Ảnh là phần media: fill chiều cao còn lại — crop cho đẹp */
 .feed-item.image img,
 .feed-item.story img {
+  flex: 1 1 auto;                 /* chiếm hết phần còn lại */
   width: 100%;
-  height: auto;
+  min-height: 0;
+  object-fit: cover;              /* crop viền cho gọn */
   display: block;
-  object-fit: contain;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid #eee;  /* giữ viền ngăn cách meta */
 }
 
-/* ==== Video ==== */
+/* Video wrapper fill phần còn lại (bỏ ép aspect-ratio để đủ chiều cao) */
 .video-wrapper {
   position: relative;
-  aspect-ratio: 9/16;
+  flex: 1 1 auto;     /* CHÍNH: video chiếm hết phần còn lại */
+  width: 100%;
   overflow: hidden;
   border-radius: 8px;
 }
 
+/* Iframe fill wrapper (YouTube sẽ letterbox/crop nhẹ tùy nội dung) */
 .video-wrapper iframe {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   border: none;
   display: block;
-  border-radius: 8px;
+  /* object-fit không áp cho iframe; fill toàn bộ wrapper */
 }
 
+/* Thumb che trước khi play (nếu dùng) */
 .video-wrapper .video-thumb {
   position: absolute;
   inset: 0;
@@ -75,15 +98,16 @@
   z-index: 1;
   border-radius: 8px;
 }
-
 .video-overlay {
-  position: absolute;
-  inset: 0;
-  z-index: 3;
-  cursor: pointer;
+  position: absolute; inset: 0; z-index: 3; cursor: pointer;
 }
 
-/* ==== Tiêu đề 2 dòng ==== */
+/* =========================
+   META (tiêu đề / giá / info)
+   Giữ chiều cao ổn định để tổng card = cố định
+   ========================= */
+
+/* Tiêu đề: kẹp 2 dòng + giữ chiều cao tối thiểu ~2 dòng */
 .one-line-title {
   padding: 8px;
   font-size: 13px;
@@ -96,77 +120,67 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-height: 2.6em;
+
+  min-height: 2.6em;   /* ~ 2 dòng */
 }
 
-/* ==== Dòng giá ==== */
+/* Dòng giá: giữ cao tối thiểu để ổn định bố cục */
 .price-line {
   padding: 0 8px 8px;
   font-size: 13px;
   display: flex;
   align-items: center;
   gap: 6px;
+  min-height: 28px;    /* cố định vùng giá */
 }
-
 .price {
   color: #f53d2d;
   font-weight: 600;
   font-size: 13px;
 }
-
 .original-price {
   color: #999;
   font-size: 13px;
   text-decoration: line-through;
 }
 
-/* ==== Info bên dưới video (avatar + tên + giá) ==== */
+/* Thông tin dưới video: đặt min-height tương đương phần title+price */
 .video-info {
   display: flex;
   align-items: center;
   gap: 8px;
   padding: 6px 8px 8px;
+  min-height: 56px;          /* gần bằng (title 2 dòng + price) */
 }
-
 .video-info img {
-  width: 36px;
-  height: 36px;
-  object-fit: cover;
-  border-radius: 6px;
+  width: 36px; height: 36px;
+  object-fit: cover; border-radius: 6px;
 }
-
 .video-info h4 {
-  font-size: 13px;
-  line-height: 1.3;
-  margin: 0;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  font-size: 13px; line-height: 1.3; margin: 0;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
-
 .video-info .price {
-  font-size: 13px;
-  font-weight: 600;
-  color: #f53d2d;
+  font-size: 13px; font-weight: 600; color: #f53d2d;
 }
 
-/* ==== Placeholder khi loading ==== */
+/* =========================
+   PLACEHOLDER / SKELETON
+   ========================= */
 .feed-item.placeholder {
+  height: var(--ff-card-h);   /* giữ bằng card thật */
   background: #f6f7f8;
-  border-radius: 8px;
-  min-height: 180px;
+  border-radius: 12px;
 }
-
 .feed-item.placeholder .skeleton {
   display: block;
   width: 100%;
-  aspect-ratio: 4/5;
-  border-radius: 8px;
+  height: 100%;
+  border-radius: 12px;
   background: linear-gradient(90deg,#f0f0f0 25%,#e9e9e9 37%,#f0f0f0 63%);
   background-size: 400% 100%;
   animation: shimmer 1.2s infinite;
 }
-
 @keyframes shimmer {
   0%   { background-position: 100% 0; }
   100% { background-position: -100% 0; }
