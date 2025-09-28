@@ -1,30 +1,19 @@
-/* ==== FreeFlow Feed Layout (Masonry Responsive, Centered) ==== */
+/* ==== FreeFlow Feed Layout (Flex Responsive, Row-major) ==== */
 #freeflowFeed {
-  column-count: 2;
-  column-gap: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
   padding: 12px;
   margin: auto;
   max-width: 100%;
   box-sizing: border-box;
-}
-
-@media screen and (min-width: 600px) {
-  #freeflowFeed {
-    column-count: 3;
-    max-width: 720px;
-  }
-}
-
-@media screen and (min-width: 1024px) {
-  #freeflowFeed {
-    column-count: 6;
-    max-width: 1080px;
-  }
+  justify-content: center; /* căn giữa tổng thể */
 }
 
 /* ==== Feed Item Card ==== */
 .feed-item {
-  break-inside: avoid;
+  box-sizing: border-box;
+  width: calc(50% - 6px); /* 2 cột trên mobile */
   margin-bottom: 12px;
   background: #fff;
   border-radius: 12px;
@@ -36,6 +25,20 @@
 
 .feed-item:hover {
   transform: translateY(-4px);
+}
+
+/* Tablet: 3 cột */
+@media screen and (min-width: 600px) {
+  .feed-item {
+    width: calc(33.333% - 8px);
+  }
+}
+
+/* Desktop: 6 cột */
+@media screen and (min-width: 1024px) {
+  .feed-item {
+    width: calc(16.666% - 10px);
+  }
 }
 
 /* ==== Ảnh (image + story) ==== */
@@ -147,6 +150,8 @@
   font-weight: 600;
   color: #f53d2d;
 }
+
+/* ==== Placeholder khi loading ==== */
 .feed-item.placeholder {
   background: #f6f7f8;        /* màu nền xám nhạt */
   border-radius: 8px;
