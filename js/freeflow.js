@@ -48,24 +48,18 @@ function saveCache(data) {
 
 // =================== Process & sort ===================
 function processAndSortData(data) {
-  // random nhẹ để tránh cứng nhắc
+  // random nhẹ để tránh cứng ngắc
   const random = () => Math.floor(Math.random() * 10) + 1;
 
-  // --- 1. Tách preferred và others ---
+  // --- 1. Chia preferred và others ---
   const preferred = data
     .filter((item) => item.productCategory === productCategory)
-    .map((item) => ({
-      ...item,
-      finalPriority: random(),
-    }))
+    .map((item) => ({ ...item, finalPriority: random() }))
     .sort((a, b) => b.finalPriority - a.finalPriority);
 
   const others = data
     .filter((item) => item.productCategory !== productCategory)
-    .map((item) => ({
-      ...item,
-      finalPriority: random(),
-    }))
+    .map((item) => ({ ...item, finalPriority: random() }))
     .sort((a, b) => b.finalPriority - a.finalPriority);
 
   // --- 2. Áp quy tắc 10 ảnh : 1 video ---
@@ -93,25 +87,37 @@ function processAndSortData(data) {
   const mixedPreferred = mixImagesVideos(preferred);
   const mixedOthers = mixImagesVideos(others);
 
-  // --- 3. Reorder cho layout masonry ---
-  function reorderForVisualMasonry(list, columns = 2) {
-    const rows = Math.ceil(list.length / columns);
+  // --- 3. Reorder zigzag trái–phải ---
+  function reorderZigZag(list) {
     const reordered = [];
-    for (let r = 0; r < rows; r++) {
-      for (let c = 0; c < columns; c++) {
-        const index = c * rows + r;
-        if (index < list.length) reordered.push(list[index]);
+    const left = [];
+    const right = [];
+
+    list.forEach((item, idx) => {
+      if (idx % 2 === 0) {
+        left.push(item); // chẵn → cột trái
+      } else {
+        right.push(item); // lẻ → cột phải
       }
+    });
+
+    // Ghép lại theo thứ tự: trái–phải–trái–phải...
+    const maxLen = Math.max(left.length, right.length);
+    for (let i = 0; i < maxLen; i++) {
+      if (i < left.length) reordered.push(left[i]);
+      if (i < right.length) reordered.push(right[i]);
     }
     return reordered;
   }
 
-  const reorderedPreferred = reorderForVisualMasonry(mixedPreferred, 2);
-  const reorderedOthers = reorderForVisualMasonry(mixedOthers, 2);
+  const reorderedPreferred = reorderZigZag(mixedPreferred);
+  const reorderedOthers = reorderZigZag(mixedOthers);
 
   // --- 4. Ghép kết quả ---
+  // Quan trọng: chỉ tạo freeflowData 1 lần, không reorder lại nữa
   freeflowData = [...reorderedPreferred, ...reorderedOthers];
 }
+
 
 // =================== Rendering ===================
 function renderFeedItem(item, container) {
