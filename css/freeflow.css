@@ -1,44 +1,44 @@
-/* ==== FreeFlow Feed Layout (Flex Responsive, Row-major) ==== */
+/* ==== FreeFlow Feed Layout (Grid Masonry Responsive) ==== */
 #freeflowFeed {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* mobile mặc định 2 cột */
   gap: 12px;
   padding: 12px;
   margin: auto;
   max-width: 100%;
   box-sizing: border-box;
-  justify-content: center; /* căn giữa tổng thể */
+  justify-content: center;
+}
+
+/* Tablet: 3 cột */
+@media screen and (min-width: 600px) {
+  #freeflowFeed {
+    grid-template-columns: repeat(3, 1fr);
+    max-width: 720px;
+  }
+}
+
+/* Desktop: 6 cột */
+@media screen and (min-width: 1024px) {
+  #freeflowFeed {
+    grid-template-columns: repeat(6, 1fr);
+    max-width: 1080px;
+  }
 }
 
 /* ==== Feed Item Card ==== */
 .feed-item {
-  box-sizing: border-box;
-  width: calc(50% - 6px); /* 2 cột trên mobile */
-  margin-bottom: 12px;
   background: #fff;
   border-radius: 12px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.08);
   overflow: hidden;
   cursor: pointer;
   transition: transform 0.2s ease;
+  break-inside: avoid;       /* quan trọng: tránh item bị cắt giữa cột */
 }
 
 .feed-item:hover {
   transform: translateY(-4px);
-}
-
-/* Tablet: 3 cột */
-@media screen and (min-width: 600px) {
-  .feed-item {
-    width: calc(33.333% - 8px);
-  }
-}
-
-/* Desktop: 6 cột */
-@media screen and (min-width: 1024px) {
-  .feed-item {
-    width: calc(16.666% - 10px);
-  }
 }
 
 /* ==== Ảnh (image + story) ==== */
@@ -117,7 +117,7 @@
 
 .original-price {
   color: #999;
-  font-size: 13px;              /* bằng với giá hiện tại */
+  font-size: 13px;
   text-decoration: line-through;
 }
 
@@ -153,15 +153,15 @@
 
 /* ==== Placeholder khi loading ==== */
 .feed-item.placeholder {
-  background: #f6f7f8;        /* màu nền xám nhạt */
+  background: #f6f7f8;
   border-radius: 8px;
-  min-height: 180px;          /* chiều cao tạm, tuỳ layout anh dùng */
+  min-height: 180px;
 }
 
 .feed-item.placeholder .skeleton {
   display: block;
   width: 100%;
-  aspect-ratio: 4/5;          /* giữ tỉ lệ khung ảnh */
+  aspect-ratio: 4/5;
   border-radius: 8px;
   background: linear-gradient(90deg,#f0f0f0 25%,#e9e9e9 37%,#f0f0f0 63%);
   background-size: 400% 100%;
