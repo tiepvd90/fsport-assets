@@ -398,7 +398,7 @@ async function fetchFreeFlowData(sheetUrlOverride) {
     saveCache(validData);
     dataReady = true;
     maybeStartRender();
-    fetchFromGoogleSheet(validData);
+    //fetchFromGoogleSheet(validData);
   } catch (e) {
     console.warn("Lỗi khi tải local JSON:", e);
     fetchFromGoogleSheet([]);
