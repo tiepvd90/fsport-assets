@@ -73,7 +73,7 @@ function processAndSortData(data) {
 
     while (imgIndex < images.length) {
       let added = 0;
-      while (imgIndex < images.length && added < 10) {
+      while (imgIndex < images.length && added < 7) {
         mixed.push(images[imgIndex++]);
         added++;
       }
