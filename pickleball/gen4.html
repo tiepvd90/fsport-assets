@@ -53,7 +53,7 @@
       <h1 style="font-size: 14px; font-weight: bold; margin-top: 8px; font-family: 'Be Vietnam Pro', sans-serif;">
         <span style="background: black; color: white; font-size: 11px; padding: 2px 6px; border-radius: 4px; margin-right: 4px;">Mall</span>
         <span style="background: #007BFF; color: white; font-size: 11px; padding: 2px 6px; border-radius: 4px; margin-right: 6px; text-transform: uppercase;">Hàng Chính Hãng</span>
-        Vợt Pickleball Gen 4 – Carbon Nhám, Kiểm Soát Tối Ưu – F-Sports Chính Hãng
+        Vợt Pickleball Gen 4 – Carbon Nhám 3 Lớp , Kiểm Soát Tối Ưu – F-Sports Chính Hãng
       </h1>
       <div class="shipping-wrapper">
         <div class="shipping-info">
@@ -90,12 +90,17 @@
     .catch(err => console.warn("❌ Lỗi khi chèn productvideo.html:", err));
 </script>
 <!-- 🔚 Hết KHỐI 3 -->
-    <!-- ✅ KHỐI 2: Reviews -->
+    <!-- ✅ Mô tả sản phẩm -->
+    <div class="product-hero" style="margin-top: 12px;">
+      <div id="productdescription-placeholder" data-src="/html/productdescription/pickleball/gen4.html"></div>
+    </div>
+    <script src="/js/productdescription.js"></script>
+<!-- ✅ KHỐI 2: Reviews -->
     <div class="product-hero" style="margin-top: 12px;">
       <div id="review-placeholder"></div>
     </div>
     <script>
-  fetch("/html/reviewblock/pickleball.html")
+  fetch("/html/reviewblock/pickleball-gen4.html")
     .then(res => res.text())
     .then(html => {
       const container = document.getElementById("review-placeholder");
@@ -114,12 +119,6 @@
     });
 </script>
 <!-- HẾT KHỐI 2: review -->
-    <!-- ✅ Mô tả sản phẩm -->
-    <div class="product-hero" style="margin-top: 12px;">
-      <div id="productdescription-placeholder" data-src="/html/productdescription/pickleball/gen4.html"></div>
-    </div>
-    <script src="/js/productdescription.js"></script>
-
     <!-- ✅ FreeFlow -->
     <h2 class="freeflow-heading" style="font-size: 18px; margin: 24px 12px 12px;">CÓ THỂ BẠN SẼ THÍCH</h2>
     <script src="/js/freeflow-loader.js"></script>
