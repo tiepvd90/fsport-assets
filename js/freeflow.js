@@ -48,71 +48,69 @@ function saveCache(data) {
 
 // =================== Process & sort ===================
 function processAndSortData(data) {
-  const random = () => Math.floor(Math.random() * 20) + 1;
+  // random nhẹ để tránh cứng nhắc
+  const random = () => Math.floor(Math.random() * 10) + 1;
 
+  // --- 1. Tách preferred và others ---
   const preferred = data
     .filter((item) => item.productCategory === productCategory)
     .map((item) => ({
       ...item,
-      finalPriority: (item.basePriority || 0) + random() + 75,
-    }));
+      finalPriority: random(),
+    }))
+    .sort((a, b) => b.finalPriority - a.finalPriority);
 
   const others = data
     .filter((item) => item.productCategory !== productCategory)
     .map((item) => ({
       ...item,
-      finalPriority: (item.basePriority || 0) + random(),
-    }));
+      finalPriority: random(),
+    }))
+    .sort((a, b) => b.finalPriority - a.finalPriority);
 
-  function interleaveBalanced(preferred, others) {
-    const result = [];
-    let i = 0,
-      j = 0;
-    const total = preferred.length + others.length;
-    for (let k = 0; k < total; k++) {
-      if ((k % 2 === 0 && i < preferred.length) || j >= others.length) {
-        result.push(preferred[i++]);
-      } else {
-        result.push(others[j++]);
+  // --- 2. Áp quy tắc 10 ảnh : 1 video ---
+  function mixImagesVideos(list) {
+    const images = list.filter((i) => i.contentType === "image");
+    const videos = list.filter((i) => i.contentType === "youtube");
+
+    const mixed = [];
+    let imgIndex = 0,
+      vidIndex = 0;
+
+    while (imgIndex < images.length) {
+      let added = 0;
+      while (imgIndex < images.length && added < 10) {
+        mixed.push(images[imgIndex++]);
+        added++;
+      }
+      if (added === 10 && vidIndex < videos.length) {
+        mixed.push(videos[vidIndex++]);
       }
     }
-    return result;
+    return mixed;
   }
 
-  const combined = interleaveBalanced(preferred, others).sort(
-    (a, b) => b.finalPriority - a.finalPriority
-  );
+  const mixedPreferred = mixImagesVideos(preferred);
+  const mixedOthers = mixImagesVideos(others);
 
-  const images = combined.filter((i) => i.contentType === "image");
-  const videos = combined.filter((i) => i.contentType === "youtube");
-
-  // ✅ 10 ảnh : 1 video, bỏ video dư ở cuối
-  const mixed = [];
-  let imgIndex = 0,
-    vidIndex = 0;
-  while (imgIndex < images.length) {
-    let added = 0;
-    while (imgIndex < images.length && added < 10) {
-      mixed.push(images[imgIndex++]);
-      added++;
-    }
-    if (added === 10 && vidIndex < videos.length) mixed.push(videos[vidIndex++]);
-    if (imgIndex >= images.length) break;
-  }
-
-  function reorderForVisualMasonry(data, columns = 2) {
-    const rows = Math.ceil(data.length / columns);
+  // --- 3. Reorder cho layout masonry ---
+  function reorderForVisualMasonry(list, columns = 2) {
+    const rows = Math.ceil(list.length / columns);
     const reordered = [];
     for (let r = 0; r < rows; r++) {
       for (let c = 0; c < columns; c++) {
         const index = c * rows + r;
-        if (index < data.length) reordered.push(data[index]);
+        if (index < list.length) reordered.push(list[index]);
       }
     }
     return reordered;
   }
 
-  freeflowData = reorderForVisualMasonry(mixed, 2);
+  const reorderedPreferred = reorderForVisualMasonry(mixedPreferred, 2);
+  const reorderedOthers = reorderForVisualMasonry(mixedOthers, 2);
+
+  // --- 4. Ghép kết quả ---
+  freeflowData = [...reorderedPreferred, ...reorderedOthers];
 }
 
 // =================== Rendering ===================
