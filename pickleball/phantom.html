@@ -35,18 +35,30 @@
     </div>
     <script src="../js/slideshow.js"></script>
 
-    <!-- ✅ Flash Banner -->
-    <div id="flashbanner-placeholder"></div>
-    <script>
-      fetch("/html/flashsalebanner/phantom.html")
-        .then(res => res.text())
-        .then(html => {
-          document.getElementById("flashbanner-placeholder").innerHTML = html;
-          const s = document.createElement("script");
-          s.src = "/js/flashsalebanner/template01.js";
-          document.body.appendChild(s);
-        });
-    </script>
+   <!-- ✅ Flash Banner -->
+<div id="flashbanner-placeholder"></div>
+<script>
+  fetch("/html/flashsalebanner/phantom.html")
+    .then(res => res.text())
+    .then(html => {
+      // inject cả HTML + JS bên trong file phantom.html
+      document.getElementById("flashbanner-placeholder").innerHTML = html;
+
+      // tìm và chạy các <script> trong nội dung vừa inject
+      const tempDiv = document.createElement("div");
+      tempDiv.innerHTML = html;
+      tempDiv.querySelectorAll("script").forEach(oldScript => {
+        const newScript = document.createElement("script");
+        if (oldScript.src) {
+          newScript.src = oldScript.src; // nếu script có src thì load
+        } else {
+          newScript.textContent = oldScript.textContent; // nếu script inline thì chạy luôn
+        }
+        document.body.appendChild(newScript);
+      });
+    });
+</script>
+
 
     <!-- ✅ Tiêu đề + Shipping -->
     <div class="product-hero">
@@ -90,7 +102,12 @@
     .catch(err => console.warn("❌ Lỗi khi chèn productvideo.html:", err));
 </script>
 <!-- 🔚 Hết KHỐI 3 -->
-    <!-- ✅ KHỐI 2: Reviews -->
+    <!-- ✅ Mô tả sản phẩm -->
+    <div class="product-hero" style="margin-top: 12px;">
+      <div id="productdescription-placeholder" data-src="/html/productdescription/pickleball/phantom.html"></div>
+    </div>
+    <script src="/js/productdescription.js"></script>
+<!-- ✅ KHỐI 2: Reviews -->
     <div class="product-hero" style="margin-top: 12px;">
       <div id="review-placeholder"></div>
     </div>
@@ -114,12 +131,6 @@
     });
 </script>
 <!-- HẾT KHỐI 2: review -->
-    <!-- ✅ Mô tả sản phẩm -->
-    <div class="product-hero" style="margin-top: 12px;">
-      <div id="productdescription-placeholder" data-src="/html/productdescription/pickleball/phantom.html"></div>
-    </div>
-    <script src="/js/productdescription.js"></script>
-
     <!-- ✅ FreeFlow -->
     <h2 class="freeflow-heading" style="font-size: 18px; margin: 24px 12px 12px;">CÓ THỂ BẠN SẼ THÍCH</h2>
     <script src="/js/freeflow-loader.js"></script>
