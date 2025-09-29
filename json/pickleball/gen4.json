@@ -6,8 +6,8 @@
       "type": "option",
       "display": "thumbnail",
       "values": [
-        { "text": "Vợt Trắng", "image": "https://i.postimg.cc/1zJDxFzh/trang.webp" },
-        { "text": "Vợt Hồng", "image": "https://i.postimg.cc/W420f8Tw/hong.webp" }
+        { "text": "Vợt Trắng", "image": "assets/images/thumb/pickleball/gen4/trang.webp" },
+        { "text": "Vợt Hồng", "image": "/assets/images/thumb/pickleball/gen4/hong.webp" }
       ]
     },
     {
