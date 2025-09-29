@@ -7,43 +7,43 @@
       "values": [
         {
           "text": "Rồng Đen",
-          "image": "https://i.postimg.cc/qB3N7ZkP/rongden.jpg",
+          "image": "/assets/images/thumb/pickleball/firstpickleball/rongden.jpg",
           "Giá": 1050000,
           "Giá gốc": 1470000
         },
         {
           "text": "Rồng Trắng",
-          "image": "https://i.postimg.cc/rw8sQVST/rongtrang.jpg",
+          "image": "/assets/images/thumb/pickleball/firstpickleball/rongtrang.jpg",
           "Giá": 1020000,
           "Giá gốc": 1500000
         },
         {
           "text": "Jusain Black",
-          "image": "https://i.postimg.cc/Dwjv6qvQ/black.jpg",
+          "image": "/assets/images/thumb/pickleball/firstpickleball/black.jpg",
           "Giá": 999000,
           "Giá gốc": 1540000
         },
         {
           "text": "Jusain Mint",
-          "image": "https://i.postimg.cc/1z788kVQ/mint.jpg",
+          "image": "/assets/images/thumb/pickleball/firstpickleball/mint.jpg",
           "Giá": 1100000,
           "Giá gốc": 1570000
         },
         {
           "text": "Phantom",
-          "image": "https://i.postimg.cc/852FtJrV/1.jpg",
+          "image": "/assets/images/thumb/pickleball/firstpickleball/phantom.JPG",
           "Giá": 2100000,
           "Giá gốc": 3010000
         },
         {
           "text": "Airforce - Đen Đỏ",
-          "image": "https://i.postimg.cc/TYcMS812/den.webp",
+          "image": "/assets/images/thumb/pickleball/firstpickleball/af-den.webp",
           "Giá": 1300000,
           "Giá gốc": 2100000
         },
         {
           "text": "Airforce - Xám",
-          "image": "https://i.postimg.cc/2S8RNHLQ/xam.webp",
+          "image": "/assets/images/thumb/pickleball/firstpickleball/af-xam.webp",
           "Giá": 1200000,
           "Giá gốc": 2000000
         }
