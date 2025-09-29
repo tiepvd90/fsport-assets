@@ -1,4 +1,4 @@
-<!-- ✅ Voucher Countdown Banner (đếm ngược tới 23:59 hôm nay) -->
+<!-- ✅ Voucher Countdown Banner -->
 <div id="voucherBanner" style="
   background-image: linear-gradient(90deg,#ff416c,#ff9966);
   width:100%;height:45px;display:flex;align-items:center;justify-content:center;
@@ -15,23 +15,27 @@
 </div>
 
 <script>
-function updateCountdown() {
-  const now = new Date();
-  const deadline = new Date();
-  deadline.setHours(23, 59, 59, 999); // 11:59 PM hôm nay
+(function() {
+  function updateCountdown() {
+    const now = new Date();
+    const deadline = new Date();
+    deadline.setHours(23, 59, 59, 999); // 23:59 hôm nay
 
-  // Nếu đã quá 23:59 thì chuyển sang 23:59 ngày mai
-  if (now > deadline) {
-    deadline.setDate(deadline.getDate() + 1);
+    // Nếu đã qua 23:59 → sang 23:59 ngày mai
+    if (now > deadline) {
+      deadline.setDate(deadline.getDate() + 1);
+    }
+
+    const diff = deadline - now;
+    const hours = String(Math.floor(diff / (1000 * 60 * 60))).padStart(2, '0');
+    const minutes = String(Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
+    const seconds = String(Math.floor((diff % (1000 * 60)) / 1000)).padStart(2, '0');
+
+    const el = document.getElementById("countdown");
+    if (el) el.textContent = `${hours}:${minutes}:${seconds}`;
   }
 
-  const diff = deadline - now;
-  const hours = String(Math.floor(diff / (1000 * 60 * 60))).padStart(2, '0');
-  const minutes = String(Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
-  const seconds = String(Math.floor((diff % (1000 * 60)) / 1000)).padStart(2, '0');
-
-  document.getElementById("countdown").textContent = `${hours}:${minutes}:${seconds}`;
-}
-setInterval(updateCountdown, 1000);
-updateCountdown();
+  setInterval(updateCountdown, 1000);
+  updateCountdown();
+})();
 </script>
