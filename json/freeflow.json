@@ -2137,6 +2137,22 @@
     "sellerID": "huyenle"
   },
   {
+    "itemId": "pickleball-phantom",
+    "title": "Vợt Tiêu Chuẩn Thi Đấu",
+    "price": 2100000,
+    "originalPrice": 270000,
+    "contentType": "youtube",
+    "image": "/assets/image/thumb/pickleball/phantom/capture.jpg",
+    "youtube": "_w8WmzZTn34",
+    "productPage": "/product/firstpickleball",
+    "tags": [
+      "pickleball","phantom"
+    ],
+    "basePriority": 16,
+    "productCategory": "pickleball",
+    "sellerID": "huyenle"
+  },
+  {
     "itemId": "pickleball-cover",
     "title": "Túi bảo vệ mặt vợt pickleball",
     "price": 37000,
