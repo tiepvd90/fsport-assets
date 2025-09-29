@@ -6,7 +6,7 @@
       "type": "option",
       "display": "thumbnail",
       "values": [
-        { "text": "Vợt Trắng", "image": "assets/images/thumb/pickleball/gen4/trang.webp" },
+        { "text": "Vợt Trắng", "image": "/assets/images/thumb/pickleball/gen4/trang.webp" },
         { "text": "Vợt Hồng", "image": "/assets/images/thumb/pickleball/gen4/hong.webp" }
       ]
     },
