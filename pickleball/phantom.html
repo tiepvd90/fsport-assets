@@ -211,6 +211,66 @@
       });
   </script>
 
+  <!-- ✅ Popup Voucher riêng cho cây phantom này -->
+<div id="voucherPopup" style="
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+">
+  <div style="
+    background: #fff;
+    width: 90%;
+    max-width: 360px;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    font-family: 'Be Vietnam Pro', sans-serif;
+    position: relative;
+  ">
+    <!-- nút đóng -->
+    <button onclick="closeVoucherPopup()" style="
+      position: absolute;
+      top: 8px; right: 10px;
+      border: none;
+      background: none;
+      font-size: 20px;
+      cursor: pointer;
+    ">✕</button>
+
+    <!-- nội dung -->
+    <h3 style="font-size:16px; margin-bottom:12px; font-weight:700;">
+      Bạn Nhận Được Voucher 300K Khi Mua Vợt Phantom
+    </h3>
+    <p style="font-size:14px; margin-bottom:18px;">
+      Chỉ Áp Dụng Cho 3 Cây Vợt Mỗi Ngày
+    </p>
+
+    <!-- nút lấy voucher -->
+    <button onclick="closeVoucherPopup()" style="
+      background: #ff0000;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      font-size: 15px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+    ">Lấy Voucher</button>
+  </div>
+</div>
+
+<script>
+  function closeVoucherPopup() {
+    const popup = document.getElementById("voucherPopup");
+    if (popup) popup.style.display = "none";
+  }
+</script>
+
   <!-- ✅ Base script -->
   <script src="/js/base.js"></script>
 </body>
