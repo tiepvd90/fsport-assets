@@ -1993,22 +1993,6 @@
     "sellerID": "huyenle"
   },
   {
-    "itemId": "pickleball-002",
-    "title": "Đúc Nguyên Khối, Ép Nhiệt Tối Ưu",
-    "price": 1000000,
-    "originalPrice": 2000000,
-    "contentType": "image",
-    "image": "https://i.postimg.cc/qM708vhK/z6527095389448-8be71a1b65ed1cefbcb1eb74dd1d0dad.jpg",
-    "youtube": "",
-    "productPage": "/product/firstpickleball",
-    "tags": [
-      "pickleball"
-    ],
-    "basePriority": 16,
-    "productCategory": "pickleball",
-    "sellerID": "huyenle"
-  },
-  {
     "itemId": "pickleball-003",
     "title": "Cảm Giác Chuẩn, Đánh Cực Êm Tay",
     "price": 999000,
@@ -2568,7 +2552,7 @@
     "price": 850000,
     "originalPrice": 1700000,
     "contentType": "image",
-    "image": "https://i.postimg.cc/DwMRFxwn/hongnho.jpg",
+    "image": "https://i.postimg.cc/9QRYTmB1/hong2.jpg",
     "youtube": "",
     "productPage": "/pickleball/gen4",
     "tags": ["pickleball", "gen4"],
@@ -2576,18 +2560,4 @@
     "productCategory": "pickleball",
     "sellerID": "huyenle"
   },
-  {
-    "itemId": "titan1007",
-    "title": "Titan Pickleball Paddle",
-    "price": 599000,
-    "originalPrice": 900000,
-    "contentType": "image",
-    "image": "https://i.postimg.cc/GtS1WsFR/titan16.webp",
-    "youtube": "",
-    "productPage": "/product/secpickleball",
-    "tags": ["pickleball", "titan"],
-    "basePriority": 18,
-    "productCategory": "pickleball",
-    "sellerID": "huyenle"
-  }
 ]
