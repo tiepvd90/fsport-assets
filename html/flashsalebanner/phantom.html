@@ -1,18 +1,48 @@
-<!-- ✅ Voucher Countdown Banner -->
+<!-- ✅ Voucher Countdown Banner với hiệu ứng lướt -->
 <div id="voucherBanner" style="
-  background-image: linear-gradient(90deg,#ff416c,#ff9966);
-  width:100%;height:45px;display:flex;align-items:center;justify-content:center;
-  padding:0 15px;color:#fff;font-weight:700;font-size:15px;gap:8px;box-sizing:border-box;">
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(90deg, #ff0000, #ff7a00);
+  width: 100%; height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 15px;
+  color: #fff;
+  font-weight: 700;
+  font-size: 15px;
+  gap: 8px;
+  box-sizing: border-box;
+">
+  <!-- lớp ánh sáng lướt -->
+  <div class="shine"></div>
+
   <span>Áp Dụng Voucher 300K Trong</span>
   <span id="countdown" style="
-    background:rgba(0,0,0,0.4);
-    padding:2px 6px;
-    border-radius:4px;
-    font-size:15px;
-    letter-spacing:1px;">
-    00:00:00
-  </span>
+    background: rgba(0,0,0,0.4);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 15px;
+    letter-spacing: 1px;
+  ">00:00:00</span>
 </div>
+
+<style>
+/* Hiệu ứng ánh sáng lướt */
+#voucherBanner .shine {
+  position: absolute;
+  top: 0; left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(120deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0) 100%);
+  animation: shineMove 3s linear infinite;
+}
+
+@keyframes shineMove {
+  0%   { left: -60%; }
+  100% { left: 120%; }
+}
+</style>
 
 <script>
 (function() {
@@ -21,7 +51,6 @@
     const deadline = new Date();
     deadline.setHours(23, 59, 59, 999); // 23:59 hôm nay
 
-    // Nếu đã qua 23:59 → sang 23:59 ngày mai
     if (now > deadline) {
       deadline.setDate(deadline.getDate() + 1);
     }
