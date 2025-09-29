@@ -6,10 +6,18 @@
       "type": "option",
       "display": "thumbnail",
       "values": [
-        {
-          "text": "Đen",
-          "image": "https://i.postimg.cc/xCMjLbDC/Capture.jpg"
-        }
+        { "text": "Vợt Đen", "image": "https://i.postimg.cc/xCMjLbDC/Capture.jpg" }
+      ]
+    },
+    {
+      "label": "Quà Tặng",
+      "key": "Quà Tặng",
+      "type": "option",
+      "display": "button",
+      "values": [
+        "Túi Pick Màu Ghi Xám",
+        "Túi Pick Màu Hồng",
+        "Túi Pick Màu Đen"
       ]
     }
   ],
@@ -18,7 +26,7 @@
       "id": "phantom",
       "category": "pickleball",
       "Giá": 2100000,
-      "Giá gốc": 2900000
+      "Giá gốc": 2700000
     }
   ]
 }
