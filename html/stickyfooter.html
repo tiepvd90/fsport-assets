@@ -1,4 +1,4 @@
-<!-- ✅ Sticky Footer (fix hiển thị chắc chắn) -->
+<!-- ✅ Sticky Footer chuẩn, chắc chắn hiển thị -->
 <style>
   .sticky-footer {
     position: fixed !important;
@@ -6,7 +6,8 @@
     left: 0;
     right: 0;
     width: 100% !important;
-    z-index: 99999;
+    height: 60px; /* đảm bảo có chiều cao tối thiểu */
+    z-index: 2147483647; /* cao nhất có thể */
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -16,45 +17,20 @@
     font-family: 'Be Vietnam Pro', sans-serif;
     box-sizing: border-box;
   }
-
-  /* Fallback button nổi (chỉ bật nếu detect in-app FB/IG) */
-  .floating-cta {
-    position: fixed;
-    bottom: 70px;
-    right: 20px;
-    background: #e60023;
-    color: #fff;
-    border: none;
-    padding: 12px 18px;
-    border-radius: 999px;
-    font-weight: 600;
-    font-size: 14px;
-    z-index: 100000;
-    display: none;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-  }
-  body.inapp-meta .floating-cta {
-    display: block;
-  }
 </style>
 
 <div class="sticky-footer">
   <!-- ✅ Nhóm nút: Home - Chat - Call -->
   <div style="display: flex; gap: 20px;">
-    <!-- Home -->
     <a href="https://fun-sport.co" style="display: flex; flex-direction: column; align-items: center; text-decoration: none; color: black; font-size: 11px;">
       <img src="https://img.icons8.com/ios-filled/20/000000/home.png" alt="Trang chủ">
       <span>Home</span>
     </a>
-
-    <!-- Chat -->
-    <a href="https://m.me/funsport1" target="_blank" style="display: flex; flex-direction: column; align-items: center; text-decoration: none; color: black; font-size: 11px;">
+    <a id="chat-link" href="https://m.me/funsport1" target="_blank" style="display: flex; flex-direction: column; align-items: center; text-decoration: none; color: black; font-size: 11px;">
       <img src="https://img.icons8.com/ios-filled/20/000000/facebook-messenger.png" alt="Chat">
       <span>Chat</span>
     </a>
-
-    <!-- Call -->
-    <a href="tel:0384735980" style="display: flex; flex-direction: column; align-items: center; text-decoration: none; color: black; font-size: 11px;">
+    <a id="call-link" href="tel:0384735980" style="display: flex; flex-direction: column; align-items: center; text-decoration: none; color: black; font-size: 11px;">
       <img src="https://img.icons8.com/ios-filled/20/000000/phone.png" alt="Gọi">
       <span>Call</span>
     </a>
@@ -66,17 +42,14 @@
   </button>
 </div>
 
-<!-- ✅ Fallback Floating Button -->
-<button class="floating-cta" onclick="document.getElementById('btn-atc')?.click()">
-  MUA NGAY
-</button>
-
 <script>
-  (function() {
-    const ua = navigator.userAgent || "";
-    if (/FBAN|FBAV|FB_IAB|Instagram|IGAPP|IG_VERSION/i.test(ua)) {
-      document.body.classList.add("inapp-meta");
-      console.log("👉 In-App Browser FB/IG detected: bật fallback CTA");
+  // ✅ Kiểm tra nếu footer render height = 0 thì ép hiển thị lại
+  window.addEventListener("load", () => {
+    const footer = document.querySelector(".sticky-footer");
+    if (footer && footer.getBoundingClientRect().height < 10) {
+      footer.style.display = "flex";
+      footer.style.height = "60px";
+      console.log("⚡ Ép sticky-footer hiển thị lại (in-app fix)");
     }
-  })();
+  });
 </script>
