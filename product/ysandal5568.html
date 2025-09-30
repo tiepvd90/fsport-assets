@@ -67,12 +67,13 @@
     }
     <style>
   /* ==== Button Block sau video ==== */
+/* ==== Button Block sau video ==== */
 .btn-block {
   display: flex;
-  flex-direction: column;   /* mỗi nút nằm 1 hàng */
+  flex-direction: column;   /* mỗi nút 1 hàng */
   gap: 8px;
-  margin: 0;                /* bỏ margin thừa */
-  width: 100%;              /* chiếm hết chiều ngang khối cha */
+  margin: 0;
+  width: 100%;
   box-sizing: border-box;
 }
 
@@ -89,7 +90,7 @@
   color: #fff;
   font-family: 'Be Vietnam Pro', sans-serif;
   box-sizing: border-box;
-  text-decoration: none;   /* xoá gạch chân */
+  text-decoration: none; /* bỏ gạch chân cho <a> */
 }
 
 .btn-block .atc-btn {
@@ -99,6 +100,7 @@
 .btn-block .shopee-btn {
   background: #ff5722; /* cam Shopee */
 }
+
 .btn-note {
   font-size: 12px;
   color: #555;
@@ -107,7 +109,6 @@
   text-align: center;
   font-family: 'Be Vietnam Pro', sans-serif;
 }
-
 </style>
 
   </style>
@@ -227,17 +228,16 @@
     });
 </script>
 <!-- HẾT KHỐI 2: review -->
+    
  <!-- ✅ KHỐI BUTTON Mua tại Shopee -->
-<div class="product-hero" style="margin-top: 12px;">
+<div class="product-hero" style="margin-top: 12px; padding:0;"> 
   <div class="btn-block">
     <!-- Nút thêm vào giỏ hàng -->
     <button class="footer-btn atc-btn" onclick="addToCart()">
       MUA TẠI WEBSITE
     </button>
     <!-- Nút mua tại Shopee -->
-    <a href="https://s.shopee.vn/2B5tYCe5Ui" 
-       target="_blank" rel="noopener noreferrer" 
-       class="footer-btn shopee-btn">
+    <a href="https://s.shopee.vn/2B5tYCe5Ui" target="_blank" rel="noopener noreferrer" class="footer-btn shopee-btn">
       MUA TẠI SHOPEE
     </a>
   </div>
@@ -245,7 +245,8 @@
     Mua Tại Website Rẻ Hơn Mua Tại Shopee
   </div>
 </div>
-    <!-- HẾT KHỐI BUTTON Mua tại Shopee -->
+<!-- 🔚 Hết KHỐI BUTTON -->
+
     <!-- ✅ KHỐI 4: Mô tả sản phẩm -->
 <div class="product-hero" style="margin-top: 12px;">
   <div id="productdescription-placeholder"></div>
