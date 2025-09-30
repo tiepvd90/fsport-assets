@@ -1,3 +1,25 @@
+function isMetaInApp() {
+  const ua = navigator.userAgent || "";
+  const ref = document.referrer || "";
+
+  // Check UserAgent
+  const uaMatch =
+    /(FBAN|FBAV|FBBV|FBDV|FB_IAB|FB4A|FBIOS|Instagram|IGAPP|IG_VERSION)/i.test(ua);
+
+  // Check Referrer
+  const refMatch = /(facebook\.com|instagram\.com)/i.test(ref);
+
+  return uaMatch || refMatch;
+}
+
+// 👉 Dùng thử
+if (isMetaInApp()) {
+  console.log("✅ Đang chạy trong Facebook/Instagram in-app browser");
+  document.body.classList.add("inapp-meta");
+} else {
+  console.log("🌐 Trình duyệt thường (Chrome/Safari)");
+}
+
 // ✅ Auto load cartpopup JS
 (function loadCartPopupJS() {
   const type = window.cartpopupType || "cartpopup"; // fallback mặc định
