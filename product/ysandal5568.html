@@ -2,9 +2,11 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, 
+        user-scalable=no, viewport-fit=cover">
   <title>Dép Chạy Bộ Ysandal Chính Hãng B&M Đài Loan Mã BCU5568 Quai Hậu</title>
-  
+
   <!-- ✅ CSS -->
   <link rel="stylesheet" href="https://friendly-kitten-d760ff.netlify.app/css/cartpopup.css" />
   <link rel="stylesheet" href="https://friendly-kitten-d760ff.netlify.app/css/checkoutpopup.css" />
@@ -22,16 +24,13 @@
   <style>
     body {
       background-color: #f9f9f9;
-      margin: 0;
     }
-
     .product-hero {
       background-color: #ffffff;
       padding: 2px;
-      border-radius: 0px;
+      border-radius: 0;
       box-sizing: border-box;
     }
-
     @media (min-width: 768px) {
       .page-container {
         padding: 0 8px;
@@ -40,14 +39,12 @@
         box-sizing: border-box;
       }
     }
-
     .shipping-wrapper {
       border-top: 1px solid #f9f9f9;
       border-bottom: 1px solid #f9f9f9;
       padding: 10px 0;
       margin: 16px 0;
     }
-
     .shipping-info {
       font-size: 14px;
       color: #333;
@@ -57,13 +54,11 @@
       gap: 4px;
       padding: 0 12px;
     }
-
     .shipping-line {
       display: flex;
       align-items: center;
       gap: 6px;
     }
-
     .shipping-line .icon {
       font-size: 16px;
       flex-shrink: 0;
@@ -72,14 +67,13 @@
     /* ==== Button Block sau video ==== */
     .btn-block {
       display: flex;
-      flex-direction: column;   /* mỗi nút 1 hàng */
+      flex-direction: column; /* mỗi nút 1 hàng */
       gap: 8px;
       margin: 0;
       width: 100%;
       box-sizing: border-box;
     }
-
-    .footer-btn {
+    .btn-block .footer-btn {
       display: block;
       width: 100%;
       padding: 14px;
@@ -91,18 +85,15 @@
       cursor: pointer;
       color: #fff;
       font-family: 'Be Vietnam Pro', sans-serif;
-      text-decoration: none; /* bỏ gạch chân cho <a> */
       box-sizing: border-box;
+      text-decoration: none; /* bỏ gạch chân cho <a> */
     }
-
-    .atc-btn {
+    .btn-block .atc-btn {
       background: #e60023; /* đỏ */
     }
-
-    .shopee-btn {
+    .btn-block .shopee-btn {
       background: #ff5722; /* cam Shopee */
     }
-
     .btn-note {
       font-size: 12px;
       color: #555;
@@ -113,6 +104,7 @@
     }
   </style>
 </head>
+
 <body>
   <!-- ✅ Tracking trực tiếp -->
   <script src="https://friendly-kitten-d760ff.netlify.app/js/tracking.js"></script>
@@ -127,7 +119,7 @@
   </script>
 
   <div class="page-container">
-    <!-- ✅ Placeholders -->
+    <!-- ✅ Container JSON sản phẩm -->
     <div id="cartPopup-placeholder"></div>
     <div id="checkoutPopup-placeholder"></div>
     <div id="sticky-footer-placeholder"></div>
@@ -150,31 +142,27 @@
 
     <!-- ✅ KHỐI 1: Tiêu đề + Shipping -->
     <div class="product-hero">
-      <h1 style="font-size: 14px; font-weight: bold; margin-top: 8px; font-family: 'Be Vietnam Pro', sans-serif;">
-        <span style="background: black; color: white; font-size: 11px; padding: 2px 6px; border-radius: 4px; margin-right: 4px;">
-          Mall
-        </span>
-        <span style="background: #007BFF; color: white; font-size: 11px; padding: 2px 6px; border-radius: 4px; margin-right: 6px; text-transform: uppercase;">
-          Hàng Chính Hãng
-        </span>
+      <h1 style="font-size:14px;font-weight:bold;margin-top:8px;font-family:'Be Vietnam Pro',sans-serif;">
+        <span style="background:black;color:white;font-size:11px;padding:2px 6px;
+              border-radius:4px;margin-right:4px;">Mall</span>
+        <span style="background:#007BFF;color:white;font-size:11px;padding:2px 6px;
+              border-radius:4px;margin-right:6px;text-transform:uppercase;">Hàng Chính Hãng</span>
         Dép Chạy Bộ Ysandal Chính Hãng B&M Đài Loan Mã BCU5568 Quai Hậu
       </h1>
       <div class="shipping-wrapper">
         <div class="shipping-info">
           <div class="shipping-line">
-            <span class="icon">🚚</span>
-            Ship từ Hà Nội – Giao Hàng Toàn Quốc, Nhận Hàng Trong Vòng 3 Ngày
+            <span class="icon">🚚</span> Ship từ Hà Nội – Giao Hàng Toàn Quốc, Nhận Hàng Trong Vòng 3 Ngày
           </div>
           <div class="shipping-line">
-            <span class="icon">🔍</span>
-            Kiểm Tra Hàng Trước Khi Thanh Toán
+            <span class="icon">🔍</span> Kiểm Tra Hàng Trước Khi Thanh Toán
           </div>
         </div>
       </div>
     </div>
 
     <!-- ✅ KHỐI 3: Video sản phẩm -->
-    <div class="product-hero" style="margin-top: 12px;">
+    <div class="product-hero" style="margin-top:12px;">
       <div id="video-placeholder">Đang tải video...</div>
     </div>
     <script>
@@ -185,26 +173,17 @@
           const script = document.createElement("script");
           script.src = "/js/productvideo.js";
           script.onload = () => {
-            if (typeof initProductVideo === "function") initProductVideo();
+            if (typeof initProductVideo === "function") {
+              initProductVideo();
+            }
           };
           document.body.appendChild(script);
         })
         .catch(err => console.warn("❌ Lỗi khi chèn productvideo.html:", err));
     </script>
 
-    <!-- ✅ KHỐI BUTTON Mua tại Shopee -->
-    <div class="product-hero" style="margin-top: 12px; padding:0;">
-      <div class="btn-block">
-        <button class="footer-btn atc-btn" onclick="addToCart()">MUA TẠI WEBSITE</button>
-        <a href="https://s.shopee.vn/2B5tYCe5Ui" target="_blank" rel="noopener noreferrer" class="footer-btn shopee-btn">MUA TẠI SHOPEE</a>
-      </div>
-      <div class="btn-note">
-        Mua Tại Website Rẻ Hơn Mua Tại Shopee
-      </div>
-    </div>
-
     <!-- ✅ KHỐI 2: Reviews -->
-    <div class="product-hero" style="margin-top: 12px;">
+    <div class="product-hero" style="margin-top:12px;">
       <div id="review-placeholder"></div>
     </div>
     <script>
@@ -223,8 +202,18 @@
         });
     </script>
 
+    <!-- ✅ KHỐI BUTTON -->
+    <div class="product-hero" style="margin-top:12px;padding:0;">
+      <div class="btn-block">
+        <button class="footer-btn atc-btn" onclick="addToCart()">MUA TẠI WEBSITE</button>
+        <a href="https://s.shopee.vn/2B5tYCe5Ui" target="_blank" rel="noopener noreferrer"
+           class="footer-btn shopee-btn">MUA TẠI SHOPEE</a>
+      </div>
+      <div class="btn-note">Mua Tại Website Rẻ Hơn Mua Tại Shopee</div>
+    </div>
+
     <!-- ✅ KHỐI 4: Mô tả sản phẩm -->
-    <div class="product-hero" style="margin-top: 12px;">
+    <div class="product-hero" style="margin-top:12px;">
       <div id="productdescription-placeholder"></div>
     </div>
     <script>
@@ -244,96 +233,90 @@
     </script>
 
     <!-- ✅ FreeFlow -->
-    <h2 class="freeflow-heading" style="font-size: 18px; margin: 24px 12px 12px;">CÓ THỂ BẠN SẼ THÍCH</h2>
+    <h2 class="freeflow-heading" style="font-size:18px;margin:24px 12px 12px;">CÓ THỂ BẠN SẼ THÍCH</h2>
     <script src="/js/freeflow-loader.js"></script>
-  </div>
 
-  <!-- ✅ Inject popup + footer -->
-  <script>
-    async function loadScript(src) {
-      return new Promise(resolve => {
-        const s = document.createElement("script");
-        s.src = src;
-        s.onload = resolve;
-        document.body.appendChild(s);
-      });
-    }
-
-    async function injectHTML(file, placeholderId) {
-      const res = await fetch(file);
-      const html = await res.text();
-      const container = document.getElementById(placeholderId);
-      const temp = document.createElement("div");
-      temp.innerHTML = html;
-      Array.from(temp.children).forEach(el => {
-        if (el.tagName === "SCRIPT") {
-          const script = document.createElement("script");
-          if (el.src) script.src = el.src;
-          else script.textContent = el.textContent;
-          document.body.appendChild(script);
-        } else {
-          container.appendChild(el);
-        }
-      });
-    }
-
-    async function setupPage() {
-      await injectHTML("/html/cartpopup.html", "cartPopup-placeholder");
-      await injectHTML("/html/checkoutpopup.html", "checkoutPopup-placeholder");
-      await injectHTML("/html/sticky-footer.html", "sticky-footer-placeholder");
-
-      await loadScript("https://friendly-kitten-d760ff.netlify.app/js/voucherpopup.js");
-      await loadScript("https://friendly-kitten-d760ff.netlify.app/js/cartpopup-2p.js");
-      await loadScript("https://friendly-kitten-d760ff.netlify.app/js/checkoutpopup.js");
-
-      setTimeout(async () => {
-        const map = await fetchVoucherMap();
-        window.__vouchersRaw = map[window.loai] || {};
-        window.voucherByProduct = {};
-        initCartPopup();
-      }, 100);
-    }
-
-    setupPage();
-  </script>
-
-  <!-- ✅ Tracking -->
-  <div id="base-placeholder"></div>
-  <script>
-    fetch("/html/base.html")
-      .then(res => res.text())
-      .then(html => {
-        document.getElementById("base-placeholder").outerHTML = html;
-        if (typeof trackBothPixels === "function") {
-          trackBothPixels("ViewContent", {
-            content_id: window.productPage,
-            content_name: window.productPage,
-            content_category: window.productCategory,
-            value: 0,
-            currency: "VND"
-          });
-        }
-      });
-  </script>
-
-  <!-- ✅ Load FreeFlow -->
-  <script src="https://friendly-kitten-d760ff.netlify.app/js/freeflow.js"></script>
-  <script>
-    fetch("/html/freeflow.html")
-      .then(res => res.text())
-      .then(html => {
-        const container = document.getElementById("freeflow-placeholder");
+    <!-- ✅ Inject popup + footer -->
+    <script>
+      async function loadScript(src) {
+        return new Promise(resolve => {
+          const s = document.createElement("script");
+          s.src = src;
+          s.onload = resolve;
+          document.body.appendChild(s);
+        });
+      }
+      async function injectHTML(file, placeholderId) {
+        const res = await fetch(file);
+        const html = await res.text();
+        const container = document.getElementById(placeholderId);
         const temp = document.createElement("div");
         temp.innerHTML = html;
-        Array.from(temp.children).forEach(el => container.appendChild(el));
-        setTimeout(() => {
-          if (typeof fetchFreeFlowData === "function") {
-            fetchFreeFlowData("https://script.google.com/macros/s/AKfycbwuEh9sP65vyQL0XzU8gY1Os0QYV_K5egKJgm8OhImAPjvdyrQiU7XCY909N99TnltP/exec");
+        Array.from(temp.children).forEach(el => {
+          if (el.tagName === "SCRIPT") {
+            const script = document.createElement("script");
+            if (el.src) script.src = el.src;
+            else script.textContent = el.textContent;
+            document.body.appendChild(script);
+          } else {
+            container.appendChild(el);
           }
-        }, 200);
-      });
-  </script>
+        });
+      }
+      async function setupPage() {
+        await injectHTML("/html/cartpopup.html", "cartPopup-placeholder");
+        await injectHTML("/html/checkoutpopup.html", "checkoutPopup-placeholder");
+        await injectHTML("/html/stickyfooter.html", "sticky-footer-placeholder");
+        await loadScript("https://friendly-kitten-d760ff.netlify.app/js/voucherpopup.js");
+        await loadScript("https://friendly-kitten-d760ff.netlify.app/js/cartpopup-2p.js");
+        await loadScript("https://friendly-kitten-d760ff.netlify.app/js/checkoutpopup.js");
+        setTimeout(async () => {
+          const map = await fetchVoucherMap();
+          window.__vouchersRaw = map[window.loai] || {};
+          window.voucherByProduct = {};
+          initCartPopup();
+        }, 100);
+      }
+      setupPage();
+    </script>
 
-  <script src="/js/base.js"></script>
+    <!-- ✅ Tracking base -->
+    <div id="base-placeholder"></div>
+    <script>
+      fetch("/html/base.html")
+        .then(res => res.text())
+        .then(html => {
+          document.getElementById("base-placeholder").outerHTML = html;
+          if (typeof trackBothPixels === "function") {
+            trackBothPixels("ViewContent", {
+              content_id: window.productPage,
+              content_name: window.productPage,
+              content_category: window.productCategory,
+              value: 0,
+              currency: "VND"
+            });
+          }
+        });
+    </script>
+
+    <!-- ✅ Load FreeFlow -->
+    <script src="https://friendly-kitten-d760ff.netlify.app/js/freeflow.js"></script>
+    <script>
+      fetch("/html/freeflow.html")
+        .then(res => res.text())
+        .then(html => {
+          const container = document.getElementById("freeflow-placeholder");
+          const temp = document.createElement("div");
+          temp.innerHTML = html;
+          Array.from(temp.children).forEach(el => container.appendChild(el));
+          setTimeout(() => {
+            if (typeof fetchFreeFlowData === "function") {
+              fetchFreeFlowData("https://script.google.com/macros/s/AKfycbwuEh9sP65vyQL0XzU8gY1Os0QYV_K5egKJgm8OhImAPjvdyrQiU7XCY909N99TnltP/exec");
+            }
+          }, 200);
+        });
+    </script>
+    <script src="/js/base.js"></script>
+  </div>
 </body>
 </html>
