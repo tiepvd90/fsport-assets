@@ -101,6 +101,13 @@ setInterval(() => {
   fetch('/favicon.ico', { cache: "no-store" }).catch(() => {});
 }, 5 * 60 * 1000);
 
+(function() {
+  const ua = navigator.userAgent || navigator.vendor || window.opera;
+  if (/FBAN|FBAV|Instagram/.test(ua)) {
+    document.body.classList.add("inapp-meta");
+  }
+})();
+
 // ✅ Gọi supportchat nếu có
 //const sc = document.createElement("script");
 //sc.src = "/js/supportchat.js";
