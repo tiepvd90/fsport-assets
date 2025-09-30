@@ -1,6 +1,4 @@
-/* === Sticky Footer CSS === */
-@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;700&display=swap');
-
+/* === Sticky Footer Style === */
 .sticky-footer {
   position: fixed;
   bottom: 0;
@@ -13,20 +11,14 @@
   z-index: 9999;
   padding: 6px 8px;
   font-family: 'Be Vietnam Pro', sans-serif;
-  box-sizing: border-box;
 }
 
-/* Icon (ví dụ giỏ hàng, home, vv) */
 .footer-icon {
   width: 60px;
   text-align: center;
   font-size: 12px;
   color: #000;
   text-decoration: none;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
 }
 
 .footer-icon img {
@@ -35,20 +27,12 @@
   margin-bottom: 4px;
 }
 
-.footer-icon i.lucide {
-  width: 20px;
-  height: 20px;
-  stroke-width: 1.8;
-  margin-bottom: 4px;
-}
-
-/* Nút mặc định */
 .footer-btn {
   flex: 1;
   margin-left: 10px;
   margin-bottom: 6px;
   height: 38px;
-  background: #e53935; /* đỏ */
+  background: #e53935;
   color: #fff;
   font-weight: bold;
   font-size: 14px;
@@ -58,25 +42,9 @@
   border-radius: 8px;
   align-self: center;
   max-width: calc(100% - 140px);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
-
-/* Nút Đặt hàng (đen) */
-.footer-btn.order {
-  background: #000;
+.footer-icon i.lucide {
+  width: 20px;
+  height: 20px;
+  stroke-width: 1.8;
 }
-
-/* Nút Shopee (cam) */
-.footer-btn.shopee {
-  background: #ff6600;
-}
-
-/* Hover chung */
-.footer-btn:hover {
-  opacity: 0.9;
-}
-/* Container icon ngang */
-.footer-icons { display: flex; gap: 16px; align-items: center; }
-
