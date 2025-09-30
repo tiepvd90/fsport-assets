@@ -65,43 +65,48 @@
     }
 
     /* ==== Button Block sau video ==== */
-    .btn-block {
-      display: flex;
-      flex-direction: column; /* mỗi nút 1 hàng */
-      gap: 8px;
-      margin: 0;
-      width: 100%;
-      box-sizing: border-box;
-    }
-    .btn-block .footer-btn {
-      display: block;
-      width: 100%;
-      padding: 14px;
-      font-weight: 700;
-      font-size: 15px;
-      text-align: center;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      color: #fff;
-      font-family: 'Be Vietnam Pro', sans-serif;
-      box-sizing: border-box;
-      text-decoration: none; /* bỏ gạch chân cho <a> */
-    }
-    .btn-block .atc-btn {
-      background: #e60023; /* đỏ */
-    }
-    .btn-block .shopee-btn {
-      background: #ff5722; /* cam Shopee */
-    }
-    .btn-note {
-      font-size: 12px;
-      color: #555;
-      font-style: italic;
-      margin-top: 6px;
-      text-align: center;
-      font-family: 'Be Vietnam Pro', sans-serif;
-    }
+.btn-block {
+  display: flex;
+  flex-direction: column; /* mỗi nút 1 hàng */
+  gap: 8px;
+  width: 100vw;           /* full chiều ngang màn hình */
+  margin: 0;
+  margin-left: calc(-50vw + 50%); /* căn full ngang chuẩn */
+  box-sizing: border-box;
+}
+
+.btn-block .footer-btn {
+  display: block;
+  width: 100%;
+  padding: 16px;
+  font-weight: 700;
+  font-size: 15px;
+  text-align: center;
+  border: none;
+  border-radius: 0; /* full width thì bỏ bo góc để nhìn liền khối */
+  cursor: pointer;
+  color: #fff;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  box-sizing: border-box;
+  text-decoration: none; /* bỏ gạch chân cho <a> */
+}
+
+.btn-block .atc-btn {
+  background: #e60023; /* đỏ */
+}
+
+.btn-block .shopee-btn {
+  background: #ff5722; /* cam Shopee */
+}
+
+.btn-note {
+  font-size: 12px;
+  color: #555;
+  font-style: italic;
+  margin-top: 6px;
+  text-align: center;
+  font-family: 'Be Vietnam Pro', sans-serif;
+}
   </style>
 </head>
 
