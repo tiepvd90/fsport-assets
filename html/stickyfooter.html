@@ -1,55 +1,37 @@
-<!-- ✅ Sticky Footer chuẩn, chắc chắn hiển thị -->
-<style>
-  .sticky-footer {
-    position: fixed !important;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    width: 100% !important;
-    height: 60px; /* đảm bảo có chiều cao tối thiểu */
-    z-index: 2147483647; /* cao nhất có thể */
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 8px 12px;
-    background: #fff;
-    border-top: 1px solid #ddd;
-    font-family: 'Be Vietnam Pro', sans-serif;
-    box-sizing: border-box;
-  }
-</style>
+<!-- ✅ Sticky Footer chuẩn -->
+<link rel="stylesheet" href="/css/stickyfooter.css">
 
 <div class="sticky-footer">
   <!-- ✅ Nhóm nút: Home - Chat - Call -->
-  <div style="display: flex; gap: 20px;">
-    <a href="https://fun-sport.co" style="display: flex; flex-direction: column; align-items: center; text-decoration: none; color: black; font-size: 11px;">
+  <div class="footer-icons">
+    <a href="https://fun-sport.co" class="footer-icon">
       <img src="https://img.icons8.com/ios-filled/20/000000/home.png" alt="Trang chủ">
       <span>Home</span>
     </a>
-    <a id="chat-link" href="https://m.me/funsport1" target="_blank" style="display: flex; flex-direction: column; align-items: center; text-decoration: none; color: black; font-size: 11px;">
+    <a id="chat-link" href="https://m.me/funsport1" target="_blank" class="footer-icon">
       <img src="https://img.icons8.com/ios-filled/20/000000/facebook-messenger.png" alt="Chat">
       <span>Chat</span>
     </a>
-    <a id="call-link" href="tel:0384735980" style="display: flex; flex-direction: column; align-items: center; text-decoration: none; color: black; font-size: 11px;">
+    <a id="call-link" href="tel:0384735980" class="footer-icon">
       <img src="https://img.icons8.com/ios-filled/20/000000/phone.png" alt="Gọi">
       <span>Call</span>
     </a>
   </div>
 
   <!-- 🛒 Nút Thêm vào giỏ -->
-  <button id="btn-atc" class="footer-btn" style="background: red; color: white; font-weight: bold; padding: 10px 16px; border: none; border-radius: 8px; font-size: 14px; white-space: nowrap;">
+  <button id="btn-atc" class="footer-btn">
     THÊM VÀO GIỎ HÀNG
   </button>
 </div>
 
 <script>
-  // ✅ Kiểm tra nếu footer render height = 0 thì ép hiển thị lại
+  // ✅ Fix in-app browser: nếu footer bị ẩn thì ép hiển thị lại
   window.addEventListener("load", () => {
     const footer = document.querySelector(".sticky-footer");
     if (footer && footer.getBoundingClientRect().height < 10) {
       footer.style.display = "flex";
       footer.style.height = "60px";
-      console.log("⚡ Ép sticky-footer hiển thị lại (in-app fix)");
+      console.log("⚡ Sticky-footer ép hiển thị lại (in-app fix)");
     }
   });
 </script>
