@@ -1,6 +1,44 @@
-<!-- ✅ Sticky Footer (đã chỉnh sửa) -->
-<div class="sticky-footer" style="display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; background: #fff; border-top: 1px solid #ddd; position: fixed; bottom: 0; left: 0; right: 0; width: 100%; max-width: 100vw; z-index: 9999; box-sizing: border-box; font-family: 'Be Vietnam Pro', sans-serif;">
+<!-- ✅ Sticky Footer (fix hiển thị chắc chắn) -->
+<style>
+  .sticky-footer {
+    position: fixed !important;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100% !important;
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 12px;
+    background: #fff;
+    border-top: 1px solid #ddd;
+    font-family: 'Be Vietnam Pro', sans-serif;
+    box-sizing: border-box;
+  }
 
+  /* Fallback button nổi (chỉ bật nếu detect in-app FB/IG) */
+  .floating-cta {
+    position: fixed;
+    bottom: 70px;
+    right: 20px;
+    background: #e60023;
+    color: #fff;
+    border: none;
+    padding: 12px 18px;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 14px;
+    z-index: 100000;
+    display: none;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  }
+  body.inapp-meta .floating-cta {
+    display: block;
+  }
+</style>
+
+<div class="sticky-footer">
   <!-- ✅ Nhóm nút: Home - Chat - Call -->
   <div style="display: flex; gap: 20px;">
     <!-- Home -->
@@ -27,3 +65,18 @@
     THÊM VÀO GIỎ HÀNG
   </button>
 </div>
+
+<!-- ✅ Fallback Floating Button -->
+<button class="floating-cta" onclick="document.getElementById('btn-atc')?.click()">
+  MUA NGAY
+</button>
+
+<script>
+  (function() {
+    const ua = navigator.userAgent || "";
+    if (/FBAN|FBAV|FB_IAB|Instagram|IGAPP|IG_VERSION/i.test(ua)) {
+      document.body.classList.add("inapp-meta");
+      console.log("👉 In-App Browser FB/IG detected: bật fallback CTA");
+    }
+  })();
+</script>
