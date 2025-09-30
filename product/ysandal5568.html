@@ -9,22 +9,25 @@
   <link rel="stylesheet" href="https://friendly-kitten-d760ff.netlify.app/css/cartpopup.css" />
   <link rel="stylesheet" href="https://friendly-kitten-d760ff.netlify.app/css/checkoutpopup.css" />
   <link rel="stylesheet" href="../css/slideshow.css" />
-<link rel="icon" type="image/png" href="/favicon.png" />
+  <link rel="icon" type="image/png" href="/favicon.png" />
+
   <!-- ✅ JS định nghĩa -->
   <script>
-  window.loai = "ysandal";
-  window.productCategory = "ysandal";     // Nhóm sản phẩm
-  window.productPage = "ysandal5568";      // Trang cụ thể
-  window.cartpopupType = "cartpopup-2p";
-</script>
+    window.loai = "ysandal";
+    window.productCategory = "ysandal";     // Nhóm sản phẩm
+    window.productPage = "ysandal5568";     // Trang cụ thể
+    window.cartpopupType = "cartpopup-2p";
+  </script>
+
   <style>
     body {
       background-color: #f9f9f9;
+      margin: 0;
     }
 
     .product-hero {
       background-color: #ffffff;
-      padding: 2px 2px;
+      padding: 2px;
       border-radius: 0px;
       box-sizing: border-box;
     }
@@ -65,70 +68,65 @@
       font-size: 16px;
       flex-shrink: 0;
     }
-    <style>
-  /* ==== Button Block sau video ==== */
-/* ==== Button Block sau video ==== */
-.btn-block {
-  display: flex;
-  flex-direction: column;   /* mỗi nút 1 hàng */
-  gap: 8px;
-  margin: 0;
-  width: 100%;
-  box-sizing: border-box;
-}
 
-.btn-block .footer-btn {
-  display: block;
-  width: 100%;
-  padding: 14px;
-  font-weight: 700;
-  font-size: 15px;
-  text-align: center;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  color: #fff;
-  font-family: 'Be Vietnam Pro', sans-serif;
-  box-sizing: border-box;
-  text-decoration: none; /* bỏ gạch chân cho <a> */
-}
+    /* ==== Button Block sau video ==== */
+    .btn-block {
+      display: flex;
+      flex-direction: column;   /* mỗi nút 1 hàng */
+      gap: 8px;
+      margin: 0;
+      width: 100%;
+      box-sizing: border-box;
+    }
 
-.btn-block .atc-btn {
-  background: #e60023; /* đỏ */
-}
+    .footer-btn {
+      display: block;
+      width: 100%;
+      padding: 14px;
+      font-weight: 700;
+      font-size: 15px;
+      text-align: center;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      color: #fff;
+      font-family: 'Be Vietnam Pro', sans-serif;
+      text-decoration: none; /* bỏ gạch chân cho <a> */
+      box-sizing: border-box;
+    }
 
-.btn-block .shopee-btn {
-  background: #ff5722; /* cam Shopee */
-}
+    .atc-btn {
+      background: #e60023; /* đỏ */
+    }
 
-.btn-note {
-  font-size: 12px;
-  color: #555;
-  font-style: italic;
-  margin-top: 6px;
-  text-align: center;
-  font-family: 'Be Vietnam Pro', sans-serif;
-}
-</style>
+    .shopee-btn {
+      background: #ff5722; /* cam Shopee */
+    }
 
+    .btn-note {
+      font-size: 12px;
+      color: #555;
+      font-style: italic;
+      margin-top: 6px;
+      text-align: center;
+      font-family: 'Be Vietnam Pro', sans-serif;
+    }
   </style>
 </head>
 <body>
   <!-- ✅ Tracking trực tiếp -->
-<script src="https://friendly-kitten-d760ff.netlify.app/js/tracking.js"></script>
-<script>
-  trackBothPixels("ViewContent", {
-    content_id: window.productPage || "unknown",
-    content_name: window.productPage || "unknown",
-    content_category: window.productCategory || "unknown",
-    value: 0,
-    currency: "VND"
-  });
-</script>
+  <script src="https://friendly-kitten-d760ff.netlify.app/js/tracking.js"></script>
+  <script>
+    trackBothPixels("ViewContent", {
+      content_id: window.productPage || "unknown",
+      content_name: window.productPage || "unknown",
+      content_category: window.productCategory || "unknown",
+      value: 0,
+      currency: "VND"
+    });
+  </script>
 
   <div class="page-container">
-    <!-- ✅ Container JSON sản phẩm -->
-
     <!-- ✅ Placeholders -->
     <div id="cartPopup-placeholder"></div>
     <div id="checkoutPopup-placeholder"></div>
@@ -152,15 +150,15 @@
 
     <!-- ✅ KHỐI 1: Tiêu đề + Shipping -->
     <div class="product-hero">
-<h1 style="font-size: 14px; font-weight: bold; margin-top: 8px; font-family: 'Be Vietnam Pro', sans-serif;">
-    <span style="background: black; color: white; font-size: 11px; padding: 2px 6px; border-radius: 4px; margin-right: 4px;">
-      Mall
-    </span>
-    <span style="background: #007BFF; color: white; font-size: 11px; padding: 2px 6px; border-radius: 4px; margin-right: 6px; text-transform: uppercase;">
-      Hàng Chính Hãng
-    </span>
-    Dép Chạy Bộ Ysandal Chính Hãng B&M Đài Loan Mã BCU5568 Quai Hậu
-  </h1>
+      <h1 style="font-size: 14px; font-weight: bold; margin-top: 8px; font-family: 'Be Vietnam Pro', sans-serif;">
+        <span style="background: black; color: white; font-size: 11px; padding: 2px 6px; border-radius: 4px; margin-right: 4px;">
+          Mall
+        </span>
+        <span style="background: #007BFF; color: white; font-size: 11px; padding: 2px 6px; border-radius: 4px; margin-right: 6px; text-transform: uppercase;">
+          Hàng Chính Hãng
+        </span>
+        Dép Chạy Bộ Ysandal Chính Hãng B&M Đài Loan Mã BCU5568 Quai Hậu
+      </h1>
       <div class="shipping-wrapper">
         <div class="shipping-info">
           <div class="shipping-line">
@@ -174,111 +172,82 @@
         </div>
       </div>
     </div>
-<!-- ✅ KHỐI 3: Video sản phẩm -->
-<div class="product-hero" style="margin-top: 12px;">
-  <div id="video-placeholder">Đang tải video...</div>
-</div>
 
-<script>
-  // ✅ Gọi file HTML video (gồm khung & ID #videoSlider)
-  fetch("/html/productvideo.html")
-    .then(res => res.text())
-    .then(html => {
-      document.getElementById("video-placeholder").innerHTML = html;
+    <!-- ✅ KHỐI 3: Video sản phẩm -->
+    <div class="product-hero" style="margin-top: 12px;">
+      <div id="video-placeholder">Đang tải video...</div>
+    </div>
+    <script>
+      fetch("/html/productvideo.html")
+        .then(res => res.text())
+        .then(html => {
+          document.getElementById("video-placeholder").innerHTML = html;
+          const script = document.createElement("script");
+          script.src = "/js/productvideo.js";
+          script.onload = () => {
+            if (typeof initProductVideo === "function") initProductVideo();
+          };
+          document.body.appendChild(script);
+        })
+        .catch(err => console.warn("❌ Lỗi khi chèn productvideo.html:", err));
+    </script>
 
-      // ✅ Gọi JS sau khi HTML có mặt
-      const script = document.createElement("script");
-      script.src = "/js/productvideo.js";
-      script.onload = () => {
-        console.log("✅ Đã load JS, gọi init...");
-        if (typeof initProductVideo === "function") {
-          initProductVideo();
-        } else {
-          console.warn("❌ Không tìm thấy initProductVideo()");
-        }
-      };
-      document.body.appendChild(script);
-    })
-    .catch(err => console.warn("❌ Lỗi khi chèn productvideo.html:", err));
-</script>
-
+    <!-- ✅ KHỐI BUTTON Mua tại Shopee -->
+    <div class="product-hero" style="margin-top: 12px; padding:0;">
+      <div class="btn-block">
+        <button class="footer-btn atc-btn" onclick="addToCart()">MUA TẠI WEBSITE</button>
+        <a href="https://s.shopee.vn/2B5tYCe5Ui" target="_blank" rel="noopener noreferrer" class="footer-btn shopee-btn">MUA TẠI SHOPEE</a>
+      </div>
+      <div class="btn-note">
+        Mua Tại Website Rẻ Hơn Mua Tại Shopee
+      </div>
+    </div>
 
     <!-- ✅ KHỐI 2: Reviews -->
     <div class="product-hero" style="margin-top: 12px;">
       <div id="review-placeholder"></div>
     </div>
     <script>
-  fetch("/html/reviewblock/ysandal5568.html")
-    .then(res => res.text())
-    .then(html => {
-      const container = document.getElementById("review-placeholder");
-      container.innerHTML = html;
-
-      // ✅ Kích hoạt lại các <script> thủ công
-      const scripts = container.querySelectorAll("script");
-      scripts.forEach(oldScript => {
-        const newScript = document.createElement("script");
-        if (oldScript.src) {
-          newScript.src = oldScript.src;
-        } else {
-          newScript.textContent = oldScript.textContent;
-        }
-        document.body.appendChild(newScript);
-      });
-    });
-</script>
-<!-- HẾT KHỐI 2: review -->
-    
- <!-- ✅ KHỐI BUTTON Mua tại Shopee -->
-<div class="product-hero" style="margin-top: 12px; padding:0;"> 
-  <div class="btn-block">
-    <!-- Nút thêm vào giỏ hàng -->
-    <button class="footer-btn atc-btn" onclick="addToCart()">
-      MUA TẠI WEBSITE
-    </button>
-    <!-- Nút mua tại Shopee -->
-    <a href="https://s.shopee.vn/2B5tYCe5Ui" target="_blank" rel="noopener noreferrer" class="footer-btn shopee-btn">
-      MUA TẠI SHOPEE
-    </a>
-  </div>
-  <div class="btn-note">
-    Mua Tại Website Rẻ Hơn Mua Tại Shopee
-  </div>
-</div>
-<!-- 🔚 Hết KHỐI BUTTON -->
+      fetch("/html/reviewblock/ysandal5568.html")
+        .then(res => res.text())
+        .then(html => {
+          const container = document.getElementById("review-placeholder");
+          container.innerHTML = html;
+          const scripts = container.querySelectorAll("script");
+          scripts.forEach(oldScript => {
+            const newScript = document.createElement("script");
+            if (oldScript.src) newScript.src = oldScript.src;
+            else newScript.textContent = oldScript.textContent;
+            document.body.appendChild(newScript);
+          });
+        });
+    </script>
 
     <!-- ✅ KHỐI 4: Mô tả sản phẩm -->
-<div class="product-hero" style="margin-top: 12px;">
-  <div id="productdescription-placeholder"></div>
-</div>
+    <div class="product-hero" style="margin-top: 12px;">
+      <div id="productdescription-placeholder"></div>
+    </div>
+    <script>
+      fetch("/html/productdescription/ysandal5568.html")
+        .then(res => res.text())
+        .then(html => {
+          const container = document.getElementById("productdescription-placeholder");
+          container.innerHTML = html;
+          const scripts = container.querySelectorAll("script");
+          scripts.forEach(script => {
+            const s = document.createElement("script");
+            if (script.src) s.src = script.src;
+            else s.textContent = script.textContent;
+            document.body.appendChild(s);
+          });
+        });
+    </script>
 
-<script>
-  fetch("/html/productdescription/ysandal5568.html")
-    .then(res => res.text())
-    .then(html => {
-      const container = document.getElementById("productdescription-placeholder");
-      container.innerHTML = html;
-
-      // ✅ Kích hoạt lại script thủ công
-      const scripts = container.querySelectorAll("script");
-      scripts.forEach(script => {
-        const s = document.createElement("script");
-        if (script.src) {
-          s.src = script.src;
-        } else {
-          s.textContent = script.textContent;
-        }
-        document.body.appendChild(s);
-      });
-    });
-</script>
-    <!-- 🔚 Hết KHỐI 3 -->
-
- <!-- HẾT KHỐI 4: Mô tả sản phẩm -->
-<!-- ✅ FreeFlow -->
+    <!-- ✅ FreeFlow -->
     <h2 class="freeflow-heading" style="font-size: 18px; margin: 24px 12px 12px;">CÓ THỂ BẠN SẼ THÍCH</h2>
     <script src="/js/freeflow-loader.js"></script>
-<!-- END FreeFlow -->
+  </div>
+
   <!-- ✅ Inject popup + footer -->
   <script>
     async function loadScript(src) {
@@ -296,16 +265,11 @@
       const container = document.getElementById(placeholderId);
       const temp = document.createElement("div");
       temp.innerHTML = html;
-
       Array.from(temp.children).forEach(el => {
         if (el.tagName === "SCRIPT") {
           const script = document.createElement("script");
-          if (el.src) {
-            script.src = el.src;
-            script.async = false;
-          } else {
-            script.textContent = el.textContent;
-          }
+          if (el.src) script.src = el.src;
+          else script.textContent = el.textContent;
           document.body.appendChild(script);
         } else {
           container.appendChild(el);
@@ -316,7 +280,7 @@
     async function setupPage() {
       await injectHTML("/html/cartpopup.html", "cartPopup-placeholder");
       await injectHTML("/html/checkoutpopup.html", "checkoutPopup-placeholder");
-      await injectHTML("/html/stickyfooter.html", "sticky-footer-placeholder");
+      await injectHTML("/html/sticky-footer.html", "sticky-footer-placeholder");
 
       await loadScript("https://friendly-kitten-d760ff.netlify.app/js/voucherpopup.js");
       await loadScript("https://friendly-kitten-d760ff.netlify.app/js/cartpopup-2p.js");
@@ -362,7 +326,6 @@
         const temp = document.createElement("div");
         temp.innerHTML = html;
         Array.from(temp.children).forEach(el => container.appendChild(el));
-
         setTimeout(() => {
           if (typeof fetchFreeFlowData === "function") {
             fetchFreeFlowData("https://script.google.com/macros/s/AKfycbwuEh9sP65vyQL0XzU8gY1Os0QYV_K5egKJgm8OhImAPjvdyrQiU7XCY909N99TnltP/exec");
@@ -370,6 +333,7 @@
         }, 200);
       });
   </script>
-    <script src="/js/base.js"></script>
+
+  <script src="/js/base.js"></script>
 </body>
 </html>
