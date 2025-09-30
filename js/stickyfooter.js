@@ -25,18 +25,27 @@ document.addEventListener("DOMContentLoaded", () => {
   const callLink = document.getElementById("call-link");
   const chatLink = document.getElementById("chat-link");
 
-  // 🛒 Sự kiện click "THÊM VÀO GIỎ HÀNG"
-  if (btnAtc) {
+  // 🔥 Chỉ riêng dép Ysandal 5568 thì đổi sang nút Shopee
+  if (window.productPage === "ysandal5568" && btnAtc) {
+    btnAtc.textContent = "MUA TẠI SHOPEE";
+    btnAtc.classList.add("shopee"); // style cam trong CSS
     btnAtc.addEventListener("click", () => {
-      const loai = window.productCategory || window.loai || "unknown";
-      if (typeof trackBothPixels === "function") {
-        trackBothPixels("AddToWishlist", {
-          content_name: "click_btn_atc_" + loai,
-          content_category: loai
-        });
-      }
-      tryOpenCartPopup();
+      window.open("https://s.shopee.vn/2B5tYCe5Ui", "_blank");
     });
+  } else {
+    // 🛒 Sự kiện click "THÊM VÀO GIỎ HÀNG" cho các sản phẩm khác
+    if (btnAtc) {
+      btnAtc.addEventListener("click", () => {
+        const loai = window.productCategory || window.loai || "unknown";
+        if (typeof trackBothPixels === "function") {
+          trackBothPixels("AddToWishlist", {
+            content_name: "click_btn_atc_" + loai,
+            content_category: loai
+          });
+        }
+        tryOpenCartPopup();
+      });
+    }
   }
 
   // ☎️ Cập nhật link call/chat từ settings.json
