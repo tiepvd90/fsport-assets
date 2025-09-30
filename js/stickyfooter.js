@@ -1,4 +1,4 @@
-// ✅ TỰ ĐỘNG LOAD FILE cartpopup JS TƯƠNG ỨNG
+// ✅ Auto load file cartpopup JS tương ứng
 (function loadCartPopupJS() {
   const type = window.cartpopupType || "cartpopup"; // fallback mặc định
   const script = document.createElement("script");
@@ -8,51 +8,62 @@
   document.body.appendChild(script);
 })();
 
-// ✅ GỌI POPUP GIỎ HÀNG
+// ✅ Hàm gọi popup giỏ hàng với retry
 function tryOpenCartPopup(attempt = 1) {
   if (typeof toggleCartPopup === "function") {
     console.log("✅ Gọi toggleCartPopup");
     toggleCartPopup(true);
   } else if (attempt < 5) {
-    console.warn(`🔁 Đợi cartpopup JS (lần ${attempt})...`);
-    setTimeout(() => tryOpenCartPopup(attempt + 1), 200);
+    console.warn(`🔁 Chờ cartpopup JS (lần ${attempt})...`);
+    setTimeout(() => tryOpenCartPopup(attempt + 1), 250);
   } else {
-    console.error("❌ toggleCartPopup chưa sẵn sàng.");
+    console.error("❌ toggleCartPopup chưa sẵn sàng sau nhiều lần thử.");
   }
 }
 
-// ✅ ĐỢI DOM XONG MỚI GẮN SỰ KIỆN
-setTimeout(() => {
+// ✅ Detect in-app browser (Facebook/Instagram)
+(function detectInAppBrowser() {
+  const ua = navigator.userAgent || "";
+  if (/FBAN|FBAV|FB_IAB|Instagram|IGAPP|IG_VERSION/i.test(ua)) {
+    document.addEventListener("DOMContentLoaded", () => {
+      document.body.classList.add("inapp-meta");
+      console.log("👉 In-App Browser FB/IG detected");
+    });
+  }
+})();
+
+// ✅ Gắn sự kiện sau khi DOM ready
+document.addEventListener("DOMContentLoaded", () => {
   const btnAtc = document.getElementById("btn-atc");
   const callLink = document.getElementById("call-link");
   const chatLink = document.getElementById("chat-link");
 
-  console.log("🔍 Kiểm tra DOM:");
+  console.log("🔍 StickyFooter DOM Ready:");
   console.log(" - btnAtc:", btnAtc);
   console.log(" - callLink:", callLink);
   console.log(" - chatLink:", chatLink);
 
-  // ✅ BẮT SỰ KIỆN NÚT "THÊM VÀO GIỎ HÀNG"
+  // 🛒 Sự kiện click "THÊM VÀO GIỎ HÀNG"
   if (btnAtc) {
     btnAtc.addEventListener("click", () => {
-  const loai = window.productCategory || window.loai || "unknown";
-  console.log("🔥 ĐÃ CLICK STICKY Footer button", loai);
+      const loai = window.productCategory || window.loai || "unknown";
+      console.log("🔥 Click StickyFooter ATC:", loai);
 
-  // ✅ Gửi đúng event bạn muốn
-  if (typeof trackBothPixels === "function") {
-    trackBothPixels("AddToWishlist", {
-      content_name: "click_btn_atc_" + loai,
-      content_category: loai
+      // Gửi Pixel event nếu có hàm trackBothPixels
+      if (typeof trackBothPixels === "function") {
+        trackBothPixels("AddToWishlist", {
+          content_name: "click_btn_atc_" + loai,
+          content_category: loai
+        });
+      }
+
+      tryOpenCartPopup();
     });
-  }
-
-  tryOpenCartPopup();
-});
   } else {
     console.error("❌ Không tìm thấy nút btn-atc trong DOM");
   }
 
-  // ✅ CẬP NHẬT LINK GỌI/CHAT TỪ settings.json
+  // ☎️ Cập nhật link call/chat từ settings.json
   fetch("https://friendly-kitten-d760ff.netlify.app/json/settings.json")
     .then(res => res.json())
     .then(data => {
@@ -61,4 +72,4 @@ setTimeout(() => {
       console.log("✅ Đã cập nhật call/chat link từ settings.json");
     })
     .catch(err => console.warn("⚠️ Lỗi tải settings.json:", err));
-}, 300);
+});
