@@ -1,4 +1,4 @@
-// ✅ Auto load file cartpopup JS tương ứng
+// ✅ Auto load cartpopup JS
 (function loadCartPopupJS() {
   const type = window.cartpopupType || "cartpopup"; // fallback mặc định
   const script = document.createElement("script");
@@ -21,18 +21,7 @@ function tryOpenCartPopup(attempt = 1) {
   }
 }
 
-// ✅ Detect in-app browser (Facebook/Instagram)
-(function detectInAppBrowser() {
-  const ua = navigator.userAgent || "";
-  if (/FBAN|FBAV|FB_IAB|Instagram|IGAPP|IG_VERSION/i.test(ua)) {
-    document.addEventListener("DOMContentLoaded", () => {
-      document.body.classList.add("inapp-meta");
-      console.log("👉 In-App Browser FB/IG detected");
-    });
-  }
-})();
-
-// ✅ Gắn sự kiện sau khi DOM ready
+// ✅ DOM Ready
 document.addEventListener("DOMContentLoaded", () => {
   const btnAtc = document.getElementById("btn-atc");
   const callLink = document.getElementById("call-link");
@@ -67,9 +56,23 @@ document.addEventListener("DOMContentLoaded", () => {
   fetch("https://friendly-kitten-d760ff.netlify.app/json/settings.json")
     .then(res => res.json())
     .then(data => {
-      if (callLink && data.tel) callLink.href = "tel:" + data.tel;
-      if (chatLink && data["fb-page"]) chatLink.href = data["fb-page"];
+      if (callLink && data.tel) {
+        callLink.href = "tel:" + data.tel;
+      }
+      if (chatLink && data["fb-page"]) {
+        chatLink.href = data["fb-page"];
+      }
       console.log("✅ Đã cập nhật call/chat link từ settings.json");
     })
     .catch(err => console.warn("⚠️ Lỗi tải settings.json:", err));
+});
+
+// ✅ Fix: ép stickyfooter hiển thị nếu in-app browser render sai
+window.addEventListener("load", () => {
+  const footer = document.querySelector(".sticky-footer");
+  if (footer && footer.getBoundingClientRect().height < 10) {
+    footer.style.display = "flex";
+    footer.style.height = "60px";
+    console.log("⚡ Ép sticky-footer hiển thị lại (in-app fix)");
+  }
 });
