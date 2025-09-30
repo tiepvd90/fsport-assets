@@ -19,22 +19,38 @@ function tryOpenCartPopup(attempt = 1) {
   }
 }
 
+// 🔎 Nhận diện chắc chắn trang ysandal5568 (global var + URL + data-attr)
+function isYS5568Page() {
+  const fromVar = (window.productPage || "").toLowerCase();
+  const fromPath = (location.pathname || "").toLowerCase();
+  const fromMeta = (document.querySelector("[data-product-page]")?.getAttribute("data-product-page") || "").toLowerCase();
+  const joined = `${fromVar} ${fromPath} ${fromMeta}`;
+  const match = /ysandal\s*5568|ysandal5568|\/product\/ysandal5568/.test(joined);
+  console.log("stickyfooter detect:", { productPage: window.productPage, path: fromPath, meta: fromMeta, isYS5568: match });
+  return match;
+}
+
 // ✅ DOM Ready
 document.addEventListener("DOMContentLoaded", () => {
   const btnAtc = document.getElementById("btn-atc");
   const callLink = document.getElementById("call-link");
   const chatLink = document.getElementById("chat-link");
+  const isYS5568 = isYS5568Page();
 
-  // 🔥 Chỉ riêng dép Ysandal 5568 thì đổi sang nút Shopee
-  if (window.productPage === "ysandal5568" && btnAtc) {
-    btnAtc.textContent = "MUA TẠI SHOPEE";
-    btnAtc.classList.add("shopee"); // style cam trong CSS
-    btnAtc.addEventListener("click", () => {
-      window.open("https://s.shopee.vn/2B5tYCe5Ui", "_blank");
-    });
-  } else {
-    // 🛒 Sự kiện click "THÊM VÀO GIỎ HÀNG" cho các sản phẩm khác
-    if (btnAtc) {
+  if (btnAtc) {
+    if (isYS5568) {
+      // 🔶 Chỉ riêng dép 5568: đổi thành nút Shopee (giữ nguyên chiều dài)
+      btnAtc.textContent = "MUA TẠI SHOPEE";
+      btnAtc.classList.add("shopee"); // màu cam đã có trong CSS
+      btnAtc.onclick = () => {
+        // (tuỳ chọn) bắn pixel riêng
+        if (typeof trackBothPixels === "function") {
+          trackBothPixels("InitiateCheckout", { source: "Shopee", content_name: "ysandal5568" });
+        }
+        window.open("https://s.shopee.vn/2B5tYCe5Ui", "_blank");
+      };
+    } else {
+      // 🛒 Các trang khác: giữ nút THÊM VÀO GIỎ HÀNG
       btnAtc.addEventListener("click", () => {
         const loai = window.productCategory || window.loai || "unknown";
         if (typeof trackBothPixels === "function") {
@@ -48,7 +64,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // ☎️ Cập nhật link call/chat từ settings.json
+  // ☎️ Cập nhật link call/chat từ settings.json (không chặn lỗi)
   fetch("https://friendly-kitten-d760ff.netlify.app/json/settings.json")
     .then(res => res.json())
     .then(data => {
@@ -58,7 +74,7 @@ document.addEventListener("DOMContentLoaded", () => {
     .catch(() => {});
 });
 
-// ✅ Ép stickyfooter hiển thị chắc chắn ở mọi môi trường
+// ✅ Ép stickyfooter hiển thị chắc chắn ở mọi môi trường (in-app)
 window.addEventListener("load", () => {
   const footer = document.querySelector(".sticky-footer");
   if (footer) {
