@@ -77,3 +77,6 @@
 .footer-btn:hover {
   opacity: 0.9;
 }
+/* Container icon ngang */
+.footer-icons { display: flex; gap: 16px; align-items: center; }
+
