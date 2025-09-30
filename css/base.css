@@ -341,3 +341,31 @@ body {
   background: linear-gradient(to right, rgba(255,255,255,0), #fff);
   pointer-events: none;
 }
+
+/* Fix cho in-app browser */
+.inapp-meta .sticky-footer {
+  position: fixed !important;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 9999;
+}
+
+/* Fallback nút nổi */
+.floating-cta {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #e60023;
+  color: #fff;
+  border: none;
+  padding: 12px 18px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 14px;
+  z-index: 10000;
+  display: none;
+}
+.inapp-meta .floating-cta {
+  display: block;
+}
