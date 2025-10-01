@@ -79,14 +79,15 @@
     bottom: 0;
     left: 0;
     width: 100%;
-    max-height: 100vh;     /* ✅ full 100% chiều cao màn hình */
+    height: 100vh;         /* ✅ full màn hình */
+    max-height: 100vh;
     overflow-y: auto;
     background: #fff;
     padding: 16px;
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
-    border-radius: 12px 12px 0 0;
+    border-radius: 0;      /* full screen nên bỏ bo góc */
   }
 
   .cart-popup-content.animate-slideup {
@@ -106,23 +107,31 @@
     border: none;
     background: transparent;
     cursor: pointer;
+    z-index: 2;
   }
 
+  /* ====== HEADER IMAGE ====== */
   .product-header {
-  flex-direction: column; /* Ảnh chiếm trên, info nằm dưới */
-}
-.product-header img {
-  width: 100%;
-  max-height: 60vh;       /* chiếm khoảng 2/3 màn */
-  object-fit: contain;
-  border-radius: 0;
-}
-  
+    display: flex;
+    flex-direction: column; /* ảnh trên, info dưới */
+    margin-bottom: 16px;
+  }
+  .product-header img {
+    width: 100%;
+    max-height: 60vh;       /* chiếm ~2/3 màn hình */
+    object-fit: contain;
+    border-radius: 0;
+    background: #f9f9f9;
+  }
+
   .product-info {
     display: flex;
     flex-direction: column;
     flex: 1;
+    margin-top: 8px;
   }
+
+  /* ====== PRICE ====== */
   .product-price {
     display: flex;
     gap: 8px;
@@ -138,8 +147,40 @@
     font-weight: bold;
     font-size: 16px;
   }
-  .variant-list { margin-top: 12px; }
 
+  /* ====== VARIANTS ====== */
+  .variant-list {
+    margin-top: 12px;
+  }
+  .variant-group {
+    margin-bottom: 12px;
+  }
+  .variant-label {
+    font-size: 14px;
+    margin-bottom: 6px;
+  }
+  .variant-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .variant-buttons button {
+    font-size: 13px;
+    font-weight: normal;
+    padding: 4px 8px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background: #f9f9f9;
+    color: #000;
+    cursor: pointer;
+  }
+  .variant-buttons button.selected {
+    background: #000;
+    color: #fff;
+    border-color: #000;
+  }
+
+  /* ====== QUANTITY ====== */
   .quantity-wrapper {
     display: flex;
     align-items: center;
@@ -170,6 +211,7 @@
     border-radius: 6px;
   }
 
+  /* ====== ADD TO CART BUTTON ====== */
   .btn-atc {
     margin-top: 16px;
     padding: 12px;
@@ -181,26 +223,4 @@
     border-radius: 8px;
     cursor: pointer;
   }
-  .variant-buttons button {
-  color: #000 !important;   /* ép chữ đen */
-  font-weight: 500;         /* giữ cho rõ */
-  text-decoration: none;    /* bỏ gạch chân nếu có */
-}
-.variant-thumb,
-.variant-buttons button {
-  -webkit-text-fill-color: #000 !important; /* ép màu chữ đen cả trên iOS */
-  color: #000 !important;
-}
-.variant-buttons button {
-  font-size: 13px;
-  font-weight: normal;
-  padding: 4px 8px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  background: #f9f9f9;
-}
-.variant-buttons button.selected {
-  background: #000;
-  color: #fff;
-}  
 </style>
