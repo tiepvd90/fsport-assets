@@ -23,14 +23,34 @@
       "display": "button",
       "values": [
         {
-          "text": "Vừa 15x20cm(A5)",
-          "GiaOverride": 199000,
+          "text": "Loại USB 15x20cm(A5)",
+          "GiaOverride": 159000,
+          "GiaGocOverride": 220000
+        },
+        {
+          "text": "Loại USB 20x30cm(A4)",
+          "GiaOverride": 189000,
           "GiaGocOverride": 270000
         },
         {
-          "text": "Lớn 21x30cm(A4)",
-          "GiaOverride": 279000,
-          "GiaGocOverride": 330000
+          "text": "Loại Sạc 15x20cm(A5)",
+          "GiaOverride": 229000,
+          "GiaGocOverride": 300000
+        },
+        {
+          "text": "Loại Sạc 20x30cm(A4)",
+          "GiaOverride": 289000,
+          "GiaGocOverride": 370000
+        },
+        {
+          "text": "Ảnh Riêng Cỡ A5",
+          "GiaOverride": 25000,
+          "GiaGocOverride": 500000
+        },
+        {
+          "text": "Ảnh Riêng Cỡ A4",
+          "GiaOverride": 39000,
+          "GiaGocOverride": 800000
         }
       ]
     },
@@ -51,8 +71,8 @@
     {
       "id": "tranhled",
       "category": "art",
-      "Giá": 199000,
-      "Giá gốc": 270000
+      "Giá": 159000,
+      "Giá gốc": 220000
     }
   ]
 }
