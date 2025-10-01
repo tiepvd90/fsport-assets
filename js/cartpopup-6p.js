@@ -215,45 +215,47 @@ else if (attr.upload === true) {
 
   // ====== Giá & voucher ======
   function applyPriceAndUI(basePrice, basePriceOrig) {
-    const qty = Math.max(1, parseInt($("#quantityInput")?.value || "1", 10));
-    const price = Math.max(0, Number(basePrice || 0)) * qty;
-    const priceOrig = Math.max(price, Number(basePriceOrig || 0) * qty);
+  const qty = Math.max(1, parseInt($("#quantityInput")?.value || "1", 10));
+  const price = Math.max(0, Number(basePrice || 0)) * qty;
+  const priceOrig = Math.max(price, Number(basePriceOrig || 0) * qty);
 
-    const sizeKey = "Kích Thước";
-    const sizeVal = window.currentSelections[sizeKey] || null;
+  const sizeKey = "Kích Thước";
+  const sizeVal = window.currentSelections[sizeKey] || null;
 
-    const idBase = (window.baseVariant?.id || "set-tranh").replace(/\s+/g, "").toLowerCase();
-    const id = sizeVal
-      ? `${idBase}-${sizeVal.replace(/\s+/g, "")}`.toLowerCase()
-      : idBase;
+  const idBase = (window.baseVariant?.id || "set-tranh").replace(/\s+/g, "").toLowerCase();
+  const id = sizeVal
+    ? `${idBase}-${sizeVal.replace(/\s+/g, "")}`.toLowerCase()
+    : idBase;
 
-    const variant = {
-      ...(window.baseVariant || {}),
-      id,
-      [sizeKey]: sizeVal,
-      Uploads: window.currentSelections["Uploads"] || [],
-      note: window.currentSelections["note"] || "",
-      "Giá": price,
-      "Giá gốc": priceOrig,
-    };
+  const variant = {
+    ...(window.baseVariant || {}),
+    ...window.currentSelections,  // ✅ merge toàn bộ selections (size, note, uploads…)
+    id,
+    "Giá": price,
+    "Giá gốc": priceOrig,
+  };
 
-    const sizeAttr = (window.allAttributes || []).find((a) => a.key === sizeKey);
-    if (sizeVal && sizeAttr && Array.isArray(sizeAttr.values)) {
-      const matched = sizeAttr.values.find((v) =>
-        typeof v === "object" ? v.text === sizeVal : v === sizeVal
-      );
-      if (matched && typeof matched === "object" && matched.image) {
-        const mainImage = $("#mainImage");
-        if (mainImage) mainImage.src = matched.image;
-        variant["Ảnh"] = matched.image;
-      } else if (!variant["Ảnh"]) {
-        variant["Ảnh"] = window.baseVariant?.["Ảnh"] || "";
-      }
-    }
-
-    renderPriceVoucherAndText(variant);
-    window.selectedVariant = variant;
+  // ✅ ép Ảnh fallback từ biến thể đầu tiên
+  if (!variant["Ảnh"]) {
+    variant["Ảnh"] = window.baseVariant?.["Ảnh"] || "";
   }
+
+  // Nếu size có ảnh override thì ưu tiên
+  const sizeAttr = (window.allAttributes || []).find((a) => a.key === sizeKey);
+  if (sizeVal && sizeAttr && Array.isArray(sizeAttr.values)) {
+    const matched = sizeAttr.values.find((v) =>
+      typeof v === "object" ? v.text === sizeVal : v === sizeVal
+    );
+    if (matched && typeof matched === "object" && matched.image) {
+      $("#mainImage")?.setAttribute("src", matched.image);
+      variant["Ảnh"] = matched.image;
+    }
+  }
+
+  renderPriceVoucherAndText(variant);
+  window.selectedVariant = variant;
+}
+
 
   function renderPriceVoucherAndText(variant) {
     if (window.__voucherWaiting?.amount) {
@@ -374,12 +376,15 @@ const phanLoaiText = sizeSelected || (product["Kích Thước"] || "Bộ Tranh")
 product["Phân loại"] = phanLoaiText;
 
 const cartItem = {
-  ...product,
-  title: product.title || phanLoaiText,   // thêm title cho checkoutpopup
+  ...product,                       // giữ baseVariant
+  ...window.currentSelections,      // ✅ đẩy toàn bộ selections
+  title: product.title || phanLoaiText,
   quantity,
   loai,
+  "Ảnh": product["Ảnh"] || window.baseVariant?.["Ảnh"] || "", // ✅ đảm bảo luôn có ảnh
   voucher: voucherAmount > 0 ? { amount: voucherAmount } : undefined
 };
+
         window.cart.push(cartItem);
         saveCart();
         updateCartIcon();
