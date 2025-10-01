@@ -389,11 +389,6 @@ if (!noteValue || !noteValue.trim()) {
   alert("Vui lòng nhập Note/Tên/Ngày/Lời Chúc.");
   return;
 }
-const uploads = window.currentSelections["Uploads"] || [];
-if (!uploads.length) {
-  alert("Vui lòng tải lên ít nhất 1 ảnh.");
-  return;
-}
 const quantity = Math.max(1, parseInt($("#quantityInput")?.value || "1", 10));
 const product = { ...(window.selectedVariant || {}) };
 
