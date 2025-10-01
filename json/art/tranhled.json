@@ -5,15 +5,83 @@
     {
       "label": "Mẫu Thiết Kế",
       "key": "Mẫu Thiết Kế",
-      "display": "button",
+      "display": "thumbnail",
       "values": [
         {
-          "text": "Mẫu 1: 20 Tháng 10",
+          "text": "20/10-1",
           "image": "/assets/images/thumb/art/tranhled/2010/1.webp"
         },
         {
-          "text": "Mẫu 4: Sinh Nhật",
-          "image": "/assets/images/thumb/art/tranhled/2010/1.webp"
+          "text": "20/10-2",
+          "image": "/assets/images/thumb/art/tranhled/2010/2.webp"
+        },
+        {
+          "text": "20/10-3",
+          "image": "/assets/images/thumb/art/tranhled/2010/3.webp"
+        },
+        {
+          "text": "SinhNhật-1",
+          "image": "/assets/images/thumb/art/tranhled/sinhnhat/1.webp"
+        },
+        {
+          "text": "SinhNhật-2",
+          "image": "/assets/images/thumb/art/tranhled/sinhnhat/2.webp"
+        },
+        {
+          "text": "SinhNhật-3",
+          "image": "/assets/images/thumb/art/tranhled/sinhnhat/3.webp"
+        },
+        {
+          "text": "SinhNhật-4",
+          "image": "/assets/images/thumb/art/tranhled/sinhnhat/4.webp"
+        },
+        {
+          "text": "SinhNhật-5",
+          "image": "/assets/images/thumb/art/tranhled/sinhnhat/5.webp"
+        },
+        {
+          "text": "SinhNhật-6",
+          "image": "/assets/images/thumb/art/tranhled/sinhnhat/6.webp"
+        },
+        {
+          "text": "SinhNhật-7",
+          "image": "/assets/images/thumb/art/tranhled/sinhnhat/7.webp"
+        },
+        {
+          "text": "KỷNiệm-1",
+          "image": "/assets/images/thumb/art/tranhled/kyniem/1.webp"
+        },
+        {
+          "text": "KỷNiệm-2",
+          "image": "/assets/images/thumb/art/tranhled/kyniem/2.webp"
+        },
+        {
+          "text": "KỷNiệm-3",
+          "image": "/assets/images/thumb/art/tranhled/kyniem/3.webp"
+        },
+        {
+          "text": "KỷNiệm-4",
+          "image": "/assets/images/thumb/art/tranhled/kyniem/4.webp"
+        },
+        {
+          "text": "KỷNiệm-5",
+          "image": "/assets/images/thumb/art/tranhled/kyniem/5.webp"
+        },
+        {
+          "text": "KỷNiệm-6",
+          "image": "/assets/images/thumb/art/tranhled/kyniem/6.webp"
+        },
+        {
+          "text": "KỷNiệm-7",
+          "image": "/assets/images/thumb/art/tranhled/kyniem/7.webp"
+        },
+        {
+          "text": "KỷNiệm-8",
+          "image": "/assets/images/thumb/art/tranhled/kyniem/8.webp"
+        },
+        {
+          "text": "KỷNiệm-9",
+          "image": "/assets/images/thumb/art/tranhled/kyniem/9.webp"
         }
       ]
     },
@@ -23,32 +91,32 @@
       "display": "button",
       "values": [
         {
-          "text": "Loại USB 15x20cm(A5)",
+          "text": "USB-A5",
           "GiaOverride": 159000,
           "GiaGocOverride": 220000
         },
         {
-          "text": "Loại USB 20x30cm(A4)",
+          "text": "USB-A4",
           "GiaOverride": 189000,
           "GiaGocOverride": 270000
         },
         {
-          "text": "Loại Sạc 15x20cm(A5)",
+          "text": "PinSạc-A5",
           "GiaOverride": 229000,
           "GiaGocOverride": 300000
         },
         {
-          "text": "Loại Sạc 20x30cm(A4)",
+          "text": "PinSạc-A4",
           "GiaOverride": 289000,
           "GiaGocOverride": 370000
         },
         {
-          "text": "Ảnh Riêng Cỡ A5",
+          "text": "Chỉ Ảnh-A5",
           "GiaOverride": 25000,
           "GiaGocOverride": 500000
         },
         {
-          "text": "Ảnh Riêng Cỡ A4",
+          "text": "Chỉ Ảnh-A4",
           "GiaOverride": 39000,
           "GiaGocOverride": 800000
         }
