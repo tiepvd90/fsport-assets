@@ -51,22 +51,23 @@
       window.baseVariant = data["biến_thể"][0];
       window.productCategory = data["category"] || window.baseVariant?.category || "art";
 
-      // ✅ Lấy mainImage từ lựa chọn đầu tiên của biến thể đầu tiên
-const mainImage = $("#mainImage");
+      // ✅ Main image mặc định
+      const mainImage = $("#mainImage");
 if (mainImage) {
-  const mainAttrKey = data.mainImageKey || (data["thuộc_tính"][0]?.key);
-  const mainAttr = (data["thuộc_tính"] || []).find((a) => a.key === mainAttrKey);
-
-  if (mainAttr && Array.isArray(mainAttr.values) && mainAttr.values.length > 0) {
-    const firstVal = mainAttr.values[0];
-    if (typeof firstVal === "object" && firstVal.image) {
-      mainImage.src = firstVal.image;
-      window.currentSelections[mainAttr.key] = firstVal.text; // auto chọn mặc định
-    }
+  const designAttr = (data["thuộc_tính"] || []).find((a) => a.key === "Thiết Kế");
+  if (designAttr && Array.isArray(designAttr.values) && designAttr.values[0]?.image) {
+    mainImage.src = designAttr.values[0].image;
   } else {
-    mainImage.src = window.baseVariant?.["Ảnh"] || "";
+    const sizeAttr = (data["thuộc_tính"] || []).find((a) => a.key === "Kích Thước");
+    if (sizeAttr && Array.isArray(sizeAttr.values) && sizeAttr.values[0]?.image) {
+      mainImage.src = sizeAttr.values[0].image;
+    } else {
+      mainImage.src = window.baseVariant?.["Ảnh"] || "";
+    }
   }
 }
+
+
       renderOptions(window.allAttributes);
       updatePriceUI(window.baseVariant?.["Giá"] || 0, window.baseVariant?.["Giá gốc"] || 0);
       bindAddToCartButton();
@@ -215,50 +216,56 @@ else if (attr.upload === true) {
 
   // ====== Giá & voucher ======
   function applyPriceAndUI(basePrice, basePriceOrig) {
-  // 1. Lấy toàn bộ selections hiện tại
-  const clean = { ...window.currentSelections };
+    const qty = Math.max(1, parseInt($("#quantityInput")?.value || "1", 10));
+    const price = Math.max(0, Number(basePrice || 0)) * qty;
+    const priceOrig = Math.max(price, Number(basePriceOrig || 0) * qty);
 
-  // 2. Gộp vào baseVariant
-  const variant = { ...(window.baseVariant || {}), ...clean };
+    const sizeKey = "Kích Thước";
+    const sizeVal = window.currentSelections[sizeKey] || null;
 
-  // 3. Tính giá
-  const qty = Math.max(1, parseInt($("#quantityInput")?.value || "1", 10));
-  let price = Number(basePrice || 0) * qty;
-  let priceOrig = Number(basePriceOrig || 0) * qty;
-  variant["Giá"] = price;
-  variant["Giá gốc"] = priceOrig;
-
-  // 4. Tạo id riêng theo size (nếu có)
-  const sizeKey = "Kích Thước";
-  if (clean[sizeKey]) {
     const idBase = (window.baseVariant?.id || "set-tranh").replace(/\s+/g, "").toLowerCase();
-    variant.id = `${idBase}-${clean[sizeKey].replace(/\s+/g, "")}`.toLowerCase();
-  } else {
-    variant.id = (window.baseVariant?.id || "set-tranh").toLowerCase();
-  }
+    const id = sizeVal
+      ? `${idBase}-${sizeVal.replace(/\s+/g, "")}`.toLowerCase()
+      : idBase;
 
-  // 5. Ảnh: ưu tiên theo mainImageKey, fallback baseVariant
-const mainKey = window.mainImageKey || "Kích Thước";
-const mainVal = clean[mainKey];
-const mainAttr = (window.allAttributes || []).find(a => a.key === mainKey);
+    const variant = {
+      ...(window.baseVariant || {}),
+      id,
+      [sizeKey]: sizeVal,
+      Uploads: window.currentSelections["Uploads"] || [],
+      note: window.currentSelections["note"] || "",
+      "Giá": price,
+      "Giá gốc": priceOrig,
+    };
 
-if (mainAttr && mainVal) {
-  const matched = mainAttr.values.find(v =>
-    typeof v === "object" ? v.text === mainVal : v === mainVal
-  );
-  if (matched?.image) {
-    $("#mainImage")?.setAttribute("src", matched.image);
+    const sizeAttr = (window.allAttributes || []).find((a) => a.key === sizeKey);
+    if (sizeVal && sizeAttr && Array.isArray(sizeAttr.values)) {
+      const matched = sizeAttr.values.find((v) =>
+        typeof v === "object" ? v.text === sizeVal : v === sizeVal
+      );
+      if (matched && typeof matched === "object" && matched.image) {
+        const mainImage = $("#mainImage");
+        if (mainImage) mainImage.src = matched.image;
+        variant["Ảnh"] = matched.image;
+      } else if (!variant["Ảnh"]) {
+        variant["Ảnh"] = window.baseVariant?.["Ảnh"] || "";
+      }
+    }
+// ✅ Nếu có chọn Thiết Kế thì ưu tiên ảnh làm thumbnail
+const thietKeVal = window.currentSelections["Thiết Kế"];
+const thietKeAttr = (window.allAttributes || []).find((a) => a.key === "Thiết Kế");
+if (thietKeVal && thietKeAttr && Array.isArray(thietKeAttr.values)) {
+  const matched = thietKeAttr.values.find(v => v.text === thietKeVal);
+  if (matched && matched.image) {
     variant["Ảnh"] = matched.image;
+    const mainImage = $("#mainImage");
+    if (mainImage) mainImage.src = matched.image;
   }
 }
-if (!variant["Ảnh"]) {
-  variant["Ảnh"] = window.baseVariant?.["Ảnh"] || "";
-}
 
-  // 6. Lưu lại và render UI
-  window.selectedVariant = variant;
-  renderPriceVoucherAndText(variant);
-}
+    renderPriceVoucherAndText(variant);
+    window.selectedVariant = variant;
+  }
 
   function renderPriceVoucherAndText(variant) {
     if (window.__voucherWaiting?.amount) {
@@ -308,27 +315,11 @@ if (!variant["Ảnh"]) {
 
     const productVariantText = $("#productVariantText");
 if (productVariantText) {
-  const ignore = new Set(["Ảnh", "Giá", "Giá gốc", "id", "category"]);
-  const selectedText = [];
-
-  for (let key in variant) {
-    if (ignore.has(key)) continue;
-    if (!variant[key]) continue;
-
-    // Nếu là Uploads (array) → chỉ hiển thị số lượng ảnh
-    if (Array.isArray(variant[key])) {
-      if (variant[key].length > 0) {
-        selectedText.push(`${key}: ${variant[key].length} ảnh`);
-      }
-    } else {
-      selectedText.push(`${variant[key]}`);
-    }
-  }
-
-  productVariantText.textContent = selectedText.join(" - ");
+  const thietKe = variant["Thiết Kế"] || "";
+  const kichThuoc = variant["Kích Thước"] || "";
+  productVariantText.textContent = `${thietKe} ${kichThuoc}`.trim();
   productVariantText.style.marginTop = "16px";
 }
-
 
   }
 
@@ -391,81 +382,27 @@ const product = { ...(window.selectedVariant || {}) };
 const loai = window.productCategory || "art";
 const voucherAmount = window.voucherByProduct?.[product.id] || 0;
 
-// ✅ Chỉ giữ lại 1 khai báo phanLoaiText
-const phanLoaiText = sizeSelected || (product["Kích Thước"] || "Bộ Tranh");
+// ✅ Ghép Thiết Kế + Kích Thước để hiển thị rõ ràng
+const phanLoaiText = `${window.currentSelections["Thiết Kế"] || ""} ${sizeSelected || ""}`.trim() || "Bộ Tranh";
 product["Phân loại"] = phanLoaiText;
 
-// Tạo text hiển thị từ toàn bộ selections
-const ignore = new Set(["Ảnh", "Giá", "Giá gốc", "id", "category"]);
-const selectedText = [];
-for (let key in window.currentSelections) {
-  if (ignore.has(key)) continue;
-  if (!window.currentSelections[key]) continue;
 
-  if (Array.isArray(window.currentSelections[key])) {
-    if (window.currentSelections[key].length > 0) {
-      selectedText.push(`${key}: ${window.currentSelections[key].length} ảnh`);
-    }
-  } else {
-    selectedText.push(window.currentSelections[key]);
-  }
-}
-
-// ✅ Thu thập tất cả selections theo key JSON
-const selections = {};
-(window.allAttributes || []).forEach(attr => {
-  const key = attr.key;
-  const value = window.currentSelections[key];
-
-  if (!value) return;
-
-  // Nếu có values dạng object (có image, giá…) thì lấy đủ
-  if (Array.isArray(attr.values)) {
-    const matched = attr.values.find(v =>
-      typeof v === "object" ? v.text === value : v === value
-    );
-    if (matched) {
-      selections[key] = {
-        text: matched.text || value,
-        image: matched.image || null,
-        GiaOverride: matched.GiaOverride || null,
-        GiaGocOverride: matched.GiaGocOverride || null
-      };
-    } else {
-      selections[key] = { text: value };
-    }
-  }
-  // Nếu là input text
-  else if (attr.input === "text") {
-    selections[key] = { text: value };
-  }
-  // Nếu là upload
-  else if (attr.upload) {
-    selections[key] = { files: window.currentSelections["Uploads"] || [] };
-  }
-});
-
-// ✅ Lấy ảnh thumbnail ưu tiên từ Mẫu Thiết Kế
-let thumbImage = window.selectedVariant["Ảnh"] || window.baseVariant?.["Ảnh"] || "";
-if (selections["Mẫu Thiết Kế"]?.image) {
-  thumbImage = selections["Mẫu Thiết Kế"].image;
-}
+const thietKe = window.currentSelections["Thiết Kế"] || "";
+const kichThuoc = window.currentSelections["Kích Thước"] || "";
+const uploads = window.currentSelections["Uploads"] || [];
+const note = window.currentSelections["note"] || "";
 
 const cartItem = {
-  id: product.id,
-  title: selections["Mẫu Thiết Kế"]?.text || "Sản phẩm",
-  selections,                        // ✅ đẩy nguyên object selections sang checkoutpopup
+  ...product,
+  title: `${thietKe} ${kichThuoc}`.trim() || product.title || phanLoaiText,
   quantity,
   loai,
-  "Ảnh": thumbImage,                 // thumbnail chuẩn
-  "Giá": product["Giá"],
-  "Giá gốc": product["Giá gốc"],
-  voucher: voucherAmount > 0 ? { amount: voucherAmount } : undefined
+  voucher: voucherAmount > 0 ? { amount: voucherAmount } : undefined,
+  "Thiết Kế": thietKe,
+  "Kích Thước": kichThuoc,
+  Uploads: uploads,
+  note: note
 };
-
-window.cart.push(cartItem);
-saveCart();
-
 
         window.cart.push(cartItem);
         saveCart();
@@ -486,17 +423,20 @@ saveCart();
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            content_id: product.id,
-            content_name: phanLoaiText,
-            content_category: product.category || loai,
-            content_page: window.productPage || "unknown",
-            value: product["Giá"],
-            currency: "VND",
-            uploads: window.currentSelections["Uploads"] || [],
-            note: window.currentSelections["note"] || "",
-            quantity,
-            timestamp: new Date().toISOString(),
-          }),
+  content_id: product.id,
+  content_name: `${thietKe} ${kichThuoc}`.trim() || phanLoaiText,
+  content_category: product.category || loai,
+  content_page: window.productPage || "unknown",
+  value: product["Giá"],
+  currency: "VND",
+  "Thiết Kế": thietKe,
+  "Kích Thước": kichThuoc,
+  uploads: uploads,
+  note: note,
+  quantity,
+  timestamp: new Date().toISOString(),
+}),
+
         }).catch((err) => console.warn("⚠️ Không thể gửi Make:", err));
 
         toggleCartPopup(false);
@@ -557,12 +497,14 @@ saveCart();
     const p = Number(price || 0);
     const o = Number(priceOrig || p);
     renderPriceVoucherAndText({
-      ...(window.baseVariant || {}),
-      id: window.baseVariant?.id || "set-tranh",
-      "Giá": p,
-      "Giá gốc": o,
-      "Kích Thước": window.currentSelections["Kích Thước"] || null,
-    });
+  ...(window.baseVariant || {}),
+  id: window.baseVariant?.id || "set-tranh",
+  "Giá": p,
+  "Giá gốc": o,
+  "Kích Thước": window.currentSelections["Kích Thước"] || null,
+  "Thiết Kế": window.currentSelections["Thiết Kế"] || null,
+});
+
   }
 
   // ====== Wireup ======
