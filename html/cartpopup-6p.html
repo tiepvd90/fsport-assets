@@ -28,15 +28,13 @@
     <div class="product-header">
       <img id="mainImage" src="" alt="Ảnh sản phẩm" />
       <div class="product-info">
-        <div>
-          <div class="product-price">
-            <span class="price-original" id="productOriginalPrice">0đ</span>
-            <span class="price-sale" id="productPrice">0đ</span>
-          </div>
-          <div id="voucherLabel"></div>
-          <div id="finalPriceLine"></div>
+        <div class="product-price">
+          <span class="price-original" id="productOriginalPrice">0đ</span>
+          <span class="price-sale" id="productPrice">0đ</span>
         </div>
-        <div class="product-variant" id="productVariantText" style="font-size: 14px; color: #333;"></div>
+        <div id="voucherLabel"></div>
+        <div id="finalPriceLine"></div>
+        <div class="product-variant" id="productVariantText"></div>
       </div>
     </div>
 
@@ -52,9 +50,13 @@
         <button type="button" onclick="changeQuantity(1)">+</button>
       </div>
     </div>
+
+    <!-- ✅ NÚT ATC -->
+    <button class="btn-atc" id="btn-atc">THÊM VÀO GIỎ HÀNG</button>
   </div>
 </div>
 
+<!-- ✅ CSS -->
 <style>
   .cart-popup {
     position: fixed;
@@ -108,15 +110,15 @@
     align-items: flex-start;
   }
   .product-header img {
-    flex: 1;
-    max-width: 75%;       /* ✅ to hơn: chiếm 3/4 ngang */
-    max-height: 75vh;     /* ✅ cao hơn */
+    flex: 3;                 /* ảnh chiếm nhiều hơn */
+    max-width: 75%;
+    max-height: 75vh;
     object-fit: contain;
     border-radius: 8px;
     background: #f9f9f9;
   }
   .product-info {
-    flex: 1;
+    flex: 1;                 /* info chiếm nhỏ hơn */
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -164,7 +166,7 @@
   .variant-label {
     font-weight: 600;
     margin-bottom: 6px;
-    font-size: 17px; /* ✅ to hơn 2 size */
+    font-size: 17px; /* to hơn */
   }
   .variant-buttons {
     display: flex;
@@ -172,7 +174,7 @@
     gap: 6px;
   }
   .variant-buttons button {
-    font-size: 13px;        /* ✅ giảm 1 size */
+    font-size: 13px;        /* nhỏ hơn */
     font-weight: normal;
     padding: 5px 10px;
     border: 1px solid #ccc;
@@ -232,5 +234,21 @@
     border-radius: 8px;
     cursor: pointer;
     font-size: 15px;
+  }
+
+  /* ====== RESPONSIVE ====== */
+  @media (max-width: 768px) {
+    .product-header {
+      flex-direction: column;
+    }
+    .product-header img {
+      width: 100%;
+      max-width: 100%;
+      max-height: 70vh;
+    }
+    .product-info {
+      width: 100%;
+      margin-top: 8px;
+    }
   }
 </style>
