@@ -215,47 +215,49 @@ else if (attr.upload === true) {
 
   // ====== Giá & voucher ======
   function applyPriceAndUI(basePrice, basePriceOrig) {
+  // 1. Lấy toàn bộ selections hiện tại
+  const clean = { ...window.currentSelections };
+
+  // 2. Gộp vào baseVariant
+  const variant = { ...(window.baseVariant || {}), ...clean };
+
+  // 3. Tính giá
   const qty = Math.max(1, parseInt($("#quantityInput")?.value || "1", 10));
-  const price = Math.max(0, Number(basePrice || 0)) * qty;
-  const priceOrig = Math.max(price, Number(basePriceOrig || 0) * qty);
+  let price = Number(basePrice || 0) * qty;
+  let priceOrig = Number(basePriceOrig || 0) * qty;
+  variant["Giá"] = price;
+  variant["Giá gốc"] = priceOrig;
 
+  // 4. Tạo id riêng theo size (nếu có)
   const sizeKey = "Kích Thước";
-  const sizeVal = window.currentSelections[sizeKey] || null;
-
-  const idBase = (window.baseVariant?.id || "set-tranh").replace(/\s+/g, "").toLowerCase();
-  const id = sizeVal
-    ? `${idBase}-${sizeVal.replace(/\s+/g, "")}`.toLowerCase()
-    : idBase;
-
-  const variant = {
-    ...(window.baseVariant || {}),
-    ...window.currentSelections,  // ✅ merge toàn bộ selections (size, note, uploads…)
-    id,
-    "Giá": price,
-    "Giá gốc": priceOrig,
-  };
-
-  // ✅ ép Ảnh fallback từ biến thể đầu tiên
-  if (!variant["Ảnh"]) {
-    variant["Ảnh"] = window.baseVariant?.["Ảnh"] || "";
+  if (clean[sizeKey]) {
+    const idBase = (window.baseVariant?.id || "set-tranh").replace(/\s+/g, "").toLowerCase();
+    variant.id = `${idBase}-${clean[sizeKey].replace(/\s+/g, "")}`.toLowerCase();
+  } else {
+    variant.id = (window.baseVariant?.id || "set-tranh").toLowerCase();
   }
 
-  // Nếu size có ảnh override thì ưu tiên
-  const sizeAttr = (window.allAttributes || []).find((a) => a.key === sizeKey);
-  if (sizeVal && sizeAttr && Array.isArray(sizeAttr.values)) {
-    const matched = sizeAttr.values.find((v) =>
-      typeof v === "object" ? v.text === sizeVal : v === sizeVal
-    );
-    if (matched && typeof matched === "object" && matched.image) {
-      $("#mainImage")?.setAttribute("src", matched.image);
-      variant["Ảnh"] = matched.image;
+  // 5. Ảnh: ưu tiên theo giá trị có image, fallback baseVariant
+  if (!variant["Ảnh"]) {
+    const sizeAttr = (window.allAttributes || []).find((a) => a.key === sizeKey);
+    if (clean[sizeKey] && sizeAttr && Array.isArray(sizeAttr.values)) {
+      const matched = sizeAttr.values.find(v =>
+        typeof v === "object" ? v.text === clean[sizeKey] : v === clean[sizeKey]
+      );
+      if (matched?.image) {
+        $("#mainImage")?.setAttribute("src", matched.image);
+        variant["Ảnh"] = matched.image;
+      }
+    }
+    if (!variant["Ảnh"]) {
+      variant["Ảnh"] = window.baseVariant?.["Ảnh"] || "";
     }
   }
 
-  renderPriceVoucherAndText(variant);
+  // 6. Lưu lại và render UI
   window.selectedVariant = variant;
+  renderPriceVoucherAndText(variant);
 }
-
 
   function renderPriceVoucherAndText(variant) {
     if (window.__voucherWaiting?.amount) {
@@ -376,15 +378,12 @@ const phanLoaiText = sizeSelected || (product["Kích Thước"] || "Bộ Tranh")
 product["Phân loại"] = phanLoaiText;
 
 const cartItem = {
-  ...product,                       // giữ baseVariant
-  ...window.currentSelections,      // ✅ đẩy toàn bộ selections
+  ...window.selectedVariant,        // ✅ lấy full variant đã merge selections + giá + ảnh
   title: product.title || phanLoaiText,
   quantity,
   loai,
-  "Ảnh": product["Ảnh"] || window.baseVariant?.["Ảnh"] || "", // ✅ đảm bảo luôn có ảnh
   voucher: voucherAmount > 0 ? { amount: voucherAmount } : undefined
 };
-
         window.cart.push(cartItem);
         saveCart();
         updateCartIcon();
