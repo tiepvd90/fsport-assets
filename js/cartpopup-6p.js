@@ -309,13 +309,25 @@ else if (attr.upload === true) {
 if (productVariantText) {
   const ignore = new Set(["Ảnh", "Giá", "Giá gốc", "id", "category"]);
   const selectedText = [];
+
   for (let key in variant) {
     if (ignore.has(key)) continue;
-    if (variant[key]) selectedText.push(variant[key]);
+    if (!variant[key]) continue;
+
+    // Nếu là Uploads (array) → chỉ hiển thị số lượng ảnh
+    if (Array.isArray(variant[key])) {
+      if (variant[key].length > 0) {
+        selectedText.push(`${key}: ${variant[key].length} ảnh`);
+      }
+    } else {
+      selectedText.push(`${variant[key]}`);
+    }
   }
+
   productVariantText.textContent = selectedText.join(" - ");
   productVariantText.style.marginTop = "16px";
 }
+
 
   }
 
