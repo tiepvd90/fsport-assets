@@ -5,14 +5,15 @@
     const container = document.getElementById("cartContainer");
     const productPage = window.productPage || "default";
     const category = window.productCategory || "art";
+
     if (container) {
-      fetch(`/json/${productPage}.json`)
+      fetch(/json/${productPage}.json)
         .then(res => {
           if (!res.ok) throw new Error("Primary JSON not found");
-          container.setAttribute("data-json", `/json/${productPage}.json`);
+          container.setAttribute("data-json", /json/${productPage}.json);
         })
         .catch(() => {
-          container.setAttribute("data-json", `/json/${category}/${productPage}.json`);
+          container.setAttribute("data-json", /json/${category}/${productPage}.json);
         });
     }
   }
@@ -28,13 +29,15 @@
     <div class="product-header">
       <img id="mainImage" src="" alt="Ảnh sản phẩm" />
       <div class="product-info">
-        <div class="product-price">
-          <span class="price-original" id="productOriginalPrice">0đ</span>
-          <span class="price-sale" id="productPrice">0đ</span>
+        <div>
+          <div class="product-price">
+            <span class="price-original" id="productOriginalPrice">0đ</span>
+            <span class="price-sale" id="productPrice">0đ</span>
+          </div>
+          <div id="voucherLabel"></div>
+          <div id="finalPriceLine"></div>
         </div>
-        <div id="voucherLabel"></div>
-        <div id="finalPriceLine"></div>
-        <div class="product-variant" id="productVariantText"></div>
+        <div class="product-variant" id="productVariantText" style="font-size: 14px; color: #333;"></div>
       </div>
     </div>
 
@@ -50,13 +53,9 @@
         <button type="button" onclick="changeQuantity(1)">+</button>
       </div>
     </div>
-
-    <!-- ✅ NÚT ATC -->
-    <button class="btn-atc" id="btn-atc">THÊM VÀO GIỎ HÀNG</button>
   </div>
 </div>
 
-<!-- ✅ CSS -->
 <style>
   .cart-popup {
     position: fixed;
@@ -67,7 +66,10 @@
     z-index: 9999;
     font-family: 'Be Vietnam Pro', sans-serif;
   }
-  .cart-popup.hidden { display: none; }
+
+  .cart-popup.hidden {
+    display: none;
+  }
 
   .cart-popup-overlay {
     position: fixed;
@@ -80,7 +82,7 @@
     top: 0;
     left: 0;
     width: 100%;
-    height: 100vh;          /* full màn hình */
+    height: 100vh; /* full màn hình */
     overflow-y: auto;
     background: #fff;
     padding: 16px;
@@ -88,6 +90,7 @@
     flex-direction: column;
     box-sizing: border-box;
     border-radius: 0;
+    font-family: 'Be Vietnam Pro', sans-serif;
   }
 
   .cart-popup-close {
@@ -108,16 +111,18 @@
     margin-bottom: 16px;
     align-items: flex-start;
   }
+
   .product-header img {
-    flex: 3;                 /* ảnh chiếm nhiều hơn */
-    max-width: 75%;
-    max-height: 75vh;
+    flex: 1;
+    max-width: 75%;   /* ✅ to hơn: chiếm 3/4 ngang */
+    max-height: 75vh; /* ✅ cao hơn */
     object-fit: contain;
     border-radius: 8px;
     background: #f9f9f9;
   }
+
   .product-info {
-    flex: 1;                 /* info nhỏ hơn */
+    flex: 1;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -130,16 +135,19 @@
     align-items: baseline;
     margin-bottom: 8px;
   }
+
   .price-original {
     color: #888;
     text-decoration: line-through;
     font-size: 15px;
   }
+
   .price-sale {
     color: #d0021b;
     font-weight: bold;
     font-size: 20px;
   }
+
   #voucherLabel {
     display: none;
     background-color: rgba(0, 160, 230, 0.6);
@@ -151,6 +159,7 @@
     margin-top: 6px;
     width: fit-content;
   }
+
   #finalPriceLine {
     display: none;
     font-weight: bold;
@@ -160,20 +169,28 @@
   }
 
   /* ====== VARIANTS ====== */
-  .variant-list { margin-top: 12px; }
-  .variant-group { margin-bottom: 16px; }
+  .variant-list {
+    margin-top: 12px;
+  }
+
+  .variant-group {
+    margin-bottom: 16px;
+  }
+
   .variant-label {
     font-weight: 600;
     margin-bottom: 6px;
-    font-size: 17px; /* label to hơn */
+    font-size: 17px; /* ✅ to hơn 2 size */
   }
+
   .variant-buttons {
     display: flex;
     flex-wrap: wrap;
     gap: 6px;
   }
+
   .variant-buttons button {
-    font-size: 13px;        /* option nhỏ hơn */
+    font-size: 13px; /* ✅ giảm 1 size */
     font-weight: normal;
     padding: 5px 10px;
     border: 1px solid #ccc;
@@ -183,6 +200,7 @@
     cursor: pointer;
     transition: all 0.2s ease;
   }
+
   .variant-buttons button.selected {
     border-color: #d0021b;
     box-shadow: 0 0 0 2px rgba(208, 2, 27, 0.3);
@@ -197,11 +215,13 @@
     margin-top: 12px;
     gap: 10px;
   }
+
   .quantity-control {
     display: flex;
     align-items: center;
     gap: 6px;
   }
+
   .quantity-control button {
     width: 28px;
     height: 28px;
@@ -212,6 +232,7 @@
     border-radius: 6px;
     cursor: pointer;
   }
+
   .quantity-control input {
     width: 48px;
     height: 28px;
@@ -233,21 +254,5 @@
     border-radius: 8px;
     cursor: pointer;
     font-size: 15px;
-  }
-
-  /* ====== RESPONSIVE ====== */
-  @media (max-width: 768px) {
-    .product-header {
-      flex-direction: column;
-    }
-    .product-header img {
-      width: 100%;          /* full ngang trên mobile */
-      max-width: 100%;
-      max-height: 70vh;
-    }
-    .product-info {
-      width: 100%;
-      margin-top: 8px;
-    }
   }
 </style>
