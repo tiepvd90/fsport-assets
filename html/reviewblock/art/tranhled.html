@@ -1,0 +1,101 @@
+<style> 
+  .review-item {
+    margin-top: 16px;
+  }
+
+  .review-header {
+    font-size: 13px;
+    font-weight: 500;
+    color: #444;
+    margin-bottom: 4px;
+  }
+
+  .review-stars {
+    color: #FFD700;
+    font-size: 14px;
+    margin-bottom: 4px;
+  }
+
+  .review-text {
+    font-size: 14px;
+    color: #222;
+    line-height: 1.5;
+    margin-bottom: 6px;
+  }
+
+  .review-images {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 6px;
+    box-sizing: border-box;
+  }
+
+  .review-image {
+    width: calc(25% - 4.5px);
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: 6px;
+    box-sizing: border-box;
+  }
+</style>
+
+<h2 style="font-size: 16px; font-weight: bold; margin-bottom: 12px;">
+  Review Sản Phẩm
+</h2>
+
+<!-- ✅ 4 ô hiển thị review -->
+<div id="review1" class="review-item"></div>
+<div id="review2" class="review-item"></div>
+<div id="review3" class="review-item"></div>
+
+<script>
+  async function fetchAndRenderReviews() {
+    try {
+      const res = await fetch("/json/reviewblock/art-tranhled.json");
+      const data = await res.json();
+
+      if (!Array.isArray(data) || data.length < 3) {
+        console.error("Không đủ review để hiển thị.");
+        return;
+      }
+
+      const indices = getUniqueRandomIndices(3, data.length);
+      for (let i = 0; i < 3; i++) {
+        renderReview(`review${i + 1}`, data[indices[i]]);
+      }
+    } catch (err) {
+      console.error("Lỗi khi tải review JSON:", err);
+    }
+  }
+
+  function getUniqueRandomIndices(count, max) {
+    const set = new Set();
+    while (set.size < count) {
+      set.add(Math.floor(Math.random() * max));
+    }
+    return Array.from(set);
+  }
+
+  function renderReview(containerId, reviewData) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+
+    const { reviewName, reviewText, reviewImages } = reviewData;
+
+    const imagesHTML = (reviewImages || []).map(url => {
+      return `<img src="${url}" alt="Ảnh review" class="review-image">`;
+    }).join("");
+
+    container.innerHTML = `
+      <div class="review-header">
+        <span class="review-name">${reviewName}</span>
+      </div>
+      <div class="review-stars">★★★★★</div>
+      <div class="review-text">${reviewText}</div>
+      <div class="review-images">${imagesHTML}</div>
+    `;
+  }
+
+  fetchAndRenderReviews();
+</script>
