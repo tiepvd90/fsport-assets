@@ -254,7 +254,6 @@ const variant = {
       }
     }
 // ✅ Nếu có chọn Thiết Kế thì ưu tiên ảnh làm thumbnail
-const thietKeVal = window.currentSelections["Thiết Kế"];
 const thietKeAttr = (window.allAttributes || []).find((a) => a.key === "Thiết Kế");
 if (thietKeVal && thietKeAttr && Array.isArray(thietKeAttr.values)) {
   const matched = thietKeAttr.values.find(v => v.text === thietKeVal);
