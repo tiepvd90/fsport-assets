@@ -55,7 +55,6 @@
   </div>
 </div>
 
-<!-- ✅ CSS -->
 <style>
   .cart-popup {
     position: fixed;
@@ -66,9 +65,7 @@
     z-index: 9999;
     font-family: 'Be Vietnam Pro', sans-serif;
   }
-  .cart-popup.hidden {
-    display: none;
-  }
+  .cart-popup.hidden { display: none; }
 
   .cart-popup-overlay {
     position: fixed;
@@ -88,16 +85,8 @@
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
-    border-radius: 0;       /* bỏ bo góc */
+    border-radius: 0;
     font-family: 'Be Vietnam Pro', sans-serif;
-  }
-
-  .cart-popup-content.animate-slideup {
-    animation: slideUp 0.3s ease-out forwards;
-  }
-  @keyframes slideUp {
-    from { transform: translateY(100%); }
-    to { transform: translateY(0%); }
   }
 
   .cart-popup-close {
@@ -116,11 +105,12 @@
     display: flex;
     gap: 16px;
     margin-bottom: 16px;
+    align-items: flex-start;
   }
   .product-header img {
     flex: 1;
-    max-width: 60%;       /* ảnh chiếm bên trái */
-    max-height: 60vh;
+    max-width: 75%;       /* ✅ to hơn: chiếm 3/4 ngang */
+    max-height: 75vh;     /* ✅ cao hơn */
     object-fit: contain;
     border-radius: 8px;
     background: #f9f9f9;
@@ -131,6 +121,8 @@
     flex-direction: column;
     justify-content: flex-start;
   }
+
+  /* ====== PRICE ====== */
   .product-price {
     display: flex;
     gap: 8px;
@@ -140,12 +132,12 @@
   .price-original {
     color: #888;
     text-decoration: line-through;
-    font-size: 14px;
+    font-size: 15px;
   }
   .price-sale {
     color: #d0021b;
     font-weight: bold;
-    font-size: 18px;
+    font-size: 20px;
   }
   #voucherLabel {
     display: none;
@@ -163,20 +155,16 @@
     font-weight: bold;
     color: #d32f2f;
     margin-top: 4px;
-    font-size: 18px;
+    font-size: 20px;
   }
 
   /* ====== VARIANTS ====== */
-  .variant-list {
-    margin-top: 12px;
-  }
-  .variant-group {
-    margin-bottom: 16px;
-  }
+  .variant-list { margin-top: 12px; }
+  .variant-group { margin-bottom: 16px; }
   .variant-label {
     font-weight: 600;
     margin-bottom: 6px;
-    font-size: 15px; /* to hơn một chút */
+    font-size: 17px; /* ✅ to hơn 2 size */
   }
   .variant-buttons {
     display: flex;
@@ -184,9 +172,9 @@
     gap: 6px;
   }
   .variant-buttons button {
-    font-size: 14px;
+    font-size: 13px;        /* ✅ giảm 1 size */
     font-weight: normal;
-    padding: 6px 12px;
+    padding: 5px 10px;
     border: 1px solid #ccc;
     border-radius: 6px;
     background: #fff;
@@ -197,8 +185,8 @@
   .variant-buttons button.selected {
     border-color: #d0021b;
     box-shadow: 0 0 0 2px rgba(208, 2, 27, 0.3);
-    background: #fff;   /* vẫn nền trắng */
-    color: #000;        /* chữ đen */
+    background: #fff;
+    color: #000;
   }
 
   /* ====== QUANTITY ====== */
@@ -246,4 +234,3 @@
     font-size: 15px;
   }
 </style>
-
