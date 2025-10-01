@@ -394,7 +394,6 @@ if (!uploads.length) {
   alert("Vui lòng tải lên ít nhất 1 ảnh.");
   return;
 }
-
 const quantity = Math.max(1, parseInt($("#quantityInput")?.value || "1", 10));
 const product = { ...(window.selectedVariant || {}) };
 
@@ -408,7 +407,6 @@ product["Phân loại"] = phanLoaiText;
 
 const thietKe = window.currentSelections["Thiết Kế"] || "";
 const kichThuoc = window.currentSelections["Kích Thước"] || "";
-const uploads = window.currentSelections["Uploads"] || [];
 const note = window.currentSelections["note"] || "";
 
 const cartItem = {
