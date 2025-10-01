@@ -1,10 +1,10 @@
 {
   "category": "art",
-  "mainImageKey": "Mẫu Thiết Kế",
+  "mainImageKey": "Thiết Kế",
   "thuộc_tính": [
     {
-      "label": "Mẫu Thiết Kế",
-      "key": "Mẫu Thiết Kế",
+      "label": "Thiết Kế",
+      "key": "Thiết Kế",
       "display": "button",
       "values": [
         {
