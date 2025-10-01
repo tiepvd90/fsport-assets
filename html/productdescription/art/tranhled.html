@@ -1,9 +1,11 @@
 <!-- ✅ VIDEO DEMO VUÔNG -->
-<div class="desc-video" id="ytVideo">
-  <div class="video-thumb">
-    <img src="https://img.youtube.com/vi/ddzh-tPxDa4/hqdefault.jpg" alt="Tranh Led Gương" />
-    <div class="play-btn">&#9658;</div>
-  </div>
+<div class="desc-video">
+  <iframe 
+    src="https://www.youtube.com/embed/ddzh-tPxDa4" 
+    title="Tranh Led Gương In Ảnh" 
+    frameborder="0" 
+    allowfullscreen>
+  </iframe>
 </div>
 
 <script>
@@ -72,56 +74,20 @@
 <script src="/js/productdescription.js"></script>
 
 <style>
-/* ====== VIDEO WRAPPER (VUÔNG) ====== */
 .desc-video {
   position: relative;
   width: 100%;
-  max-width: 400px; /* hoặc 100% tuỳ layout */
-  aspect-ratio: 1/1; /* ✅ Vuông */
+  max-width: 400px;   /* bạn có thể để 100% toàn khung */
+  aspect-ratio: 1 / 1; /* ✅ vuông */
   margin: 0 auto 16px auto;
-  border-radius: 12px;
+  border-radius: 8px;
   overflow: hidden;
   background: #000;
-  cursor: pointer;
 }
 
-.desc-video .video-thumb {
-  position: relative;
-  width: 100%;
-  height: 100%;
-}
-
-.desc-video img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-/* Nút play nhẹ nhàng */
-.play-btn {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 48px;
-  color: white;
-  background: rgba(0,0,0,0.5);
-  width: 72px;
-  height: 72px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background 0.2s ease;
-}
-.play-btn:hover {
-  background: rgba(0,0,0,0.7);
-}
-
-/* Khi load iframe */
 .desc-video iframe {
   width: 100%;
   height: 100%;
+  border: none;
 }
 </style>
