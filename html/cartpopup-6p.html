@@ -180,7 +180,7 @@
   .variant-label {
     font-weight: 600;
     margin-bottom: 6px;
-    font-size: 17px; /* ✅ to hơn 2 size */
+    font-size: 18px;
   }
 
   .variant-buttons {
@@ -190,7 +190,7 @@
   }
 
   .variant-buttons button {
-    font-size: 13px; /* ✅ giảm 1 size */
+    font-size: 12px; /* ✅ giảm 1 size */
     font-weight: normal;
     padding: 5px 10px;
     border: 1px solid #ccc;
@@ -255,4 +255,43 @@
     cursor: pointer;
     font-size: 15px;
   }
+  /* ✅ Ưu tiên cao: chỉ áp cho popup này */
+#cartPopup .product-header {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+/* ✅ Ảnh chiếm ~2/3, cột info ~1/3 */
+#cartPopup .product-header > #mainImage {
+  flex: 0 0 66.6667%;
+  width: 100%;
+  max-width: none;      /* tránh bị cap ở nơi khác */
+  max-height: 80vh;
+  object-fit: contain;
+}
+
+/* ✅ Cho cột info có thể co lại, tránh “đè” ảnh về 50% */
+#cartPopup .product-info {
+  flex: 0 0 33.3333%;
+  min-width: 0;         /* rất quan trọng trong flex layout */
+}
+
+/* ✅ Mobile: xếp dọc, ảnh full ngang */
+@media (max-width: 768px) {
+  #cartPopup .product-header {
+    flex-direction: column;
+    align-items: center;
+  }
+  #cartPopup .product-header > #mainImage {
+    flex: 0 0 auto;
+    width: 100%;
+    max-height: 70vh;
+  }
+  #cartPopup .product-info {
+    flex: 0 0 auto;
+    width: 100%;
+    min-width: 0;
+  }
+}
 </style>
