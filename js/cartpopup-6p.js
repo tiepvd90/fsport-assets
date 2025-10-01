@@ -306,12 +306,17 @@ else if (attr.upload === true) {
     }
 
     const productVariantText = $("#productVariantText");
-    if (productVariantText) {
-      productVariantText.textContent = variant["Kích Thước"]
-        ? `${variant["Kích Thước"]}`
-        : "";
-      productVariantText.style.marginTop = "16px";
-    }
+if (productVariantText) {
+  const ignore = new Set(["Ảnh", "Giá", "Giá gốc", "id", "category"]);
+  const selectedText = [];
+  for (let key in variant) {
+    if (ignore.has(key)) continue;
+    if (variant[key]) selectedText.push(variant[key]);
+  }
+  productVariantText.textContent = selectedText.join(" - ");
+  productVariantText.style.marginTop = "16px";
+}
+
   }
 
   // ====== Quantity ======
