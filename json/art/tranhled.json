@@ -3,7 +3,7 @@
   "mainImageKey": "Thiết Kế",
   "thuộc_tính": [
     {
-      "label": "Thiết Kế",
+      "label": "Chọn Mẫu Thiết Kế",
       "key": "Thiết Kế",
       "display": "button",
       "values": [
@@ -86,7 +86,7 @@
       ]
     },
     {
-      "label": "Kích Thước",
+      "label": "Phân Loại Và Kích Thước",
       "key": "Kích Thước",
       "display": "button",
       "values": [
