@@ -411,15 +411,61 @@ for (let key in window.currentSelections) {
   }
 }
 
+// ✅ Thu thập tất cả selections theo key JSON
+const selections = {};
+(window.allAttributes || []).forEach(attr => {
+  const key = attr.key;
+  const value = window.currentSelections[key];
+
+  if (!value) return;
+
+  // Nếu có values dạng object (có image, giá…) thì lấy đủ
+  if (Array.isArray(attr.values)) {
+    const matched = attr.values.find(v =>
+      typeof v === "object" ? v.text === value : v === value
+    );
+    if (matched) {
+      selections[key] = {
+        text: matched.text || value,
+        image: matched.image || null,
+        GiaOverride: matched.GiaOverride || null,
+        GiaGocOverride: matched.GiaGocOverride || null
+      };
+    } else {
+      selections[key] = { text: value };
+    }
+  }
+  // Nếu là input text
+  else if (attr.input === "text") {
+    selections[key] = { text: value };
+  }
+  // Nếu là upload
+  else if (attr.upload) {
+    selections[key] = { files: window.currentSelections["Uploads"] || [] };
+  }
+});
+
+// ✅ Lấy ảnh thumbnail ưu tiên từ Mẫu Thiết Kế
+let thumbImage = window.selectedVariant["Ảnh"] || window.baseVariant?.["Ảnh"] || "";
+if (selections["Mẫu Thiết Kế"]?.image) {
+  thumbImage = selections["Mẫu Thiết Kế"].image;
+}
+
 const cartItem = {
-  ...window.selectedVariant,   // đã merge selections + giá + ảnh
-  title: selectedText.join(" - ") || "Sản phẩm",
-  variantText: selectedText.join(" - "),
+  id: product.id,
+  title: selections["Mẫu Thiết Kế"]?.text || "Sản phẩm",
+  selections,                        // ✅ đẩy nguyên object selections sang checkoutpopup
   quantity,
   loai,
-  "Ảnh": window.selectedVariant["Ảnh"] || window.baseVariant?.["Ảnh"] || "",
+  "Ảnh": thumbImage,                 // thumbnail chuẩn
+  "Giá": product["Giá"],
+  "Giá gốc": product["Giá gốc"],
   voucher: voucherAmount > 0 ? { amount: voucherAmount } : undefined
 };
+
+window.cart.push(cartItem);
+saveCart();
+
 
         window.cart.push(cartItem);
         saveCart();
