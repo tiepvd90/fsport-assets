@@ -79,7 +79,7 @@
     bottom: 0;
     left: 0;
     width: 100%;
-    max-height: 75vh;     /* ✅ chỉ 75% chiều cao màn hình */
+    max-height: 100vh;     /* ✅ full 100% chiều cao màn hình */
     overflow-y: auto;
     background: #fff;
     padding: 16px;
@@ -109,16 +109,15 @@
   }
 
   .product-header {
-    display: flex;
-    gap: 12px;
-    margin-bottom: 16px;
-  }
-  .product-header img {
-    width: 100px;
-    height: auto;
-    object-fit: contain;
-    border-radius: 8px;
-  }
+  flex-direction: column; /* Ảnh chiếm trên, info nằm dưới */
+}
+.product-header img {
+  width: 100%;
+  max-height: 60vh;       /* chiếm khoảng 2/3 màn */
+  object-fit: contain;
+  border-radius: 0;
+}
+  
   .product-info {
     display: flex;
     flex-direction: column;
@@ -192,4 +191,16 @@
   -webkit-text-fill-color: #000 !important; /* ép màu chữ đen cả trên iOS */
   color: #000 !important;
 }
+.variant-buttons button {
+  font-size: 13px;
+  font-weight: normal;
+  padding: 4px 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background: #f9f9f9;
+}
+.variant-buttons button.selected {
+  background: #000;
+  color: #fff;
+}  
 </style>
