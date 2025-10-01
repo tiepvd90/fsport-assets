@@ -5,7 +5,7 @@
     {
       "label": "Mẫu Thiết Kế",
       "key": "Mẫu Thiết Kế",
-      "display": "thumbnail",
+      "display": "button",
       "values": [
         {
           "text": "20/10-1",
