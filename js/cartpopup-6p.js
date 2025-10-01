@@ -228,15 +228,17 @@ else if (attr.upload === true) {
       ? `${idBase}-${sizeVal.replace(/\s+/g, "")}`.toLowerCase()
       : idBase;
 
-    const variant = {
-      ...(window.baseVariant || {}),
-      id,
-      [sizeKey]: sizeVal,
-      Uploads: window.currentSelections["Uploads"] || [],
-      note: window.currentSelections["note"] || "",
-      "Giá": price,
-      "Giá gốc": priceOrig,
-    };
+    const thietKeVal = window.currentSelections["Thiết Kế"] || null;
+const variant = {
+  ...(window.baseVariant || {}),
+  id,
+  "Thiết Kế": thietKeVal,
+  "Kích Thước": sizeVal,
+  Uploads: window.currentSelections["Uploads"] || [],
+  note: window.currentSelections["note"] || "",
+  "Giá": price,
+  "Giá gốc": priceOrig,
+};
 
     const sizeAttr = (window.allAttributes || []).find((a) => a.key === sizeKey);
     if (sizeVal && sizeAttr && Array.isArray(sizeAttr.values)) {
@@ -313,13 +315,14 @@ if (thietKeVal && thietKeAttr && Array.isArray(thietKeAttr.values)) {
       if (voucherLabel) voucherLabel.style.display = "none";
     }
 
-    const productVariantText = $("#productVariantText");
+   const productVariantText = $("#productVariantText");
 if (productVariantText) {
   const thietKe = variant["Thiết Kế"] || "";
   const kichThuoc = variant["Kích Thước"] || "";
-  productVariantText.textContent = `${thietKe} ${kichThuoc}`.trim();
+  productVariantText.textContent = [thietKe, kichThuoc].filter(Boolean).join(" - ");
   productVariantText.style.marginTop = "16px";
 }
+
 
   }
 
@@ -501,8 +504,8 @@ const cartItem = {
   id: window.baseVariant?.id || "set-tranh",
   "Giá": p,
   "Giá gốc": o,
-  "Kích Thước": window.currentSelections["Kích Thước"] || null,
   "Thiết Kế": window.currentSelections["Thiết Kế"] || null,
+  "Kích Thước": window.currentSelections["Kích Thước"] || null,
 });
 
   }
