@@ -371,10 +371,27 @@ if (productVariantText) {
           return;
         }
 
-        const sizeKey = "Kích Thước";
+const sizeKey = "Kích Thước";
 const sizeSelected = window.currentSelections[sizeKey];
 if (!sizeSelected) {
-  alert("Vui lòng chọn kích thước bộ tranh.");
+  alert("Vui lòng chọn kích thước.");
+  return;
+}
+
+const thietKeSelected = window.currentSelections["Thiết Kế"];
+if (!thietKeSelected) {
+  alert("Vui lòng chọn thiết kế.");
+  return;
+}
+
+const noteValue = window.currentSelections["note"];
+if (!noteValue || !noteValue.trim()) {
+  alert("Vui lòng nhập Note/Tên/Ngày/Lời Chúc.");
+  return;
+}
+const uploads = window.currentSelections["Uploads"] || [];
+if (!uploads.length) {
+  alert("Vui lòng tải lên ít nhất 1 ảnh.");
   return;
 }
 
