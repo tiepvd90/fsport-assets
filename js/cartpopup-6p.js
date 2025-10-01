@@ -51,17 +51,22 @@
       window.baseVariant = data["biến_thể"][0];
       window.productCategory = data["category"] || window.baseVariant?.category || "art";
 
-      // ✅ Main image mặc định
-      const mainImage = $("#mainImage");
-      if (mainImage) {
-        const sizeAttr = (data["thuộc_tính"] || []).find((a) => a.key === "Kích Thước");
-        if (sizeAttr && Array.isArray(sizeAttr.values) && sizeAttr.values[0]?.image) {
-          mainImage.src = sizeAttr.values[0].image;
-        } else {
-          mainImage.src = window.baseVariant?.["Ảnh"] || "";
-        }
-      }
+      // ✅ Lấy mainImage từ lựa chọn đầu tiên của biến thể đầu tiên
+const mainImage = $("#mainImage");
+if (mainImage) {
+  const mainAttrKey = data.mainImageKey || (data["thuộc_tính"][0]?.key);
+  const mainAttr = (data["thuộc_tính"] || []).find((a) => a.key === mainAttrKey);
 
+  if (mainAttr && Array.isArray(mainAttr.values) && mainAttr.values.length > 0) {
+    const firstVal = mainAttr.values[0];
+    if (typeof firstVal === "object" && firstVal.image) {
+      mainImage.src = firstVal.image;
+      window.currentSelections[mainAttr.key] = firstVal.text; // auto chọn mặc định
+    }
+  } else {
+    mainImage.src = window.baseVariant?.["Ảnh"] || "";
+  }
+}
       renderOptions(window.allAttributes);
       updatePriceUI(window.baseVariant?.["Giá"] || 0, window.baseVariant?.["Giá gốc"] || 0);
       bindAddToCartButton();
