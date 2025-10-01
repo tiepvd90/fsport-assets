@@ -1,0 +1,58 @@
+{
+  "category": "art",
+  "mainImageKey": "Mẫu Thiết Kế",
+  "thuộc_tính": [
+    {
+      "label": "Mẫu Thiết Kế",
+      "key": "Mẫu Thiết Kế",
+      "display": "button",
+      "values": [
+        {
+          "text": "Mẫu 1: 20 Tháng 10",
+          "image": "/assets/images/thumb/art/tranhled/2010/1.webp"
+        },
+        {
+          "text": "Mẫu 4: Sinh Nhật",
+          "image": "/assets/images/thumb/art/tranhled/2010/1.webp"
+        }
+      ]
+    },
+    {
+      "label": "Kích Thước",
+      "key": "Kích Thước",
+      "display": "button",
+      "values": [
+        {
+          "text": "Vừa 15x20cm(A5)",
+          "GiaOverride": 199000,
+          "GiaGocOverride": 270000
+        },
+        {
+          "text": "Lớn 21x30cm(A4)",
+          "GiaOverride": 279000,
+          "GiaGocOverride": 330000
+        }
+      ]
+    },
+    {
+      "label": "Tải Lên Bộ Ảnh Của Bạn",
+      "key": "Uploads",
+      "upload": true,
+      "uploadCount": 6
+    },
+    {
+      "label": "Tên/Ngày/Lời Chúc",
+      "key": "note",
+      "input": "text",
+      "placeholder": "Mô Tả Cụ Thể Tên/Ngày/Lời Chúc Bạn Muốn"
+    }
+  ],
+  "biến_thể": [
+    {
+      "id": "tranhled",
+      "category": "art",
+      "Giá": 199000,
+      "Giá gốc": 270000
+    }
+  ]
+}
