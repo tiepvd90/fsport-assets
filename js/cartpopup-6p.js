@@ -237,22 +237,23 @@ else if (attr.upload === true) {
     variant.id = (window.baseVariant?.id || "set-tranh").toLowerCase();
   }
 
-  // 5. Ảnh: ưu tiên theo giá trị có image, fallback baseVariant
-  if (!variant["Ảnh"]) {
-    const sizeAttr = (window.allAttributes || []).find((a) => a.key === sizeKey);
-    if (clean[sizeKey] && sizeAttr && Array.isArray(sizeAttr.values)) {
-      const matched = sizeAttr.values.find(v =>
-        typeof v === "object" ? v.text === clean[sizeKey] : v === clean[sizeKey]
-      );
-      if (matched?.image) {
-        $("#mainImage")?.setAttribute("src", matched.image);
-        variant["Ảnh"] = matched.image;
-      }
-    }
-    if (!variant["Ảnh"]) {
-      variant["Ảnh"] = window.baseVariant?.["Ảnh"] || "";
-    }
+  // 5. Ảnh: ưu tiên theo mainImageKey, fallback baseVariant
+const mainKey = window.mainImageKey || "Kích Thước";
+const mainVal = clean[mainKey];
+const mainAttr = (window.allAttributes || []).find(a => a.key === mainKey);
+
+if (mainAttr && mainVal) {
+  const matched = mainAttr.values.find(v =>
+    typeof v === "object" ? v.text === mainVal : v === mainVal
+  );
+  if (matched?.image) {
+    $("#mainImage")?.setAttribute("src", matched.image);
+    variant["Ảnh"] = matched.image;
   }
+}
+if (!variant["Ảnh"]) {
+  variant["Ảnh"] = window.baseVariant?.["Ảnh"] || "";
+}
 
   // 6. Lưu lại và render UI
   window.selectedVariant = variant;
@@ -394,13 +395,32 @@ const voucherAmount = window.voucherByProduct?.[product.id] || 0;
 const phanLoaiText = sizeSelected || (product["Kích Thước"] || "Bộ Tranh");
 product["Phân loại"] = phanLoaiText;
 
+// Tạo text hiển thị từ toàn bộ selections
+const ignore = new Set(["Ảnh", "Giá", "Giá gốc", "id", "category"]);
+const selectedText = [];
+for (let key in window.currentSelections) {
+  if (ignore.has(key)) continue;
+  if (!window.currentSelections[key]) continue;
+
+  if (Array.isArray(window.currentSelections[key])) {
+    if (window.currentSelections[key].length > 0) {
+      selectedText.push(`${key}: ${window.currentSelections[key].length} ảnh`);
+    }
+  } else {
+    selectedText.push(window.currentSelections[key]);
+  }
+}
+
 const cartItem = {
-  ...window.selectedVariant,        // ✅ lấy full variant đã merge selections + giá + ảnh
-  title: product.title || phanLoaiText,
+  ...window.selectedVariant,   // đã merge selections + giá + ảnh
+  title: selectedText.join(" - ") || "Sản phẩm",
+  variantText: selectedText.join(" - "),
   quantity,
   loai,
+  "Ảnh": window.selectedVariant["Ảnh"] || window.baseVariant?.["Ảnh"] || "",
   voucher: voucherAmount > 0 ? { amount: voucherAmount } : undefined
 };
+
         window.cart.push(cartItem);
         saveCart();
         updateCartIcon();
