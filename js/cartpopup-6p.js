@@ -402,6 +402,11 @@ product["Phân loại"] = phanLoaiText;
 
 const thietKe = window.currentSelections["Thiết Kế"] || "";
 const kichThuoc = window.currentSelections["Kích Thước"] || "";
+const uploads = window.currentSelections["Uploads"] || [];
+if (!uploads.length) {
+  alert("Vui lòng tải lên ít nhất 1 ảnh.");
+  return;
+}
 const note = window.currentSelections["note"] || "";
 
 const cartItem = {
@@ -415,7 +420,6 @@ const cartItem = {
   Uploads: uploads,
   note: note
 };
-
         window.cart.push(cartItem);
         saveCart();
         updateCartIcon();
