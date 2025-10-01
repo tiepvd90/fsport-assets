@@ -7,13 +7,14 @@
     const category = window.productCategory || "art";
 
     if (container) {
-      fetch(/json/${productPage}.json)
+      // ✅ Dùng template string đúng cú pháp
+      fetch(`/json/${productPage}.json`)
         .then(res => {
           if (!res.ok) throw new Error("Primary JSON not found");
-          container.setAttribute("data-json", /json/${productPage}.json);
+          container.setAttribute("data-json", `/json/${productPage}.json`);
         })
         .catch(() => {
-          container.setAttribute("data-json", /json/${category}/${productPage}.json);
+          container.setAttribute("data-json", `/json/${category}/${productPage}.json`);
         });
     }
   }
