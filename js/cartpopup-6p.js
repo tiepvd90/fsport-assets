@@ -19,16 +19,7 @@
   window.currentSelections = {}; // { "Kích Thước": "...", "Uploads": [], "note": "" }
   let isCartEventBound = false;
   let isCartPopupOpen = false;
-  
-function adjustCartPopupHeight() {
-  const footer = document.querySelector(".sticky-footer");
-  const content = document.querySelector("#cartPopup .cart-popup-content");
-  if (footer && content) {
-    const footerHeight = footer.offsetHeight || 0;
-    content.style.height = `calc(100vh - ${footerHeight}px)`;
-    content.style.bottom = `${footerHeight}px`;
-  }
-}
+
 
   // ====== DOM helpers ======
   const $ = (sel, root = document) => root.querySelector(sel);
@@ -504,8 +495,6 @@ const cartItem = {
     content.classList.add("animate-slideup");
     popup.classList.remove("hidden");
     isCartPopupOpen = true;
-
-    adjustCartPopupHeight(); // ✅ gọi để tính lại chiều cao khi mở
 
     setTimeout(() => bindAddToCartButton(), 100);
   } else {
