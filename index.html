@@ -69,32 +69,48 @@
   </div>
 
 </div>
-  <!-- 🔸 Banner Tranh Led -->
-  <a href="https://fun-sport.co/art/tranhled" class="banner-led-link" title="Tranh LED">
-    <img src="/assets/images/gallery/art/tranhled/6.webp" 
-         alt="Tranh Gương Đèn LED In Hình Theo Yêu Cầu" 
-         class="banner-led-img" />
-  </a>
+    <!-- 🔸 Banner Tranh Led -->
+  <div class="banner-led-block">
+    <a href="https://fun-sport.co/art/tranhled" class="banner-led-link">
+      <img src="/assets/images/gallery/art/tranhled/6.webp" 
+           alt="" 
+           class="banner-led-img" />
+    </a>
+    <div class="banner-led-title">Tranh Gương Đèn LED In Hình Theo Yêu Cầu</div>
+  </div>
 
   <style>
+    .banner-led-block {
+      max-width: 1080px;
+      margin: 20px auto;
+      text-align: center;
+      padding: 0 12px;
+      box-sizing: border-box;
+    }
+
     .banner-led-link {
       display: block;
       text-decoration: none;
-      margin: 16px auto;
-      max-width: 1080px;   /* căn ngang theo freeflow */
     }
 
     .banner-led-img {
       width: 100%;
-      display: block;
-      border-radius: 14px; /* bo góc mềm mại */
+      border-radius: 14px; /* bo góc đẹp */
       box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      display: block;
+    }
+
+    .banner-led-title {
+      margin-top: 10px;
+      font-size: 18px;
+      font-weight: 600;
+      color: #222;
+      font-family: 'Be Vietnam Pro', sans-serif;
     }
 
     @media (max-width: 600px) {
-      .banner-led-link {
-        padding: 0 12px;
-        box-sizing: border-box;
+      .banner-led-title {
+        font-size: 16px;
       }
     }
   </style>
