@@ -70,62 +70,53 @@
 
 </div>
      <!-- 🔸 Banner Tranh Led -->
-  <div class="banner-led-block">
-    <a href="https://fun-sport.co/art/tranhled" class="banner-led-link">
-      <img src="/assets/images/gallery/art/tranhled/6.webp" 
-           alt="Tranh Gương Đèn LED In Hình Theo Yêu Cầu" 
-           class="banner-led-img" />
-    </a>
-    <div class="banner-led-title">
-      Tranh Gương Đèn LED In Hình Theo Yêu Cầu
-    </div>
-  </div>
+<a href="https://fun-sport.co/art/tranhled" class="banner-led-card">
+  <img src="/assets/images/gallery/art/tranhled/6.webp" 
+       alt="Tranh Gương Đèn LED In Hình Theo Yêu Cầu" 
+       class="banner-led-img" />
+  <div class="banner-led-title">Tranh Gương Đèn LED In Hình Theo Yêu Cầu</div>
+</a>
 
-  <style>
-    .banner-led-block {
-      max-width: 1080px;
-      margin: 24px auto;
-      padding: 0 12px;
-      box-sizing: border-box;
-      text-align: center;
-    }
+<style>
+  .banner-led-card {
+    display: block;
+    max-width: 1080px;
+    margin: 20px auto;
+    padding: 12px;
+    text-align: center;
+    order: 2px solid #ff5722;       /* viền nhẹ */
+    border-radius: 16px;          /* bo góc khối */
+    background: #fff;             /* nền trắng */
+    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+    text-decoration: none;        /* bỏ gạch chân link */
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
 
-    .banner-led-link {
-      display: block;
-    }
+  .banner-led-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(0,0,0,0.12);
+  }
 
-    .banner-led-img {
-      width: 100%;
-      border-radius: 14px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.12);
-      display: block;
-    }
+  .banner-led-img {
+    width: 100%;
+    border-radius: 12px;
+    display: block;
+  }
 
-    /* Khối title nổi bật */
+  .banner-led-title {
+    margin-top: 10px;
+    font-size: 18px;
+    font-weight: 600;
+    color: #222; /* chữ đen như anh yêu cầu */
+    font-family: 'Be Vietnam Pro', sans-serif;
+  }
+
+  @media (max-width: 600px) {
     .banner-led-title {
-      display: inline-block;
-      margin-top: -12px;           /* kéo lên gần ảnh */
-      padding: 8px 16px;
-      background: #fff;
-      border-radius: 20px;
-      font-size: 18px;
-      font-weight: 600;
-      color: #e60023;              /* đỏ nhấn */
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-      font-family: 'Be Vietnam Pro', sans-serif;
-      position: relative;
-      z-index: 2;
+      font-size: 16px;
     }
-
-    /* Mobile tối ưu font */
-    @media (max-width: 600px) {
-      .banner-led-title {
-        font-size: 16px;
-        padding: 6px 12px;
-      }
-    }
-  </style>
-
+  }
+</style>
 
   <!-- ✅ Checkout Popup -->
   <div id="checkoutPopup-placeholder"></div>
