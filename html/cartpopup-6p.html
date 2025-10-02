@@ -78,20 +78,26 @@
   }
 
   .cart-popup-content {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    /* ❌ bỏ height: 100vh; để JS set động */
-    overflow-y: auto;
-    background: #fff;
-    padding: 16px;
-    display: flex;
-    flex-direction: column;
-    box-sizing: border-box;
-    border-radius: 0;
-    font-family: 'Be Vietnam Pro', sans-serif;
-  }
+  position: fixed;
+  left: 0;
+  top: 12.5vh;          /* đẩy xuống để 75vh nằm giữa màn */
+  width: 100%;
+  height: 75vh;         /* ✅ quay về 75vh */
+  bottom: auto;         /* chắc chắn không “dính” đáy nữa */
+  overflow-y: auto;
+  background: #fff;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  border-radius: 12px;   /* cho mềm góc đẹp hơn modal */
+  box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+  font-family: 'Be Vietnam Pro', sans-serif;
+}
+
+/* để popup che footer khi mở (tránh lộ footer sau lớp mờ) */
+.cart-popup { z-index: 10000; }
+
 
   .cart-popup-close {
     position: absolute;
