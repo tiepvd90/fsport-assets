@@ -19,6 +19,16 @@
   window.currentSelections = {}; // { "Kích Thước": "...", "Uploads": [], "note": "" }
   let isCartEventBound = false;
   let isCartPopupOpen = false;
+  
+function adjustCartPopupHeight() {
+  const footer = document.querySelector(".sticky-footer");
+  const content = document.querySelector("#cartPopup .cart-popup-content");
+  if (footer && content) {
+    const footerHeight = footer.offsetHeight || 0;
+    content.style.height = `calc(100vh - ${footerHeight}px)`;
+    content.style.bottom = `${footerHeight}px`;
+  }
+}
 
   // ====== DOM helpers ======
   const $ = (sel, root = document) => root.querySelector(sel);
@@ -483,28 +493,31 @@ const cartItem = {
   }
 
   function toggleCartPopup(show = true) {
-    const popup = $("#cartPopup");
-    const content = popup?.querySelector(".cart-popup-content");
-    if (!popup || !content) return;
+  const popup = $("#cartPopup");
+  const content = popup?.querySelector(".cart-popup-content");
+  if (!popup || !content) return;
 
-    if (show) {
-      popup.style.display = "flex";
-      content.classList.remove("animate-slideup");
-      void content.offsetWidth;
-      content.classList.add("animate-slideup");
-      popup.classList.remove("hidden");
-      isCartPopupOpen = true;
-      setTimeout(() => bindAddToCartButton(), 100);
-    } else {
-      content.classList.remove("animate-slideup");
-      popup.classList.add("hidden");
-      setTimeout(() => {
-        popup.style.display = "none";
-        updateCartIcon();
-      }, 300);
-      isCartPopupOpen = false;
-    }
+  if (show) {
+    popup.style.display = "flex";
+    content.classList.remove("animate-slideup");
+    void content.offsetWidth;
+    content.classList.add("animate-slideup");
+    popup.classList.remove("hidden");
+    isCartPopupOpen = true;
+
+    adjustCartPopupHeight(); // ✅ gọi để tính lại chiều cao khi mở
+
+    setTimeout(() => bindAddToCartButton(), 100);
+  } else {
+    content.classList.remove("animate-slideup");
+    popup.classList.add("hidden");
+    setTimeout(() => {
+      popup.style.display = "none";
+      updateCartIcon();
+    }, 300);
+    isCartPopupOpen = false;
   }
+}
 
   function updatePriceUI(price, priceOrig) {
     const p = Number(price || 0);
