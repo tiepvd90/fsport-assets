@@ -83,26 +83,32 @@
   bottom: 0;
   left: 0;
   width: 100%;
-  max-height: 87vh;
+  max-height: 77vh;              /* popup chiếm khoảng 3/4 màn hình */
   overflow-y: auto;
   background: #fff;
   padding: 16px;
   box-sizing: border-box;
-  border-radius: 12px 12px 0 0;
+  border-radius: 12px 12px 0 0;  /* bo góc trên cho đẹp */
   animation: slideUp 0.3s ease-out forwards;
+  z-index: 10000;                /* đảm bảo nằm trên footer */
+  font-family: 'Be Vietnam Pro', sans-serif;
 }
 
+/* ✅ MOBILE FULL-SCREEN (ẩn footer, không hở mép) */
 @media (max-width: 768px) {
   .cart-popup-content {
+    position: fixed;
     top: 0;
     left: 0;
+    bottom: 0;                   /* đảm bảo dính đáy, tránh hở */
     width: 100%;
     height: 100vh;
-    max-height: none;
-    border-radius: 0;
+    max-height: 100vh;           /* tránh lỗi safe-area hoặc gap trên Meta */
+    border-radius: 0;            /* bỏ bo góc cho full-screen */
+    overflow-y: auto;
+    animation: none;             /* tránh giật khi load */
   }
 }
-
 
 .cart-popup-content.animate-slideup {
   animation: slideUp 0.3s ease-out forwards;
@@ -300,5 +306,20 @@
   align-items: center;
   justify-content: center;
   pointer-events: none;
+}
+  /* === FIX khoảng hở dưới popup khi mở trong Meta browser === */
+@supports (-webkit-touch-callout: none) {
+  .sticky-footer,
+  #cartPopup .cart-popup-content {
+    bottom: env(safe-area-inset-bottom, 0);
+  }
+}
+
+/* Dự phòng cho Meta WebView (Facebook, Messenger) */
+body[data-browser*="FB"] .sticky-footer,
+body[data-browser*="FB"] #cartPopup .cart-popup-content {
+  bottom: 0 !important;
+  padding-bottom: constant(safe-area-inset-bottom);
+  padding-bottom: env(safe-area-inset-bottom);
 }
 </style>
