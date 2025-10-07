@@ -91,34 +91,24 @@
       "display": "button",
       "values": [
         {
-          "text": "USB-A5",
+          "text": "USB-A5(15x20cm)",
           "GiaOverride": 159000,
           "GiaGocOverride": 220000
         },
-        {
-          "text": "USB-A4",
-          "GiaOverride": 189000,
-          "GiaGocOverride": 270000
-        },
-        {
-          "text": "PinSạc-A5",
+                {
+          "text": "PinSạc-A5(15x20cm)",
           "GiaOverride": 229000,
           "GiaGocOverride": 300000
         },
         {
-          "text": "PinSạc-A4",
+          "text": "USB-A4(20x30cm)",
+          "GiaOverride": 189000,
+          "GiaGocOverride": 270000
+        },
+        {
+          "text": "PinSạc-A4(20x30cm)",
           "GiaOverride": 289000,
           "GiaGocOverride": 370000
-        },
-        {
-          "text": "Chỉ Ảnh-A5",
-          "GiaOverride": 25000,
-          "GiaGocOverride": 500000
-        },
-        {
-          "text": "Chỉ Ảnh-A4",
-          "GiaOverride": 39000,
-          "GiaGocOverride": 800000
         }
       ]
     },
