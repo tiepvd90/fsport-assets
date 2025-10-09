@@ -187,6 +187,7 @@ function selectVariant(data) {
       window.voucherByProduct[data.id] = window.__voucherWaiting.amount;
     }
   }
+
   window.selectedVariant = data;
 
   const mainImage = document.getElementById("mainImage");
