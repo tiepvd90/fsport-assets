@@ -18,7 +18,7 @@ function showVoucherPopup(refCode, amount) {
     <div class="voucher-close" id="closeVoucherBtn">×</div>
     <h2>🎉 FLASH SALE 10.10!</h2>
     <p>MIỄN PHÍ SHIP TOÀN BỘ ĐƠN HÀNG</p>
-    <p>GIẢM 5% TOÀN BỘ WEBSIE</p>
+    <p>GIẢM 5% TOÀN BỘ WEBSITE</p>
     <p>GIẢM 8% ĐƠN HÀNG TRÊN 1.500.000 ĐỒNG</p>
     <p><span id="voucherCountdown" style="font-weight:bold; color:#e53935;"></span></p>
     <button id="applyVoucherBtn">LẤY MÃ GIẢM GIÁ NGAY</button>
@@ -36,9 +36,17 @@ function showVoucherPopup(refCode, amount) {
     document.querySelector("#btn-atc")?.click();
   });
 
-  startVoucherCountdown(600);
-}
 
+  startVoucherCountdown(getSecondsUntil4PM());
+}
+// 🔹 Tính số giây còn lại tới 16:00 hôm nay
+function getSecondsUntil4PM() {
+  const now = new Date();
+  const target = new Date();
+  target.setHours(16, 0, 0, 0); // 16:00:00 hôm nay
+  const diff = Math.floor((target - now) / 1000);
+  return diff > 0 ? diff : 0;
+}
 function createVoucherFloatingIcon(amount, refCode) {
   if (document.getElementById("voucherFloatIcon")) return;
 
@@ -74,39 +82,45 @@ function startVoucherCountdown(seconds) {
     return `${m} phút ${sec < 10 ? "0" : ""}${sec} giây`;
   }
 
-  countdownEl.textContent = `Voucher sẽ hết hạn sau: ${formatTime(seconds)}`;
+  countdownEl.textContent = `⏰ FLASH SALE kết thúc lúc 16:00 hôm nay (${formatTime(seconds)} còn lại)`;
   const interval = setInterval(() => {
     seconds--;
     if (seconds <= 0) {
       clearInterval(interval);
       countdownEl.textContent = "Voucher đã hết hạn!";
     } else {
-      countdownEl.textContent = `Voucher sẽ hết hạn sau: ${formatTime(seconds)}`;
+      countdownEl.textContent = `⏰ FLASH SALE kết thúc lúc 16:00 hôm nay (${formatTime(seconds)} còn lại)`;
     }
   }, 1000);
 }
 
-// ✅ Hàm chính
+// ✅ Hàm chính — Hiển thị voucher popup và icon
 function runVoucherImmediately() {
   const refCode = "30k";
   const amount = 30000;
 
+  // ✅ Luôn tạo icon (để người dùng click được dù trong cooldown)
+  createVoucherFloatingIcon(amount, refCode);
+
   const lastShown = Number(sessionStorage.getItem("voucherShownGlobal") || 0);
-  const COOLDOWN_MS = 60 * 60 * 1000; // 1 tiếng không hiện lại
+  const COOLDOWN_MS = 60 * 60 * 1000; // 1 tiếng không tự bật lại
+
+  // 🔹 Nếu mới hiển thị gần đây thì không bật popup nữa
   if (Date.now() - lastShown < COOLDOWN_MS) {
-    console.log("⏳ Đang trong cooldown – không hiện lại popup voucher.");
+    console.log("⏳ Trong cooldown – chỉ hiển thị icon, không bật popup.");
     return;
   }
 
+  // 🔹 Nếu chưa hiển thị hoặc hết cooldown → bật popup và lưu mốc thời gian
   localStorage.setItem("savedVoucher", JSON.stringify({ code: refCode, amount }));
   window.currentVoucherValue = amount;
   window.__voucherWaiting = { amount };
-
   sessionStorage.setItem("voucherShownGlobal", String(Date.now()));
-  console.log("🎉 Hiển thị voucher popup mặc định 30K ở mọi trang.");
-  createVoucherFloatingIcon(amount, refCode);
+
+  console.log("🎉 Hiển thị popup voucher 30K + icon ở mọi trang.");
   showVoucherPopup(refCode, amount);
 }
+
 
 // ✅ Đảm bảo chạy đúng thời điểm
 if (document.readyState === "loading") {
