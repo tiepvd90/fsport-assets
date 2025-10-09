@@ -69,78 +69,99 @@
     // Thêm CSS style giống bản cũ
     const style = document.createElement("style");
     style.innerHTML = `
-      .voucher-popup {
-        position: fixed;
-        inset: 0;
-        display: flex;
-        justify-content: center;
-        align-items: flex-end;
-        z-index: 9999;
-        animation: slideUp 0.35s ease-out forwards;
-      }
-      .voucher-overlay {
-        position: absolute;
-        inset: 0;
-        background: rgba(0,0,0,0.4);
-      }
-      .voucher-content {
-        position: relative;
-        background: linear-gradient(160deg, #1565c0, #1e88e5);
-        color: #fff;
-        padding: 24px 20px 28px;
-        width: 90%;
-        max-width: 400px;
-        margin-bottom: 8%;
-        border-radius: 12px;
-        box-shadow: 0 4px 18px rgba(0,0,0,0.3);
-        text-align: center;
-        font-family: "Be Vietnam Pro", sans-serif;
-        transform: translateY(50px);
-        opacity: 0;
-        animation: popupFadeIn 0.4s ease-out forwards;
-      }
-      .voucher-close {
-        position: absolute;
-        top: 8px;
-        right: 12px;
-        font-size: 22px;
-        font-weight: bold;
-        cursor: pointer;
-      }
-      .voucher-content h2 {
-        font-size: 22px;
-        margin-bottom: 10px;
-        font-weight: 800;
-      }
-      .voucher-content p {
-        margin: 6px 0;
-        font-size: 16px;
-      }
-      #voucherCountdown {
-        font-style: italic;
-        color: #fff;
-        font-weight: 500;
-      }
-      #applyVoucherBtn {
-        margin-top: 14px;
-        background: #fff;
-        color: #1565c0;
-        font-weight: 600;
-        border: none;
-        border-radius: 8px;
-        padding: 10px 22px;
-        font-size: 16px;
-        cursor: pointer;
-      }
-      @keyframes popupFadeIn {
-        from { opacity: 0; transform: translateY(50px); }
-        to { opacity: 1; transform: translateY(0); }
-      }
-      @keyframes slideUp {
-        from { opacity: 0; }
-        to { opacity: 1; }
-      }
-    `;
+  .voucher-popup {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    z-index: 9999;
+    animation: slideUp 0.4s ease-out forwards;
+  }
+
+  .voucher-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(2px);
+  }
+
+  .voucher-content {
+    position: relative;
+    background: linear-gradient(180deg, #3fa9f5, #2a82db);
+    color: #fff;
+    padding: 28px 22px 32px;
+    width: 90%;
+    max-width: 400px;
+    margin-bottom: 10%;
+    border-radius: 16px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+    text-align: center;
+    font-family: "Be Vietnam Pro", sans-serif;
+    transform: translateY(60px);
+    opacity: 0;
+    animation: popupFadeIn 0.45s ease-out forwards;
+  }
+
+  .voucher-close {
+    position: absolute;
+    top: 8px;
+    right: 12px;
+    font-size: 24px;
+    font-weight: 700;
+    color: #fff;
+    cursor: pointer;
+  }
+
+  .voucher-content h2 {
+    font-size: 24px;
+    margin-bottom: 12px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+  }
+
+  .voucher-content p {
+    margin: 8px 0;
+    font-size: 17px;
+    font-weight: 400;
+  }
+
+  #voucherCountdown {
+    font-style: italic;
+    color: #fff;
+    font-weight: 500;
+    margin-top: 8px;
+    display: block;
+  }
+
+  #applyVoucherBtn {
+    margin-top: 18px;
+    background: #fff;
+    color: #2a82db;
+    font-weight: 700;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 24px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+  }
+
+  #applyVoucherBtn:hover {
+    background: #e3f2fd;
+  }
+
+  @keyframes popupFadeIn {
+    from { opacity: 0; transform: translateY(60px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+`;
+
     document.head.appendChild(style);
 
     startCountdown();
