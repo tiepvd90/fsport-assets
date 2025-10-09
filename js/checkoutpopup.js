@@ -179,16 +179,16 @@ function updateCheckoutSummary() {
     0
   );
 
-  // 🚚 Phí vận chuyển cố định = 0đ (Free ship)
+  // 🚚 Miễn phí ship
   shippingFeeOriginal = 0;
   shippingFee = 0;
 
-  // 🎁 Tính VOUCHER 10/10
+  // 🎁 Voucher 10/10
   const discountPercent = subtotal >= 1500000 ? 0.08 : 0.05;
   voucherValue = Math.round(subtotal * discountPercent);
-  const voucherLabel = "VOUCHER 10/10";
+  const voucherLabel = "Voucher 10/10";
 
-  // 🧾 Tổng cuối cùng
+  // 🧾 Tổng tiền cuối
   const total = subtotal - voucherValue + shippingFee;
 
   // 🔹 Cập nhật giao diện
@@ -201,10 +201,17 @@ function updateCheckoutSummary() {
   const shippingEl = document.getElementById("shippingFeeText");
   if (shippingEl) shippingEl.textContent = "0₫";
 
+  // ⚡ Label voucher (bên trái)
+  const voucherLabelEl = document.getElementById("voucherLabel");
+  if (voucherLabelEl) voucherLabelEl.textContent = voucherLabel;
+
+  // ⚡ Giá trị giảm (bên phải)
   const voucherTextEl = document.getElementById("voucherText");
   if (voucherTextEl) {
     if (voucherValue > 0) {
-      voucherTextEl.textContent = `-${voucherValue.toLocaleString()}₫ (${voucherLabel})`;
+      voucherTextEl.textContent = `-${voucherValue.toLocaleString()}₫`;
+      voucherTextEl.style.color = "red";
+      voucherTextEl.style.fontWeight = "600";
       voucherTextEl.style.display = "block";
     } else {
       voucherTextEl.style.display = "none";
@@ -214,10 +221,11 @@ function updateCheckoutSummary() {
   const totalEl = document.getElementById("totalText");
   if (totalEl) totalEl.textContent = `${total.toLocaleString()}₫`;
 
-  // 🧩 Lưu label & phần trăm để gửi sang Make.com nếu cần
+  // Lưu dữ liệu cho Make.com
   window.currentVoucherLabel = voucherLabel;
   window.currentVoucherPercent = discountPercent * 100;
 }
+
 
 // ------------------------
 // 🔹 SỬA SỐ LƯỢNG / XOÁ / LƯU CART
