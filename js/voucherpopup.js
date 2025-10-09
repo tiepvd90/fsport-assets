@@ -1,8 +1,8 @@
 /* =========================================================================
- * voucherpopup.js — FLASH SALE 10/10 (CLEAN EDITION)
- * - Popup tone đỏ-cam, chữ trắng
- * - Font vừa phải, giảm size tiêu đề
- * - Float icon giữa màn hình, nhỏ hơn
+ * voucherpopup.js — FLASH SALE 10/10 (hiển thị theo style cũ)
+ * - Giao diện nền xanh & chữ trắng (giống bản voucher 30K cũ)
+ * - Hiệu ứng slide-up khi mở
+ * - Giữ nguyên logic mới (đếm ngược đến 4PM, label truyền sang cartpopup)
  * ========================================================================= */
 
 (function () {
@@ -12,21 +12,21 @@
     window.fetchVoucherMap = () => Promise.resolve({});
   }
 
+  // Countdown tới 16:00 hôm nay
   function getSecondsUntil4PM() {
     const now = new Date();
     const target = new Date();
     target.setHours(16, 0, 0, 0);
-    let diff = Math.floor((target - now) / 1000);
-    return diff < 0 ? 0 : diff;
+    return Math.max(0, Math.floor((target - now) / 1000));
   }
 
-  function formatTime(s) {
-    const h = Math.floor(s / 3600);
-    const m = Math.floor((s % 3600) / 60);
-    const sec = s % 60;
-    return `${h.toString().padStart(2, "0")}:${m.toString().padStart(2, "0")}:${sec
+  function formatTime(sec) {
+    const h = Math.floor(sec / 3600);
+    const m = Math.floor((sec % 3600) / 60);
+    const s = sec % 60;
+    return `${h.toString().padStart(2, "0")}:${m
       .toString()
-      .padStart(2, "0")}`;
+      .padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
   }
 
   function startCountdown() {
@@ -45,48 +45,104 @@
     }, 1000);
   }
 
+  // Popup Flash Sale 10/10
   function showVoucherPopup() {
     if (document.getElementById("voucherPopup")) return;
+
     const popup = document.createElement("div");
+    popup.className = "voucher-popup";
     popup.id = "voucherPopup";
     popup.innerHTML = `
-      <div style="position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:9999;display:flex;justify-content:center;align-items:center;">
-        <div style="
-          background:linear-gradient(135deg,#ff5722,#d32f2f);
-          color:#fff;
-          padding:22px;
-          border-radius:16px;
-          width:90%;
-          max-width:380px;
-          box-shadow:0 4px 20px rgba(0,0,0,0.3);
-          text-align:center;
-          font-size:17px;
-          font-family:'Be Vietnam Pro',sans-serif;
-          position:relative;
-        ">
-          <div id="closeVoucherBtn" style="position:absolute;top:8px;right:12px;font-size:22px;cursor:pointer;color:#fff;">&times;</div>
-
-          <h2 style="margin-bottom:10px;font-size:22px;font-weight:800;letter-spacing:0.5px;">🔥 FLASH SALE 10/10 🔥</h2>
-          <p>FreeShip toàn bộ đơn hàng 🎁</p>
-          <p>Giảm <strong>5%</strong> toàn website</p>
-          <p>Giảm <strong>8%</strong> cho đơn từ <strong>1.500.000₫</strong></p>
-          <p id="voucherCountdown" style="font-style:italic;margin-top:8px;color:#fff;"></p>
-
-          <button id="applyVoucherBtn" style="
-            margin-top:18px;
-            background:#fff;
-            color:#d32f2f;
-            border:none;
-            padding:12px 24px;
-            border-radius:8px;
-            font-size:17px;
-            font-weight:600;
-            cursor:pointer;
-          ">ĐÃ HIỂU</button>
-        </div>
+      <div class="voucher-overlay"></div>
+      <div class="voucher-content">
+        <div class="voucher-close" id="closeVoucherBtn">×</div>
+        <h2>🔥 FLASH SALE 10/10 🔥</h2>
+        <p>FreeShip toàn bộ đơn hàng 🎁</p>
+        <p>Giảm <strong>5%</strong> toàn website</p>
+        <p>Giảm <strong>8%</strong> cho đơn từ <strong>1.500.000₫</strong></p>
+        <p><em id="voucherCountdown"></em></p>
+        <button id="applyVoucherBtn">ĐÃ HIỂU</button>
       </div>
     `;
     document.body.appendChild(popup);
+
+    // Thêm CSS style giống bản cũ
+    const style = document.createElement("style");
+    style.innerHTML = `
+      .voucher-popup {
+        position: fixed;
+        inset: 0;
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+        z-index: 9999;
+        animation: slideUp 0.35s ease-out forwards;
+      }
+      .voucher-overlay {
+        position: absolute;
+        inset: 0;
+        background: rgba(0,0,0,0.4);
+      }
+      .voucher-content {
+        position: relative;
+        background: linear-gradient(160deg, #1565c0, #1e88e5);
+        color: #fff;
+        padding: 24px 20px 28px;
+        width: 90%;
+        max-width: 400px;
+        margin-bottom: 8%;
+        border-radius: 12px;
+        box-shadow: 0 4px 18px rgba(0,0,0,0.3);
+        text-align: center;
+        font-family: "Be Vietnam Pro", sans-serif;
+        transform: translateY(50px);
+        opacity: 0;
+        animation: popupFadeIn 0.4s ease-out forwards;
+      }
+      .voucher-close {
+        position: absolute;
+        top: 8px;
+        right: 12px;
+        font-size: 22px;
+        font-weight: bold;
+        cursor: pointer;
+      }
+      .voucher-content h2 {
+        font-size: 22px;
+        margin-bottom: 10px;
+        font-weight: 800;
+      }
+      .voucher-content p {
+        margin: 6px 0;
+        font-size: 16px;
+      }
+      #voucherCountdown {
+        font-style: italic;
+        color: #fff;
+        font-weight: 500;
+      }
+      #applyVoucherBtn {
+        margin-top: 14px;
+        background: #fff;
+        color: #1565c0;
+        font-weight: 600;
+        border: none;
+        border-radius: 8px;
+        padding: 10px 22px;
+        font-size: 16px;
+        cursor: pointer;
+      }
+      @keyframes popupFadeIn {
+        from { opacity: 0; transform: translateY(50px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      @keyframes slideUp {
+        from { opacity: 0; }
+        to { opacity: 1; }
+      }
+    `;
+    document.head.appendChild(style);
+
     startCountdown();
 
     document.getElementById("closeVoucherBtn").addEventListener("click", () => popup.remove());
@@ -102,6 +158,7 @@
     });
   }
 
+  // Icon nổi
   function createVoucherFloatingIcon() {
     if (document.getElementById("voucherFloatIcon")) return;
     const icon = document.createElement("div");
@@ -113,14 +170,12 @@
         right:10px;
         transform:translateY(-50%);
         z-index:9999;
-        cursor:pointer;
-      ">
+        cursor:pointer;">
         <img src="https://i.postimg.cc/bvL7Lbvn/1010-2.jpg" alt="Flash Sale 10/10" style="
           width:60px;
           height:auto;
-          border-radius:10px;
-          box-shadow:0 4px 8px rgba(0,0,0,0.25);
-        "/>
+          border-radius:8px;
+          box-shadow:0 4px 8px rgba(0,0,0,0.25);" />
         <div id="closeVoucherIcon" style="
           position:absolute;
           top:-8px;
@@ -133,8 +188,7 @@
           display:flex;
           align-items:center;
           justify-content:center;
-          font-size:13px;
-        ">×</div>
+          font-size:13px;">×</div>
       </div>
     `;
     document.body.appendChild(icon);
@@ -148,6 +202,7 @@
     });
   }
 
+  // Hiển thị popup & icon ngay khi load
   function runFlashSaleVoucher() {
     createVoucherFloatingIcon();
     showVoucherPopup();
@@ -159,6 +214,7 @@
     runFlashSaleVoucher();
   }
 
+  // Khi đóng checkout → hiện lại popup
   (function setupVoucherAfterCheckoutClose() {
     function waitForCloseButton(retries = 20) {
       const closeBtn = document.querySelector(".checkout-close");
