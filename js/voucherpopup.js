@@ -212,30 +212,6 @@ function getSecondsUntil4PM() {
 </script>
 
 
-// 🪄 Icon nổi góc màn hình
-function createVoucherFloatingIcon() {
-  if (document.getElementById("voucherFloatIcon")) return;
-
-  const icon = document.createElement("div");
-  icon.id = "voucherFloatIcon";
-  icon.innerHTML = `
-    <div class="voucher-float-img-wrapper">
-      <img src="https://i.postimg.cc/bvL7Lbvn/1010-2.jpg" alt="voucher" />
-      <div class="voucher-float-close" id="closeVoucherIcon">×</div>
-    </div>
-  `;
-  document.body.appendChild(icon);
-
-  icon.addEventListener("click", (e) => {
-    if (e.target.id !== "closeVoucherIcon") showVoucherPopup();
-  });
-
-  document.getElementById("closeVoucherIcon")?.addEventListener("click", (e) => {
-    e.stopPropagation();
-    icon.remove();
-  });
-}
-
 // 🕒 Đếm ngược dạng giờ-phút-giây
 function startVoucherCountdown(seconds) {
   const countdownEl = document.getElementById("voucherCountdown");
