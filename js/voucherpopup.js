@@ -38,21 +38,24 @@ function getSecondsUntil4PM() {
   return diff > 0 ? diff : 0;
 }
 // ==========================================
-// 🔴 MINI LIVESTREAM FACEBOOK (GÓC PHẢI, AUTOPLAY + NÚT X) + POPUP FULL
+// 🔴 MINI LIVESTREAM (GÓC PHẢI, TOP 80PX) + POPUP 2 NÚT
 // ==========================================
 (function () {
+  // Link plugin + link xem trực tiếp trên Facebook
   const fbLiveUrl =
-    "https://www.facebook.com/plugins/video.php?href=https%3A%2F%2Fweb.facebook.com%2Freel%2F2579888902356798%2F&show_text=false&autoplay=1&mute=1&width=267&height=476";
+    "https://www.facebook.com/plugins/video.php?href=" +
+    encodeURIComponent("https://www.facebook.com/reel/2579888902356798/") +
+    "&show_text=false&autoplay=1&mute=1&width=267&height=476";
+  const fbDirectUrl = "https://www.facebook.com/reel/2579888902356798/";
 
   // ===== CSS =====
   const style = document.createElement("style");
   style.textContent = `
-    /* Mini livestream khung nổi */
     #fbLiveMini {
       position: fixed;
-      top: 120px; /* 👈 cách mép trên 120px */
+      top: 80px;             /* ✅ đúng yêu cầu */
       right: 10px;
-      width: 90px;
+      width: 80px;           /* ✅ nhỏ lại */
       background: #fff;
       border-radius: 10px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.25);
@@ -62,130 +65,118 @@ function getSecondsUntil4PM() {
       transition: transform 0.25s ease;
     }
     #fbLiveMini:hover { transform: scale(1.03); }
-
-    /* Nút X đóng mini */
-    #fbLiveMini .close-mini {
-      position: absolute;
-      top: 3px;
-      right: 3px;
-      width: 20px;
-      height: 20px;
-      background: rgba(255,255,255,0.8);
-      border-radius: 50%;
-      text-align: center;
-      line-height: 19px;
-      font-size: 16px;
-      font-weight: bold;
-      color: #000;
-      cursor: pointer;
-      z-index: 10;
-    }
-
-    /* Label LIVE đỏ phía trên */
     #fbLiveMini .live-label {
       background: #e60000;
       color: #fff;
       text-align: center;
       font-weight: 700;
-      font-size: 12px;
+      font-size: 11px;
       padding: 2px 0;
       animation: blink 1s infinite;
       letter-spacing: 1px;
     }
-    @keyframes blink {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.3; }
-    }
-
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
+    #fbLiveMini .frame-wrap { position: relative; }
     #fbLiveMini iframe {
       width: 100%;
-      height: 130px;
+      height: 112px;         /* tỉ lệ gọn cho width 80 */
       display: block;
       border: none;
     }
-
-    #fbLiveMini .click-layer {
+    /* ✅ Nút X trắng nền đen, đặt lệch ra ngoài để không đè chữ LIVE */
+    #fbLiveMini .close-mini {
       position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
+      top: -10px;
+      right: -10px;
+      width: 22px; height: 22px;
+      background: #000;
+      color: #fff;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 22px;
+      font-size: 14px;
+      font-weight: 800;
       cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0,0,0,.35);
       z-index: 5;
+    }
+    /* Lớp trong suốt bắt click để mở popup */
+    #fbLiveMini .click-layer {
+      position: absolute; inset: 0;
+      cursor: pointer;
+      z-index: 4;
       background: rgba(0,0,0,0);
     }
 
-    /* Popup full */
+    /* ===== Popup ===== */
     #fbLiveOverlay {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%;
-      height: 100%;
+      position: fixed; inset: 0;
       background: rgba(0,0,0,0.5);
       display: none;
-      align-items: center;
-      justify-content: center;
+      align-items: center; justify-content: center;
       z-index: 10000;
     }
-
     #fbLivePopup {
       background: #fff;
-      width: 90%;
+      width: 90%;            /* ✅ 90% chiều rộng điện thoại */
       max-width: 500px;
-      border-radius: 10px;
+      border-radius: 12px;
       overflow: hidden;
       box-shadow: 0 5px 25px rgba(0,0,0,0.4);
-      animation: scaleIn 0.3s ease;
-      position: relative;
+      animation: scaleIn .25s ease;
     }
+    @keyframes scaleIn { from {transform:scale(.92);opacity:0} to {transform:scale(1);opacity:1} }
+
+    /* Header 2 nút */
+    #fbLivePopup .pop-header {
+      display: flex; gap: 10px;
+      padding: 10px;
+      background: #f6f6f6;
+    }
+    #fbLivePopup .btn {
+      flex: 1;
+      padding: 10px 12px;
+      border-radius: 999px;
+      text-align: center;
+      font-weight: 700;
+      font-size: 14px;
+      border: none;
+      cursor: pointer;
+    }
+    #fbLivePopup .btn-viewfb { background: #1877F2; color: #fff; }  /* ✅ xanh Facebook */
+    #fbLivePopup .btn-close  { background: #000;    color: #fff; }
 
     #fbLivePopup iframe {
       width: 100%;
-      height: 80vh;
+      height: 70vh;
       display: block;
       border: none;
     }
 
-    #fbLivePopup .close-btn {
-      position: absolute;
-      top: 8px;
-      right: 10px;
-      font-size: 28px;
-      color: #333;
-      background: rgba(255,255,255,0.8);
-      border-radius: 50%;
-      width: 34px;
-      height: 34px;
-      line-height: 30px;
-      text-align: center;
-      cursor: pointer;
-      font-weight: bold;
-      z-index: 10001;
-    }
-
-    @keyframes scaleIn {
-      from { transform: scale(0.8); opacity: 0; }
-      to { transform: scale(1); opacity: 1; }
-    }
-
     @media (max-width: 768px) {
-      #fbLiveMini { width: 90px; top: 120px; right: 8px; }
-      #fbLiveMini iframe { height: 120px; }
+      #fbLiveMini { width: 80px; top: 80px; right: 8px; }
+      #fbLiveMini iframe { height: 112px; }
       #fbLivePopup iframe { height: 70vh; }
     }
   `;
   document.head.appendChild(style);
 
-  // ===== MINI KHUNG NHỎ (AUTOPLAY) =====
+  // ===== MINI KHUNG NHỎ =====
   const mini = document.createElement("div");
   mini.id = "fbLiveMini";
   mini.innerHTML = `
     <div class="live-label">🔴 LIVE</div>
-    <div class="close-mini">&times;</div>
-    <iframe
-      src="${fbLiveUrl}"
-      allow="autoplay; muted; clipboard-write; encrypted-media; picture-in-picture; web-share"
-      allowfullscreen="true">
-    </iframe>
-    <div class="click-layer"></div>
+    <div class="frame-wrap">
+      <iframe
+        title="FB Live"
+        src="about:blank"
+        allow="autoplay; encrypted-media; picture-in-picture; web-share"
+        allowfullscreen
+        scrolling="no"
+        frameborder="0"></iframe>
+      <div class="click-layer"></div>
+      <div class="close-mini">&times;</div>
+    </div>
   `;
   document.body.appendChild(mini);
 
@@ -194,20 +185,50 @@ function getSecondsUntil4PM() {
   overlay.id = "fbLiveOverlay";
   overlay.innerHTML = `
     <div id="fbLivePopup">
-      <div class="close-btn">&times;</div>
+      <div class="pop-header">
+        <button class="btn btn-viewfb">XEM TRÊN FB</button>
+        <button class="btn btn-close">ĐÓNG</button>
+      </div>
       <iframe
-        src="${fbLiveUrl}"
-        allow="autoplay; muted; clipboard-write; encrypted-media; picture-in-picture; web-share"
-        allowfullscreen="true">
-      </iframe>
+        title="FB Live Big"
+        src="about:blank"
+        allow="autoplay; encrypted-media; picture-in-picture; web-share"
+        allowfullscreen
+        scrolling="no"
+        frameborder="0"></iframe>
     </div>
   `;
   document.body.appendChild(overlay);
 
+  // ===== Autoplay chắc chắn khi reload =====
+  const miniIframe = mini.querySelector("iframe");
+  const bigIframe  = overlay.querySelector("iframe");
+
+  function setAutoplay(iframeEl) {
+    // đảm bảo luôn có autoplay=1 & mute=1
+    let url = fbLiveUrl;
+    if (!/autoplay=1/.test(url)) url += (url.includes("?") ? "&" : "?") + "autoplay=1";
+    if (!/mute=1/.test(url))     url += "&mute=1";
+    iframeEl.src = url;
+
+    // Fallback iOS: reload lại sau 800ms nếu bị block
+    setTimeout(() => {
+      try {
+        // chỉ reload nếu vẫn là about:blank (trường hợp hiếm)
+        if (iframeEl.contentWindow == null) iframeEl.src = url;
+      } catch (_) { /* cross-origin, bỏ qua */ }
+    }, 800);
+  }
+
+  // Gán src sau khi DOM sẵn sàng + sau khi window load (double ensure)
+  setAutoplay(miniIframe);
+  window.addEventListener("load", () => setAutoplay(miniIframe));
+
   // ===== SỰ KIỆN =====
-  // click mở popup
+  // mở popup
   mini.querySelector(".click-layer").addEventListener("click", () => {
     overlay.style.display = "flex";
+    setAutoplay(bigIframe);   // gán src vào khung to
   });
 
   // đóng mini
@@ -216,23 +237,23 @@ function getSecondsUntil4PM() {
     mini.remove();
   });
 
-  // đóng popup
-  overlay.querySelector(".close-btn").addEventListener("click", (e) => {
-    e.stopPropagation();
+  // nút xem trên FB (mở tab mới/app FB)
+  overlay.querySelector(".btn-viewfb").addEventListener("click", () => {
+    window.open(fbDirectUrl, "_blank");
+  });
+
+  // nút đóng popup
+  overlay.querySelector(".btn-close").addEventListener("click", () => {
     overlay.style.display = "none";
+    bigIframe.src = "about:blank"; // dừng phát khi đóng
   });
 
-  overlay.addEventListener("click", (e) => {
-    if (e.target.id === "fbLiveOverlay") overlay.style.display = "none";
-  });
-
-  // ===== Autoplay đảm bảo khi load =====
-  window.addEventListener("load", () => {
-    const iframe = mini.querySelector("iframe");
-    const src = fbLiveUrl + "&autoplay=1&mute=1";
-    iframe.src = src;
-  });
+  // chạm ra ngoài không đóng (để tránh tắt nhầm), nếu muốn đóng ngoài khung thì bật đoạn dưới:
+  // overlay.addEventListener("click", (e) => {
+  //   if (e.target.id === "fbLiveOverlay") overlay.style.display = "none";
+  // });
 })();
+
 
 
 // 🪄 Icon nổi góc màn hình
