@@ -1,9 +1,9 @@
-// 🛡️ Dự phòng cũ (giữ cho an toàn)
+// 🛡️ Dự phòng cũ (giữ cho an toàn, không cần gọi gì thêm)
 if (typeof fetchVoucherMap !== "function") {
   window.fetchVoucherMap = () => Promise.resolve({});
 }
 
-// 🎉 Hiển thị popup voucher
+// 🎉 Hiển thị popup FLASH SALE
 function showVoucherPopup() {
   if (document.getElementById("voucherPopup")) return;
 
@@ -13,20 +13,23 @@ function showVoucherPopup() {
   popup.innerHTML = `
     <div class="voucher-close" id="closeVoucherBtn">×</div>
     <h2>🎉 FLASH SALE <strong style="font-weight:900; color:#d32f2f;">10/10</strong></h2>
-    <p>MIỄN PHÍ SHIP TOÀN BỘ ĐƠN HÀNG</p>
-    <p>GIẢM 5% TOÀN BỘ WEBSITE</p>
-    <p>GIẢM 8% ĐƠN HÀNG TRÊN <strong style="font-weight:900; color:#d32f2f;">1.500.000 </strong> ĐỒNG</p>
+    <ul style="text-align:left; padding-left:20px; color:#000; font-weight:500; line-height:1.6;">
+      <li>MIỄN PHÍ SHIP TOÀN BỘ ĐƠN HÀNG</li>
+      <li>GIẢM 5% TOÀN BỘ WEBSITE</li>
+      <li>GIẢM 8% ĐƠN HÀNG TRÊN <strong style="color:#d32f2f;">1.500.000đ</strong></li>
+    </ul>
     <p><span id="voucherCountdown" style="font-weight:bold; color:#e53935;"></span></p>
-    <button id="applyVoucherBtn">LẤY VOUCHER</button>
+    <button id="applyVoucherBtn" style="margin-top:10px; padding:8px 16px; border:none; border-radius:6px; background:#ff9800; color:#fff; font-weight:700;">LẤY VOUCHER</button>
   `;
   document.body.appendChild(popup);
 
   document.getElementById("closeVoucherBtn")?.addEventListener("click", () => popup.remove());
   document.getElementById("applyVoucherBtn")?.addEventListener("click", () => popup.remove());
+
   startVoucherCountdown(getSecondsUntil4PM());
 }
 
-// 🔹 Đếm ngược tới 16:00
+// 🔹 Đếm ngược tới 16:00 hôm nay
 function getSecondsUntil4PM() {
   const now = new Date();
   const target = new Date();
@@ -35,32 +38,40 @@ function getSecondsUntil4PM() {
   return diff > 0 ? diff : 0;
 }
 
-// ===============================================
-// ✅ MINI LIVESTREAM FACEBOOK FIXED VERSION
-// ===============================================
+// ==========================================
+// 🔴 MINI LIVESTREAM FACEBOOK + POPUP 2 NÚT
+// ==========================================
 (function () {
   const fbLiveUrl =
     "https://www.facebook.com/plugins/video.php?href=" +
     encodeURIComponent("https://www.facebook.com/reel/2579888902356798/") +
     "&show_text=false&autoplay=1&mute=1&width=267&height=476";
+
   const fbDirectUrl = "https://www.facebook.com/reel/2579888902356798/";
 
+  // ===== CSS =====
   const style = document.createElement("style");
   style.textContent = `
     #fbLiveMini {
       position: fixed;
-      top: 80px;
+      top: 140px;
       right: 10px;
-      width: 90px;
-      background: #000;
+      width: 80px;
+      background: #fff;
       border-radius: 10px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.25);
       z-index: 9998;
       overflow: hidden;
-      border: 1px solid #444;
+      border: 1px solid #ddd;
       transition: transform 0.25s ease;
     }
-    #fbLiveMini:hover { transform: scale(1.05); }
+    #fbLiveMini:hover { transform: scale(1.03); }
+    #fbLiveMini iframe {
+      width: 100%;
+      height: 112px;
+      display: block;
+      border: none;
+    }
     #fbLiveMini .live-label {
       background: #e60000;
       color: #fff;
@@ -71,24 +82,26 @@ function getSecondsUntil4PM() {
       animation: blink 1s infinite;
       letter-spacing: 1px;
     }
-    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
-    #fbLiveMini iframe {
-      width: 100%;
-      height: 120px;
-      display: block;
-      border: none;
+    @keyframes blink {
+      0%,100% { opacity: 1; }
+      50% { opacity: .3; }
     }
     #fbLiveMini .click-layer {
-      position: absolute; inset: 0;
+      position: absolute;
+      inset: 0;
       cursor: pointer;
       z-index: 4;
       background: rgba(0,0,0,0);
     }
+
+    /* Popup full */
     #fbLiveOverlay {
-      position: fixed; inset: 0;
-      background: rgba(0,0,0,0.6);
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
       display: none;
-      align-items: center; justify-content: center;
+      align-items: center;
+      justify-content: center;
       z-index: 10000;
     }
     #fbLivePopup {
@@ -100,9 +113,13 @@ function getSecondsUntil4PM() {
       box-shadow: 0 5px 25px rgba(0,0,0,0.4);
       animation: scaleIn .25s ease;
     }
-    @keyframes scaleIn { from {transform:scale(.92);opacity:0} to {transform:scale(1);opacity:1} }
+    @keyframes scaleIn {
+      from { transform: scale(.92); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
     #fbLivePopup .pop-header {
-      display: flex; gap: 10px;
+      display: flex;
+      gap: 10px;
       padding: 10px;
       background: #f6f6f6;
     }
@@ -117,37 +134,38 @@ function getSecondsUntil4PM() {
       cursor: pointer;
     }
     #fbLivePopup .btn-viewfb { background: #1877F2; color: #fff; }
-    #fbLivePopup .btn-close  { background: #000; color: #fff; }
+    #fbLivePopup .btn-close { background: #000; color: #fff; }
     #fbLivePopup iframe {
       width: 100%;
       height: 70vh;
       display: block;
       border: none;
     }
+
     @media (max-width: 768px) {
-      #fbLiveMini { width: 80px; top: 80px; right: 8px; }
-      #fbLiveMini iframe { height: 110px; }
+      #fbLiveMini {
+        width: 80px;
+        top: 80px;
+        right: 8px;
+      }
+      #fbLiveMini iframe { height: 112px; }
       #fbLivePopup iframe { height: 70vh; }
     }
   `;
   document.head.appendChild(style);
 
+  // ===== MINI LIVESTREAM =====
   const mini = document.createElement("div");
   mini.id = "fbLiveMini";
   mini.innerHTML = `
+    <iframe src="about:blank" allow="autoplay; encrypted-media; picture-in-picture; web-share"
+      allowfullscreen scrolling="no" frameborder="0"></iframe>
     <div class="live-label">🔴 LIVE</div>
-    <iframe
-      src="${fbLiveUrl}"
-      allow="autoplay; encrypted-media; picture-in-picture; web-share"
-      allowfullscreen
-      scrolling="no"
-      frameborder="0"
-      muted
-    ></iframe>
     <div class="click-layer"></div>
   `;
   document.body.appendChild(mini);
 
+  // ===== POPUP =====
   const overlay = document.createElement("div");
   overlay.id = "fbLiveOverlay";
   overlay.innerHTML = `
@@ -156,56 +174,78 @@ function getSecondsUntil4PM() {
         <button class="btn btn-viewfb">XEM TRÊN FB</button>
         <button class="btn btn-close">ĐÓNG</button>
       </div>
-      <iframe
-        src="about:blank"
-        allow="autoplay; encrypted-media; picture-in-picture; web-share"
-        allowfullscreen
-        scrolling="no"
-        frameborder="0"
-      ></iframe>
+      <iframe src="about:blank" allow="autoplay; encrypted-media; picture-in-picture; web-share"
+        allowfullscreen scrolling="no" frameborder="0"></iframe>
     </div>
   `;
   document.body.appendChild(overlay);
 
+  // ===== AUTOPLAY =====
   const miniIframe = mini.querySelector("iframe");
-  const bigIframe  = overlay.querySelector("iframe");
+  const bigIframe = overlay.querySelector("iframe");
 
-  const setAutoplay = (iframe, muted = true) => {
-    const url = muted
-      ? fbLiveUrl + "&autoplay=1&mute=1"
-      : fbLiveUrl.replace("&mute=1", "") + "&autoplay=1";
-    iframe.src = url;
+  const setAutoplay = (iframe) => {
+    iframe.src = fbLiveUrl.includes("autoplay=1")
+      ? fbLiveUrl
+      : fbLiveUrl + "&autoplay=1&mute=1";
   };
+  setAutoplay(miniIframe);
+  window.addEventListener("load", () => setAutoplay(miniIframe));
 
-  window.addEventListener("DOMContentLoaded", () => {
-    setTimeout(() => setAutoplay(miniIframe, true), 500);
-  });
-
+  // ===== EVENT =====
   mini.querySelector(".click-layer").addEventListener("click", () => {
     overlay.style.display = "flex";
-    setAutoplay(bigIframe, false);
+    setAutoplay(bigIframe);
   });
 
   overlay.querySelector(".btn-viewfb").addEventListener("click", () => {
     window.open(fbDirectUrl, "_blank");
   });
+
   overlay.querySelector(".btn-close").addEventListener("click", () => {
     overlay.style.display = "none";
     bigIframe.src = "about:blank";
   });
 })();
 
-// 🕒 Đếm ngược voucher
+// 🪄 Icon nổi góc màn hình
+function createVoucherFloatingIcon() {
+  if (document.getElementById("voucherFloatIcon")) return;
+
+  const icon = document.createElement("div");
+  icon.id = "voucherFloatIcon";
+  icon.innerHTML = `
+    <div class="voucher-float-img-wrapper">
+      <img src="https://i.postimg.cc/bvL7Lbvn/1010-2.jpg" alt="voucher" />
+      <div class="voucher-float-close" id="closeVoucherIcon">×</div>
+    </div>
+  `;
+  document.body.appendChild(icon);
+
+  icon.addEventListener("click", (e) => {
+    if (e.target.id !== "closeVoucherIcon") showVoucherPopup();
+  });
+
+  document.getElementById("closeVoucherIcon")?.addEventListener("click", (e) => {
+    e.stopPropagation();
+    icon.remove();
+  });
+}
+
+// 🕒 Đếm ngược dạng giờ-phút-giây
 function startVoucherCountdown(seconds) {
   const countdownEl = document.getElementById("voucherCountdown");
   if (!countdownEl) return;
+
   function formatTime(s) {
     const h = Math.floor(s / 3600);
     const m = Math.floor((s % 3600) / 60);
     const sec = s % 60;
-    return `${h}:${m}:${sec < 10 ? "0":""}${sec}`;
+    return `${h}:${m}:${sec < 10 ? "0" : ""}${sec}`;
   }
+
   countdownEl.textContent = `⏰ FLASH SALE END: ${formatTime(seconds)}`;
+
   const interval = setInterval(() => {
     seconds--;
     if (seconds <= 0) {
@@ -216,3 +256,54 @@ function startVoucherCountdown(seconds) {
     }
   }, 1000);
 }
+
+// ✅ Hiển thị icon và popup khi load
+function runVoucherImmediately() {
+  createVoucherFloatingIcon();
+  const lastShown = Number(sessionStorage.getItem("voucherShownGlobal") || 0);
+  const COOLDOWN_MS = 60 * 60 * 1000;
+
+  if (Date.now() - lastShown < COOLDOWN_MS) {
+    console.log("⏳ Cooldown: chỉ hiển thị icon, không bật popup.");
+    return;
+  }
+
+  sessionStorage.setItem("voucherShownGlobal", String(Date.now()));
+  showVoucherPopup();
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", runVoucherImmediately);
+} else {
+  runVoucherImmediately();
+}
+
+// ✅ Hiển thị lại popup khi đóng giỏ hàng
+(function setupVoucherAfterCheckoutClose() {
+  function waitForCloseButton(retries = 20) {
+    const closeBtn = document.querySelector(".checkout-close");
+    if (!closeBtn) {
+      if (retries > 0) return setTimeout(() => waitForCloseButton(retries - 1), 300);
+      return;
+    }
+
+    closeBtn.addEventListener("click", () => {
+      setTimeout(() => {
+        const lastShown = Number(sessionStorage.getItem("voucherShownAfterClose") || 0);
+        const COOLDOWN_MS = 60 * 60 * 1000;
+        if (Date.now() - lastShown < COOLDOWN_MS) return;
+
+        sessionStorage.setItem("voucherShownAfterClose", String(Date.now()));
+        console.log("🎉 Hiển thị popup FLASH SALE khi đóng giỏ hàng.");
+        createVoucherFloatingIcon();
+        showVoucherPopup();
+      }, 300);
+    });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", () => waitForCloseButton());
+  } else {
+    waitForCloseButton();
+  }
+})();
