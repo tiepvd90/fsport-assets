@@ -1,32 +1,78 @@
-<!-- ✅ Flash Sale Banner -->
-<div id="flashSaleBanner" style="
-  background-image: url('https://i.postimg.cc/wB7DgT1R/flash-sale-background.jpg');
-  background-size: cover;
-  background-position: center;
-  width: 100%;
-  height: 40px;
+<!-- ✅ Voucher Countdown Banner (Cam chủ đạo, cùng 1 dòng, đếm ngược tới 4PM hôm nay) -->
+<div id="voucherBanner" style="
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(90deg, #ff9900, #ff6600, #ff3300);
+  width: 100%; height: 45px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 0 20px;
-  color: white;
-  font-weight: bold;
+  justify-content: center;
+  padding: 0 15px;
+  color: #fff;
+  font-weight: 700;
   font-size: 15px;
+  gap: 8px;
   box-sizing: border-box;
+  white-space: nowrap; /* ✅ Giữ cùng 1 dòng */
+  z-index: 1;
 ">
-  <!-- Giá bên trái -->
-  <div id="flashSalePrice" style="flex-shrink: 0; white-space: nowrap; font-size: 17px;">
-    Upto 35% Off
-  </div>
+  <span>FLASH SALE 10/10 KẾT THÚC SAU</span>
+  <span id="countdown" style="
+    background: rgba(0,0,0,0.4);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 14px;
+    letter-spacing: 1px;
+  ">00:00:00</span>
 
-  <!-- Flash Sale bên phải -->
-  <div style="display: flex; align-items: center; gap: 6px; text-align: right;">
-    <img src="https://img.icons8.com/color/24/000000/flash-on.png" style="width: 14px; height: 14px;" />
-    <div style="display: flex; flex-direction: column; line-height: 1.2;">
-      <div style="font-size: 13px; text-align: center;">Flash Sale</div>
-      <div style="font-size: 10px; font-weight: normal;">Kết Thúc Hôm Nay</div>
-    </div>
-    <img src="https://img.icons8.com/color/24/000000/flash-on.png" style="width: 14px; height: 14px;" />
-  </div>
+  <!-- ✅ Lớp ánh sáng lướt -->
+  <div class="shine"></div>
 </div>
-<!-- END Flash Sale Banner -->
+
+<style>
+#voucherBanner .shine {
+  position: absolute;
+  top: 0;
+  left: -60%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(120deg,
+    rgba(255,255,255,0) 0%,
+    rgba(255,255,255,0.4) 50%,
+    rgba(255,255,255,0) 100%);
+  animation: shineMove 3s linear infinite;
+  pointer-events: none;
+  z-index: 0; /* ✅ Cho dưới text */
+}
+
+@keyframes shineMove {
+  0%   { left: -60%; }
+  100% { left: 120%; }
+}
+</style>
+
+<script>
+(function() {
+  function updateCountdown() {
+    const now = new Date();
+    const deadline = new Date();
+    deadline.setHours(16, 0, 0, 0); // ✅ Đếm tới 16:00 hôm nay
+
+    // Nếu đã qua 16h thì chuyển sang 16h ngày mai
+    if (now > deadline) {
+      deadline.setDate(deadline.getDate() + 1);
+    }
+
+    const diff = deadline - now;
+    const hours = String(Math.floor(diff / 3600000)).padStart(2, "0");
+    const minutes = String(Math.floor((diff % 3600000) / 60000)).padStart(2, "0");
+    const seconds = String(Math.floor((diff % 60000) / 1000)).padStart(2, "0");
+
+    const el = document.getElementById("countdown");
+    if (el) el.textContent = `${hours}:${minutes}:${seconds}`;
+  }
+
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+})();
+</script>
