@@ -12,7 +12,7 @@ function showVoucherPopup() {
   popup.id = "voucherPopup";
   popup.innerHTML = `
     <div class="voucher-close" id="closeVoucherBtn">×</div>
-    <h2>🎉 FLASH SALE 10.10!</h2>
+    <h2>🎉 FLASH SALE <strong style="font-weight:900; color:#d32f2f;">10/10</strong></h2>
     <p>MIỄN PHÍ SHIP TOÀN BỘ ĐƠN HÀNG</p>
     <p>GIẢM 5% TOÀN BỘ WEBSITE</p>
     <p>GIẢM 8% ĐƠN HÀNG TRÊN <strong style="font-weight:900; color:#d32f2f;">1.500.000 </strong> ĐỒNG
