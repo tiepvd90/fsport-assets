@@ -1,4 +1,4 @@
-<!-- ✅ Voucher Countdown Banner với hiệu ứng cam chủ đạo -->
+<!-- ✅ Voucher Countdown Banner (Cam chủ đạo, cùng 1 dòng, đếm ngược tới 4PM hôm nay) -->
 <div id="voucherBanner" style="
   position: relative;
   overflow: hidden;
@@ -13,10 +13,9 @@
   font-size: 15px;
   gap: 8px;
   box-sizing: border-box;
+  white-space: nowrap; /* ✅ Giữ cùng 1 dòng */
+  z-index: 1;
 ">
-  <!-- lớp ánh sáng lướt -->
-  <div class="shine"></div>
-
   <span>FLASH SALE 10/10 KẾT THÚC SAU</span>
   <span id="countdown" style="
     background: rgba(0,0,0,0.4);
@@ -25,20 +24,25 @@
     font-size: 14px;
     letter-spacing: 1px;
   ">00:00:00</span>
+
+  <!-- ✅ Lớp ánh sáng lướt -->
+  <div class="shine"></div>
 </div>
 
 <style>
-/* Hiệu ứng ánh sáng lướt */
 #voucherBanner .shine {
   position: absolute;
-  top: 0; left: -100%;
+  top: 0;
+  left: -60%;
   width: 50%;
   height: 100%;
   background: linear-gradient(120deg,
     rgba(255,255,255,0) 0%,
-    rgba(255,255,255,0.45) 50%,
+    rgba(255,255,255,0.4) 50%,
     rgba(255,255,255,0) 100%);
   animation: shineMove 3s linear infinite;
+  pointer-events: none;
+  z-index: 0; /* ✅ Cho dưới text */
 }
 
 @keyframes shineMove {
@@ -52,22 +56,23 @@
   function updateCountdown() {
     const now = new Date();
     const deadline = new Date();
-    deadline.setHours(16, 00, 00, 0000); // 16:00 hôm nay
+    deadline.setHours(16, 0, 0, 0); // ✅ Đếm tới 16:00 hôm nay
 
+    // Nếu đã qua 16h thì chuyển sang 16h ngày mai
     if (now > deadline) {
       deadline.setDate(deadline.getDate() + 1);
     }
 
     const diff = deadline - now;
-    const hours = String(Math.floor(diff / (1000 * 60 * 60))).padStart(2, '0');
-    const minutes = String(Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
-    const seconds = String(Math.floor((diff % (1000 * 60)) / 1000)).padStart(2, '0');
+    const hours = String(Math.floor(diff / 3600000)).padStart(2, "0");
+    const minutes = String(Math.floor((diff % 3600000) / 60000)).padStart(2, "0");
+    const seconds = String(Math.floor((diff % 60000) / 1000)).padStart(2, "0");
 
     const el = document.getElementById("countdown");
     if (el) el.textContent = `${hours}:${minutes}:${seconds}`;
   }
 
-  setInterval(updateCountdown, 1000);
   updateCountdown();
+  setInterval(updateCountdown, 1000);
 })();
 </script>
