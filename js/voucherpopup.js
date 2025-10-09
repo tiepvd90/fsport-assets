@@ -3,7 +3,7 @@ if (typeof fetchVoucherMap !== "function") {
   window.fetchVoucherMap = () => Promise.resolve({});
 }
 
-// 🎉 Hiển thị popup FLASH SALE
+// 🎉 Hiển thị popup
 function showVoucherPopup() {
   if (document.getElementById("voucherPopup")) return;
 
@@ -13,17 +13,19 @@ function showVoucherPopup() {
   popup.innerHTML = `
     <div class="voucher-close" id="closeVoucherBtn">×</div>
     <h2>🎉 FLASH SALE <strong style="font-weight:900; color:#d32f2f;">10/10</strong></h2>
-    <ul style="text-align:left; padding-left:20px; color:#000; font-weight:500; line-height:1.6;">
-      <li>MIỄN PHÍ SHIP TOÀN BỘ ĐƠN HÀNG</li>
-      <li>GIẢM 5% TOÀN BỘ WEBSITE</li>
-      <li>GIẢM 8% ĐƠN HÀNG TRÊN <strong style="color:#d32f2f;">1.500.000đ</strong></li>
-    </ul>
+    <p>MIỄN PHÍ SHIP TOÀN BỘ ĐƠN HÀNG</p>
+    <p>GIẢM 5% TOÀN BỘ WEBSITE</p>
+    <p>GIẢM 8% ĐƠN HÀNG TRÊN <strong style="font-weight:900; color:#d32f2f;">1.500.000 </strong> ĐỒNG</p>
     <p><span id="voucherCountdown" style="font-weight:bold; color:#e53935;"></span></p>
-    <button id="applyVoucherBtn" style="margin-top:10px; padding:8px 16px; border:none; border-radius:6px; background:#ff9800; color:#fff; font-weight:700;">LẤY VOUCHER</button>
+    <button id="applyVoucherBtn">LẤY VOUCHER</button>
   `;
+
   document.body.appendChild(popup);
 
+  // Đóng popup
   document.getElementById("closeVoucherBtn")?.addEventListener("click", () => popup.remove());
+
+  // Nút bấm chỉ đóng popup
   document.getElementById("applyVoucherBtn")?.addEventListener("click", () => popup.remove());
 
   startVoucherCountdown(getSecondsUntil4PM());
@@ -38,176 +40,6 @@ function getSecondsUntil4PM() {
   return diff > 0 ? diff : 0;
 }
 
-// ==========================================
-// 🔴 MINI LIVESTREAM FACEBOOK + POPUP 2 NÚT
-// ==========================================
-(function () {
-  const fbLiveUrl =
-    "https://www.facebook.com/plugins/video.php?href=" +
-    encodeURIComponent("https://www.facebook.com/reel/2579888902356798/") +
-    "&show_text=false&autoplay=1&mute=1&width=267&height=476";
-
-  const fbDirectUrl = "https://www.facebook.com/reel/2579888902356798/";
-
-  // ===== CSS =====
-  const style = document.createElement("style");
-  style.textContent = `
-    #fbLiveMini {
-      position: fixed;
-      top: 140px;
-      right: 10px;
-      width: 80px;
-      background: #fff;
-      border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.25);
-      z-index: 9998;
-      overflow: hidden;
-      border: 1px solid #ddd;
-      transition: transform 0.25s ease;
-    }
-    #fbLiveMini:hover { transform: scale(1.03); }
-    #fbLiveMini iframe {
-      width: 100%;
-      height: 112px;
-      display: block;
-      border: none;
-    }
-    #fbLiveMini .live-label {
-      background: #e60000;
-      color: #fff;
-      text-align: center;
-      font-weight: 700;
-      font-size: 11px;
-      padding: 2px 0;
-      animation: blink 1s infinite;
-      letter-spacing: 1px;
-    }
-    @keyframes blink {
-      0%,100% { opacity: 1; }
-      50% { opacity: .3; }
-    }
-    #fbLiveMini .click-layer {
-      position: absolute;
-      inset: 0;
-      cursor: pointer;
-      z-index: 4;
-      background: rgba(0,0,0,0);
-    }
-
-    /* Popup full */
-    #fbLiveOverlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.5);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 10000;
-    }
-    #fbLivePopup {
-      background: #fff;
-      width: 90%;
-      max-width: 500px;
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 5px 25px rgba(0,0,0,0.4);
-      animation: scaleIn .25s ease;
-    }
-    @keyframes scaleIn {
-      from { transform: scale(.92); opacity: 0; }
-      to { transform: scale(1); opacity: 1; }
-    }
-    #fbLivePopup .pop-header {
-      display: flex;
-      gap: 10px;
-      padding: 10px;
-      background: #f6f6f6;
-    }
-    #fbLivePopup .btn {
-      flex: 1;
-      padding: 10px 12px;
-      border-radius: 999px;
-      text-align: center;
-      font-weight: 700;
-      font-size: 14px;
-      border: none;
-      cursor: pointer;
-    }
-    #fbLivePopup .btn-viewfb { background: #1877F2; color: #fff; }
-    #fbLivePopup .btn-close { background: #000; color: #fff; }
-    #fbLivePopup iframe {
-      width: 100%;
-      height: 70vh;
-      display: block;
-      border: none;
-    }
-
-    @media (max-width: 768px) {
-      #fbLiveMini {
-        width: 80px;
-        top: 80px;
-        right: 8px;
-      }
-      #fbLiveMini iframe { height: 112px; }
-      #fbLivePopup iframe { height: 70vh; }
-    }
-  `;
-  document.head.appendChild(style);
-
-  // ===== MINI LIVESTREAM =====
-  const mini = document.createElement("div");
-  mini.id = "fbLiveMini";
-  mini.innerHTML = `
-    <iframe src="about:blank" allow="autoplay; encrypted-media; picture-in-picture; web-share"
-      allowfullscreen scrolling="no" frameborder="0"></iframe>
-    <div class="live-label">🔴 LIVE</div>
-    <div class="click-layer"></div>
-  `;
-  document.body.appendChild(mini);
-
-  // ===== POPUP =====
-  const overlay = document.createElement("div");
-  overlay.id = "fbLiveOverlay";
-  overlay.innerHTML = `
-    <div id="fbLivePopup">
-      <div class="pop-header">
-        <button class="btn btn-viewfb">XEM TRÊN FB</button>
-        <button class="btn btn-close">ĐÓNG</button>
-      </div>
-      <iframe src="about:blank" allow="autoplay; encrypted-media; picture-in-picture; web-share"
-        allowfullscreen scrolling="no" frameborder="0"></iframe>
-    </div>
-  `;
-  document.body.appendChild(overlay);
-
-  // ===== AUTOPLAY =====
-  const miniIframe = mini.querySelector("iframe");
-  const bigIframe = overlay.querySelector("iframe");
-
-  const setAutoplay = (iframe) => {
-    iframe.src = fbLiveUrl.includes("autoplay=1")
-      ? fbLiveUrl
-      : fbLiveUrl + "&autoplay=1&mute=1";
-  };
-  setAutoplay(miniIframe);
-  window.addEventListener("load", () => setAutoplay(miniIframe));
-
-  // ===== EVENT =====
-  mini.querySelector(".click-layer").addEventListener("click", () => {
-    overlay.style.display = "flex";
-    setAutoplay(bigIframe);
-  });
-
-  overlay.querySelector(".btn-viewfb").addEventListener("click", () => {
-    window.open(fbDirectUrl, "_blank");
-  });
-
-  overlay.querySelector(".btn-close").addEventListener("click", () => {
-    overlay.style.display = "none";
-    bigIframe.src = "about:blank";
-  });
-})();
-
 // 🪄 Icon nổi góc màn hình
 function createVoucherFloatingIcon() {
   if (document.getElementById("voucherFloatIcon")) return;
@@ -220,6 +52,7 @@ function createVoucherFloatingIcon() {
       <div class="voucher-float-close" id="closeVoucherIcon">×</div>
     </div>
   `;
+
   document.body.appendChild(icon);
 
   icon.addEventListener("click", (e) => {
@@ -257,9 +90,10 @@ function startVoucherCountdown(seconds) {
   }, 1000);
 }
 
-// ✅ Hiển thị icon và popup khi load
+// ✅ Hàm chính: hiển thị icon và popup (mỗi 1 tiếng mới tự bật lại)
 function runVoucherImmediately() {
   createVoucherFloatingIcon();
+
   const lastShown = Number(sessionStorage.getItem("voucherShownGlobal") || 0);
   const COOLDOWN_MS = 60 * 60 * 1000;
 
@@ -272,13 +106,14 @@ function runVoucherImmediately() {
   showVoucherPopup();
 }
 
+// ✅ Gọi khi load trang
 if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", runVoucherImmediately);
 } else {
   runVoucherImmediately();
 }
 
-// ✅ Hiển thị lại popup khi đóng giỏ hàng
+// ✅ Sau khi đóng giỏ hàng thì cũng hiển thị lại popup (như flash sale)
 (function setupVoucherAfterCheckoutClose() {
   function waitForCloseButton(retries = 20) {
     const closeBtn = document.querySelector(".checkout-close");
