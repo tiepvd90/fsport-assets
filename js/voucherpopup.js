@@ -38,7 +38,7 @@ function getSecondsUntil4PM() {
   return diff > 0 ? diff : 0;
 }
 // ==========================================
-// 🔴 MINI LIVESTREAM FACEBOOK (GÓC PHẢI) + POPUP FULL
+// 🔴 MINI LIVESTREAM FACEBOOK (GÓC PHẢI, AUTOPLAY + NÚT X) + POPUP FULL
 // ==========================================
 (function () {
   const fbLiveUrl =
@@ -50,9 +50,9 @@ function getSecondsUntil4PM() {
     /* Mini livestream khung nổi */
     #fbLiveMini {
       position: fixed;
-      top: 90px; /* hạ xuống dưới một chút */
+      top: 120px; /* 👈 cách mép trên 120px */
       right: 10px;
-      width: 110px;
+      width: 90px;
       background: #fff;
       border-radius: 10px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.25);
@@ -63,14 +63,32 @@ function getSecondsUntil4PM() {
     }
     #fbLiveMini:hover { transform: scale(1.03); }
 
+    /* Nút X đóng mini */
+    #fbLiveMini .close-mini {
+      position: absolute;
+      top: 3px;
+      right: 3px;
+      width: 20px;
+      height: 20px;
+      background: rgba(255,255,255,0.8);
+      border-radius: 50%;
+      text-align: center;
+      line-height: 19px;
+      font-size: 16px;
+      font-weight: bold;
+      color: #000;
+      cursor: pointer;
+      z-index: 10;
+    }
+
     /* Label LIVE đỏ phía trên */
     #fbLiveMini .live-label {
       background: #e60000;
       color: #fff;
       text-align: center;
       font-weight: 700;
-      font-size: 13px;
-      padding: 3px 0;
+      font-size: 12px;
+      padding: 2px 0;
       animation: blink 1s infinite;
       letter-spacing: 1px;
     }
@@ -81,18 +99,17 @@ function getSecondsUntil4PM() {
 
     #fbLiveMini iframe {
       width: 100%;
-      height: 160px;
+      height: 130px;
       display: block;
       border: none;
     }
 
-    /* Lớp trong suốt bắt click */
     #fbLiveMini .click-layer {
       position: absolute;
       top: 0; left: 0;
       width: 100%; height: 100%;
       cursor: pointer;
-      z-index: 2;
+      z-index: 5;
       background: rgba(0,0,0,0);
     }
 
@@ -150,8 +167,8 @@ function getSecondsUntil4PM() {
     }
 
     @media (max-width: 768px) {
-      #fbLiveMini { width: 100px; top: 50px; right: 8px; }
-      #fbLiveMini iframe { height: 140px; }
+      #fbLiveMini { width: 90px; top: 120px; right: 8px; }
+      #fbLiveMini iframe { height: 120px; }
       #fbLivePopup iframe { height: 70vh; }
     }
   `;
@@ -162,10 +179,12 @@ function getSecondsUntil4PM() {
   mini.id = "fbLiveMini";
   mini.innerHTML = `
     <div class="live-label">🔴 LIVE</div>
+    <div class="close-mini">&times;</div>
     <iframe
       src="${fbLiveUrl}"
-      allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
-      allowfullscreen="true"></iframe>
+      allow="autoplay; muted; clipboard-write; encrypted-media; picture-in-picture; web-share"
+      allowfullscreen="true">
+    </iframe>
     <div class="click-layer"></div>
   `;
   document.body.appendChild(mini);
@@ -178,17 +197,26 @@ function getSecondsUntil4PM() {
       <div class="close-btn">&times;</div>
       <iframe
         src="${fbLiveUrl}"
-        allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
-        allowfullscreen="true"></iframe>
+        allow="autoplay; muted; clipboard-write; encrypted-media; picture-in-picture; web-share"
+        allowfullscreen="true">
+      </iframe>
     </div>
   `;
   document.body.appendChild(overlay);
 
   // ===== SỰ KIỆN =====
+  // click mở popup
   mini.querySelector(".click-layer").addEventListener("click", () => {
     overlay.style.display = "flex";
   });
 
+  // đóng mini
+  mini.querySelector(".close-mini").addEventListener("click", (e) => {
+    e.stopPropagation();
+    mini.remove();
+  });
+
+  // đóng popup
   overlay.querySelector(".close-btn").addEventListener("click", (e) => {
     e.stopPropagation();
     overlay.style.display = "none";
@@ -196,6 +224,13 @@ function getSecondsUntil4PM() {
 
   overlay.addEventListener("click", (e) => {
     if (e.target.id === "fbLiveOverlay") overlay.style.display = "none";
+  });
+
+  // ===== Autoplay đảm bảo khi load =====
+  window.addEventListener("load", () => {
+    const iframe = mini.querySelector("iframe");
+    const src = fbLiveUrl + "&autoplay=1&mute=1";
+    iframe.src = src;
   });
 })();
 
