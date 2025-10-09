@@ -15,7 +15,7 @@ function showVoucherPopup() {
     <h2>🎉 FLASH SALE 10.10!</h2>
     <p>MIỄN PHÍ SHIP TOÀN BỘ ĐƠN HÀNG</p>
     <p>GIẢM 5% TOÀN BỘ WEBSITE</p>
-    <p>GIẢM 8% ĐƠN HÀNG TRÊN <strong style="font-weight:900; color:#d32f2f;">1.500.000 ĐỒNG</strong>
+    <p>GIẢM 8% ĐƠN HÀNG TRÊN <strong style="font-weight:900; color:#d32f2f;">1.500.000 </strong> ĐỒNG
     <p><span id="voucherCountdown" style="font-weight:bold; color:#e53935;"></span></p>
     <button id="applyVoucherBtn">LẤY VOUCHER</button>
   `;
