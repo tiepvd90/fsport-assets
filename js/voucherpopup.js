@@ -37,9 +37,8 @@ function getSecondsUntil4PM() {
   const diff = Math.floor((target - now) / 1000);
   return diff > 0 ? diff : 0;
 }
-// ==========================================
-// 🔴 MINI LIVESTREAM FACEBOOK (KHÔNG NÚT ×) + POPUP 2 NÚT
-// ==========================================
+<!-- ✅ MINI LIVESTREAM FACEBOOK FIXED VERSION -->
+<script>
 (function () {
   const fbLiveUrl =
     "https://www.facebook.com/plugins/video.php?href=" +
@@ -52,18 +51,18 @@ function getSecondsUntil4PM() {
   style.textContent = `
     #fbLiveMini {
       position: fixed;
-      top: 120px;
+      top: 80px;
       right: 10px;
-      width: 80px;
-      background: #fff;
+      width: 90px;
+      background: #000;
       border-radius: 10px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.25);
       z-index: 9998;
       overflow: hidden;
-      border: 1px solid #ddd;
+      border: 1px solid #444;
       transition: transform 0.25s ease;
     }
-    #fbLiveMini:hover { transform: scale(1.03); }
+    #fbLiveMini:hover { transform: scale(1.05); }
     #fbLiveMini .live-label {
       background: #e60000;
       color: #fff;
@@ -77,7 +76,7 @@ function getSecondsUntil4PM() {
     @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
     #fbLiveMini iframe {
       width: 100%;
-      height: 112px;
+      height: 120px;
       display: block;
       border: none;
     }
@@ -91,7 +90,7 @@ function getSecondsUntil4PM() {
     /* Popup full */
     #fbLiveOverlay {
       position: fixed; inset: 0;
-      background: rgba(0,0,0,0.5);
+      background: rgba(0,0,0,0.6);
       display: none;
       align-items: center; justify-content: center;
       z-index: 10000;
@@ -134,7 +133,7 @@ function getSecondsUntil4PM() {
 
     @media (max-width: 768px) {
       #fbLiveMini { width: 80px; top: 80px; right: 8px; }
-      #fbLiveMini iframe { height: 112px; }
+      #fbLiveMini iframe { height: 110px; }
       #fbLivePopup iframe { height: 70vh; }
     }
   `;
@@ -146,11 +145,13 @@ function getSecondsUntil4PM() {
   mini.innerHTML = `
     <div class="live-label">🔴 LIVE</div>
     <iframe
-      src="about:blank"
+      src="${fbLiveUrl}"
       allow="autoplay; encrypted-media; picture-in-picture; web-share"
       allowfullscreen
       scrolling="no"
-      frameborder="0"></iframe>
+      frameborder="0"
+      muted
+    ></iframe>
     <div class="click-layer"></div>
   `;
   document.body.appendChild(mini);
@@ -169,36 +170,46 @@ function getSecondsUntil4PM() {
         allow="autoplay; encrypted-media; picture-in-picture; web-share"
         allowfullscreen
         scrolling="no"
-        frameborder="0"></iframe>
+        frameborder="0"
+      ></iframe>
     </div>
   `;
   document.body.appendChild(overlay);
 
-  // ===== AUTOPLAY =====
   const miniIframe = mini.querySelector("iframe");
   const bigIframe  = overlay.querySelector("iframe");
-  const setAutoplay = (iframe) => {
-    iframe.src = fbLiveUrl.includes("autoplay=1")
-      ? fbLiveUrl
-      : fbLiveUrl + "&autoplay=1&mute=1";
-  };
-  setAutoplay(miniIframe);
-  window.addEventListener("load", () => setAutoplay(miniIframe));
 
-  // ===== EVENT =====
+  // ✅ Hàm set autoplay (muted hay không)
+  const setAutoplay = (iframe, muted = true) => {
+    const url = muted
+      ? fbLiveUrl + "&autoplay=1&mute=1"
+      : fbLiveUrl.replace("&mute=1", "") + "&autoplay=1";
+    iframe.src = url;
+  };
+
+  // ✅ Autoplay mini sau khi load (muted)
+  window.addEventListener("DOMContentLoaded", () => {
+    setTimeout(() => setAutoplay(miniIframe, true), 500);
+  });
+
+  // ✅ Khi click mini → mở popup (unmuted)
   mini.querySelector(".click-layer").addEventListener("click", () => {
     overlay.style.display = "flex";
-    setAutoplay(bigIframe);
+    setAutoplay(bigIframe, false);
   });
+
+  // ✅ Nút XEM TRÊN FB
   overlay.querySelector(".btn-viewfb").addEventListener("click", () => {
     window.open(fbDirectUrl, "_blank");
   });
+
+  // ✅ Nút ĐÓNG
   overlay.querySelector(".btn-close").addEventListener("click", () => {
     overlay.style.display = "none";
-    bigIframe.src = "about:blank";
+    bigIframe.src = "about:blank"; // dừng video khi đóng
   });
 })();
-
+</script>
 
 
 // 🪄 Icon nổi góc màn hình
