@@ -38,7 +38,7 @@ function getSecondsUntil4PM() {
   return diff > 0 ? diff : 0;
 }
 // ==========================================
-// 🔴 MINI LIVESTREAM FACEBOOK (GÓC TRÊN PHẢI) + POPUP FULL
+// 🔴 MINI LIVESTREAM FACEBOOK (GÓC PHẢI) + POPUP FULL
 // ==========================================
 (function () {
   const fbLiveUrl =
@@ -50,7 +50,7 @@ function getSecondsUntil4PM() {
     /* Mini livestream khung nổi */
     #fbLiveMini {
       position: fixed;
-      top: 20px;
+      top: 90px; /* hạ xuống dưới một chút */
       right: 10px;
       width: 110px;
       background: #fff;
@@ -59,7 +59,6 @@ function getSecondsUntil4PM() {
       z-index: 9998;
       overflow: hidden;
       border: 1px solid #ddd;
-      cursor: pointer;
       transition: transform 0.25s ease;
     }
     #fbLiveMini:hover { transform: scale(1.03); }
@@ -85,6 +84,16 @@ function getSecondsUntil4PM() {
       height: 160px;
       display: block;
       border: none;
+    }
+
+    /* Lớp trong suốt bắt click */
+    #fbLiveMini .click-layer {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      cursor: pointer;
+      z-index: 2;
+      background: rgba(0,0,0,0);
     }
 
     /* Popup full */
@@ -141,7 +150,7 @@ function getSecondsUntil4PM() {
     }
 
     @media (max-width: 768px) {
-      #fbLiveMini { width: 100px; top: 15px; right: 8px; }
+      #fbLiveMini { width: 100px; top: 50px; right: 8px; }
       #fbLiveMini iframe { height: 140px; }
       #fbLivePopup iframe { height: 70vh; }
     }
@@ -156,8 +165,8 @@ function getSecondsUntil4PM() {
     <iframe
       src="${fbLiveUrl}"
       allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
-      allowfullscreen="true">
-    </iframe>
+      allowfullscreen="true"></iframe>
+    <div class="click-layer"></div>
   `;
   document.body.appendChild(mini);
 
@@ -170,14 +179,13 @@ function getSecondsUntil4PM() {
       <iframe
         src="${fbLiveUrl}"
         allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
-        allowfullscreen="true">
-      </iframe>
+        allowfullscreen="true"></iframe>
     </div>
   `;
   document.body.appendChild(overlay);
 
   // ===== SỰ KIỆN =====
-  mini.addEventListener("click", () => {
+  mini.querySelector(".click-layer").addEventListener("click", () => {
     overlay.style.display = "flex";
   });
 
