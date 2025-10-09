@@ -105,19 +105,3 @@ setInterval(() => {
 //const sc = document.createElement("script");
 //sc.src = "/js/supportchat.js";
 //document.body.appendChild(sc);
-// ============================================================
-// ✅ GỌI LIVEVIDEO.JS TỪ BASE.JS
-// ============================================================
-
-(function () {
-  // Hàm tiện ích để nạp file JS động
-  function loadScript(url) {
-    const script = document.createElement("script");
-    script.src = url;
-    script.async = true;
-    document.body.appendChild(script);
-  }
-
-  // ✅ Nạp file livevideo.js
-  loadScript("/js/livevideo.js");
-})();
