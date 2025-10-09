@@ -79,9 +79,9 @@ function startVoucherCountdown(seconds) {
     seconds--;
     if (seconds <= 0) {
       clearInterval(interval);
-      countdownEl.textContent = "FLASH SALE đã kết thúc!";
+      countdownEl.textContent = "FLASH SALE ĐÃ KẾT THÚC!";
     } else {
-      countdownEl.textContent = `⏰ FLASH SALE kết thúc sau: ${formatTime(seconds)}`;
+      countdownEl.textContent = `⏰ FLASH SALE END: ${formatTime(seconds)}`;
     }
   }, 1000);
 }
