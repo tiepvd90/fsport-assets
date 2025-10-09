@@ -1,6 +1,10 @@
 // ===============================================
-// ✅ CHECKOUT POPUP + VOUCHER 10/10 (FREE SHIP + GIẢM GIÁ)
+// ✅ CHECKOUT POPUP + AUTOSAVE THÔNG TIN NGƯỜI NHẬN
 // ===============================================
+
+// ------------------------
+// 🔹 CART STATE
+// ------------------------
 
 function updateCartItemCount() {
   const badge = document.getElementById("cartItemCount");
@@ -27,7 +31,7 @@ let shippingFeeOriginal = 0;
 let voucherValue = 0;
 
 // ------------------------
-// 🔹 AUTOSAVE THÔNG TIN NGƯỜI NHẬN
+// 🔹 AUTOSAVE – THÔNG TIN NGƯỜI NHẬN
 // ------------------------
 
 function hydrateCheckoutInfo() {
@@ -36,6 +40,7 @@ function hydrateCheckoutInfo() {
     const nameEl = document.getElementById("checkoutName");
     const phoneEl = document.getElementById("checkoutPhone");
     const addressEl = document.getElementById("checkoutAddress");
+
     if (nameEl && typeof saved.name === "string") nameEl.value = saved.name;
     if (phoneEl && typeof saved.phone === "string") phoneEl.value = saved.phone;
     if (addressEl && typeof saved.address === "string") addressEl.value = saved.address;
@@ -45,20 +50,19 @@ function hydrateCheckoutInfo() {
 }
 
 function setupLiveSaveCheckoutInfo() {
-  const els = [
-    document.getElementById("checkoutName"),
-    document.getElementById("checkoutPhone"),
-    document.getElementById("checkoutAddress"),
-  ];
-  els.forEach((el) => {
+  const nameEl = document.getElementById("checkoutName");
+  const phoneEl = document.getElementById("checkoutPhone");
+  const addressEl = document.getElementById("checkoutAddress");
+
+  [nameEl, phoneEl, addressEl].forEach((el) => {
     if (el && !el.dataset.autosaveBound) {
       const handler = () => {
-        const info = {
+        const newInfo = {
           name: (document.getElementById("checkoutName")?.value || "").trim(),
           phone: (document.getElementById("checkoutPhone")?.value || "").trim(),
           address: (document.getElementById("checkoutAddress")?.value || "").trim(),
         };
-        localStorage.setItem("checkoutInfo", JSON.stringify(info));
+        localStorage.setItem("checkoutInfo", JSON.stringify(newInfo));
       };
       el.addEventListener("input", handler);
       el.addEventListener("change", handler);
@@ -72,7 +76,9 @@ function whenCheckoutInputsReady(run) {
     document.getElementById("checkoutName") &&
     document.getElementById("checkoutPhone") &&
     document.getElementById("checkoutAddress");
+
   if (ready()) return run();
+
   const obs = new MutationObserver(() => {
     if (ready()) {
       obs.disconnect();
@@ -89,13 +95,17 @@ function whenCheckoutInputsReady(run) {
 function showCheckoutPopup() {
   loadShippingFee();
   renderCheckoutCart();
+
   const popup = document.getElementById("checkoutPopup");
   if (popup) {
     popup.classList.remove("hidden");
     popup.style.display = "flex";
   }
   document.body.style.overflow = "hidden";
+
   bindCheckoutEvents();
+
+  // Điền lại trước rồi mới gắn listener
   hydrateCheckoutInfo();
   setupLiveSaveCheckoutInfo();
 }
@@ -116,6 +126,7 @@ function hideCheckoutPopup() {
 function renderCheckoutCart() {
   const list = document.getElementById("checkoutCartList");
   if (!list) return;
+
   list.innerHTML = "";
 
   if (!window.cart.length) {
@@ -127,14 +138,22 @@ function renderCheckoutCart() {
   window.cart.forEach((item, index) => {
     const el = document.createElement("div");
     el.className = "cart-item";
+
+    const hasVoucher = item.voucher?.amount;
     const priceText = Number(item.Giá || 0).toLocaleString() + "₫";
+    const voucherHtml = hasVoucher
+      ? `<span class="voucher-tag" style="background: rgba(0,160,230,0.6); color: white; font-size: 9px; padding: 2px 6px; margin-left: 6px; border-radius: 4px; vertical-align: middle;">Voucher: -${Number(item.voucher.amount).toLocaleString()}₫</span>`
+      : "";
+
     el.innerHTML = `
       <button class="remove-btn" onclick="removeItem(${index})">&times;</button>
       <img src="${item.Ảnh}" alt="img" />
       <div class="cart-item-details">
         <div class="cart-item-name">${item["Phân loại"]}</div>
         <div class="cart-item-price-qty">
-          <div class="cart-item-price">${priceText}</div>
+          <div class="cart-item-price">
+            ${priceText} ${voucherHtml}
+          </div>
           <div class="cart-item-qty">
             <button onclick="changeItemQty(${index}, -1)">−</button>
             <span>${item.quantity}</span>
@@ -149,45 +168,44 @@ function renderCheckoutCart() {
   updateCheckoutSummary();
 }
 
-// ------------------------
-// 🔹 ÁP DỤNG VOUCHER 10/10 (FREE SHIP + % GIẢM)
-// ------------------------
-
 function updateCheckoutSummary() {
+  // 🧮 Tính tổng tiền hàng & số lượng
   const subtotal = window.cart.reduce(
-    (sum, i) => sum + (i.Giá || 0) * (i.quantity || 1),
+    (sum, item) => sum + (item.Giá || 0) * (item.quantity || 1),
     0
   );
-  const totalQty = window.cart.reduce((s, i) => s + (i.quantity || 1), 0);
+  const totalQty = window.cart.reduce(
+    (sum, item) => sum + (item.quantity || 1),
+    0
+  );
 
-  // 🎁 Free Ship
+  // 🚚 Phí vận chuyển cố định = 0đ (Free ship)
   shippingFeeOriginal = 0;
   shippingFee = 0;
 
-  // 🎫 Voucher 10/10: 5% < 1.5tr, 8% >= 1.5tr
-  if (subtotal > 0 && subtotal < 1500000) {
-    voucherValue = Math.round(subtotal * 0.05);
-  } else if (subtotal >= 1500000) {
-    voucherValue = Math.round(subtotal * 0.08);
-  } else {
-    voucherValue = 0;
-  }
+  // 🎁 Tính VOUCHER 10/10
+  const discountPercent = subtotal >= 1500000 ? 0.08 : 0.05;
+  voucherValue = Math.round(subtotal * discountPercent);
+  const voucherLabel = "VOUCHER 10/10";
 
+  // 🧾 Tổng cuối cùng
   const total = subtotal - voucherValue + shippingFee;
 
+  // 🔹 Cập nhật giao diện
   const qtyEl = document.getElementById("itemQuantityText");
-  const subtotalEl = document.getElementById("subtotalText");
   if (qtyEl) qtyEl.textContent = `${totalQty} sản phẩm`;
+
+  const subtotalEl = document.getElementById("subtotalText");
   if (subtotalEl) subtotalEl.textContent = `${subtotal.toLocaleString()}₫`;
 
   const shippingEl = document.getElementById("shippingFeeText");
-  if (shippingEl) shippingEl.textContent = "MIỄN PHÍ";
+  if (shippingEl) shippingEl.textContent = "0₫";
 
   const voucherTextEl = document.getElementById("voucherText");
   if (voucherTextEl) {
     if (voucherValue > 0) {
+      voucherTextEl.textContent = `-${voucherValue.toLocaleString()}₫ (${voucherLabel})`;
       voucherTextEl.style.display = "block";
-      voucherTextEl.textContent = `Voucher 10/10: -${voucherValue.toLocaleString()}₫`;
     } else {
       voucherTextEl.style.display = "none";
     }
@@ -195,6 +213,10 @@ function updateCheckoutSummary() {
 
   const totalEl = document.getElementById("totalText");
   if (totalEl) totalEl.textContent = `${total.toLocaleString()}₫`;
+
+  // 🧩 Lưu label & phần trăm để gửi sang Make.com nếu cần
+  window.currentVoucherLabel = voucherLabel;
+  window.currentVoucherPercent = discountPercent * 100;
 }
 
 // ------------------------
@@ -207,18 +229,20 @@ function changeItemQty(index, delta) {
   saveCart();
   renderCheckoutCart();
 }
+
 function removeItem(index) {
   window.cart.splice(index, 1);
   saveCart();
   renderCheckoutCart();
 }
+
 function saveCart() {
   localStorage.setItem("cart", JSON.stringify(window.cart));
   updateCartItemCount();
 }
 
 // ------------------------
-// 🔹 PHÍ VẬN CHUYỂN (FREE SHIP)
+// 🔹 PHÍ VẬN CHUYỂN = 0Đ (MIỄN PHÍ HOÀN TOÀN)
 // ------------------------
 
 function loadShippingFee() {
@@ -226,6 +250,7 @@ function loadShippingFee() {
   shippingFee = 0;
   updateCheckoutSummary();
 }
+
 
 // ------------------------
 // 🔹 GỬI ĐƠN HÀNG
@@ -235,24 +260,42 @@ function submitOrder() {
   const name = document.getElementById("checkoutName")?.value.trim();
   const phone = document.getElementById("checkoutPhone")?.value.trim();
   const address = document.getElementById("checkoutAddress")?.value.trim();
-  if (!name || !phone || !address) return alert("Vui lòng nhập đầy đủ thông tin.");
-  if (!window.cart.length) return alert("Giỏ hàng của bạn đang trống.");
 
-  const subtotal = window.cart.reduce(
-    (sum, i) => sum + (i.Giá || 0) * (i.quantity || 1),
-    0
-  );
-  const total = subtotal - voucherValue + shippingFee;
+  if (!name || !phone || !address) {
+    return alert("Vui lòng nhập đầy đủ thông tin.");
+  }
+  if (!window.cart.length) {
+    return alert("Giỏ hàng của bạn đang trống.");
+  }
+
+  const firstItem = window.cart[0] || {};
+  const category = firstItem.category || "unknown";
 
   const orderData = {
     name,
     phone,
     address,
-    voucherLabel: "Voucher 10/10",
-    voucherValue,
+    category,
+    items: window.cart.map(item => {
+      const baseItem = {
+        id: item.id || null,
+        category: item.category || "unknown",
+        "Phân loại": item["Phân loại"],
+        Giá: item.Giá,
+        Ảnh: item.Ảnh,
+        quantity: item.quantity
+      };
+      if (item.voucher && typeof item.voucher.amount === "number" && item.voucher.amount > 0) {
+        baseItem.voucher = {
+          amount: item.voucher.amount,
+          label: item.voucher.label || ""
+        };
+      }
+      return baseItem;
+    }),
     shippingFee,
-    items: window.cart,
-    total,
+    voucherValue,
+    total: window.cart.reduce((sum, i) => sum + (i.Giá || 0) * (i.quantity || 1), 0) + shippingFee - voucherValue
   };
 
   console.log("📦 Sending orderData:", orderData);
@@ -260,36 +303,38 @@ function submitOrder() {
   fetch("https://hook.eu2.make.com/m9o7boye6fl1hstehst7waysmt38b2ul", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(orderData),
+    body: JSON.stringify(orderData)
   })
-    .then((res) => {
+    .then(res => {
       if (!res.ok) throw new Error("Gửi đơn hàng thất bại");
       return res.text();
     })
     .then(() => {
-      if (typeof trackBothPixels === "function" && window.cart[0]) {
-        const f = window.cart[0];
+      if (typeof trackBothPixels === "function" && firstItem) {
         trackBothPixels("Purchase", {
-          content_id: f.id || "unknown",
-          content_name: f["Phân loại"] || "unknown",
-          content_category: f.category || "unknown",
-          value: total,
-          currency: "VND",
+          content_id: firstItem.id || "unknown",
+          content_name: firstItem["Phân loại"] || "unknown",
+          content_category: firstItem.category || "unknown",
+          content_page: window.productPage || "unknown",
+          value: orderData.total,
+          currency: "VND"
         });
       }
+
+      // ❗ Không xóa checkoutInfo — giữ lại cho lần sau
       showThankyouPopup();
       window.cart = [];
       saveCart();
       hideCheckoutPopup();
     })
-    .catch((err) => {
-      console.error("❌ Lỗi gửi Make.com:", err);
-      alert("Có lỗi xảy ra, vui lòng thử lại sau.");
+    .catch(err => {
+      console.error("❌ Lỗi khi gửi về Make.com:", err);
+      alert("Có lỗi xảy ra khi gửi đơn hàng, vui lòng thử lại sau.");
     });
 }
 
 // ------------------------
-// 🔹 SỰ KIỆN
+// 🔹 GẮN SỰ KIỆN
 // ------------------------
 
 function bindCheckoutEvents() {
@@ -301,15 +346,16 @@ function bindCheckoutEvents() {
 }
 
 // ------------------------
-// 🔹 POPUP CẢM ƠN
+// 🔹 THANK YOU POPUP (anti-flash)
 // ------------------------
 
 function showThankyouPopup() {
   const el = document.getElementById("thankyouPopup");
   if (!el) return;
-  el.style.display = "flex";
+  el.style.display = "flex";   // chỉ điều khiển bằng inline style để tránh xung đột
   document.body.style.overflow = "hidden";
 }
+
 function hideThankyouPopup() {
   const el = document.getElementById("thankyouPopup");
   if (!el) return;
@@ -324,15 +370,45 @@ function hideThankyouPopup() {
 window.addEventListener("DOMContentLoaded", () => {
   loadCart();
   bindCheckoutEvents();
+
+  // ✅ Ensure thankyouPopup khởi tạo ẩn tuyệt đối (anti-flash)
   const ty = document.getElementById("thankyouPopup");
   if (ty) {
     ty.style.display = "none";
+    // Nếu HTML cũ còn class hidden, dọn cho sạch:
     if (ty.classList) ty.classList.remove("hidden");
   }
+
+  // Nếu input đã sẵn trong DOM
   hydrateCheckoutInfo();
   setupLiveSaveCheckoutInfo();
+
+  // Nếu input được inject muộn (injectHTML)
   whenCheckoutInputsReady(() => {
     hydrateCheckoutInfo();
     setupLiveSaveCheckoutInfo();
   });
 });
+
+// ✅ Inject HTML thankyouPopup từ file riêng
+fetch("/html/thanksandupsell.html")
+  .then(res => res.text())
+  .then(html => {
+    const temp = document.createElement("div");
+    temp.innerHTML = html;
+    const popup = temp.querySelector("#thankyouPopup");
+    if (popup) {
+      document.body.appendChild(popup);
+    }
+    // Inject script trong file
+    temp.querySelectorAll("script").forEach(s => {
+      const newScript = document.createElement("script");
+      if (s.src) {
+        newScript.src = s.src;
+      } else {
+        newScript.textContent = s.textContent;
+      }
+      document.body.appendChild(newScript);
+    });
+  })
+  .catch(err => console.warn("Không load được thankyouPopup:", err));
