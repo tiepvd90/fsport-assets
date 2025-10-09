@@ -9,6 +9,16 @@
     "category": "pickleball",
     "tags": []
   },
+    {
+    "id": "phantom-carbon",
+    "title": "Vợt Pickleball Phantom – 14mm- carbon Tràn Viền, lõi gen4",
+    "image": "https://i.postimg.cc/xCMjLbDC/Capture.jpg",
+    "price": 2100000,
+    "originalPrice": 3000000,
+    "link": "/pickleball/phantom",
+    "category": "pickleball",
+    "tags": []
+  },
   {
     "id": "titan-16mm",
     "title": "F-Sport Titan – 16mm- sợi titanium siêu bền",
@@ -86,16 +96,6 @@
     "price": 399000,
     "originalPrice": 500000,
     "link": "/product/secpickleball",
-    "category": "pickleball",
-    "tags": []
-  },
-  {
-    "id": "phantom-carbon",
-    "title": "Vợt Pickleball Phantom – 14mm- carbon Tràn Viền, lõi gen4",
-    "image": "https://i.postimg.cc/xCMjLbDC/Capture.jpg",
-    "price": 2100000,
-    "originalPrice": 3000000,
-    "link": "/pickleball/phantom",
     "category": "pickleball",
     "tags": []
   },
