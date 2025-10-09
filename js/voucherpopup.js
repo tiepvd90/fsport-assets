@@ -71,7 +71,7 @@ function startVoucherCountdown(seconds) {
     const h = Math.floor(s / 3600);
     const m = Math.floor((s % 3600) / 60);
     const sec = s % 60;
-    return `${h} giờ ${m} phút ${sec < 10 ? "0" : ""}${sec} giây`;
+    return `${h} : ${m} : ${sec < 10 ? "0" : ""}${sec} :`;
   }
 
   countdownEl.textContent = `⏰ FLASH SALE END: ${formatTime(seconds)}`;
