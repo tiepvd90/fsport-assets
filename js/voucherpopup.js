@@ -37,6 +37,143 @@ function getSecondsUntil4PM() {
   const diff = Math.floor((target - now) / 1000);
   return diff > 0 ? diff : 0;
 }
+// ==========================================
+// 🔴 POPUP LIVESTREAM FACEBOOK MINI + FULL
+// ==========================================
+(function () {
+  const fbLiveUrl = "https://www.facebook.com/plugins/video.php?height=476&href=https%3A%2F%2Fweb.facebook.com%2Freel%2F2579888902356798%2F&show_text=false&autoplay=1&mute=1&width=267";
+
+  // ===== CSS =====
+  const style = document.createElement("style");
+  style.textContent = `
+    /* Mini khung nổi bên trái */
+    #fbLiveMini {
+      position: fixed;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 110px;
+      background: #fff;
+      border: 1px solid #ccc;
+      border-left: none;
+      border-radius: 0 10px 10px 0;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+      z-index: 9998;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+    #fbLiveMini:hover { transform: translateY(-50%) scale(1.03); }
+
+    #fbLiveMini iframe {
+      width: 100%;
+      height: 180px;
+      display: block;
+    }
+
+    /* Dòng chữ LIVE đỏ phía trên */
+    .live-label {
+      background: #ff0000;
+      color: #fff;
+      text-align: center;
+      font-weight: 900;
+      font-size: 14px;
+      padding: 3px 0;
+      letter-spacing: 1px;
+      animation: pulse 1s infinite;
+    }
+    @keyframes pulse {
+      0% { opacity: 1; }
+      50% { opacity: 0.3; }
+      100% { opacity: 1; }
+    }
+
+    /* Popup phóng to */
+    #fbLivePopupLarge {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 90%;
+      max-width: 480px;
+      height: auto;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 25px rgba(0,0,0,0.3);
+      z-index: 10000;
+      display: none;
+      overflow: hidden;
+    }
+
+    #fbLivePopupLarge iframe {
+      width: 100%;
+      height: 80vh;
+      border: none;
+      display: block;
+    }
+
+    #fbLivePopupLarge .close-btn {
+      position: absolute;
+      top: 5px;
+      right: 10px;
+      font-size: 24px;
+      color: #000;
+      background: rgba(255,255,255,0.8);
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      line-height: 28px;
+      text-align: center;
+      cursor: pointer;
+      font-weight: bold;
+      z-index: 10001;
+    }
+
+    @media (max-width: 768px) {
+      #fbLiveMini { width: 90px; }
+      #fbLiveMini iframe { height: 150px; }
+      #fbLivePopupLarge { width: 90%; }
+    }
+  `;
+  document.head.appendChild(style);
+
+  // ===== Tạo khung mini =====
+  const mini = document.createElement("div");
+  mini.id = "fbLiveMini";
+  mini.innerHTML = `
+    <div class="live-label">🔴 LIVE</div>
+    <iframe
+      src="${fbLiveUrl}"
+      scrolling="no"
+      frameborder="0"
+      allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+      allowfullscreen="true">
+    </iframe>
+  `;
+  document.body.appendChild(mini);
+
+  // ===== Tạo popup lớn (ẩn ban đầu) =====
+  const popup = document.createElement("div");
+  popup.id = "fbLivePopupLarge";
+  popup.innerHTML = `
+    <div class="close-btn">&times;</div>
+    <iframe
+      src="${fbLiveUrl}"
+      allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+      allowfullscreen="true">
+    </iframe>
+  `;
+  document.body.appendChild(popup);
+
+  // ===== Sự kiện mở/đóng =====
+  mini.addEventListener("click", () => {
+    popup.style.display = "block";
+  });
+  popup.querySelector(".close-btn").addEventListener("click", () => {
+    popup.style.display = "none";
+  });
+})();
+
 
 // 🪄 Icon nổi góc màn hình
 function createVoucherFloatingIcon() {
