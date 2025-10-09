@@ -38,7 +38,7 @@ function getSecondsUntil4PM() {
   return diff > 0 ? diff : 0;
 }
 // ==========================================
-// 🔴 MINI LIVESTREAM FACEBOOK + POPUP FULL
+// 🔴 MINI LIVESTREAM FACEBOOK (GÓC TRÊN PHẢI) + POPUP FULL
 // ==========================================
 (function () {
   const fbLiveUrl =
@@ -50,8 +50,8 @@ function getSecondsUntil4PM() {
     /* Mini livestream khung nổi */
     #fbLiveMini {
       position: fixed;
-      left: 10px;
-      bottom: 120px; /* nằm trên float icon */
+      top: 20px;
+      right: 10px;
       width: 110px;
       background: #fff;
       border-radius: 10px;
@@ -141,14 +141,14 @@ function getSecondsUntil4PM() {
     }
 
     @media (max-width: 768px) {
-      #fbLiveMini { width: 90px; bottom: 100px; }
-      #fbLiveMini iframe { height: 130px; }
+      #fbLiveMini { width: 100px; top: 15px; right: 8px; }
+      #fbLiveMini iframe { height: 140px; }
       #fbLivePopup iframe { height: 70vh; }
     }
   `;
   document.head.appendChild(style);
 
-  // ===== MINI KHUNG NHỎ =====
+  // ===== MINI KHUNG NHỎ (AUTOPLAY) =====
   const mini = document.createElement("div");
   mini.id = "fbLiveMini";
   mini.innerHTML = `
