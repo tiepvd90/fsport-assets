@@ -1,222 +1,215 @@
-/* =========================================================================
- * voucherpopup-1010.js — FLASH SALE 10/10
- * - Hiển thị ở mọi trang (chỉ giới hạn cooldown)
- * - Popup nền trắng, chữ đen, dòng cuối màu cam đậm
- * - Countdown đến 16:00 hôm nay
- * - Icon nổi = ảnh mới https://i.postimg.cc/bvL7Lbvn/1010-2.jpg
- * ========================================================================= */
+// 🛡️ Fallback nếu file cũ còn gọi fetchVoucherMap
+if (typeof fetchVoucherMap !== "function") {
+  window.fetchVoucherMap = () => Promise.resolve({});
+}
 
-(function () {
-  "use strict";
-
-  const COOLDOWN_MINUTES = 60; // thời gian không hiển thị lại (phút)
-  const COOLDOWN_MS = COOLDOWN_MINUTES * 60 * 1000;
-  const ICON_IMG = "https://i.postimg.cc/bvL7Lbvn/1010-2.jpg";
-
-  // ===================== COUNTDOWN =====================
-  function getSecondsUntil4PM() {
-    const now = new Date();
-    const target = new Date();
-    target.setHours(16, 0, 0, 0);
-    return Math.max(0, Math.floor((target - now) / 1000));
+function getProductPageFromUrl() {
+  if (typeof window.productPage === "string" && window.productPage.trim() !== "") {
+    return window.productPage.trim().toLowerCase();
   }
 
-  function startCountdown() {
-    const el = document.getElementById("voucherCountdown");
-    if (!el) return;
-    let seconds = getSecondsUntil4PM();
+  const path = window.location.pathname.toLowerCase();
+  const filename = path.substring(path.lastIndexOf("/") + 1);
+  return filename.split(".")[0] || "homepage";
+}
 
-    function formatTime(s) {
-      const h = Math.floor(s / 3600);
-      const m = Math.floor((s % 3600) / 60);
-      const sec = s % 60;
-      return `${h > 0 ? h + " giờ " : ""}${m} phút ${sec < 10 ? "0" : ""}${sec} giây`;
-    }
+const simpleVoucherMap = {
+  "30k": 30000,
+};
 
-    el.textContent = `SẼ HẾT SAU ${formatTime(seconds)}`;
-    const interval = setInterval(() => {
-      seconds--;
-      if (seconds <= 0) {
-        clearInterval(interval);
-        el.textContent = "ĐÃ KẾT THÚC!";
-        el.style.color = "#e53935";
-      } else {
-        el.textContent = `SẼ HẾT SAU ${formatTime(seconds)}`;
-      }
-    }, 1000);
-  }
+const allowedPages = [
+  "ysandal5568", "ysandalbn68", "firstpickleball",
+  "secpickleball", "teflon", "phantom", "gen4", "tera", "ysandal5560", "bcu5206", "bn520",
+  "collection", "pickleball-airforce", "homepage"
+];
 
-  // ===================== POPUP =====================
-  function showVoucherPopup() {
-    if (document.getElementById("voucherPopup")) return;
+function showVoucherPopup(refCode, amount) {
+  if (document.getElementById("voucherPopup")) return;
 
-    const popup = document.createElement("div");
-    popup.id = "voucherPopup";
-    popup.className = "voucher-popup";
-
-    popup.innerHTML = `
-      <div class="voucher-content">
-        <div class="voucher-close" id="closeVoucherBtn">×</div>
-        <h2>FLASH SALE 10/10</h2>
-        <ul>
-          <li>FREESHIP TOÀN BỘ ĐƠN HÀNG</li>
-          <li>GIẢM GIÁ 5% TOÀN BỘ WEBSITE</li>
-          <li>GIẢM 8% VỚI ĐƠN HÀNG TRÊN 1.500.000Đ</li>
-        </ul>
-        <p id="voucherCountdown" style="color:#e53935; font-weight:bold; margin-top:8px;">...</p>
-        <button id="applyVoucherBtn">LẤY VOUCHER</button>
-      </div>
-    `;
-
-    document.body.appendChild(popup);
-    document.getElementById("closeVoucherBtn").addEventListener("click", () => popup.remove());
-    document.getElementById("applyVoucherBtn").addEventListener("click", () => {
-      popup.remove();
-      localStorage.setItem("voucher1010Shown", String(Date.now()));
-    });
-
-    startCountdown();
-  }
-
-  // ===================== FLOAT ICON =====================
-  function createFloatingIcon() {
-    if (document.getElementById("voucherFloatIcon")) return;
-
-    const icon = document.createElement("div");
-    icon.id = "voucherFloatIcon";
-    icon.innerHTML = `
-      <div class="voucher-float-img-wrapper">
-        <img src="${ICON_IMG}" alt="voucher flash sale" />
-        <div class="voucher-float-close" id="closeVoucherIcon">×</div>
-      </div>
-    `;
-    document.body.appendChild(icon);
-
-    icon.addEventListener("click", (e) => {
-      if (e.target.id !== "closeVoucherIcon") {
-        showVoucherPopup();
-      }
-    });
-
-    document.getElementById("closeVoucherIcon").addEventListener("click", (e) => {
-      e.stopPropagation();
-      icon.remove();
-    });
-  }
-
-  // ===================== STYLE =====================
-  const style = document.createElement("style");
-  style.textContent = `
-    .voucher-popup {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: #fff;
-      color: #000;
-      border: 1px solid #ddd;
-      border-radius: 10px;
-      padding: 20px 24px;
-      width: 90%;
-      max-width: 340px;
-      z-index: 9999;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-      font-family: "Be Vietnam Pro", sans-serif;
-      text-align: left;
-      text-transform: uppercase;
-    }
-    .voucher-content h2 {
-      text-align: center;
-      font-size: 20px;
-      margin-bottom: 12px;
-    }
-    .voucher-content ul {
-      list-style: none;
-      padding-left: 0;
-      margin: 0;
-    }
-    .voucher-content ul li::before {
-      content: "• ";
-      color: #000;
-      font-weight: bold;
-    }
-    .voucher-content ul li {
-      margin: 4px 0;
-      font-size: 15px;
-    }
-    #voucherCountdown {
-      text-align: center;
-      font-size: 15px;
-      margin-top: 10px;
-    }
-    #applyVoucherBtn {
-      display: block;
-      margin: 12px auto 0;
-      background: orange;
-      color: #fff;
-      border: none;
-      padding: 10px 18px;
-      border-radius: 6px;
-      font-weight: bold;
-      cursor: pointer;
-      font-size: 15px;
-    }
-    .voucher-close {
-      position: absolute;
-      top: 6px;
-      right: 10px;
-      cursor: pointer;
-      font-size: 20px;
-      color: #666;
-    }
-    #voucherFloatIcon {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      z-index: 9998;
-      cursor: pointer;
-    }
-    .voucher-float-img-wrapper {
-      position: relative;
-      display: inline-block;
-    }
-    .voucher-float-img-wrapper img {
-      width: 120px;
-      height: auto;
-      border-radius: 10px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.15);
-    }
-    .voucher-float-close {
-      position: absolute;
-      top: 2px;
-      right: 6px;
-      font-size: 18px;
-      color: #fff;
-      background: rgba(0,0,0,0.5);
-      border-radius: 50%;
-      width: 22px;
-      height: 22px;
-      text-align: center;
-      line-height: 20px;
-      cursor: pointer;
-    }
+  const popup = document.createElement("div");
+  popup.className = "voucher-popup";
+  popup.id = "voucherPopup";
+  popup.innerHTML = `
+    <div class="voucher-close" id="closeVoucherBtn">×</div>
+    <h2>🎉 Chúc Mừng!</h2>
+    <p>Bạn đã nhận được <strong>voucher giảm ${amount.toLocaleString("vi-VN")}₫</strong> khi mua vợt Pickleball và Dép Chạy Bộ Ysandal.</p>
+    <p><span id="voucherCountdown" style="font-weight:bold; color:#e53935;"></span></p>
+    <button id="applyVoucherBtn">LẤY MÃ GIẢM GIÁ NGAY</button>
   `;
-  document.head.appendChild(style);
+  document.body.appendChild(popup);
 
-  // ===================== KHỞI CHẠY =====================
-  function initVoucherPopup() {
-    const lastShown = Number(localStorage.getItem("voucher1010Shown") || 0);
-    if (Date.now() - lastShown < COOLDOWN_MS) {
-      console.log("⏳ Trong thời gian cooldown, chưa hiển lại popup.");
+  document.getElementById("closeVoucherBtn")?.addEventListener("click", () => popup.remove());
+
+  document.getElementById("applyVoucherBtn")?.addEventListener("click", () => {
+    localStorage.setItem("savedVoucher", JSON.stringify({ code: refCode, amount }));
+    window.currentVoucherValue = amount;
+    window.__voucherWaiting = { amount };
+
+    popup.remove();
+    document.querySelector("#btn-atc")?.click();
+  });
+
+  startVoucherCountdown(600);
+}
+
+function createVoucherFloatingIcon(amount, refCode) {
+  if (document.getElementById("voucherFloatIcon")) return;
+
+  const icon = document.createElement("div");
+  icon.id = "voucherFloatIcon";
+  icon.innerHTML = `
+    <div class="voucher-float-img-wrapper">
+      <img src="https://i.postimg.cc/pdNBDJ8B/voucher30k.png" alt="voucher" />
+      <div class="voucher-float-close" id="closeVoucherIcon">×</div>
+    </div>
+  `;
+  document.body.appendChild(icon);
+
+  icon.addEventListener("click", (e) => {
+    if (e.target.id !== "closeVoucherIcon") {
+      showVoucherPopup(refCode, amount);
+    }
+  });
+
+  document.getElementById("closeVoucherIcon")?.addEventListener("click", (e) => {
+    e.stopPropagation();
+    icon.remove();
+  });
+}
+
+function startVoucherCountdown(seconds) {
+  const countdownEl = document.getElementById("voucherCountdown");
+  if (!countdownEl) return;
+
+  function formatTime(s) {
+    const m = Math.floor(s / 60);
+    const sec = s % 60;
+    return `${m} phút ${sec < 10 ? "0" : ""}${sec} giây`;
+  }
+
+  countdownEl.textContent = `Voucher sẽ hết hạn sau: ${formatTime(seconds)}`;
+  const interval = setInterval(() => {
+    seconds--;
+    if (seconds <= 0) {
+      clearInterval(interval);
+      countdownEl.textContent = "Voucher đã hết hạn!";
+    } else {
+      countdownEl.textContent = `Voucher sẽ hết hạn sau: ${formatTime(seconds)}`;
+    }
+  }, 1000);
+}
+
+// ✅ Hàm chính
+function runVoucherImmediately() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const refRaw = urlParams.get("ref") || "";
+  const matchedCode = Object.keys(simpleVoucherMap).find(k => refRaw.startsWith(k));
+  const amount = matchedCode ? simpleVoucherMap[matchedCode] : 0;
+  const currentPage = getProductPageFromUrl();
+
+  const lastPurchaseTime = Number(localStorage.getItem("lastPurchaseTime") || 0);
+  const recentPurchaseWithin24h = Date.now() - lastPurchaseTime < 24 * 60 * 60 * 1000;
+
+  console.log("🎯 Voucher check:", {
+    refRaw, amount, currentPage, productPage: window.productPage, recentPurchaseWithin24h
+  });
+
+  window.voucherByProduct = window.voucherByProduct || {};
+
+  if (amount > 0 && allowedPages.includes(currentPage) && !recentPurchaseWithin24h) {
+    localStorage.setItem("savedVoucher", JSON.stringify({ code: refRaw, amount }));
+    window.currentVoucherValue = amount;
+    window.__voucherWaiting = { amount };
+
+    createVoucherFloatingIcon(amount, refRaw);
+    showVoucherPopup(refRaw, amount);
+  } else {
+    const saved = JSON.parse(localStorage.getItem("savedVoucher") || "{}");
+    const reusedAmount = saved?.amount;
+    const reusedCode = saved?.code || "";
+
+    if (reusedAmount > 0 && allowedPages.includes(currentPage)) {
+      window.currentVoucherValue = reusedAmount;
+      window.__voucherWaiting = { amount: reusedAmount };
+
+      // ⚠️ Nếu khách mới mua → không hiện lại popup/icon
+      if (!recentPurchaseWithin24h) {
+        createVoucherFloatingIcon(reusedAmount, reusedCode);
+      }
+
+      console.log("♻️ Áp dụng lại voucher đã lưu:", reusedAmount);
+    } else {
+      console.log("🚫 Không đủ điều kiện hiển thị voucher.");
+    }
+  }
+}
+
+// ✅ Đảm bảo chạy đúng thời điểm
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", runVoucherImmediately);
+} else {
+  runVoucherImmediately();
+}
+
+// ✅ nếu khách hàng đã checkout nhưng không mua mà ấn close checkout thì hiện voucher 30k
+(function setupVoucherAfterCheckoutClose() {
+  function waitForCloseButton(retries = 20) {
+    const closeBtn = document.querySelector(".checkout-close");
+    if (!closeBtn) {
+      if (retries > 0) {
+        setTimeout(() => waitForCloseButton(retries - 1), 300);
+      } else {
+        console.warn("❌ Không tìm thấy .checkout-close sau nhiều lần thử.");
+      }
       return;
     }
-    createFloatingIcon();
-    showVoucherPopup();
+
+    closeBtn.addEventListener("click", () => {
+      setTimeout(() => {
+        const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+        if (!cart.length) {
+          console.log("❌ Giỏ hàng trống – bỏ qua popup voucher.");
+          return;
+        }
+
+        const currentPage = getProductPageFromUrl();
+        if (!allowedPages.includes(currentPage)) {
+          console.log("🚫 Không nằm trong allowedPages:", currentPage);
+          return;
+        }
+
+        const lastPurchaseTime = Number(localStorage.getItem("lastPurchaseTime") || 0);
+        const recentPurchaseWithin24h = Date.now() - lastPurchaseTime < 24 * 60 * 60 * 1000;
+        if (recentPurchaseWithin24h) {
+          console.log("⏳ Khách mới mua hàng – không hiển popup.");
+          return;
+        }
+
+        const lastShown = Number(sessionStorage.getItem("voucherShownAfterClose") || 0);
+        const COOLDOWN_MS = 60 * 60 * 1000;
+        if (Date.now() - lastShown < COOLDOWN_MS) {
+          console.log("⏳ Đang trong cooldown – không hiện lại.");
+          return;
+        }
+
+        const refCode = "30k";
+        const amount = 30000;
+
+        localStorage.setItem("savedVoucher", JSON.stringify({ code: refCode, amount }));
+        sessionStorage.setItem("voucherShownAfterClose", String(Date.now()));
+        window.currentVoucherValue = amount;
+        window.__voucherWaiting = { amount };
+
+        console.log("🎉 Hiển thị voucher popup 30K khi đóng giỏ hàng.");
+        createVoucherFloatingIcon(amount, refCode);
+        showVoucherPopup(refCode, amount);
+      }, 300);
+    });
   }
 
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initVoucherPopup);
+    document.addEventListener("DOMContentLoaded", () => waitForCloseButton());
   } else {
-    initVoucherPopup();
+    waitForCloseButton();
   }
 })();
