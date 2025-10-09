@@ -3,25 +3,10 @@ if (typeof fetchVoucherMap !== "function") {
   window.fetchVoucherMap = () => Promise.resolve({});
 }
 
-function getProductPageFromUrl() {
-  if (typeof window.productPage === "string" && window.productPage.trim() !== "") {
-    return window.productPage.trim().toLowerCase();
-  }
-
-  const path = window.location.pathname.toLowerCase();
-  const filename = path.substring(path.lastIndexOf("/") + 1);
-  return filename.split(".")[0] || "homepage";
-}
 
 const simpleVoucherMap = {
   "30k": 30000,
 };
-
-const allowedPages = [
-  "ysandal5568", "ysandalbn68", "firstpickleball",
-  "secpickleball", "teflon", "phantom", "gen4", "tera", "ysandal5560", "bcu5206", "bn520",
-  "collection", "pickleball-airforce", "homepage"
-];
 
 function showVoucherPopup(refCode, amount) {
   if (document.getElementById("voucherPopup")) return;
@@ -31,8 +16,10 @@ function showVoucherPopup(refCode, amount) {
   popup.id = "voucherPopup";
   popup.innerHTML = `
     <div class="voucher-close" id="closeVoucherBtn">×</div>
-    <h2>🎉 Chúc Mừng!</h2>
-    <p>Bạn đã nhận được <strong>voucher giảm ${amount.toLocaleString("vi-VN")}₫</strong> khi mua vợt Pickleball và Dép Chạy Bộ Ysandal.</p>
+    <h2>🎉 FLASH SALE 10.10!</h2>
+    <p>MIỄN PHÍ SHIP TOÀN BỘ ĐƠN HÀNG</p>
+    <p>GIẢM 5% TOÀN BỘ WEBSIE</p>
+    <p>GIẢM 8% ĐƠN HÀNG TRÊN 1.500.000 ĐỒNG</p>
     <p><span id="voucherCountdown" style="font-weight:bold; color:#e53935;"></span></p>
     <button id="applyVoucherBtn">LẤY MÃ GIẢM GIÁ NGAY</button>
   `;
@@ -59,7 +46,7 @@ function createVoucherFloatingIcon(amount, refCode) {
   icon.id = "voucherFloatIcon";
   icon.innerHTML = `
     <div class="voucher-float-img-wrapper">
-      <img src="https://i.postimg.cc/pdNBDJ8B/voucher30k.png" alt="voucher" />
+      <img src="https://i.postimg.cc/bvL7Lbvn/1010-2.jpg" alt="voucher" />
       <div class="voucher-float-close" id="closeVoucherIcon">×</div>
     </div>
   `;
@@ -101,47 +88,24 @@ function startVoucherCountdown(seconds) {
 
 // ✅ Hàm chính
 function runVoucherImmediately() {
-  const urlParams = new URLSearchParams(window.location.search);
-  const refRaw = urlParams.get("ref") || "";
-  const matchedCode = Object.keys(simpleVoucherMap).find(k => refRaw.startsWith(k));
-  const amount = matchedCode ? simpleVoucherMap[matchedCode] : 0;
-  const currentPage = getProductPageFromUrl();
+  const refCode = "30k";
+  const amount = 30000;
 
-  const lastPurchaseTime = Number(localStorage.getItem("lastPurchaseTime") || 0);
-  const recentPurchaseWithin24h = Date.now() - lastPurchaseTime < 24 * 60 * 60 * 1000;
-
-  console.log("🎯 Voucher check:", {
-    refRaw, amount, currentPage, productPage: window.productPage, recentPurchaseWithin24h
-  });
-
-  window.voucherByProduct = window.voucherByProduct || {};
-
-  if (amount > 0 && allowedPages.includes(currentPage) && !recentPurchaseWithin24h) {
-    localStorage.setItem("savedVoucher", JSON.stringify({ code: refRaw, amount }));
-    window.currentVoucherValue = amount;
-    window.__voucherWaiting = { amount };
-
-    createVoucherFloatingIcon(amount, refRaw);
-    showVoucherPopup(refRaw, amount);
-  } else {
-    const saved = JSON.parse(localStorage.getItem("savedVoucher") || "{}");
-    const reusedAmount = saved?.amount;
-    const reusedCode = saved?.code || "";
-
-    if (reusedAmount > 0 && allowedPages.includes(currentPage)) {
-      window.currentVoucherValue = reusedAmount;
-      window.__voucherWaiting = { amount: reusedAmount };
-
-      // ⚠️ Nếu khách mới mua → không hiện lại popup/icon
-      if (!recentPurchaseWithin24h) {
-        createVoucherFloatingIcon(reusedAmount, reusedCode);
-      }
-
-      console.log("♻️ Áp dụng lại voucher đã lưu:", reusedAmount);
-    } else {
-      console.log("🚫 Không đủ điều kiện hiển thị voucher.");
-    }
+  const lastShown = Number(sessionStorage.getItem("voucherShownGlobal") || 0);
+  const COOLDOWN_MS = 60 * 60 * 1000; // 1 tiếng không hiện lại
+  if (Date.now() - lastShown < COOLDOWN_MS) {
+    console.log("⏳ Đang trong cooldown – không hiện lại popup voucher.");
+    return;
   }
+
+  localStorage.setItem("savedVoucher", JSON.stringify({ code: refCode, amount }));
+  window.currentVoucherValue = amount;
+  window.__voucherWaiting = { amount };
+
+  sessionStorage.setItem("voucherShownGlobal", String(Date.now()));
+  console.log("🎉 Hiển thị voucher popup mặc định 30K ở mọi trang.");
+  createVoucherFloatingIcon(amount, refCode);
+  showVoucherPopup(refCode, amount);
 }
 
 // ✅ Đảm bảo chạy đúng thời điểm
@@ -167,16 +131,6 @@ if (document.readyState === "loading") {
     closeBtn.addEventListener("click", () => {
       setTimeout(() => {
         const cart = JSON.parse(localStorage.getItem("cart") || "[]");
-        if (!cart.length) {
-          console.log("❌ Giỏ hàng trống – bỏ qua popup voucher.");
-          return;
-        }
-
-        const currentPage = getProductPageFromUrl();
-        if (!allowedPages.includes(currentPage)) {
-          console.log("🚫 Không nằm trong allowedPages:", currentPage);
-          return;
-        }
 
         const lastPurchaseTime = Number(localStorage.getItem("lastPurchaseTime") || 0);
         const recentPurchaseWithin24h = Date.now() - lastPurchaseTime < 24 * 60 * 60 * 1000;
