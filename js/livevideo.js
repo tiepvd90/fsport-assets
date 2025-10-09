@@ -16,7 +16,7 @@
   container.style.right = "10px";
   container.style.width = "80px";
   container.style.height = "150px";
-  container.style.zIndex = "9999";
+  container.style.zIndex = "7999";
   container.style.borderRadius = "8px";
   container.style.overflow = "hidden";
   container.style.boxShadow = "0 0 8px rgba(0,0,0,0.3)";
@@ -43,7 +43,7 @@
   closeBtn.style.alignItems = "center";
   closeBtn.style.justifyContent = "center";
   closeBtn.style.cursor = "pointer";
-  closeBtn.style.zIndex = "10000";
+  closeBtn.style.zIndex = "8000";
   closeBtn.addEventListener("click", () => {
     container.remove();
   });
