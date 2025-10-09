@@ -1,9 +1,10 @@
 /* =========================================================================
- * voucherpopup.js — FLASH SALE 10/10 (SMOOTH BLUE EDITION)
- * - Nền xanh blue siêu nhạt, chữ trắng
- * - Dòng đồng hồ cam nhẹ
- * - Hiệu ứng slide-up khi mở, fade-out khi tắt
- * - Có icon nổi góc phải
+ * voucherpopup.js — FLASH SALE 10/10 (CLEAN BLUE MINI EDITION)
+ * - Popup nhỏ gọn giữa màn hình
+ * - Nền xanh nhạt gần trắng
+ * - Text đen, dòng đếm ngược màu cam
+ * - Auto truyền voucher sang cartpopup khi load
+ * - Hiệu ứng mở / tắt mượt
  * ========================================================================= */
 
 (function () {
@@ -13,7 +14,17 @@
     window.fetchVoucherMap = () => Promise.resolve({});
   }
 
-  // ====== ⏰ Đếm ngược tới 16:00 hôm nay ======
+  // 🔹 Gán voucher tự động ngay khi load
+  function applyVoucherAuto() {
+    const voucherObj = {
+      label: "Voucher 10/10 Áp Dụng Ở Bước Thanh Toán",
+      amount: 0,
+    };
+    window.__voucherWaiting = voucherObj;
+    localStorage.setItem("savedVoucher", JSON.stringify(voucherObj));
+  }
+
+  // 🔸 Countdown
   function getSecondsUntil4PM() {
     const now = new Date();
     const target = new Date();
@@ -47,7 +58,7 @@
     }, 1000);
   }
 
-  // ====== 🎁 Hiển thị popup ======
+  // 🔹 Hiển thị popup
   function showVoucherPopup() {
     if (document.getElementById("voucherPopup")) return;
 
@@ -57,7 +68,7 @@
       <div id="voucherOverlay" style="
         position:fixed;
         inset:0;
-        background:rgba(0,0,0,0.5);
+        background:rgba(0,0,0,0.3);
         z-index:9999;
         display:flex;
         justify-content:center;
@@ -65,18 +76,18 @@
         animation:fadeIn 0.3s ease-out forwards;
       ">
         <div id="voucherContent" style="
-          background:linear-gradient(135deg,#7fc8ff,#2f80ed);
-          color:#fff;
-          padding:24px;
+          background:linear-gradient(135deg,#f7fbff,#dbefff);
+          color:#111;
+          padding:24px 26px;
           border-radius:18px;
           width:90%;
-          max-width:380px;
-          box-shadow:0 6px 22px rgba(0,0,0,0.25);
+          max-width:320px;
+          box-shadow:0 6px 18px rgba(0,0,0,0.15);
           text-align:center;
-          font-size:17px;
+          font-size:16px;
           font-family:'Be Vietnam Pro',sans-serif;
           position:relative;
-          transform:translateY(40px);
+          transform:translateY(30px);
           opacity:0;
           animation:slideUp 0.4s ease-out forwards;
         ">
@@ -84,28 +95,29 @@
             position:absolute;
             top:8px;
             right:12px;
-            font-size:26px;
+            font-size:24px;
             cursor:pointer;
-            color:#fff;
+            color:#333;
             font-weight:500;
           ">&times;</div>
 
-          <h2 style="margin-bottom:10px;font-size:22px;font-weight:800;letter-spacing:0.5px;">
+          <h2 style="margin-bottom:10px;font-size:20px;font-weight:800;letter-spacing:0.3px;color:#1a237e;">
             💙 FLASH SALE 10/10 💙
           </h2>
-          <p>Miễn phí vận chuyển toàn bộ đơn hàng 🎁</p>
+          <p>Miễn phí vận chuyển toàn bộ đơn hàng</p>
+          <p style="font-size:20px; margin:6px 0;">🎁</p>
           <p>Giảm <strong>5%</strong> toàn website</p>
           <p>Giảm <strong>8%</strong> cho đơn từ <strong>1.500.000₫</strong></p>
-          <p id="voucherCountdown" style="font-style:italic;margin-top:10px;color:#ffd28a;"></p>
+          <p id="voucherCountdown" style="font-style:italic;margin-top:10px;color:#f59e0b;"></p>
 
           <button id="applyVoucherBtn" style="
-            margin-top:20px;
-            background:#fff;
-            color:#2f80ed;
+            margin-top:18px;
+            background:#1e40af;
+            color:#fff;
             border:none;
-            padding:12px 26px;
-            border-radius:10px;
-            font-size:17px;
+            padding:10px 24px;
+            border-radius:8px;
+            font-size:16px;
             font-weight:600;
             cursor:pointer;
             transition:all 0.2s ease;
@@ -115,7 +127,7 @@
 
       <style>
         @keyframes slideUp {
-          from {transform:translateY(60px);opacity:0;}
+          from {transform:translateY(50px);opacity:0;}
           to {transform:translateY(0);opacity:1;}
         }
         @keyframes fadeIn {
@@ -124,14 +136,14 @@
         }
         @keyframes fadeOut {
           from {opacity:1;transform:translateY(0);}
-          to {opacity:0;transform:translateY(50px);}
+          to {opacity:0;transform:translateY(40px);}
         }
       </style>
     `;
     document.body.appendChild(popup);
     startCountdown();
 
-    // ====== Hiệu ứng tắt mượt ======
+    // 🔸 Hiệu ứng tắt
     function closeWithAnimation() {
       const overlay = document.getElementById("voucherOverlay");
       const content = document.getElementById("voucherContent");
@@ -141,21 +153,12 @@
       setTimeout(() => popup.remove(), 400);
     }
 
-    // ====== Sự kiện nút ======
+    // Nút đóng / Đã hiểu
     document.getElementById("closeVoucherBtn").addEventListener("click", closeWithAnimation);
-    document.getElementById("applyVoucherBtn").addEventListener("click", () => {
-      window.__voucherWaiting = {
-        label: "Voucher 10/10 Áp Dụng Ở Bước Thanh Toán",
-      };
-      localStorage.setItem(
-        "savedVoucher",
-        JSON.stringify({ label: "Voucher 10/10 Áp Dụng Ở Bước Thanh Toán" })
-      );
-      closeWithAnimation();
-    });
+    document.getElementById("applyVoucherBtn").addEventListener("click", closeWithAnimation);
   }
 
-  // ====== 🌟 Icon nổi bên phải ======
+  // 🔹 Icon nổi góc phải
   function createVoucherFloatingIcon() {
     if (document.getElementById("voucherFloatIcon")) return;
     const icon = document.createElement("div");
@@ -170,17 +173,17 @@
         cursor:pointer;
       ">
         <img src="https://i.postimg.cc/bvL7Lbvn/1010-2.jpg" alt="Flash Sale 10/10" style="
-          width:60px;
+          width:55px;
           height:auto;
-          border-radius:12px;
-          box-shadow:0 4px 10px rgba(0,0,0,0.3);
+          border-radius:10px;
+          box-shadow:0 4px 10px rgba(0,0,0,0.25);
           transition:transform 0.2s ease;
         " id="voucherIconImg"/>
         <div id="closeVoucherIcon" style="
           position:absolute;
           top:-8px;
           right:-8px;
-          background:#2f80ed;
+          background:#1e3a8a;
           color:#fff;
           border-radius:50%;
           width:20px;
@@ -189,19 +192,14 @@
           align-items:center;
           justify-content:center;
           font-size:13px;
-          box-shadow:0 2px 6px rgba(0,0,0,0.2);
         ">×</div>
       </div>
     `;
     document.body.appendChild(icon);
 
     const iconImg = document.getElementById("voucherIconImg");
-    iconImg.addEventListener("mouseenter", () => {
-      iconImg.style.transform = "scale(1.08)";
-    });
-    iconImg.addEventListener("mouseleave", () => {
-      iconImg.style.transform = "scale(1)";
-    });
+    iconImg.addEventListener("mouseenter", () => (iconImg.style.transform = "scale(1.08)"));
+    iconImg.addEventListener("mouseleave", () => (iconImg.style.transform = "scale(1)"));
 
     icon.addEventListener("click", (e) => {
       if (e.target.id !== "closeVoucherIcon") showVoucherPopup();
@@ -212,8 +210,9 @@
     });
   }
 
-  // ====== 🔄 Kích hoạt khi load trang ======
+  // 🔸 Khởi chạy
   function runFlashSaleVoucher() {
+    applyVoucherAuto(); // Gán voucher tự động
     createVoucherFloatingIcon();
     showVoucherPopup();
   }
@@ -223,33 +222,4 @@
   } else {
     runFlashSaleVoucher();
   }
-
-  // ====== Sau khi đóng checkout, hiển thị lại ======
-  (function setupVoucherAfterCheckoutClose() {
-    function waitForCloseButton(retries = 20) {
-      const closeBtn = document.querySelector(".checkout-close");
-      if (!closeBtn) {
-        if (retries > 0) setTimeout(() => waitForCloseButton(retries - 1), 300);
-        return;
-      }
-      closeBtn.addEventListener("click", () => {
-        setTimeout(() => {
-          window.__voucherWaiting = {
-            label: "Voucher 10/10 Áp Dụng Ở Bước Thanh Toán",
-          };
-          localStorage.setItem(
-            "savedVoucher",
-            JSON.stringify({ label: "Voucher 10/10 Áp Dụng Ở Bước Thanh Toán" })
-          );
-          createVoucherFloatingIcon();
-          showVoucherPopup();
-        }, 300);
-      });
-    }
-    if (document.readyState === "loading") {
-      document.addEventListener("DOMContentLoaded", () => waitForCloseButton());
-    } else {
-      waitForCloseButton();
-    }
-  })();
 })();
