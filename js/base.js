@@ -106,26 +106,4 @@ setInterval(() => {
 //sc.src = "/js/supportchat.js";
 //document.body.appendChild(sc);
 
-// === 🧨 ƯU ĐÃI 10.10 POPUP LOADER ===
-(function() {
-  const popupPath = '/html/1010.html';
-
-  // Kiểm tra xem popup đã được load chưa
-  if (document.querySelector('#salePopup')) return;
-
-  fetch(popupPath)
-    .then(res => {
-      if (!res.ok) throw new Error('Không tìm thấy 1010.html');
-      return res.text();
-    })
-    .then(html => {
-      // Chèn popup vào cuối body
-      const div = document.createElement('div');
-      div.innerHTML = html;
-      document.body.appendChild(div);
-
-      console.log('✅ Popup 10/10 đã được nạp thành công');
-    })
-    .catch(err => console.error('❌ Lỗi nạp popup 10/10:', err));
-})();
 
