@@ -1,0 +1,138 @@
+<!-- 🔔 POPUP ƯU ĐÃI 10/10 -->
+<div id="salePopup" class="sale-popup">
+  <div class="sale-popup-content">
+    <button class="sale-popup-close" onclick="closeSalePopup()">×</button>
+    <h2>🎉 ƯU ĐÃI ĐẶC BIỆT 10.10 🎉</h2>
+    <p>🔥 Giảm <strong>5%</strong> toàn bộ đơn hàng</p>
+    <p>💥 Giảm thêm <strong>8%</strong> cho đơn từ <strong>1.500.000đ</strong></p>
+    <p>🚚 <strong>Miễn phí ship toàn quốc</strong></p>
+    <div class="countdown">
+      ⏳ Kết thúc sau: <span id="countdownTimer">--:--:--</span>
+    </div>
+    <p class="note">(*) Giảm giá sẽ được áp dụng sau khi thêm vào giỏ hàng thành công.</p>
+  </div>
+</div>
+
+<style>
+/* ==== POPUP ==== */
+.sale-popup {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.5);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 9999;
+  animation: fadeIn 0.3s ease;
+}
+
+.sale-popup-content {
+  background: #fff;
+  padding: 24px;
+  border-radius: 12px;
+  text-align: center;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+  font-family: "Be Vietnam Pro", sans-serif;
+  position: relative;
+  animation: scaleIn 0.3s ease;
+}
+
+.sale-popup-content h2 {
+  color: #e60023;
+  font-size: 20px;
+  margin-bottom: 8px;
+}
+
+.sale-popup-content p {
+  margin: 6px 0;
+  font-size: 15px;
+  color: #333;
+}
+
+.sale-popup-close {
+  position: absolute;
+  top: 10px; right: 10px;
+  border: none;
+  background: transparent;
+  font-size: 22px;
+  cursor: pointer;
+  color: #333;
+}
+
+.countdown {
+  background: #000;
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-weight: 600;
+  display: inline-block;
+  margin: 12px 0;
+  font-size: 16px;
+}
+
+.note {
+  font-size: 13px;
+  color: #666;
+  margin-top: 10px;
+  font-style: italic;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; } to { opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from { transform: scale(0.9); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+</style>
+
+<script>
+(function() {
+  const popup = document.getElementById("salePopup");
+  const countdownTimer = document.getElementById("countdownTimer");
+
+  // Ngày kết thúc: 23:59 ngày 10/10/2025
+  const endTime = new Date("2025-10-10T23:59:59+07:00").getTime();
+
+  function updateCountdown() {
+    const now = new Date().getTime();
+    const distance = endTime - now;
+
+    if (distance <= 0) {
+      countdownTimer.textContent = "Đã kết thúc 🎉";
+      return;
+    }
+
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    countdownTimer.textContent =
+      String(hours).padStart(2, "0") + ":" +
+      String(minutes).padStart(2, "0") + ":" +
+      String(seconds).padStart(2, "0");
+  }
+
+  function showSalePopup() {
+    const lastShown = localStorage.getItem("salePopupShown");
+    const today = new Date().toDateString();
+    if (lastShown === today) return; // chỉ hiện 1 lần/ngày
+    popup.style.display = "flex";
+    localStorage.setItem("salePopupShown", today);
+  }
+
+  window.closeSalePopup = function() {
+    popup.style.display = "none";
+  };
+
+  // Chạy đồng hồ mỗi giây
+  setInterval(updateCountdown, 1000);
+  updateCountdown();
+
+  // Hiển thị popup sau 2 giây
+  window.addEventListener("load", () => {
+    setTimeout(showSalePopup, 2000);
+  });
+})();
+</script>
