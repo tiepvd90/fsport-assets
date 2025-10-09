@@ -1,48 +1,78 @@
-<style>
-  @keyframes swingText {
-    0% { transform: rotate(0deg); }
-    25% { transform: rotate(2deg); }
-    50% { transform: rotate(-2deg); }
-    75% { transform: rotate(2deg); }
-    100% { transform: rotate(0deg); }
-  }
-
-  .swinging-text {
-    animation: swingText 1s infinite;
-    font-size: 16px;
-    color: white;
-    font-weight: 900;
-    text-align: center;
-    font-family: 'Be Vietnam Pro', sans-serif;
-    white-space: nowrap;
-    overflow: hidden;
-    max-width: 100%;
-    text-transform: uppercase;
-  }
-
-  @media (max-width: 400px) {
-    .swinging-text {
-      font-size: 14px;
-    }
-  }
-
-  @media (max-width: 320px) {
-    .swinging-text {
-      font-size: 12px;
-    }
-  }
-</style>
-
-<div style="
-  background-color: #28a745;
-  width: 100%;
-  height: 40px;
+<!-- ✅ Voucher Countdown Banner (Cam chủ đạo, cùng 1 dòng, đếm ngược tới 4PM hôm nay) -->
+<div id="voucherBanner" style="
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(90deg, #ff9900, #ff6600, #ff3300);
+  width: 100%; height: 45px;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0 12px;
+  padding: 0 15px;
+  color: #fff;
+  font-weight: 700;
+  font-size: 15px;
+  gap: 8px;
   box-sizing: border-box;
-  overflow: hidden;
+  white-space: nowrap; /* ✅ Giữ cùng 1 dòng */
+  z-index: 1;
 ">
-  <div class="swinging-text">🎁 GIÁ RẺ VÔ ĐỊCH CHO 20 VỢT TITAN 16MM 🎁</div>
+  <span>FLASH SALE 10/10 KẾT THÚC SAU</span>
+  <span id="countdown" style="
+    background: rgba(0,0,0,0.4);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 14px;
+    letter-spacing: 1px;
+  ">00:00:00</span>
+
+  <!-- ✅ Lớp ánh sáng lướt -->
+  <div class="shine"></div>
 </div>
+
+<style>
+#voucherBanner .shine {
+  position: absolute;
+  top: 0;
+  left: -60%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(120deg,
+    rgba(255,255,255,0) 0%,
+    rgba(255,255,255,0.4) 50%,
+    rgba(255,255,255,0) 100%);
+  animation: shineMove 3s linear infinite;
+  pointer-events: none;
+  z-index: 0; /* ✅ Cho dưới text */
+}
+
+@keyframes shineMove {
+  0%   { left: -60%; }
+  100% { left: 120%; }
+}
+</style>
+
+<script>
+(function() {
+  function updateCountdown() {
+    const now = new Date();
+    const deadline = new Date();
+    deadline.setHours(16, 0, 0, 0); // ✅ Đếm tới 16:00 hôm nay
+
+    // Nếu đã qua 16h thì chuyển sang 16h ngày mai
+    if (now > deadline) {
+      deadline.setDate(deadline.getDate() + 1);
+    }
+
+    const diff = deadline - now;
+    const hours = String(Math.floor(diff / 3600000)).padStart(2, "0");
+    const minutes = String(Math.floor((diff % 3600000) / 60000)).padStart(2, "0");
+    const seconds = String(Math.floor((diff % 60000) / 1000)).padStart(2, "0");
+
+    const el = document.getElementById("countdown");
+    if (el) el.textContent = `${hours}:${minutes}:${seconds}`;
+  }
+
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+})();
+</script>
