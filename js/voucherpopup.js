@@ -38,139 +38,156 @@ function getSecondsUntil4PM() {
   return diff > 0 ? diff : 0;
 }
 // ==========================================
-// 🔴 POPUP LIVESTREAM FACEBOOK MINI + FULL
+// 🔴 MINI LIVESTREAM FACEBOOK + POPUP FULL
 // ==========================================
 (function () {
-  const fbLiveUrl = "https://www.facebook.com/plugins/video.php?height=476&href=https%3A%2F%2Fweb.facebook.com%2Freel%2F2579888902356798%2F&show_text=false&autoplay=1&mute=1&width=267";
+  const fbLiveUrl =
+    "https://www.facebook.com/plugins/video.php?href=https%3A%2F%2Fweb.facebook.com%2Freel%2F2579888902356798%2F&show_text=false&autoplay=1&mute=1&width=267&height=476";
 
   // ===== CSS =====
   const style = document.createElement("style");
   style.textContent = `
-    /* Mini khung nổi bên trái */
+    /* Mini livestream khung nổi */
     #fbLiveMini {
       position: fixed;
-      left: 0;
-      top: 50%;
-      transform: translateY(-50%);
+      left: 10px;
+      bottom: 120px; /* nằm trên float icon */
       width: 110px;
       background: #fff;
-      border: 1px solid #ccc;
-      border-left: none;
-      border-radius: 0 10px 10px 0;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.25);
       z-index: 9998;
       overflow: hidden;
+      border: 1px solid #ddd;
       cursor: pointer;
-      transition: transform 0.3s ease;
+      transition: transform 0.25s ease;
     }
-    #fbLiveMini:hover { transform: translateY(-50%) scale(1.03); }
+    #fbLiveMini:hover { transform: scale(1.03); }
+
+    /* Label LIVE đỏ phía trên */
+    #fbLiveMini .live-label {
+      background: #e60000;
+      color: #fff;
+      text-align: center;
+      font-weight: 700;
+      font-size: 13px;
+      padding: 3px 0;
+      animation: blink 1s infinite;
+      letter-spacing: 1px;
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
 
     #fbLiveMini iframe {
       width: 100%;
-      height: 180px;
+      height: 160px;
       display: block;
+      border: none;
     }
 
-    /* Dòng chữ LIVE đỏ phía trên */
-    .live-label {
-      background: #ff0000;
-      color: #fff;
-      text-align: center;
-      font-weight: 900;
-      font-size: 14px;
-      padding: 3px 0;
-      letter-spacing: 1px;
-      animation: pulse 1s infinite;
-    }
-    @keyframes pulse {
-      0% { opacity: 1; }
-      50% { opacity: 0.3; }
-      100% { opacity: 1; }
-    }
-
-    /* Popup phóng to */
-    #fbLivePopupLarge {
+    /* Popup full */
+    #fbLiveOverlay {
       position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 90%;
-      max-width: 480px;
-      height: auto;
-      background: #fff;
-      border-radius: 12px;
-      box-shadow: 0 4px 25px rgba(0,0,0,0.3);
-      z-index: 10000;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
       display: none;
-      overflow: hidden;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
     }
 
-    #fbLivePopupLarge iframe {
+    #fbLivePopup {
+      background: #fff;
+      width: 90%;
+      max-width: 500px;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 5px 25px rgba(0,0,0,0.4);
+      animation: scaleIn 0.3s ease;
+      position: relative;
+    }
+
+    #fbLivePopup iframe {
       width: 100%;
       height: 80vh;
-      border: none;
       display: block;
+      border: none;
     }
 
-    #fbLivePopupLarge .close-btn {
+    #fbLivePopup .close-btn {
       position: absolute;
-      top: 5px;
+      top: 8px;
       right: 10px;
-      font-size: 24px;
-      color: #000;
+      font-size: 28px;
+      color: #333;
       background: rgba(255,255,255,0.8);
       border-radius: 50%;
-      width: 30px;
-      height: 30px;
-      line-height: 28px;
+      width: 34px;
+      height: 34px;
+      line-height: 30px;
       text-align: center;
       cursor: pointer;
       font-weight: bold;
       z-index: 10001;
     }
 
+    @keyframes scaleIn {
+      from { transform: scale(0.8); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
     @media (max-width: 768px) {
-      #fbLiveMini { width: 90px; }
-      #fbLiveMini iframe { height: 150px; }
-      #fbLivePopupLarge { width: 90%; }
+      #fbLiveMini { width: 90px; bottom: 100px; }
+      #fbLiveMini iframe { height: 130px; }
+      #fbLivePopup iframe { height: 70vh; }
     }
   `;
   document.head.appendChild(style);
 
-  // ===== Tạo khung mini =====
+  // ===== MINI KHUNG NHỎ =====
   const mini = document.createElement("div");
   mini.id = "fbLiveMini";
   mini.innerHTML = `
     <div class="live-label">🔴 LIVE</div>
     <iframe
       src="${fbLiveUrl}"
-      scrolling="no"
-      frameborder="0"
       allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
       allowfullscreen="true">
     </iframe>
   `;
   document.body.appendChild(mini);
 
-  // ===== Tạo popup lớn (ẩn ban đầu) =====
-  const popup = document.createElement("div");
-  popup.id = "fbLivePopupLarge";
-  popup.innerHTML = `
-    <div class="close-btn">&times;</div>
-    <iframe
-      src="${fbLiveUrl}"
-      allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
-      allowfullscreen="true">
-    </iframe>
+  // ===== OVERLAY POPUP =====
+  const overlay = document.createElement("div");
+  overlay.id = "fbLiveOverlay";
+  overlay.innerHTML = `
+    <div id="fbLivePopup">
+      <div class="close-btn">&times;</div>
+      <iframe
+        src="${fbLiveUrl}"
+        allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+        allowfullscreen="true">
+      </iframe>
+    </div>
   `;
-  document.body.appendChild(popup);
+  document.body.appendChild(overlay);
 
-  // ===== Sự kiện mở/đóng =====
+  // ===== SỰ KIỆN =====
   mini.addEventListener("click", () => {
-    popup.style.display = "block";
+    overlay.style.display = "flex";
   });
-  popup.querySelector(".close-btn").addEventListener("click", () => {
-    popup.style.display = "none";
+
+  overlay.querySelector(".close-btn").addEventListener("click", (e) => {
+    e.stopPropagation();
+    overlay.style.display = "none";
+  });
+
+  overlay.addEventListener("click", (e) => {
+    if (e.target.id === "fbLiveOverlay") overlay.style.display = "none";
   });
 })();
 
