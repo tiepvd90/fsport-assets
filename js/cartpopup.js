@@ -26,6 +26,8 @@ function initCartPopup() {
   if (window.__voucherWaiting?.amount && id) {
     window.voucherByProduct[id] = window.__voucherWaiting.amount;
   }
+
+        
 });
         renderOptions(data["thuộc_tính"]);
         bindAddToCartButton();
