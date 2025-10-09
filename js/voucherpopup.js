@@ -112,33 +112,3 @@ if (document.readyState === "loading") {
 } else {
   runVoucherImmediately();
 }
-
-// ✅ Sau khi đóng giỏ hàng thì cũng hiển thị lại popup (như flash sale)
-(function setupVoucherAfterCheckoutClose() {
-  function waitForCloseButton(retries = 20) {
-    const closeBtn = document.querySelector(".checkout-close");
-    if (!closeBtn) {
-      if (retries > 0) return setTimeout(() => waitForCloseButton(retries - 1), 300);
-      return;
-    }
-
-    closeBtn.addEventListener("click", () => {
-      setTimeout(() => {
-        const lastShown = Number(sessionStorage.getItem("voucherShownAfterClose") || 0);
-        const COOLDOWN_MS = 60 * 60 * 1000;
-        if (Date.now() - lastShown < COOLDOWN_MS) return;
-
-        sessionStorage.setItem("voucherShownAfterClose", String(Date.now()));
-        console.log("🎉 Hiển thị popup FLASH SALE khi đóng giỏ hàng.");
-        createVoucherFloatingIcon();
-        showVoucherPopup();
-      }, 300);
-    });
-  }
-
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", () => waitForCloseButton());
-  } else {
-    waitForCloseButton();
-  }
-})();
