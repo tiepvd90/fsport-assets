@@ -106,4 +106,75 @@ setInterval(() => {
 //sc.src = "/js/supportchat.js";
 //document.body.appendChild(sc);
 
+function initFbLivePopup() {
+  // Kiểm tra tránh chèn trùng
+  if (document.getElementById("fbLivePopup")) return;
+
+  // CSS nội tuyến
+  const style = document.createElement("style");
+  style.textContent = `
+    #fbLivePopup {
+      position: fixed;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 90px;
+      background: #fff;
+      border: 1px solid #ddd;
+      border-left: none;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      border-radius: 0 10px 10px 0;
+      overflow: hidden;
+      z-index: 9999;
+      transition: transform 0.3s ease;
+    }
+    #fbLivePopup iframe {
+      width: 100%;
+      height: 160px;
+      display: block;
+    }
+    #fbLivePopup .close-btn {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      background: rgba(0,0,0,0.6);
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      font-size: 14px;
+      cursor: pointer;
+      line-height: 20px;
+      text-align: center;
+    }
+    #fbLivePopup.hidden {
+      transform: translate(-100%, -50%);
+    }
+    @media (max-width: 768px) {
+      #fbLivePopup { width: 70px; }
+      #fbLivePopup iframe { height: 120px; }
+    }
+  `;
+  document.head.appendChild(style);
+
+  // HTML popup
+  const popup = document.createElement("div");
+  popup.id = "fbLivePopup";
+  popup.innerHTML = `
+    <button class="close-btn" onclick="this.parentElement.classList.add('hidden')">&times;</button>
+    <iframe 
+      src="https://www.facebook.com/plugins/video.php?height=476&href=https%3A%2F%2Fweb.facebook.com%2Freel%2F2579888902356798%2F&show_text=true&width=267&t=0"
+      style="border:none;overflow:hidden"
+      scrolling="no"
+      frameborder="0"
+      allowfullscreen="true"
+      allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share">
+    </iframe>
+  `;
+  document.body.appendChild(popup);
+}
+
+// ✅ Gọi hàm sau khi trang load
+document.addEventListener("DOMContentLoaded", initFbLivePopup);
 
