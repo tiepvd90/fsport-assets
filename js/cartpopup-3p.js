@@ -187,11 +187,6 @@ function selectVariant(data) {
       window.voucherByProduct[data.id] = window.__voucherWaiting.amount;
     }
   }
-    // ✅ Phantom luôn giảm 300k
-if (data.id && data.id.toLowerCase().includes("phantom")) {
-  window.voucherByProduct = window.voucherByProduct || {};
-  window.voucherByProduct[data.id] = 300000;
-}
   window.selectedVariant = data;
 
   const mainImage = document.getElementById("mainImage");
