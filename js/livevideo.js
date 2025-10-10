@@ -1,25 +1,26 @@
 // ===========================================================
-// 🔴 MINI LIVESTREAM FACEBOOK + POPUP FULL 2 NÚT (ép autoplay mute, không nhảy ra ngoài)
+// 🔴 MINI LIVESTREAM FACEBOOK + POPUP FULL 2 NÚT (bản cập nhật click 2 lần)
 // ===========================================================
+
 (function () {
   "use strict";
 
-  // ✅ KHAI BÁO LINK FACEBOOK CHỈ MỘT LẦN
-  const FB_VIDEO_ID = "2579888902356798"; // 👉 chỉ cần đổi ID video ở đây
-  const fbDirectUrl = `https://www.facebook.com/reel/${FB_VIDEO_ID}/`;
+  // ✅ CHỈ CẦN THAY LINK VIDEO Ở ĐÂY
+  const FB_VIDEO_URL = "https://web.facebook.com/funsport1/videos/1506865553689608/";
+  const fbDirectUrl = FB_VIDEO_URL;
   const fbEmbedUrl =
     "https://www.facebook.com/plugins/video.php?href=" +
     encodeURIComponent(fbDirectUrl) +
-    "&show_text=false&autoplay=1&mute=1&controls=0&width=267&height=476";
+    "&show_text=false&autoplay=1&mute=1&width=267&height=476";
 
-  // ✅ CSS (không đổi giao diện)
+  // ✅ CSS
   const style = document.createElement("style");
   style.textContent = `
     #fbLiveMini {
       position: fixed;
       top: 140px;
       right: 10px;
-      width: 80px;
+      width: 90px;
       background: #fff;
       border-radius: 10px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.25);
@@ -34,7 +35,6 @@
       height: 112px;
       display: block;
       border: none;
-      pointer-events: none; /* 🚀 Quan trọng: ngăn click trực tiếp vào video */
     }
     #fbLiveMini .live-label {
       background: #e60000;
@@ -125,7 +125,7 @@
   `;
   document.body.appendChild(mini);
 
-  // ✅ TẠO POPUP FULL LIVESTREAM
+  // ✅ POPUP FULL LIVESTREAM
   const overlay = document.createElement("div");
   overlay.id = "fbLiveOverlay";
   overlay.innerHTML = `
@@ -140,41 +140,37 @@
   `;
   document.body.appendChild(overlay);
 
-  // ✅ BIẾN THAM CHIẾU
+  // ✅ CÁC BIẾN DÙNG LẠI
   const miniIframe = mini.querySelector("iframe");
   const bigIframe = overlay.querySelector("iframe");
   const clickLayer = mini.querySelector(".click-layer");
   const btnViewFb = overlay.querySelector(".btn-viewfb");
   const btnClose = overlay.querySelector(".btn-close");
 
-  // ✅ ÉP AUTOPLAY + MUTE (mini video)
-  function loadMini() {
-    // Dùng srcdoc để tránh nhảy ra ngoài khi click
-    miniIframe.srcdoc = `
-      <html><body style="margin:0;padding:0;overflow:hidden;">
-      <iframe
-        src="${fbEmbedUrl}"
-        style="width:100%;height:100%;border:none;"
-        allow="autoplay; encrypted-media; picture-in-picture"
-        allowfullscreen muted></iframe>
-      </body></html>`;
+  let miniPlayed = false; // theo dõi click đầu tiên
+
+  // ✅ HÀM SET AUTOPLAY
+  function setAutoplay(iframe) {
+    iframe.src = fbEmbedUrl;
   }
 
-  // ✅ AUTOPLAY MINI NGAY KHI LOAD
-  window.addEventListener("DOMContentLoaded", loadMini);
-
-  // ✅ CLICK MINI → MỞ POPUP FULL
+  // ✅ CLICK MINI: lần đầu play, lần hai mở popup
   clickLayer.addEventListener("click", () => {
-    overlay.style.display = "flex";
-    bigIframe.src = fbEmbedUrl; // bật video lớn
+    if (!miniPlayed) {
+      setAutoplay(miniIframe);
+      miniPlayed = true;
+    } else {
+      overlay.style.display = "flex";
+      setAutoplay(bigIframe);
+    }
   });
 
-  // ✅ XEM TRÊN FB
+  // ✅ CLICK "XEM TRÊN FB"
   btnViewFb.addEventListener("click", () => window.open(fbDirectUrl, "_blank"));
 
-  // ✅ ĐÓNG POPUP
+  // ✅ CLICK "ĐÓNG"
   btnClose.addEventListener("click", () => {
     overlay.style.display = "none";
-    bigIframe.src = "about:blank"; // dừng video
+    bigIframe.src = "about:blank";
   });
 })();
