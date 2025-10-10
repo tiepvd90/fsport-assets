@@ -182,14 +182,16 @@ function updateSelectedVariant() {
 function selectVariant(data) {
     // ✅ Nếu có __voucherWaiting → gán vào voucherByProduct
   if (window.__voucherWaiting?.amount) {
-    window.voucherByProduct = window.voucherByProduct || {};
-    if (!window.voucherByProduct[data.id]) {
-      window.voucherByProduct[data.id] = window.__voucherWaiting.amount;
-    }
-       // ✅ Phantom mặc định giảm 300k
- if (["phantom"].includes(id)) { window.voucherByProduct[id] = 300000; }
+  window.voucherByProduct = window.voucherByProduct || {};
+  if (!window.voucherByProduct[data.id]) {
+    window.voucherByProduct[data.id] = window.__voucherWaiting.amount;
   }
+}
 
+// ✅ Phantom mặc định giảm 300k
+if (["phantom"].includes(data.id)) {
+  window.voucherByProduct[data.id] = 300000;
+}
   window.selectedVariant = data;
 
   const mainImage = document.getElementById("mainImage");
