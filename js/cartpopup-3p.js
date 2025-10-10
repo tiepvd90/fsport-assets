@@ -186,9 +186,10 @@ function selectVariant(data) {
     if (!window.voucherByProduct[data.id]) {
       window.voucherByProduct[data.id] = window.__voucherWaiting.amount;
     }
-  }
-   // ✅ Phantom mặc định giảm 300k
+       // ✅ Phantom mặc định giảm 300k
  if (["phantom"].includes(id)) { window.voucherByProduct[id] = 300000; }
+  }
+
   window.selectedVariant = data;
 
   const mainImage = document.getElementById("mainImage");
