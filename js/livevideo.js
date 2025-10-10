@@ -1,5 +1,5 @@
 // ===========================================================
-// 📺 livevideo.js — Mini popup livestream + mở to 90% màn hình
+// 📺 livevideo.js — Mini livestream + popup to (fix click)
 // ===========================================================
 
 (function () {
@@ -7,146 +7,191 @@
 
   if (document.getElementById("liveMiniPopup")) return;
 
-  const fbVideoLink =
-    "https://www.facebook.com/reel/2579888902356798"; // link thật Facebook
+  const fbVideoLink = "https://www.facebook.com/reel/2579888902356798";
 
-  // ✅ MINI POPUP (góc phải)
+  // ✅ MINI POPUP
   const mini = document.createElement("div");
   mini.id = "liveMiniPopup";
-  mini.style.position = "fixed";
-  mini.style.top = "120px";
-  mini.style.right = "10px";
-  mini.style.width = "90px";
-  mini.style.height = "150px";
-  mini.style.zIndex = "9999";
-  mini.style.background = "#000";
-  mini.style.display = "flex";
-  mini.style.flexDirection = "column";
-  mini.style.overflow = "hidden";
-  mini.style.boxShadow = "0 0 8px rgba(0,0,0,0.4)";
-  mini.style.borderRadius = "0";
+  Object.assign(mini.style, {
+    position: "fixed",
+    top: "120px",
+    right: "10px",
+    width: "90px",
+    height: "150px",
+    zIndex: "9999",
+    background: "#000",
+    display: "flex",
+    flexDirection: "column",
+    overflow: "hidden",
+    boxShadow: "0 0 8px rgba(0,0,0,0.4)",
+    borderRadius: "0",
+  });
 
-  // 🔴 Header: LIVE + X
+  // 🔴 HEADER
   const header = document.createElement("div");
-  header.style.display = "flex";
-  header.style.alignItems = "center";
-  header.style.justifyContent = "space-between";
-  header.style.padding = "2px 5px";
-  header.style.background = "#000";
+  Object.assign(header.style, {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    padding: "2px 5px",
+    background: "#000",
+  });
 
   const live = document.createElement("div");
   live.textContent = "LIVE";
-  live.style.background = "#d32f2f";
-  live.style.color = "#fff";
-  live.style.fontSize = "11px";
-  live.style.fontWeight = "bold";
-  live.style.padding = "2px 6px";
-  live.style.animation = "pulseLive 1.2s infinite";
+  Object.assign(live.style, {
+    background: "#d32f2f",
+    color: "#fff",
+    fontSize: "11px",
+    fontWeight: "bold",
+    padding: "2px 6px",
+    animation: "pulseLive 1.2s infinite",
+  });
 
   const closeMini = document.createElement("div");
   closeMini.innerHTML = "&#10005;";
-  closeMini.style.color = "#fff";
-  closeMini.style.fontSize = "12px";
-  closeMini.style.cursor = "pointer";
+  Object.assign(closeMini.style, {
+    color: "#fff",
+    fontSize: "12px",
+    cursor: "pointer",
+  });
   closeMini.addEventListener("click", () => mini.remove());
 
   header.appendChild(live);
   header.appendChild(closeMini);
 
-  // 🎥 Video (iframe nhỏ)
+  // 🎥 VIDEO MINI (iframe)
   const iframeMini = document.createElement("iframe");
   iframeMini.src =
     "https://www.facebook.com/plugins/video.php?height=476&href=https%3A%2F%2Fweb.facebook.com%2Freel%2F2579888902356798%2F&show_text=false&width=267&t=0&autoplay=true&mute=true";
-  iframeMini.width = "90";
-  iframeMini.height = "130";
-  iframeMini.style.border = "none";
+  Object.assign(iframeMini.style, {
+    width: "90px",
+    height: "130px",
+    border: "none",
+  });
   iframeMini.allow =
     "autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share";
 
-  // 🖱️ Khi click → mở popup to
-  iframeMini.style.cursor = "pointer";
-  iframeMini.addEventListener("click", openFullPopup);
+  // ⚡ Lớp overlay để bắt click
+  const clickOverlay = document.createElement("div");
+  Object.assign(clickOverlay.style, {
+    position: "absolute",
+    top: "20px",
+    left: "0",
+    width: "90px",
+    height: "130px",
+    cursor: "pointer",
+    zIndex: "2",
+  });
+  clickOverlay.addEventListener("click", openFullPopup);
+
+  // Đặt container có position relative để overlay hoạt động
+  mini.style.position = "fixed";
+  mini.style.overflow = "hidden";
+  mini.style.boxSizing = "border-box";
+  mini.style.position = "fixed";
+  mini.style.background = "#000";
+  mini.style.borderRadius = "0";
+  mini.style.cursor = "pointer";
+  mini.style.position = "fixed";
+  mini.style.zIndex = "9999";
+  mini.style.display = "flex";
+  mini.style.flexDirection = "column";
+  mini.style.overflow = "hidden";
+  mini.style.position = "fixed";
+  mini.style.right = "10px";
+  mini.style.top = "120px";
+  mini.style.width = "90px";
+  mini.style.height = "150px";
+  mini.style.position = "fixed";
+  mini.style.position = "relative";
 
   mini.appendChild(header);
   mini.appendChild(iframeMini);
+  mini.appendChild(clickOverlay);
   document.body.appendChild(mini);
 
-  // 🔵 Popup to (ẩn mặc định)
+  // 🖼️ POPUP TO
   function openFullPopup() {
     const overlay = document.createElement("div");
-    overlay.id = "liveFullOverlay";
-    overlay.style.position = "fixed";
-    overlay.style.top = "0";
-    overlay.style.left = "0";
-    overlay.style.width = "100%";
-    overlay.style.height = "100%";
-    overlay.style.background = "rgba(0,0,0,0.7)";
-    overlay.style.zIndex = "10000";
-    overlay.style.display = "flex";
-    overlay.style.alignItems = "center";
-    overlay.style.justifyContent = "center";
-
-    const popup = document.createElement("div");
-    popup.style.background = "#fff";
-    popup.style.border = "1px solid #ccc";
-    popup.style.borderRadius = "8px";
-    popup.style.overflow = "hidden";
-    popup.style.width =
-      window.innerWidth < 768
-        ? "90%" // mobile
-        : "70%"; // desktop
-    popup.style.maxWidth = "700px";
-    popup.style.aspectRatio = "9 / 16";
-    popup.style.position = "relative";
-
-    // Header của popup to
-    const topBar = document.createElement("div");
-    topBar.style.display = "flex";
-    topBar.style.justifyContent = "space-between";
-    topBar.style.padding = "8px";
-    topBar.style.background = "#fff";
-    topBar.style.position = "absolute";
-    topBar.style.top = "0";
-    topBar.style.left = "0";
-    topBar.style.width = "100%";
-    topBar.style.zIndex = "2";
-
-    // 🔵 Nút XEM TRÊN FB
-    const fbBtn = document.createElement("button");
-    fbBtn.textContent = "XEM TRÊN FB";
-    fbBtn.style.background = "#1877f2";
-    fbBtn.style.color = "#fff";
-    fbBtn.style.fontWeight = "bold";
-    fbBtn.style.border = "none";
-    fbBtn.style.padding = "6px 12px";
-    fbBtn.style.borderRadius = "6px";
-    fbBtn.style.cursor = "pointer";
-    fbBtn.addEventListener("click", () => {
-      window.open(fbVideoLink, "_blank");
+    Object.assign(overlay.style, {
+      position: "fixed",
+      top: "0",
+      left: "0",
+      width: "100%",
+      height: "100%",
+      background: "rgba(0,0,0,0.7)",
+      zIndex: "10000",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
     });
 
-    // ⚫ Nút ĐÓNG
+    const popup = document.createElement("div");
+    Object.assign(popup.style, {
+      background: "#fff",
+      border: "1px solid #ccc",
+      borderRadius: "6px",
+      overflow: "hidden",
+      width: window.innerWidth < 768 ? "90%" : "70%",
+      maxWidth: "700px",
+      aspectRatio: "9 / 16",
+      position: "relative",
+      display: "flex",
+      flexDirection: "column",
+    });
+
+    // 2 nút phía trên
+    const topBar = document.createElement("div");
+    Object.assign(topBar.style, {
+      display: "flex",
+      justifyContent: "space-between",
+      padding: "8px",
+      background: "#fff",
+      position: "absolute",
+      top: "0",
+      left: "0",
+      width: "100%",
+      zIndex: "2",
+    });
+
+    const fbBtn = document.createElement("button");
+    fbBtn.textContent = "XEM TRÊN FB";
+    Object.assign(fbBtn.style, {
+      background: "#1877f2",
+      color: "#fff",
+      fontWeight: "bold",
+      border: "none",
+      padding: "6px 12px",
+      borderRadius: "6px",
+      cursor: "pointer",
+    });
+    fbBtn.addEventListener("click", () => window.open(fbVideoLink, "_blank"));
+
     const closeBig = document.createElement("button");
     closeBig.textContent = "ĐÓNG";
-    closeBig.style.background = "#000";
-    closeBig.style.color = "#fff";
-    closeBig.style.fontWeight = "bold";
-    closeBig.style.border = "none";
-    closeBig.style.padding = "6px 12px";
-    closeBig.style.borderRadius = "6px";
-    closeBig.style.cursor = "pointer";
+    Object.assign(closeBig.style, {
+      background: "#000",
+      color: "#fff",
+      fontWeight: "bold",
+      border: "none",
+      padding: "6px 12px",
+      borderRadius: "6px",
+      cursor: "pointer",
+    });
     closeBig.addEventListener("click", () => overlay.remove());
 
     topBar.appendChild(fbBtn);
     topBar.appendChild(closeBig);
 
-    // Video lớn
     const iframeBig = document.createElement("iframe");
     iframeBig.src =
       "https://www.facebook.com/plugins/video.php?height=476&href=https%3A%2F%2Fweb.facebook.com%2Freel%2F2579888902356798%2F&show_text=false&width=267&t=0&autoplay=true&mute=true";
-    iframeBig.style.width = "100%";
-    iframeBig.style.height = "100%";
-    iframeBig.style.border = "none";
+    Object.assign(iframeBig.style, {
+      width: "100%",
+      height: "100%",
+      border: "none",
+    });
     iframeBig.allow =
       "autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share";
 
@@ -156,12 +201,12 @@
     document.body.appendChild(overlay);
   }
 
-  // 🔄 Hiệu ứng LIVE
+  // 🔴 Hiệu ứng LIVE
   const style = document.createElement("style");
   style.textContent = `
     @keyframes pulseLive {
       0% { opacity: 1; }
-      50% { opacity: 0.5; }
+      50% { opacity: 0.4; }
       100% { opacity: 1; }
     }
   `;
