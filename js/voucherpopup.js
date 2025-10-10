@@ -31,11 +31,11 @@ function showVoucherPopup() {
   startVoucherCountdown(getSecondsUntil4PM());
 }
 
-// 🔹 Đếm ngược tới 16:00 hôm nay
+// 🔹 Đếm ngược tới 23:00 hôm nay
 function getSecondsUntil4PM() {
   const now = new Date();
   const target = new Date();
-  target.setHours(16, 0, 0, 0);
+  target.setHours(23, 0, 0, 0);
   const diff = Math.floor((target - now) / 1000);
   return diff > 0 ? diff : 0;
 }
