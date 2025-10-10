@@ -56,7 +56,7 @@
   function updateCountdown() {
     const now = new Date();
     const deadline = new Date();
-    deadline.setHours(16, 0, 0, 0); // ✅ Đếm tới 16:00 hôm nay
+    deadline.setHours(23, 0, 0, 0); // ✅ Đếm tới 23:00 hôm nay
 
     // Nếu đã qua 16h thì chuyển sang 16h ngày mai
     if (now > deadline) {
