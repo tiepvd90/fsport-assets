@@ -18,7 +18,7 @@
   container.style.right = "10px";
   container.style.width = "70px";
   container.style.background = "#fff";
-  container.style.zIndex = "9999";
+  container.style.zIndex = "7999";
   container.style.textAlign = "center";
   container.style.fontFamily = "Be Vietnam Pro, sans-serif";
   container.style.border = "1px solid #ccc";
