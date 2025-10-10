@@ -169,49 +169,38 @@ function renderCheckoutCart() {
 }
 
 function updateCheckoutSummary() {
-  // 🧮 Tính tổng tiền hàng & số lượng
-  const subtotal = window.cart.reduce(
-    (sum, item) => sum + (item.Giá || 0) * (item.quantity || 1),
-    0
-  );
-  const totalQty = window.cart.reduce(
-    (sum, item) => sum + (item.quantity || 1),
-    0
-  );
+  const subtotal = window.cart.reduce((sum, item) => sum + (item.Giá || 0) * (item.quantity || 1), 0);
+  const totalQty = window.cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+  voucherValue = window.cart.reduce((sum, item) => sum + (item.voucher?.amount || 0) * (item.quantity || 1), 0);
 
-  // 🚚 Miễn phí ship
-  shippingFeeOriginal = 0;
-  shippingFee = 0;
+  const shipping = shippingFee;
+  const total = subtotal + shipping - voucherValue;
 
-  // 🎁 Voucher 10/10
-  const discountPercent = subtotal >= 1500000 ? 0.08 : 0.05;
-  voucherValue = Math.round(subtotal * discountPercent);
-  const voucherLabel = "Voucher 10/10";
-
-  // 🧾 Tổng tiền cuối
-  const total = subtotal - voucherValue + shippingFee;
-
-  // 🔹 Cập nhật giao diện
   const qtyEl = document.getElementById("itemQuantityText");
-  if (qtyEl) qtyEl.textContent = `${totalQty} sản phẩm`;
-
   const subtotalEl = document.getElementById("subtotalText");
+  if (qtyEl) qtyEl.textContent = `${totalQty} sản phẩm`;
   if (subtotalEl) subtotalEl.textContent = `${subtotal.toLocaleString()}₫`;
 
   const shippingEl = document.getElementById("shippingFeeText");
-  if (shippingEl) shippingEl.textContent = "0₫";
+  if (shippingEl) {
+    if (shippingFeeOriginal > shippingFee) {
+      shippingEl.innerHTML = `
+        <span style="text-decoration: line-through; color: gray; margin-right: 6px;">
+          ${shippingFeeOriginal.toLocaleString()}₫
+        </span>
+        <span style="color: red; font-weight: bold;">
+          ${shippingFee.toLocaleString()}₫
+        </span>
+      `;
+    } else {
+      shippingEl.textContent = `${shippingFee.toLocaleString()}₫`;
+    }
+  }
 
-  // ⚡ Label voucher (bên trái)
-  const voucherLabelEl = document.getElementById("voucherLabel");
-  if (voucherLabelEl) voucherLabelEl.textContent = voucherLabel;
-
-  // ⚡ Giá trị giảm (bên phải)
   const voucherTextEl = document.getElementById("voucherText");
   if (voucherTextEl) {
     if (voucherValue > 0) {
       voucherTextEl.textContent = `-${voucherValue.toLocaleString()}₫`;
-      voucherTextEl.style.color = "red";
-      voucherTextEl.style.fontWeight = "600";
       voucherTextEl.style.display = "block";
     } else {
       voucherTextEl.style.display = "none";
@@ -220,12 +209,7 @@ function updateCheckoutSummary() {
 
   const totalEl = document.getElementById("totalText");
   if (totalEl) totalEl.textContent = `${total.toLocaleString()}₫`;
-
-  // Lưu dữ liệu cho Make.com
-  window.currentVoucherLabel = voucherLabel;
-  window.currentVoucherPercent = discountPercent * 100;
 }
-
 
 // ------------------------
 // 🔹 SỬA SỐ LƯỢNG / XOÁ / LƯU CART
@@ -250,15 +234,26 @@ function saveCart() {
 }
 
 // ------------------------
-// 🔹 PHÍ VẬN CHUYỂN = 0Đ (MIỄN PHÍ HOÀN TOÀN)
+// 🔹 PHÍ VẬN CHUYỂN
 // ------------------------
 
 function loadShippingFee() {
-  shippingFeeOriginal = 0;
-  shippingFee = 0;
-  updateCheckoutSummary();
+  fetch("https://friendly-kitten-d760ff.netlify.app/json/shippingfee.json")
+    .then(res => res.json())
+    .then(data => {
+      const fees = window.cart.map(i => data[i.loai] || 0);
+      const maxFee = Math.max(...fees, 0);
+      shippingFeeOriginal = maxFee;
+      shippingFee = Math.round(maxFee * 0.4); // Giảm 60%
+      updateCheckoutSummary();
+    })
+    .catch(err => {
+      console.warn("Không thể tải shippingfee.json:", err);
+      shippingFeeOriginal = 0;
+      shippingFee = 0;
+      updateCheckoutSummary();
+    });
 }
-
 
 // ------------------------
 // 🔹 GỬI ĐƠN HÀNG
