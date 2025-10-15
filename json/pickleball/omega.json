@@ -1,0 +1,32 @@
+{
+  "thuộc_tính": [
+    {
+      "label": "Màu Sắc",
+      "key": "Màu Sắc",
+      "type": "option",
+      "display": "thumbnail",
+      "values": [
+        { "text": "Vợt Xanh Lá", "image": "/assets/images/gallery/pickleball/omega/5.webp" }
+      ]
+    },
+    {
+      "label": "Quà Tặng",
+      "key": "Quà Tặng",
+      "type": "option",
+      "display": "button",
+      "values": [
+        "Túi Pick Màu Ghi Xám",
+        "Túi Pick Màu Hồng",
+        "Túi Pick Màu Đen"
+      ]
+    }
+  ],
+  "biến_thể": [
+    {
+      "id": "phantom",
+      "category": "pickleball",
+      "Giá": 2390000,
+      "Giá gốc": 2700000
+    }
+  ]
+}
