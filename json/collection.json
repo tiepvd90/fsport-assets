@@ -9,13 +9,23 @@
     "category": "pickleball",
     "tags": []
   },
-    {
+  {
     "id": "phantom-carbon",
     "title": "Vợt Pickleball Phantom – 14mm- carbon Tràn Viền, lõi gen4",
     "image": "https://i.postimg.cc/xCMjLbDC/Capture.jpg",
     "price": 1800000,
     "originalPrice": 2700000,
     "link": "/pickleball/phantom",
+    "category": "pickleball",
+    "tags": []
+  },
+  {
+    "id": "omega",
+    "title": "Vợt Pickleball Omega",
+    "image": "https://fun-sport.co/assets/images/gallery/pickleball/omega/2.webp",
+    "price": 2090000,
+    "originalPrice": 2700000,
+    "link": "/pickleball/omega",
     "category": "pickleball",
     "tags": []
   },
