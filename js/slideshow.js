@@ -6,7 +6,6 @@ switch (window.productPage) {
     totalImages = 14;
     break;
   case "ysandalbn68":
-  case "firstpickleball":
   case "pickleball-airforce":
     totalImages = 9;
     break;
