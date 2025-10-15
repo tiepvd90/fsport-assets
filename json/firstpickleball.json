@@ -12,28 +12,10 @@
           "Giá gốc": 1270000
         },
         {
-          "text": "Rồng Trắng",
-          "image": "/assets/images/thumb/pickleball/firstpickleball/rongtrang.jpg",
-          "Giá": 820000,
-          "Giá gốc": 1200000
-        },
-        {
-          "text": "Jusain Black",
+          "text": "JBlack",
           "image": "/assets/images/thumb/pickleball/firstpickleball/black.jpg",
           "Giá": 800000,
           "Giá gốc": 1240000
-        },
-        {
-          "text": "Jusain Mint",
-          "image": "/assets/images/thumb/pickleball/firstpickleball/mint.jpg",
-          "Giá": 1100000,
-          "Giá gốc": 1570000
-        },
-        {
-          "text": "Phantom",
-          "image": "/assets/images/thumb/pickleball/firstpickleball/phantom.JPG",
-          "Giá": 2100000,
-          "Giá gốc": 3010000
         },
         {
           "text": "Airforce - Đen Đỏ",
@@ -52,10 +34,7 @@
   ],
   "biến_thể": [
     { "Màu Sắc": "Rồng Đen", "id": "pickleball-rongden", "category": "pickleball" },
-    { "Màu Sắc": "Rồng Trắng", "id": "pickleball-rongtrang", "category": "pickleball" },
-    { "Màu Sắc": "Jusain Black", "id": "pickleball-jusainblack", "category": "pickleball" },
-    { "Màu Sắc": "Jusain Mint", "id": "pickleball-jusainmint", "category": "pickleball" },
-    { "Màu Sắc": "Phantom", "id": "pickleball-phantom", "category": "pickleball" },
+    { "Màu Sắc": "JBlack", "id": "pickleball-jusainblack", "category": "pickleball" },
     { "Màu Sắc": "Airforce - Đen Đỏ", "id": "pickleball-airforce-den", "category": "pickleball" },
     { "Màu Sắc": "Airforce - Xám", "id": "pickleball-airforce-xam", "category": "pickleball" }
   ]
