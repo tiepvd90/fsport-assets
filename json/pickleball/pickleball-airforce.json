@@ -6,7 +6,8 @@
       "type": "option",
       "display": "thumbnail",
       "values": [
-        { "text": "Vợt Xám", "image": "https://i.postimg.cc/2S8RNHLQ/xam.webp" }
+        { "text": "Vợt Xám", "assets/images/thumb/pickleball/firstpickleball/af-xam.webp" },
+         { "text": "Vợt Đen Đỏ", "/assets/images/thumb/pickleball/firstpickleball/af-den.webp" }
       ]
     },
     {
@@ -17,8 +18,7 @@
       "values": [
         "Túi Pick Màu Xám",
         "Túi Pick Màu Hồng",
-        "Túi Pick Màu Đen",
-        "10 Bóng Thi Đấu"
+        "Túi Pick Màu Đen"
       ]
     }
   ],
@@ -26,7 +26,7 @@
     {
       "id": "airforce",
       "category": "pickleball",
-      "Giá": 1250000,
+      "Giá": 1300000,
       "Giá gốc": 2000000
     }
   ]
