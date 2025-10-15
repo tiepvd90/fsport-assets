@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Vợt Pickleball Jusain Omega-ELS Gen 4 YNXZ-14 (16mm)</title>
+
+  <!-- ✅ CSS -->
+  <link rel="stylesheet" href="/css/base.css" />
+  <link rel="stylesheet" href="https://friendly-kitten-d760ff.netlify.app/css/cartpopup.css" />
+  <link rel="stylesheet" href="https://friendly-kitten-d760ff.netlify.app/css/checkoutpopup.css" />
+  <link rel="stylesheet" href="/css/productdescription.css" />
+  <link rel="stylesheet" href="../css/slideshow.css" />
+  <link rel="icon" type="image/png" href="/favicon.png" />
+
+  <!-- ✅ JS định nghĩa -->
+  <script>
+    window.loai = "pickleball";
+    window.productCategory = "pickleball";
+    window.productPage = "omega";
+  </script>
+</head>
+<body>
+
+  <div class="page-container">
+
+    <!-- ✅ Placeholders -->
+    <div id="cartPopup-placeholder"></div>
+    <div id="checkoutPopup-placeholder"></div>
+    <div id="sticky-footer-placeholder"></div>
+
+    <!-- ✅ Slideshow -->
+    <div class="lazy-slideshow" id="lazySlideshow">
+      <div class="slide-counter" id="slideCounter">1/1</div>
+    </div>
+    <script src="../js/slideshow.js"></script>
+
+   <!-- ✅ Flash Banner -->
+<div id="flashbanner-placeholder"></div>
+<script>
+  fetch("/html/flashsalebanner/phantom.html")
+    .then(res => res.text())
+    .then(html => {
+      // inject cả HTML + JS bên trong file phantom.html
+      document.getElementById("flashbanner-placeholder").innerHTML = html;
+
+      // tìm và chạy các <script> trong nội dung vừa inject
+      const tempDiv = document.createElement("div");
+      tempDiv.innerHTML = html;
+      tempDiv.querySelectorAll("script").forEach(oldScript => {
+        const newScript = document.createElement("script");
+        if (oldScript.src) {
+          newScript.src = oldScript.src; // nếu script có src thì load
+        } else {
+          newScript.textContent = oldScript.textContent; // nếu script inline thì chạy luôn
+        }
+        document.body.appendChild(newScript);
+      });
+    });
+</script>
+
+
+    <!-- ✅ Tiêu đề + Shipping -->
+    <div class="product-hero">
+      <h1 style="font-size: 14px; font-weight: bold; margin-top: 8px; font-family: 'Be Vietnam Pro', sans-serif;">
+        <span style="background: black; color: white; font-size: 11px; padding: 2px 6px; border-radius: 4px; margin-right: 4px;">Mall</span>
+        <span style="background: #007BFF; color: white; font-size: 11px; padding: 2px 6px; border-radius: 4px; margin-right: 6px; text-transform: uppercase;">Hàng Chính Hãng</span>
+        Vợt Pickleball Jusain Omega-ELS Gen 4 YNXZ-14 (16mm)
+      </h1>
+      <div class="shipping-wrapper">
+        <div class="shipping-info">
+          <div class="shipping-line"><span class="icon">🚚</span>Ship từ Hà Nội – Giao Hàng Toàn Quốc, Nhận Hàng Trong Vòng 3 Ngày</div>
+          <div class="shipping-line"><span class="icon">🔍</span>Kiểm Tra Hàng Trước Khi Thanh Toán</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ✅ Mô tả sản phẩm -->
+    <div class="product-hero" style="margin-top: 12px;">
+      <div id="productdescription-placeholder" data-src="/html/productdescription/pickleball/omega.html"></div>
+    </div>
+    <script src="/js/productdescription.js"></script>
+    <!-- ✅ FreeFlow -->
+    <h2 class="freeflow-heading" style="font-size: 18px; margin: 24px 12px 12px;">CÓ THỂ BẠN SẼ THÍCH</h2>
+    <script src="/js/freeflow-loader.js"></script>
+
+  </div>
+
+  <!-- ✅ Inject popup + footer -->
+  <script>
+    async function loadScript(src) {
+      return new Promise(resolve => {
+        const s = document.createElement("script");
+        s.src = src;
+        s.onload = resolve;
+        document.body.appendChild(s);
+      });
+    }
+
+    async function injectHTML(file, placeholderId) {
+      const res = await fetch(file);
+      const html = await res.text();
+      const container = document.getElementById(placeholderId);
+      const temp = document.createElement("div");
+      temp.innerHTML = html;
+
+      Array.from(temp.children).forEach(el => {
+        if (el.tagName === "SCRIPT") {
+          const script = document.createElement("script");
+          if (el.src) {
+            script.src = el.src;
+            script.async = false;
+          } else {
+            script.textContent = el.textContent;
+          }
+          document.body.appendChild(script);
+        } else {
+          container.appendChild(el);
+        }
+      });
+    }
+
+    async function setupPage() {
+      await injectHTML("/html/cartpopup.html", "cartPopup-placeholder");
+      await injectHTML("/html/checkoutpopup.html", "checkoutPopup-placeholder");
+      await injectHTML("/html/stickyfooter.html", "sticky-footer-placeholder");
+
+      await loadScript("https://friendly-kitten-d760ff.netlify.app/js/voucherpopup.js");
+      await loadScript("https://friendly-kitten-d760ff.netlify.app/js/cartpopup-3p.js");
+      await loadScript("https://friendly-kitten-d760ff.netlify.app/js/checkoutpopup.js");
+
+      setTimeout(async () => {
+        const map = await fetchVoucherMap();
+        window.__vouchersRaw = map[window.loai] || {};
+        window.voucherByProduct = {};
+        initCartPopup();
+      }, 100);
+    }
+
+    setupPage();
+  </script>
+
+  <!-- ✅ Tracking -->
+  <script src="https://friendly-kitten-d760ff.netlify.app/js/tracking.js"></script>
+  <div id="base-placeholder"></div>
+  <script>
+    fetch("/html/base.html")
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById("base-placeholder").outerHTML = html;
+        if (typeof trackBothPixels === "function") {
+          trackBothPixels("ViewContent", {
+            content_id: window.productPage,
+            content_name: window.productPage,
+            content_category: window.productCategory,
+            value: 0,
+            currency: "VND"
+          });
+        }
+      });
+  </script>
+
+<script>
+  function closeVoucherPopup() {
+    const popup = document.getElementById("voucherPopup");
+    if (popup) popup.style.display = "none";
+  }
+</script>
+
+  <!-- ✅ Popup Voucher 300K Phantom -->
+<style>
+  #voucherNotice {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60%;
+    max-width: 340px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    padding: 18px 20px;
+    text-align: center;
+    z-index: 99999;
+    font-family: 'Be Vietnam Pro', sans-serif;
+    display: none;
+    animation: fadeIn 0.4s ease;
+  }
+  #voucherNotice h3 {
+    font-size: 15px;
+    font-weight: 700;
+    color: #d32f2f;
+    margin: 0 0 8px;
+  }
+  #voucherNotice p {
+    font-size: 13px;
+    color: #444;
+    margin: 0 0 8px;
+  }
+  #voucherNotice .note {
+    font-size: 12px;
+    color: #666;
+    font-style: italic;
+    margin-bottom: 12px;
+  }
+  #voucherNotice button {
+    background: #d32f2f;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+  #voucherNotice button:hover {
+    background: #b71c1c;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translate(-50%, -45%); }
+    to { opacity: 1; transform: translate(-50%, -50%); }
+  }
+</style>
+
+<div id="voucherNotice">
+  <h3>🎁 Voucher 300K cho vợt Phantom</h3>
+  <p>Đang được áp dụng cho đơn hàng này!</p>
+  <div class="note">*Mỗi ngày chỉ áp dụng cho 3 đơn hàng*</div>
+  <button id="getVoucherBtn">Lấy Voucher Ngay</button>
+</div>
+
+<script>
+  // Hiển thị popup sau 1 giây khi load trang
+  window.addEventListener("load", () => {
+    setTimeout(() => {
+      const popup = document.getElementById("voucherNotice");
+      if (popup) popup.style.display = "block";
+    }, 1000);
+  });
+
+  // Đóng popup khi click nút
+  document.addEventListener("click", (e) => {
+    if (e.target.id === "getVoucherBtn") {
+      const popup = document.getElementById("voucherNotice");
+      popup.style.display = "none";
+    }
+  });
+</script>
+
+
+  <!-- ✅ Base script -->
+  <script src="/js/base.js"></script>
+</body>
+</html>
