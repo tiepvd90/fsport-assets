@@ -1,5 +1,6 @@
 // ===========================================================
 // 📺 LIVE ICON HÌNH CHỮ NHẬT — CLICK MỞ THẲNG VIDEO FACEBOOK
+// (Phiên bản cập nhật ngày 16/10 với video mới)
 // ===========================================================
 (function () {
   "use strict";
@@ -8,7 +9,7 @@
 
   // === CONFIG ===
   const IMAGE_URL = "https://i.postimg.cc/0NThGSDz/LIVE.webp";
-  const FB_DIRECT_URL = "https://www.facebook.com/funsport1/videos/1506865553689608/";
+  const FB_DIRECT_URL = "https://web.facebook.com/funsport1/videos/1322209672716406/";
 
   // === CONTAINER CHÍNH ===
   const container = document.createElement("div");
@@ -45,7 +46,7 @@
   img.style.margin = "0";
   img.title = "Xem livestream trên Facebook";
 
-  // Khi click vào ảnh → mở thẳng Facebook
+  // Khi click vào ảnh → mở thẳng Facebook livestream mới
   img.addEventListener("click", () => {
     window.open(FB_DIRECT_URL, "_blank"); // mở tab mới
   });
@@ -65,6 +66,7 @@
   closeBtn.style.alignItems = "center";
   closeBtn.style.justifyContent = "center";
   closeBtn.style.cursor = "pointer";
+  closeBtn.style.borderRadius = "50%";
   closeBtn.title = "Đóng";
 
   closeBtn.addEventListener("click", () => container.remove());
