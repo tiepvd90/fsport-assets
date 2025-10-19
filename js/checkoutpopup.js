@@ -313,23 +313,28 @@ function submitOrder() {
       return res.text();
     })
     .then(() => {
-      if (typeof trackBothPixels === "function" && firstItem) {
-        trackBothPixels("Purchase", {
-          content_id: firstItem.id || "unknown",
-          content_name: firstItem["Phân loại"] || "unknown",
-          content_category: firstItem.category || "unknown",
-          content_page: window.productPage || "unknown",
-          value: orderData.total,
-          currency: "VND"
-        });
-      }
+  // 🧠 Chống double tracking Purchase (chỉ gửi 1 lần duy nhất)
+  if (!window.__purchaseTracked) {
+    window.__purchaseTracked = true;
 
-      // ❗ Không xóa checkoutInfo — giữ lại cho lần sau
-      showThankyouPopup();
-      window.cart = [];
-      saveCart();
-      hideCheckoutPopup();
-    })
+    if (typeof trackBothPixels === "function" && firstItem) {
+      trackBothPixels("Purchase", {
+        content_id: firstItem.id || "unknown",
+        content_name: firstItem["Phân loại"] || "unknown",
+        content_category: firstItem.category || "unknown",
+        content_page: window.productPage || "unknown",
+        value: orderData.total,
+        currency: "VND"
+      });
+    }
+  }
+
+  // ❗ Không xóa checkoutInfo — giữ lại cho lần sau
+  showThankyouPopup();
+  window.cart = [];
+  saveCart();
+  hideCheckoutPopup();
+})
     .catch(err => {
       console.error("❌ Lỗi khi gửi về Make.com:", err);
       alert("Có lỗi xảy ra khi gửi đơn hàng, vui lòng thử lại sau.");
