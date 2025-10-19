@@ -316,7 +316,6 @@ function submitOrder() {
   // 🧠 Chống double tracking Purchase (chỉ gửi 1 lần duy nhất)
   if (!window.__purchaseTracked) {
     window.__purchaseTracked = true;
-
     if (typeof trackBothPixels === "function" && firstItem) {
       trackBothPixels("Purchase", {
         content_id: firstItem.id || "unknown",
