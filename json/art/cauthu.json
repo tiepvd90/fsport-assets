@@ -1,0 +1,142 @@
+{
+  "category": "art",
+  "mainImageKey": "Thiết Kế",
+  "thuộc_tính": [
+    {
+      "label": "Thiết Kế",
+      "key": "Thiết Kế",
+      "display": "thumbnail",
+      "values": [
+        {
+          "text": "TK01",
+          "image": "/assets/images/gallery/art/cauthu/1.webp"
+        },
+        {
+          "text": "TK02",
+          "image": "/assets/images/gallery/art/cauthu/2.webp"
+        },
+        {
+          "text": "TK03",
+          "image": "/assets/images/gallery/art/cauthu/3.webp"
+        },
+        {
+          "text": "TK04",
+          "image": "/assets/images/gallery/art/cauthu/4.webp"
+        },
+        {
+          "text": "TK05",
+          "image": "/assets/images/gallery/art/cauthu/5.webp"
+        },
+        {
+          "text": "TK06",
+          "image": "/assets/images/gallery/art/cauthu/6.webp"
+        },
+        {
+          "text": "TK07",
+          "image": "/assets/images/gallery/art/cauthu/7.webp"
+        },
+        {
+          "text": "TK08",
+          "image": "/assets/images/gallery/art/cauthu/8.webp"
+        },
+        {
+          "text": "TK09",
+          "image": "/assets/images/gallery/art/cauthu/9.webp"
+        },
+        {
+          "text": "TK10",
+          "image": "/assets/images/gallery/art/cauthu/10.webp"
+        },
+        {
+          "text": "TK11",
+          "image": "/assets/images/gallery/art/cauthu/11.webp"
+        },
+        {
+          "text": "TK12",
+          "image": "/assets/images/gallery/art/cauthu/12.webp"
+        },
+        {
+          "text": "TK13",
+          "image": "/assets/images/gallery/art/cauthu/13.webp"
+        },
+        {
+          "text": "TK14",
+          "image": "/assets/images/gallery/art/cauthu/14.webp"
+        },
+        {
+          "text": "TK15",
+          "image": "/assets/images/gallery/art/cauthu/15.webp"
+        },
+        {
+          "text": "TK16",
+          "image": "/assets/images/gallery/art/cauthu/16.webp"
+        },
+        {
+          "text": "TK17",
+          "image": "/assets/images/gallery/art/cauthu/17.webp"
+        },
+        {
+          "text": "TK18",
+          "image": "/assets/images/gallery/art/cauthu/18.webp"
+        },
+        {
+          "text": "TK19",
+          "image": "/assets/images/gallery/art/cauthu/19.webp"
+        },
+        {
+          "text": "TK20",
+          "image": "/assets/images/gallery/art/cauthu/20.webp"
+        },
+        {
+          "text": "TK21",
+          "image": "/assets/images/gallery/art/cauthu/21.webp"
+        },
+        {
+          "text": "TK22",
+          "image": "/assets/images/gallery/art/cauthu/22.webp"
+        },
+        {
+          "text": "TK23",
+          "image": "/assets/images/gallery/art/cauthu/23.webp"
+        },
+        {
+          "text": "TK24",
+          "image": "/assets/images/gallery/art/cauthu/24.webp"
+        },
+        {
+          "text": "TK25",
+          "image": "/assets/images/gallery/art/cauthu/25.webp"
+        },
+        {
+          "text": "TK26",
+          "image": "/assets/images/gallery/art/cauthu/26.webp"
+        }
+      ]
+    },
+    {
+      "label": "Kích cỡ",
+      "key": "Kích cỡ",
+      "display": "button",
+      "values": [
+        {
+          "text": "Set Tranh Vừa",
+          "GiaOverride": 99000,
+          "GiaGocOverride": 130000
+        },
+        {
+          "text": "Set Tranh To",
+          "GiaOverride": 149000,
+          "GiaGocOverride": 200000
+        }
+      ]
+    }
+  ],
+  "biến_thể": [
+    {
+      "id": "cauthu",
+      "category": "art",
+      "Giá": 99000,
+      "Giá gốc": 130000
+    }
+  ]
+}
