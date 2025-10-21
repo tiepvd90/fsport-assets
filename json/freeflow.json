@@ -2119,27 +2119,11 @@
     "basePriority": 16,
     "productCategory": "pickleball",
     "sellerID": "huyenle"
-  },
-  {
-    "itemId": "pickleball-012",
-    "title": "Vợt Tiêu Chuẩn Thi Đấu",
-    "price": 999000,
-    "originalPrice": 150000,
-    "contentType": "youtube",
-    "image": "https://i.postimg.cc/QNvGWJ32/Untitled-2.jpg",
-    "youtube": "otxZyMed-Ck",
-    "productPage": "/product/firstpickleball",
-    "tags": [
-      "pickleball"
-    ],
-    "basePriority": 16,
-    "productCategory": "pickleball",
-    "sellerID": "huyenle"
-  },
+  }
   {
     "itemId": "pickleball-phantom",
     "title": "Vợt Tiêu Chuẩn Thi Đấu",
-    "price": 2100000,
+    "price": 1700000,
     "originalPrice": 270000,
     "contentType": "youtube",
     "image": "/assets/images/thumb/pickleball/phantom/Capture.JPG",
@@ -2348,22 +2332,6 @@
     "sellerID": "huyenle"
   },
   {
-    "itemId": "pickleball-air2606",
-    "title": "Carbon 3K - Chuẩn Thi Đấu",
-    "price": 1200000,
-    "originalPrice": null,
-    "contentType": "youtube",
-    "image": "https://i.postimg.cc/TYcMS812/den.webp",
-    "youtube": "_rBLEmTVoA8",
-    "productPage": "/product/pickleball-airforce",
-    "tags": [
-      "pickleball"
-    ],
-    "basePriority": 18,
-    "productCategory": "pickleball",
-    "sellerID": "huyenle"
-  },
-  {
     "itemId": "pickleball-2605-2",
     "title": "Chuẩn Thi Đấu Đúc Nguyên khối",
     "price": 999000,
@@ -2397,6 +2365,23 @@
     "sellerID": "huyenle"
   },
   {
+    "itemId": "titan16mm",
+    "title": " Vợt Titan 16mm",
+    "price": 599000,
+    "originalPrice": null,
+    "contentType": "youtube",
+    "image": "https://i.postimg.cc/Prk55WrK/titan16.jpg",
+    "youtube": "qnI4SSQetus",
+    "productPage": "/product/secpickleball",
+    "tags": [
+      "pickleball",
+      "titan"
+    ],
+    "basePriority": 16,
+    "productCategory": "pickleball",
+    "sellerID": "huyenle"
+  },
+  {
     "itemId": "pickleball-gen4-1",
     "title": "Gen4 Pickleball F Sport",
     "price": 850000,
@@ -2404,6 +2389,20 @@
     "contentType": "youtube",
     "image": "https://i.postimg.cc/vZbZfHrc/trangnho.jpg",
     "youtube": "A_m5sLmI55I",
+    "productPage": "/pickleball/gen4",
+    "tags": ["pickleball", "gen4"],
+    "basePriority": 18,
+    "productCategory": "pickleball",
+    "sellerID": "huyenle"
+  },
+  {
+    "itemId": "pickleball-gen4-1",
+    "title": "Gen4 Pickleball F Sport",
+    "price": 850000,
+    "originalPrice": 1700000,
+    "contentType": "youtube",
+    "image": "https://i.postimg.cc/vZbZfHrc/trangnho.jpg",
+    "youtube": "liogWPMDXuQ",
     "productPage": "/pickleball/gen4",
     "tags": ["pickleball", "gen4"],
     "basePriority": 18,
