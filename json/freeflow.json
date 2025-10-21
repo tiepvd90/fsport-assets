@@ -2153,6 +2153,38 @@
     "sellerID": "huyenle"
   },
   {
+    "itemId": "pickleball-phantom-2",
+    "title": "CARBON TRÀN VIỀN - VỢT PICKLEBALL PHANTOM",
+    "price": 1700000,
+    "originalPrice": 2700000,
+    "contentType": "image",
+    "image": "/assets/images/thumb/pickleball/phantom/6.webp",
+    "youtube": "",
+    "productPage": "/pickleball/phantom",
+    "tags": [
+      "pickleball"
+    ],
+    "basePriority": 16,
+    "productCategory": "pickleball",
+    "sellerID": "huyenle"
+  },
+  {
+    "itemId": "pickleball-omega",
+    "title": "OMEGA - VỢT CARBON TEFLON XK100",
+    "price": 2090000,
+    "originalPrice": 2700000,
+    "contentType": "image",
+    "image": "/assets/images/gallery/pickleball/omega/2.webp",
+    "youtube": "",
+    "productPage": "/pickleball/omega",
+    "tags": [
+      "pickleball"
+    ],
+    "basePriority": 16,
+    "productCategory": "pickleball",
+    "sellerID": "huyenle"
+  },
+  {
     "itemId": "pickleball-cover",
     "title": "Túi bảo vệ mặt vợt pickleball",
     "price": 37000,
