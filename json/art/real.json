@@ -1,0 +1,66 @@
+{
+  "category": "art",
+  "mainImageKey": "Thiết Kế",
+  "thuộc_tính": [
+    {
+      "label": "Thiết Kế",
+      "key": "Thiết Kế",
+      "display": "thumbnail",
+      "values": [
+        {
+          "text": "TK01",
+          "image": "/assets/images/gallery/art/real/1.webp"
+        },
+        {
+          "text": "TK02",
+          "image": "/assets/images/gallery/art/real/2.webp"
+        },
+        {
+          "text": "TK03",
+          "image": "/assets/images/gallery/art/real/3.webp"
+        },
+        {
+          "text": "TK04",
+          "image": "/assets/images/gallery/art/real/4.webp"
+        },
+        {
+          "text": "TK05",
+          "image": "/assets/images/gallery/art/real/5.webp"
+        },
+        {
+          "text": "TK06",
+          "image": "/assets/images/gallery/art/real/6.webp"
+        },
+        {
+          "text": "TK07",
+          "image": "/assets/images/gallery/art/real/7.webp"
+        }
+      ]
+    },
+    {
+      "label": "Kích cỡ",
+      "key": "Kích cỡ",
+      "display": "button",
+      "values": [
+        {
+          "text": "Set Tranh Vừa",
+          "GiaOverride": 99000,
+          "GiaGocOverride": 130000
+        },
+        {
+          "text": "Set Tranh To",
+          "GiaOverride": 149000,
+          "GiaGocOverride": 200000
+        }
+      ]
+    }
+  ],
+  "biến_thể": [
+    {
+      "id": "real",
+      "category": "art",
+      "Giá": 99000,
+      "Giá gốc": 130000
+    }
+  ]
+}
