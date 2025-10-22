@@ -304,56 +304,36 @@ function submitOrder() {
   console.log("📦 Sending orderData:", orderData);
 
   fetch("https://hook.eu2.make.com/m9o7boye6fl1hstehst7waysmt38b2ul", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify(orderData)
-})
-  .then(async res => {
-    if (!res.ok) throw new Error("Gửi đơn hàng thất bại");
-
-    const text = await res.text(); // chỉ đọc 1 lần
-    console.log("✅ Webhook response:", text);
-
-    // ✅ Chỉ khi webhook trả về OK mới thực sự bắn Purchase
-    const firstItem = window.cart[0] || {};
-    const orderValue = orderData.total;
-    const uniqueId = "PUR-" + Date.now() + "-" + Math.floor(Math.random() * 10000);
-
-    if (!window.__purchaseTracked) {
-      window.__purchaseTracked = true;
-
-      if (typeof trackBothPixels === "function") {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(orderData)
+  })
+    .then(res => {
+      if (!res.ok) throw new Error("Gửi đơn hàng thất bại");
+      return res.text();
+    })
+    .then(() => {
+      if (typeof trackBothPixels === "function" && firstItem) {
         trackBothPixels("Purchase", {
           content_id: firstItem.id || "unknown",
           content_name: firstItem["Phân loại"] || "unknown",
           content_category: firstItem.category || "unknown",
           content_page: window.productPage || "unknown",
-          value: orderValue,
-          currency: "VND",
-          event_id: uniqueId
+          value: orderData.total,
+          currency: "VND"
         });
-        console.log("🟢 Pixel Purchase sent:", orderValue, "event_id:", uniqueId);
-      } else if (typeof fbq === "function") {
-        // fallback nếu chưa có trackBothPixels
-        fbq("track", "Purchase", {
-          value: orderValue,
-          currency: "VND",
-          event_id: uniqueId
-        });
-        console.log("🟢 FBQ Purchase sent:", orderValue);
       }
-    }
 
-    // ✅ Sau khi gửi xong event thì mới hiển thị popup cảm ơn
-    showThankyouPopup();
-    window.cart = [];
-    saveCart();
-    hideCheckoutPopup();
-  })
-  .catch(err => {
-    console.error("❌ Lỗi khi gửi về Make.com:", err);
-    alert("Có lỗi xảy ra khi gửi đơn hàng, vui lòng thử lại sau.");
-  });
+      // ❗ Không xóa checkoutInfo — giữ lại cho lần sau
+      showThankyouPopup();
+      window.cart = [];
+      saveCart();
+      hideCheckoutPopup();
+    })
+    .catch(err => {
+      console.error("❌ Lỗi khi gửi về Make.com:", err);
+      alert("Có lỗi xảy ra khi gửi đơn hàng, vui lòng thử lại sau.");
+    });
 }
 
 // ------------------------
