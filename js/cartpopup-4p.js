@@ -522,79 +522,79 @@ window.cartpopup = {
   toggle: toggleCartPopup,
   qty: changeQuantity,
 };
-// ====== ZOOM ẢNH CHÍNH FULLSCREEN ======
-document.addEventListener("DOMContentLoaded", () => {
-  const mainImg = document.getElementById("mainImage");
-  if (!mainImg) return;
+// ====== ZOOM ẢNH CHÍNH FULLSCREEN (AUTO FIX) ======
+(function setupMainImageZoom() {
+  function initZoom() {
+    const mainImg = document.getElementById("mainImage");
+    if (!mainImg) {
+      // thử lại nếu ảnh render trễ
+      setTimeout(initZoom, 500);
+      return;
+    }
 
-  // ✅ Nếu chưa có overlay, tạo luôn
-  if (!document.getElementById("fullscreenZoom")) {
-    const zoomOverlay = document.createElement("div");
-    zoomOverlay.id = "fullscreenZoom";
-    zoomOverlay.style.cssText = `
-      display:none;
-      position:fixed;
-      top:0; left:0;
-      width:100%; height:100%;
-      background:rgba(0,0,0,0.85);
-      justify-content:center;
-      align-items:center;
-      z-index:9999;
-      opacity:0;
-      transition:opacity 0.25s ease;
-    `;
-    zoomOverlay.innerHTML = `
-      <div style="position:relative;max-width:90%;max-height:90%;">
-        <img id="zoomedImg" src="" alt="Zoomed" style="
-          width:auto;height:auto;max-width:100%;max-height:100%;
-          border-radius:8px;
-          box-shadow:0 0 20px rgba(0,0,0,0.5);
-          display:block;margin:auto;
-        ">
-        <button id="zoomCloseBtn" style="
-          position:absolute;
-          top:-12px; right:-12px;
-          width:40px; height:40px;
-          border:none;
-          border-radius:50%;
-          background:rgba(0,0,0,0.6);
-          color:white;
-          font-size:26px;
-          font-weight:bold;
-          cursor:pointer;
-          line-height:36px;
-        ">×</button>
-      </div>
-    `;
-    document.body.appendChild(zoomOverlay);
+    // thêm cursor cho dễ nhận biết
+    mainImg.style.cursor = "zoom-in";
+
+    // nếu chưa có overlay thì tạo
+    let zoomOverlay = document.getElementById("fullscreenZoom");
+    if (!zoomOverlay) {
+      zoomOverlay = document.createElement("div");
+      zoomOverlay.id = "fullscreenZoom";
+      zoomOverlay.style.cssText = `
+        display:none;position:fixed;inset:0;
+        background:rgba(0,0,0,0.85);
+        justify-content:center;align-items:center;
+        z-index:99999;opacity:0;transition:opacity 0.25s ease;
+      `;
+      zoomOverlay.innerHTML = `
+        <div id="zoomWrapper" style="position:relative;max-width:90%;max-height:90%;">
+          <img id="zoomedImg" src="" alt="Zoomed" style="
+            display:block;margin:auto;
+            max-width:100%;max-height:100%;
+            border-radius:8px;box-shadow:0 0 20px rgba(0,0,0,0.5);
+          ">
+          <button id="zoomCloseBtn" style="
+            position:absolute;top:-14px;right:-14px;
+            width:42px;height:42px;border:none;border-radius:50%;
+            background:rgba(0,0,0,0.6);color:#fff;
+            font-size:28px;font-weight:bold;line-height:38px;cursor:pointer;
+          ">×</button>
+        </div>`;
+      document.body.appendChild(zoomOverlay);
+    }
+
+    const zoomedImg = zoomOverlay.querySelector("#zoomedImg");
+    const closeBtn = zoomOverlay.querySelector("#zoomCloseBtn");
+
+    // click ảnh mở zoom
+    mainImg.addEventListener("click", (e) => {
+      e.stopPropagation();
+      zoomedImg.src = mainImg.src;
+      zoomOverlay.style.display = "flex";
+      requestAnimationFrame(() => (zoomOverlay.style.opacity = "1"));
+    });
+
+    // click nút x
+    closeBtn.addEventListener("click", () => {
+      zoomOverlay.style.opacity = "0";
+      setTimeout(() => (zoomOverlay.style.display = "none"), 250);
+    });
+
+    // click nền
+    zoomOverlay.addEventListener("click", (e) => {
+      if (e.target === zoomOverlay) {
+        zoomOverlay.style.opacity = "0";
+        setTimeout(() => (zoomOverlay.style.display = "none"), 250);
+      }
+    });
   }
 
-  const zoomOverlay = document.getElementById("fullscreenZoom");
-  const zoomedImg = document.getElementById("zoomedImg");
-  const closeBtn = document.getElementById("zoomCloseBtn");
-
-  // 🎬 Mở zoom khi click ảnh chính
-  mainImg.addEventListener("click", () => {
-    zoomedImg.src = mainImg.src;
-    zoomOverlay.style.display = "flex";
-    requestAnimationFrame(() => {
-      zoomOverlay.style.opacity = "1";
-    });
-  });
-
-  // ❌ Đóng khi click nút X
-  closeBtn.addEventListener("click", () => {
-    zoomOverlay.style.opacity = "0";
-    setTimeout(() => (zoomOverlay.style.display = "none"), 200);
-  });
-
-  // ❌ Đóng khi click ra ngoài vùng ảnh
-  zoomOverlay.addEventListener("click", (e) => {
-    if (e.target === zoomOverlay) {
-      zoomOverlay.style.opacity = "0";
-      setTimeout(() => (zoomOverlay.style.display = "none"), 200);
-    }
-  });
-});
+  // Gọi khi DOM ready
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initZoom);
+  } else {
+    initZoom();
+  }
+})();
 
 })();
