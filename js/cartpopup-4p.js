@@ -595,6 +595,5 @@ window.cartpopup = {
   } else {
     initZoom();
   }
-})();
 
 })();
