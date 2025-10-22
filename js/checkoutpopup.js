@@ -312,24 +312,38 @@ function submitOrder() {
       if (!res.ok) throw new Error("Gửi đơn hàng thất bại");
       return res.text();
     })
-    .then(() => {
+    .then(async res => {
+  if (!res.ok) throw new Error("Gửi đơn hàng thất bại");
+  const text = await res.text();
+
+  // ✅ Chỉ khi webhook trả về OK mới thực sự bắn Purchase
+  const firstItem = window.cart[0] || {};
+  const orderValue = orderData.total; // tổng tiền đã tính chắc chắn
+  const uniqueId = "PUR-" + Date.now() + "-" + Math.floor(Math.random() * 10000);
+
   // 🧠 Chống double tracking Purchase (chỉ gửi 1 lần duy nhất)
   if (!window.__purchaseTracked) {
     window.__purchaseTracked = true;
-    if (typeof trackBothPixels === "function" && firstItem) {
+
+    // ⚡ Nếu có hàm trackBothPixels thì bắn Purchase
+    if (typeof trackBothPixels === "function") {
       trackBothPixels("Purchase", {
         content_id: firstItem.id || "unknown",
         content_name: firstItem["Phân loại"] || "unknown",
         content_category: firstItem.category || "unknown",
         content_page: window.productPage || "unknown",
-        value: orderData.total,
-        currency: "VND"
+        value: orderValue,
+        currency: "VND",
+        event_id: uniqueId, // 🔹 giúp Meta tránh trùng event
       });
+      console.log("🟢 Pixel Purchase sent:", orderValue, "event_id:", uniqueId);
     }
   }
 
-  // ❗ Không xóa checkoutInfo — giữ lại cho lần sau
+  // ✅ Sau khi gửi xong event thì mới hiển thị popup cảm ơn
   showThankyouPopup();
+
+  // ✅ Xóa giỏ hàng sau khi gửi thành công
   window.cart = [];
   saveCart();
   hideCheckoutPopup();
