@@ -522,5 +522,79 @@ window.cartpopup = {
   toggle: toggleCartPopup,
   qty: changeQuantity,
 };
+// ====== ZOOM ẢNH CHÍNH FULLSCREEN ======
+document.addEventListener("DOMContentLoaded", () => {
+  const mainImg = document.getElementById("mainImage");
+  if (!mainImg) return;
+
+  // ✅ Nếu chưa có overlay, tạo luôn
+  if (!document.getElementById("fullscreenZoom")) {
+    const zoomOverlay = document.createElement("div");
+    zoomOverlay.id = "fullscreenZoom";
+    zoomOverlay.style.cssText = `
+      display:none;
+      position:fixed;
+      top:0; left:0;
+      width:100%; height:100%;
+      background:rgba(0,0,0,0.85);
+      justify-content:center;
+      align-items:center;
+      z-index:9999;
+      opacity:0;
+      transition:opacity 0.25s ease;
+    `;
+    zoomOverlay.innerHTML = `
+      <div style="position:relative;max-width:90%;max-height:90%;">
+        <img id="zoomedImg" src="" alt="Zoomed" style="
+          width:auto;height:auto;max-width:100%;max-height:100%;
+          border-radius:8px;
+          box-shadow:0 0 20px rgba(0,0,0,0.5);
+          display:block;margin:auto;
+        ">
+        <button id="zoomCloseBtn" style="
+          position:absolute;
+          top:-12px; right:-12px;
+          width:40px; height:40px;
+          border:none;
+          border-radius:50%;
+          background:rgba(0,0,0,0.6);
+          color:white;
+          font-size:26px;
+          font-weight:bold;
+          cursor:pointer;
+          line-height:36px;
+        ">×</button>
+      </div>
+    `;
+    document.body.appendChild(zoomOverlay);
+  }
+
+  const zoomOverlay = document.getElementById("fullscreenZoom");
+  const zoomedImg = document.getElementById("zoomedImg");
+  const closeBtn = document.getElementById("zoomCloseBtn");
+
+  // 🎬 Mở zoom khi click ảnh chính
+  mainImg.addEventListener("click", () => {
+    zoomedImg.src = mainImg.src;
+    zoomOverlay.style.display = "flex";
+    requestAnimationFrame(() => {
+      zoomOverlay.style.opacity = "1";
+    });
+  });
+
+  // ❌ Đóng khi click nút X
+  closeBtn.addEventListener("click", () => {
+    zoomOverlay.style.opacity = "0";
+    setTimeout(() => (zoomOverlay.style.display = "none"), 200);
+  });
+
+  // ❌ Đóng khi click ra ngoài vùng ảnh
+  zoomOverlay.addEventListener("click", (e) => {
+    if (e.target === zoomOverlay) {
+      zoomOverlay.style.opacity = "0";
+      setTimeout(() => (zoomOverlay.style.display = "none"), 200);
+    }
+  });
+});
 
 })();
