@@ -1,0 +1,126 @@
+{
+  "category": "art",
+  "mainImageKey": "Thiết Kế",
+  "thuộc_tính": [
+    {
+      "label": "Thiết Kế",
+      "key": "Thiết Kế",
+      "display": "thumbnail",
+      "values": [
+        {
+          "text": "TK01",
+          "image": "/assets/images/gallery/art/dongluc/1.webp"
+        },
+        {
+          "text": "TK02",
+          "image": "/assets/images/gallery/art/dongluc/2.webp"
+        },
+        {
+          "text": "TK03",
+          "image": "/assets/images/gallery/art/dongluc/3.webp"
+        },
+        {
+          "text": "TK04",
+          "image": "/assets/images/gallery/art/dongluc/4.webp"
+        },
+        {
+          "text": "TK05",
+          "image": "/assets/images/gallery/art/dongluc/5.webp"
+        },
+        {
+          "text": "TK06",
+          "image": "/assets/images/gallery/art/dongluc/6.webp"
+        },
+        {
+          "text": "TK07",
+          "image": "/assets/images/gallery/art/dongluc/7.webp"
+        },
+        {
+          "text": "TK08",
+          "image": "/assets/images/gallery/art/dongluc/8.webp"
+        },
+        {
+          "text": "TK09",
+          "image": "/assets/images/gallery/art/dongluc/9.webp"
+        },
+        {
+          "text": "TK10",
+          "image": "/assets/images/gallery/art/dongluc/10.webp"
+        },
+        {
+          "text": "TK11",
+          "image": "/assets/images/gallery/art/dongluc/11.webp"
+        },
+        {
+          "text": "TK12",
+          "image": "/assets/images/gallery/art/dongluc/12.webp"
+        },
+        {
+          "text": "TK13",
+          "image": "/assets/images/gallery/art/dongluc/13.webp"
+        },
+        {
+          "text": "TK14",
+          "image": "/assets/images/gallery/art/dongluc/14.webp"
+        },
+        {
+          "text": "TK15",
+          "image": "/assets/images/gallery/art/dongluc/15.webp"
+        },
+        {
+          "text": "TK16",
+          "image": "/assets/images/gallery/art/dongluc/16.webp"
+        },
+        {
+          "text": "TK17",
+          "image": "/assets/images/gallery/art/dongluc/17.webp"
+        },
+        {
+          "text": "TK18",
+          "image": "/assets/images/gallery/art/dongluc/18.webp"
+        },
+        {
+          "text": "TK19",
+          "image": "/assets/images/gallery/art/dongluc/19.webp"
+        },
+        {
+          "text": "TK20",
+          "image": "/assets/images/gallery/art/dongluc/20.webp"
+        },
+        {
+          "text": "TK21",
+          "image": "/assets/images/gallery/art/dongluc/21.webp"
+        },
+        {
+          "text": "TK22",
+          "image": "/assets/images/gallery/art/dongluc/22.webp"
+        }
+      ]
+    },
+    {
+      "label": "Kích cỡ",
+      "key": "Kích cỡ",
+      "display": "button",
+      "values": [
+        {
+          "text": "Set Tranh Vừa",
+          "GiaOverride": 99000,
+          "GiaGocOverride": 130000
+        },
+        {
+          "text": "Set Tranh To",
+          "GiaOverride": 149000,
+          "GiaGocOverride": 200000
+        }
+      ]
+    }
+  ],
+  "biến_thể": [
+    {
+      "id": "dongluc",
+      "category": "art",
+      "Giá": 99000,
+      "Giá gốc": 130000
+    }
+  ]
+}
