@@ -1,19 +1,64 @@
 {
   "collections": [
-    {
-      "title": "Arsenal",
-      "slug": "/art/arsenal",
+      {
+      "title": "Phật Pháp",
+      "slug": "/art/zen",
       "images": [
-        { "image": "/assets/images/gallery/art/arsenal/1.webp", "slug": "/art/arsenal" },
-        { "image": "/assets/images/gallery/art/arsenal/2.webp", "slug": "/art/arsenal" }
+        { "image": "/assets/images/gallery/art/zen/10.jpg", "slug": "/art/zen" },
+        { "image": "/assets/images/gallery/art/zen/2.jpg", "slug": "/art/zen" },
+        { "image": "/assets/images/gallery/art/zen/3.jpg", "slug": "/art/zen" },
+        { "image": "/assets/images/gallery/art/zen/7.jpg", "slug": "/art/zen" }
       ]
     },
     {
-      "title": "Barca",
-      "slug": "/art/barca",
+      "title": "Hoa Sen",
+      "slug": "/art/hoasen",
       "images": [
-        { "image": "/assets/images/gallery/art/barca/1.webp", "slug": "/art/barca" },
+        { "image": "/assets/images/gallery/art/hoasen/1.webp", "slug": "/art/hoasen" },
+        { "image": "/assets/images/gallery/art/hoasen/2.webp", "slug": "/art/hoasen" },
+        { "image": "/assets/images/gallery/art/hoasen/3.webp", "slug": "/art/hoasen" },
+        { "image": "/assets/images/gallery/art/hoasen/6.webp", "slug": "/art/hoasen" }
+      ]
+    },
+	{
+      "title": "Phong Cảnh",
+      "slug": "/art/phongcanh",
+      "images": [
+        { "image": "/assets/images/gallery/art/phongcanh/1.webp", "slug": "/art/phongcanh" },
+        { "image": "/assets/images/gallery/art/phongcanh/4.webp", "slug": "/art/phongcanh" },
+        { "image": "/assets/images/gallery/art/phongcanh/5.webp", "slug": "/art/phongcanh" },
+        { "image": "/assets/images/gallery/art/phongcanh/6.webp", "slug": "/art/phongcanh" }
+      ]
+    },
+	{
+      "title": "Hiện Đại",
+      "slug": "/art/hiendai",
+      "images": [
+        { "image": "/assets/images/gallery/art/hiendai/1.webp", "slug": "/art/hiendai" },
+        { "image": "/assets/images/gallery/art/hiendai/9.webp", "slug": "/art/hiendai" },
+        { "image": "/assets/images/gallery/art/hiendai/7.webp", "slug": "/art/hiendai" },
+        { "image": "/assets/images/gallery/art/hiendai/2.webp", "slug": "/art/hiendai" },
+		{ "image": "/assets/images/gallery/art/hiendai2/1.webp", "slug": "/art/hiendai2" },
+        { "image": "/assets/images/gallery/art/hiendai2/2.webp", "slug": "/art/hiendai2" },
+        { "image": "/assets/images/gallery/art/hiendai2/9.webp", "slug": "/art/hiendai2" },
+        { "image": "/assets/images/gallery/art/hiendai2/10.webp", "slug": "/art/hiendai2" }
+      ]
+    },
+    {
+      "title": "Bóng Đá",
+      "slug": "/art/bongda",
+      "images": [
+        { "image": "/assets/images/gallery/art/arsenal/1.webp", "slug": "/art/arsenal" },
+        { "image": "/assets/images/gallery/art/arsenal/2.webp", "slug": "/art/arsenal" },
+		{ "image": "/assets/images/gallery/art/chelsea/1.webp", "slug": "/art/chelsea" },
+        { "image": "/assets/images/gallery/art/chelsea/2.webp", "slug": "/art/chelsea" },
+		{ "image": "/assets/images/gallery/art/manu/1.webp", "slug": "/art/manu" },
+		{ "image": "/assets/images/gallery/art/manu/2.webp", "slug": "/art/manu" },
+		{ "image": "/assets/images/gallery/art/real/1.webp", "slug": "/art/real" },
+		{ "image": "/assets/images/gallery/art/real/2.webp", "slug": "/art/real" },
+		{ "image": "/assets/images/gallery/art/barca/1.webp", "slug": "/art/barca" },
         { "image": "/assets/images/gallery/art/barca/2.webp", "slug": "/art/barca" }
+		
       ]
     },
     {
@@ -23,8 +68,6 @@
         { "image": "/assets/images/gallery/art/bearbrick/1.webp", "slug": "/art/bearbrick" },
         { "image": "/assets/images/gallery/art/bearbrick/2.webp", "slug": "/art/bearbrick" },
         { "image": "/assets/images/gallery/art/bearbrick/3.webp", "slug": "/art/bearbrick" },
-        { "image": "/assets/images/gallery/art/bearbrick/4.webp", "slug": "/art/bearbrick" },
-        { "image": "/assets/images/gallery/art/bearbrick/5.webp", "slug": "/art/bearbrick" },
         { "image": "/assets/images/gallery/art/bearbrick/6.webp", "slug": "/art/bearbrick" }
       ]
     }
