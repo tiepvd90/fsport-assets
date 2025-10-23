@@ -1,25 +1,19 @@
 {
-  "Sub1": [
+  "collections": [
     {
-      "title": "Bóng Đá",
-      "slug": "/art/bongda",
-      "Sub2": [
-        {
-          "title": "Arsenal",
-          "slug": "/art/arsenal",
-          "images": [
-            { "image": "/assets/images/gallery/art/arsenal/1.webp", "slug": "/art/arsenal" },
-            { "image": "/assets/images/gallery/art/arsenal/2.webp", "slug": "/art/arsenal" }
-          ]
-        },
-        {
-          "title": "Barca",
-          "slug": "/art/barca",
-          "images": [
-            { "image": "/assets/images/gallery/art/barca/1.webp", "slug": "/art/barca" },
-            { "image": "/assets/images/gallery/art/barca/2.webp", "slug": "/art/barca" }
-          ]
-        }
+      "title": "Arsenal",
+      "slug": "/art/arsenal",
+      "images": [
+        { "image": "/assets/images/gallery/art/arsenal/1.webp", "slug": "/art/arsenal" },
+        { "image": "/assets/images/gallery/art/arsenal/2.webp", "slug": "/art/arsenal" }
+      ]
+    },
+    {
+      "title": "Barca",
+      "slug": "/art/barca",
+      "images": [
+        { "image": "/assets/images/gallery/art/barca/1.webp", "slug": "/art/barca" },
+        { "image": "/assets/images/gallery/art/barca/2.webp", "slug": "/art/barca" }
       ]
     },
     {
