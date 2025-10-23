@@ -1,0 +1,119 @@
+/* ================================
+   🎨 DECOR GALLERY — FreeFlow Style (Compact)
+   ================================ */
+
+:root {
+  --art-card-h: 160px;
+}
+@media (min-width: 600px) {
+  :root { --art-card-h: 180px; }
+}
+@media (min-width: 1024px) {
+  :root { --art-card-h: 200px; }
+}
+
+h1 {
+  text-align: center;
+  margin: 32px 0 24px;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.collection-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 16px 48px;
+  box-sizing: border-box;
+}
+
+/* 🔸 Khoảng cách gọn giữa các nhóm */
+.collection-block {
+  margin-bottom: 8px;
+}
+
+.collection-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0 0 6px 0;
+  text-transform: uppercase;
+  border-left: 4px solid #000;
+  padding-left: 8px;
+}
+
+/* ---- GRID ---- */
+.art-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+.art-item {
+  background: #fff;
+  width: calc(50% - 5px);
+  height: var(--art-card-h);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.art-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+}
+
+@media (min-width: 600px) {
+  .art-item { width: calc(33.333% - 7px); }
+}
+
+@media (min-width: 1024px) {
+  .art-item { width: calc(16.666% - 8px); }
+}
+
+.art-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 10px;
+}
+
+/* ✅ Nút "Xem Thêm Tranh ..." — tinh tế, canh giữa */
+.view-more {
+  margin-top: 4px;
+  background: none;
+  border: none;
+  font-weight: 500;
+  color: #000;
+  cursor: pointer;
+  padding: 10px 0;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  transition: opacity 0.2s;
+  text-decoration: none;
+}
+
+.view-more:hover {
+  opacity: 0.6;
+}
+
+.view-more span {
+  font-size: 12px;
+  margin-left: 4px;
+}
+
+.divider {
+  height: 1px;
+  background: #eee;
+  margin: 8px 0;
+}
