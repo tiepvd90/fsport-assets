@@ -1,15 +1,17 @@
 /* ================================
-   🎨 DECOR GALLERY — FreeFlow Style (Compact, viền đen)
+   🎨 DECOR GALLERY — FreeFlow Style (Compact)
    ================================ */
 
 :root {
   --art-card-h: 160px;
 }
+
 @media (min-width: 600px) {
   :root {
     --art-card-h: 180px;
   }
 }
+
 @media (min-width: 1024px) {
   :root {
     --art-card-h: 200px;
@@ -65,9 +67,6 @@ h1 {
   display: flex;
   align-items: center;
   justify-content: center;
-
-  /* ✅ Viền đen mảnh */
-  border: 1px solid #000;
 }
 
 .art-item:hover {
