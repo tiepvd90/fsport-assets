@@ -8,16 +8,16 @@
           "title": "Arsenal",
           "slug": "/art/arsenal",
           "images": [
-            { "image": "/assets/images/gallery/art/arsenal/1.webp", "slug": "/art/arsenal1" },
-            { "image": "/assets/images/gallery/art/arsenal/2.webp", "slug": "/art/arsenal2" }
+            { "image": "/assets/images/gallery/art/arsenal/1.webp", "slug": "/art/arsenal" },
+            { "image": "/assets/images/gallery/art/arsenal/2.webp", "slug": "/art/arsenal" }
           ]
         },
         {
           "title": "Barca",
           "slug": "/art/barca",
           "images": [
-            { "image": "/assets/images/gallery/art/barca/1.webp", "slug": "/art/barca1" },
-            { "image": "/assets/images/gallery/art/barca/2.webp", "slug": "/art/barca2" }
+            { "image": "/assets/images/gallery/art/barca/1.webp", "slug": "/art/barca" },
+            { "image": "/assets/images/gallery/art/barca/2.webp", "slug": "/art/barca" }
           ]
         }
       ]
