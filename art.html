@@ -103,32 +103,31 @@
       border-radius: 10px;
     }
 
-    /* ---- Nút xem thêm ---- */
+    /* ✅ Nút "Xem Thêm Tranh ..." — theo desc-toggle-btn style */
     .view-more {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      color: #444;
-      font-size: 13px;
+      margin-top: 16px;
+      background: none;
+      border: none;
       font-weight: 500;
-      text-decoration: none;
-      margin: 14px auto 0;
-      padding: 6px 14px;
-      border-radius: 20px;
-      background: #fff;
-      border: 1px solid #ddd;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-      transition: all 0.2s ease;
-    }
-
-    .view-more:hover {
       color: #000;
-      border-color: #bbb;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+      cursor: pointer;
+      padding: 12px 0;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      font-family: 'Be Vietnam Pro', sans-serif;
+      transition: opacity 0.2s;
+      text-decoration: none;
+    }
+    .view-more:hover {
+      opacity: 0.6;
     }
 
     .view-more span {
       font-size: 12px;
+      margin-left: 4px;
     }
 
     .divider {
