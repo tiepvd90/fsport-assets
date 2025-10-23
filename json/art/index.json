@@ -124,7 +124,7 @@
         { "image": "/assets/images/gallery/art/goku/1.jpg", "slug": "/art/goku" },
 		{ "image": "/assets/images/gallery/art/goku2/1.jpg", "slug": "/art/goku2" },
         { "image": "/assets/images/gallery/art/pubg/2.webp", "slug": "/art/pubg" },
-		{ "image": "/assets/images/gallery/art/valorant/1.webp", "slug": "/art/valorant" }
+		{ "image": "/assets/images/gallery/art/valorant/1.webp", "slug": "/art/valorant" },
 		{ "image": "/assets/images/gallery/art/valorant2/1.webp", "slug": "/art/valorant2" },
         { "image": "/assets/images/gallery/art/lol/2.webp", "slug": "/art/lol" }
       ]
