@@ -2,134 +2,25 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, minimum-scale=1.0,
+                 maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+
+  <!-- 🔹 CÁC FILE CSS CHUNG -->
   <link rel="stylesheet" href="/stories/css/stories.css">
   <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/art.css"> <!-- ✅ CSS gallery riêng -->
+
   <title>Bộ Sưu Tập Tranh Decor | Fun Sport</title>
   <link rel="icon" type="image/png" href="/favicon.png" />
+
+  <!-- 🔹 CHECKOUT & VOUCHER POPUP -->
   <link rel="stylesheet" href="https://friendly-kitten-d760ff.netlify.app/css/checkoutpopup.css" />
   <link rel="stylesheet" href="https://friendly-kitten-d760ff.netlify.app/css/voucherpopup.css" />
   <script>window.productPage = "homepage";</script>
   <script src="https://friendly-kitten-d760ff.netlify.app/js/voucherpopup.js" defer></script>
 
-  <style>
-/* ================================
-   🎨 DECOR GALLERY — FreeFlow Style (Compact)
-   ================================ */
-:root {
-  --art-card-h: 160px;
-}
-@media (min-width: 600px) {
-  :root { --art-card-h: 180px; }
-}
-@media (min-width: 1024px) {
-  :root { --art-card-h: 200px; }
-}
-
-h1 {
-  text-align: center;
-  margin: 32px 0 24px;
-  font-size: 22px;
-  font-weight: 700;
-  letter-spacing: 1px;
-}
-
-.collection-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 16px 48px; /* 🔸 Giảm padding bottom tổng */
-  box-sizing: border-box;
-}
-
-/* 🔸 Giảm khoảng cách giữa các nhóm */
-.collection-block {
-  margin-bottom: 8px; /* trước đây là 64px */
-}
-
-.collection-title {
-  font-size: 18px;
-  font-weight: 600;
-  margin: 0 0 6px 0; /* 🔸 Giảm spacing dưới title */
-  text-transform: uppercase;
-  border-left: 4px solid #000;
-  padding-left: 8px;
-}
-
-/* ---- GRID ---- */
-.art-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  justify-content: center;
-}
-
-.art-item {
-  background: #fff;
-  width: calc(50% - 5px);
-  height: var(--art-card-h);
-  border-radius: 10px;
-  overflow: hidden;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
-  cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.art-item:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
-}
-
-@media (min-width: 600px) {
-  .art-item { width: calc(33.333% - 7px); }
-}
-@media (min-width: 1024px) {
-  .art-item { width: calc(16.666% - 8px); }
-}
-
-.art-item img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-  border-radius: 10px;
-}
-
-/* ✅ Nút "Xem Thêm Tranh ..." — tinh tế, canh giữa */
-.view-more {
-  margin-top: 4px; /* 🔸 Giảm so với 16px */
-  background: none;
-  border: none;
-  font-weight: 500;
-  color: #000;
-  cursor: pointer;
-  padding: 10px 0;
-  font-size: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  font-family: 'Be Vietnam Pro', sans-serif;
-  transition: opacity 0.2s;
-  text-decoration: none;
-}
-.view-more:hover { opacity: 0.6; }
-
-.view-more span {
-  font-size: 12px;
-  margin-left: 4px;
-}
-
-.divider {
-  height: 1px;
-  background: #eee;
-  margin: 8px 0; /* 🔸 Giảm so với 40px */
-}
-</style>
-
-
-  <!-- Google tag (gtag.js) -->
+  <!-- 🔹 GOOGLE ANALYTICS -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-RXC205951M"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -143,7 +34,7 @@ h1 {
   <h1>BỘ SƯU TẬP TRANH DECOR</h1>
   <div class="collection-container" id="collectionContainer"></div>
 
-  <!-- ✅ Checkout Popup -->
+  <!-- ✅ CHECKOUT POPUP -->
   <div id="checkoutPopup-placeholder"></div>
   <script>
     fetch("/html/checkoutpopup.html")
@@ -156,7 +47,7 @@ h1 {
       });
   </script>
 
-  <!-- ✅ Script render gallery -->
+  <!-- ✅ GALLERY SCRIPT -->
   <script>
   async function loadCollections() {
     try {
@@ -176,14 +67,15 @@ h1 {
       const block = document.createElement('div');
       block.className = 'collection-block';
 
+      // Tiêu đề chủ đề
       const title = document.createElement('div');
       title.className = 'collection-title';
       title.textContent = col.title;
       block.appendChild(title);
 
+      // Grid ảnh
       const grid = document.createElement('div');
       grid.className = 'art-grid';
-
       col.images.forEach(imgObj => {
         const item = document.createElement('div');
         item.className = 'art-item';
@@ -194,17 +86,19 @@ h1 {
         item.appendChild(img);
         grid.appendChild(item);
       });
-
       block.appendChild(grid);
 
+      // Nút xem thêm
       const moreBtn = document.createElement('a');
       moreBtn.className = 'view-more';
       moreBtn.href = col.slug;
       moreBtn.innerHTML = `Xem Thêm Tranh ${col.title} <span>▼</span>`;
       block.appendChild(moreBtn);
 
+      // Gắn vào container
       container.appendChild(block);
 
+      // Gạch ngăn cách
       const divider = document.createElement('div');
       divider.className = 'divider';
       container.appendChild(divider);
@@ -214,6 +108,7 @@ h1 {
   loadCollections();
   </script>
 
+  <!-- 🔹 BASE SCRIPT CHUNG -->
   <script src="/js/base.js"></script>
 </body>
 </html>
