@@ -73,11 +73,11 @@ function processAndSortData(data) {
 
     while (imgIndex < images.length) {
       let added = 0;
-      while (imgIndex < images.length && added < 7) {
+      while (imgIndex < images.length && added < 4) {
         mixed.push(images[imgIndex++]);
         added++;
       }
-      if (added === 7 && vidIndex < videos.length) {
+      if (added === 4 && vidIndex < videos.length) {
         mixed.push(videos[vidIndex++]);
       }
     }
