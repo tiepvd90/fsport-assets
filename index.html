@@ -138,21 +138,68 @@
   fetch("/art.html")
     .then(res => res.text())
     .then(html => {
-      // Trích phần nội dung chính (bỏ <head> của art.html)
       const parser = new DOMParser();
       const doc = parser.parseFromString(html, "text/html");
       const content = doc.querySelector(".collection-container");
       if (content) {
         document.getElementById("artGallery-placeholder").innerHTML =
           '<h1>BỘ SƯU TẬP TRANH DECOR</h1>' + content.outerHTML;
-        // Nạp lại script render trong art.html nếu cần
-        const script = doc.querySelector("script:not([src])");
-        if (script) eval(script.textContent);
       }
+
+      // ✅ Gọi lại logic render của art.html trực tiếp
+      (async function loadCollections() {
+        try {
+          const res = await fetch('/json/art/index.json');
+          const data = await res.json();
+          const container = document.querySelector('#artGallery-placeholder .collection-container');
+          if (!data || !data.collections || !container) return;
+
+          data.collections.forEach(col => {
+            const block = document.createElement('div');
+            block.className = 'collection-block';
+
+            const title = document.createElement('div');
+            title.className = 'collection-title';
+            title.textContent = col.title;
+            block.appendChild(title);
+
+            const grid = document.createElement('div');
+            grid.className = 'art-grid';
+
+            col.images.forEach(imgObj => {
+              const item = document.createElement('div');
+              item.className = 'art-item';
+              const img = document.createElement('img');
+              img.src = imgObj.image;
+              img.alt = col.title;
+              item.onclick = () => window.location.href = imgObj.slug;
+              item.appendChild(img);
+              grid.appendChild(item);
+            });
+
+            block.appendChild(grid);
+
+            const moreBtn = document.createElement('a');
+            moreBtn.className = 'view-more';
+            moreBtn.href = col.slug;
+            moreBtn.innerHTML = `Xem Thêm Tranh ${col.title} <span>▼</span>`;
+            block.appendChild(moreBtn);
+
+            container.appendChild(block);
+
+            const divider = document.createElement('div');
+            divider.className = 'divider';
+            container.appendChild(divider);
+          });
+        } catch (err) {
+          console.error('Lỗi khi tải dữ liệu art:', err);
+        }
+      })();
     });
 </script>
 
 <script src="/js/base.js"></script>
+
 
   <!-- ✅ Sticky footer 
 <div id="footerContainer"></div>
