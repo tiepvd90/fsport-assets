@@ -51,7 +51,7 @@
   <script>
   async function loadCollections() {
     try {
-      const res = await fetch('/json/art/mordern.json');
+      const res = await fetch('/json/art/modern.json');
       const data = await res.json();
       renderCollections(data);
     } catch (err) {
