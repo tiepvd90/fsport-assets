@@ -1,0 +1,45 @@
+{
+  "collections": [
+    {
+      "title": "Hiện Đại",
+      "slug": "/art",
+      "images": [
+        { "image": "/assets/images/gallery/art/hiendai/1.webp", "slug": "/art/hiendai" },
+        { "image": "/assets/images/gallery/art/hiendai/2.webp", "slug": "/art/hiendai" },
+        { "image": "/assets/images/gallery/art/hiendai/3.webp", "slug": "/art/hiendai" },
+        { "image": "/assets/images/gallery/art/hiendai/4.webp", "slug": "/art/hiendai" },
+        { "image": "/assets/images/gallery/art/hiendai/5.webp", "slug": "/art/hiendai" },
+        { "image": "/assets/images/gallery/art/hiendai/6.webp", "slug": "/art/hiendai" },
+        { "image": "/assets/images/gallery/art/hiendai/7.webp", "slug": "/art/hiendai" },
+        { "image": "/assets/images/gallery/art/hiendai/8.webp", "slug": "/art/hiendai" },
+        { "image": "/assets/images/gallery/art/hiendai/9.webp", "slug": "/art/hiendai" },
+        { "image": "/assets/images/gallery/art/hiendai/10.webp", "slug": "/art/hiendai" },
+        { "image": "/assets/images/gallery/art/hiendai/11.webp", "slug": "/art/hiendai" },
+        { "image": "/assets/images/gallery/art/hiendai/12.webp", "slug": "/art/hiendai" },
+        { "image": "/assets/images/gallery/art/hiendai/13.webp", "slug": "/art/hiendai" },
+        { "image": "/assets/images/gallery/art/hiendai/14.webp", "slug": "/art/hiendai" },
+        { "image": "/assets/images/gallery/art/hiendai/15.webp", "slug": "/art/hiendai" },
+        { "image": "/assets/images/gallery/art/hiendai2/1.webp", "slug": "/art/hiendai" },
+        { "image": "/assets/images/gallery/art/hiendai2/2.webp", "slug": "/art/hiendai" },
+        { "image": "/assets/images/gallery/art/hiendai2/3.webp", "slug": "/art/hiendai" },
+        { "image": "/assets/images/gallery/art/hiendai2/4.webp", "slug": "/art/hiendai" },
+        { "image": "/assets/images/gallery/art/hiendai2/5.webp", "slug": "/art/hiendai" },
+        { "image": "/assets/images/gallery/art/hiendai2/6.webp", "slug": "/art/hiendai" },
+        { "image": "/assets/images/gallery/art/hiendai2/7.webp", "slug": "/art/hiendai" },
+        { "image": "/assets/images/gallery/art/hiendai2/8.webp", "slug": "/art/hiendai" },
+        { "image": "/assets/images/gallery/art/hiendai2/9.webp", "slug": "/art/hiendai" },
+        { "image": "/assets/images/gallery/art/hiendai2/10.webp", "slug": "/art/hiendai" },
+        { "image": "/assets/images/gallery/art/hiendai2/11.webp", "slug": "/art/hiendai" },
+        { "image": "/assets/images/gallery/art/hiendai2/12.webp", "slug": "/art/hiendai" },
+        { "image": "/assets/images/gallery/art/hiendai2/13.webp", "slug": "/art/hiendai" },
+        { "image": "/assets/images/gallery/art/hiendai2/14.webp", "slug": "/art/hiendai" },
+        { "image": "/assets/images/gallery/art/hiendai2/15.webp", "slug": "/art/hiendai" },
+        { "image": "/assets/images/gallery/art/hiendai2/16.webp", "slug": "/art/hiendai" },
+        { "image": "/assets/images/gallery/art/hiendai2/17.webp", "slug": "/art/hiendai" },
+        { "image": "/assets/images/gallery/art/hiendai2/18.webp", "slug": "/art/hiendai" },
+        { "image": "/assets/images/gallery/art/hiendai2/19.webp", "slug": "/art/hiendai" },
+        { "image": "/assets/images/gallery/art/hiendai2/20.webp", "slug": "/art/hiendai" }
+      ]
+    }
+  ]
+}
