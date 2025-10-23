@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <link rel="stylesheet" href="/stories/css/stories.css">
   <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/art.css">
   <title>Fun Sport</title>
   <link rel="icon" type="image/png" href="/favicon.png" />
   <link rel="stylesheet" href="https://friendly-kitten-d760ff.netlify.app/css/checkoutpopup.css" />
@@ -131,9 +132,28 @@
       });
   </script>
 
-  <!-- ✅ Load FreeFlow -->
-<script src="/js/freeflow-loader.js"></script>
+<!-- ✅ Nhúng gallery art.html -->
+<div id="artGallery-placeholder"></div>
+<script>
+  fetch("/art.html")
+    .then(res => res.text())
+    .then(html => {
+      // Trích phần nội dung chính (bỏ <head> của art.html)
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(html, "text/html");
+      const content = doc.querySelector(".collection-container");
+      if (content) {
+        document.getElementById("artGallery-placeholder").innerHTML =
+          '<h1>BỘ SƯU TẬP TRANH DECOR</h1>' + content.outerHTML;
+        // Nạp lại script render trong art.html nếu cần
+        const script = doc.querySelector("script:not([src])");
+        if (script) eval(script.textContent);
+      }
+    });
+</script>
+
 <script src="/js/base.js"></script>
+
   <!-- ✅ Sticky footer 
 <div id="footerContainer"></div>
 <script src="https://unpkg.com/lucide@latest"></script>
