@@ -28,10 +28,7 @@
   ],
   "biến_thể": [
     { "Màu Sắc": "Titan 16mm", "id": "pickleball-titan16", "category": "pickleball" },
-    { "Màu Sắc": "T700 Pro Xám", "id": "pickleball-t700pro-xam", "category": "pickleball" },
-    { "Màu Sắc": "T700 Pro Hồng", "id": "pickleball-t700pro-hong", "category": "pickleball" },
     { "Màu Sắc": "Flexion Xám", "id": "pickleball-flexion-xam", "category": "pickleball" },
-    { "Màu Sắc": "Flexion Cam", "id": "pickleball-flexion-cam", "category": "pickleball" },
     { "Màu Sắc": "Flexion Xanh", "id": "pickleball-flexion-xanh", "category": "pickleball" }
   ]
 }
