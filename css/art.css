@@ -1,19 +1,21 @@
 /* ================================
-   🎨 DECOR GALLERY — FreeFlow Style (Responsive Grid)
+   🎨 DECOR GALLERY — FreeFlow Style (Compact, viền đen)
    ================================ */
 
 :root {
   --art-card-h: 160px;
 }
-
 @media (min-width: 600px) {
-  :root { --art-card-h: 180px; }
+  :root {
+    --art-card-h: 180px;
+  }
 }
 @media (min-width: 1024px) {
-  :root { --art-card-h: 200px; }
+  :root {
+    --art-card-h: 200px;
+  }
 }
 
-/* ---- TITLES ---- */
 h1 {
   text-align: center;
   margin: 32px 0 24px;
@@ -23,17 +25,13 @@ h1 {
 }
 
 .collection-container {
-  max-width: 1400px; /* 🔸 tăng max-width để desktop có nhiều lề */
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 0 32px 48px; /* 🔸 lề rộng hơn ở desktop */
+  padding: 0 16px 48px;
   box-sizing: border-box;
 }
 
-@media (min-width: 1024px) {
-  .collection-container { padding: 0 64px 64px; }
-}
-
-/* ---- BLOCK ---- */
+/* 🔸 Khoảng cách gọn giữa các nhóm */
 .collection-block {
   margin-bottom: 8px;
 }
@@ -51,46 +49,42 @@ h1 {
 .art-grid {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
+  gap: 10px;
   justify-content: center;
 }
 
-/* Mobile: 2 cột */
 .art-item {
   background: #fff;
-  width: calc(50% - 3px);
+  width: calc(50% - 5px);
   height: var(--art-card-h);
-  border-radius: 8px;
+  border-radius: 10px;
   overflow: hidden;
-  border: 1px solid rgba(255, 0, 0, 0.3);
-  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
   cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
   display: flex;
   align-items: center;
   justify-content: center;
-}
 
-/* Tablet: 3 hoặc 4 cột (tự co giãn tùy màn hình) */
-@media (min-width: 600px) {
-  .art-item {
-    flex: 1 1 calc(25% - 6px); /* 🔸 mặc định 4 cột */
-    max-width: calc(33.333% - 6px); /* nếu không đủ rộng thì 3 cột */
-  }
-}
-
-/* Desktop: 6 cột tối đa */
-@media (min-width: 1024px) {
-  .art-item {
-    flex: 1 1 calc(16.666% - 6px);
-    max-width: calc(16.666% - 6px);
-  }
+  /* ✅ Viền đen mảnh */
+  border: 1px solid #000;
 }
 
 .art-item:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 3px 8px rgba(0,0,0,0.1);
-  border-color: rgba(255, 0, 0, 0.6);
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+@media (min-width: 600px) {
+  .art-item {
+    width: calc(33.333% - 7px);
+  }
+}
+
+@media (min-width: 1024px) {
+  .art-item {
+    width: calc(16.666% - 8px);
+  }
 }
 
 .art-item img {
@@ -98,9 +92,10 @@ h1 {
   height: 100%;
   object-fit: cover;
   display: block;
+  border-radius: 10px;
 }
 
-/* ---- VIEW MORE ---- */
+/* ✅ Nút "Xem Thêm Tranh ..." — tinh tế, canh giữa */
 .view-more {
   margin-top: 4px;
   background: none;
@@ -118,14 +113,16 @@ h1 {
   transition: opacity 0.2s;
   text-decoration: none;
 }
-.view-more:hover { opacity: 0.6; }
+
+.view-more:hover {
+  opacity: 0.6;
+}
 
 .view-more span {
   font-size: 12px;
   margin-left: 4px;
 }
 
-/* ---- DIVIDER ---- */
 .divider {
   height: 1px;
   background: #eee;
