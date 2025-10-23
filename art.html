@@ -1,202 +1,248 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Bộ Sưu Tập Tranh Decor</title>
-  <style>
-    body {
-      font-family: 'Be Vietnam Pro', sans-serif;
-      margin: 0;
-      background: #fafafa;
-      color: #222;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bộ Sưu Tập Tranh Decor</title>
+<style>
+/* ================================
+   🎨 DECOR GALLERY — FreeFlow Style
+   ================================ */
 
-    h1 {
-      text-align: center;
-      margin: 40px 0 20px;
-      font-size: 22px;
-      letter-spacing: 1px;
-      font-weight: 700;
-    }
+/* ---- Card height theo viewport ---- */
+:root {
+  --art-card-h: 160px; /* mobile square */
+}
+@media (min-width: 600px) {
+  :root { --art-card-h: 180px; }
+}
+@media (min-width: 1024px) {
+  :root { --art-card-h: 200px; }
+}
 
-    .collection-container {
-      max-width: 1400px;
-      margin: 0 auto;
-      padding: 0 24px;
-    }
+/* ---- Base ---- */
+body {
+  font-family: 'Be Vietnam Pro', sans-serif;
+  margin: 0;
+  background: #fafafa;
+  color: #222;
+}
+h1 {
+  text-align: center;
+  margin: 40px 0 32px;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
 
-    .sub1-block {
-      margin-bottom: 48px;
-    }
+/* ---- Container ---- */
+.collection-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 16px 80px;
+  box-sizing: border-box;
+}
 
-    .sub1-title {
-      font-size: 18px;
-      font-weight: 600;
-      margin-bottom: 12px;
-      text-transform: uppercase;
-      border-left: 4px solid #000;
-      padding-left: 8px;
-    }
+/* ---- Sub1 Section ---- */
+.sub1-block {
+  margin-bottom: 64px;
+}
+.sub1-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0 0 16px 0;
+  text-transform: uppercase;
+  border-left: 4px solid #000;
+  padding-left: 8px;
+}
 
-    .sub2-block {
-      margin: 24px 0;
-    }
+/* ---- Sub2 Section ---- */
+.sub2-block {
+  margin-bottom: 32px;
+}
+.sub2-title {
+  font-size: 15px;
+  font-weight: 500;
+  margin: 0 0 10px;
+  color: #333;
+}
 
-    .sub2-title {
-      font-size: 15px;
-      font-weight: 500;
-      margin-bottom: 8px;
-      color: #333;
-    }
+/* ---- GRID LAYOUT (FreeFlow style) ---- */
+.art-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+.art-item {
+  background: #fff;
+  width: calc(50% - 5px);
+  height: var(--art-card-h);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.art-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+}
+@media (min-width: 600px) {
+  .art-item { width: calc(33.333% - 7px); }
+}
+@media (min-width: 1024px) {
+  .art-item { width: calc(16.666% - 8px); }
+}
 
-    .image-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-      gap: 8px;
-    }
+/* ---- Ảnh vuông cover ---- */
+.art-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 10px;
+}
 
-    @media (min-width: 768px) {
-      .image-grid {
-        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-      }
-    }
+/* ---- Nút xem thêm tinh tế ---- */
+.view-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: #444;
+  font-size: 13px;
+  font-weight: 500;
+  text-decoration: none;
+  margin: 12px auto 0;
+  padding: 6px 10px;
+  border-radius: 20px;
+  background: #fff;
+  border: 1px solid #ddd;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  transition: all 0.2s ease;
+}
+.view-more:hover {
+  color: #000;
+  border-color: #bbb;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+}
+.view-more span {
+  font-size: 12px;
+}
 
-    @media (min-width: 1024px) {
-      .image-grid {
-        grid-template-columns: repeat(6, 1fr);
-        gap: 12px;
-      }
-    }
-
-    .image-grid img {
-      width: 100%;
-      border-radius: 6px;
-      cursor: pointer;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    .image-grid img:hover {
-      transform: scale(1.04);
-      box-shadow: 0 3px 8px rgba(0,0,0,0.15);
-    }
-
-    .view-more {
-      display: inline-block;
-      margin-top: 12px;
-      background: #000;
-      color: #fff;
-      font-size: 13px;
-      padding: 8px 16px;
-      border-radius: 20px;
-      text-decoration: none;
-      transition: background 0.2s;
-    }
-
-    .view-more:hover {
-      background: #444;
-    }
-
-    .divider {
-      height: 1px;
-      background: #ddd;
-      margin: 32px 0;
-    }
-  </style>
+/* ---- Divider ---- */
+.divider {
+  height: 1px;
+  background: #eee;
+  margin: 40px 0;
+}
+</style>
 </head>
 <body>
-  <h1>BỘ SƯU TẬP TRANH DECOR</h1>
-  <div class="collection-container" id="collectionContainer">
-    <!-- Nội dung render bằng JS -->
-  </div>
 
-  <script>
-    async function loadCollections() {
-      try {
-        const res = await fetch('/json/art/index.json');
-        const data = await res.json();
-        renderCollections(data);
-      } catch (err) {
-        console.error('Không thể tải dữ liệu:', err);
-      }
-    }
+<h1>BỘ SƯU TẬP TRANH DECOR</h1>
+<div class="collection-container" id="collectionContainer"></div>
 
-    function renderCollections(data) {
-      const container = document.getElementById('collectionContainer');
-      if (!data || !data.Sub1) return;
+<script>
+async function loadCollections() {
+  try {
+    const res = await fetch('/json/art/index.json');
+    const data = await res.json();
+    renderCollections(data);
+  } catch (err) {
+    console.error('Lỗi khi tải dữ liệu:', err);
+  }
+}
 
-      data.Sub1.forEach(sub1 => {
-        const sub1Block = document.createElement('div');
-        sub1Block.className = 'sub1-block';
+function renderCollections(data) {
+  const container = document.getElementById('collectionContainer');
+  if (!data || !data.Sub1) return;
 
-        const sub1Title = document.createElement('div');
-        sub1Title.className = 'sub1-title';
-        sub1Title.textContent = sub1.title;
-        sub1Block.appendChild(sub1Title);
+  data.Sub1.forEach(sub1 => {
+    const sub1Block = document.createElement('div');
+    sub1Block.className = 'sub1-block';
 
-        // Nếu có Sub2
-        if (Array.isArray(sub1.Sub2)) {
-          sub1.Sub2.forEach(sub2 => {
-            const sub2Block = document.createElement('div');
-            sub2Block.className = 'sub2-block';
+    // Tiêu đề Sub1
+    const sub1Title = document.createElement('div');
+    sub1Title.className = 'sub1-title';
+    sub1Title.textContent = sub1.title;
+    sub1Block.appendChild(sub1Title);
 
-            const sub2Title = document.createElement('div');
-            sub2Title.className = 'sub2-title';
-            sub2Title.textContent = sub2.title;
-            sub2Block.appendChild(sub2Title);
+    // Nếu có Sub2
+    if (Array.isArray(sub1.Sub2)) {
+      sub1.Sub2.forEach(sub2 => {
+        const sub2Block = document.createElement('div');
+        sub2Block.className = 'sub2-block';
 
-            const grid = document.createElement('div');
-            grid.className = 'image-grid';
+        const sub2Title = document.createElement('div');
+        sub2Title.className = 'sub2-title';
+        sub2Title.textContent = sub2.title;
+        sub2Block.appendChild(sub2Title);
 
-            sub2.images.forEach(imgObj => {
-              const img = document.createElement('img');
-              img.src = imgObj.image;
-              img.alt = sub2.title;
-              img.onclick = () => window.location.href = imgObj.slug;
-              grid.appendChild(img);
-            });
+        const grid = document.createElement('div');
+        grid.className = 'art-grid';
 
-            sub2Block.appendChild(grid);
+        sub2.images.forEach(imgObj => {
+          const item = document.createElement('div');
+          item.className = 'art-item';
+          const img = document.createElement('img');
+          img.src = imgObj.image;
+          img.alt = sub2.title;
+          item.onclick = () => window.location.href = imgObj.slug;
+          item.appendChild(img);
+          grid.appendChild(item);
+        });
 
-            const moreBtn = document.createElement('a');
-            moreBtn.className = 'view-more';
-            moreBtn.href = sub2.slug;
-            moreBtn.textContent = `Xem Thêm Tranh ${sub2.title}`;
-            sub2Block.appendChild(moreBtn);
+        sub2Block.appendChild(grid);
 
-            sub1Block.appendChild(sub2Block);
-          });
-        }
+        // Nút xem thêm tinh tế
+        const moreBtn = document.createElement('a');
+        moreBtn.className = 'view-more';
+        moreBtn.href = sub2.slug;
+        moreBtn.innerHTML = `Xem thêm <span>▼</span>`;
+        sub2Block.appendChild(moreBtn);
 
-        // Nếu có images trực tiếp trong Sub1
-        if (Array.isArray(sub1.images)) {
-          const grid = document.createElement('div');
-          grid.className = 'image-grid';
-          sub1.images.forEach(imgObj => {
-            const img = document.createElement('img');
-            img.src = imgObj.image;
-            img.alt = sub1.title;
-            img.onclick = () => window.location.href = imgObj.slug;
-            grid.appendChild(img);
-          });
-          sub1Block.appendChild(grid);
-        }
-
-        // Nút Xem thêm cho Sub1
-        const moreBtn1 = document.createElement('a');
-        moreBtn1.className = 'view-more';
-        moreBtn1.href = sub1.slug;
-        moreBtn1.textContent = `Xem Thêm Tranh ${sub1.title}`;
-        sub1Block.appendChild(moreBtn1);
-
-        container.appendChild(sub1Block);
-        const divider = document.createElement('div');
-        divider.className = 'divider';
-        container.appendChild(divider);
+        sub1Block.appendChild(sub2Block);
       });
     }
 
-    loadCollections();
-  </script>
+    // Nếu có ảnh trực tiếp trong Sub1
+    if (Array.isArray(sub1.images)) {
+      const grid = document.createElement('div');
+      grid.className = 'art-grid';
+      sub1.images.forEach(imgObj => {
+        const item = document.createElement('div');
+        item.className = 'art-item';
+        const img = document.createElement('img');
+        img.src = imgObj.image;
+        img.alt = sub1.title;
+        item.onclick = () => window.location.href = imgObj.slug;
+        item.appendChild(img);
+        grid.appendChild(item);
+      });
+      sub1Block.appendChild(grid);
+    }
+
+    // Nút xem thêm cho Sub1
+    const moreBtn1 = document.createElement('a');
+    moreBtn1.className = 'view-more';
+    moreBtn1.href = sub1.slug;
+    moreBtn1.innerHTML = `Xem thêm <span>▼</span>`;
+    sub1Block.appendChild(moreBtn1);
+
+    container.appendChild(sub1Block);
+
+    const divider = document.createElement('div');
+    divider.className = 'divider';
+    container.appendChild(divider);
+  });
+}
+
+loadCollections();
+</script>
+
 </body>
 </html>
