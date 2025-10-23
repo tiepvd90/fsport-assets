@@ -32,7 +32,7 @@
     },
 	{
       "title": "Hiện Đại",
-      "slug": "/art/hiendai",
+      "slug": "/art/modern",
       "images": [
         { "image": "/assets/images/gallery/art/hiendai/1.webp", "slug": "/art/hiendai" },
         { "image": "/assets/images/gallery/art/hiendai/9.webp", "slug": "/art/hiendai" },
@@ -61,6 +61,30 @@
 		
       ]
     },
+	{
+      "title": "Quán Cà Phê",
+      "slug": "/art/coffee",
+      "images": [
+        { "image": "/assets/images/gallery/art/coffee1/3.webp", "slug": "/art/coffee1" },
+        { "image": "/assets/images/gallery/art/coffee1/5.webp", "slug": "/art/coffee1" },
+        { "image": "/assets/images/gallery/art/coffee1/7.webp", "slug": "/art/coffee1" },
+        { "image": "/assets/images/gallery/art/coffee1/10.webp", "slug": "/art/coffee1" }
+      ]
+    },
+	{
+      "title": "Động Lực",
+      "slug": "/art/dongluc",
+      "images": [
+        { "image": "/assets/images/gallery/art/dongluc/1.webp", "slug": "/art/dongluc" },
+        { "image": "/assets/images/gallery/art/dongluc/2.webp", "slug": "/art/dongluc" },
+        { "image": "/assets/images/gallery/art/dongluc/3.webp", "slug": "/art/dongluc" },
+        { "image": "/assets/images/gallery/art/dongluc/4.webp", "slug": "/art/dongluc" },
+		{ "image": "/assets/images/gallery/art/dongluc/5.webp", "slug": "/art/dongluc" },
+        { "image": "/assets/images/gallery/art/dongluc/6.webp", "slug": "/art/dongluc" },
+        { "image": "/assets/images/gallery/art/dongluc/7.webp", "slug": "/art/dongluc" },
+        { "image": "/assets/images/gallery/art/dongluc/8.webp", "slug": "/art/dongluc" }
+      ]
+    },
     {
       "title": "Gấu BearBrick",
       "slug": "/art/bearbrick",
@@ -69,6 +93,40 @@
         { "image": "/assets/images/gallery/art/bearbrick/2.webp", "slug": "/art/bearbrick" },
         { "image": "/assets/images/gallery/art/bearbrick/3.webp", "slug": "/art/bearbrick" },
         { "image": "/assets/images/gallery/art/bearbrick/6.webp", "slug": "/art/bearbrick" }
+      ]
+    },
+	{
+      "title": "Phòng Cho Bé",
+      "slug": "/art/cute",
+      "images": [
+        { "image": "/assets/images/gallery/art/cute/1.webp", "slug": "/art/cute" },
+        { "image": "/assets/images/gallery/art/cute/2.webp", "slug": "/art/cute" },
+        { "image": "/assets/images/gallery/art/cute/3.webp", "slug": "/art/cute" },
+        { "image": "/assets/images/gallery/art/cute/4.webp", "slug": "/art/cute" }
+      ]
+    },
+	{
+      "title": "Siêu Xe",
+      "slug": "/art/sieuxe",
+      "images": [
+        { "image": "/assets/images/gallery/art/sieuxe/1.webp", "slug": "/art/sieuxe" },
+        { "image": "/assets/images/gallery/art/sieuxe/2.webp", "slug": "/art/sieuxe" },
+        { "image": "/assets/images/gallery/art/sieuxe/3.webp", "slug": "/art/sieuxe" },
+        { "image": "/assets/images/gallery/art/sieuxe/4.webp", "slug": "/art/sieuxe" }
+      ]
+    },
+		{
+      "title": "Anime-Game",
+      "slug": "/art/anime",
+      "images": [
+        { "image": "/assets/images/gallery/art/naruto/1.webp", "slug": "/art/naruto" },
+        { "image": "/assets/images/gallery/art/onepiece/2.webp", "slug": "/art/onepiece" },
+        { "image": "/assets/images/gallery/art/goku/1.jpg", "slug": "/art/goku" },
+		{ "image": "/assets/images/gallery/art/goku2/1.jpg", "slug": "/art/goku2" },
+        { "image": "/assets/images/gallery/art/pubg/2.webp", "slug": "/art/pubg" },
+		{ "image": "/assets/images/gallery/art/valorant/1.webp", "slug": "/art/valorant" }
+		{ "image": "/assets/images/gallery/art/valorant2/1.webp", "slug": "/art/valorant2" },
+        { "image": "/assets/images/gallery/art/lol/2.webp", "slug": "/art/lol" }
       ]
     }
   ]
