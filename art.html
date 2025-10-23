@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bộ Sưu Tập Tranh Decor</title>
+  <style>
+    body {
+      font-family: 'Be Vietnam Pro', sans-serif;
+      margin: 0;
+      background: #fafafa;
+      color: #222;
+    }
+
+    h1 {
+      text-align: center;
+      margin: 40px 0 20px;
+      font-size: 22px;
+      letter-spacing: 1px;
+      font-weight: 700;
+    }
+
+    .collection-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .sub1-block {
+      margin-bottom: 48px;
+    }
+
+    .sub1-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      border-left: 4px solid #000;
+      padding-left: 8px;
+    }
+
+    .sub2-block {
+      margin: 24px 0;
+    }
+
+    .sub2-title {
+      font-size: 15px;
+      font-weight: 500;
+      margin-bottom: 8px;
+      color: #333;
+    }
+
+    .image-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 8px;
+    }
+
+    @media (min-width: 768px) {
+      .image-grid {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .image-grid {
+        grid-template-columns: repeat(6, 1fr);
+        gap: 12px;
+      }
+    }
+
+    .image-grid img {
+      width: 100%;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .image-grid img:hover {
+      transform: scale(1.04);
+      box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+    }
+
+    .view-more {
+      display: inline-block;
+      margin-top: 12px;
+      background: #000;
+      color: #fff;
+      font-size: 13px;
+      padding: 8px 16px;
+      border-radius: 20px;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+
+    .view-more:hover {
+      background: #444;
+    }
+
+    .divider {
+      height: 1px;
+      background: #ddd;
+      margin: 32px 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>BỘ SƯU TẬP TRANH DECOR</h1>
+  <div class="collection-container" id="collectionContainer">
+    <!-- Nội dung render bằng JS -->
+  </div>
+
+  <script>
+    async function loadCollections() {
+      try {
+        const res = await fetch('/json/art/index.json');
+        const data = await res.json();
+        renderCollections(data);
+      } catch (err) {
+        console.error('Không thể tải dữ liệu:', err);
+      }
+    }
+
+    function renderCollections(data) {
+      const container = document.getElementById('collectionContainer');
+      if (!data || !data.Sub1) return;
+
+      data.Sub1.forEach(sub1 => {
+        const sub1Block = document.createElement('div');
+        sub1Block.className = 'sub1-block';
+
+        const sub1Title = document.createElement('div');
+        sub1Title.className = 'sub1-title';
+        sub1Title.textContent = sub1.title;
+        sub1Block.appendChild(sub1Title);
+
+        // Nếu có Sub2
+        if (Array.isArray(sub1.Sub2)) {
+          sub1.Sub2.forEach(sub2 => {
+            const sub2Block = document.createElement('div');
+            sub2Block.className = 'sub2-block';
+
+            const sub2Title = document.createElement('div');
+            sub2Title.className = 'sub2-title';
+            sub2Title.textContent = sub2.title;
+            sub2Block.appendChild(sub2Title);
+
+            const grid = document.createElement('div');
+            grid.className = 'image-grid';
+
+            sub2.images.forEach(imgObj => {
+              const img = document.createElement('img');
+              img.src = imgObj.image;
+              img.alt = sub2.title;
+              img.onclick = () => window.location.href = imgObj.slug;
+              grid.appendChild(img);
+            });
+
+            sub2Block.appendChild(grid);
+
+            const moreBtn = document.createElement('a');
+            moreBtn.className = 'view-more';
+            moreBtn.href = sub2.slug;
+            moreBtn.textContent = `Xem Thêm Tranh ${sub2.title}`;
+            sub2Block.appendChild(moreBtn);
+
+            sub1Block.appendChild(sub2Block);
+          });
+        }
+
+        // Nếu có images trực tiếp trong Sub1
+        if (Array.isArray(sub1.images)) {
+          const grid = document.createElement('div');
+          grid.className = 'image-grid';
+          sub1.images.forEach(imgObj => {
+            const img = document.createElement('img');
+            img.src = imgObj.image;
+            img.alt = sub1.title;
+            img.onclick = () => window.location.href = imgObj.slug;
+            grid.appendChild(img);
+          });
+          sub1Block.appendChild(grid);
+        }
+
+        // Nút Xem thêm cho Sub1
+        const moreBtn1 = document.createElement('a');
+        moreBtn1.className = 'view-more';
+        moreBtn1.href = sub1.slug;
+        moreBtn1.textContent = `Xem Thêm Tranh ${sub1.title}`;
+        sub1Block.appendChild(moreBtn1);
+
+        container.appendChild(sub1Block);
+        const divider = document.createElement('div');
+        divider.className = 'divider';
+        container.appendChild(divider);
+      });
+    }
+
+    loadCollections();
+  </script>
+</body>
+</html>
