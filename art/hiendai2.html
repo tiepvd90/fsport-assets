@@ -100,10 +100,19 @@
     <!-- ✅ KHỐI 2: Reviews -->
     <div id="review-placeholder"></div>
     <script src="/js/review.js"></script>
-    <!-- ✅ FreeFlow -->
-    <h2 class="freeflow-heading" style="font-size: 18px; margin: 24px 12px 12px;">CÓ THỂ BẠN SẼ THÍCH</h2>
-    <script src="/js/freeflow-loader.js"></script>
-  </div>
+    <!-- ✅ Nhúng gallery art.html -->
+<div id="artGallery-placeholder"></div>
+<script>
+  fetch("/art.html")
+    .then(res => res.text())
+    .then(html => {
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(html, "text/html");
+      const content = doc.querySelector(".collection-container");
+      if (content) {
+        document.getElementById("artGallery-placeholder").innerHTML =
+          '<h1>BỘ SƯU TẬP TRANH DECOR</h1>' + content.outerHTML;
+      }
 
   <!-- ✅ Inject popup + footer -->
   <script>
