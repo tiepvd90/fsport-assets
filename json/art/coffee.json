@@ -23,13 +23,7 @@
         { "image": "/assets/images/gallery/art/coffee1/17.webp", "slug": "/art/coffee1" },
         { "image": "/assets/images/gallery/art/coffee1/18.webp", "slug": "/art/coffee1" },
         { "image": "/assets/images/gallery/art/coffee1/19.webp", "slug": "/art/coffee1" },
-        { "image": "/assets/images/gallery/art/coffee1/20.webp", "slug": "/art/coffee1" }
-      ]
-    },
-    {
-      "title": "Coffee 2",
-      "slug": "/art/coffee2",
-      "images": [
+        { "image": "/assets/images/gallery/art/coffee1/20.webp", "slug": "/art/coffee1" },
         { "image": "/assets/images/gallery/art/coffee2/1.webp", "slug": "/art/coffee2" },
         { "image": "/assets/images/gallery/art/coffee2/2.webp", "slug": "/art/coffee2" },
         { "image": "/assets/images/gallery/art/coffee2/3.webp", "slug": "/art/coffee2" },
