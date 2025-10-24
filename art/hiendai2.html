@@ -74,6 +74,7 @@
 <div class="product-hero">
   <h1 style="font-size: 14px; font-weight: bold; margin-top: 8px; font-family: 'Be Vietnam Pro', sans-serif;">
     <span style="background: black; color: white; font-size: 11px; padding: 2px 6px; border-radius: 4px; margin-right: 4px;">Mall</span>
+    <span style="background: #00b14f; color: white; font-size: 11px; padding: 2px 6px; border-radius: 4px;">HÀNG VIỆT</span>
     <span id="pageTitle"></span>
   </h1>
   <div class="shipping-wrapper">
@@ -92,35 +93,14 @@
   });
 </script>
     
-    <!-- ✅ Mô tả sản phẩm -->
+        <!-- ✅ Mô tả sản phẩm -->
     <div class="product-hero" style="margin-top: 12px;">
-      <div id="productdescription-placeholder" data-src="/html/productdescription/art/tranhled.html"></div>
+      <div id="productdescription-placeholder" data-src="/html/productdescription/art/set6tranh.html"></div>
     </div>
     <script src="/js/productdescription.js"></script>
     <!-- ✅ KHỐI 2: Reviews -->
-    <div class="product-hero" style="margin-top: 12px;">
-      <div id="review-placeholder"></div>
-    </div>
-    <script>
-  fetch("/html/reviewblock/art/tranhled.html")
-    .then(res => res.text())
-    .then(html => {
-      const container = document.getElementById("review-placeholder");
-      container.innerHTML = html;
-      // ✅ Kích hoạt lại các <script> thủ công
-      const scripts = container.querySelectorAll("script");
-      scripts.forEach(oldScript => {
-        const newScript = document.createElement("script");
-        if (oldScript.src) {
-          newScript.src = oldScript.src;
-        } else {
-          newScript.textContent = oldScript.textContent;
-        }
-        document.body.appendChild(newScript);
-      });
-    });
-</script>
-<!-- HẾT KHỐI 2: review -->
+    <div id="review-placeholder"></div>
+    <script src="/js/review.js"></script>
     <!-- ✅ Nhúng gallery art.html -->
 <div id="artGallery-placeholder"></div>
 <script>
@@ -227,7 +207,7 @@
       await injectHTML("/html/stickyfooter.html", "sticky-footer-placeholder");
 
       await loadScript("https://friendly-kitten-d760ff.netlify.app/js/voucherpopup.js");
-      await loadScript("https://friendly-kitten-d760ff.netlify.app/js/cartpopup-6p.js");
+      await loadScript("https://friendly-kitten-d760ff.netlify.app/js/cartpopup-4p.js");
       await loadScript("https://friendly-kitten-d760ff.netlify.app/js/checkoutpopup.js");
 
       setTimeout(async () => {
