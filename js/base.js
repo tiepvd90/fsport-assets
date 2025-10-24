@@ -100,6 +100,19 @@ document.body.appendChild(fakenotifyScript);
 setInterval(() => {
   fetch('/favicon.ico', { cache: "no-store" }).catch(() => {});
 }, 5 * 60 * 1000);
+/* ===========================
+   ✅ COLLECTION ICON LOADER
+   =========================== */
+(function loadCollectionIcon() {
+  if (window.__collectionIconInjected) return;
+  window.__collectionIconInjected = true;
+
+  const s = document.createElement('script');
+  s.src = '/js/collectionIcon.js?v=1';
+  s.defer = true;
+  s.onerror = (e) => console.warn('Không load được collectionIcon.js', e);
+  document.head.appendChild(s);
+})();
 
 // ✅ Gọi supportchat nếu có
 //const sc = document.createElement("script");
