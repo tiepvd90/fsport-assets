@@ -1,0 +1,102 @@
+{
+  "collections": [
+        {
+      "title": "OnePiece",
+      "slug": "/art/goku",
+      "images": [
+        { "image": "/assets/images/gallery/art/goku/1.jpg", "slug": "/art/goku" },
+        { "image": "/assets/images/gallery/art/goku2/1.jpg", "slug": "/art/goku2" }
+      ]
+    },
+    {
+      "title": "Naruto",
+      "slug": "/art/naruto",
+      "images": [
+        { "image": "/assets/images/gallery/art/naruto/1.webp", "slug": "/art/naruto" },
+        { "image": "/assets/images/gallery/art/naruto/2.webp", "slug": "/art/naruto" },
+        { "image": "/assets/images/gallery/art/naruto/3.webp", "slug": "/art/naruto" },
+        { "image": "/assets/images/gallery/art/naruto/4.webp", "slug": "/art/naruto" },
+        { "image": "/assets/images/gallery/art/naruto/5.webp", "slug": "/art/naruto" },
+        { "image": "/assets/images/gallery/art/naruto/6.webp", "slug": "/art/naruto" },
+        { "image": "/assets/images/gallery/art/naruto/7.webp", "slug": "/art/naruto" },
+        { "image": "/assets/images/gallery/art/naruto/8.webp", "slug": "/art/naruto" },
+        { "image": "/assets/images/gallery/art/naruto/9.webp", "slug": "/art/naruto" },
+        { "image": "/assets/images/gallery/art/naruto/10.webp", "slug": "/art/naruto" }
+      ]
+    },
+        {
+      "title": "OnePiece",
+      "slug": "/art/onepiece",
+      "images": [
+        { "image": "/assets/images/gallery/art/onepiece/1.webp", "slug": "/art/onepiece" },
+        { "image": "/assets/images/gallery/art/onepiece/2.webp", "slug": "/art/onepiece" },
+        { "image": "/assets/images/gallery/art/onepiece/3.webp", "slug": "/art/onepiece" },
+        { "image": "/assets/images/gallery/art/onepiece/4.webp", "slug": "/art/onepiece" },
+        { "image": "/assets/images/gallery/art/onepiece/5.webp", "slug": "/art/onepiece" },
+        { "image": "/assets/images/gallery/art/onepiece/6.webp", "slug": "/art/onepiece" },
+        { "image": "/assets/images/gallery/art/onepiece/7.webp", "slug": "/art/onepiece" },
+        { "image": "/assets/images/gallery/art/onepiece/8.webp", "slug": "/art/onepiece" }
+      ]
+    },
+    {
+      "title": "PUBG",
+      "slug": "/art/pubg",
+      "images": [
+        { "image": "/assets/images/gallery/art/pubg/1.webp", "slug": "/art/pubg" },
+        { "image": "/assets/images/gallery/art/pubg/2.webp", "slug": "/art/pubg" },
+        { "image": "/assets/images/gallery/art/pubg/3.webp", "slug": "/art/pubg" },
+        { "image": "/assets/images/gallery/art/pubg/4.webp", "slug": "/art/pubg" },
+        { "image": "/assets/images/gallery/art/pubg/5.webp", "slug": "/art/pubg" },
+        { "image": "/assets/images/gallery/art/pubg/6.webp", "slug": "/art/pubg" },
+        { "image": "/assets/images/gallery/art/pubg/7.webp", "slug": "/art/pubg" },
+        { "image": "/assets/images/gallery/art/pubg/8.webp", "slug": "/art/pubg" },
+        { "image": "/assets/images/gallery/art/pubg/9.webp", "slug": "/art/pubg" },
+        { "image": "/assets/images/gallery/art/pubg/10.webp", "slug": "/art/pubg" }
+      ]
+    },
+    {
+      "title": "LOL",
+      "slug": "/art/lol",
+      "images": [
+        { "image": "/assets/images/gallery/art/lol/1.webp", "slug": "/art/lol" },
+        { "image": "/assets/images/gallery/art/lol/2.webp", "slug": "/art/lol" },
+        { "image": "/assets/images/gallery/art/lol/3.webp", "slug": "/art/lol" },
+        { "image": "/assets/images/gallery/art/lol/4.webp", "slug": "/art/lol" },
+        { "image": "/assets/images/gallery/art/lol/5.webp", "slug": "/art/lol" },
+        { "image": "/assets/images/gallery/art/lol/6.webp", "slug": "/art/lol" },
+        { "image": "/assets/images/gallery/art/lol/7.webp", "slug": "/art/lol" },
+        { "image": "/assets/images/gallery/art/lol/8.webp", "slug": "/art/lol" }
+      ]
+    },
+    {
+      "title": "Valorant",
+      "slug": "/art/valorant",
+      "images": [
+        { "image": "/assets/images/gallery/art/valorant/1.webp", "slug": "/art/valorant" },
+        { "image": "/assets/images/gallery/art/valorant/2.webp", "slug": "/art/valorant" },
+        { "image": "/assets/images/gallery/art/valorant/3.webp", "slug": "/art/valorant" },
+        { "image": "/assets/images/gallery/art/valorant/4.webp", "slug": "/art/valorant" },
+        { "image": "/assets/images/gallery/art/valorant/5.webp", "slug": "/art/valorant" },
+        { "image": "/assets/images/gallery/art/valorant/6.webp", "slug": "/art/valorant" },
+        { "image": "/assets/images/gallery/art/valorant/7.webp", "slug": "/art/valorant" },
+        { "image": "/assets/images/gallery/art/valorant/8.webp", "slug": "/art/valorant" },
+        { "image": "/assets/images/gallery/art/valorant/9.webp", "slug": "/art/valorant" }
+      ]
+    },
+    {
+      "title": "Valorant 2",
+      "slug": "/art/valorant2",
+      "images": [
+        { "image": "/assets/images/gallery/art/valorant2/1.webp", "slug": "/art/valorant2" },
+        { "image": "/assets/images/gallery/art/valorant2/2.webp", "slug": "/art/valorant2" },
+        { "image": "/assets/images/gallery/art/valorant2/3.webp", "slug": "/art/valorant2" },
+        { "image": "/assets/images/gallery/art/valorant2/4.webp", "slug": "/art/valorant2" },
+        { "image": "/assets/images/gallery/art/valorant2/5.webp", "slug": "/art/valorant2" },
+        { "image": "/assets/images/gallery/art/valorant2/6.webp", "slug": "/art/valorant2" },
+        { "image": "/assets/images/gallery/art/valorant2/7.webp", "slug": "/art/valorant2" },
+        { "image": "/assets/images/gallery/art/valorant2/8.webp", "slug": "/art/valorant2" },
+        { "image": "/assets/images/gallery/art/valorant2/9.webp", "slug": "/art/valorant2" }
+      ]
+    }
+  ]
+}
