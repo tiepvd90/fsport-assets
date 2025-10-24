@@ -1,0 +1,60 @@
+{
+  "collections": [
+    {
+      "title": "Coffee",
+      "slug": "/art",
+      "images": [
+        { "image": "/assets/images/gallery/art/coffee1/1.webp", "slug": "/art/coffee1" },
+        { "image": "/assets/images/gallery/art/coffee1/2.webp", "slug": "/art/coffee1" },
+        { "image": "/assets/images/gallery/art/coffee1/3.webp", "slug": "/art/coffee1" },
+        { "image": "/assets/images/gallery/art/coffee1/4.webp", "slug": "/art/coffee1" },
+        { "image": "/assets/images/gallery/art/coffee1/5.webp", "slug": "/art/coffee1" },
+        { "image": "/assets/images/gallery/art/coffee1/6.webp", "slug": "/art/coffee1" },
+        { "image": "/assets/images/gallery/art/coffee1/7.webp", "slug": "/art/coffee1" },
+        { "image": "/assets/images/gallery/art/coffee1/8.webp", "slug": "/art/coffee1" },
+        { "image": "/assets/images/gallery/art/coffee1/9.webp", "slug": "/art/coffee1" },
+        { "image": "/assets/images/gallery/art/coffee1/10.webp", "slug": "/art/coffee1" },
+        { "image": "/assets/images/gallery/art/coffee1/11.webp", "slug": "/art/coffee1" },
+        { "image": "/assets/images/gallery/art/coffee1/12.webp", "slug": "/art/coffee1" },
+        { "image": "/assets/images/gallery/art/coffee1/13.webp", "slug": "/art/coffee1" },
+        { "image": "/assets/images/gallery/art/coffee1/14.webp", "slug": "/art/coffee1" },
+        { "image": "/assets/images/gallery/art/coffee1/15.webp", "slug": "/art/coffee1" },
+        { "image": "/assets/images/gallery/art/coffee1/16.webp", "slug": "/art/coffee1" },
+        { "image": "/assets/images/gallery/art/coffee1/17.webp", "slug": "/art/coffee1" },
+        { "image": "/assets/images/gallery/art/coffee1/18.webp", "slug": "/art/coffee1" },
+        { "image": "/assets/images/gallery/art/coffee1/19.webp", "slug": "/art/coffee1" },
+        { "image": "/assets/images/gallery/art/coffee1/20.webp", "slug": "/art/coffee1" }
+      ]
+    },
+    {
+      "title": "Coffee 2",
+      "slug": "/art/coffee2",
+      "images": [
+        { "image": "/assets/images/gallery/art/coffee2/1.webp", "slug": "/art/coffee2" },
+        { "image": "/assets/images/gallery/art/coffee2/2.webp", "slug": "/art/coffee2" },
+        { "image": "/assets/images/gallery/art/coffee2/3.webp", "slug": "/art/coffee2" },
+        { "image": "/assets/images/gallery/art/coffee2/4.webp", "slug": "/art/coffee2" },
+        { "image": "/assets/images/gallery/art/coffee2/5.webp", "slug": "/art/coffee2" },
+        { "image": "/assets/images/gallery/art/coffee2/6.webp", "slug": "/art/coffee2" },
+        { "image": "/assets/images/gallery/art/coffee2/7.webp", "slug": "/art/coffee2" },
+        { "image": "/assets/images/gallery/art/coffee2/8.webp", "slug": "/art/coffee2" },
+        { "image": "/assets/images/gallery/art/coffee2/9.webp", "slug": "/art/coffee2" },
+        { "image": "/assets/images/gallery/art/coffee2/10.webp", "slug": "/art/coffee2" },
+        { "image": "/assets/images/gallery/art/coffee2/11.webp", "slug": "/art/coffee2" },
+        { "image": "/assets/images/gallery/art/coffee2/12.webp", "slug": "/art/coffee2" },
+        { "image": "/assets/images/gallery/art/coffee2/13.webp", "slug": "/art/coffee2" },
+        { "image": "/assets/images/gallery/art/coffee2/14.webp", "slug": "/art/coffee2" },
+        { "image": "/assets/images/gallery/art/coffee2/15.webp", "slug": "/art/coffee2" },
+        { "image": "/assets/images/gallery/art/coffee2/16.webp", "slug": "/art/coffee2" },
+        { "image": "/assets/images/gallery/art/coffee2/17.webp", "slug": "/art/coffee2" },
+        { "image": "/assets/images/gallery/art/coffee2/18.webp", "slug": "/art/coffee2" },
+        { "image": "/assets/images/gallery/art/coffee2/19.webp", "slug": "/art/coffee2" },
+        { "image": "/assets/images/gallery/art/coffee2/20.webp", "slug": "/art/coffee2" },
+        { "image": "/assets/images/gallery/art/coffee2/21.webp", "slug": "/art/coffee2" },
+        { "image": "/assets/images/gallery/art/coffee2/22.webp", "slug": "/art/coffee2" },
+        { "image": "/assets/images/gallery/art/coffee2/23.webp", "slug": "/art/coffee2" },
+        { "image": "/assets/images/gallery/art/coffee2/24.webp", "slug": "/art/coffee2" }
+      ]
+    }
+  ]
+}
