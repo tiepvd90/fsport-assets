@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, minimum-scale=1.0,
+                 maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+
+  <!-- 🔹 CSS -->
+  <link rel="stylesheet" href="/stories/css/stories.css">
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/art.css">
+  <title>Bộ Sưu Tập Tranh Decor | Fun Sport</title>
+  <link rel="icon" type="image/png" href="/favicon.png" />
+
+  <!-- 🔹 CHECKOUT & VOUCHER -->
+  <link rel="stylesheet" href="https://friendly-kitten-d760ff.netlify.app/css/checkoutpopup.css" />
+  <link rel="stylesheet" href="https://friendly-kitten-d760ff.netlify.app/css/voucherpopup.css" />
+  <script>window.productPage = "homepage";</script>
+  <script src="https://friendly-kitten-d760ff.netlify.app/js/voucherpopup.js" defer></script>
+
+  <!-- 🔹 GOOGLE ANALYTICS -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-RXC205951M"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-RXC205951M');
+  </script>
+</head>
+
+<body>
+  <h1>BỘ SƯU TẬP TRANH DECOR BÓNG ĐÁ</h1>
+  <div class="collection-container" id="collectionContainer"></div>
+
+  <!-- ✅ CHECKOUT POPUP -->
+  <div id="checkoutPopup-placeholder"></div>
+  <script>
+    fetch("/html/checkoutpopup.html")
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById("checkoutPopup-placeholder").innerHTML = html;
+        const script = document.createElement("script");
+        script.src = "https://friendly-kitten-d760ff.netlify.app/js/checkoutpopup.js";
+        document.body.appendChild(script);
+      });
+  </script>
+
+  <!-- ✅ GALLERY SCRIPT -->
+  <script>
+  // 🔹 Khai báo mảng các file JSON cần đọc
+  const artFiles = ["cauthu","arsenal", "barca", "manu", "chelsea", "real"];
+
+  async function loadCollections() {
+    const container = document.getElementById('collectionContainer');
+    container.innerHTML = '';
+
+    for (const name of artFiles) {
+      try {
+        const res = await fetch(`/json/art/${name}.json`);
+        const data = await res.json();
+
+        // Mỗi file có thể có field "collections" hoặc "images"
+        const images = data.collections
+          ? data.collections.flatMap(c => c.images || [])
+          : data.images || [];
+
+        if (!images.length) continue;
+
+        // Tạo block hiển thị cho mỗi file
+        const block = document.createElement('div');
+        block.className = 'collection-block';
+
+        const title = document.createElement('div');
+        title.className = 'collection-title';
+        title.textContent = (data.title || name).toUpperCase();
+        block.appendChild(title);
+
+        const grid = document.createElement('div');
+        grid.className = 'art-grid';
+
+        images.forEach(imgObj => {
+          const item = document.createElement('div');
+          item.className = 'art-item';
+          const img = document.createElement('img');
+          img.src = imgObj.image;
+          img.alt = name;
+          item.onclick = () => {
+            if (imgObj.slug) window.location.href = imgObj.slug;
+          };
+          item.appendChild(img);
+          grid.appendChild(item);
+        });
+
+        block.appendChild(grid);
+
+        const moreBtn = document.createElement('a');
+        moreBtn.className = 'view-more';
+        moreBtn.href = `/art/${name}`;
+        moreBtn.textContent = `XEM BỘ SƯU TẬP ${name.toUpperCase()}`;
+        block.appendChild(moreBtn);
+
+        container.appendChild(block);
+
+        const divider = document.createElement('div');
+        divider.className = 'divider';
+        container.appendChild(divider);
+      } catch (err) {
+        console.warn(`⚠️ Lỗi khi tải ${name}.json:`, err);
+      }
+    }
+  }
+
+  loadCollections();
+  </script>
+
+  <!-- 🔹 BASE SCRIPT -->
+  <script src="/js/base.js"></script>
+</body>
+</html>
