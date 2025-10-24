@@ -49,7 +49,7 @@
 
   <!-- ✅ GALLERY SCRIPT -->
   <script>
-  // 🔹 Danh sách file JSON
+  // 🔹 Danh sách file JSON cần load
   const artFiles = ["cauthu","arsenal","barca","manu","chelsea","real"];
 
   async function loadCollections() {
@@ -61,7 +61,7 @@
         const res = await fetch(`/json/art/${name}.json`);
         const data = await res.json();
 
-        // 🔍 Đệ quy tìm tất cả field "image"
+        // 🔍 Tìm tất cả field "image"
         const images = [];
         (function findImages(obj) {
           if (Array.isArray(obj)) {
@@ -106,13 +106,6 @@
         });
 
         block.appendChild(grid);
-
-        const moreBtn = document.createElement("a");
-        moreBtn.className = "view-more";
-        moreBtn.href = `/art/${name}`;
-        moreBtn.textContent = `XEM BỘ ${name.toUpperCase()}`;
-        block.appendChild(moreBtn);
-
         container.appendChild(block);
 
         const divider = document.createElement("div");
@@ -122,6 +115,13 @@
         console.error(`❌ Lỗi đọc /json/art/${name}.json:`, err);
       }
     }
+
+    // 🔹 Nút duy nhất ở cuối trang
+    const allBtn = document.createElement("a");
+    allBtn.className = "view-more";
+    allBtn.href = "/art";
+    allBtn.textContent = "XEM TẤT CẢ CHỦ ĐỀ TRANH DECOR";
+    container.appendChild(allBtn);
   }
 
   loadCollections();
