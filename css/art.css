@@ -1,5 +1,5 @@
 /* ================================
-   🎨 DECOR GALLERY — FreeFlow Style (Compact, 3 cột từ tablet)
+   🎨 DECOR GALLERY — FreeFlow Style (Compact)
    ================================ */
 
 :root {
@@ -57,11 +57,11 @@ h1 {
 
 .art-item {
   background: #fff;
-  width: calc(50% - 5px); /* ✅ mobile: 2 cột */
+  width: calc(50% - 5px);
   height: var(--art-card-h);
   border-radius: 10px;
   overflow: hidden;
-  border: 1px solid #000; /* viền đen nhỏ */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   display: flex;
@@ -76,13 +76,13 @@ h1 {
 
 @media (min-width: 600px) {
   .art-item {
-    width: calc(33.333% - 7px); /* ✅ tablet: 3 cột */
+    width: calc(33.333% - 7px);
   }
 }
 
 @media (min-width: 1024px) {
   .art-item {
-    width: calc(33.333% - 8px); /* ✅ desktop vẫn 3 cột, chỉ giãn lề hơn */
+    width: calc(16.666% - 8px);
   }
 }
 
@@ -94,7 +94,7 @@ h1 {
   border-radius: 10px;
 }
 
-/* ✅ Nút "Xem Thêm Tranh ..." */
+/* ✅ Nút "Xem Thêm Tranh ..." — tinh tế, canh giữa */
 .view-more {
   margin-top: 4px;
   background: none;
