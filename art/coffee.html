@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, minimum-scale=1.0,
+                 maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+
+  <!-- 🔹 CÁC FILE CSS CHUNG -->
+  <link rel="stylesheet" href="/stories/css/stories.css">
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/art.css"> <!-- ✅ CSS gallery riêng -->
+
+  <title>Bộ Sưu Tập Tranh Decor | Fun Sport</title>
+  <link rel="icon" type="image/png" href="/favicon.png" />
+
+  <!-- 🔹 CHECKOUT & VOUCHER POPUP -->
+  <link rel="stylesheet" href="https://friendly-kitten-d760ff.netlify.app/css/checkoutpopup.css" />
+  <link rel="stylesheet" href="https://friendly-kitten-d760ff.netlify.app/css/voucherpopup.css" />
+  <script>window.productPage = "homepage";</script>
+  <script src="https://friendly-kitten-d760ff.netlify.app/js/voucherpopup.js" defer></script>
+
+  <!-- 🔹 GOOGLE ANALYTICS -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-RXC205951M"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-RXC205951M');
+  </script>
+</head>
+
+<body>
+  <h1>BỘ SƯU TẬP TRANH DECOR HIỆN ĐẠI</h1>
+  <div class="collection-container" id="collectionContainer"></div>
+
+  <!-- ✅ CHECKOUT POPUP -->
+  <div id="checkoutPopup-placeholder"></div>
+  <script>
+    fetch("/html/checkoutpopup.html")
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById("checkoutPopup-placeholder").innerHTML = html;
+        const script = document.createElement("script");
+        script.src = "https://friendly-kitten-d760ff.netlify.app/js/checkoutpopup.js";
+        document.body.appendChild(script);
+      });
+  </script>
+
+  <!-- ✅ GALLERY SCRIPT -->
+  <script>
+  async function loadCollections() {
+    try {
+      const res = await fetch('/json/art/coffee.json');
+      const data = await res.json();
+      renderCollections(data);
+    } catch (err) {
+      console.error('Lỗi khi tải dữ liệu:', err);
+    }
+  }
+
+  function renderCollections(data) {
+    const container = document.getElementById('collectionContainer');
+    if (!data || !data.collections) return;
+
+    data.collections.forEach(col => {
+      const block = document.createElement('div');
+      block.className = 'collection-block';
+
+      // Tiêu đề chủ đề
+      const title = document.createElement('div');
+      title.className = 'collection-title';
+      title.textContent = col.title;
+      block.appendChild(title);
+
+      // Grid ảnh
+      const grid = document.createElement('div');
+      grid.className = 'art-grid';
+      col.images.forEach(imgObj => {
+        const item = document.createElement('div');
+        item.className = 'art-item';
+        const img = document.createElement('img');
+        img.src = imgObj.image;
+        img.alt = col.title;
+        item.onclick = () => window.location.href = imgObj.slug;
+        item.appendChild(img);
+        grid.appendChild(item);
+      });
+      block.appendChild(grid);
+
+      // Nút xem thêm
+      const moreBtn = document.createElement('a');
+      moreBtn.className = 'view-more';
+      moreBtn.href = col.slug;
+      moreBtn.innerHTML = `XEM BỘ SƯU TẬP TRANH DECOR`;
+      block.appendChild(moreBtn);
+
+      // Gắn vào container
+      container.appendChild(block);
+
+      // Gạch ngăn cách
+      const divider = document.createElement('div');
+      divider.className = 'divider';
+      container.appendChild(divider);
+    });
+  }
+
+  loadCollections();
+  </script>
+
+  <!-- 🔹 BASE SCRIPT CHUNG -->
+  <script src="/js/base.js"></script>
+</body>
+</html>
