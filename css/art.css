@@ -1,17 +1,15 @@
 /* ================================
-   🎨 DECOR GALLERY — FreeFlow Style (Compact)
+   🎨 DECOR GALLERY — FreeFlow Style (Compact, viền đen, 3 cột desktop)
    ================================ */
 
 :root {
   --art-card-h: 160px;
 }
-
 @media (min-width: 600px) {
   :root {
     --art-card-h: 180px;
   }
 }
-
 @media (min-width: 1024px) {
   :root {
     --art-card-h: 200px;
@@ -57,7 +55,7 @@ h1 {
 
 .art-item {
   background: #fff;
-  width: calc(50% - 5px);
+  width: calc(50% - 5px); /* mobile 2 cột */
   height: var(--art-card-h);
   border-radius: 10px;
   overflow: hidden;
@@ -67,6 +65,7 @@ h1 {
   display: flex;
   align-items: center;
   justify-content: center;
+  border: 1px solid #000; /* ✅ viền đen mảnh */
 }
 
 .art-item:hover {
@@ -74,15 +73,17 @@ h1 {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
 }
 
+/* ✅ Tablet trở lên: 3 cột */
 @media (min-width: 600px) {
   .art-item {
     width: calc(33.333% - 7px);
   }
 }
 
+/* ✅ Desktop giữ nguyên 3 cột (không bị 6 cột nhỏ) */
 @media (min-width: 1024px) {
   .art-item {
-    width: calc(16.666% - 8px);
+    width: calc(33.333% - 7px);
   }
 }
 
