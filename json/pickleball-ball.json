@@ -28,8 +28,18 @@
   ],
   "biến_thể": [
     {
-      "Màu Sắc": "Bóng Thi Đấu Pro",
-      "id": "bongthidaupro",
+      "Màu Sắc": "3 Bóng Dạ Quang Pro",
+      "id": "3bongpro",
+      "category": "pickleball"
+    },
+    {
+      "Màu Sắc": "6 Bóng Dạ Quang Pro",
+      "id": "6bongpro",
+      "category": "pickleball"
+    },
+    {
+      "Màu Sắc": "9 Bóng Dạ Quang Pro",
+      "id": "9bongpro",
       "category": "pickleball"
     }
   ]
