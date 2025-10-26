@@ -15,6 +15,8 @@
   window.loai = "pickleball";
   window.productCategory = "pickleball";     // Nhóm sản phẩm
   window.productPage = "pickleball-ball";      // Trang cụ thể
+  window.imageCount = 4;
+  window.imageFormat = "webp";
 </script>
   <style>
     body {
@@ -76,11 +78,29 @@
     <div id="checkoutPopup-placeholder"></div>
     <div id="sticky-footer-placeholder"></div>
 
-    <!-- ✅ Slideshow -->
+       <!-- ============================== -->
+    <!-- ✅ SLIDESHOW SẢN PHẨM CÓ ZOOM -->
+    <!-- ============================== -->
+
+    <!-- Slideshow chính -->
     <div class="lazy-slideshow" id="lazySlideshow">
       <div class="slide-counter" id="slideCounter">1/1</div>
     </div>
-    <script src="../js/slideshow.js"></script>
+
+    <!-- Zoom toàn màn hình khi click ảnh -->
+    <div id="fullscreenZoom" style="display: none;">
+      <div id="zoomWrapper">
+        <img id="zoomedImg" src="" alt="Zoomed" />
+        <button id="zoomCloseBtn">×</button>
+      </div>
+    </div>
+
+    <!-- Script xử lý slideshow + zoom -->
+    <script src="/js/slideshow-2p.js"></script>
+
+    <!-- ============================== -->
+    <!-- ✅ END SLIDESHOW -->
+    <!-- ============================== -->
 
     <!-- ✅ flashbanner -->
 <!-- Gọi template -->
