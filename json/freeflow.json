@@ -1,32 +1,4 @@
 [
-{
-    "itemId": "sup009",
-    "title": "Thuyền SUP Bơm Hơi FA",
-    "price": 3293771,
-    "originalPrice": 3553953,
-    "contentType": "image",
-    "image": "https://i.postimg.cc/hjgcR0VV/281869563-331345509135443-3369932602561377383-n.jpg",
-    "youtube": "",
-    "productPage": "/product/sup",
-    "tags": ["SUP", "thuyền", "bơm"],
-    "basePriority": 10,
-    "productCategory": "sup",
-    "sellerID": "huyenle"
-  },
-  {
-    "itemId": "sup010",
-    "title": "Thuyền SUP Bơm Hơi FA",
-    "price": 3358696,
-    "originalPrice": 3829687,
-    "contentType": "image",
-    "image": "https://i.postimg.cc/VNPpr6Cp/z5877726978291-e407e7717db9548c3d68b7124fd31735.jpg",
-    "youtube": "",
-    "productPage": "/product/sup",
-    "tags": ["SUP", "thuyền", "bơm"],
-    "basePriority": 15,
-    "productCategory": "sup",
-    "sellerID": "huyenle"
-  },
   {
     "itemId": "sup011",
     "title": "Sport SUP - Ván Chèo Đứng Bơm Hơi",
@@ -53,20 +25,6 @@
     "tags": ["SUP", "thuyền", "bơm"],
     "basePriority": 15,
     "productCategory": "sup",
-    "sellerID": "huyenle"
-  },
-  {
-    "itemId": "chair4a",
-    "title": "Ghế Chỉnh Dáng Ngồi",
-    "price": 419000,
-    "originalPrice": 500000,
-    "contentType": "image",
-    "image": "https://fun-sport.co/assets/images/thumb/freeflow/chair/IMG_0463.webp",
-    "youtube": "",
-    "productPage": "/product/chair",
-    "tags": ["ghế", "ghế fa", "ghế chỉnh dáng ngồi"],
-    "basePriority": 15,
-    "productCategory": "chair",
     "sellerID": "huyenle"
   },
   {
@@ -98,62 +56,6 @@
     "sellerID": "huyenle"
   },
   {
-    "itemId": "chair4",
-    "title": "Ghế Công Thái Học Chỉnh Dáng",
-    "price": 419000,
-    "originalPrice": 500000,
-    "contentType": "image",
-    "image": "https://fun-sport.co/assets/images/thumb/freeflow/chair/IMG_6683.webp",
-    "youtube": "",
-    "productPage": "/product/chair",
-    "tags": ["ghế", "ghế fa", "ghế chỉnh dáng ngồi"],
-    "basePriority": 15,
-    "productCategory": "chair",
-    "sellerID": "huyenle"
-  },
-  {
-    "itemId": "dep1",
-    "title": "Dép Chạy Bộ Ysandal Rêu",
-    "price": 450000,
-    "originalPrice": 520000,
-    "contentType": "image",
-    "image": "https://i.postimg.cc/LsFbM67r/reu.jpg",
-    "youtube": "",
-    "productPage": "/product/ysandalbn68",
-    "tags": ["ysandal"],
-    "basePriority": 17,
-    "productCategory": "ysandal",
-    "sellerID": "huyenle"
-  },
-  {
-    "itemId": "dep2",
-    "title": "Dép Chạy Bộ Ysandal Đỏ Hồng",
-    "price": 450000,
-    "originalPrice": 520000,
-    "contentType": "image",
-    "image": "https://i.postimg.cc/prLS1G7r/hong.jpg",
-    "youtube": "",
-    "productPage": "/product/ysandalbn68",
-    "tags": ["ysandal"],
-    "basePriority": 17,
-    "productCategory": "ysandal",
-    "sellerID": "huyenle"
-  },
-  {
-    "itemId": "dep3",
-    "title": "Dép Chạy Bộ Ysandal Chính Hãng",
-    "price": 450000,
-    "originalPrice": 520000,
-    "contentType": "image",
-    "image": "https://i.postimg.cc/X7XhfPdD/lam.jpg",
-    "youtube": "",
-    "productPage": "/product/ysandalbn68",
-    "tags": ["ysandal"],
-    "basePriority": 15,
-    "productCategory": "ysandal",
-    "sellerID": "huyenle"
-  },
-  {
     "itemId": "dep4",
     "title": "Dép Chạy Bộ Ysandal Chính Hãng",
     "price": 550000,
@@ -162,20 +64,6 @@
     "image": "https://i.postimg.cc/1XBGSfZ5/8.jpg",
     "youtube": "",
     "productPage": "/product/ysandalbn68",
-    "tags": ["ysandal"],
-    "basePriority": 15,
-    "productCategory": "ysandal",
-    "sellerID": "huyenle"
-  },
-  {
-    "itemId": "dep5",
-    "title": "Dép Chạy Bộ Ysandal đài loan",
-    "price": 550000,
-    "originalPrice": 700000,
-    "contentType": "image",
-    "image": "https://i.postimg.cc/fLpPwJ7s/Capture.jpg",
-    "youtube": "",
-    "productPage": "/product/ysandal5568",
     "tags": ["ysandal"],
     "basePriority": 15,
     "productCategory": "ysandal",
@@ -196,72 +84,12 @@
     "sellerID": "huyenle"
   },
   {
-    "itemId": "dep7",
-    "title": "Dép Chạy Bộ Ysandal Chính Hãng",
-    "price": 550000,
-    "originalPrice": 579000,
-    "contentType": "youtube",
-    "image": "https://i.postimg.cc/7ZD3rzhS/5.jpg",
-    "youtube": "Z7ql8lmWUUA",
-    "productPage": "/product/ysandal5568",
-    "tags": ["ysandal"],
-    "basePriority": 17,
-    "productCategory": "ysandal",
-    "sellerID": "huyenle"
-  },
-  {
-    "itemId": "dep8",
-    "title": "BCU5568 Dép Chạy Bộ Ysandal đài loan",
-    "price": 579000,
-    "originalPrice": 700000,
-    "contentType": "image",
-    "image": "https://i.postimg.cc/xTSstrt6/2.jpg",
-    "youtube": "",
-    "productPage": "/product/ysandal5568",
-    "tags": ["ysandal"],
-    "basePriority": 15,
-    "productCategory": "ysandal",
-    "sellerID": "huyenle"
-  },
-  {
-    "itemId": "ysandal9",
-    "title": "BCU5568 Dép Chạy Bộ Ysandal đài loan",
-    "price": 550000,
-    "originalPrice": 700000,
-    "contentType": "image",
-    "image": "https://i.postimg.cc/br8JLvnp/2.jpg",
-    "youtube": "",
-    "productPage": "/product/ysandal5568",
-    "tags": [
-      "ysandal"
-    ],
-    "basePriority": 15,
-    "productCategory": "ysandal",
-    "sellerID": "huyenle"
-  },
-  {
     "itemId": "ysandal10",
     "title": "BCU5568 Dép Chạy Bộ Ysandal đài loan",
     "price": 550000,
     "originalPrice": 700000,
     "contentType": "image",
     "image": "https://i.postimg.cc/DwDwH6GC/3.jpg",
-    "youtube": "",
-    "productPage": "/product/ysandal5568",
-    "tags": [
-      "ysandal"
-    ],
-    "basePriority": 15,
-    "productCategory": "ysandal",
-    "sellerID": "huyenle"
-  },
-  {
-    "itemId": "ysandal11",
-    "title": "BCU5568 Dép Chạy Bộ Ysandal đài loan",
-    "price": 550000,
-    "originalPrice": 700000,
-    "contentType": "image",
-    "image": "https://i.postimg.cc/7L2ZkzMq/Capture.jpg",
     "youtube": "",
     "productPage": "/product/ysandal5568",
     "tags": [
@@ -289,114 +117,12 @@
     "sellerID": "huyenle"
   },
   {
-    "itemId": "gaiter2",
-    "title": "Khăn Ống Đa Năng Đi Phượt Thể Thao",
-    "price": 49000,
-    "originalPrice": 60000,
-    "contentType": "image",
-    "image": "https://i.postimg.cc/sDrFMnQh/1.jpg",
-    "youtube": "",
-    "productPage": "/product/gaiter",
-    "tags": [
-      "gaiter",
-      "ysandal"
-    ],
-    "basePriority": 15,
-    "productCategory": "ysandal",
-    "sellerID": "huyenle"
-  },
-  {
-    "itemId": "gaiter3",
-    "title": "Khăn Ống Đa Năng Đi Phượt Thể Thao",
-    "price": 49000,
-    "originalPrice": 60000,
-    "contentType": "image",
-    "image": "https://i.postimg.cc/qB2SH8bM/3.jpg",
-    "youtube": "",
-    "productPage": "/product/gaiter",
-    "tags": [
-      "gaiter",
-      "ysandal"
-    ],
-    "basePriority": 15,
-    "productCategory": "ysandal",
-    "sellerID": "huyenle"
-  },
-  {
-    "itemId": "gaiter4",
-    "title": "Khăn Ống Đa Năng Đi Phượt Thể Thao",
-    "price": 49000,
-    "originalPrice": 60000,
-    "contentType": "image",
-    "image": "https://i.postimg.cc/mgg59Kbt/4.jpg",
-    "youtube": "",
-    "productPage": "/product/gaiter",
-    "tags": [
-      "gaiter",
-      "ysandal"
-    ],
-    "basePriority": 15,
-    "productCategory": "ysandal",
-    "sellerID": "huyenle"
-  },
-  {
     "itemId": "meikan1",
     "title": "Tất Vớ Chạy Bộ Xỏ Ngón Đạp Xe Thể Thao",
     "price": 79000,
     "originalPrice": 120000,
     "contentType": "image",
     "image": "https://i.postimg.cc/mkfHfcLK/1.jpg",
-    "youtube": "",
-    "productPage": "/product/meikan",
-    "tags": [
-      "meikan",
-      "ysandal"
-    ],
-    "basePriority": 15,
-    "productCategory": "ysandal",
-    "sellerID": "huyenle"
-  },
-  {
-    "itemId": "meikan2",
-    "title": "Tất Vớ Chạy Bộ Xỏ Ngón Đạp Xe Thể Thao",
-    "price": 79000,
-    "originalPrice": 120000,
-    "contentType": "image",
-    "image": "https://i.postimg.cc/cHmSZ20Z/2.jpg",
-    "youtube": "",
-    "productPage": "/product/meikan",
-    "tags": [
-      "meikan",
-      "ysandal"
-    ],
-    "basePriority": 15,
-    "productCategory": "ysandal",
-    "sellerID": "huyenle"
-  },
-  {
-    "itemId": "meikan3",
-    "title": "Tất Vớ Chạy Bộ Xỏ Ngón Đạp Xe Thể Thao",
-    "price": 79000,
-    "originalPrice": 120000,
-    "contentType": "image",
-    "image": "https://i.postimg.cc/hvtqGstm/3.jpg",
-    "youtube": "",
-    "productPage": "/product/meikan",
-    "tags": [
-      "meikan",
-      "ysandal"
-    ],
-    "basePriority": 15,
-    "productCategory": "ysandal",
-    "sellerID": "huyenle"
-  },
-  {
-    "itemId": "meikan4",
-    "title": "Tất Vớ Chạy Bộ Xỏ Ngón Đạp Xe Thể Thao",
-    "price": 79000,
-    "originalPrice": 120000,
-    "contentType": "image",
-    "image": "https://i.postimg.cc/Y2dHs5dz/4.jpg",
     "youtube": "",
     "productPage": "/product/meikan",
     "tags": [
