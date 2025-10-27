@@ -48,75 +48,30 @@ function saveCache(data) {
 
 // =================== Process & sort ===================
 function processAndSortData(data) {
-  // random nhẹ để tránh cứng ngắc
+  // random nhẹ để tránh thứ tự cứng ngắc
   const random = () => Math.floor(Math.random() * 10) + 1;
 
-  // --- 1. Chia preferred và others ---
+  // --- 1. Chia preferred (cùng category) và others (khác category) ---
   const preferred = data
     .filter((item) => item.productCategory === productCategory)
-    .map((item) => ({ ...item, finalPriority: random() }))
+    .map((item) => ({
+      ...item,
+      finalPriority: (item.basePriority || 0) + random()
+    }))
     .sort((a, b) => b.finalPriority - a.finalPriority);
 
   const others = data
     .filter((item) => item.productCategory !== productCategory)
-    .map((item) => ({ ...item, finalPriority: random() }))
+    .map((item) => ({
+      ...item,
+      finalPriority: (item.basePriority || 0) + random()
+    }))
     .sort((a, b) => b.finalPriority - a.finalPriority);
 
-  // --- 2. Áp quy tắc 10 ảnh : 1 video ---
-  function mixImagesVideos(list) {
-    const images = list.filter((i) => i.contentType === "image");
-    const videos = list.filter((i) => i.contentType === "youtube");
-
-    const mixed = [];
-    let imgIndex = 0,
-      vidIndex = 0;
-
-    while (imgIndex < images.length) {
-      let added = 0;
-      while (imgIndex < images.length && added < 4) {
-        mixed.push(images[imgIndex++]);
-        added++;
-      }
-      if (added === 4 && vidIndex < videos.length) {
-        mixed.push(videos[vidIndex++]);
-      }
-    }
-    return mixed;
-  }
-
-  const mixedPreferred = mixImagesVideos(preferred);
-  const mixedOthers = mixImagesVideos(others);
-
-  // --- 3. Reorder zigzag trái–phải ---
-  function reorderZigZag(list) {
-    const reordered = [];
-    const left = [];
-    const right = [];
-
-    list.forEach((item, idx) => {
-      if (idx % 2 === 0) {
-        left.push(item); // chẵn → cột trái
-      } else {
-        right.push(item); // lẻ → cột phải
-      }
-    });
-
-    // Ghép lại theo thứ tự: trái–phải–trái–phải...
-    const maxLen = Math.max(left.length, right.length);
-    for (let i = 0; i < maxLen; i++) {
-      if (i < left.length) reordered.push(left[i]);
-      if (i < right.length) reordered.push(right[i]);
-    }
-    return reordered;
-  }
-
-  const reorderedPreferred = reorderZigZag(mixedPreferred);
-  const reorderedOthers = reorderZigZag(mixedOthers);
-
-  // --- 4. Ghép kết quả ---
-  // Quan trọng: chỉ tạo freeflowData 1 lần, không reorder lại nữa
-  freeflowData = [...reorderedPreferred, ...reorderedOthers];
+  // --- 2. Gộp lại: ưu tiên category hiện tại lên đầu ---
+  freeflowData = [...preferred, ...others];
 }
+
 
 
 // =================== Rendering ===================
