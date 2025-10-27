@@ -22,7 +22,7 @@ const FEED_ID = "freeflowFeed";
 // ====== State ======
 let freeflowData = [];
 let itemsLoaded = 0;
-let productCategory = window.productCategory || "0";
+let productCategory = (window.productCategory || "0").toString().toLowerCase();
 const renderedIds = new Set();
 let dataReady = false; // dữ liệu đã process xong
 let initialRendered = false; // đã render 4 item đầu chưa
@@ -53,7 +53,7 @@ function processAndSortData(data) {
 
   // --- 1. Chia preferred (cùng category) và others (khác category) ---
   const preferred = data
-    .filter((item) => item.productCategory === productCategory)
+  .filter((item) => (item.productCategory || "").toString().toLowerCase() === productCategory)
     .map((item) => ({
       ...item,
       finalPriority: (item.basePriority || 0) + random()
@@ -61,7 +61,7 @@ function processAndSortData(data) {
     .sort((a, b) => b.finalPriority - a.finalPriority);
 
   const others = data
-    .filter((item) => item.productCategory !== productCategory)
+  .filter((item) => (item.productCategory || "").toString().toLowerCase() !== productCategory)
     .map((item) => ({
       ...item,
       finalPriority: (item.basePriority || 0) + random()
@@ -393,17 +393,18 @@ async function fetchFreeFlowData(sheetUrlOverride) {
     maybeStartRender();
 
     // 🔹 Sau khi freeflow render xong → mới load phần tranh (như cũ)
-    document.addEventListener("freeflowReady", async () => {
-      loadArtCSS();
-      try {
-        const res = await fetch("/json/art/index.json");
-        const data = await res.json();
-        renderCollectionsInline(data);
-      } catch (err) {
-        console.error("⚠️ Không thể tải /json/art/index.json:", err);
-      }
-    });
-
+    if ((window.productCategory || "").toString().toLowerCase() !== "art") {
+  document.addEventListener("freeflowReady", async () => {
+    loadArtCSS();
+    try {
+      const res = await fetch("/json/art/index.json");
+      const data = await res.json();
+      renderCollectionsInline(data);
+    } catch (err) {
+      console.error("Lỗi khi tải /json/art/index.json:", err);
+    }
+  });
+}
   } catch (e) {
     console.warn("⚠️ Lỗi khi tải local JSON:", e);
     fetchFromGoogleSheet([]);
@@ -546,19 +547,6 @@ function loadArtCSS() {
   document.head.appendChild(link);
 }
 
-// 🖼️ Khi FreeFlow render xong → gọi JSON Art + load CSS
-document.addEventListener("freeflowReady", async () => {
-  loadArtCSS(); // ✅ Đảm bảo CSS được nạp
-
-  try {
-    const res = await fetch("/json/art/index.json");
-    const data = await res.json();
-    renderCollectionsInline(data);
-  } catch (err) {
-    console.error("Lỗi khi tải /json/art/index.json:", err);
-  }
-});
-
 // 🧱 Hàm hiển thị gallery từ JSON
 function renderCollectionsInline(data) {
   if (!data || !Array.isArray(data.collections)) return;
@@ -620,73 +608,22 @@ function renderCollectionsInline(data) {
   });
 
   const feed = document.getElementById("freeflowFeed");
-  (feed?.parentNode || document.body).appendChild(wrapper);
+const isArt = (window.productCategory || "").toString().toLowerCase() === "art";
+
+if (feed && feed.parentNode) {
+  if (isArt) {
+    // ✅ ART đứng TRƯỚC feed
+    feed.parentNode.insertBefore(wrapper, feed);
+  } else {
+    // các category khác: gắn sau như cũ
+    feed.parentNode.appendChild(wrapper);
+  }
+} else {
+  (document.body).appendChild(wrapper);
 }
 
-
-function renderCollectionsInline(data) {
-  if (!data || !Array.isArray(data.collections)) return;
-
-  const wrapper = document.createElement("section");
-  wrapper.className = "art-section-wrapper";
-  wrapper.style.marginTop = "40px";
-
-  // (tuỳ chọn) Tiêu đề khu vực
-  const h1 = document.createElement("h1");
-  h1.textContent = "BỘ SƯU TẬP TRANH DECOR";
-  h1.style.textAlign = "center";
-  h1.style.margin = "24px 0 16px";
-  wrapper.appendChild(h1);
-
-  const container = document.createElement("div");
-  container.className = "collection-container";
-  wrapper.appendChild(container);
-
-  data.collections.forEach(col => {
-    const block = document.createElement("div");
-    block.className = "collection-block";
-
-    const title = document.createElement("div");
-    title.className = "collection-title";
-    title.textContent = col.title;
-    block.appendChild(title);
-
-    const grid = document.createElement("div");
-    grid.className = "art-grid";
-
-    (col.images || []).forEach(imgObj => {
-      const item = document.createElement("div");
-      item.className = "art-item";
-
-      const img = document.createElement("img");
-      img.loading = "lazy";
-      img.src = imgObj.image;
-      img.alt = col.title;
-
-      item.appendChild(img);
-      item.onclick = () => (window.location.href = imgObj.slug || col.slug || "#");
-      grid.appendChild(item);
-    });
-
-    block.appendChild(grid);
-
-    const moreBtn = document.createElement("a");
-    moreBtn.className = "view-more";
-    moreBtn.href = col.slug || "#";
-    moreBtn.innerHTML = `Xem Thêm Tranh ${col.title} <span>▼</span>`;
-    block.appendChild(moreBtn);
-
-    container.appendChild(block);
-
-    const divider = document.createElement("div");
-    divider.className = "divider";
-    container.appendChild(divider);
-  });
-
-  // Gắn sau feed
-  const feed = document.getElementById("freeflowFeed");
-  (feed?.parentNode || document.body).appendChild(wrapper);
 }
+
 
 
 
