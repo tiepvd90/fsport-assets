@@ -1,21 +1,19 @@
 /* ================================
-   FREEFLOW — Equal-height Cards
-   Mục tiêu: hết khoảng trắng, 2 cột bằng nhau
-   Cách làm: card fixed-height, media fill phần còn lại
+   FREEFLOW — Square Cards + Left-align last odd
    ================================ */
 
-/* ---- Biến chiều cao card theo breakpoint ---- */
+/* ---- Biến chiều rộng/thẻ vuông theo breakpoint ---- */
 :root {
-  --ff-card-h: 300px;   /* mobile */
+  --ff-card-size: calc(50% - 6px); /* mobile: 2 cột */
 }
 @media (min-width: 600px) {
-  :root { --ff-card-h: 320px; }  /* tablet */
+  :root { --ff-card-size: calc(33.333% - 8px); } /* tablet: 3 cột */
 }
 @media (min-width: 1024px) {
-  :root { --ff-card-h: 340px; }  /* desktop */
+  :root { --ff-card-size: calc(16.666% - 10px); } /* desktop: 6 cột */
 }
 
-/* ---- Layout theo hàng (row-major), 2-3-6 cột ---- */
+/* ---- Layout theo hàng ---- */
 #freeflowFeed {
   display: flex;
   flex-wrap: wrap;
@@ -24,151 +22,49 @@
   margin: auto;
   max-width: 1080px;
   box-sizing: border-box;
-  justify-content: center;
+  justify-content: flex-start; /* 👈 ảnh lẻ nằm bên trái */
 }
 
-/* Mặc định: 2 cột */
+/* ---- Card ---- */
 .feed-item {
-  box-sizing: border-box;
-  width: calc(50% - 6px);
-  height: var(--ff-card-h);       /* CHIỀU CAO CỐ ĐỊNH */
+  width: var(--ff-card-size);
+  aspect-ratio: 1 / 1; /* 👈 vuông hoàn hảo */
   display: flex;
-  flex-direction: column;         /* media fill, meta cố định */
+  flex-direction: column;
   background: #fff;
   border-radius: 12px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-  overflow: hidden;               /* crop phần dư */
+  overflow: hidden;
   cursor: pointer;
   transition: transform 0.2s ease;
 }
 .feed-item:hover { transform: translateY(-4px); }
 
-/* Tablet: 3 cột */
-@media (min-width: 600px) {
-  .feed-item { width: calc(33.333% - 8px); }
-}
-
-/* Desktop: 6 cột */
-@media (min-width: 1024px) {
-  .feed-item { width: calc(16.666% - 10px); }
-}
-
 /* =========================
-   MEDIA (ảnh / video) FILL
+   MEDIA (ảnh / video)
    ========================= */
-
-/* Ảnh là phần media: fill chiều cao còn lại — crop cho đẹp */
 .feed-item.image img,
 .feed-item.story img {
-  flex: 1 1 auto;                 /* chiếm hết phần còn lại */
-  width: 100%;
-  min-height: 0;
-  object-fit: cover;              /* crop viền cho gọn */
-  display: block;
-  border-bottom: 1px solid #eee;  /* giữ viền ngăn cách meta */
-}
-
-/* Video wrapper fill phần còn lại (bỏ ép aspect-ratio để đủ chiều cao) */
-.video-wrapper {
-  position: relative;
-  flex: 1 1 auto;     /* CHÍNH: video chiếm hết phần còn lại */
-  width: 100%;
-  overflow: hidden;
-  border-radius: 8px;
-}
-
-/* Iframe fill wrapper (YouTube sẽ letterbox/crop nhẹ tùy nội dung) */
-.video-wrapper iframe {
-  position: absolute;
-  inset: 0;
   width: 100%;
   height: 100%;
-  border: none;
+  object-fit: cover; /* ảnh luôn lấp đầy vuông */
   display: block;
-  /* object-fit không áp cho iframe; fill toàn bộ wrapper */
-}
-
-/* Thumb che trước khi play (nếu dùng) */
-.video-wrapper .video-thumb {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  z-index: 1;
-  border-radius: 8px;
-}
-.video-overlay {
-  position: absolute; inset: 0; z-index: 3; cursor: pointer;
 }
 
 /* =========================
-   META (tiêu đề / giá / info)
-   Giữ chiều cao ổn định để tổng card = cố định
+   META (nếu cần giữ)
    ========================= */
-
-/* Tiêu đề: kẹp 2 dòng + giữ chiều cao tối thiểu ~2 dòng */
-.one-line-title {
-  padding: 8px;
-  font-size: 13px;
-  font-weight: 500;
-  color: #333;
-  margin: 0;
-  line-height: 1.3;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-
-  min-height: 2.6em;   /* ~ 2 dòng */
-}
-
-/* Dòng giá: giữ cao tối thiểu để ổn định bố cục */
-.price-line {
-  padding: 0 8px 8px;
-  font-size: 13px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  min-height: 28px;    /* cố định vùng giá */
-}
-.price {
-  color: #f53d2d;
-  font-weight: 600;
-  font-size: 13px;
-}
-.original-price {
-  color: #999;
-  font-size: 13px;
-  text-decoration: line-through;
-}
-
-/* Thông tin dưới video: đặt min-height tương đương phần title+price */
+.one-line-title,
+.price-line,
 .video-info {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 8px 8px;
-  min-height: 56px;          /* gần bằng (title 2 dòng + price) */
-}
-.video-info img {
-  width: 36px; height: 36px;
-  object-fit: cover; border-radius: 6px;
-}
-.video-info h4 {
-  font-size: 13px; line-height: 1.3; margin: 0;
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-}
-.video-info .price {
-  font-size: 13px; font-weight: 600; color: #f53d2d;
+  display: none; /* nếu chỉ hiển thị ảnh vuông */
 }
 
 /* =========================
    PLACEHOLDER / SKELETON
    ========================= */
 .feed-item.placeholder {
-  height: var(--ff-card-h);   /* giữ bằng card thật */
+  aspect-ratio: 1 / 1;
   background: #f6f7f8;
   border-radius: 12px;
 }
