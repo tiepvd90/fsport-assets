@@ -1,5 +1,13 @@
 {
   "collections": [
+	  {
+      "title": "Tranh đèn LED",
+      "slug": "/art/tranhled",
+      "images": [
+        { "image": "/assets/images/gallery/art/tranhled/6.webp", "slug": "/art/tranhled" },
+        { "image": "/assets/images/gallery/art/tranhled/8.webp", "slug": "/art/tranhled" }
+      ]
+    },
       {
       "title": "Phật Pháp",
       "slug": "/art/zen",
@@ -8,6 +16,16 @@
         { "image": "/assets/images/gallery/art/zen/2.jpg", "slug": "/art/zen" },
         { "image": "/assets/images/gallery/art/zen/3.jpg", "slug": "/art/zen" },
         { "image": "/assets/images/gallery/art/zen/7.jpg", "slug": "/art/zen" }
+      ]
+    },
+	  {
+      "title": "Thư Pháp",
+      "slug": "/art/zen",
+      "images": [
+        { "image": "/assets/images/gallery/art/thuphap/13.webp", "slug": "/art/thuphap" },
+        { "image": "/assets/images/gallery/art/thuphap/12.webp", "slug": "/art/thuphap" },
+        { "image": "/assets/images/gallery/art/thuphap/1.webp", "slug": "/art/thuphap" },
+        { "image": "/assets/images/gallery/art/thuphap/2.webp", "slug": "/art/thuphap" }
       ]
     },
     {
