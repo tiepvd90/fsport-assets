@@ -322,7 +322,11 @@ function renderInitialAndStartPager() {
   setTimeout(() => {
     autofillToViewport();
   }, 30);
+
+  // 🔹 Báo hiệu FreeFlow đã sẵn sàng
+  document.dispatchEvent(new Event("freeflowReady"));
 }
+
 
 function maybeStartRender() {
   if (initialRendered) return;
@@ -474,6 +478,40 @@ window.fetchFreeFlowData = fetchFreeFlowData;
     setTimeout(tryStart, 0);
   }
 })();
+// =====================================================
+// 🖼️ SAU KHI FREEFLOW LOAD XONG → GỌI /art.html
+// =====================================================
+document.addEventListener("freeflowReady", async () => {
+  console.log("✅ FreeFlow đã render xong, bắt đầu tải /art.html...");
+
+  try {
+    const res = await fetch("/art.html");
+    const html = await res.text();
+
+    // ✅ Tạo thẻ tạm để parse nội dung
+    const tempDiv = document.createElement("div");
+    tempDiv.innerHTML = html;
+
+    // ✅ Lấy phần cần hiển thị (collection-container)
+    const content = tempDiv.querySelector(".collection-container");
+    if (content) {
+      const wrapper = document.createElement("div");
+      wrapper.className = "art-section-wrapper";
+      wrapper.style.marginTop = "40px";
+      wrapper.style.borderTop = "1px solid #ddd";
+      wrapper.style.paddingTop = "16px";
+      wrapper.appendChild(content);
+
+      document.body.appendChild(wrapper);
+      console.log("🎨 Đã chèn nội dung từ /art.html thành công");
+    } else {
+      console.warn("Không tìm thấy .collection-container trong /art.html");
+    }
+  } catch (err) {
+    console.error("❌ Lỗi khi tải /art.html:", err);
+  }
+});
+
 
 // ✅ Safari back-forward cache
 window.addEventListener("pageshow", function (event) {
