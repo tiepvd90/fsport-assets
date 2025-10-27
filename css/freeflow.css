@@ -24,7 +24,7 @@
   margin: auto;
   max-width: 1080px;
   box-sizing: border-box;
-  justify-content: center;
+  justify-content: flex-start;
 }
 
 /* Mặc định: 2 cột */
