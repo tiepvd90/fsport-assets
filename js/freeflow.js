@@ -481,36 +481,164 @@ window.fetchFreeFlowData = fetchFreeFlowData;
 // =====================================================
 // 🖼️ SAU KHI FREEFLOW LOAD XONG → GỌI /art.html
 // =====================================================
+// =====================================================
+// 🎨 SAU KHI FREEFLOW LOAD XONG → GỌI /css/art.css + render JSON
+// =====================================================
+
+// 🧩 Hàm load file CSS ngoài
+function loadArtCSS() {
+  if (document.querySelector('link[href="/css/art.css"]')) return;
+  const link = document.createElement("link");
+  link.rel = "stylesheet";
+  link.href = "/css/art.css";
+  link.type = "text/css";
+  link.onload = () => console.log("🎨 Đã load /css/art.css");
+  link.onerror = () => console.warn("⚠️ Không thể tải /css/art.css");
+  document.head.appendChild(link);
+}
+
+// 🖼️ Khi FreeFlow render xong → gọi JSON Art + load CSS
 document.addEventListener("freeflowReady", async () => {
-  console.log("✅ FreeFlow đã render xong, bắt đầu tải /art.html...");
+  loadArtCSS(); // ✅ Đảm bảo CSS được nạp
 
   try {
-    const res = await fetch("/art.html");
-    const html = await res.text();
-
-    // ✅ Tạo thẻ tạm để parse nội dung
-    const tempDiv = document.createElement("div");
-    tempDiv.innerHTML = html;
-
-    // ✅ Lấy phần cần hiển thị (collection-container)
-    const content = tempDiv.querySelector(".collection-container");
-    if (content) {
-      const wrapper = document.createElement("div");
-      wrapper.className = "art-section-wrapper";
-      wrapper.style.marginTop = "40px";
-      wrapper.style.borderTop = "1px solid #ddd";
-      wrapper.style.paddingTop = "16px";
-      wrapper.appendChild(content);
-
-      document.body.appendChild(wrapper);
-      console.log("🎨 Đã chèn nội dung từ /art.html thành công");
-    } else {
-      console.warn("Không tìm thấy .collection-container trong /art.html");
-    }
+    const res = await fetch("/json/art/index.json");
+    const data = await res.json();
+    renderCollectionsInline(data);
   } catch (err) {
-    console.error("❌ Lỗi khi tải /art.html:", err);
+    console.error("Lỗi khi tải /json/art/index.json:", err);
   }
 });
+
+// 🧱 Hàm hiển thị gallery từ JSON
+function renderCollectionsInline(data) {
+  if (!data || !Array.isArray(data.collections)) return;
+
+  const wrapper = document.createElement("section");
+  wrapper.className = "art-section-wrapper";
+  wrapper.style.marginTop = "40px";
+
+  const h1 = document.createElement("h1");
+  h1.textContent = "BỘ SƯU TẬP TRANH DECOR";
+  h1.style.textAlign = "center";
+  h1.style.margin = "24px 0 16px";
+  wrapper.appendChild(h1);
+
+  const container = document.createElement("div");
+  container.className = "collection-container";
+  wrapper.appendChild(container);
+
+  data.collections.forEach(col => {
+    const block = document.createElement("div");
+    block.className = "collection-block";
+
+    const title = document.createElement("div");
+    title.className = "collection-title";
+    title.textContent = col.title;
+    block.appendChild(title);
+
+    const grid = document.createElement("div");
+    grid.className = "art-grid";
+
+    (col.images || []).forEach(imgObj => {
+      const item = document.createElement("div");
+      item.className = "art-item";
+
+      const img = document.createElement("img");
+      img.loading = "lazy";
+      img.src = imgObj.image;
+      img.alt = col.title;
+
+      item.appendChild(img);
+      item.onclick = () =>
+        (window.location.href = imgObj.slug || col.slug || "#");
+      grid.appendChild(item);
+    });
+
+    block.appendChild(grid);
+
+    const moreBtn = document.createElement("a");
+    moreBtn.className = "view-more";
+    moreBtn.href = col.slug || "#";
+    moreBtn.innerHTML = `Xem Thêm Tranh ${col.title} <span>▼</span>`;
+    block.appendChild(moreBtn);
+
+    container.appendChild(block);
+
+    const divider = document.createElement("div");
+    divider.className = "divider";
+    container.appendChild(divider);
+  });
+
+  const feed = document.getElementById("freeflowFeed");
+  (feed?.parentNode || document.body).appendChild(wrapper);
+}
+
+
+function renderCollectionsInline(data) {
+  if (!data || !Array.isArray(data.collections)) return;
+
+  const wrapper = document.createElement("section");
+  wrapper.className = "art-section-wrapper";
+  wrapper.style.marginTop = "40px";
+
+  // (tuỳ chọn) Tiêu đề khu vực
+  const h1 = document.createElement("h1");
+  h1.textContent = "BỘ SƯU TẬP TRANH DECOR";
+  h1.style.textAlign = "center";
+  h1.style.margin = "24px 0 16px";
+  wrapper.appendChild(h1);
+
+  const container = document.createElement("div");
+  container.className = "collection-container";
+  wrapper.appendChild(container);
+
+  data.collections.forEach(col => {
+    const block = document.createElement("div");
+    block.className = "collection-block";
+
+    const title = document.createElement("div");
+    title.className = "collection-title";
+    title.textContent = col.title;
+    block.appendChild(title);
+
+    const grid = document.createElement("div");
+    grid.className = "art-grid";
+
+    (col.images || []).forEach(imgObj => {
+      const item = document.createElement("div");
+      item.className = "art-item";
+
+      const img = document.createElement("img");
+      img.loading = "lazy";
+      img.src = imgObj.image;
+      img.alt = col.title;
+
+      item.appendChild(img);
+      item.onclick = () => (window.location.href = imgObj.slug || col.slug || "#");
+      grid.appendChild(item);
+    });
+
+    block.appendChild(grid);
+
+    const moreBtn = document.createElement("a");
+    moreBtn.className = "view-more";
+    moreBtn.href = col.slug || "#";
+    moreBtn.innerHTML = `Xem Thêm Tranh ${col.title} <span>▼</span>`;
+    block.appendChild(moreBtn);
+
+    container.appendChild(block);
+
+    const divider = document.createElement("div");
+    divider.className = "divider";
+    container.appendChild(divider);
+  });
+
+  // Gắn sau feed
+  const feed = document.getElementById("freeflowFeed");
+  (feed?.parentNode || document.body).appendChild(wrapper);
+}
+
 
 
 // ✅ Safari back-forward cache
