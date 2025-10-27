@@ -69,7 +69,8 @@ function processAndSortData(data) {
     .sort((a, b) => b.finalPriority - a.finalPriority);
 
   // --- 2. Gộp lại: ưu tiên category hiện tại lên đầu ---
-  freeflowData = [...preferred, ...others];
+  freeflowData = [...(freeflowData || []), ...preferred, ...others]
+  .filter((v,i,a) => a.findIndex(t=>t.itemId===v.itemId)===i); // loại trùng
 }
 
 
@@ -344,10 +345,9 @@ async function fetchFreeFlowData(sheetUrlOverride) {
 
   const cached = loadCachedFreeFlow();
   if (cached) {
-    processAndSortData(cached);
-    dataReady = true;
-    maybeStartRender();
-  }
+  processAndSortData(cached);
+  // ⚠️ Chưa render vội, đợi fetch local xong
+}
 
   try {
     const res = await fetch("/json/freeflow.json");
@@ -450,10 +450,11 @@ function bootstrapFreeflow(options = {}) {
     fetchFreeFlowData();
   }, delay);
 
-  // Fallback nếu IO bị miss
-  setTimeout(() => {
-    maybeStartRender();
-  }, 5000);
+  // Fallback sau 2 giây, nếu chưa render thì ép render
+setTimeout(() => {
+  if (!initialRendered && dataReady) renderInitialAndStartPager();
+}, 2000);
+
 }
 
 // ✅ Public API cho loader
