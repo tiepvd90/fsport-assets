@@ -475,9 +475,9 @@
     "itemId": "pickleball-010",
     "title": "Vợt Pickleball Titan",
     "price": 599000,
-    "originalPrice": 699000,
+    "originalPrice": 700000,
     "contentType": "image",
-    "image": "https://i.postimg.cc/63hPKxHd/Untitled-2.jpg",
+    "image": "https://fun-sport.co/assets/images/gallery/pickleball/secpickleball/2.webp",
     "youtube": "",
     "productPage": "/product/secpickleball",
     "tags": [
@@ -519,13 +519,29 @@
     "productCategory": "pickleball",
     "sellerID": "huyenle"
   },
+    {
+    "itemId": "pickleball-omega2",
+    "title": "OMEGA - VỢT CARBON TEFLON XK100",
+    "price": 2090000,
+    "originalPrice": 2700000,
+    "contentType": "youtube",
+    "image": "/assets/images/gallery/pickleball/omega/8.webp",
+    "youtube": "jb6egrT-FsU",
+    "productPage": "/pickleball/omega",
+    "tags": [
+      "pickleball"
+    ],
+    "basePriority": 16,
+    "productCategory": "pickleball",
+    "sellerID": "huyenle"
+  },
   {
     "itemId": "pickleball-omega",
     "title": "OMEGA - VỢT CARBON TEFLON XK100",
     "price": 2090000,
     "originalPrice": 2700000,
     "contentType": "image",
-    "image": "/assets/images/gallery/pickleball/omega/2.webp",
+    "image": "/assets/images/gallery/pickleball/omega/8.webp",
     "youtube": "",
     "productPage": "/pickleball/omega",
     "tags": [
