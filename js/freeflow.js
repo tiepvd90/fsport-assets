@@ -351,13 +351,29 @@ async function fetchFreeFlowData(sheetUrlOverride) {
 
   try {
     const res = await fetch("/json/freeflow.json");
-    const localData = await res.json();
-    const validData = Array.isArray(localData) ? localData : [];
-    processAndSortData(validData);
-    saveCache(validData);
-    dataReady = true;
-    maybeStartRender();
-    //fetchFromGoogleSheet(validData);
+const localData = await res.json();
+const validData = Array.isArray(localData) ? localData : [];
+processAndSortData(validData);
+saveCache(validData);
+dataReady = true;
+maybeStartRender();
+
+// ✅ Nếu đang ở trang art → sau khi render freeflow thì mới load art JSON
+if (window.productCategory === "art") {
+  try {
+    console.log("🎨 Đang ở category ART → đẩy phần tranh decor xuống dưới");
+    await new Promise((resolve) => setTimeout(resolve, 500)); // chờ 0.5s cho feed ổn định
+    const resArt = await fetch("/json/art/index.json");
+    const dataArt = await resArt.json();
+    renderCollectionsInline(dataArt);
+  } catch (err) {
+    console.error("⚠️ Lỗi khi tải /json/art/index.json:", err);
+  }
+} else {
+  // ✅ Nếu không phải art thì vẫn cho phép tải thêm sheet như cũ
+  //fetchFromGoogleSheet(validData);
+}
+
   } catch (e) {
     console.warn("Lỗi khi tải local JSON:", e);
     fetchFromGoogleSheet([]);
