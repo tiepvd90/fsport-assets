@@ -1,0 +1,90 @@
+{
+  "category": "art",
+  "mainImageKey": "Thiết Kế",
+  "thuộc_tính": [
+    {
+      "label": "Thiết Kế",
+      "key": "Thiết Kế",
+      "display": "thumbnail",
+      "values": [
+        {
+          "text": "TK01",
+          "image": "/assets/images/gallery/art/thuphap/1.webp"
+        },
+        {
+          "text": "TK02",
+          "image": "/assets/images/gallery/art/thuphap/2.webp"
+        },
+        {
+          "text": "TK03",
+          "image": "/assets/images/gallery/art/thuphap/3.webp"
+        },
+        {
+          "text": "TK04",
+          "image": "/assets/images/gallery/art/thuphap/4.webp"
+        },
+        {
+          "text": "TK05",
+          "image": "/assets/images/gallery/art/thuphap/5.webp"
+        },
+        {
+          "text": "TK06",
+          "image": "/assets/images/gallery/art/thuphap/6.webp"
+        },
+        {
+          "text": "TK07",
+          "image": "/assets/images/gallery/art/thuphap/7.webp"
+        },
+        {
+          "text": "TK08",
+          "image": "/assets/images/gallery/art/thuphap/8.webp"
+        },
+        {
+          "text": "TK09",
+          "image": "/assets/images/gallery/art/thuphap/9.webp"
+        },
+        {
+          "text": "TK10",
+          "image": "/assets/images/gallery/art/thuphap/10.webp"
+        },
+        {
+          "text": "TK11",
+          "image": "/assets/images/gallery/art/thuphap/11.webp"
+        },
+        {
+          "text": "TK12",
+          "image": "/assets/images/gallery/art/thuphap/12.webp"
+        },
+        {
+          "text": "TK13",
+          "image": "/assets/images/gallery/art/thuphap/13.webp"
+        }
+      ]
+    },
+    {
+      "label": "Kích cỡ",
+      "key": "Kích cỡ",
+      "display": "button",
+      "values": [
+        {
+          "text": "Set Tranh Vừa",
+          "GiaOverride": 99000,
+          "GiaGocOverride": 130000
+        },
+        {
+          "text": "Set Tranh To",
+          "GiaOverride": 149000,
+          "GiaGocOverride": 200000
+        }
+      ]
+    }
+  ],
+  "biến_thể": [
+    {
+      "id": "thuphap",
+      "category": "art",
+      "Giá": 99000,
+      "Giá gốc": 130000
+    }
+  ]
+}
