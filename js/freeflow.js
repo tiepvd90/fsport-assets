@@ -341,7 +341,7 @@ function maybeStartRender() {
 
 // =================== Data fetching ===================
 async function fetchFreeFlowData(sheetUrlOverride) {
-  if (sheetUrlOverride) fallbackUrl = sheetUrlOverride; // Cho phép override URL
+  if (sheetUrlOverride) fallbackUrl = sheetUrlOverride;
 
   const cached = loadCachedFreeFlow();
   if (cached) {
@@ -349,67 +349,66 @@ async function fetchFreeFlowData(sheetUrlOverride) {
   }
 
   // =========================================
-  // 🧩 Nếu category là ART → load ART trước
+  // 🧩 Nếu category là ART → load ART trước rồi tới freeflow
   // =========================================
-  if (window.productCategory?.toLowerCase() === "art") {
+  if (productCategory === "art") {
     try {
-      console.log("🎨 ART mode → load /json/art/index.json trước, rồi mới freeflow");
+      console.log("🎨 ART mode: load art trước, rồi freeflow");
 
-      // 1️⃣ Load CSS cho phần tranh
       loadArtCSS();
 
-      // 2️⃣ Fetch và render phần tranh decor
+      // 1️⃣ Load ART trước
       const resArt = await fetch("/json/art/index.json");
       const dataArt = await resArt.json();
       renderCollectionsInline(dataArt);
 
-      // 3️⃣ Tiếp theo load freeflow.json
+      // 2️⃣ Tiếp theo load FREEFLOW
       const res = await fetch("/json/freeflow.json");
-      const localData = await res.json();
-      const validData = Array.isArray(localData) ? localData : [];
+      const data = await res.json();
+      const validData = Array.isArray(data) ? data : [];
       processAndSortData(validData);
       saveCache(validData);
       dataReady = true;
       maybeStartRender();
 
-      // (tuỳ chọn) Có thể bật thêm fetchFromGoogleSheet nếu cần
-      // fetchFromGoogleSheet(validData);
     } catch (err) {
-      console.error("⚠️ Lỗi khi tải dữ liệu ART hoặc FREEFLOW:", err);
+      console.error("⚠️ Lỗi khi tải ART hoặc FREEFLOW:", err);
     }
-    return; // ✅ Kết thúc sớm, không chạy phần dưới nữa
+    return;
   }
 
   // =========================================
-  // 🧩 Ngược lại: category khác ART → bình thường
+  // 🧩 Ngược lại: category KHÔNG phải ART → load FREEFLOW trước, rồi ART sau
   // =========================================
   try {
+    console.log("🪶 Normal mode: load freeflow trước, rồi art sau");
+
+    // 1️⃣ Load FREEFLOW trước
     const res = await fetch("/json/freeflow.json");
-    const localData = await res.json();
-    const validData = Array.isArray(localData) ? localData : [];
+    const data = await res.json();
+    const validData = Array.isArray(data) ? data : [];
     processAndSortData(validData);
     saveCache(validData);
     dataReady = true;
     maybeStartRender();
 
-    // 🔹 Sau khi freeflow render xong → mới load phần tranh (như cũ)
-    if ((window.productCategory || "").toString().toLowerCase() !== "art") {
-  document.addEventListener("freeflowReady", async () => {
-    loadArtCSS();
-    try {
-      const res = await fetch("/json/art/index.json");
-      const data = await res.json();
-      renderCollectionsInline(data);
-    } catch (err) {
-      console.error("Lỗi khi tải /json/art/index.json:", err);
-    }
-  });
-}
-  } catch (e) {
-    console.warn("⚠️ Lỗi khi tải local JSON:", e);
+    // 2️⃣ Khi FreeFlow sẵn sàng → load thêm ART
+    document.addEventListener("freeflowReady", async () => {
+      try {
+        loadArtCSS();
+        const resArt = await fetch("/json/art/index.json");
+        const dataArt = await resArt.json();
+        renderCollectionsInline(dataArt);
+      } catch (err) {
+        console.error("⚠️ Lỗi khi tải /json/art/index.json:", err);
+      }
+    });
+  } catch (err) {
+    console.error("⚠️ Lỗi khi tải FREEFLOW:", err);
     fetchFromGoogleSheet([]);
   }
 }
+
 
 
 
