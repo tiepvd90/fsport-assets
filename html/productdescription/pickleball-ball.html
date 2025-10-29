@@ -1,14 +1,16 @@
 <style>
-  .desc-img-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
+  .desc-video {
+    width: 100%;
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
     margin-bottom: 16px;
   }
 
-  .desc-img {
+  .desc-video iframe {
     width: 100%;
-    border-radius: 8px;
+    height: 360px;
+    border: none;
     display: block;
   }
 
@@ -60,9 +62,14 @@
   }
 </style>
 
-<div class="desc-img-grid">
-  <img src="https://i.postimg.cc/2SBCb1Z8/bongdau.webp" class="desc-img" alt="Bóng Pickleball Thi Đấu" />
-  <img src="https://i.postimg.cc/26YjfC3j/bongpro.webp" class="desc-img" alt="Bóng Pickleball Pro" />
+<!-- 🔹 Video full width -->
+<div class="desc-video">
+  <iframe
+    id="pickleVideo"
+    src="https://www.youtube.com/embed/hCxL7COxp3k?enablejsapi=1&playsinline=1&rel=0&modestbranding=1"
+    allow="autoplay; encrypted-media"
+    allowfullscreen
+  ></iframe>
 </div>
 
 <h2 class="desc-title">Mô Tả Bóng Pickleball FSport</h2>
@@ -95,6 +102,7 @@
 </button>
 
 <script>
+  // Nút xem thêm / thu gọn
   const toggleBtn = document.getElementById('toggleDesc');
   const descFull = document.getElementById('descFull');
   const fade = document.getElementById('descFade');
@@ -107,4 +115,24 @@
       ? 'Thu Gọn <span class="arrow">&#x25B2;</span>'
       : 'Xem Thêm <span class="arrow">&#x25BC;</span>';
   });
+
+  // 🔊 Bật tiếng khi nhấn play
+  let player;
+  function onYouTubeIframeAPIReady() {
+    player = new YT.Player('pickleVideo', {
+      events: {
+        onStateChange: (event) => {
+          if (event.data === YT.PlayerState.PLAYING) {
+            player.unMute();
+            player.setVolume(100);
+          }
+        },
+      },
+    });
+  }
+
+  // Nạp YouTube API để điều khiển video
+  const tag = document.createElement('script');
+  tag.src = "https://www.youtube.com/iframe_api";
+  document.body.appendChild(tag);
 </script>
