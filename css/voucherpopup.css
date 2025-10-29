@@ -84,8 +84,6 @@
 .voucher-float-img-wrapper img {
   width: 60px;
   height: auto;
-  border-radius: 10px;
-  box-shadow: 0 0 12px rgba(255, 105, 0, 0.3);
 }
 
 /* ❌ Nút tắt ảnh nổi */
