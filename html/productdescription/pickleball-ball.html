@@ -1,24 +1,25 @@
 <style>
-
+  /* === VIDEO KHUNG TỶ LỆ 9:16 === */
   .desc-video {
-  position: relative;
-  width: 100%;
-  padding-top: 177.78%; /* 9:16 ratio = 16 / 9 * 100% = 177.78% */
-  overflow: hidden;
-  border-radius: 8px;
-  margin-bottom: 16px;
-}
+    position: relative;
+    width: 100%;
+    padding-top: 177.78%; /* 9:16 ratio */
+    overflow: hidden;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    display: block;
+  }
 
-.desc-video iframe {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  border: none;
-}
+  .desc-video iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
 
-
+  /* === TEXT & LAYOUT === */
   .desc-text {
     font-size: 12px;
     line-height: 1.6;
@@ -67,7 +68,7 @@
   }
 </style>
 
-<!-- 🔹 Video full width -->
+<!-- 🎬 VIDEO 9:16 -->
 <div class="desc-video">
   <iframe
     id="pickleVideo"
@@ -80,7 +81,7 @@
 <h2 class="desc-title">Mô Tả Bóng Pickleball FSport</h2>
 
 <div id="descShort" class="desc-text">
-  <p><strong>🏓 Bóng Pickleball Ngoài Trời FSport – Tiêu Chuẩn Thi Đấu</strong></p>
+  <p><strong>Bóng Pickleball Dạ Quang FSport PRO – Tiêu Chuẩn Thi Đấu</strong></p>
   <p>Bóng chất lượng cao dành cho tập luyện và thi đấu, độ bền vượt trội, bay ổn định và cảm giác chơi mượt mà. Phù hợp cho người chơi phong trào đến chuyên nghiệp.</p>
 </div>
 
@@ -107,7 +108,7 @@
 </button>
 
 <script>
-  // Nút xem thêm / thu gọn
+  /* ==== NÚT XEM THÊM / THU GỌN ==== */
   const toggleBtn = document.getElementById('toggleDesc');
   const descFull = document.getElementById('descFull');
   const fade = document.getElementById('descFade');
@@ -121,23 +122,38 @@
       : 'Xem Thêm <span class="arrow">&#x25BC;</span>';
   });
 
-  // 🔊 Bật tiếng khi nhấn play
-  let player;
-  function onYouTubeIframeAPIReady() {
-    player = new YT.Player('pickleVideo', {
-      events: {
-        onStateChange: (event) => {
-          if (event.data === YT.PlayerState.PLAYING) {
-            player.unMute();
-            player.setVolume(100);
+  /* ==== KHỞI TẠO VIDEO KHÔNG XUNG ĐỘT ==== */
+  (function () {
+    function initPickleVideo() {
+      if (!window.YT || !YT.Player) return;
+      new YT.Player('pickleVideo', {
+        events: {
+          onStateChange: function (e) {
+            if (e.data === YT.PlayerState.PLAYING) {
+              e.target.unMute();
+              e.target.setVolume(100);
+            }
           }
-        },
-      },
-    });
-  }
+        }
+      });
+    }
 
-  // Nạp YouTube API để điều khiển video
-  const tag = document.createElement('script');
-  tag.src = "https://www.youtube.com/iframe_api";
-  document.body.appendChild(tag);
+    // Nếu YT đã có sẵn (FreeFlow hoặc trang khác đã nạp)
+    if (window.YT && YT.Player) {
+      initPickleVideo();
+    } else {
+      // Giữ hàm cũ nếu đã tồn tại
+      const prev = window.onYouTubeIframeAPIReady;
+      window.onYouTubeIframeAPIReady = function () {
+        if (typeof prev === 'function') prev();
+        initPickleVideo();
+      };
+      // Chỉ nạp script nếu chưa có
+      if (![...document.scripts].some(s => s.src.includes('youtube.com/iframe_api'))) {
+        const tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        document.head.appendChild(tag);
+      }
+    }
+  })();
 </script>
