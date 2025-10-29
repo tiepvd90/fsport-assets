@@ -128,3 +128,16 @@ setInterval(() => {
   document.body.appendChild(script);
 })();
 
+// ============================================
+// 💬 GỌI ZALO OA CHAT
+// ============================================
+(function loadZaloChat() {
+  if (window.__zaloInjected) return;
+  window.__zaloInjected = true;
+
+  const s = document.createElement("script");
+  s.src = "/js/zalo.js?v=1";
+  s.defer = true;
+  s.onerror = (e) => console.warn("Không load được zalo.js", e);
+  document.head.appendChild(s);
+})();
