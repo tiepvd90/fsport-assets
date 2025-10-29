@@ -18,7 +18,7 @@ const simpleVoucherMap = {
 };
 
 const allowedPages = [
-  "firstpickleball", "secpickleball", "teflon", "phantom", "gen4", "tera","pickleball-airforce", "homepage"
+  "teflon"
 ];
 
 function showVoucherPopup(refCode, amount) {
