@@ -309,6 +309,22 @@
     "productCategory": "pickleball",
     "sellerID": "huyenle"
   },
+    {
+    "itemId": "pickleball-ball-2",
+    "title": "Bóng Pickleball PRO Dạ Quang Tiêu Chuẩn Thi Đấu",
+    "price": 20000,
+    "originalPrice": 40000,
+    "contentType": "youtube",
+    "image": "https://fun-sport.co/assets/images/gallery/pickleball/pickleball-ball/2.webp",
+    "youtube": "hCxL7COxp3k",
+    "productPage": "/pickleball/ball",
+    "tags": [
+      "pickleball"
+    ],
+    "basePriority": 36,
+    "productCategory": "pickleball",
+    "sellerID": "huyenle"
+  },
   {
     "itemId": "pickleball-bag",
     "title": "Túi Đựng Vợt Pickleball Balo Đựng Vợt Pickleball",
