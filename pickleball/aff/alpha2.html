@@ -3,38 +3,40 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>Kamito Alpha 2 – Pickleball Paddle | Fun-Sport</title>
 
-  <!-- ✅ CSS -->
+  <title>document.title = window.productTitle;</title>
+
+  <!-- CSS -->
   <link rel="stylesheet" href="/css/base.css" />
   <link rel="stylesheet" href="/css/slideshow.css" />
   <link rel="stylesheet" href="/css/productdescription.css" />
   <link rel="icon" type="image/png" href="/favicon.png" />
 
-  <!-- ✅ JS định nghĩa -->
+  <!-- Biến cấu hình trang -->
   <script>
-    window.title = "Kamito Alpha 2 – Pickleball Paddle | Fun-Sport";
-    window.loai = "pickleball";
-    window.productCategory = "pickleball";
-    window.productPage = "alpha2";
-    window.shopeeLink = "https://s.shopee.vn/7fRcPKWyC9";
+    window.productTitle   = "Kamito Alpha 2 – Pickleball";
+    window.loai           = "pickleball";
+    window.productCategory= "pickleball";
+    window.productPage    = "alpha2";
+    window.shopeeLink     = "https://s.shopee.vn/7fRcPKWyC9";
     window.affImages = [
       "https://down-vn.img.susercontent.com/file/vn-11134207-820l4-mg7vnkk0tszscd.webp",
       "https://down-vn.img.susercontent.com/file/vn-11134207-820l4-mfrynu1smozzdb.webp",
       "https://down-vn.img.susercontent.com/file/vn-11134207-820l4-mfrymxdvos94d7.webp",
       "https://down-vn.img.susercontent.com/file/vn-11134207-820l4-mf5imtmwu77t71.webp"
     ];
+    document.title = window.productTitle;
   </script>
 </head>
 <body>
-
   <div class="page-container">
 
-    <!-- ✅ Slideshow -->
+    <!-- Slideshow -->
     <div class="lazy-slideshow" id="lazySlideshow">
       <div class="slide-counter" id="slideCounter">1/1</div>
     </div>
-    <div id="fullscreenZoom" style="display: none;">
+    <!-- Zoom overlay -->
+    <div id="fullscreenZoom" style="display:none;">
       <div id="zoomWrapper">
         <img id="zoomedImg" src="" alt="Zoomed" />
         <button id="zoomCloseBtn">×</button>
@@ -42,84 +44,74 @@
     </div>
     <script src="/js/aff/slideshow-aff.js"></script>
 
-    <!-- ✅ Tiêu đề sản phẩm -->
-    <div class="product-hero">
+    <!-- Tiêu đề -->
+    <div class="product-hero" style="margin-top:12px;">
       <h1 style="font-size:14px;font-weight:bold;margin-top:8px;font-family:'Be Vietnam Pro',sans-serif;">
         <span style="background:black;color:white;font-size:11px;padding:2px 6px;border-radius:4px;margin-right:4px;">Mall</span>
         <span style="background:#007BFF;color:white;font-size:11px;padding:2px 6px;border-radius:4px;margin-right:6px;text-transform:uppercase;">Hàng Chính Hãng</span>
-        Kamito Alpha 2 – Pickleball Paddle | Fun-Sport
+        <span id="productTitleText">Kamito Alpha 2 – Pickleball Paddle | Fun-Sport</span>
       </h1>
     </div>
+    <script>
+      document.getElementById("productTitleText").textContent = window.productTitle + " | Fun-Sport";
+    </script>
 
-    <!-- ✅ Mô tả sản phẩm -->
+    <!-- MÔ TẢ (đúng format cũ) -->
     <div class="desc-container">
-      <img src="https://down-vn.img.susercontent.com/file/vn-11134207-820l4-mg6dj1ephlhle5.webp"
-           alt="Vợt Pickleball Kamito Alpha 2"
-           class="desc-img"
-           style="width:100%;border-radius:8px;margin-bottom:16px;" />
 
-      <h2 class="desc-title">Kamito Alpha 2 – Bước Tiến Mới Trong Thiết Kế Vợt Pickleball</h2>
+      <h2 class="desc-title">Kamito Alpha 2 – Cân bằng kiểm soát, ổn định và cảm giác bóng</h2>
 
-      <p><strong>Kamito Alpha 2</strong> ra mắt như một minh chứng cho việc Kamito luôn lắng nghe người chơi và không ngừng cải tiến sản phẩm để mang đến những trải nghiệm thi đấu tốt nhất.</p>
+      <div class="desc-text" id="descShort">
+        <p><strong>Phiên bản nâng cấp từ Kamito Alpha</strong> với bề mặt nhám hơn và mềm hơn giúp kiểm soát bóng tốt, tạo xoáy dễ dàng.</p>
+        <p>Vật liệu <strong>Carbon Toray Nhật Bản</strong> cho độ bền và phản hồi lực ổn định; lõi <strong>PP Honeycomb</strong> giảm rung tay khi thi đấu lâu.</p>
+        <p>Độ dày 16&nbsp;mm, trọng lượng khoảng 230&nbsp;g – cấu hình tối ưu giữa kiểm soát, độ êm và sức mạnh phản công.</p>
+      </div>
 
-      <p>Không chỉ kế thừa toàn bộ ưu điểm của dòng Alpha đời đầu, <strong>Kamito Alpha 2</strong> được tinh chỉnh bề mặt vợt với độ nhám cao hơn và mềm hơn, giúp kiểm soát bóng tối ưu và tạo xoáy dễ dàng hơn trong mọi pha đánh.</p>
+      <div class="desc-text hidden" id="descFull">
+        <p><strong>📌 Thông số kỹ thuật:</strong></p>
+        <ul>
+          <li>Chiều dài: 418&nbsp;mm – Rộng mặt: 190&nbsp;mm – Dày: 16&nbsp;mm</li>
+          <li>Chiều dài cán: 136&nbsp;mm – Chu vi cán: 103&nbsp;mm</li>
+          <li>Trọng lượng: 230&nbsp;±&nbsp;4&nbsp;g</li>
+          <li>Chất liệu bề mặt: Carbon Toray (Nhật Bản)</li>
+          <li>Cấu trúc lõi: PP Honeycomb</li>
+          <li>Màu sắc: Xanh dương – Tím hồng – Đỏ tím – Đỏ vàng – Xanh ngọc</li>
+        </ul>
 
-      <h3>💡 Cải Tiến Vượt Trội</h3>
-      <ul>
-        <li>🎯 Mặt vợt làm từ <strong>Carbon Toray Nhật Bản</strong> – tăng độ bền và khả năng bám bóng.</li>
-        <li>🎯 Bề mặt nhám giúp bóng “ăn” vào vợt lâu hơn, dễ kiểm soát và tạo xoáy (topspin, slice, dink ...).</li>
-        <li>🎯 Lõi <strong>PP Honeycomb</strong> kết hợp vật liệu hấp thụ rung giúp giảm chấn tay khi đánh mạnh.</li>
-        <li>🎯 Kích thước chuẩn 419 × 190 mm phù hợp cả người chơi một tay và hai tay.</li>
-        <li>🎯 Độ dày 16 mm đảm bảo cảm giác đầm chắc, ổn định khi phản công.</li>
-        <li>🎯 Chu vi cán 103 mm – bo tròn nhẹ, vừa vặn tay người Việt, cầm nắm thoải mái.</li>
-      </ul>
+        <p><strong>⚙️ Cảm giác & hiệu năng:</strong></p>
+        <p>Bề mặt nhám giúp bóng “ăn” vào vợt lâu hơn, hỗ trợ <strong>dink</strong>, <strong>topspin</strong>, <strong>slice</strong> chính xác; độ dày 16&nbsp;mm cho cảm giác đầm chắc, ổn định khi phòng thủ và phản công.</p>
 
-      <h3>⚙️ Thông Số Kỹ Thuật</h3>
-      <ul>
-        <li><strong>Chất liệu:</strong> Carbon Toray Nhật Bản</li>
-        <li><strong>Cấu trúc lõi:</strong> PP Honeycomb</li>
-        <li><strong>Chiều dài vợt:</strong> 418 mm</li>
-        <li><strong>Chiều rộng vợt:</strong> 190 mm</li>
-        <li><strong>Độ dày vợt:</strong> 16 mm</li>
-        <li><strong>Chiều dài cán vợt:</strong> 136 mm</li>
-        <li><strong>Chu vi cán:</strong> 103 mm</li>
-        <li><strong>Trọng lượng:</strong> 230 ± 4 g</li>
-        <li><strong>Màu sắc:</strong> Xanh dương – Tím hồng – Đỏ tím – Đỏ vàng – Xanh ngọc</li>
-      </ul>
+        <p><strong>🧩 Đối tượng phù hợp:</strong></p>
+        <p>Người chơi thiên về kiểm soát, muốn độ ổn định cao nhưng vẫn cần lực bật tốt để chuyển trạng thái tấn công nhanh.</p>
+      </div>
 
-      <h3>✨ Trải Nghiệm Thực Tế</h3>
-      <ul>
-        <li>⚡ Bóng bật nhanh, cảm giác đầm tay và cực kỳ ổn định.</li>
-        <li>⚡ Phù hợp cho người chơi thiên về kiểm soát nhưng vẫn muốn tốc độ phản công cao.</li>
-        <li>⚡ Viền vợt bền màu, in chìm “KAMITO ALPHA 2” dọc hai bên tạo điểm nhấn sang trọng.</li>
-      </ul>
-
-      <p style="margin-top:24px;">
-        <em>Kamito Alpha 2 – lựa chọn lý tưởng cho người chơi muốn nâng cấp trải nghiệm thi đấu chuyên nghiệp, cân bằng hoàn hảo giữa lực, kiểm soát và độ xoáy.</em>
-      </p>
+      <div class="desc-fade" id="descFade"></div>
+      <button id="toggleDesc" class="desc-toggle-btn">
+        Xem Thêm <span class="arrow">&#x25BC;</span>
+      </button>
     </div>
+    <script src="/js/productdescription.js"></script>
 
-    <!-- ✅ FreeFlow -->
+    <!-- FreeFlow gợi ý -->
     <h2 class="freeflow-heading" style="font-size:18px;margin:24px 12px 12px;">CÓ THỂ BẠN SẼ THÍCH</h2>
     <script src="/js/freeflow-loader.js"></script>
-
   </div>
 
-  <!-- ✅ Sticky Footer -->
+  <!-- Sticky footer Shopee -->
   <script src="/js/aff/stickyfooter-aff.js"></script>
 
-  <!-- ✅ Tracking -->
+  <!-- Tracking + base -->
   <script src="https://friendly-kitten-d760ff.netlify.app/js/tracking.js"></script>
   <div id="base-placeholder"></div>
   <script>
     fetch("/html/base.html")
-      .then(res => res.text())
+      .then(r => r.text())
       .then(html => {
         document.getElementById("base-placeholder").outerHTML = html;
         if (typeof trackBothPixels === "function") {
           trackBothPixels("ViewContent", {
             content_id: window.productPage,
-            content_name: window.title,
+            content_name: window.productTitle,
             content_category: window.productCategory,
             value: 0,
             currency: "VND"
@@ -127,8 +119,6 @@
         }
       });
   </script>
-
-  <!-- ✅ Base JS -->
   <script src="/js/base.js"></script>
 </body>
 </html>
