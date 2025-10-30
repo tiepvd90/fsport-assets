@@ -166,22 +166,6 @@
     "sellerID": "huyenle"
   },
   {
-    "itemId": "pickleball-007",
-    "title": "Jusain & AirForce – Dành Cho Người Chơi Thật",
-    "price": 1050000,
-    "originalPrice": 2000000,
-    "contentType": "image",
-    "image": "https://i.postimg.cc/Ls5NTGkN/11.jpg",
-    "youtube": "",
-    "productPage": "/product/firstpickleball",
-    "tags": [
-      "pickleball"
-    ],
-    "basePriority": 16,
-    "productCategory": "pickleball",
-    "sellerID": "huyenle"
-  },
-  {
     "itemId": "pickleball-008",
     "title": "Vợt thiên công The Black 14mm",
     "price": 999000,
