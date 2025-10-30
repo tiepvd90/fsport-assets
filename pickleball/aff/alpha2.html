@@ -7,48 +7,36 @@
 
   <title></title>
 
-  <!-- ✅ CSS -->
+  <!-- ✅ CSS cơ bản -->
   <link rel="stylesheet" href="../../css/base.css" />
   <link rel="stylesheet" href="../../css/slideshow.css" />
   <link rel="stylesheet" href="../../css/stickyfooter.css" />
   <link rel="stylesheet" href="../../css/productdescription.css" />
   <link rel="icon" type="image/png" href="/favicon.png" />
 
-  <!-- ✅ JS định nghĩa -->
+  <!-- ✅ Biến sản phẩm -->
   <script>
-    // 🏷️ Cấu hình sản phẩm
     window.loai = "pickleball";
     window.productCategory = "pickleball";
-    window.productPage = "kamito-alpha-2";
+    window.productPage = "alpha2";
     window.productTitle = "Kamito Alpha 2 – Pickleball Paddle";
     window.shopeeLink = "https://s.shopee.vn/7fRcPKWyC9";
-
-    // 🖼️ Ảnh slideshow
     window.affImages = [
       "https://down-vn.img.susercontent.com/file/vn-11134207-820l4-mg7vnkk0tszscd.webp",
       "https://down-vn.img.susercontent.com/file/vn-11134207-820l4-mfrynu1smozzdb.webp",
       "https://down-vn.img.susercontent.com/file/vn-11134207-820l4-mfrymxdvos94d7.webp",
       "https://down-vn.img.susercontent.com/file/vn-11134207-820l4-mf5imtmwu77t71.webp"
     ];
-
-    // ✅ Gán động title trình duyệt
-    document.addEventListener("DOMContentLoaded", () => {
-      document.title = window.productTitle + " | Fun-Sport";
-    });
+    document.title = window.productTitle + " | Fun-Sport";
   </script>
 </head>
 
 <body>
-
   <div class="page-container">
-    <!-- ✅ Placeholder popup & footer -->
-    <div id="cartPopup-placeholder"></div>
-    <div id="checkoutPopup-placeholder"></div>
-    <div id="sticky-footer-placeholder"></div>
 
     <!-- ✅ Slideshow -->
     <div class="lazy-slideshow" id="lazySlideshow">
-      <div class="slide-counter" id="slideCounter">1/4</div>
+      <div class="slide-counter" id="slideCounter">1/1</div>
     </div>
 
     <!-- ✅ Zoom toàn màn hình -->
@@ -58,15 +46,12 @@
         <button id="zoomCloseBtn">×</button>
       </div>
     </div>
-
-    <!-- ✅ Gọi slideshow -->
     <script src="../../js/aff/slideshow-aff.js"></script>
 
-    <!-- ✅ Tiêu đề -->
+    <!-- ✅ Tiêu đề + thông tin -->
     <div class="product-hero" style="margin-top:12px;">
       <h1 id="productTitleText"
           style="font-size:15px;font-weight:bold;margin-top:8px;font-family:'Be Vietnam Pro',sans-serif;"></h1>
-
       <script>
         document.addEventListener("DOMContentLoaded", () => {
           document.getElementById("productTitleText").textContent = window.productTitle;
@@ -75,94 +60,72 @@
 
       <div class="shipping-wrapper">
         <div class="shipping-info">
-          <div class="shipping-line" style="font-size:13px;">
-            🚚 Sản phẩm được vận hành bởi Shopee
-          </div>
+          <div class="shipping-line"><span class="icon">🚚</span>Sản Phẩm Được Vận Hành Bởi Shopee</div>
+          <div class="shipping-line"><span class="icon">🔍</span>Kiểm Tra Hàng Trước Khi Thanh Toán</div>
         </div>
       </div>
     </div>
 
     <!-- ✅ Mô tả sản phẩm -->
     <div class="desc-container" style="margin-top:12px;">
-      <h2 class="desc-title">KAMITO ALPHA 2</h2>
+      <h2 class="desc-title">Kamito Alpha 2 – Bước Tiến Mới Trong Thiết Kế Vợt Pickleball</h2>
 
       <p>Kamito Alpha 2 ra mắt như một minh chứng cho việc Kamito luôn lắng nghe khách hàng và không ngừng cải tiến sản phẩm để mang đến người dùng những dòng sản phẩm chất lượng nhất.</p>
-
       <p>Không chỉ kế thừa tất cả những ưu điểm của Kamito Alpha, phiên bản Kamito Alpha 2 còn được tinh chỉnh mặt vợt với độ nhám cao hơn và mềm hơn, giúp mang đến những trải nghiệm thi đấu tốt nhất dành cho người chơi.</p>
 
-      <h3>1. THÔNG SỐ KỸ THUẬT VỢT ALPHA 2</h3>
+      <h3>1. Thông số kỹ thuật vợt Alpha 2</h3>
       <ul>
-        <li><strong>Chất liệu:</strong> Carbon Toray Nhật Bản</li>
-        <li><strong>Cấu trúc lõi:</strong> PP Honeycomb</li>
-        <li><strong>Chiều dài vợt:</strong> 418 mm</li>
-        <li><strong>Chiều rộng vợt:</strong> 190 mm</li>
-        <li><strong>Độ dày vợt:</strong> 16 mm</li>
-        <li><strong>Chiều dài cán vợt:</strong> 136 mm</li>
-        <li><strong>Chu vi cán:</strong> 103 mm</li>
-        <li><strong>Trọng lượng:</strong> 230±4g</li>
-        <li><strong>Màu sắc:</strong> Xanh dương – Tím hồng – Đỏ tím – Đỏ vàng – Xanh ngọc</li>
+        <li>Chất liệu: Carbon Toray Nhật Bản</li>
+        <li>Cấu trúc lõi: PP Honeycomb</li>
+        <li>Chiều dài vợt: 418 mm</li>
+        <li>Chiều rộng vợt: 190 mm</li>
+        <li>Độ dày vợt: 16 mm</li>
+        <li>Chiều dài cán vợt: 136 mm</li>
+        <li>Chu vi cán: 103 mm</li>
+        <li>Trọng lượng: 230±4 g</li>
+        <li>Màu sắc: Xanh dương - Tím hồng - Đỏ tím - Đỏ vàng - Xanh ngọc</li>
       </ul>
 
-      <h3>2. ƯU ĐIỂM NỔI BẬT VỢT KAMITO ALPHA 2</h3>
+      <h3>2. Ưu điểm nổi bật</h3>
       <ul>
-        <li>Mặt vợt cải tiến bằng <strong>Carbon Toray Nhật Bản</strong> với độ nhám cao, giúp tăng độ bền và khả năng xoáy bóng vượt trội.</li>
-        <li>Độ nhám được tinh chỉnh cho khả năng bám bóng tốt hơn, hỗ trợ kỹ thuật dink, topspin, slide... chính xác hơn.</li>
-        <li>Cấu trúc lõi đặc biệt cân bằng giữa độ nảy và hấp thụ lực, tối ưu cho các pha tấn công uy lực.</li>
-        <li>Kích thước chuẩn 419×190 mm, cán dài 136 mm, dễ cầm nắm và hỗ trợ cả cú đánh hai tay.</li>
-        <li>Độ dày tiêu chuẩn 16 mm giúp giảm rung hiệu quả, cảm giác tay chân thực.</li>
-        <li>Chu vi cán 103 mm phù hợp tay người Việt, tăng độ thoải mái và linh hoạt.</li>
-        <li>Trọng lượng 230 ± 4 g cân bằng giữa tốc độ, lực và kiểm soát.</li>
-        <li>Viền vợt bền màu, logo “KAMITO ALPHA 2” dập chìm tạo điểm nhấn cao cấp.</li>
+        <li>Mặt vợt bằng Carbon Toray Nhật Bản, độ nhám cao giúp tăng khả năng bám bóng và kiểm soát cú xoáy.</li>
+        <li>Bề mặt tinh chỉnh mềm hơn, hỗ trợ cảm giác chạm bóng tự nhiên, giảm rung tay khi thi đấu lâu.</li>
+        <li>Cấu trúc lõi PP Honeycomb cân bằng giữa lực bật và khả năng hấp thụ rung.</li>
+        <li>Kích thước chuẩn 419x190mm, phù hợp cả cú đánh hai tay và một tay.</li>
+        <li>Độ dày 16mm cho cảm giác đầm, ổn định, chính xác trong từng pha xử lý.</li>
+        <li>Chu vi cán 103mm – bo tròn nhẹ, cầm thoải mái cho bàn tay người Việt.</li>
+        <li>Trọng lượng 230g cân bằng giữa tốc độ, lực và kiểm soát.</li>
+        <li>Viền vợt bền màu, in nổi “KAMITO ALPHA 2” dọc hai bên tạo điểm nhấn sang trọng.</li>
       </ul>
     </div>
 
-    <!-- ✅ FreeFlow -->
+    <!-- ✅ FreeFlow đề xuất sản phẩm -->
     <h2 class="freeflow-heading" style="font-size:18px;margin:24px 12px 12px;">CÓ THỂ BẠN SẼ THÍCH</h2>
     <script src="/js/freeflow-loader.js"></script>
-
   </div>
 
-  <!-- ✅ Sticky footer -->
-  <div id="sticky-footer-placeholder"></div>
+  <!-- ✅ Sticky footer Shopee -->
   <script src="../../js/aff/stickyfooter-aff.js"></script>
 
-  <!-- ✅ Popup + tracking -->
+  <!-- ✅ Tracking & base -->
+  <script src="https://friendly-kitten-d760ff.netlify.app/js/tracking.js"></script>
+  <div id="base-placeholder"></div>
   <script>
-    async function loadScript(src) {
-      return new Promise((resolve) => {
-        const s = document.createElement("script");
-        s.src = src;
-        s.onload = resolve;
-        document.body.appendChild(s);
+    fetch("/html/base.html")
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById("base-placeholder").outerHTML = html;
+        if (typeof trackBothPixels === "function") {
+          trackBothPixels("ViewContent", {
+            content_id: window.productPage,
+            content_name: window.productTitle,
+            content_category: window.productCategory,
+            value: 0,
+            currency: "VND"
+          });
+        }
       });
-    }
-
-    async function injectHTML(file, id) {
-      const res = await fetch(file);
-      const html = await res.text();
-      document.getElementById(id).innerHTML = html;
-    }
-
-    async function setupPage() {
-      await injectHTML("/html/cartpopup.html", "cartPopup-placeholder");
-      await injectHTML("/html/checkoutpopup.html", "checkoutPopup-placeholder");
-
-      await loadScript("https://friendly-kitten-d760ff.netlify.app/js/checkoutpopup.js");
-      await loadScript("https://friendly-kitten-d760ff.netlify.app/js/tracking.js");
-      await loadScript("/js/base.js");
-
-      if (typeof trackBothPixels === "function") {
-        trackBothPixels("ViewContent", {
-          content_id: window.productPage,
-          content_name: window.productTitle,
-          content_category: window.productCategory,
-          value: 0,
-          currency: "VND",
-        });
-      }
-    }
-
-    setupPage();
   </script>
+  <script src="/js/base.js"></script>
 </body>
 </html>
