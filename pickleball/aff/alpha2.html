@@ -15,10 +15,7 @@
 
   <!-- ✅ Biến toàn cục -->
   <script>
-    window.loai = "pickleball";
-    window.productCategory = "pickleball";
-    window.productPage = "kamito-alpha-2";
-    window.shopeeLink = "https://shopee.vn/product/123456789"; // 🔗 Thay link thật
+    window.shopeeLink = "https://shopee.vn/product/123456789"; // 🔗 thay link thật
     window.affImages = [
       "https://down-vn.img.susercontent.com/file/vn-11134207-820l4-mg7vnkk0tszscd.webp",
       "https://down-vn.img.susercontent.com/file/vn-11134207-820l4-mfrynu1smozzdb.webp",
@@ -31,14 +28,58 @@
 <body>
   <div class="page-container">
 
-    <!-- ✅ Placeholder popup & base -->
-    <div id="cartPopup-placeholder"></div>
-    <div id="checkoutPopup-placeholder"></div>
-    <div id="sticky-footer-placeholder"></div>
-    <div id="base-placeholder"></div>
-
     <!-- ✅ Slideshow -->
-    <script src="/js/aff/slideshow-aff.js"></script>
+    <div class="lazy-slideshow" id="lazySlideshow">
+      <div class="slide-counter" id="slideCounter">1/4</div>
+    </div>
+
+    <div id="fullscreenZoom" style="display:none;">
+      <div id="zoomWrapper">
+        <img id="zoomedImg" src="" alt="Zoomed" />
+        <button id="zoomCloseBtn">×</button>
+      </div>
+    </div>
+
+    <script>
+      // ====== Slideshow chạy trực tiếp ======
+      const imgs = window.affImages || [];
+      const container = document.getElementById("lazySlideshow");
+      const counter = document.getElementById("slideCounter");
+      let current = 0;
+      const slides = [];
+
+      imgs.forEach((src, i) => {
+        const img = document.createElement("img");
+        img.src = src;
+        img.className = "slide" + (i === 0 ? " show" : "");
+        container.insertBefore(img, counter);
+        slides.push(img);
+      });
+
+      function updateCounter() {
+        counter.textContent = `${current + 1}/${imgs.length}`;
+      }
+
+      function next() {
+        slides[current].classList.remove("show");
+        current = (current + 1) % imgs.length;
+        slides[current].classList.add("show");
+        updateCounter();
+      }
+      let auto = setInterval(next, 4000);
+      updateCounter();
+
+      // Zoom ảnh
+      const overlay = document.getElementById("fullscreenZoom");
+      const zoomImg = document.getElementById("zoomedImg");
+      document.getElementById("zoomCloseBtn").onclick = () => {
+        overlay.style.display = "none";
+      };
+      container.onclick = () => {
+        zoomImg.src = slides[current].src;
+        overlay.style.display = "flex";
+      };
+    </script>
 
     <!-- ✅ Tiêu đề sản phẩm -->
     <div class="product-hero" style="margin-top: 12px;">
@@ -53,9 +94,7 @@
     <!-- ✅ Mô tả sản phẩm -->
     <div class="desc-container" style="margin-top: 12px;">
       <h2 class="desc-title">KAMITO ALPHA 2</h2>
-
       <p>Kamito Alpha 2 ra mắt như một minh chứng cho việc Kamito luôn lắng nghe khách hàng và không ngừng cải tiến sản phẩm để mang đến người dùng những dòng sản phẩm chất lượng nhất.</p>
-
       <p>Không chỉ kế thừa tất cả những ưu điểm của Kamito Alpha, phiên bản Kamito Alpha 2 còn được tinh chỉnh mặt vợt với độ nhám cao hơn và mềm hơn, giúp mang đến những trải nghiệm thi đấu tốt nhất dành cho người chơi.</p>
 
       <h3>1. THÔNG SỐ KỸ THUẬT VỢT ALPHA 2</h3>
@@ -90,76 +129,27 @@
 
   </div>
 
-  <!-- ====================================================== -->
-  <!-- ✅ Inject popup, base, sticky footer và tracking -->
-  <!-- ====================================================== -->
-  <script>
-    async function loadScript(src) {
-      return new Promise((resolve, reject) => {
-        const s = document.createElement("script");
-        s.src = src;
-        s.onload = resolve;
-        s.onerror = reject;
-        document.body.appendChild(s);
-      });
-    }
-
-    async function injectHTML(file, placeholderId) {
-      try {
-        const res = await fetch(file);
-        const html = await res.text();
-        const container = document.getElementById(placeholderId);
-        if (!container) return;
-        const temp = document.createElement("div");
-        temp.innerHTML = html;
-
-        Array.from(temp.children).forEach(el => {
-          if (el.tagName === "SCRIPT") {
-            const script = document.createElement("script");
-            if (el.src) script.src = el.src;
-            else script.textContent = el.textContent;
-            document.body.appendChild(script);
-          } else {
-            container.appendChild(el);
-          }
-        });
-      } catch (err) {
-        console.warn("⚠️ Lỗi injectHTML:", file, err);
-      }
-    }
-
-    async function setupPage() {
-      console.log("🧩 Injecting popup & footer...");
-
-      await injectHTML("/html/cartpopup.html", "cartPopup-placeholder");
-      await injectHTML("/html/checkoutpopup.html", "checkoutPopup-placeholder");
-
-      // Base HTML chứa icon giỏ hàng
-      const res = await fetch("/html/base.html");
-      const html = await res.text();
-      const basePlaceholder = document.getElementById("base-placeholder");
-      if (basePlaceholder) basePlaceholder.outerHTML = html;
-
-      // Sticky footer aff (Shopee)
-      await loadScript("/js/aff/stickyfooter-aff.js");
-      await loadScript("https://friendly-kitten-d760ff.netlify.app/js/checkoutpopup.js");
-      await loadScript("/js/base.js");
-
-      // Tracking (Meta + TikTok)
-      await loadScript("https://friendly-kitten-d760ff.netlify.app/js/tracking.js");
-      if (typeof trackBothPixels === "function") {
-        trackBothPixels("ViewContent", {
-          content_id: window.productPage,
-          content_name: window.productPage,
-          content_category: window.productCategory,
-          value: 0,
-          currency: "VND",
-        });
-        console.log("📈 Tracking ViewContent sent");
-      }
-    }
-
-    document.addEventListener("DOMContentLoaded", setupPage);
-  </script>
+  <!-- ✅ Sticky Footer Shopee -->
+  <div class="sticky-footer">
+    <div style="display:flex;align-items:center;gap:20px;">
+      <a href="https://fun-sport.co" class="footer-icon">
+        <img src="https://img.icons8.com/ios-filled/20/000000/home.png" /><span>Home</span>
+      </a>
+      <a href="https://m.me/funsport1" class="footer-icon" target="_blank">
+        <img src="https://img.icons8.com/ios-filled/20/000000/facebook-messenger.png"/><span>Mess</span>
+      </a>
+      <a href="https://zalo.me/3913722836443497435" class="footer-icon" target="_blank">
+        <img src="https://img.icons8.com/ios-filled/20/000000/zalo.png"/><span>Zalo</span>
+      </a>
+      <a href="tel:0384735980" class="footer-icon">
+        <img src="https://img.icons8.com/ios-filled/20/000000/phone.png"/><span>Call</span>
+      </a>
+    </div>
+    <button onclick="window.open(window.shopeeLink,'_blank')"
+            class="footer-btn"
+            style="background:#ee4d2d;color:white;">
+      🛒 MUA TRÊN SHOPEE
+    </button>
+  </div>
 </body>
 </html>
