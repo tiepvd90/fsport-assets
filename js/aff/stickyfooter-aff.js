@@ -1,7 +1,6 @@
 /* ======================================================
- * 🖼️ SLIDESHOW-AFF — render từ window.affImages
- * Dành cho trang Affiliate (AFF)
- * KHÔNG tự gọi CSS (trang product đã có link).
+ * 🛒 STICKYFOOTER-AFF — Dành cho trang Affiliate
+ * Tự render footer Shopee (không tự gọi CSS)
  * ====================================================== */
 (function () {
   function onReady(fn) {
@@ -10,104 +9,52 @@
     } else fn();
   }
 
-  onReady(function () {
-    const imageList = Array.isArray(window.affImages) ? window.affImages : [];
-    if (!imageList.length) {
-      console.warn("⚠️ slideshow-aff: window.affImages trống.");
+  onReady(() => {
+    // ---- Kiểm tra biến Shopee link ----
+    const link = window.shopeeLink || "";
+    if (!link) {
+      console.warn("⚠️ stickyfooter-aff: thiếu window.shopeeLink");
       return;
     }
 
-    let container = document.getElementById("lazySlideshow");
-    let counterEl = document.getElementById("slideCounter");
-
-    if (!container) {
-      console.warn("⚠️ slideshow-aff: thiếu khung #lazySlideshow trong HTML.");
+    // ---- Kiểm tra xem đã có sticky chưa ----
+    if (document.querySelector(".sticky-footer")) {
+      console.warn("ℹ️ stickyfooter-aff: đã tồn tại sticky-footer, bỏ qua render lại.");
       return;
     }
 
-    let current = 0;
-    const slides = [];
+    // ---- Tạo phần HTML sticky footer ----
+    const footer = document.createElement("div");
+    footer.className = "sticky-footer";
+    footer.innerHTML = `
+      <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+        <div style="display: flex; gap: 20px;">
+          <a href="https://fun-sport.co" class="footer-icon" style="text-decoration: none;">
+            <img src="https://img.icons8.com/ios-filled/20/000000/home.png" alt="Trang chủ" />
+            <span>Home</span>
+          </a>
+          <a href="https://m.me/funsport1" target="_blank" class="footer-icon" style="text-decoration: none;">
+            <img src="https://img.icons8.com/ios-filled/20/000000/facebook-messenger.png" alt="Chat" />
+            <span>Mess</span>
+          </a>
+          <a href="https://zalo.me/3913722836443497435" target="_blank" class="footer-icon" style="text-decoration: none;">
+            <img src="https://img.icons8.com/ios-filled/20/000000/zalo.png" alt="Zalo" />
+            <span>Zalo</span>
+          </a>
+          <a href="tel:0384735980" class="footer-icon" style="text-decoration: none;">
+            <img src="https://img.icons8.com/ios-filled/20/000000/phone.png" alt="Gọi" />
+            <span>Call</span>
+          </a>
+        </div>
 
-    // Lazy load
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (!entry.isIntersecting) return;
-        const el = entry.target;
-        if (el.dataset.src && !el.src) {
-          el.src = el.dataset.src;
-          el.decode?.().catch(() => {});
-          io.unobserve(el);
-          delete el.dataset.src;
-        }
-      });
-    }, { rootMargin: "300px 0px", threshold: 0.01 });
+        <button class="footer-btn" style="background: #ee4d2d; color: white;"
+          onclick="window.open('${link}', '_blank')">
+          🛒 MUA TRÊN SHOPEE
+        </button>
+      </div>
+    `;
 
-    // Thêm ảnh
-    imageList.forEach((src, i) => {
-      const img = document.createElement("img");
-      img.className = "slide";
-      img.alt = `Ảnh ${i + 1}`;
-      img.decoding = "async";
-      img.loading = i === 0 ? "eager" : "lazy";
-      img.style.objectFit = "cover";
-      if (i === 0) {
-        img.classList.add("show");
-        img.src = src;
-      } else {
-        img.dataset.src = src;
-        io.observe(img);
-      }
-      container.insertBefore(img, counterEl);
-      slides.push(img);
-    });
-
-    function updateCounter() {
-      if (counterEl) counterEl.textContent = `${current + 1}/${slides.length}`;
-    }
-    updateCounter();
-
-    // Auto slide
-    let interval = setInterval(nextSlide, 4000);
-    function nextSlide() {
-      slides[current]?.classList.remove("show");
-      current = (current + 1) % slides.length;
-      slides[current]?.classList.add("show");
-      updateCounter();
-    }
-    function prevSlide() {
-      slides[current]?.classList.remove("show");
-      current = (current - 1 + slides.length) % slides.length;
-      slides[current]?.classList.add("show");
-      updateCounter();
-    }
-
-    // Swipe support
-    let startX = 0;
-    container.addEventListener("touchstart", (e) => startX = e.touches[0].clientX);
-    container.addEventListener("touchend", (e) => {
-      const dx = e.changedTouches[0].clientX - startX;
-      if (Math.abs(dx) > 50) { clearInterval(interval); dx < 0 ? nextSlide() : prevSlide(); interval = setInterval(nextSlide, 4000); }
-    });
-
-    // Zoom
-    const zoomOverlay = document.getElementById("fullscreenZoom");
-    const zoomImg = document.getElementById("zoomedImg");
-    const zoomClose = document.getElementById("zoomCloseBtn");
-
-    if (zoomOverlay && zoomImg && zoomClose) {
-      container.addEventListener("click", () => {
-        zoomImg.src = slides[current].src;
-        zoomOverlay.style.display = "flex";
-        document.body.style.overflow = "hidden";
-      });
-      zoomClose.addEventListener("click", closeZoom);
-      document.addEventListener("keydown", (e) => e.key === "Escape" && closeZoom());
-
-      function closeZoom() {
-        zoomOverlay.style.display = "none";
-        zoomImg.src = "";
-        document.body.style.overflow = "";
-      }
-    }
+    // ---- Gắn footer vào cuối body ----
+    document.body.appendChild(footer);
   });
 })();
