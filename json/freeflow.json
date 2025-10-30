@@ -134,22 +134,6 @@
     "sellerID": "huyenle"
   },
   {
-    "itemId": "pickleball-004",
-    "title": "Chọn Vợt Chuẩn, Lên Tay Từng Cú",
-    "price": 1050000,
-    "originalPrice": 2000000,
-    "contentType": "image",
-    "image": "https://i.postimg.cc/TYcMS812/den.webp",
-    "youtube": "",
-    "productPage": "/product/firstpickleball",
-    "tags": [
-      "pickleball"
-    ],
-    "basePriority": 16,
-    "productCategory": "pickleball",
-    "sellerID": "huyenle"
-  },
-  {
     "itemId": "pickleball-006",
     "title": "Vợt Siêu Nhám – Tạo Xoáy Linh Hoạt - Rồng Đen 14mm",
     "price": 849000,
@@ -393,23 +377,6 @@
     "sellerID": "huyenle"
   },
   {
-    "itemId": "titan16mm",
-    "title": " Vợt Titan 16mm",
-    "price": 599000,
-    "originalPrice": null,
-    "contentType": "youtube",
-    "image": "https://fun-sport.co/assets/images/gallery/pickleball/secpickleball/2.webp",
-    "youtube": "Hgo-mQFUSHc",
-    "productPage": "/product/secpickleball",
-    "tags": [
-      "pickleball",
-      "titan"
-    ],
-    "basePriority": 16,
-    "productCategory": "pickleball",
-    "sellerID": "huyenle"
-  },
-  {
     "itemId": "titan16mm-2",
     "title": " Vợt Titan 16mm",
     "price": 599000,
@@ -484,9 +451,9 @@
   },
   {
     "itemId": "pickleball-kamito-alpha2-1",
-    "title": "Vợt Kamito Alpha 2",
-    "price": ,
-    "originalPrice": ,
+    "title": "[Liên Kết Shopee]Vợt Kamito Alpha 2",
+    "price": 3600000,
+    "originalPrice": 4500000,
     "contentType": "image",
     "image": "https://down-vn.img.susercontent.com/file/vn-11134207-820l4-mg6dj1ephlhle5.webp",
     "youtube": "",
