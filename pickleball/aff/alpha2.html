@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 
-  <title>document.title = window.productTitle;</title>
+  <title>Kamito Alpha 2 – Pickleball</title>
 
   <!-- CSS -->
   <link rel="stylesheet" href="/css/base.css" />
@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="/css/productdescription.css" />
   <link rel="icon" type="image/png" href="/favicon.png" />
 
-  <!-- Biến cấu hình trang -->
+  <!-- ✅ Biến cấu hình trang -->
   <script>
     window.productTitle   = "Kamito Alpha 2 – Pickleball";
     window.loai           = "pickleball";
@@ -108,7 +108,22 @@
       </button>
     </div>
 
-    <script src="/js/productdescription.js"></script>
+    <!-- ✅ Script toggle mô tả -->
+    <script>
+      const toggleBtn = document.getElementById("toggleDesc");
+      const descFull = document.getElementById("descFull");
+      const fade = document.getElementById("descFade");
+
+      if (toggleBtn && descFull && fade) {
+        toggleBtn.addEventListener("click", () => {
+          const isHidden = descFull.classList.toggle("hidden");
+          fade.style.display = isHidden ? "block" : "none";
+          toggleBtn.innerHTML = isHidden
+            ? 'Xem Thêm <span class="arrow">&#x25BC;</span>'
+            : 'Thu Gọn <span class="arrow">&#x25B2;</span>';
+        });
+      }
+    </script>
 
     <!-- FreeFlow -->
     <h2 class="freeflow-heading" style="font-size:18px;margin:24px 12px 12px;">CÓ THỂ BẠN SẼ THÍCH</h2>
