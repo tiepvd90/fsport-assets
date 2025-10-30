@@ -58,7 +58,7 @@
                border:none;border-radius:8px;font-size:13px;white-space:nowrap;
                display:flex;align-items:center;gap:6px;cursor:pointer;"
         onclick="window.open('${link}','_blank')">
-        🛒 MUA TRÊN SHOPEE
+        MUA TRÊN SHOPEE
       </button>
     `;
 
