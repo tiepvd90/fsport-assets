@@ -40,26 +40,6 @@
     "tags": []
   },
   {
-    "id": "airforce-xam",
-    "title": "F-Sport AirForce Đúc nguyên khối – 14mm - thiên công",
-    "image": "https://i.postimg.cc/2S8RNHLQ/xam.webp",
-    "price": 1200000,
-    "originalPrice": 1750000,
-    "link": "/product/pickleball-airforce",
-    "category": "pickleball",
-    "tags": []
-  },
-  {
-    "id": "arena",
-    "title": "Vợt Pickleball Arena – Lõi Gen 3 Foam, Kiểm Soát Chuẩn Xác, Độ Bền Vượt Trội",
-    "image": "https://fun-sport.co/assets/images/thumb/pickleball/arena/xanh.webp",
-    "price": 1450000,
-    "originalPrice": 1800000,
-    "link": "/pickleball/arena",
-    "category": "pickleball",
-    "tags": []
-  },
-  {
     "id": "rong-den",
     "title": "Rồng Đen - 14mm - Đúc nguyên khối- thiên công",
     "image": "https://i.postimg.cc/Y06dCv4z/IMG-8564.jpg",
@@ -86,16 +66,6 @@
     "price": 799000,
     "originalPrice": 1400000,
     "link": "/product/firstpickleball",
-    "category": "pickleball",
-    "tags": []
-  },
-  {
-    "id": "t700-pro",
-    "title": "T700 Pro - 16mm - Mặt Vợt Nhám tiêu chuẩn",
-    "image": "https://i.postimg.cc/tJNDPd0W/1.webp",
-    "price": 435000,
-    "originalPrice": 699000,
-    "link": "/product/secpickleball",
     "category": "pickleball",
     "tags": []
   },
