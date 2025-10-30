@@ -6,7 +6,7 @@
         content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>Kamito Alpha 2 – Pickleball Paddle | Fun-Sport</title>
 
-  <!-- ✅ CSS chung -->
+  <!-- ✅ CSS cơ bản -->
   <link rel="stylesheet" href="/css/base.css" />
   <link rel="stylesheet" href="/css/slideshow.css" />
   <link rel="stylesheet" href="/css/stickyfooter.css" />
@@ -18,8 +18,9 @@
     window.loai = "pickleball";
     window.productCategory = "pickleball";
     window.productPage = "kamito-alpha-2";
-    window.shopeeLink = "https://shopee.vn/product/123456789"; // 🔗 thay bằng link Shopee thật
+    window.shopeeLink = "https://shopee.vn/product/123456789"; // 🔗 Thay bằng link Shopee thật
 
+    // ✅ Ảnh slideshow (Shopee)
     window.affImages = [
       "https://down-vn.img.susercontent.com/file/vn-11134207-820l4-mg7vnkk0tszscd.webp",
       "https://down-vn.img.susercontent.com/file/vn-11134207-820l4-mfrynu1smozzdb.webp",
@@ -32,10 +33,11 @@
 <body>
   <div class="page-container">
 
-    <!-- ✅ Placeholder popup & icon -->
+    <!-- ✅ Placeholder popup & base -->
     <div id="cartPopup-placeholder"></div>
     <div id="checkoutPopup-placeholder"></div>
     <div id="sticky-footer-placeholder"></div>
+    <div id="base-placeholder"></div>
 
     <!-- ✅ Slideshow ảnh sản phẩm -->
     <script src="/js/aff/slideshow-aff.js"></script>
@@ -46,7 +48,7 @@
         Kamito Alpha 2 – Pickleball Paddle
       </h1>
       <div class="shipping-info" style="font-size: 13px; color: #555; margin-top: 4px;">
-        🚚 Giao hàng toàn quốc – Chính hãng Fun-Sport | Shopee Mall
+        🚚 Sản phẩm được vận hành bởi Shopee
       </div>
     </div>
 
@@ -90,8 +92,7 @@
 
   </div>
 
-  <!-- ✅ Setup Affiliate (gom tracking + inject + sticky footer) -->
-  <div id="base-placeholder"></div>
+  <!-- ✅ Gọi setup (gom tracking + popup + footer) -->
   <script src="/js/aff/setup-aff.js"></script>
 </body>
 </html>
