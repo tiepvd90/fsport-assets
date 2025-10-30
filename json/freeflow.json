@@ -481,5 +481,19 @@
     "basePriority": 18,
     "productCategory": "pickleball",
     "sellerID": "huyenle"
+  },
+  {
+    "itemId": "pickleball-kamito-alpha2-1",
+    "title": "Vợt Kamito Alpha 2",
+    "price": ,
+    "originalPrice": ,
+    "contentType": "image",
+    "image": "https://down-vn.img.susercontent.com/file/vn-11134207-820l4-mg6dj1ephlhle5.webp",
+    "youtube": "",
+    "productPage": "/pickleball/aff/alpha2",
+    "tags": ["pickleball", "kamito"],
+    "basePriority": 18,
+    "productCategory": "pickleball",
+    "sellerID": "huyenle"
   }
 ]
