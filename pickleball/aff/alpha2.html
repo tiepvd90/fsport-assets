@@ -4,35 +4,54 @@
   <meta charset="UTF-8" />
   <meta name="viewport"
         content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>Kamito Alpha 2 – Pickleball Paddle | Fun-Sport</title>
+
+  <title></title>
 
   <!-- ✅ CSS -->
-  <link rel="stylesheet" href="/css/base.css" />
-  <link rel="stylesheet" href="/css/slideshow.css" />
-  <link rel="stylesheet" href="/css/stickyfooter.css" />
-  <link rel="stylesheet" href="/css/productdescription.css" />
+  <link rel="stylesheet" href="../../css/base.css" />
+  <link rel="stylesheet" href="../../css/slideshow.css" />
+  <link rel="stylesheet" href="../../css/stickyfooter.css" />
+  <link rel="stylesheet" href="../../css/productdescription.css" />
   <link rel="icon" type="image/png" href="/favicon.png" />
 
-  <!-- ✅ Biến toàn cục -->
+  <!-- ✅ JS định nghĩa -->
   <script>
-    window.shopeeLink = "https://shopee.vn/product/123456789"; // 🔗 thay link thật
+    // 🏷️ Cấu hình sản phẩm
+    window.loai = "pickleball";
+    window.productCategory = "pickleball";
+    window.productPage = "kamito-alpha-2";
+    window.productTitle = "Kamito Alpha 2 – Pickleball Paddle";
+    window.shopeeLink = "https://s.shopee.vn/7fRcPKWyC9";
+
+    // 🖼️ Ảnh slideshow
     window.affImages = [
       "https://down-vn.img.susercontent.com/file/vn-11134207-820l4-mg7vnkk0tszscd.webp",
       "https://down-vn.img.susercontent.com/file/vn-11134207-820l4-mfrynu1smozzdb.webp",
       "https://down-vn.img.susercontent.com/file/vn-11134207-820l4-mfrymxdvos94d7.webp",
       "https://down-vn.img.susercontent.com/file/vn-11134207-820l4-mf5imtmwu77t71.webp"
     ];
+
+    // ✅ Gán động title trình duyệt
+    document.addEventListener("DOMContentLoaded", () => {
+      document.title = window.productTitle + " | Fun-Sport";
+    });
   </script>
 </head>
 
 <body>
+
   <div class="page-container">
+    <!-- ✅ Placeholder popup & footer -->
+    <div id="cartPopup-placeholder"></div>
+    <div id="checkoutPopup-placeholder"></div>
+    <div id="sticky-footer-placeholder"></div>
 
     <!-- ✅ Slideshow -->
     <div class="lazy-slideshow" id="lazySlideshow">
       <div class="slide-counter" id="slideCounter">1/4</div>
     </div>
 
+    <!-- ✅ Zoom toàn màn hình -->
     <div id="fullscreenZoom" style="display:none;">
       <div id="zoomWrapper">
         <img id="zoomedImg" src="" alt="Zoomed" />
@@ -40,61 +59,35 @@
       </div>
     </div>
 
-    <script>
-      // ====== Slideshow chạy trực tiếp ======
-      const imgs = window.affImages || [];
-      const container = document.getElementById("lazySlideshow");
-      const counter = document.getElementById("slideCounter");
-      let current = 0;
-      const slides = [];
+    <!-- ✅ Gọi slideshow -->
+    <script src="../../js/aff/slideshow-aff.js"></script>
 
-      imgs.forEach((src, i) => {
-        const img = document.createElement("img");
-        img.src = src;
-        img.className = "slide" + (i === 0 ? " show" : "");
-        container.insertBefore(img, counter);
-        slides.push(img);
-      });
+    <!-- ✅ Tiêu đề -->
+    <div class="product-hero" style="margin-top:12px;">
+      <h1 id="productTitleText"
+          style="font-size:15px;font-weight:bold;margin-top:8px;font-family:'Be Vietnam Pro',sans-serif;"></h1>
 
-      function updateCounter() {
-        counter.textContent = `${current + 1}/${imgs.length}`;
-      }
+      <script>
+        document.addEventListener("DOMContentLoaded", () => {
+          document.getElementById("productTitleText").textContent = window.productTitle;
+        });
+      </script>
 
-      function next() {
-        slides[current].classList.remove("show");
-        current = (current + 1) % imgs.length;
-        slides[current].classList.add("show");
-        updateCounter();
-      }
-      let auto = setInterval(next, 4000);
-      updateCounter();
-
-      // Zoom ảnh
-      const overlay = document.getElementById("fullscreenZoom");
-      const zoomImg = document.getElementById("zoomedImg");
-      document.getElementById("zoomCloseBtn").onclick = () => {
-        overlay.style.display = "none";
-      };
-      container.onclick = () => {
-        zoomImg.src = slides[current].src;
-        overlay.style.display = "flex";
-      };
-    </script>
-
-    <!-- ✅ Tiêu đề sản phẩm -->
-    <div class="product-hero" style="margin-top: 12px;">
-      <h1 style="font-size: 16px; font-weight: bold; font-family: 'Be Vietnam Pro', sans-serif;">
-        Kamito Alpha 2 – Pickleball Paddle
-      </h1>
-      <div class="shipping-info" style="font-size: 13px; color: #555; margin-top: 4px;">
-        🚚 Sản phẩm được vận hành bởi Shopee
+      <div class="shipping-wrapper">
+        <div class="shipping-info">
+          <div class="shipping-line" style="font-size:13px;">
+            🚚 Sản phẩm được vận hành bởi Shopee
+          </div>
+        </div>
       </div>
     </div>
 
     <!-- ✅ Mô tả sản phẩm -->
-    <div class="desc-container" style="margin-top: 12px;">
+    <div class="desc-container" style="margin-top:12px;">
       <h2 class="desc-title">KAMITO ALPHA 2</h2>
+
       <p>Kamito Alpha 2 ra mắt như một minh chứng cho việc Kamito luôn lắng nghe khách hàng và không ngừng cải tiến sản phẩm để mang đến người dùng những dòng sản phẩm chất lượng nhất.</p>
+
       <p>Không chỉ kế thừa tất cả những ưu điểm của Kamito Alpha, phiên bản Kamito Alpha 2 còn được tinh chỉnh mặt vợt với độ nhám cao hơn và mềm hơn, giúp mang đến những trải nghiệm thi đấu tốt nhất dành cho người chơi.</p>
 
       <h3>1. THÔNG SỐ KỸ THUẬT VỢT ALPHA 2</h3>
@@ -124,32 +117,52 @@
     </div>
 
     <!-- ✅ FreeFlow -->
-    <h2 class="freeflow-heading" style="font-size: 18px; margin: 24px 12px 12px;">CÓ THỂ BẠN SẼ THÍCH</h2>
+    <h2 class="freeflow-heading" style="font-size:18px;margin:24px 12px 12px;">CÓ THỂ BẠN SẼ THÍCH</h2>
     <script src="/js/freeflow-loader.js"></script>
 
   </div>
 
-  <!-- ✅ Sticky Footer Shopee -->
-  <div class="sticky-footer">
-    <div style="display:flex;align-items:center;gap:20px;">
-      <a href="https://fun-sport.co" class="footer-icon">
-        <img src="https://img.icons8.com/ios-filled/20/000000/home.png" /><span>Home</span>
-      </a>
-      <a href="https://m.me/funsport1" class="footer-icon" target="_blank">
-        <img src="https://img.icons8.com/ios-filled/20/000000/facebook-messenger.png"/><span>Mess</span>
-      </a>
-      <a href="https://zalo.me/3913722836443497435" class="footer-icon" target="_blank">
-        <img src="https://img.icons8.com/ios-filled/20/000000/zalo.png"/><span>Zalo</span>
-      </a>
-      <a href="tel:0384735980" class="footer-icon">
-        <img src="https://img.icons8.com/ios-filled/20/000000/phone.png"/><span>Call</span>
-      </a>
-    </div>
-    <button onclick="window.open(window.shopeeLink,'_blank')"
-            class="footer-btn"
-            style="background:#ee4d2d;color:white;">
-      🛒 MUA TRÊN SHOPEE
-    </button>
-  </div>
+  <!-- ✅ Sticky footer -->
+  <div id="sticky-footer-placeholder"></div>
+  <script src="../../js/aff/stickyfooter-aff.js"></script>
+
+  <!-- ✅ Popup + tracking -->
+  <script>
+    async function loadScript(src) {
+      return new Promise((resolve) => {
+        const s = document.createElement("script");
+        s.src = src;
+        s.onload = resolve;
+        document.body.appendChild(s);
+      });
+    }
+
+    async function injectHTML(file, id) {
+      const res = await fetch(file);
+      const html = await res.text();
+      document.getElementById(id).innerHTML = html;
+    }
+
+    async function setupPage() {
+      await injectHTML("/html/cartpopup.html", "cartPopup-placeholder");
+      await injectHTML("/html/checkoutpopup.html", "checkoutPopup-placeholder");
+
+      await loadScript("https://friendly-kitten-d760ff.netlify.app/js/checkoutpopup.js");
+      await loadScript("https://friendly-kitten-d760ff.netlify.app/js/tracking.js");
+      await loadScript("/js/base.js");
+
+      if (typeof trackBothPixels === "function") {
+        trackBothPixels("ViewContent", {
+          content_id: window.productPage,
+          content_name: window.productTitle,
+          content_category: window.productCategory,
+          value: 0,
+          currency: "VND",
+        });
+      }
+    }
+
+    setupPage();
+  </script>
 </body>
 </html>
