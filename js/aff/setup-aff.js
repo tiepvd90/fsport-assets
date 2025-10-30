@@ -1,5 +1,5 @@
 /* =====================================================
- * 🧩 setup-aff.js — Dùng chung cho toàn bộ trang Affiliate
+ * 🧩 setup-aff.js — Dùng chung cho toàn bộ trang Affiliate (fix stable)
  * ===================================================== */
 
 (function () {
@@ -15,7 +15,7 @@
     });
   }
 
-  // ===== Helper: inject file HTML vào placeholder =====
+  // ===== Helper: inject file HTML =====
   async function injectHTML(file, placeholderId) {
     try {
       const res = await fetch(file);
@@ -42,19 +42,21 @@
 
   // ===== Hàm chính =====
   async function setupAffiliatePage() {
-    // 🧱 Inject popup & icon
+    console.log("🧩 setup-aff.js đang khởi tạo...");
+
+    // 1️⃣ Load CSS nền sớm để tránh icon nhảy
+    if (!document.querySelector('link[href*="/css/base.css"]')) {
+      const css = document.createElement("link");
+      css.rel = "stylesheet";
+      css.href = "/css/base.css";
+      document.head.appendChild(css);
+    }
+
+    // 2️⃣ Inject popup + base.html
     await injectHTML("/html/cartpopup.html", "cartPopup-placeholder");
     await injectHTML("/html/checkoutpopup.html", "checkoutPopup-placeholder");
 
-    // 🧠 Load các JS cần thiết
-    await loadScript("https://friendly-kitten-d760ff.netlify.app/js/checkoutpopup.js");
-    await loadScript("/js/aff/stickyfooter-aff.js");
-    await loadScript("/js/base.js");
-
-    // 🧭 Tracking (Meta + TikTok)
-    await loadScript("https://friendly-kitten-d760ff.netlify.app/js/tracking.js");
-
-    // 🧩 Inject base.html để có icon giỏ hàng
+    // Inject base.html để có icon giỏ hàng
     try {
       const res = await fetch("/html/base.html");
       const html = await res.text();
@@ -64,8 +66,19 @@
       console.warn("⚠️ Lỗi khi inject base.html:", e);
     }
 
-    // 🎯 Gửi sự kiện ViewContent nếu tracking có sẵn
-    setTimeout(() => {
+    // 3️⃣ Load các JS nền
+    await loadScript("https://friendly-kitten-d760ff.netlify.app/js/checkoutpopup.js");
+    await loadScript("/js/base.js");
+
+    // 4️⃣ Đợi CSS ổn định, rồi mới load sticky footer
+    setTimeout(async () => {
+      await loadScript("/js/aff/stickyfooter-aff.js");
+      console.log("✅ Sticky footer đã khởi tạo");
+    }, 300);
+
+    // 5️⃣ Tracking (Meta + TikTok)
+    setTimeout(async () => {
+      await loadScript("https://friendly-kitten-d760ff.netlify.app/js/tracking.js");
       if (typeof trackBothPixels === "function") {
         trackBothPixels("ViewContent", {
           content_id: window.productPage || "unknown",
@@ -74,10 +87,11 @@
           value: 0,
           currency: "VND",
         });
+        console.log("📈 Gửi event ViewContent");
       }
     }, 800);
   }
 
-  // 🚀 Chạy tự động khi DOM sẵn sàng
+  // 🚀 Tự động chạy khi DOM sẵn sàng
   document.addEventListener("DOMContentLoaded", setupAffiliatePage);
 })();
