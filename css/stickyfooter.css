@@ -48,3 +48,28 @@
   height: 20px;
   stroke-width: 1.8;
 }
+/* === Nút MUA TRÊN SHOPEE === */
+.footer-btn-shopee {
+  flex: 1;
+  margin-left: 10px;
+  margin-bottom: 6px;
+  height: 38px;
+  background: linear-gradient(90deg, #ff7b00, #ff4400); /* cam Shopee */
+  color: #fff;
+  font-weight: bold;
+  font-size: 14px;
+  border: none;
+  padding: 0 12px;
+  cursor: pointer;
+  border-radius: 8px;
+  align-self: center;
+  max-width: calc(100% - 140px);
+  box-shadow: 0 2px 6px rgba(255, 68, 0, 0.3);
+  transition: 0.2s;
+}
+
+.footer-btn-shopee:hover {
+  opacity: 0.9;
+  transform: scale(1.03);
+}
+
