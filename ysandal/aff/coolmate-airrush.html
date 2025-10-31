@@ -12,9 +12,44 @@
   <link rel="stylesheet" href="/css/productdescription.css" />
   <link rel="icon" type="image/png" href="/favicon.png" />
 
+  <style>
+    /* ✅ Fix lỗi ảnh mô tả tràn trên mobile */
+    .desc-container {
+      width: 100%;
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    .desc-container img {
+      display: block;
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+      margin: 8px 0;
+      object-fit: contain;
+    }
+
+    /* Mobile: đảm bảo không overflow */
+    @media (max-width: 768px) {
+      .desc-container {
+        padding: 0;
+        margin: 0;
+      }
+      .desc-container img {
+        width: 100vw;
+        max-width: 100%;
+        margin-left: 0;
+        margin-right: 0;
+        border-radius: 0; /* Cho liền màn hình nếu muốn full bleed */
+      }
+    }
+  </style>
+
   <!-- ✅ Biến cấu hình trang -->
   <script>
-    window.productType     = "affiliate"
+    window.productType     = "affiliate";
     window.loai           = "ysandal";
     window.productCategory= "ysandal";
     window.productPage    = "coolmate-airrush";
@@ -72,7 +107,7 @@
 
   <!-- Sticky footer Shopee -->
   <script src="/js/aff/outbound-click.js"></script>
-<script src="/js/aff/stickyfooter-aff.js"></script>
+  <script src="/js/aff/stickyfooter-aff.js"></script>
 
   <!-- Tracking + base -->
   <script src="https://friendly-kitten-d760ff.netlify.app/js/tracking.js"></script>
