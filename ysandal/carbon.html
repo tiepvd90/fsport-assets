@@ -14,46 +14,33 @@
   <link rel="icon" type="image/png" href="/favicon.png" />
 
   <!-- ✅ JS định nghĩa -->
- <script>
+  <script>
     window.loai = "ysandal";
-    window.productCategory = "ysandal";     // Nhóm sản phẩm
-    window.productPage = "carbon";     // Trang cụ thể
+    window.productCategory = "ysandal";
+    window.productPage = "carbon";
     window.imageCount = 8;
     window.imageFormat = "jpg";
+    window.shopeeLink = "https://s.shopee.vn/6fZ6bQnTs2"; // ✅ Khai báo Shopee link tại đầu
   </script>
 </head>
+
 <body>
-
   <div class="page-container">
-
-    <!-- ✅ Placeholders -->
     <div id="cartPopup-placeholder"></div>
     <div id="checkoutPopup-placeholder"></div>
     <div id="sticky-footer-placeholder"></div>
 
-     <!-- ============================== -->
-    <!-- ✅ SLIDESHOW SẢN PHẨM CÓ ZOOM -->
-    <!-- ============================== -->
-
-    <!-- Slideshow chính -->
+    <!-- ✅ SLIDESHOW -->
     <div class="lazy-slideshow" id="lazySlideshow">
       <div class="slide-counter" id="slideCounter">1/1</div>
     </div>
-
-    <!-- Zoom toàn màn hình khi click ảnh -->
     <div id="fullscreenZoom" style="display: none;">
       <div id="zoomWrapper">
         <img id="zoomedImg" src="" alt="Zoomed" />
         <button id="zoomCloseBtn">×</button>
       </div>
     </div>
-
-    <!-- Script xử lý slideshow + zoom -->
     <script src="/js/slideshow-2p.js"></script>
-
-    <!-- ============================== -->
-    <!-- ✅ END SLIDESHOW -->
-    <!-- ============================== -->
 
     <!-- ✅ Flash Banner -->
     <div id="flashbanner-placeholder"></div>
@@ -82,100 +69,72 @@
         </div>
       </div>
     </div>
-<!-- ✅ KHỐI 3: Video sản phẩm -->
-<div class="product-hero" style="margin-top: 12px;">
-  <div id="video-placeholder">Đang tải video...</div>
-</div>
 
-<script>
-  // ✅ Gọi file HTML video (gồm khung & ID #videoSlider)
-  fetch("/html/productvideo.html")
-    .then(res => res.text())
-    .then(html => {
-      document.getElementById("video-placeholder").innerHTML = html;
+    <!-- ✅ VIDEO -->
+    <div class="product-hero" style="margin-top: 12px;">
+      <div id="video-placeholder">Đang tải video...</div>
+    </div>
+    <script>
+      fetch("/html/productvideo.html")
+        .then(res => res.text())
+        .then(html => {
+          document.getElementById("video-placeholder").innerHTML = html;
+          const script = document.createElement("script");
+          script.src = "/js/productvideo.js";
+          script.onload = () => {
+            if (typeof initProductVideo === "function") initProductVideo();
+          };
+          document.body.appendChild(script);
+        })
+        .catch(err => console.warn("❌ Lỗi khi chèn productvideo.html:", err));
+    </script>
 
-      // ✅ Gọi JS sau khi HTML có mặt
-      const script = document.createElement("script");
-      script.src = "/js/productvideo.js";
-      script.onload = () => {
-        console.log("✅ Đã load JS, gọi init...");
-        if (typeof initProductVideo === "function") {
-          initProductVideo();
-        } else {
-          console.warn("❌ Không tìm thấy initProductVideo()");
-        }
-      };
-      document.body.appendChild(script);
-    })
-    .catch(err => console.warn("❌ Lỗi khi chèn productvideo.html:", err));
-</script>
-<!-- 🔚 Hết KHỐI 3 -->
-  
-    <!-- ✅ Mô tả sản phẩm -->
+    <!-- ✅ Mô tả -->
     <div class="product-hero" style="margin-top: 12px;">
       <div id="productdescription-placeholder" data-src="/html/productdescription/ysandal/carbon"></div>
     </div>
     <script src="/js/productdescription.js"></script>
-<!-- ✅ KHỐI BUTTON -->
-<div class="product-hero" style="margin-top:12px;padding:0;">
-  <style>
-    .btn-block {
-      display: flex;
-      gap: 8px;
-      margin-top: 8px;
-      width: 100%;
-      font-family: 'Be Vietnam Pro', sans-serif;
-    }
-    .btn-block .footer-btn {
-      flex: 1;
-      text-align: center;
-      border: none;
-      border-radius: 6px;
-      font-weight: 600;
-      font-size: 14px;
-      padding: 10px 0;
-      cursor: pointer;
-      transition: opacity 0.2s ease;
-    }
-    .btn-block .footer-btn:hover {
-      opacity: 0.85;
-    }
-    .btn-block .atc-btn {
-      background: #e53935; /* đỏ */
-      color: #fff;
-    }
-    .btn-block .shopee-btn {
-      background: #ff6600; /* cam Shopee */
-      color: #fff;
-      text-decoration: none;
-      display: inline-block;
-    }
-    .btn-note {
-      text-align: center;
-      font-size: 12px;
-      color: #333;
-      margin-top: 6px;
-      font-family: 'Be Vietnam Pro', sans-serif;
-    }
-  </style>
 
-  <div class="btn-block">
-    <button class="footer-btn atc-btn" onclick="addToCart()">MUA TẠI WEBSITE</button>
-    <a href="https://s.shopee.vn/6fZ6bQnTs2" rel="noopener noreferrer" class="footer-btn shopee-btn">
-      MUA TẠI SHOPEE
-    </a>
-  </div>
+    <!-- ✅ KHỐI BUTTON -->
+    <div class="product-hero" style="margin-top:12px;padding:0;">
+      <style>
+        .btn-block {
+          display: flex;
+          gap: 8px;
+          margin-top: 8px;
+          width: 100%;
+          font-family: 'Be Vietnam Pro', sans-serif;
+        }
+        .btn-block .footer-btn {
+          flex: 1;
+          text-align: center;
+          border: none;
+          border-radius: 6px;
+          font-weight: 600;
+          font-size: 14px;
+          padding: 10px 0;
+          cursor: pointer;
+          transition: opacity 0.2s ease;
+        }
+        .btn-block .footer-btn:hover { opacity: 0.85; }
+        .btn-block .atc-btn { background: #e53935; color: #fff; }
+        .btn-block .shopee-btn { background: #ff6600; color: #fff; text-decoration: none; display: inline-block; }
+        .btn-note { text-align: center; font-size: 12px; color: #333; margin-top: 6px; font-family: 'Be Vietnam Pro', sans-serif; }
+      </style>
 
-  <div class="btn-note">Mua Tại Website Rẻ Hơn Mua Tại Shopee</div>
-</div>
+      <div class="btn-block">
+        <button class="footer-btn atc-btn" onclick="addToCart()">MUA TẠI WEBSITE</button>
+        <button class="footer-btn shopee-btn" id="buyShopeeBtn">MUA TẠI SHOPEE</button>
+      </div>
+      <div class="btn-note">Mua Tại Website Rẻ Hơn Mua Tại Shopee</div>
+    </div>
 
-    <!-- ✅ FreeFlow -->
+    <!-- ✅ FREEFLOW -->
     <h2 class="freeflow-heading" style="font-size: 18px; margin: 24px 12px 12px;">CÓ THỂ BẠN SẼ THÍCH</h2>
     <script src="/js/freeflow-loader.js"></script>
-
   </div>
 
-  <!-- ✅ Inject popup + footer -->
+  <!-- ✅ Inject popup -->
   <script>
     async function loadScript(src) {
       return new Promise(resolve => {
@@ -196,12 +155,8 @@
       Array.from(temp.children).forEach(el => {
         if (el.tagName === "SCRIPT") {
           const script = document.createElement("script");
-          if (el.src) {
-            script.src = el.src;
-            script.async = false;
-          } else {
-            script.textContent = el.textContent;
-          }
+          if (el.src) script.src = el.src;
+          else script.textContent = el.textContent;
           document.body.appendChild(script);
         } else {
           container.appendChild(el);
@@ -225,7 +180,6 @@
         initCartPopup();
       }, 100);
     }
-
     setupPage();
   </script>
 
@@ -247,6 +201,25 @@
           });
         }
       });
+  </script>
+
+  <!-- ✅ OUTBOUND TRACKING -->
+  <script src="/js/aff/outbound-click.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const btn = document.getElementById("buyShopeeBtn");
+      if (btn) {
+        btn.addEventListener("click", function (e) {
+          e.preventDefault();
+          if (typeof trackOutboundClick === "function") {
+            trackOutboundClick();
+          } else {
+            console.warn("⚠️ outbound-click.js chưa load — mở trực tiếp Shopee");
+            window.location.href = window.shopeeLink;
+          }
+        });
+      }
+    });
   </script>
 
   <!-- ✅ Base script -->
