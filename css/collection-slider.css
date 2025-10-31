@@ -1,113 +1,123 @@
-/* ======================================================
- * 🎯 Fun-Sport COLLECTION SLIDER — refined layout
- * ====================================================== */
+/* ===== Fun-Sport Collection Slider — v2 ===== */
 
+/* Khung tổng: giới hạn bề ngang giống FreeFlow và canh giữa */
 .cps-container {
-  padding: 0 10px 24px;
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0 12px 24px;
   font-family: 'Be Vietnam Pro', sans-serif;
 }
 
+/* Tiêu đề nhóm */
 .cps-subtitle {
   font-size: 16px;
   font-weight: 700;
-  margin: 16px 12px 10px;
+  margin: 16px 4px 8px;
   color: #111;
 }
 
-/* === Slider wrapper === */
+/* Vỏ slider */
 .cps-slider-wrapper {
   position: relative;
   overflow: hidden;
   margin-bottom: 14px;
 }
 
+/* Track trượt ngang */
 .cps-slider {
   display: flex;
-  gap: 12px;
+  gap: 12px;                    /* Khoảng cách giữa các card */
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
-  padding: 6px 4px 10px;
+  padding: 8px 10px 12px;       /* Đệm trong, giúp mobile không “dí sát lề” */
+}
+.cps-slider::-webkit-scrollbar { display: none; }
+
+/* Đệm 2 mép trái/phải để card đầu/cuối không dính lề */
+.cps-slider::before,
+.cps-slider::after {
+  content: "";
+  flex: 0 0 2px;                /* chỉ 2px, tạo cảm giác thoáng mà không “đổ bóng” */
 }
 
-.cps-slider::-webkit-scrollbar {
-  display: none;
-}
+/* Track chứa item */
+.cps-track { display: flex; gap: 12px; }
 
-/* === Card === */
-.cps-item {
-  flex: 0 0 auto;
-  width: 155px;
-  background: #fff;
-  border-radius: 12px;
-  overflow: hidden;
-  scroll-snap-align: start;
-  text-decoration: none;
-  color: #000;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+/* Card sản phẩm – reset mọi margin/padding có thể bị file khác áp vào */
+.cps-container .cps-item {
+  flex: 0 0 auto !important;
+  width: 155px !important;      /* Card đủ gọn để thấy nhiều món ở desktop */
+  margin: 0 !important;
+  padding: 0 !important;
+  background: #fff !important;
+  border-radius: 12px !important;
+  overflow: hidden !important;
+  scroll-snap-align: start !important;
+  text-decoration: none !important;
+  color: #000 !important;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08) !important;
+  transition: transform .2s ease, box-shadow .2s ease;
 }
-
-.cps-item:hover {
+.cps-container .cps-item:hover {
   transform: translateY(-3px);
   box-shadow: 0 4px 10px rgba(0,0,0,0.15);
 }
 
-/* === Image === */
-.cps-item img {
-  width: 100%;
-  height: 155px;
-  object-fit: cover;
-  background: #f5f5f5;
-  display: block;
+/* Ảnh – buộc tỉ lệ đồng nhất, tránh “auto” từ file khác đè */
+.cps-container .cps-item img {
+  display: block !important;
+  width: 100% !important;
+  height: 155px !important;
+  object-fit: cover !important;
+  background: #f5f5f5 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
 }
 
-/* === Text === */
-.cps-info {
-  padding: 8px 10px 10px;
+/* Vùng text */
+.cps-container .cps-info {
+  padding: 8px 10px 10px !important;
 }
-
-.cps-title {
+.cps-container .cps-title {
   font-size: 13.5px;
   line-height: 1.4;
-  height: 38px;
+  height: 38px;                 /* 2 dòng */
   overflow: hidden;
   color: #111;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
 }
-
-.cps-price {
+.cps-container .cps-price {
   font-size: 14px;
   font-weight: 700;
   color: #e53935;
   margin-top: 4px;
 }
 
-/* === Fade gradient === */
+/* Hiệu ứng mờ mép phải */
 .cps-fade-right {
   position: absolute;
-  right: 0;
-  top: 0;
-  width: 40px;
-  height: 100%;
+  right: 0; top: 0;
+  width: 40px; height: 100%;
   background: linear-gradient(to right, transparent, #f9f9f9);
   pointer-events: none;
 }
 
-/* === Responsive === */
+/* Mobile tinh chỉnh – tăng đệm, giữ khoảng cách card */
 @media (max-width: 600px) {
-  .cps-item {
-    width: 140px;
-  }
-  .cps-item img {
-    height: 140px;
-  }
-  .cps-title {
-    font-size: 12.5px;
-  }
-  .cps-price {
-    font-size: 13px;
-  }
+  .cps-slider { padding: 8px 12px 12px; gap: 12px; }
+  .cps-track { gap: 12px; }
+  .cps-container .cps-item { width: 140px !important; }
+  .cps-container .cps-item img { height: 140px !important; }
+  .cps-container .cps-title { font-size: 12.5px; }
+  .cps-container .cps-price { font-size: 13px; }
+}
+
+/* Desktop lớn – đừng để khoảng cách “loãng” quá */
+@media (min-width: 1081px) {
+  /* Giữ gap nhỏ gọn; nếu màn quá rộng vẫn đẹp nhờ max-width container */
+  .cps-slider, .cps-track { gap: 12px; }
 }
