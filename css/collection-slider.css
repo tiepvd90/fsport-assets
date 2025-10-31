@@ -1,0 +1,99 @@
+/* ======================================================
+ * 🎯 COLLECTION-SLIDER — Horizontal Product Slider
+ * ====================================================== */
+
+.cps-container {
+  padding: 0 12px;
+  font-family: 'Be Vietnam Pro', sans-serif;
+}
+
+.cps-section-title,
+.cps-subtitle {
+  font-weight: 700;
+  color: #111;
+  margin: 8px 0;
+}
+
+.cps-subtitle {
+  font-size: 14px;
+  margin-top: 16px;
+  margin-bottom: 8px;
+}
+
+.cps-slider-wrapper {
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+
+.cps-slider {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  gap: 10px;
+  padding-bottom: 6px;
+}
+
+.cps-slider::-webkit-scrollbar {
+  display: none;
+}
+
+.cps-track {
+  display: flex;
+  gap: 10px;
+}
+
+.cps-item {
+  flex: 0 0 auto;
+  width: 140px;
+  scroll-snap-align: start;
+  text-decoration: none;
+  color: #000;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease;
+}
+
+.cps-item:hover {
+  transform: translateY(-3px);
+}
+
+.cps-item img {
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+  display: block;
+}
+
+.cps-info {
+  padding: 6px;
+  text-align: left;
+}
+
+.cps-title {
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cps-price {
+  font-size: 13px;
+  color: #e53935;
+  font-weight: 600;
+  margin-top: 2px;
+}
+
+.cps-fade-right {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 40px;
+  height: 100%;
+  background: linear-gradient(to right, transparent, #f9f9f9);
+  pointer-events: none;
+}
