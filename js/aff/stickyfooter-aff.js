@@ -1,16 +1,54 @@
 /* ======================================================
  * 🛒 STICKYFOOTER-AFF — fun-sport.co
- * Hiển thị icon Home / Mess / Zalo / Call + nút MUA TRÊN SHOPEE
- * Gọi trackOutboundClick() khi click
+ * Gồm:
+ *  - Hiển thị icon Home / Mess / Zalo / Call
+ *  - Nút MUA TRÊN SHOPEE (chuyển thẳng)
+ *  - Gửi log click về Make.com webhook
  * ====================================================== */
 
 (function () {
+  const WEBHOOK_URL = "https://hook.eu2.make.com/47xaye20idohgs8qts584amkh6yjacmn";
+
+  // ===== Hàm gửi log về Make.com =====
+  function trackOutboundClick() {
+    const payload = {
+      productPage: window.productPage || "",
+      productCategory: window.productCategory || "",
+      destinationURL: window.shopeeLink || "",
+      timestamp: new Date().toISOString(),
+    };
+
+    // ✅ Gửi log bằng sendBeacon hoặc fetch
+    try {
+      const blob = new Blob([JSON.stringify(payload)], { type: "application/json" });
+      if (!navigator.sendBeacon(WEBHOOK_URL, blob)) throw new Error("Beacon failed");
+      console.log("✅ Outbound click: beacon sent");
+    } catch (err) {
+      fetch(WEBHOOK_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      })
+        .then(() => console.log("✅ Outbound click: fetch sent"))
+        .catch((e) => console.warn("⚠️ Outbound click error:", e));
+    }
+
+    // ✅ Chuyển hướng thẳng sang Shopee (không mở tab mới)
+    if (window.shopeeLink) {
+      window.location.href = window.shopeeLink;
+    } else {
+      console.warn("⚠️ Không tìm thấy window.shopeeLink");
+    }
+  }
+
+  // ===== Helper khi DOM sẵn sàng =====
   function onReady(fn) {
     if (document.readyState === "loading") {
       document.addEventListener("DOMContentLoaded", fn);
     } else fn();
   }
 
+  // ===== Khởi tạo Footer =====
   onReady(() => {
     const link = window.shopeeLink || "";
     if (!link) {
@@ -18,77 +56,36 @@
       return;
     }
 
-    // Nếu đã có footer thì bỏ qua tạo mới
+    // Nếu đã có footer thì bỏ qua
     if (document.querySelector(".sticky-footer")) {
       console.log("ℹ️ stickyfooter-aff: footer đã tồn tại");
       return;
     }
 
-    // ✅ Tạo footer
+    // ✅ Tạo footer HTML
     const footer = document.createElement("div");
     footer.className = "sticky-footer";
-    footer.style.cssText = `
-      position: fixed;
-      bottom: 0; left: 0; right: 0;
-      width: 100%;
-      background: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-top: 1px solid #ddd;
-      z-index: 9999;
-      padding: 6px 10px;
-      font-family: 'Be Vietnam Pro', sans-serif;
-      box-sizing: border-box;
-    `;
-
     footer.innerHTML = `
-      <div style="display:flex;align-items:center;gap:18px;">
-        <a href="https://fun-sport.co" target="_blank"
-           style="text-decoration:none;color:black;text-align:center;font-size:12px;display:flex;flex-direction:column;align-items:center;">
-          <img src="https://img.icons8.com/ios-filled/22/000000/home.png" style="width:22px;height:22px;margin-bottom:3px;">
+      <div class="footer-left">
+        <a href="https://fun-sport.co" target="_blank" class="footer-icon">
+          <img src="https://img.icons8.com/ios-filled/22/000000/home.png" alt="Home" />
           <span>Home</span>
         </a>
-        <a href="https://m.me/funsport1" target="_blank"
-           style="text-decoration:none;color:black;text-align:center;font-size:12px;display:flex;flex-direction:column;align-items:center;">
-          <img src="https://img.icons8.com/ios-filled/22/000000/facebook-messenger.png" style="width:22px;height:22px;margin-bottom:3px;">
+        <a href="https://m.me/funsport1" target="_blank" class="footer-icon">
+          <img src="https://img.icons8.com/ios-filled/22/000000/facebook-messenger.png" alt="Mess" />
           <span>Mess</span>
         </a>
-        <a href="https://zalo.me/3913722836443497435" target="_blank"
-           style="text-decoration:none;color:black;text-align:center;font-size:12px;display:flex;flex-direction:column;align-items:center;">
-          <img src="https://img.icons8.com/ios-filled/22/000000/zalo.png" style="width:22px;height:22px;margin-bottom:3px;">
+        <a href="https://zalo.me/0978585804" target="_blank" class="footer-icon">
+          <img src="https://img.icons8.com/ios-filled/22/000000/zalo.png" alt="Zalo" />
           <span>Zalo</span>
         </a>
-        <a href="tel:0384735980"
-           style="text-decoration:none;color:black;text-align:center;font-size:12px;display:flex;flex-direction:column;align-items:center;">
-          <img src="https://img.icons8.com/ios-filled/22/000000/phone.png" style="width:22px;height:22px;margin-bottom:3px;">
+        <a href="tel:0384735980" class="footer-icon">
+          <img src="https://img.icons8.com/ios-filled/22/000000/phone.png" alt="Call" />
           <span>Call</span>
         </a>
       </div>
 
-      <button id="btnShopee"
-        style="
-          flex:1;
-          margin-left:10px;
-          margin-bottom:4px;
-          height:40px;
-          background:linear-gradient(90deg,#ff7b00,#ff4400);
-          color:#fff;
-          font-weight:bold;
-          font-size:14px;
-          border:none;
-          padding:0 16px;
-          cursor:pointer;
-          border-radius:8px;
-          align-self:center;
-          white-space:nowrap;
-          box-shadow:0 2px 6px rgba(255,68,0,0.3);
-          transition:0.2s;
-        "
-        onmouseover="this.style.opacity='0.9';this.style.transform='scale(1.03)'"
-        onmouseout="this.style.opacity='1';this.style.transform='scale(1)'">
-        MUA TRÊN SHOPEE
-      </button>
+      <button id="btnShopee" class="footer-btn-shopee">MUA TRÊN SHOPEE</button>
     `;
 
     document.body.appendChild(footer);
@@ -96,13 +93,8 @@
     // ✅ Gắn event click
     const btn = footer.querySelector("#btnShopee");
     btn.addEventListener("click", () => {
-      if (typeof window.trackOutboundClick === "function") {
-        console.log("🔗 Gọi trackOutboundClick()");
-        window.trackOutboundClick();
-      } else {
-        console.warn("⚠️ Không thấy trackOutboundClick(), mở link trực tiếp.");
-        window.open(link, "_blank");
-      }
+      console.log("🔗 Gửi log outbound + chuyển đến Shopee");
+      trackOutboundClick();
     });
 
     console.log("✅ stickyfooter-aff loaded");
