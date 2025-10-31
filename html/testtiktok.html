@@ -2,149 +2,66 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TikTok Autoplay + Popup | Fun-Sport Test</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Test TikTok Embed | Fun-Sport</title>
   <style>
     body {
-      font-family: 'Be Vietnam Pro', sans-serif;
-      background: #fff;
-      margin: 0;
-      padding: 40px 0;
-      text-align: center;
+      margin: 0; padding: 24px;
+      font-family: system-ui, -apple-system, "Be Vietnam Pro", Segoe UI, Roboto, Arial, sans-serif;
+      background: #fafafa; color: #111;
+    }
+    .page {
+      max-width: 720px; margin: 0 auto;
+    }
+    h1 {
+      font-size: 18px; margin: 0 0 12px;
+    }
+    .tip {
+      font-size: 13px; color: #555; margin-bottom: 16px;
+    }
+    .embed-card {
+      background: #fff; border: 1px solid #e5e5e5; border-radius: 10px;
+      padding: 12px; box-shadow: 0 2px 8px rgba(0,0,0,.04);
     }
 
-    h2 {
-      font-size: 18px;
-      margin-bottom: 12px;
+    /* Giữ tỉ lệ 9:16 gọn gàng trong khung (tuỳ chọn) */
+    .ratio-9x16 {
+      position: relative; width: 100%; max-width: 605px; margin: 0 auto;
     }
-
-    /* --- Video preview --- */
-    .video-wrapper {
-      position: relative;
-      width: 90%;
-      max-width: 400px;
-      aspect-ratio: 9 / 16;
-      margin: 0 auto;
-      overflow: hidden;
-      border-radius: 12px;
-      background: #000;
-      cursor: pointer;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    }
-    .video-wrapper video {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.3s ease;
-    }
-    .video-wrapper:hover video {
-      transform: scale(1.03);
-    }
-
-    /* --- Popup --- */
-    .video-popup {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: rgba(0, 0, 0, 0.92);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      z-index: 9999;
-      visibility: hidden;
-      opacity: 0;
-      transition: opacity 0.3s ease, visibility 0.3s ease;
-    }
-    .video-popup.active {
-      visibility: visible;
-      opacity: 1;
-    }
-    .video-popup video {
-      width: 100%;
-      max-width: 420px;
-      aspect-ratio: 9 / 16;
-      border-radius: 10px;
-      background: #000;
-      object-fit: contain;
-    }
-
-    /* --- Buttons --- */
-    .popup-buttons {
-      display: flex;
-      width: 100%;
-      max-width: 420px;
-      margin-top: 10px;
-      gap: 8px;
-      padding: 0 10px;
-    }
-    .popup-buttons button {
-      flex: 1;
-      height: 40px;
-      border: none;
-      font-weight: bold;
-      font-size: 14px;
-      border-radius: 6px;
-      cursor: pointer;
-      text-transform: uppercase;
-    }
-    .buy-btn {
-      background: #e53935;
-      color: #fff;
-    }
-    .close-btn {
-      background: #000;
-      color: #fff;
-    }
+    /* TikTok tự set kích thước bằng script; không ép height để tránh xung đột */
   </style>
 </head>
 <body>
+  <div class="page">
+    <h1>Test nhúng TikTok (embed chính thức)</h1>
+    <div class="tip">Nếu không hiển thị, kiểm tra kết nối tới <code>tiktok.com</code> hoặc thử ngoài trình duyệt in-app.</div>
 
-  <h2>🎬 Video TikTok Autoplay + Popup Test</h2>
-
-  <div class="video-wrapper" id="tiktokPreview">
-    <video
-      src="https://v16m.tiktokcdn.com/7485966741466582290.mp4"
-      autoplay
-      muted
-      loop
-      playsinline>
-    </video>
-  </div>
-
-  <div class="video-popup" id="videoPopup">
-    <video
-      id="popupVideo"
-      src="https://v16m.tiktokcdn.com/7485966741466582290.mp4"
-      controls
-      autoplay
-      playsinline>
-    </video>
-    <div class="popup-buttons">
-      <button class="buy-btn" onclick="window.location.href='https://fun-sport.co/sandal'">Xem sản phẩm</button>
-      <button class="close-btn" id="closePopup">Đóng</button>
+    <div class="embed-card">
+      <div class="ratio-9x16">
+        <!-- ✅ ĐOẠN EMBED BẠN CUNG CẤP (giữ nguyên) -->
+        <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@fun.sports60/video/7485966741466582290" data-video-id="7485966741466582290" style="max-width: 605px;min-width: 325px;" >
+          <section>
+            <a target="_blank" title="@fun.sports60" href="https://www.tiktok.com/@fun.sports60?refer=embed">@fun.sports60</a>
+            Chạy Bộ Cùng Dép Chạy Bộ Ysandal Chính Hãng B&#38;M Đài Loan
+            <a title="funsports" target="_blank" href="https://www.tiktok.com/tag/funsports?refer=embed">#funsports</a>
+            <a title="ysandal" target="_blank" href="https://www.tiktok.com/tag/ysandal?refer=embed">#ysandal</a>
+            <a title="depchaybo" target="_blank" href="https://www.tiktok.com/tag/depchaybo?refer=embed">#depchaybo</a>
+            <a title="depchay" target="_blank" href="https://www.tiktok.com/tag/depchay?refer=embed">#depchay</a>
+            <a title="depchayboysandal" target="_blank" href="https://www.tiktok.com/tag/depchayboysandal?refer=embed">#depchayboysandal</a>
+            <a title="depchaybonam" target="_blank" href="https://www.tiktok.com/tag/depchaybonam?refer=embed">#depchaybonam</a>
+            <a title="depchaybonu" target="_blank" href="https://www.tiktok.com/tag/depchaybonu?refer=embed">#depchaybonu</a>
+            <a title="depthethao" target="_blank" href="https://www.tiktok.com/tag/depthethao?refer=embed">#depthethao</a>
+            <a title="depchayysandal" target="_blank" href="https://www.tiktok.com/tag/depchayysandal?refer=embed">#depchayysandal</a>
+            <a title="xuhuong" target="_blank" href="https://www.tiktok.com/tag/xuhuong?refer=embed">#xuhuong</a>
+            <a title="xuhuongchaybo" target="_blank" href="https://www.tiktok.com/tag/xuhuongchaybo?refer=embed">#xuhuongchaybo</a>
+            <a title="chaybo" target="_blank" href="https://www.tiktok.com/tag/chaybo?refer=embed">#chaybo</a>
+            <a target="_blank" title="♬ Tropical Summer - Aleksei Guz" href="https://www.tiktok.com/music/Tropical-Summer-7273912913444931621?refer=embed">♬ Tropical Summer - Aleksei Guz</a>
+          </section>
+        </blockquote>
+        <script async src="https://www.tiktok.com/embed.js"></script>
+        <!-- /✅ KẾT THÚC ĐOẠN EMBED -->
+      </div>
     </div>
   </div>
-
-  <script>
-    const preview = document.getElementById("tiktokPreview");
-    const popup = document.getElementById("videoPopup");
-    const popupVideo = document.getElementById("popupVideo");
-    const closeBtn = document.getElementById("closePopup");
-
-    preview.addEventListener("click", () => {
-      popup.classList.add("active");
-      popupVideo.currentTime = 0;
-      popupVideo.play();
-    });
-
-    closeBtn.addEventListener("click", () => {
-      popup.classList.remove("active");
-      popupVideo.pause();
-    });
-  </script>
-
 </body>
 </html>
