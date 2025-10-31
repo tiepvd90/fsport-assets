@@ -1,10 +1,10 @@
-/* ==========================================================
- * 🎯 OUTBOUND CLICK TRACKER — fun-sport.co
- * Mục đích: gửi log click về Make.com webhook
- * ========================================================== */
+/* ======================================================
+ * 🎯 OUTBOUND CLICK TRACKER — fun-sport.co (SYNCED FINAL)
+ * Gửi log click về Make.com và chuyển hướng Shopee (same tab)
+ * ====================================================== */
 
 (function () {
-  const WEBHOOK_URL = "https://hook.eu2.make.com/47xaye20idohgs8qts584amkh6yjacmn";
+  const WEBHOOK_URL = "https://hook.eu2.make.com/lpksqwgx4jid73t2uewg6md9279h276y";
 
   window.trackOutboundClick = function () {
     const payload = {
@@ -14,28 +14,29 @@
       timestamp: new Date().toISOString(),
     };
 
-    // ✅ Gửi log (sendBeacon trước, fetch fallback)
-    try {
-      const blob = new Blob([JSON.stringify(payload)], { type: "application/json" });
-      if (!navigator.sendBeacon(WEBHOOK_URL, blob)) throw new Error("Beacon failed");
-      console.log("✅ Outbound click: beacon sent");
-    } catch (err) {
-      fetch(WEBHOOK_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      })
-        .then(() => console.log("✅ Outbound click: fetch sent"))
-        .catch((e) => console.warn("⚠️ Outbound click error:", e));
-    }
+    console.log("🧭 Gửi dữ liệu click:", payload);
 
-    // ✅ Mở link Shopee
-    if (window.shopeeLink) {
-      window.open(window.shopeeLink, "_blank");
-    } else {
-      console.warn("⚠️ Không tìm thấy window.shopeeLink");
-    }
+    fetch(WEBHOOK_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error("Webhook POST failed");
+        console.log("✅ Đã gửi log click thành công về Make.com");
+      })
+      .catch((err) => {
+        console.warn("⚠️ Lỗi khi gửi log:", err);
+      })
+      .finally(() => {
+        // ✅ Chuyển hướng Shopee trong cùng tab (trải nghiệm tốt hơn trên mobile)
+        if (window.shopeeLink) {
+          window.location.href = window.shopeeLink;
+        } else {
+          alert("⚠️ Thiếu window.shopeeLink — không thể mở Shopee!");
+        }
+      });
   };
 
-  console.log("✅ outbound-click.js loaded");
+  console.log("✅ outbound-click.js (FINAL SYNC) loaded");
 })();
