@@ -1,91 +1,81 @@
 /* ======================================================
- * 🎯 COLLECTION SLIDER — Fun-Sport Style (2025)
+ * 🎯 Fun-Sport COLLECTION SLIDER — refined layout
  * ====================================================== */
 
 .cps-container {
-  padding: 0 10px 20px;
-  overflow: hidden;
+  padding: 0 10px 24px;
   font-family: 'Be Vietnam Pro', sans-serif;
 }
 
-.cps-section-title {
-  font-size: 17px;
+.cps-subtitle {
+  font-size: 16px;
   font-weight: 700;
-  margin: 20px 12px 10px;
+  margin: 16px 12px 10px;
   color: #111;
 }
 
-.cps-subtitle {
-  font-size: 15px;
-  font-weight: 600;
-  margin: 14px 12px 10px;
-  color: #222;
-}
-
-/* --- Wrapper --- */
+/* === Slider wrapper === */
 .cps-slider-wrapper {
   position: relative;
   overflow: hidden;
-  margin-bottom: 10px;
+  margin-bottom: 14px;
 }
 
-/* --- Track --- */
 .cps-slider {
   display: flex;
+  gap: 12px;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
-  gap: 12px;
-  padding: 4px 6px 8px;
+  padding: 6px 4px 10px;
 }
 
 .cps-slider::-webkit-scrollbar {
   display: none;
 }
 
-/* --- Item --- */
+/* === Card === */
 .cps-item {
   flex: 0 0 auto;
-  width: 165px;
-  scroll-snap-align: start;
+  width: 155px;
   background: #fff;
-  border-radius: 10px;
-  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
   overflow: hidden;
+  scroll-snap-align: start;
   text-decoration: none;
-  color: inherit;
+  color: #000;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .cps-item:hover {
   transform: translateY(-3px);
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
 }
 
-/* --- Image --- */
+/* === Image === */
 .cps-item img {
   width: 100%;
-  height: 165px;
+  height: 155px;
   object-fit: cover;
+  background: #f5f5f5;
   display: block;
-  background: #fafafa;
 }
 
-/* --- Text --- */
+/* === Text === */
 .cps-info {
-  padding: 6px 8px 10px;
+  padding: 8px 10px 10px;
 }
 
 .cps-title {
-  font-size: 13px;
+  font-size: 13.5px;
   line-height: 1.4;
-  height: 36px;
+  height: 38px;
   overflow: hidden;
-  text-overflow: ellipsis;
+  color: #111;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
-  color: #111;
 }
 
 .cps-price {
@@ -95,18 +85,18 @@
   margin-top: 4px;
 }
 
-/* --- Fade Right --- */
+/* === Fade gradient === */
 .cps-fade-right {
   position: absolute;
-  top: 0;
   right: 0;
+  top: 0;
   width: 40px;
   height: 100%;
   background: linear-gradient(to right, transparent, #f9f9f9);
   pointer-events: none;
 }
 
-/* --- Mobile Optimize --- */
+/* === Responsive === */
 @media (max-width: 600px) {
   .cps-item {
     width: 140px;
