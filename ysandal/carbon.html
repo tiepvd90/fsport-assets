@@ -31,11 +31,29 @@
     <div id="checkoutPopup-placeholder"></div>
     <div id="sticky-footer-placeholder"></div>
 
-    <!-- ✅ Slideshow -->
+     <!-- ============================== -->
+    <!-- ✅ SLIDESHOW SẢN PHẨM CÓ ZOOM -->
+    <!-- ============================== -->
+
+    <!-- Slideshow chính -->
     <div class="lazy-slideshow" id="lazySlideshow">
       <div class="slide-counter" id="slideCounter">1/1</div>
     </div>
-    <script src="../js/slideshow.js"></script>
+
+    <!-- Zoom toàn màn hình khi click ảnh -->
+    <div id="fullscreenZoom" style="display: none;">
+      <div id="zoomWrapper">
+        <img id="zoomedImg" src="" alt="Zoomed" />
+        <button id="zoomCloseBtn">×</button>
+      </div>
+    </div>
+
+    <!-- Script xử lý slideshow + zoom -->
+    <script src="/js/slideshow-2p.js"></script>
+
+    <!-- ============================== -->
+    <!-- ✅ END SLIDESHOW -->
+    <!-- ============================== -->
 
     <!-- ✅ Flash Banner -->
     <div id="flashbanner-placeholder"></div>
@@ -95,7 +113,7 @@
   
     <!-- ✅ Mô tả sản phẩm -->
     <div class="product-hero" style="margin-top: 12px;">
-      <div id="productdescription-placeholder" data-src="/html/productdescription/pickleball/tera"></div>
+      <div id="productdescription-placeholder" data-src="/html/productdescription/ysandal/carbon"></div>
     </div>
     <script src="/js/productdescription.js"></script>
 <!-- ✅ KHỐI BUTTON -->
