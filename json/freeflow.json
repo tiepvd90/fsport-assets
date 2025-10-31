@@ -478,5 +478,19 @@
     "basePriority": 18,
     "productCategory": "pickleball",
     "sellerID": "huyenle"
+  },
+  {
+    "itemId": "pickleball-facolos-elite",
+    "title": "[Liên Kết Shopee]Facolos Pro Series Elite X 16mm",
+    "price": 3750000,
+    "originalPrice": 4500000,
+    "contentType": "image",
+    "image": "https://down-vn.img.susercontent.com/file/vn-11134207-7ra0g-m8r6too0xlc4fc.webp",
+    "youtube": "",
+    "productPage": "/pickleball/aff/facolos-elite",
+    "tags": ["pickleball", "facolos"],
+    "basePriority": 18,
+    "productCategory": "pickleball",
+    "sellerID": "huyenle"
   }
 ]
