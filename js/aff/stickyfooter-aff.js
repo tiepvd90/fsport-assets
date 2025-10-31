@@ -1,9 +1,7 @@
 /* ======================================================
- * 🛒 STICKYFOOTER-AFF — fun-sport.co
- * Gồm:
- *  - Hiển thị icon Home / Mess / Zalo / Call
- *  - Nút MUA TRÊN SHOPEE (chuyển thẳng)
- *  - Gửi log click về Make.com webhook
+ * 🧪 STICKYFOOTER-AFF — TEST MODE (fun-sport.co)
+ * Gửi dữ liệu click về Make.com để test
+ * -> KHÔNG chuyển trang Shopee
  * ====================================================== */
 
 (function () {
@@ -18,19 +16,23 @@
       timestamp: new Date().toISOString(),
     };
 
-    console.log("🧭 Sending payload:", payload);
+    console.log("🧭 TEST Sending payload to webhook:", payload);
+
     let sent = false;
 
-    // ✅ Ưu tiên sendBeacon
     try {
       const blob = new Blob([JSON.stringify(payload)], { type: "application/json" });
       sent = navigator.sendBeacon(WEBHOOK_URL, blob);
-      if (sent) console.log("✅ Outbound click: beacon sent");
+      if (sent) {
+        console.log("✅ Outbound click: beacon sent to Make");
+        alert("✅ Gửi dữ liệu thành công (sendBeacon)!");
+        return;
+      }
     } catch (err) {
       sent = false;
     }
 
-    // ✅ Fallback fetch nếu beacon thất bại
+    // ✅ fallback fetch nếu beacon không hoạt động
     if (!sent) {
       try {
         await fetch(WEBHOOK_URL, {
@@ -39,20 +41,13 @@
           body: JSON.stringify(payload),
           keepalive: true,
         });
-        console.log("✅ Outbound click: fetch sent");
+        console.log("✅ Outbound click: fetch sent to Make");
+        alert("✅ Gửi dữ liệu thành công (fetch)!");
       } catch (e) {
         console.warn("⚠️ Outbound click error:", e);
+        alert("⚠️ Lỗi gửi dữ liệu, xem Console để kiểm tra!");
       }
     }
-
-    // ✅ Delay nhẹ để đảm bảo gửi log trước khi chuyển trang
-    setTimeout(() => {
-      if (window.shopeeLink) {
-        window.location.href = window.shopeeLink;
-      } else {
-        console.warn("⚠️ Không tìm thấy window.shopeeLink");
-      }
-    }, 250);
   }
 
   // ===== Helper khi DOM sẵn sàng =====
@@ -64,18 +59,11 @@
 
   // ===== Khởi tạo Footer =====
   onReady(() => {
-    const link = window.shopeeLink || "";
-    if (!link) {
-      console.warn("⚠️ stickyfooter-aff: thiếu window.shopeeLink");
-      return;
-    }
-
     if (document.querySelector(".sticky-footer")) {
       console.log("ℹ️ stickyfooter-aff: footer đã tồn tại");
       return;
     }
 
-    // ✅ Tạo footer HTML
     const footer = document.createElement("div");
     footer.className = "sticky-footer";
     footer.innerHTML = `
@@ -98,26 +86,26 @@
         </a>
       </div>
 
-      <button id="btnShopee" class="footer-btn-shopee">MUA TRÊN SHOPEE</button>
+      <button id="btnShopee" class="footer-btn-shopee">TEST WEBHOOK</button>
     `;
 
     document.body.appendChild(footer);
 
-    // ✅ Nút Shopee — gửi log + chuyển trang
+    // ✅ Nút TEST WEBHOOK — chỉ gửi log, không redirect
     const btn = footer.querySelector("#btnShopee");
     btn.addEventListener("click", (e) => {
       e.preventDefault();
-      console.log("🔗 Gửi log outbound + chuyển đến Shopee");
+      console.log("🔗 TEST click: gửi dữ liệu về webhook Make");
       trackOutboundClick();
     });
 
-    // ✅ Nút Home — chuyển trang trong cùng tab
+    // ✅ Nút Home — không mở tab mới
     const home = footer.querySelector("#homeLink");
     home.addEventListener("click", (e) => {
       e.preventDefault();
       window.location.href = "https://fun-sport.co";
     });
 
-    console.log("✅ stickyfooter-aff loaded");
+    console.log("✅ stickyfooter-aff (TEST MODE) loaded");
   });
 })();
