@@ -10,7 +10,7 @@
   const WEBHOOK_URL = "https://hook.eu2.make.com/47xaye20idohgs8qts584amkh6yjacmn";
 
   // ===== Hàm gửi log về Make.com =====
-  function trackOutboundClick() {
+  async function trackOutboundClick() {
     const payload = {
       productPage: window.productPage || "",
       productCategory: window.productCategory || "",
@@ -18,27 +18,42 @@
       timestamp: new Date().toISOString(),
     };
 
-    // ✅ Gửi log bằng sendBeacon hoặc fetch
+    console.log("🧭 Sending payload:", payload);
+
+    let sent = false;
+
+    // ✅ Thử gửi bằng sendBeacon trước
     try {
       const blob = new Blob([JSON.stringify(payload)], { type: "application/json" });
-      if (!navigator.sendBeacon(WEBHOOK_URL, blob)) throw new Error("Beacon failed");
-      console.log("✅ Outbound click: beacon sent");
+      sent = navigator.sendBeacon(WEBHOOK_URL, blob);
+      if (sent) console.log("✅ Outbound click: beacon sent");
     } catch (err) {
-      fetch(WEBHOOK_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      })
-        .then(() => console.log("✅ Outbound click: fetch sent"))
-        .catch((e) => console.warn("⚠️ Outbound click error:", e));
+      sent = false;
     }
 
-    // ✅ Chuyển hướng thẳng sang Shopee (không mở tab mới)
-    if (window.shopeeLink) {
-      window.location.href = window.shopeeLink;
-    } else {
-      console.warn("⚠️ Không tìm thấy window.shopeeLink");
+    // ✅ Nếu beacon không thành công, fallback fetch
+    if (!sent) {
+      try {
+        await fetch(WEBHOOK_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+          keepalive: true, // đảm bảo gửi ngay cả khi rời trang
+        });
+        console.log("✅ Outbound click: fetch sent");
+      } catch (e) {
+        console.warn("⚠️ Outbound click error:", e);
+      }
     }
+
+    // ✅ Delay nhẹ để đảm bảo gói log gửi đi trước khi rời trang
+    setTimeout(() => {
+      if (window.shopeeLink) {
+        window.location.href = window.shopeeLink;
+      } else {
+        console.warn("⚠️ Không tìm thấy window.shopeeLink");
+      }
+    }, 250);
   }
 
   // ===== Helper khi DOM sẵn sàng =====
@@ -92,7 +107,8 @@
 
     // ✅ Gắn event click
     const btn = footer.querySelector("#btnShopee");
-    btn.addEventListener("click", () => {
+    btn.addEventListener("click", (e) => {
+      e.preventDefault();
       console.log("🔗 Gửi log outbound + chuyển đến Shopee");
       trackOutboundClick();
     });
