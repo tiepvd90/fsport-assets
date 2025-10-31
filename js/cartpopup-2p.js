@@ -9,16 +9,26 @@ function initCartPopup() {
   const container = document.getElementById("cartContainer");
   const productPage = window.productPage || "default";
   const category = window.productCategory || "tshirt";
-  const primaryUrl = container?.getAttribute("data-json") || `/json/${productPage}.json`;
+
+  // ✅ Thử tìm JSON ở 2 vị trí
+  const primaryUrl = `/json/${productPage}.json`;
   const fallbackUrl = `/json/${category}/${productPage}.json`;
 
-  fetch(primaryUrl)
-    .then(res => {
-      if (!res.ok) throw new Error("Primary JSON not found");
-      return res.json();
-    })
-    .catch(() => fetch(fallbackUrl).then(res => res.json()))
+  // ✅ Hàm helper thử tải JSON
+  function tryFetch(url) {
+    return fetch(url)
+      .then(res => {
+        if (!res.ok) throw new Error(`Không tìm thấy: ${url}`);
+        return res.json();
+      });
+  }
+
+  // ✅ Thử primary → fallback
+  tryFetch(primaryUrl)
+    .catch(() => tryFetch(fallbackUrl))
     .then(data => {
+      if (!data) throw new Error("❌ Không thể tải được JSON sản phẩm.");
+
       if (data["thuộc_tính"] && data["biến_thể"]?.length === 1) {
         window.allAttributes = data["thuộc_tính"];
         window.baseVariant = data["biến_thể"][0];
@@ -32,7 +42,7 @@ function initCartPopup() {
         console.error("❌ JSON không đúng định dạng đơn giản (1 biến thể).", data);
       }
     })
-    .catch(err => console.warn("Không thể tải JSON sản phẩm:", err));
+    .catch(err => console.warn("⚠️ Không thể tải JSON sản phẩm:", err));
 }
 
 function renderOptions(attributes) {
@@ -44,21 +54,21 @@ function renderOptions(attributes) {
     const group = document.createElement("div");
     group.className = "variant-group";
     let noteText = "";
-if (attr.key.toLowerCase().includes("size")) {
-  const noteMap = {
-    "ysandal5568": "Trừ 2 size so với giày thể thao, ví dụ: hàng ngày đi giày thể thao size 40 => Chọn dép này size 38",
-    "ysandal5560": "Trừ 2 size so với giày thể thao, ví dụ: hàng ngày đi giày thể thao size 42 => Chọn dép này size 40",
-    "carbon": "Trừ 2 size so với giày thể thao, ví dụ: hàng ngày đi giày thể thao size 42 => Chọn dép này size 40",
-    "ysandalbn68": "Trừ 1 size so với giày thể thao, ví dụ: hàng ngày đi giày thể thao size 40 => Chọn dép này size 39",
-  };
-  const currentPage = window.productPage || "";
-  if (noteMap[currentPage]) {
-    noteText = ` <span class="sizenote">${noteMap[currentPage]}</span>`;
-  }
-}
 
-group.innerHTML = `<div class="variant-label">${attr.label}:${noteText}</div>`;
+    if (attr.key.toLowerCase().includes("size")) {
+      const noteMap = {
+        "ysandal5568": "Trừ 2 size so với giày thể thao, ví dụ: hàng ngày đi giày thể thao size 40 ⇒ chọn dép này size 38",
+        "ysandal5560": "Trừ 2 size so với giày thể thao, ví dụ: hàng ngày đi giày thể thao size 42 ⇒ chọn dép này size 40",
+        "carbon": "Trừ 2 size so với giày thể thao, ví dụ: hàng ngày đi giày thể thao size 42 ⇒ chọn dép này size 40",
+        "ysandalbn68": "Trừ 1 size so với giày thể thao, ví dụ: hàng ngày đi giày thể thao size 40 ⇒ chọn dép này size 39",
+      };
+      const currentPage = window.productPage || "";
+      if (noteMap[currentPage]) {
+        noteText = ` <span class="sizenote">${noteMap[currentPage]}</span>`;
+      }
+    }
 
+    group.innerHTML = `<div class="variant-label">${attr.label}:${noteText}</div>`;
 
     const displayMode = attr.display || "button";
     const wrapper = document.createElement("div");
@@ -78,7 +88,8 @@ group.innerHTML = `<div class="variant-label">${attr.label}:${noteText}</div>`;
         : value;
 
       thumb.addEventListener("click", () => {
-        document.querySelectorAll(`.variant-thumb[data-key="${attr.key}"]`).forEach(el => el.classList.remove("selected"));
+        document.querySelectorAll(`.variant-thumb[data-key="${attr.key}"]`)
+          .forEach(el => el.classList.remove("selected"));
         thumb.classList.add("selected");
         updateSelectedVariant();
       });
@@ -115,7 +126,6 @@ function updateSelectedVariant() {
 }
 
 function selectVariant(data) {
-    // ✅ Nếu có __voucherWaiting → gán vào voucherByProduct
   if (window.__voucherWaiting?.amount) {
     window.voucherByProduct = window.voucherByProduct || {};
     if (!window.voucherByProduct[data.id]) {
@@ -182,12 +192,12 @@ function selectVariant(data) {
     productVariantText.style.marginTop = "16px";
   }
 }
+
 function changeQuantity(delta) {
   const input = document.getElementById("quantityInput");
   let value = parseInt(input?.value || "1");
   if (input) input.value = Math.max(1, value + delta);
 }
-
 
 function toggleCartPopup(show = true) {
   const popup = document.getElementById("cartPopup");
@@ -201,8 +211,6 @@ function toggleCartPopup(show = true) {
     content.classList.add("animate-slideup");
     popup.classList.remove("hidden");
     isCartPopupOpen = true;
-
-    // ✅ Thêm dòng này để tránh lỗi lần đầu
     setTimeout(() => bindAddToCartButton(), 100);
   } else {
     content.classList.remove("animate-slideup");
@@ -214,12 +222,10 @@ function toggleCartPopup(show = true) {
   }
 }
 
-
 function bindAddToCartButton() {
   const atcBtn = document.getElementById("btn-atc");
   if (atcBtn && !isCartEventBound) {
     isCartEventBound = true;
-
     atcBtn.addEventListener("click", (e) => {
       e.preventDefault();
       e.stopImmediatePropagation();
@@ -228,27 +234,19 @@ function bindAddToCartButton() {
         toggleCartPopup(true);
       } else {
         const quantity = parseInt(document.getElementById("quantityInput")?.value) || 1;
-        if (!window.selectedVariant) {
-          return alert("Vui lòng chọn phân loại sản phẩm.");
-        }
+        if (!window.selectedVariant) return alert("Vui lòng chọn phân loại sản phẩm.");
 
-        // ✅ Kiểm tra đã chọn đủ tất cả thuộc tính chưa
         const requiredKeys = window.allAttributes.map(a => a.key);
         const selectedKeys = Object.keys(window.selectedVariant);
         const isComplete = requiredKeys.every(key => selectedKeys.includes(key));
-        if (!isComplete) {
-          return alert("Vui lòng chọn đầy đủ phân loại sản phẩm.");
-        }
+        if (!isComplete) return alert("Vui lòng chọn đầy đủ phân loại sản phẩm.");
 
         const product = window.selectedVariant;
         const loai = window.productCategory || "unknown";
         const voucherAmount = window.voucherByProduct?.[product.id] || 0;
-
-        // ✅ Gộp phân loại
         const phanLoaiText = requiredKeys.map(key => product[key]).join(" - ");
         product["Phân loại"] = phanLoaiText;
 
-        // ✅ Thêm vào giỏ
         window.cart.push({
           ...product,
           quantity,
@@ -267,23 +265,21 @@ function bindAddToCartButton() {
             currency: "VND"
           });
         }
-// ✅ Gửi log về Make.com
-fetch("https://hook.eu2.make.com/31c0jdh2vkvkjcnaenbm3kyze8fp3us3", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({
-    content_id: product.id,
-    content_name: phanLoaiText,
-    content_category: product.category || loai,
-    content_page: window.productPage || "unknown",
-    value: product.Giá,
-    currency: "VND",
-    timestamp: new Date().toISOString()
-  })
-}).catch(err => {
-  console.warn("⚠️ Không thể gửi dữ liệu về Make:", err);
-});
-// END Gửi log về Make.com
+
+        fetch("https://hook.eu2.make.com/31c0jdh2vkvkjcnaenbm3kyze8fp3us3", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            content_id: product.id,
+            content_name: phanLoaiText,
+            content_category: product.category || loai,
+            content_page: window.productPage || "unknown",
+            value: product.Giá,
+            currency: "VND",
+            timestamp: new Date().toISOString()
+          })
+        }).catch(err => console.warn("⚠️ Không thể gửi dữ liệu về Make:", err));
+
         toggleCartPopup(false);
         if (typeof showCheckoutPopup === "function") showCheckoutPopup();
       }
