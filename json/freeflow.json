@@ -61,7 +61,7 @@
     "price": 550000,
     "originalPrice": 700000,
     "contentType": "image",
-    "image": "https://i.postimg.cc/1XBGSfZ5/8.jpg",
+    "image": "https://laz-img-sg.alicdn.com/other/lzd-client-service/99080b22e7c88c97284ed7b9e327c392.jpeg",
     "youtube": "",
     "productPage": "/product/ysandalbn68",
     "tags": ["ysandal"],
@@ -70,15 +70,17 @@
     "sellerID": "huyenle"
   },
   {
-    "itemId": "dep6",
-    "title": "BCU5560 Dép Chạy Bộ Ysandal đài loan",
-    "price": 649000,
-    "originalPrice": 750000,
-    "contentType": "image",
-    "image": "https://i.postimg.cc/dtM0fDK8/vangchanh.jpg",
-    "youtube": "",
-    "productPage": "/product/ysandal5560",
-    "tags": ["ysandal"],
+    "itemId": "ysandal-100",
+    "title": "BCU5568 Dép Chạy Bộ Ysandal đài loan",
+    "price": 550000,
+    "originalPrice": 700000,
+    "contentType": "youtube",
+    "image": "https://down-vn.img.susercontent.com/file/vn-11134207-7ras8-m3h9nqgg0hitda.webp",
+    "youtube": "Z7ql8lmWUUA",
+    "productPage": "/product/ysandal5568",
+    "tags": [
+      "ysandal"
+    ],
     "basePriority": 15,
     "productCategory": "ysandal",
     "sellerID": "huyenle"
@@ -89,7 +91,7 @@
     "price": 550000,
     "originalPrice": 700000,
     "contentType": "image",
-    "image": "https://i.postimg.cc/DwDwH6GC/3.jpg",
+    "image": "https://down-vn.img.susercontent.com/file/vn-11134207-7ras8-m3h9nqgg0hitda.webp",
     "youtube": "",
     "productPage": "/product/ysandal5568",
     "tags": [
