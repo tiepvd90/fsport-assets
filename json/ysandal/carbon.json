@@ -1,0 +1,43 @@
+{
+  "thuộc_tính": [
+    {
+      "label": "Màu Sắc",
+      "key": "Màu Sắc",
+      "type": "option",
+      "display": "thumbnail",
+      "values": [
+        { "text": "Trắng", "image": "https://down-vn.img.susercontent.com/file/vn-11134207-820l4-mghkn5613gneec@resize_w450_nl.webp" },
+        { "text": "Đen", "image": "https://down-vn.img.susercontent.com/file/vn-11134207-820l4-mghknb8lsf0t94@resize_w450_nl.webp" },
+        { "text": "Xanh", "image": "https://down-vn.img.susercontent.com/file/vn-11134207-820l4-mghknew8m97189@resize_w450_nl.webp" },
+        { "text": "Xám", "image": "https://down-vn.img.susercontent.com/file/vn-11134207-820l4-mghknixre1vs3c@resize_w450_nl.webp" },
+        { "text": "Vàng Chanh", "image": "https://down-vn.img.susercontent.com/file/vn-11134207-820l4-mghknocr4bux97@resize_w450_nl.webp" },
+		{ "text": "Rêu", "image": "https://down-vn.img.susercontent.com/file/vn-11134207-820l4-mghkns0y8lc985@resize_w450_nl.webp" },
+		{ "text": "Hồng", "image": "https://down-vn.img.susercontent.com/file/vn-11134207-820l4-mghknvet1jwq09@resize_w450_nl.webp" }
+      ]
+    },
+    {
+      "label": "Size",
+      "key": "Size",
+      "type": "option",
+      "display": "button",
+      "values": [
+        "35",
+        "36",
+        "37",
+        "38",
+        "39",
+        "40",
+        "41",
+		"42"
+      ]
+    }
+  ],
+  "biến_thể": [
+    {
+      "id": "carbon",
+      "category": "ysandal",
+      "Giá": 1150000,
+      "Giá gốc": 18000000
+    }
+  ]
+}
