@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+
+  <title>Áo Singlet chạy bộ AirRush Gradient áo thể thao running thoáng khí thấm hút tốt Coolmate</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/css/base.css" />
+  <link rel="stylesheet" href="/css/slideshow.css" />
+  <link rel="stylesheet" href="/css/productdescription.css" />
+  <link rel="icon" type="image/png" href="/favicon.png" />
+
+  <style>
+    /* ✅ Fix lỗi ảnh mô tả tràn trên mobile */
+    .desc-container {
+      width: 100%;
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    .desc-container img {
+      display: block;
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+      margin: 8px 0;
+      object-fit: contain;
+    }
+
+    /* Mobile: đảm bảo không overflow */
+    @media (max-width: 768px) {
+      .desc-container {
+        padding: 0;
+        margin: 0;
+      }
+      .desc-container img {
+        width: 100vw;
+        max-width: 100%;
+        margin-left: 0;
+        margin-right: 0;
+        border-radius: 0; /* Cho liền màn hình nếu muốn full bleed */
+      }
+    }
+  </style>
+
+  <!-- ✅ Biến cấu hình trang -->
+  <script>
+    window.productType     = "affiliate";
+    window.loai           = "ysandal";
+    window.productCategory= "ysandal";
+    window.productPage    = "coolmate-singlet";
+    window.shopeeLink     = "https://s.shopee.vn/6KwGVrqyyf";
+    window.affImages = [
+      "https://down-vn.img.susercontent.com/file/vn-11134207-7ras8-matwu99yp1hz46.webp",
+      "https://down-vn.img.susercontent.com/file/vn-11134207-7ras8-maw2g92uh9qkd6.webp",
+      "https://down-vn.img.susercontent.com/file/vn-11134207-7ras8-maw2g92kj2x831.webp",
+      "https://down-vn.img.susercontent.com/file/vn-11134207-7ras8-maw2g92uiob07d.webp"
+    ];
+  </script>
+</head>
+<body>
+  <div class="page-container">
+
+    <!-- Slideshow -->
+    <div class="lazy-slideshow" id="lazySlideshow">
+      <div class="slide-counter" id="slideCounter">1/1</div>
+    </div>
+
+    <!-- Zoom overlay -->
+    <div id="fullscreenZoom" style="display:none;">
+      <div id="zoomWrapper">
+        <img id="zoomedImg" src="" alt="Zoomed" />
+        <button id="zoomCloseBtn">×</button>
+      </div>
+    </div>
+    <script src="/js/aff/slideshow-aff.js"></script>
+
+    <!-- Tiêu đề -->
+    <div class="product-hero" style="margin-top:12px;">
+      <h1 style="font-size:14px;font-weight:bold;margin-top:8px;font-family:'Be Vietnam Pro',sans-serif;">
+        <span style="background:black;color:white;font-size:11px;padding:2px 6px;border-radius:4px;margin-right:4px;">Mall</span>
+        <span style="background:#007BFF;color:white;font-size:11px;padding:2px 6px;border-radius:4px;margin-right:6px;text-transform:uppercase;">Hàng Chính Hãng</span>
+        <span>Áo Singlet chạy bộ AirRush Gradient áo thể thao running thoáng khí thấm hút tốt Coolmate</span>
+      </h1>
+    </div>
+
+    <!-- ✅ ẢNH MÔ TẢ -->
+    <div class="desc-container">
+      <img src="https://down-vn.img.susercontent.com/file/vn-11134207-7ras8-matww7olnwt48d.webp" alt="Ảnh 1">
+      <img src="https://down-vn.img.susercontent.com/file/vn-11134207-7ras8-mawd8u7f35qw12.webp" alt="Ảnh 2">
+      <img src="https://down-vn.img.susercontent.com/file/vn-11134207-7ras8-maw2g92uh9kx6b.webp" alt="Ảnh 3">
+      <img src="https://down-vn.img.susercontent.com/file/vn-11134207-7ras8-mawd8u7f35jr91.webp" alt="Ảnh 4">
+    </div>
+
+    <!-- FreeFlow -->
+    <h2 class="freeflow-heading" style="font-size:18px;margin:24px 12px 12px;">CÓ THỂ BẠN SẼ THÍCH</h2>
+    <script src="/js/freeflow-loader.js"></script>
+  </div>
+
+  <!-- Sticky footer Shopee -->
+  <script src="/js/aff/outbound-click.js"></script>
+  <script src="/js/aff/stickyfooter-aff.js"></script>
+
+  <!-- Tracking + base -->
+  <script src="https://friendly-kitten-d760ff.netlify.app/js/tracking.js"></script>
+  <div id="base-placeholder"></div>
+  <script>
+    fetch("/html/base.html")
+      .then(r => r.text())
+      .then(html => {
+        document.getElementById("base-placeholder").outerHTML = html;
+        if (typeof trackBothPixels === "function") {
+          trackBothPixels("ViewContent", {
+            content_id: window.productPage,
+            content_name: window.productTitle,
+            content_category: window.productCategory,
+            value: 0,
+            currency: "VND"
+          });
+        }
+      });
+  </script>
+  <script src="/js/base.js"></script>
+</body>
+</html>
