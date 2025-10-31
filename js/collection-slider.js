@@ -1,18 +1,11 @@
 /* ======================================================
  * 🛒 COLLECTION-SLIDER — Horizontal Product Slider
- * Hiển thị các khối sản phẩm trượt ngang (Pickleball, Ysandal,...)
- * Dữ liệu đọc từ /json/collection.json
+ * Dữ liệu: /json/collection.json
+ * CSS: /css/collection-slider.css
  * ====================================================== */
 
 (function () {
-  // Chờ DOM sẵn sàng
-  function onReady(fn) {
-    if (document.readyState === "loading") {
-      document.addEventListener("DOMContentLoaded", fn);
-    } else fn();
-  }
-
-  // Hàm render 1 slider
+  // Hàm render slider
   function renderSliderItems(data, containerId) {
     const container = document.getElementById(containerId);
     if (!container) return;
@@ -32,7 +25,7 @@
     });
   }
 
-  // Hàm tải dữ liệu JSON và hiển thị
+  // Hàm load dữ liệu JSON
   async function loadCollectionSliders() {
     try {
       const res = await fetch("/json/collection.json");
@@ -45,10 +38,9 @@
       renderSliderItems(pickleballItems, "slider-pickleball");
       renderSliderItems(ysandalItems, "slider-ysandal");
     } catch (err) {
-      console.error("Lỗi khi tải collection:", err);
+      console.error("⚠️ Lỗi khi tải collection:", err);
     }
   }
 
-  // Gọi hàm khi DOM sẵn sàng
-  onReady(loadCollectionSliders);
+  document.addEventListener("DOMContentLoaded", loadCollectionSliders);
 })();
