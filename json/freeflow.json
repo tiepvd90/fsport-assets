@@ -70,6 +70,20 @@
     "sellerID": "huyenle"
   },
   {
+    "itemId": "dep-carbon",
+    "title": "Dép Carbon Chạy Bộ Ysandal Chính Hãng",
+    "price": 1150000,
+    "originalPrice": 1800000,
+    "contentType": "image",
+    "image": "https://fun-sport.co/assets/images/gallery/ysandal/carbon/4.jpg",
+    "youtube": "",
+    "productPage": "/ysandal/carbon",
+    "tags": ["ysandal"],
+    "basePriority": 15,
+    "productCategory": "ysandal",
+    "sellerID": "huyenle"
+  },
+  {
     "itemId": "ysandal-100",
     "title": "BCU5568 Dép Chạy Bộ Ysandal đài loan",
     "price": 550000,
