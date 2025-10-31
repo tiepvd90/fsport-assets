@@ -1,6 +1,7 @@
 /* ======================================================
  * 🛒 STICKYFOOTER-AFF — Bản ép inline CSS (ổn định tuyệt đối)
  * Hiển thị icon Home / Mess / Zalo / Call + nút MUA TRÊN SHOPEE
+ * Khi click: gọi file /js/aff/outbound-click.js để gửi dữ liệu
  * ====================================================== */
 (function () {
   function onReady(fn) {
@@ -65,7 +66,7 @@
       </div>
 
       <!-- 🛒 Nút Shopee -->
-      <button onclick="window.open('${link}','_blank')"
+      <button id="shopeeButton"
         style="
           flex:1;
           margin-left:10px;
@@ -91,5 +92,16 @@
     `;
 
     document.body.appendChild(footer);
+
+    // ✅ Gắn sự kiện click: gọi script /js/aff/outbound-click.js
+    const shopeeBtn = footer.querySelector("#shopeeButton");
+    shopeeBtn.addEventListener("click", () => {
+      if (typeof window.trackOutboundClick === "function") {
+        window.trackOutboundClick(); // Gọi hàm trong /js/aff/outbound-click.js
+      } else {
+        console.warn("⚠️ trackOutboundClick() chưa được load — mở link trực tiếp.");
+        window.open(link, "_blank");
+      }
+    });
   });
 })();
