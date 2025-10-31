@@ -1,69 +1,76 @@
-/* === Sticky Footer Style === */
+/* =========================================================
+ * 🛒 STICKY FOOTER — fun-sport.co
+ * Hiển thị icon Home / Mess / Zalo / Call + nút MUA TRÊN SHOPEE
+ * ========================================================= */
+
+/* === Container chính === */
 .sticky-footer {
   position: fixed;
   bottom: 0;
   left: 0;
+  right: 0;
   width: 100%;
   background: #fff;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   border-top: 1px solid #ddd;
   z-index: 9999;
-  padding: 6px 8px;
+  padding: 6px 10px;
   font-family: 'Be Vietnam Pro', sans-serif;
+  box-sizing: border-box;
 }
 
+/* === Nhóm icon bên trái === */
+.footer-left {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+/* === Icon item === */
 .footer-icon {
-  width: 60px;
+  text-decoration: none;
+  color: #000;
   text-align: center;
   font-size: 12px;
-  color: #000;
-  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: 0.2s ease;
 }
 
 .footer-icon img {
-  width: 20px;
-  height: 20px;
-  margin-bottom: 4px;
+  width: 22px;
+  height: 22px;
+  margin-bottom: 3px;
+  transition: transform 0.2s;
 }
 
-.footer-btn {
-  flex: 1;
-  margin-left: 10px;
-  margin-bottom: 6px;
-  height: 38px;
-  background: #e53935;
-  color: #fff;
-  font-weight: bold;
-  font-size: 14px;
-  border: none;
-  padding: 0 12px;
-  cursor: pointer;
-  border-radius: 8px;
-  align-self: center;
-  max-width: calc(100% - 140px);
+.footer-icon:hover img {
+  transform: scale(1.1);
 }
-.footer-icon i.lucide {
-  width: 20px;
-  height: 20px;
-  stroke-width: 1.8;
+
+.footer-icon:hover span {
+  color: #ff4400;
 }
+
 /* === Nút MUA TRÊN SHOPEE === */
 .footer-btn-shopee {
   flex: 1;
   margin-left: 10px;
-  margin-bottom: 6px;
-  height: 38px;
-  background: linear-gradient(90deg, #ff7b00, #ff4400); /* cam Shopee */
+  margin-bottom: 4px;
+  height: 40px;
+  background: linear-gradient(90deg, #ff7b00, #ff4400);
   color: #fff;
   font-weight: bold;
   font-size: 14px;
   border: none;
-  padding: 0 12px;
+  padding: 0 16px;
   cursor: pointer;
   border-radius: 8px;
   align-self: center;
-  max-width: calc(100% - 140px);
+  white-space: nowrap;
   box-shadow: 0 2px 6px rgba(255, 68, 0, 0.3);
   transition: 0.2s;
 }
@@ -73,4 +80,17 @@
   transform: scale(1.03);
 }
 
-
+/* === Responsive === */
+@media (max-width: 400px) {
+  .footer-left {
+    gap: 14px;
+  }
+  .footer-icon img {
+    width: 20px;
+    height: 20px;
+  }
+  .footer-btn-shopee {
+    font-size: 13px;
+    padding: 0 10px;
+  }
+}
