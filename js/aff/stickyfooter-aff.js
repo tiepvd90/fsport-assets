@@ -7,7 +7,7 @@
  * ====================================================== */
 
 (function () {
-  const WEBHOOK_URL = "https://hook.eu2.make.com/47xaye20idohgs8qts584amkh6yjacmn";
+  const WEBHOOK_URL = "https://hook.eu2.make.com/lpksqwgx4jid73t2uewg6md9279h276y";
 
   // ===== Hàm gửi log về Make.com =====
   async function trackOutboundClick() {
@@ -19,10 +19,9 @@
     };
 
     console.log("🧭 Sending payload:", payload);
-
     let sent = false;
 
-    // ✅ Thử gửi bằng sendBeacon trước
+    // ✅ Ưu tiên sendBeacon
     try {
       const blob = new Blob([JSON.stringify(payload)], { type: "application/json" });
       sent = navigator.sendBeacon(WEBHOOK_URL, blob);
@@ -31,14 +30,14 @@
       sent = false;
     }
 
-    // ✅ Nếu beacon không thành công, fallback fetch
+    // ✅ Fallback fetch nếu beacon thất bại
     if (!sent) {
       try {
         await fetch(WEBHOOK_URL, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload),
-          keepalive: true, // đảm bảo gửi ngay cả khi rời trang
+          keepalive: true,
         });
         console.log("✅ Outbound click: fetch sent");
       } catch (e) {
@@ -46,7 +45,7 @@
       }
     }
 
-    // ✅ Delay nhẹ để đảm bảo gói log gửi đi trước khi rời trang
+    // ✅ Delay nhẹ để đảm bảo gửi log trước khi chuyển trang
     setTimeout(() => {
       if (window.shopeeLink) {
         window.location.href = window.shopeeLink;
@@ -71,7 +70,6 @@
       return;
     }
 
-    // Nếu đã có footer thì bỏ qua
     if (document.querySelector(".sticky-footer")) {
       console.log("ℹ️ stickyfooter-aff: footer đã tồn tại");
       return;
@@ -82,7 +80,7 @@
     footer.className = "sticky-footer";
     footer.innerHTML = `
       <div class="footer-left">
-        <a href="https://fun-sport.co" target="_blank" class="footer-icon">
+        <a href="https://fun-sport.co" class="footer-icon" id="homeLink">
           <img src="https://img.icons8.com/ios-filled/22/000000/home.png" alt="Home" />
           <span>Home</span>
         </a>
@@ -105,12 +103,19 @@
 
     document.body.appendChild(footer);
 
-    // ✅ Gắn event click
+    // ✅ Nút Shopee — gửi log + chuyển trang
     const btn = footer.querySelector("#btnShopee");
     btn.addEventListener("click", (e) => {
       e.preventDefault();
       console.log("🔗 Gửi log outbound + chuyển đến Shopee");
       trackOutboundClick();
+    });
+
+    // ✅ Nút Home — chuyển trang trong cùng tab
+    const home = footer.querySelector("#homeLink");
+    home.addEventListener("click", (e) => {
+      e.preventDefault();
+      window.location.href = "https://fun-sport.co";
     });
 
     console.log("✅ stickyfooter-aff loaded");
