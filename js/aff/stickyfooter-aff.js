@@ -1,46 +1,10 @@
 /* ======================================================
- * 🛒 STICKYFOOTER-AFF — fun-sport.co (FINAL PRODUCTION)
+ * 🛒 STICKYFOOTER-AFF — fun-sport.co (FINAL CLEAN)
  * Hiển thị icon Home / Mess / Zalo / Call
- * Nút "MUA TRÊN SHOPEE" → gửi log về Make.com → chuyển sang Shopee
+ * Nút "MUA TRÊN SHOPEE" → gọi trackOutboundClick() từ outbound-click.js
  * ====================================================== */
 
 (function () {
-  // ===== Webhook Make.com =====
-  const WEBHOOK_URL = "https://hook.eu2.make.com/lpksqwgx4jid73t2uewg6md9279h276y";
-
-  // ===== Hàm gửi log click về Make.com =====
-  function trackOutboundClickAndRedirect() {
-    const payload = {
-      productPage: window.productPage || "",
-      productCategory: window.productCategory || "",
-      destinationURL: window.shopeeLink || "",
-      timestamp: new Date().toISOString(),
-    };
-
-    console.log("🧭 Gửi dữ liệu click:", payload);
-
-    fetch(WEBHOOK_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    })
-      .then((res) => {
-        if (!res.ok) throw new Error("Webhook POST failed");
-        console.log("✅ Đã gửi log click thành công về Make.com");
-      })
-      .catch((err) => {
-        console.warn("⚠️ Lỗi khi gửi log:", err);
-      })
-      .finally(() => {
-        // ✅ Chuyển hướng sang Shopee trong cùng tab
-        if (window.shopeeLink) {
-          window.location.href = window.shopeeLink;
-        } else {
-          alert("⚠️ Thiếu window.shopeeLink — không thể mở Shopee!");
-        }
-      });
-  }
-
   // ===== Helper: chạy khi DOM sẵn sàng =====
   function onReady(fn) {
     if (document.readyState === "loading") {
@@ -86,8 +50,13 @@
     const btn = footer.querySelector("#btnShopee");
     btn.addEventListener("click", (e) => {
       e.preventDefault();
-      console.log("🔗 Click MUA TRÊN SHOPEE → gửi log + chuyển sang Shopee");
-      trackOutboundClickAndRedirect();
+      console.log("🔗 Click MUA TRÊN SHOPEE → gọi trackOutboundClick()");
+      if (typeof window.trackOutboundClick === "function") {
+        window.trackOutboundClick();
+      } else {
+        console.warn("⚠️ trackOutboundClick chưa được load!");
+        if (window.shopeeLink) window.location.href = window.shopeeLink;
+      }
     });
 
     // ✅ Nút Home → không mở tab mới
@@ -97,6 +66,6 @@
       window.location.href = "https://fun-sport.co";
     });
 
-    console.log("✅ stickyfooter-aff (FINAL) loaded");
+    console.log("✅ stickyfooter-aff (FINAL CLEAN) loaded");
   });
 })();
