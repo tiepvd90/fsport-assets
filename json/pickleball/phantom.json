@@ -7,15 +7,9 @@
       "display": "thumbnail",
       "values": [
         {
-          "text": "Chữ PHANTOM Màu TÍM",
-          "image": "/assets/images/thumb/pickleball/phantom/CHUTIM.webp",
-          "GiaOverride": 2000000,
-          "GiaGocOverride": 2700000
-        },
-        {
           "text": "Chữ PHANTOM Màu XANH",
           "image": "/assets/images/gallery/pickleball/phantom/3.webp",
-          "GiaOverride": 2100000,
+          "GiaOverride": 2200000,
           "GiaGocOverride": 2800000
         }
       ]
@@ -36,7 +30,7 @@
     {
       "id": "phantom",
       "category": "pickleball",
-      "Giá": 2100000,
+      "Giá": 2200000,
       "Giá gốc": 2700000
     }
   ]
