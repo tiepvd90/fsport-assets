@@ -137,6 +137,11 @@ function selectVariant(data) {
       window.voucherByProduct[data.id] = window.__voucherWaiting.amount;
     }
   }
+  // ✅ Fix cứng voucher 200k cho pickleball-rongden
+  window.voucherByProduct = window.voucherByProduct || {};
+  if (data.id === "pickleball-rongden") {
+    window.voucherByProduct[data.id] = 200000;
+  }
 
   window.selectedVariant = data;
 
