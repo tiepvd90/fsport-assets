@@ -189,7 +189,7 @@ function selectVariant(data) {
 }
 
 // ✅ Phantom mặc định giảm 300k
-if (["phantom","omeage"].includes(data.id)) {
+if (["phantom","omega"].includes(data.id)) {
   window.voucherByProduct[data.id] = 300000;
 }
   window.selectedVariant = data;
