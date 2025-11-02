@@ -1,33 +1,48 @@
 {
   "thuộc_tính": [
     {
-      "label": "Màu Sắc",
       "key": "Màu Sắc",
-      "type": "option",
+      "label": "Màu Sắc",
       "display": "thumbnail",
       "values": [
-        { "text": "Vợt Trắng", "image": "/assets/images/thumb/pickleball/gen4/trang.webp" },
-        { "text": "Vợt Hồng", "image": "/assets/images/thumb/pickleball/gen4/hong.webp" }
-      ]
-    },
-    {
-      "label": "Quà Tặng",
-      "key": "Quà Tặng",
-      "type": "option",
-      "display": "button",
-      "values": [
-        "Túi Pick Màu Ghi Xám",
-        "Túi Pick Màu Hồng",
-        "Túi Pick Màu Đen"
+        {
+          "text": "Gen-4 Trắng",
+          "image": "/assets/images/thumb/pickleball/gen4/trang.webp",
+          "Giá": 719000,
+          "Giá gốc": 1000000
+        },
+        {
+          "text": "Gen-4 Hồng",
+          "image": "/assets/images/thumb/pickleball/gen4/hong.webp",
+          "Giá": 719000,
+          "Giá gốc": 1000000
+        },
+        {
+          "text": "Rồng Đen",
+          "image": "/assets/images/thumb/pickleball/firstpickleball/rongden.jpg",
+          "Giá": 849000,
+          "Giá gốc": 1270000
+        },
+        {
+          "text": "JBlack",
+          "image": "/assets/images/thumb/pickleball/firstpickleball/black.jpg",
+          "Giá": 849000,
+          "Giá gốc": 1240000
+        },
+        {
+          "text": "Titan",
+          "image": "/assets/images/gallery/pickleball/secpickleball/2.webp",
+          "Giá": 599000,
+          "Giá gốc": 900000
+        }
       ]
     }
   ],
   "biến_thể": [
-    {
-      "id": "gen4",
-      "category": "pickleball",
-      "Giá": 850000,
-      "Giá gốc": 1700000
-    }
+    { "Màu Sắc": "Gen-4 Trắng", "id": "pickleball-gen4-trang", "category": "pickleball" },
+    { "Màu Sắc": "Gen-4 Hồng", "id": "pickleball-gen4-hong", "category": "pickleball" },
+    { "Màu Sắc": "Rồng Đen", "id": "pickleball-rongden", "category": "pickleball" },
+    { "Màu Sắc": "JBlack", "id": "pickleball-black", "category": "pickleball" },
+    { "Màu Sắc": "Titan", "id": "pickleball-titan", "category": "pickleball" }
   ]
 }
