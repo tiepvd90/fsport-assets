@@ -5,38 +5,48 @@ let isCartPopupOpen = false;
 
 function initCartPopup() {
   const container = document.getElementById("cartContainer");
-  const loai = window.productPage || "default";
-  const jsonUrl = container?.getAttribute("data-json") || `/json/${loai}.json`;
+  const productPage = window.productPage || "default";
+  const category = window.productCategory || "default";
 
-  fetch(jsonUrl)
-    .then(res => res.json())
+  // ✅ Ưu tiên file chính, fallback sang thư mục category nếu không thấy
+  const primaryUrl = container?.getAttribute("data-json") || `/json/${productPage}.json`;
+  const fallbackUrl = `/json/${category}/${productPage}.json`;
+
+  fetch(primaryUrl)
+    .then(res => {
+      if (!res.ok) throw new Error("Primary JSON not found");
+      return res.json();
+    })
+    .catch(() => {
+      console.warn(`⚠️ Không tìm thấy ${primaryUrl}, thử tải fallback ${fallbackUrl}`);
+      return fetch(fallbackUrl).then(res => res.json());
+    })
     .then(data => {
       if (data["thuộc_tính"] && data["biến_thể"]) {
         window.allVariants = data["biến_thể"];
         window.allAttributes = data["thuộc_tính"];
-        window.productCategory = data["category"]
-  || (Array.isArray(data["biến_thể"]) ? data["biến_thể"][0]?.category : "unknown")
-  || "unknown";
+        window.productCategory =
+          data["category"] ||
+          (Array.isArray(data["biến_thể"]) ? data["biến_thể"][0]?.category : "unknown") ||
+          "unknown";
 
-
+        // ✅ Gán voucher nếu có
         data["biến_thể"].forEach(sp => {
-  const id = sp.id;
+          const id = sp.id;
+          if (window.__voucherWaiting?.amount && id) {
+            window.voucherByProduct[id] = window.__voucherWaiting.amount;
+          }
+        });
 
-  // ✅ Gán từ __voucherWaiting nếu có
-  if (window.__voucherWaiting?.amount && id) {
-    window.voucherByProduct[id] = window.__voucherWaiting.amount;
-  }
-
-        
-});
         renderOptions(data["thuộc_tính"]);
         bindAddToCartButton();
       } else {
         console.error("❌ Dữ liệu JSON thiếu thuộc_tính hoặc biến_thể.");
       }
     })
-    .catch(err => console.warn("Không thể tải JSON sản phẩm:", err));
+    .catch(err => console.error("Không thể tải JSON sản phẩm:", err));
 }
+
 
 function renderOptions(attributes) {
   const container = document.getElementById("variantList");
