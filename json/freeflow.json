@@ -125,6 +125,20 @@
     "productCategory": "ysandal",
     "sellerID": "huyenle"
   },
+    {
+    "itemId": "Coolmate - Daily Wear",
+    "title": "[Shopee Product]Áo Advanced Vent Tech Graphic Camo",
+    "price": 240000,
+    "originalPrice": 350000,
+    "contentType": "image",
+    "image": "https://down-vn.img.susercontent.com/file/vn-11134208-7ras8-mc7hft7fj04q56@resize_w875_nl.webp",
+    "youtube": "",
+    "productPage": "/ysandal/aff/Coolmate-DailyWear",
+    "tags": ["ysandal","coolmate"],
+    "basePriority": 15,
+    "productCategory": "ysandal",
+    "sellerID": "huyenle"
+  },
   {
     "itemId": "dep-carbon",
     "title": "Dép Carbon Chạy Bộ Ysandal Chính Hãng",
