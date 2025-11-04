@@ -14,8 +14,10 @@
   const POPUP_ID = "ballPromoPopup";
   const CSS_PATH = "/css/popupmessage.css";
   const IMG_ICON = "/assets/images/thumb/pickleball/ball/MUA4DUOC6.webp";
+  const IMG_BALL = "/assets/images/gallery/pickleball/pickleball-ball/2.webp";
   const IMG_QR = "/assets/images/zaloOA.webp";
   const ZALO_LINK = "https://zalo.me/3913722836443497435";
+  const BALL_LINK = "https://fun-sport.co/pickleball/ball";
 
   // ====== Đảm bảo CSS được load ======
   if (!document.querySelector(`link[href="${CSS_PATH}"]`)) {
@@ -50,7 +52,11 @@
       <div class="qr-box">
         <img src="${IMG_QR}" alt="QR Zalo OA Fun-Sport">
       </div>
-      <button class="btn-zalo" id="openZaloOA">ZALO OA Fun-Sport</button>
+      <img src="${IMG_BALL}" alt="Bóng Pickleball F-Sport Pro" style="width:100%;border-radius:8px;margin-top:10px;">
+      <div class="btn-row" style="display:flex;gap:8px;justify-content:center;margin-top:12px;">
+        <button class="btn-zalo" id="openZaloOA" style="flex:1;">ZALO OA Fun-Sport</button>
+        <button class="btn-ball" id="viewBallDetail" style="flex:1;background:#000;color:#fff;border:none;border-radius:6px;padding:8px 12px;font-weight:600;">XEM CHI TIẾT BÓNG</button>
+      </div>
     `;
     document.body.appendChild(popup);
   }
@@ -70,9 +76,14 @@
     popupEl.classList.remove("show");
   });
 
-  // mở OA Zalo
+  // mở OA Zalo trong cùng tab
   document.getElementById("openZaloOA").addEventListener("click", () => {
-    window.open(ZALO_LINK, "_blank");
+    window.location.href = ZALO_LINK;
+  });
+
+  // mở chi tiết bóng trong cùng tab
+  document.getElementById("viewBallDetail").addEventListener("click", () => {
+    window.location.href = BALL_LINK;
   });
 
   // đóng icon nổi
