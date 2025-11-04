@@ -1,9 +1,15 @@
 /* ============================================================
  * 🏐 POPUP MESSAGE — Pickleball Ball Promotion (Fun-Sport)
- * Dùng CSS từ /css/popupmessage.css
+ * Hiển thị chỉ khi category = "pickleball" và productPage ≠ "pickleball-ball"
  * ============================================================ */
 
 (function () {
+  const category = window.productCategory || "";
+  const productPage = window.productPage || "";
+
+  // ✅ Điều kiện hiển thị
+  if (category !== "pickleball" || productPage === "pickleball-ball") return;
+
   const ICON_ID = "ballPromoFloatIcon";
   const POPUP_ID = "ballPromoPopup";
   const CSS_PATH = "/css/popupmessage.css";
