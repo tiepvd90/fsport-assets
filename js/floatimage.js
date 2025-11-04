@@ -14,8 +14,8 @@
   const POPUP_ID = "ballPromoPopup";
   const CSS_PATH = "/css/popupmessage.css";
   const IMG_ICON = "/assets/images/thumb/pickleball/ball/MUA4DUOC6.webp";
-  const IMG_BALL = "/assets/images/gallery/pickleball/pickleball-ball/2.webp";
   const IMG_QR = "/assets/images/zaloOA.webp";
+  const IMG_BALL = "/assets/images/gallery/pickleball/pickleball-ball/2.webp";
   const ZALO_LINK = "https://zalo.me/3913722836443497435";
   const BALL_LINK = "https://fun-sport.co/pickleball/ball";
 
@@ -47,15 +47,18 @@
     popup.id = POPUP_ID;
     popup.innerHTML = `
       <div class="close-btn" id="closeBallPromo">×</div>
-      <h3>🎁 Ưu đãi Bóng Thi Đấu Dạ Quang F-Sport Pro Tại Zalo OA</h3>
-      <p>Chỉ cần ấn nút <b>“Quan Tâm”</b> Zalo OA <b>Fun-Sport</b> và nhắn tin “<b>Bóng Pro</b>” – bạn sẽ nhận ngay mã ưu đãi <b>Mua 4 được 6 bóng thi đấu Dạ Quang Pro</b>.</p>
-      <div class="qr-box">
-        <img src="${IMG_QR}" alt="QR Zalo OA Fun-Sport">
-      </div>
-      <img src="${IMG_BALL}" alt="Bóng Pickleball F-Sport Pro" style="width:100%;border-radius:8px;margin-top:10px;">
-      <div class="btn-row" style="display:flex;gap:8px;justify-content:center;margin-top:12px;">
-        <button class="btn-zalo" id="openZaloOA" style="flex:1;">ZALO OA Fun-Sport</button>
-        <button class="btn-ball" id="viewBallDetail" style="flex:1;background:#000;color:#fff;border:none;border-radius:6px;padding:8px 12px;font-weight:600;">XEM CHI TIẾT BÓNG</button>
+      <h3>🎁 Ưu đãi Bóng Thi Đấu Dạ Quang F-Sport Pro</h3>
+      <p>Ấn “Quan Tâm” Zalo OA Fun-Sport và nhắn “<b>Bóng Pro</b>” để nhận ưu đãi <b>Mua 4 được 6 bóng thi đấu Dạ Quang Pro</b>.</p>
+
+      <div class="promo-row">
+        <div class="promo-col">
+          <img src="${IMG_QR}" alt="QR Zalo OA Fun-Sport" class="promo-img">
+          <button class="btn-zalo" id="openZaloOA">ZALO OA Fun-Sport</button>
+        </div>
+        <div class="promo-col">
+          <img src="${IMG_BALL}" alt="Bóng Pickleball F-Sport Pro" class="promo-img">
+          <button class="btn-ball" id="viewBallDetail">XEM CHI TIẾT BÓNG</button>
+        </div>
       </div>
     `;
     document.body.appendChild(popup);
@@ -76,12 +79,12 @@
     popupEl.classList.remove("show");
   });
 
-  // mở OA Zalo trong cùng tab
+  // mở OA Zalo (trong tab hiện tại)
   document.getElementById("openZaloOA").addEventListener("click", () => {
     window.location.href = ZALO_LINK;
   });
 
-  // mở chi tiết bóng trong cùng tab
+  // mở chi tiết bóng (trong tab hiện tại)
   document.getElementById("viewBallDetail").addEventListener("click", () => {
     window.location.href = BALL_LINK;
   });
