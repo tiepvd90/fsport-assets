@@ -283,23 +283,11 @@
       });
   </script>
 
-  <!-- ✅ Load FreeFlow -->
-  <script src="https://friendly-kitten-d760ff.netlify.app/js/freeflow.js"></script>
-  <script>
-    fetch("/html/freeflow.html")
-      .then(res => res.text())
-      .then(html => {
-        const container = document.getElementById("freeflow-placeholder");
-        const temp = document.createElement("div");
-        temp.innerHTML = html;
-        Array.from(temp.children).forEach(el => container.appendChild(el));
-
-        setTimeout(() => {
-          if (typeof fetchFreeFlowData === "function") {
-            fetchFreeFlowData("https://script.google.com/macros/s/AKfycbwuEh9sP65vyQL0XzU8gY1Os0QYV_K5egKJgm8OhImAPjvdyrQiU7XCY909N99TnltP/exec");
-          }
-        }, 200);
-      });
+ <!-- ✅ FreeFlow -->
+    <h2 class="freeflow-heading" style="font-size: 18px; margin: 24px 12px 12px;">CÓ THỂ BẠN SẼ THÍCH</h2>
+    <script src="/js/freeflow-loader.js"></script>
+  </div>
+   <!-- ✅ Base + Popup -->
     <script src="/js/base.js"></script>
 </body>
 </html>
