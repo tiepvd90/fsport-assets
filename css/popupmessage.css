@@ -208,7 +208,7 @@
 @media (max-width: 480px) {
   .popup-message {
     width: 88%;
-    padding: 16px;
+    padding: 14px;
   }
 
   .popup-message h3 {
@@ -219,32 +219,36 @@
     font-size: 12px;
   }
 
-  /* ✅ Bố cục 2x2: hai ảnh cùng hàng, hai nút cùng hàng */
+  /* ✅ Hai cột ngang, mỗi cột gồm ảnh + nút */
   .promo-row {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: auto auto;
-    gap: 12px 14px;
-    justify-items: center;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 10px;
+    flex-wrap: nowrap;
   }
 
   .promo-col {
-    flex: none;
-    width: 100%;
+    flex: 1 1 48%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     text-align: center;
   }
 
   .promo-col .promo-img {
-    max-width: 120px;
-    margin-bottom: 0;
+    max-width: 100px;
+    margin-bottom: 6px;  /* tạo khoảng cách nhỏ với nút */
     border-radius: 8px;
   }
 
-  /* Hai nút nhỏ lại cho cân hàng */
+  /* ✅ Nút nhỏ, cao vừa phải */
   .popup-message .btn-zalo,
   .popup-message .btn-ball {
     width: 100%;
-    max-width: 140px;
-    font-size: 12.5px;
+    max-width: 120px;
+    font-size: 12px;
+    padding: 6px 10px;
+    line-height: 1.3;
   }
 }
