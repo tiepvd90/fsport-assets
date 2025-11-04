@@ -39,13 +39,12 @@
     popup.id = POPUP_ID;
     popup.innerHTML = `
       <div class="close-btn" id="closeBallPromo">×</div>
-      <h3>🎁 Ưu đãi Bóng Thi Đấu Dạ Quang Pro</h3>
-      <p>Chương trình ưu đãi đặc biệt từ <b>F-Sport</b> dành cho khách hàng thân thiết!</p>
-      <p>Chỉ cần ấn nút <b>“Quan Tâm”</b> Zalo OA <b>Fun-Sport</b> và nhắn tin “<b>Nhận Mã</b>” – bạn sẽ nhận ngay mã ưu đãi <b>Mua 4 được 6 bóng thi đấu Dạ Quang Pro</b>.</p>
+      <h3>🎁 Ưu đãi Bóng Thi Đấu Dạ Quang F-Sport Pro Tại Zalo OA</h3>
+      <p>Chỉ cần ấn nút <b>“Quan Tâm”</b> Zalo OA <b>Fun-Sport</b> và nhắn tin “<b>Bóng Pro</b>” – bạn sẽ nhận ngay mã ưu đãi <b>Mua 4 được 6 bóng thi đấu Dạ Quang Pro</b>.</p>
       <div class="qr-box">
         <img src="${IMG_QR}" alt="QR Zalo OA Fun-Sport">
       </div>
-      <button class="btn-zalo" id="openZaloOA">OA Fun-Sport</button>
+      <button class="btn-zalo" id="openZaloOA">ZALO OA Fun-Sport</button>
     `;
     document.body.appendChild(popup);
   }
