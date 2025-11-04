@@ -6,7 +6,7 @@
 (function () {
   const ICON_ID = "voucherFloatIcon";
   const TARGET_URL = "https://fun-sport.co/pickleball/ball";
-  const IMG_SRC = "/assets/images/thumb/pickleball/ball/BONGPRO.webp";
+  const IMG_SRC = "/assets/images/thumb/pickleball/ball/MUA4DUOC6.webp";
 
   // Nếu đã tồn tại icon thì không tạo lại
   if (document.getElementById(ICON_ID)) return;
