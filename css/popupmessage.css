@@ -40,6 +40,7 @@
   line-height: 1.5;
 }
 
+/* ====== Ảnh chung ====== */
 .popup-message img {
   max-width: 120px;
   height: auto;
@@ -49,6 +50,7 @@
   box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
+/* ====== Nút Zalo OA ====== */
 .popup-message .btn-zalo {
   background: #0084ff;
   color: #fff;
@@ -59,12 +61,32 @@
   font-weight: 600;
   cursor: pointer;
   transition: 0.2s;
+  width: 100%;
 }
 
 .popup-message .btn-zalo:hover {
   background: #0073e6;
 }
 
+/* ====== Nút xem chi tiết bóng ====== */
+.popup-message .btn-ball {
+  background: #000;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+  width: 100%;
+}
+
+.popup-message .btn-ball:hover {
+  background: #222;
+}
+
+/* ====== Nút đóng popup ====== */
 .popup-message .close-btn {
   position: absolute;
   top: 8px;
@@ -86,6 +108,30 @@
   background: #333;
 }
 
+/* ====== Hàng QR + Bóng ====== */
+.promo-row {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 14px;
+  margin-top: 14px;
+  flex-wrap: wrap;
+}
+
+.promo-col {
+  flex: 1 1 45%;
+  text-align: center;
+}
+
+.promo-col .promo-img {
+  width: 100%;
+  border-radius: 8px;
+  display: block;
+  margin-bottom: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+/* ====== Khung QR cũ (vẫn giữ để tương thích) ====== */
 .qr-box {
   display: flex;
   justify-content: center;
@@ -144,6 +190,7 @@
   background: #333;
 }
 
+/* ===== Animation ===== */
 @keyframes floatBounce {
   0%, 100% { transform: translateY(-50%) translateY(0); }
   50% { transform: translateY(-50%) translateY(-8px); }
@@ -166,8 +213,13 @@
   .popup-message p {
     font-size: 12px;
   }
-  .popup-message .btn-zalo {
+  .popup-message .btn-zalo,
+  .popup-message .btn-ball {
     padding: 8px 12px;
     font-size: 12px;
+  }
+  .promo-row {
+    flex-direction: column;
+    gap: 10px;
   }
 }
