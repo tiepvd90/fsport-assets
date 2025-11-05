@@ -143,7 +143,34 @@
       </div>
     </div>
 
-    
+    <!-- ✅ KHỐI 3: Video sản phẩm -->
+<div class="product-hero" style="margin-top: 12px;">
+  <div id="video-placeholder">Đang tải video...</div>
+</div>
+
+<script>
+  // ✅ Gọi file HTML video (gồm khung & ID #videoSlider)
+  fetch("/html/productvideo.html")
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById("video-placeholder").innerHTML = html;
+
+      // ✅ Gọi JS sau khi HTML có mặt
+      const script = document.createElement("script");
+      script.src = "/js/productvideo.js";
+      script.onload = () => {
+        console.log("✅ Đã load JS, gọi init...");
+        if (typeof initProductVideo === "function") {
+          initProductVideo();
+        } else {
+          console.warn("❌ Không tìm thấy initProductVideo()");
+        }
+      };
+      document.body.appendChild(script);
+    })
+    .catch(err => console.warn("❌ Lỗi khi chèn productvideo.html:", err));
+</script>
+<!-- 🔚 Hết KHỐI 3 -->
 
     <!-- ✅ KHỐI 4: Mô tả sản phẩm -->
 <div class="product-hero" style="margin-top: 12px;">
@@ -245,25 +272,6 @@
             currency: "VND"
           });
         }
-      });
-  </script>
-
-  <!-- ✅ Load FreeFlow -->
-  <script src="https://friendly-kitten-d760ff.netlify.app/js/freeflow.js"></script>
-  <script>
-    fetch("/html/freeflow.html")
-      .then(res => res.text())
-      .then(html => {
-        const container = document.getElementById("freeflow-placeholder");
-        const temp = document.createElement("div");
-        temp.innerHTML = html;
-        Array.from(temp.children).forEach(el => container.appendChild(el));
-
-        setTimeout(() => {
-          if (typeof fetchFreeFlowData === "function") {
-            fetchFreeFlowData("https://script.google.com/macros/s/AKfycbwuEh9sP65vyQL0XzU8gY1Os0QYV_K5egKJgm8OhImAPjvdyrQiU7XCY909N99TnltP/exec");
-          }
-        }, 200);
       });
   </script>
     <script src="/js/base.js"></script>
