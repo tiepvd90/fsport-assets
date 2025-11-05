@@ -1,79 +1,35 @@
-<h2 class="desc-title">Mô Tả Bóng Pickleball FSport</h2>
+<div class="desc-container">
+  <img src="/assets/images/gallery/pickleball/ball/1.webp" alt="pickleball ball" class="desc-img" style="width:100%;border-radius:8px;margin-bottom:16px;">
+  <img src="/assets/images/gallery/pickleball/ball/2.webp" alt="pickleball ball" class="desc-img" style="width:100%;border-radius:8px;margin-bottom:16px;">
 
-<div id="descShort" class="desc-text">
-  <p><strong>Bóng Pickleball Dạ Quang FSport PRO – Tiêu Chuẩn Thi Đấu</strong></p>
-  <p>Bóng chất lượng cao dành cho tập luyện và thi đấu, độ bền vượt trội, bay ổn định và cảm giác chơi mượt mà. Phù hợp cho người chơi phong trào đến chuyên nghiệp.</p>
+  <h2 class="desc-title">Mô Tả Bóng Pickleball FSport</h2>
+
+  <div id="descShort" class="desc-text">
+    <p><strong>Bóng Pickleball Dạ Quang FSport PRO – Tiêu Chuẩn Thi Đấu</strong></p>
+    <p>Bóng chất lượng cao dành cho tập luyện và thi đấu, độ bền vượt trội, bay ổn định và cảm giác chơi mượt mà. Phù hợp cho người chơi phong trào đến chuyên nghiệp.</p>
+  </div>
+
+  <div id="descFull" class="desc-text hidden">
+    <p>✔️ Bóng Pickleball FSport là lựa chọn lý tưởng cho cả <strong>tập luyện chuyên sâu</strong> lẫn <strong>thi đấu ngoài trời</strong>. Sản phẩm đạt tiêu chuẩn quốc tế với độ nảy ổn định và khả năng chịu va đập cực tốt.</p>
+
+    <p><strong>🔍 Thông tin kỹ thuật:</strong><br>
+    – Chất liệu: Nhựa PE cao cấp<br>
+    – Kích thước: 74 mm<br>
+    – Trọng lượng: 26 gr<br>
+    – Cấu trúc: 40 lỗ</p>
+
+    <p>💪 Độ bền cao và khả năng chống nứt tuyệt vời nhờ công nghệ <strong>đúc quay cao cấp</strong>.</p>
+    <p>✅ Không dễ bị biến dạng khi sử dụng lâu dài, bóng giữ được độ nảy ổn định suốt thời gian chơi.</p>
+    <p>🌱 Chất liệu PE thân thiện môi trường, không có mùi đặc biệt, an toàn khi sử dụng.</p>
+    <p>🌀 Lỗ thiết kế dạng góc L cho cảm giác êm ái và giúp bóng bay ổn định hơn trong điều kiện ngoài trời.</p>
+    <p>🎯 Đáp ứng tốt cả nhu cầu tập luyện thường xuyên và thi đấu thực chiến.</p>
+  </div>
+
+  <div class="desc-fade" id="descFade"></div>
+
+  <button id="toggleDesc" class="desc-toggle-btn">
+    Xem Thêm <span class="arrow">&#x25BC;</span>
+  </button>
 </div>
 
-<div id="descFull" class="desc-text hidden">
-  <p>✔️ Bóng Pickleball FSport là lựa chọn lý tưởng cho cả <strong>tập luyện chuyên sâu</strong> lẫn <strong>thi đấu ngoài trời</strong>. Sản phẩm đạt tiêu chuẩn quốc tế với độ nảy ổn định và khả năng chịu va đập cực tốt.</p>
-
-  <p><strong>🔍 Thông tin kỹ thuật:</strong><br>
-  – Chất liệu: Nhựa PE cao cấp<br>
-  – Kích thước: 74 mm<br>
-  – Trọng lượng: 26 gr<br>
-  – Cấu trúc: 40 lỗ</p>
-
-  <p>💪 Độ bền cao và khả năng chống nứt tuyệt vời nhờ công nghệ <strong>đúc quay cao cấp</strong>.</p>
-  <p>✅ Không dễ bị biến dạng khi sử dụng lâu dài, bóng giữ được độ nảy ổn định suốt thời gian chơi.</p>
-  <p>🌱 Chất liệu PE thân thiện môi trường, không có mùi đặc biệt, an toàn khi sử dụng.</p>
-  <p>🌀 Lỗ thiết kế dạng góc L cho cảm giác êm ái và giúp bóng bay ổn định hơn trong điều kiện ngoài trời.</p>
-  <p>🎯 Đáp ứng tốt cả nhu cầu tập luyện thường xuyên và thi đấu thực chiến.</p>
-</div>
-
-<div class="desc-fade" id="descFade"></div>
-
-<button id="toggleDesc" class="desc-toggle-btn">
-  Xem Thêm <span class="arrow">&#x25BC;</span>
-</button>
-
-<script>
-  /* ==== NÚT XEM THÊM / THU GỌN ==== */
-  const toggleBtn = document.getElementById('toggleDesc');
-  const descFull = document.getElementById('descFull');
-  const fade = document.getElementById('descFade');
-
-  toggleBtn.addEventListener('click', () => {
-    const isHidden = descFull.classList.contains('hidden');
-    descFull.classList.toggle('hidden');
-    fade.style.display = isHidden ? 'none' : 'block';
-    toggleBtn.innerHTML = isHidden
-      ? 'Thu Gọn <span class="arrow">&#x25B2;</span>'
-      : 'Xem Thêm <span class="arrow">&#x25BC;</span>';
-  });
-
-  /* ==== KHỞI TẠO VIDEO KHÔNG XUNG ĐỘT ==== */
-  (function () {
-    function initPickleVideo() {
-      if (!window.YT || !YT.Player) return;
-      new YT.Player('pickleVideo', {
-        events: {
-          onStateChange: function (e) {
-            if (e.data === YT.PlayerState.PLAYING) {
-              e.target.unMute();
-              e.target.setVolume(100);
-            }
-          }
-        }
-      });
-    }
-
-    // Nếu YT đã có sẵn (FreeFlow hoặc trang khác đã nạp)
-    if (window.YT && YT.Player) {
-      initPickleVideo();
-    } else {
-      // Giữ hàm cũ nếu đã tồn tại
-      const prev = window.onYouTubeIframeAPIReady;
-      window.onYouTubeIframeAPIReady = function () {
-        if (typeof prev === 'function') prev();
-        initPickleVideo();
-      };
-      // Chỉ nạp script nếu chưa có
-      if (![...document.scripts].some(s => s.src.includes('youtube.com/iframe_api'))) {
-        const tag = document.createElement('script');
-        tag.src = "https://www.youtube.com/iframe_api";
-        document.head.appendChild(tag);
-      }
-    }
-  })();
-</script>
+<script src="/js/productdescription.js"></script>
