@@ -1,32 +1,89 @@
-<div class="desc-container">
-  <h2 class="desc-title">Mô Tả Bóng Pickleball FSport PRO</h2>
+<style>
+  .desc-text {
+    font-size: 12px;
+    line-height: 1.6;
+    color: #222;
+    font-family: 'Be Vietnam Pro', sans-serif;
+  }
 
-  <div id="descShort" class="desc-text">
-    <p><strong>Bóng Pickleball Dạ Quang FSport PRO – Tiêu Chuẩn Thi Đấu</strong></p>
-    <p>Bóng chất lượng cao dành cho tập luyện và thi đấu, độ bền vượt trội, bay ổn định và cảm giác chơi mượt mà. Phù hợp cho người chơi phong trào đến chuyên nghiệp.</p>
-  </div>
+  .desc-title {
+    font-size: 14px;
+    font-weight: bold;
+    margin: 12px 0 8px;
+  }
 
-  <div id="descFull" class="desc-text hidden">
-    <p>✔️ Bóng Pickleball FSport là lựa chọn lý tưởng cho cả <strong>tập luyện chuyên sâu</strong> lẫn <strong>thi đấu ngoài trời</strong>. Sản phẩm đạt tiêu chuẩn quốc tế với độ nảy ổn định và khả năng chịu va đập cực tốt.</p>
+  .desc-toggle-btn {
+    margin-top: 16px;
+    background: none;
+    border: none;
+    font-weight: bold;
+    color: #000;
+    cursor: pointer;
+    padding: 10px 0;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    width: 100%;
+    font-family: 'Be Vietnam Pro', sans-serif;
+  }
 
-    <p><strong>🔍 Thông tin kỹ thuật:</strong><br>
-    – Chất liệu: Nhựa PE cao cấp<br>
-    – Kích thước: 74 mm<br>
-    – Trọng lượng: 26 gr<br>
-    – Cấu trúc: 40 lỗ</p>
+  .desc-toggle-btn .arrow {
+    font-size: 12px;
+    display: inline-block;
+    transform: translateY(1px);
+  }
 
-    <p>💪 Độ bền cao và khả năng chống nứt tuyệt vời nhờ công nghệ <strong>đúc quay cao cấp</strong>.</p>
-    <p>✅ Không dễ bị biến dạng khi sử dụng lâu dài, bóng giữ được độ nảy ổn định suốt thời gian chơi.</p>
-    <p>🌱 Chất liệu PE thân thiện môi trường, không có mùi đặc biệt, an toàn khi sử dụng.</p>
-    <p>🌀 Lỗ thiết kế dạng góc L cho cảm giác êm ái và giúp bóng bay ổn định hơn trong điều kiện ngoài trời.</p>
-    <p>🎯 Đáp ứng tốt cả nhu cầu tập luyện thường xuyên và thi đấu thực chiến.</p>
-  </div>
+  .desc-fade {
+    height: 60px;
+    background: linear-gradient(to top, #fff, transparent);
+    margin-top: -60px;
+    pointer-events: none;
+  }
 
-  <div class="desc-fade" id="descFade"></div>
+  .hidden {
+    display: none;
+  }
+</style>
+<h2 class="desc-title">Mô Tả Bóng Pickleball FSport PRO</h2>
 
-  <button id="toggleDesc" class="desc-toggle-btn">
-    Xem Thêm <span class="arrow">&#x25BC;</span>
-  </button>
+<div id="descShort" class="desc-text">
+  <p><strong>🏐 Bóng Pickleball Dạ Quang FSport PRO – Tiêu Chuẩn Thi Đấu Quốc Tế</strong></p>
+  <p>Dòng bóng thi đấu cao cấp được phát triển dành riêng cho <strong>tập luyện chuyên sâu</strong> và <strong>thi đấu ngoài trời</strong>, mang lại độ bay ổn định, cảm giác tiếp xúc mượt mà và độ nảy chuẩn xác trong từng pha bóng.</p>
 </div>
 
-<script src="/js/productdescription.js"></script>
+<div id="descFull" class="desc-text hidden">
+  <p>💡 <strong>Hiệu suất vượt trội:</strong> Mỗi quả bóng FSport PRO cho cảm giác kiểm soát tốt hơn ở mọi tình huống – từ những cú giao bóng mạnh đến các pha rally dài hơi, đảm bảo đường bóng bay thẳng và ổn định.</p>
+
+  <p>⚙️ <strong>Công nghệ đúc quay hiện đại:</strong> Bóng được sản xuất bằng nhựa PE cao cấp, tạo cấu trúc đồng đều, bền chắc và chịu va đập cực tốt. Không dễ nứt hay biến dạng sau thời gian dài sử dụng, vẫn giữ được độ đàn hồi và cảm giác chơi ổn định.</p>
+
+  <p>🌪 <strong>Thiết kế 40 lỗ khí động học:</strong> Phân bố đều quanh bề mặt giúp bóng bay cân bằng và giảm ảnh hưởng của gió – đặc biệt hiệu quả khi chơi ngoài trời.</p>
+
+  <p>✨ <strong>Màu dạ quang vàng neon nổi bật:</strong> Giúp người chơi dễ dàng quan sát bóng trong mọi điều kiện ánh sáng – từ sân trong nhà đến sân ngoài trời buổi chiều muộn.</p>
+
+  <p>🌱 <strong>Thân thiện với môi trường:</strong> Chất liệu PE an toàn, không mùi và dễ vệ sinh, phù hợp cho cả trẻ em và người lớn.</p>
+
+  <p>🔥 <strong>FSport PRO</strong> là lựa chọn lý tưởng cho người chơi pickleball ở mọi cấp độ – từ phong trào đến chuyên nghiệp – những ai đang tìm kiếm một quả bóng bền, chuẩn và đáng tin cậy cho mỗi trận đấu.</p>
+</div>
+
+<div class="desc-fade" id="descFade"></div>
+
+<button id="toggleDesc" class="desc-toggle-btn">
+  Xem Thêm <span class="arrow">&#x25BC;</span>
+</button>
+
+<script>
+  const toggleBtn = document.getElementById('toggleDesc');
+  const descFull = document.getElementById('descFull');
+  const fade = document.getElementById('descFade');
+
+  toggleBtn.addEventListener('click', () => {
+    const isHidden = descFull.classList.contains('hidden');
+    descFull.classList.toggle('hidden');
+    fade.style.display = isHidden ? 'none' : 'block';
+    toggleBtn.innerHTML = isHidden
+      ? 'Thu Gọn <span class="arrow">&#x25B2;</span>'
+      : 'Xem Thêm <span class="arrow">&#x25BC;</span>';
+  });
+</script>
