@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Xác nhận chính hãng – Vợt Pickleball Gen4 F Sport</title>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Be Vietnam Pro', sans-serif;
+      margin: 0;
+      background: #fff;
+    }
+    .popup {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+    .popup-content {
+      background: #fff;
+      padding: 24px;
+      border-radius: 12px;
+      text-align: center;
+      max-width: 90%;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+    }
+    .popup-content h2 {
+      color: #333;
+      font-size: 18px;
+      margin: 16px 0;
+    }
+    .popup-content p {
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+    .popup-content .check-icon {
+      font-size: 40px;
+      color: #4caf50;
+    }
+    .popup-content button {
+      padding: 10px 20px;
+      background: #4caf50;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .popup-content .logo-small {
+      width: 50px;
+      margin: 12px auto;
+      display: block;
+    }
+    .popup-content .logo-inline {
+      width: 60px;
+      vertical-align: middle;
+    }
+    .product-info {
+      display: none;
+      padding: 20px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .product-image {
+      width: 100%;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+    .serial {
+      background: #000;
+      color: #0f0;
+      padding: 8px;
+      border-radius: 4px;
+      display: inline-block;
+      margin: 12px 0;
+    }
+    .specs {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-top: 20px;
+      font-size: 14px;
+    }
+    .specs div {
+      background: #f1f1f1;
+      padding: 10px;
+      border-radius: 6px;
+    }
+    .company-info {
+      text-align: center;
+      font-size: 13px;
+      color: #555;
+      margin-top: 40px;
+      padding: 20px;
+    }
+    .logo-bottom {
+      display: block;
+      margin: 20px auto;
+      width: 80px;
+    }
+    @media (max-width: 768px) {
+      .product-info {
+        padding: 10px;
+        margin: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="popup" id="authPopup">
+  <div class="popup-content">
+    <div class="check-icon">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/5/50/Yes_Check_Circle.svg" alt="check" style="width:40px;">
+</div>
+
+    <h2>XÁC NHẬN CHÍNH HÃNG F SPORT</h2>
+    <p>Ấn Tiếp Tục Để Xem Chi Tiết Cây Vợt</p>
+    <button onclick="closePopup()">TIẾP TỤC</button>
+  </div>
+</div>
+
+<div class="product-info" id="productInfo">
+  <h1>Vợt Pickleball F-Sports Gen 4 - Màu Trắng</h1>
+
+  <img src="https://i.postimg.cc/13GVhSnD/tr-ng.jpg" alt="Gen4 Trắng" class="product-image">
+
+  <div style="display: flex; align-items: center; gap: 8px;">
+  <img src="https://i.postimg.cc/Lsg0XdNN/logo-fsport.png" alt="F Sport Logo" style="width: 50px;">
+  <div class="serial">SKU ID: 0000000454</div>
+</div>
+
+  <div class="specs">
+    <div><strong>Chiều dài tổng thể:</strong> 420mm</div>
+    <div><strong>Chiều dài cán:</strong> 145mm</div>
+    <div><strong>Chiều rộng mặt vợt:</strong> 190mm</div>
+    <div><strong>Độ dày mặt vợt:</strong> 16mm</div>
+  </div>
+
+  <div class="company-info">
+    Công ty TNHH F Sport Việt Nam<br>
+    Địa chỉ: Số 9, liền kề 11, khu đô thị Phú Lương, Hà Đông, Hà Nội
+  </div>
+</div>
+
+<script>
+  function closePopup() {
+    document.getElementById("authPopup").style.display = "none";
+    document.getElementById("productInfo").style.display = "block";
+  }
+</script>
+
+</body>
+</html>
