@@ -1,158 +1,172 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Xác nhận chính hãng – Vợt Pickleball Gen4 F Sport</title>
-  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;700&display=swap" rel="stylesheet" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Xác thực chính hãng F-Sport Pickleball</title>
   <style>
     body {
       font-family: 'Be Vietnam Pro', sans-serif;
       margin: 0;
-      background: #fff;
+      background: #fafafa;
+      color: #222;
     }
-    .popup {
+
+    /* Popup xác thực */
+    .verify-popup {
       position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.7);
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(255,255,255,0.98);
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
+      text-align: center;
       z-index: 9999;
+      opacity: 0;
+      animation: fadeIn 0.6s ease forwards;
+      animation-delay: 1.2s;
     }
-    .popup-content {
-      background: #fff;
-      padding: 24px;
-      border-radius: 12px;
-      text-align: center;
-      max-width: 90%;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.4);
-    }
-    .popup-content h2 {
-      color: #333;
+    @keyframes fadeIn { to {opacity:1;} }
+
+    .verify-popup h1 {
       font-size: 18px;
-      margin: 16px 0;
+      font-weight: 700;
+      color: #111;
+      margin-bottom: 6px;
     }
-    .popup-content p {
+    .verify-popup p {
       font-size: 14px;
-      margin-bottom: 20px;
-    }
-    .popup-content .check-icon {
-      font-size: 40px;
-      color: #4caf50;
-    }
-    .popup-content button {
-      padding: 10px 20px;
-      background: #4caf50;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    .popup-content .logo-small {
-      width: 50px;
-      margin: 12px auto;
-      display: block;
-    }
-    .popup-content .logo-inline {
-      width: 60px;
-      vertical-align: middle;
-    }
-    .product-info {
-      display: none;
-      padding: 20px;
-      max-width: 900px;
-      margin: 0 auto;
-    }
-    .product-image {
-      width: 100%;
-      border-radius: 8px;
-      margin-bottom: 20px;
-    }
-    .serial {
-      background: #000;
-      color: #0f0;
-      padding: 8px;
-      border-radius: 4px;
-      display: inline-block;
-      margin: 12px 0;
-    }
-    .specs {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-      margin-top: 20px;
-      font-size: 14px;
-    }
-    .specs div {
-      background: #f1f1f1;
-      padding: 10px;
-      border-radius: 6px;
-    }
-    .company-info {
-      text-align: center;
-      font-size: 13px;
       color: #555;
-      margin-top: 40px;
+      margin-bottom: 18px;
+    }
+    .verify-btn {
+      background: #2ea44f;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 10px 28px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.25s;
+    }
+    .verify-btn:hover { background: #23903f; }
+
+    .loading-scan {
+      width: 60px; height: 60px;
+      border-radius: 50%;
+      border: 3px solid #4caf50;
+      border-top-color: transparent;
+      animation: spin 1s linear infinite;
+      margin-bottom: 18px;
+    }
+    @keyframes spin { to {transform: rotate(360deg);} }
+
+    /* Ảnh sản phẩm */
+    .product-section {
+      display: none;
+      animation: fadeContent 0.6s ease;
+    }
+    @keyframes fadeContent { from{opacity:0;} to{opacity:1;} }
+
+    .product-img {
+      width: 100%;
+      display: block;
+      object-fit: cover;
+      border-radius: 0;
+      margin-bottom: 12px;
+    }
+    @media (min-width:768px) {
+      .product-img {
+        width: 80%;
+        margin: 20px auto;
+        border-radius: 12px;
+      }
+    }
+
+    .product-info {
+      max-width: 720px;
+      margin: 0 auto;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
       padding: 20px;
     }
-    .logo-bottom {
-      display: block;
-      margin: 20px auto;
-      width: 80px;
+    .product-info h2 {
+      text-align: center;
+      font-size: 20px;
+      margin-bottom: 12px;
+      color: #111;
     }
-    @media (max-width: 768px) {
-      .product-info {
-        padding: 10px;
-        margin: 0;
-      }
+    .spec-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 14px;
+    }
+    .spec-table td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      font-size: 14px;
+    }
+    .spec-table td:first-child {
+      font-weight: 600;
+      background: #f8f8f8;
+      width: 45%;
+    }
+    .desc {
+      font-size: 14px;
+      line-height: 1.6;
+      color: #444;
+      margin-top: 10px;
     }
   </style>
 </head>
 <body>
 
-<div class="popup" id="authPopup">
-  <div class="popup-content">
-    <div class="check-icon">
-  <img src="https://upload.wikimedia.org/wikipedia/commons/5/50/Yes_Check_Circle.svg" alt="check" style="width:40px;">
-</div>
-
-    <h2>XÁC NHẬN CHÍNH HÃNG F SPORT</h2>
-    <p>Ấn Tiếp Tục Để Xem Chi Tiết Cây Vợt</p>
-    <button onclick="closePopup()">TIẾP TỤC</button>
-  </div>
-</div>
-
-<div class="product-info" id="productInfo">
-  <h1>Vợt Pickleball F-Sports Gen 4 - Màu Trắng</h1>
-
-  <img src="https://i.postimg.cc/13GVhSnD/tr-ng.jpg" alt="Gen4 Trắng" class="product-image">
-
-  <div style="display: flex; align-items: center; gap: 8px;">
-  <img src="https://i.postimg.cc/Lsg0XdNN/logo-fsport.png" alt="F Sport Logo" style="width: 50px;">
-  <div class="serial">SKU ID: 0000000454</div>
-</div>
-
-  <div class="specs">
-    <div><strong>Chiều dài tổng thể:</strong> 420mm</div>
-    <div><strong>Chiều dài cán:</strong> 145mm</div>
-    <div><strong>Chiều rộng mặt vợt:</strong> 190mm</div>
-    <div><strong>Độ dày mặt vợt:</strong> 16mm</div>
+  <!-- Popup xác nhận -->
+  <div class="verify-popup" id="verifyPopup">
+    <div class="loading-scan"></div>
+    <h1>F-SPORT PICKLEBALL</h1>
+    <p>XÁC NHẬN HÀNG CHÍNH HÃNG<br>VỢT PICKLEBALL RỒNG ĐEN</p>
+    <button class="verify-btn" onclick="showProduct()">TIẾP TỤC</button>
   </div>
 
-  <div class="company-info">
-    Công ty TNHH F Sport Việt Nam<br>
-    Địa chỉ: Số 9, liền kề 11, khu đô thị Phú Lương, Hà Đông, Hà Nội
+  <!-- Nội dung sản phẩm -->
+  <div class="product-section" id="productSection">
+    <img src="/assets/images/gallery/pickleball/firstpickleball/rongden.webp"
+         alt="Vợt Pickleball Rồng Đen" class="product-img">
+
+    <div class="product-info">
+      <h2>VỢT F-SPORT RỒNG ĐEN 14MM CARBON</h2>
+      <table class="spec-table">
+        <tr><td>Chiều cao</td><td>42 cm</td></tr>
+        <tr><td>Chiều ngang</td><td>18,5 cm</td></tr>
+        <tr><td>Độ dày</td><td>1,4 cm</td></tr>
+        <tr><td>Cân nặng</td><td>220 g</td></tr>
+        <tr><td>Bề mặt</td><td>Carbon fibre T700 nhám</td></tr>
+        <tr><td>Lõi</td><td>Tổ ong (Honeycomb Core)</td></tr>
+        <tr><td>Bảo hành điện tử</td><td>1 tháng</td></tr>
+      </table>
+      <div class="desc">
+        <p>Vợt Pickleball F-Sport Rồng Đen được thiết kế cho người chơi yêu thích sức mạnh và độ kiểm soát cao. Cấu trúc đúc nguyên khối với lớp carbon T700 nhám giúp tăng cảm giác tiếp xúc bóng và giảm rung chấn.</p>
+        <p>Phù hợp cho cả thi đấu và tập luyện chuyên sâu. Cán quấn kiểu tennis cho độ bám chắc chắn và thoáng tay khi chơi lâu.</p>
+      </div>
+    </div>
   </div>
-</div>
 
-<script>
-  function closePopup() {
-    document.getElementById("authPopup").style.display = "none";
-    document.getElementById("productInfo").style.display = "block";
-  }
-</script>
+  <script>
+    // Giả lập delay loading trước khi hiển thị popup
+    document.addEventListener("DOMContentLoaded", () => {
+      const popup = document.getElementById("verifyPopup");
+      popup.style.display = "flex";
+    });
 
+    function showProduct() {
+      document.getElementById("verifyPopup").style.display = "none";
+      document.getElementById("productSection").style.display = "block";
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  </script>
 </body>
 </html>
