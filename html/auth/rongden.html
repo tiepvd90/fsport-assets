@@ -2,17 +2,27 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <!-- ✅ Không cho zoom trên mobile -->
+  <!-- ✅ Không cho zoom và tối ưu iOS -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>Xác thực chính hãng F-Sport</title>
   <style>
-    body {
+    /* === Reset font và fix zoom iOS === */
+    html, body, input, textarea {
+      -webkit-text-size-adjust: 100%;
       font-family: 'Be Vietnam Pro', sans-serif;
+      font-size: 16px;
+      line-height: 1.5;
+      color: #222;
+    }
+
+    input, textarea, select {
+      font-size: 16px !important;
+    }
+
+    /* ==== Bố cục tổng ==== */
+    body {
       margin: 0;
       background: #fff;
-      color: #111;
-      line-height: 1.6;
-      font-size: 15px;
       padding: 0 16px 60px;
       max-width: 720px;
       margin-inline: auto;
@@ -76,7 +86,7 @@
     }
     .verify-btn:hover {opacity:.85;}
 
-    /* ==== CONTENT ==== */
+    /* ==== NỘI DUNG ==== */
     h2 {
       text-align:center;
       font-size:20px;
@@ -120,9 +130,7 @@
       border:1px solid #ccc;
       border-radius:4px;
       padding:10px;
-      font-size:14px;
       margin-bottom:10px;
-      font-family:'Be Vietnam Pro',sans-serif;
     }
     input:focus {outline:none;border-color:#000;}
 
@@ -202,7 +210,7 @@
   </main>
 
   <script>
-    // Hiệu ứng xác nhận
+    // Hiệu ứng xác nhận popup
     window.addEventListener("DOMContentLoaded", () => {
       setTimeout(() => {
         document.getElementById("loadingIcon").style.display = "none";
