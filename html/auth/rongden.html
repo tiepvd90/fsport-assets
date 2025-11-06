@@ -10,8 +10,8 @@
     /* === Reset & fix zoom iOS/Android === */
     html, body, input, textarea, select {
       -webkit-text-size-adjust: 100%;
-      touch-action: manipulation;
-      -ms-touch-action: manipulation;
+      touch-action: pan-y;  /* Cho phép cuộn dọc, vẫn chặn zoom */
+      overscroll-behavior-y: contain; /* Cho phép refresh trên mobile */
       overscroll-behavior: none;
       font-family: 'Be Vietnam Pro', sans-serif;
       font-size: 16px;
@@ -156,7 +156,7 @@
     }
     .note strong {color:#000;}
 
-    /* ==== Popup upsell (new version) ==== */
+    /* ==== Popup upsell (tối ưu hiển thị) ==== */
 .popup-success {
   position: fixed;
   inset: 0;
@@ -201,16 +201,22 @@
 .popup-bottom {
   padding: 18px 20px 22px;
 }
-.popup-bottom img {
-  width: 110px;
-  margin: 0 auto 8px;
-  border-radius: 10px;
-  display: block;
+.upsell-intro {
+  font-size: 14px;
+  color: #000;
+  font-weight: 600;
+  margin-bottom: 4px;
 }
 .upsell-title {
-  font-size: 14px;
-  color: #222;
+  font-size: 13px;
+  color: #444;
   margin-bottom: 10px;
+}
+.popup-bottom img {
+  width: 110px;
+  margin: 0 auto 10px;
+  border-radius: 10px;
+  display: block;
 }
 .combo-grid {
   display: grid;
@@ -218,33 +224,39 @@
   gap: 8px;
 }
 .combo-btn {
-  background: #fff;
+  background: #fdfdfd;
   border: 1px solid #ccc;
   border-radius: 8px;
-  padding: 8px 0;
+  padding: 10px 0;
   font-size: 13px;
   cursor: pointer;
   transition: 0.25s;
   line-height: 1.4;
+  color: #111;
 }
 .combo-btn:hover {
   background: #000;
   color: #fff;
 }
-.combo-btn .old {
+.combo-label {
+  font-weight: 600;
   display: block;
+  margin-bottom: 2px;
+}
+.combo-btn .old {
+  display: inline-block;
   font-size: 12px;
   color: #666;
   text-decoration: line-through;
+  margin-right: 4px;
 }
 .combo-btn .new {
-  display: block;
   font-size: 14px;
   color: #e53935;
   font-weight: 600;
 }
 .close-btn {
-  margin-top: 14px;
+  margin-top: 16px;
   background: #000;
   color: #fff;
   border: none;
@@ -315,42 +327,42 @@
     </form>
   </main>
 
-  <!-- ==== POPUP UPSELL (phiên bản mới) ==== -->
+  <!-- ==== POPUP UPSELL (phiên bản tối ưu) ==== -->
 <div class="popup-success" id="successPopup">
   <div class="popup-box">
     
     <!-- Phần 1: Thông báo xác nhận -->
     <div class="popup-top">
       <h4>✅ F-SPORT ĐÃ NHẬN THÔNG TIN KÍCH HOẠT</h4>
-      <p>Yêu cầu của anh/chị đã được ghi nhận.  
+      <p>Yêu cầu của anh/chị đã được ghi nhận.<br>
       Thông tin xác nhận sẽ được gửi qua email trong 24h tới.</p>
     </div>
 
-    <!-- Phần 2: Upsell -->
+    <!-- Phần 2: Ưu đãi upsell -->
     <div class="popup-bottom">
+      <p class="upsell-intro">🎁 Ưu đãi dành riêng cho khách hàng thân thiết!</p>
+      <p class="upsell-title">Giảm <strong>10%</strong> khi mua thêm bóng thi đấu <strong>F-SPORT PRO</strong></p>
+
       <img src="/assets/images/gallery/pickleball/pickleball-ball/2.webp" alt="Bóng Pickleball F-Sport Pro">
-      <p class="upsell-title">
-        🎁 Giảm <strong>10%</strong> khi mua thêm bóng thi đấu F-SPORT PRO
-      </p>
 
       <div class="combo-grid">
         <button class="combo-btn" onclick="sendUpsell('3 quả',87,78.3)">
-          Mua 3 quả<br>
+          <span class="combo-label">Mua 3 quả</span>
           <span class="old">87.000đ</span>
           <span class="new">78.300đ</span>
         </button>
         <button class="combo-btn" onclick="sendUpsell('6 quả',156,140.4)">
-          Mua 6 quả<br>
+          <span class="combo-label">Mua 6 quả</span>
           <span class="old">156.000đ</span>
           <span class="new">140.400đ</span>
         </button>
         <button class="combo-btn" onclick="sendUpsell('9 quả',210,189)">
-          Mua 9 quả<br>
+          <span class="combo-label">Mua 9 quả</span>
           <span class="old">210.000đ</span>
           <span class="new">189.000đ</span>
         </button>
         <button class="combo-btn" onclick="sendUpsell('12 quả',252,226.8)">
-          Mua 12 quả<br>
+          <span class="combo-label">Mua 12 quả</span>
           <span class="old">252.000đ</span>
           <span class="new">226.800đ</span>
         </button>
@@ -360,7 +372,6 @@
     </div>
   </div>
 </div>
-
 
   <script>
     /* Chặn zoom iOS */
