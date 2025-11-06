@@ -12,7 +12,6 @@
       -webkit-text-size-adjust: 100%;
       touch-action: pan-y;  /* Cho phép cuộn dọc, vẫn chặn zoom */
       overscroll-behavior-y: contain; /* Cho phép refresh trên mobile */
-      overscroll-behavior: none;
       font-family: 'Be Vietnam Pro', sans-serif;
       font-size: 16px;
       line-height: 1.5;
@@ -439,29 +438,42 @@
         e.target.reset();
       }catch(err){alert("Không thể gửi thông tin, vui lòng thử lại sau.");}
     });
+let selectedCombo = null;
 
-    /* Gửi upsell */
-    async function sendUpsell(combo,original,discount){
-      const payload={
-        type:"upsell",
-        upsell_product:"Bóng FSport PRO",
-        combo,
-        price:discount*1000,
-        original_price:original*1000,
-        name:document.getElementById("name").value,
-        phone:document.getElementById("phone").value,
-        email:document.getElementById("email").value,
-        date:new Date().toLocaleString("vi-VN"),
-        source:"Upsell sau kích hoạt bảo hành"
-      };
-      await fetch("https://hook.eu2.make.com/dxl7ngaypediyxwb8g7jir704356vhjt",{
-        method:"POST",
-        headers:{"Content-Type":"application/json"},
-        body:JSON.stringify(payload)
-      });
-      alert("Cảm ơn anh/chị! Ưu đãi đã được ghi nhận.");
-      closeSuccess();
-    }
+function selectCombo(button, label, oldPrice, newPrice) {
+  document.querySelectorAll(".combo-btn").forEach(btn => btn.classList.remove("active"));
+  button.classList.add("active");
+  selectedCombo = { label, oldPrice, newPrice };
+  const confirmBtn = document.getElementById("confirmUpsell");
+  confirmBtn.disabled = false;
+  confirmBtn.classList.add("enabled");
+}
+
+document.getElementById("confirmUpsell").addEventListener("click", () => {
+  if (!selectedCombo) return alert("Vui lòng chọn combo trước.");
+  const payload = {
+    type: "upsell",
+    product: "Bóng F-Sport Pro",
+    combo: selectedCombo.label,
+    original_price: selectedCombo.oldPrice,
+    price: selectedCombo.newPrice,
+    date: new Date().toLocaleString("vi-VN"),
+    source: "Kích hoạt bảo hành - upsell fun-sport.co"
+  };
+  
+  fetch("https://hook.eu2.make.com/dxl7ngaypediyxwb8g7jir704356vhjt", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload)
+  })
+  .then(() => {
+    alert("✅ Cảm ơn anh/chị! Thông tin ưu đãi đã được ghi nhận.");
+    closeSuccess();
+  })
+  .catch(() => alert("Lỗi mạng, vui lòng thử lại sau."));
+});
+
+
 
     function closeSuccess(){
       document.getElementById("successPopup").style.display="none";
