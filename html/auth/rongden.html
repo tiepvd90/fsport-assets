@@ -2,24 +2,24 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <!-- ✅ Không cho zoom và tối ưu iOS -->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <!-- ✅ Khóa zoom iOS & Android -->
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, minimum-scale=1.0,
+             maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>Xác thực chính hãng F-Sport</title>
   <style>
-    /* === Reset font và fix zoom iOS === */
-    html, body, input, textarea {
+    /* === Reset & chặn zoom === */
+    html, body, input, textarea, select {
       -webkit-text-size-adjust: 100%;
+      touch-action: manipulation;
+      -ms-touch-action: manipulation;
+      overscroll-behavior: none;
       font-family: 'Be Vietnam Pro', sans-serif;
       font-size: 16px;
       line-height: 1.5;
       color: #222;
     }
 
-    input, textarea, select {
-      font-size: 16px !important;
-    }
-
-    /* ==== Bố cục tổng ==== */
     body {
       margin: 0;
       background: #fff;
@@ -28,7 +28,11 @@
       margin-inline: auto;
     }
 
-    /* ==== POPUP ==== */
+    input, textarea, select {
+      font-size: 16px !important;
+    }
+
+    /* ==== POPUP xác thực ==== */
     .verify-overlay {
       position: fixed;
       inset: 0;
@@ -51,6 +55,7 @@
       text-align: center;
       box-shadow: 0 6px 24px rgba(0,0,0,0.1);
     }
+
     .verify-loading {
       width: 70px; height: 70px;
       border: 4px solid #4caf50;
@@ -60,8 +65,9 @@
       animation: spin 1s linear infinite;
     }
     @keyframes spin {to{transform:rotate(360deg);}}
+
     .verify-icon {
-      width: 70px;height:70px;
+      width: 70px; height:70px;
       background: linear-gradient(135deg,#4CAF50,#2E7D32);
       border-radius:50%;
       color:#fff;
@@ -125,6 +131,7 @@
     form {
       margin-top:12px;
     }
+
     input {
       width:100%;
       border:1px solid #ccc;
@@ -154,16 +161,57 @@
       color:#333;
     }
     .note strong {color:#000;}
+
+    /* ==== Popup gửi thành công ==== */
+    .popup-success {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.4);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 10000;
+    }
+    .popup-box {
+      background: #fff;
+      border-radius: 10px;
+      padding: 24px 20px;
+      text-align: center;
+      max-width: 320px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    }
+    .popup-box h4 {
+      margin: 0 0 8px;
+      font-size: 17px;
+      color: #111;
+    }
+    .popup-box p {
+      font-size: 14px;
+      color: #555;
+      margin: 0 0 12px;
+    }
+    .popup-box button {
+      background: #000;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 8px 20px;
+      cursor: pointer;
+      font-weight: 600;
+    }
   </style>
 </head>
+
 <body>
 
-  <!-- ==== POPUP ==== -->
+  <!-- ==== POPUP XÁC NHẬN ==== -->
   <div class="verify-overlay" id="verifyPopup">
     <div class="verify-card">
       <div class="verify-loading" id="loadingIcon"></div>
       <div class="verify-icon" id="checkIcon">✓</div>
-      <div class="verify-message" id="verifyMessage">Đang xác nhận chính hãng QIS<br>phân phối bởi F-SPORT...</div>
+      <div class="verify-message" id="verifyMessage">
+        Đang xác nhận chính hãng QIS<br>phân phối bởi F-SPORT...
+      </div>
       <div class="verify-sub" id="verifySub"></div>
       <button class="verify-btn" id="continueBtn" onclick="showProduct()">TIẾP TỤC</button>
     </div>
@@ -173,7 +221,8 @@
   <main id="productSection" style="display:none;">
     <h2>VỢT ĐÚC NGUYÊN KHỐI RỒNG ĐEN</h2>
 
-    <img src="/assets/images/gallery/pickleball/firstpickleball/rongden.webp" alt="Vợt Pickleball Rồng Đen">
+    <img src="/assets/images/gallery/pickleball/firstpickleball/rongden.webp"
+         alt="Vợt Pickleball Rồng Đen">
 
     <table>
       <tr><td>Chiều cao</td><td>42 cm</td></tr>
@@ -185,32 +234,47 @@
     </table>
 
     <p>
-      Vợt Pickleball Đúc Nguyên Khối Rồng Đen chính hãng QIS được phân phối bởi công ty TNHH F-Sport. 
+      Vợt Pickleball Đúc Nguyên Khối Rồng Đen chính hãng QIS được phân phối bởi công ty TNHH F-Sport.
       Thiết kế nguyên khối với bề mặt carbon T700 nhám giúp tăng độ ổn định và cảm giác kiểm soát bóng trong từng pha đánh.
     </p>
 
     <h3>CHÍNH SÁCH BẢO HÀNH</h3>
     <p>
-      Sản phẩm được bảo hành 1 tháng kể từ ngày kích hoạt bảo hành điện tử đối với các lỗi sản xuất như bong viền, gãy nứt vật liệu hoặc lỗi cấu trúc 
-      (không áp dụng cho trường hợp rơi, va đập hoặc sử dụng sai cách). 
+      Sản phẩm được bảo hành 1 tháng kể từ ngày kích hoạt bảo hành điện tử đối với các lỗi sản xuất như bong viền, gãy nứt vật liệu hoặc lỗi cấu trúc
+      (không áp dụng cho trường hợp rơi, va đập hoặc sử dụng sai cách).
       Việc kích hoạt bảo hành giúp xác nhận sản phẩm chính hãng và đảm bảo quyền lợi khách hàng.
     </p>
 
     <p class="note">
-      <strong>Quý khách vui lòng sử dụng số điện thoại đã đặt hàng</strong> để gửi yêu cầu kích hoạt bảo hành. 
+      <strong>Quý khách vui lòng sử dụng số điện thoại đã đặt hàng</strong> để gửi yêu cầu kích hoạt bảo hành.
       Hệ thống sẽ đối chiếu thông tin đơn hàng nhằm xác thực quyền lợi bảo hành chính hãng.
     </p>
 
     <form id="warrantyForm">
-      <input type="text" name="name" placeholder="Họ và tên" required>
-      <input type="tel" name="phone" placeholder="Số điện thoại" required>
-      <input type="email" name="email" placeholder="Email" required>
+      <input type="text" id="name" name="name" placeholder="Họ và tên" required>
+      <input type="tel" id="phone" name="phone" placeholder="Số điện thoại" required>
+      <input type="email" id="email" name="email" placeholder="Email" required>
       <button type="submit">GỬI YÊU CẦU KÍCH HOẠT</button>
     </form>
   </main>
 
+  <!-- ✅ POPUP GỬI THÀNH CÔNG -->
+  <div class="popup-success" id="successPopup">
+    <div class="popup-box">
+      <h4>ĐÃ GỬI THÀNH CÔNG</h4>
+      <p>Yêu cầu kích hoạt bảo hành của bạn đã được ghi nhận.<br>
+         F-Sport sẽ gửi email xác nhận trong thời gian sớm nhất.</p>
+      <button onclick="closeSuccess()">ĐÓNG</button>
+    </div>
+  </div>
+
   <script>
-    // Hiệu ứng xác nhận popup
+    // ✅ Chặn zoom iOS
+    ['gesturestart','gesturechange','gestureend','dblclick'].forEach(evt => {
+      document.addEventListener(evt, e => e.preventDefault(), { passive:false });
+    });
+
+    // ✅ Hiệu ứng xác nhận popup
     window.addEventListener("DOMContentLoaded", () => {
       setTimeout(() => {
         document.getElementById("loadingIcon").style.display = "none";
@@ -228,10 +292,40 @@
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
-    document.getElementById("warrantyForm").addEventListener("submit", e => {
+    // ✅ Gửi dữ liệu tới Make.com webhook
+    document.getElementById("warrantyForm").addEventListener("submit", async e => {
       e.preventDefault();
-      alert("Thông tin kích hoạt sẽ được xử lý ở bước tiếp theo!");
+
+      const name = document.getElementById("name").value.trim();
+      const phone = document.getElementById("phone").value.trim();
+      const email = document.getElementById("email").value.trim();
+
+      const payload = {
+        product: "Vợt Rồng Đen Pickleball",
+        name,
+        phone,
+        email,
+        date: new Date().toLocaleString("vi-VN"),
+        source: "Xác thực chính hãng - fun-sport.co"
+      };
+
+      try {
+        await fetch("https://hook.eu2.make.com/dxl7ngaypediyxwb8g7jir704356vhjt", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+
+        document.getElementById("successPopup").style.display = "flex";
+        e.target.reset();
+      } catch (error) {
+        alert("Không thể gửi thông tin, vui lòng thử lại sau.");
+      }
     });
+
+    function closeSuccess() {
+      document.getElementById("successPopup").style.display = "none";
+    }
   </script>
 </body>
 </html>
