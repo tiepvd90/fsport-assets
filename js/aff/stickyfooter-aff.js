@@ -31,7 +31,7 @@
           <img src="https://img.icons8.com/ios-filled/22/000000/facebook-messenger.png" alt="Mess" />
           <span>Mess</span>
         </a>
-        <a href="https://zalo.me/0978585804" target="_blank" class="footer-icon">
+        <a href="https://zalo.me/3913722836443497435" target="_blank" class="footer-icon">
           <img src="https://img.icons8.com/ios-filled/22/000000/zalo.png" alt="Zalo" />
           <span>Zalo</span>
         </a>
