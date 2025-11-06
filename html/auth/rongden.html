@@ -3,84 +3,93 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Xác thực chính hãng QIS x F-SPORT</title>
+  <title>Xác thực chính hãng F-Sport</title>
   <style>
     body {
       font-family: 'Be Vietnam Pro', sans-serif;
       margin: 0;
       background: #fafafa;
       color: #222;
+      overflow-x: hidden;
     }
 
-    /* === POPUP XÁC NHẬN === */
-    .verify-popup {
+    /* === POPUP OVERLAY === */
+    .verify-overlay {
       position: fixed;
       top: 0; left: 0;
       width: 100%; height: 100%;
-      background: rgba(255,255,255,0.98);
+      background: rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(6px);
       display: flex;
-      flex-direction: column;
       justify-content: center;
       align-items: center;
-      text-align: center;
       z-index: 9999;
       animation: fadeIn 0.5s ease forwards;
     }
-    @keyframes fadeIn { from{opacity:0;} to{opacity:1;} }
+    @keyframes fadeIn { from {opacity:0;} to {opacity:1;} }
 
-    .verify-box {
+    .verify-card {
       background: #fff;
-      border: 2px solid #000;
-      border-radius: 10px;
-      padding: 30px 40px;
-      max-width: 340px;
+      border-radius: 20px;
+      padding: 40px 32px 32px;
+      width: 90%;
+      max-width: 360px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.15);
       text-align: center;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+      border: 1px solid rgba(0,0,0,0.1);
+      transform: translateY(10px);
+      animation: slideUp 0.5s ease forwards;
+    }
+    @keyframes slideUp { to { transform: translateY(0);} }
+
+    .verify-icon {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: linear-gradient(135deg,#4CAF50,#2E7D32);
+      color: #fff;
+      font-size: 38px;
+      line-height: 72px;
+      margin: 0 auto 18px;
+      display: none;
     }
 
-    .loading-scan, .check-icon {
-      width: 60px; height: 60px;
+    .verify-loading {
+      width: 72px; height: 72px;
       border-radius: 50%;
-      margin: 0 auto 16px;
-    }
-    .loading-scan {
-      border: 4px solid #4caf50;
+      border: 4px solid #4CAF50;
       border-top-color: transparent;
+      margin: 0 auto 18px;
       animation: spin 1s linear infinite;
     }
     @keyframes spin { to {transform: rotate(360deg);} }
 
-    .check-icon {
-      display: none;
-      background: #4caf50;
-      color: #fff;
-      font-size: 34px;
-      line-height: 60px;
+    .verify-message {
+      font-size: 15px;
+      font-weight: 600;
+      color: #111;
+      line-height: 1.6;
+      margin-bottom: 12px;
+    }
+    .verify-sub {
+      font-size: 13px;
+      color: #666;
+      margin-bottom: 22px;
     }
 
-    .verify-popup h1 {
-      font-size: 16px;
-      font-weight: 700;
-      color: #111;
-      margin-bottom: 6px;
-    }
-    .verify-popup p {
-      font-size: 13px;
-      color: #555;
-      margin-bottom: 18px;
-      line-height: 1.5;
-    }
     .verify-btn {
-      background: #2ea44f;
+      background: linear-gradient(135deg,#2EA44F,#1B7F39);
       color: #fff;
       border: none;
-      border-radius: 6px;
-      padding: 10px 28px;
+      border-radius: 8px;
+      padding: 10px 26px;
       font-weight: 600;
       cursor: pointer;
-      transition: 0.25s;
+      transition: all 0.25s ease;
+      box-shadow: 0 3px 10px rgba(46,164,79,0.3);
+      display: none;
     }
-    .verify-btn:hover { background: #23903f; }
+    .verify-btn:hover { transform: translateY(-2px); }
 
     /* === PHẦN SẢN PHẨM === */
     .product-section {
@@ -98,25 +107,25 @@
     }
     @media (min-width:768px) {
       .product-img {
-        width: 70%;
-        margin: 30px auto;
-        border-radius: 14px;
+        width: 65%;
+        margin: 40px auto;
+        border-radius: 16px;
         display: block;
       }
     }
 
     .product-info {
       max-width: 720px;
-      margin: 0 auto;
+      margin: 0 auto 50px;
       background: #fff;
-      border-radius: 12px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      padding: 20px;
+      border-radius: 16px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+      padding: 24px;
     }
     .product-info h2 {
       text-align: center;
       font-size: 20px;
-      margin-bottom: 12px;
+      margin-bottom: 14px;
       color: #111;
     }
     .spec-table {
@@ -144,19 +153,18 @@
 </head>
 <body>
 
-  <!-- === POPUP XÁC NHẬN === -->
-  <div class="verify-popup" id="verifyPopup">
-    <div class="verify-box">
-      <div class="loading-scan" id="loadingScan"></div>
-      <div class="check-icon" id="checkIcon">✓</div>
-
-      <h1>F-SPORT PICKLEBALL</h1>
-      <p id="verifyMessage">Đang xác nhận chính hãng QIS<br>phân phối bởi F-SPORT...</p>
-      <button class="verify-btn" id="continueBtn" style="display:none;" onclick="showProduct()">TIẾP TỤC</button>
+  <!-- === POPUP CHÍNH HÃNG === -->
+  <div class="verify-overlay" id="verifyPopup">
+    <div class="verify-card">
+      <div class="verify-loading" id="loadingIcon"></div>
+      <div class="verify-icon" id="checkIcon">✓</div>
+      <div class="verify-message" id="verifyMessage">Đang xác nhận chính hãng QIS<br>phân phối bởi F-SPORT...</div>
+      <div class="verify-sub" id="verifySub"></div>
+      <button class="verify-btn" id="continueBtn" onclick="showProduct()">TIẾP TỤC</button>
     </div>
   </div>
 
-  <!-- === NỘI DUNG SẢN PHẨM === -->
+  <!-- === PHẦN SẢN PHẨM === -->
   <div class="product-section" id="productSection">
     <img src="/assets/images/gallery/pickleball/firstpickleball/rongden.webp"
          alt="Vợt Pickleball Rồng Đen" class="product-img">
@@ -173,20 +181,22 @@
         <tr><td>Bảo hành điện tử</td><td>1 tháng</td></tr>
       </table>
       <div class="desc">
-        <p>Vợt Pickleball F-Sport Rồng Đen là dòng vợt được phân phối chính hãng bởi QIS và F-Sport. Cấu trúc đúc nguyên khối với lớp carbon T700 nhám giúp tăng kiểm soát bóng, hạn chế rung và mang lại độ ổn định tuyệt vời trong từng pha đánh.</p>
-        <p>Trọng lượng nhẹ 220g cùng cán quấn kiểu tennis cho cảm giác chắc tay và thoáng khí khi thi đấu.</p>
+        <p>Vợt Pickleball F-Sport Rồng Đen được phân phối chính hãng bởi QIS và F-Sport. Thiết kế nguyên khối, bề mặt carbon T700 nhám cho cảm giác tiếp xúc bóng chắc, ổn định và chính xác trong từng cú đánh.</p>
+        <p>Trọng lượng nhẹ 220g, cán quấn tennis êm, giúp người chơi kiểm soát tốt hơn và giảm rung chấn đáng kể.</p>
       </div>
     </div>
   </div>
 
   <script>
-    // Quay 1 giây rồi hiện tích xanh
+    // Loading chỉ 1 giây rồi hiện check
     window.addEventListener("DOMContentLoaded", () => {
       setTimeout(() => {
-        document.getElementById("loadingScan").style.display = "none";
+        document.getElementById("loadingIcon").style.display = "none";
         document.getElementById("checkIcon").style.display = "block";
         document.getElementById("verifyMessage").innerHTML =
-          "<strong>XÁC NHẬN CHÍNH HÃNG QIS<br>PHÂN PHỐI BỞI F-SPORT</strong><br>Ấn Tiếp Tục Để Xem Chi Tiết Cây Vợt";
+          "<strong>XÁC NHẬN CHÍNH HÃNG QIS<br>PHÂN PHỐI BỞI F-SPORT</strong>";
+        document.getElementById("verifySub").textContent =
+          "Ấn Tiếp Tục Để Xem Chi Tiết Cây Vợt";
         document.getElementById("continueBtn").style.display = "inline-block";
       }, 1000);
     });
