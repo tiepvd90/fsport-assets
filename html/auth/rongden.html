@@ -11,7 +11,6 @@
       background: #fafafa;
       color: #222;
       line-height: 1.6;
-      overflow-x: hidden;
     }
 
     /* ==== POPUP ==== */
@@ -74,7 +73,7 @@
 
     /* ==== PHẦN NỘI DUNG ==== */
     main {
-      max-width: 680px;
+      max-width: 720px;
       margin: 0 auto;
       padding: 24px 16px 60px;
       background: #fafafa;
@@ -95,7 +94,8 @@
     }
     @media (min-width:768px){
       .product-img{
-        width:55%;
+        width:100%; /* full bằng phần text */
+        max-width:720px;
         margin:0 auto 24px;
       }
     }
@@ -157,8 +157,31 @@
       cursor:pointer;
       transition:.25s;
       font-size:15px;
+      margin-top:12px;
     }
     .btn-activate:hover {opacity:.85;}
+
+    /* ==== CHÍNH SÁCH ==== */
+    .policy {
+      margin-top: 32px;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+      padding: 18px 20px;
+    }
+    .policy h3 {
+      font-size: 17px;
+      font-weight: 700;
+      text-align: center;
+      color: #111;
+      margin-bottom: 10px;
+    }
+    .policy p {
+      font-size: 14px;
+      color: #444;
+      text-align: justify;
+      margin: 0;
+    }
   </style>
 </head>
 <body>
@@ -194,6 +217,14 @@
       Thiết kế nguyên khối với bề mặt carbon T700 nhám giúp tăng độ ổn định và cảm giác kiểm soát bóng trong từng pha đánh.
     </p>
 
+    <div class="policy"> 
+      <h3>CHÍNH SÁCH BẢO HÀNH</h3>
+      <p>
+        Sản phẩm được bảo hành 1 tháng kể từ ngày kích hoạt bảo hành điện tử đối với các lỗi sản xuất như bong viền, gãy nứt vật liệu hoặc lỗi cấu trúc (không áp dụng cho trường hợp rơi, va đập hoặc sử dụng sai cách). 
+        Việc kích hoạt bảo hành giúp xác nhận sản phẩm chính hãng và đảm bảo quyền lợi khách hàng.
+      </p>
+    </div>
+
     <div class="form-note">
       <strong>Quý khách vui lòng sử dụng số điện thoại đã đặt hàng</strong> để kích hoạt bảo hành. 
       Hệ thống sẽ đối chiếu thông tin đơn hàng nhằm xác thực quyền lợi bảo hành chính hãng.
@@ -227,7 +258,6 @@
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
-    // Chưa có logic gửi form, chỉ ngăn reload
     document.getElementById("warrantyForm").addEventListener("submit", e => {
       e.preventDefault();
       alert("Form kích hoạt sẽ được xử lý ở bước tiếp theo!");
