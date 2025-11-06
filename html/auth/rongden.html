@@ -156,7 +156,7 @@
     }
     .note strong {color:#000;}
 
-    /* ==== Popup upsell (tối ưu hiển thị) ==== */
+    /* ==== Popup upsell (v3 - flow xác nhận) ==== */
 .popup-success {
   position: fixed;
   inset: 0;
@@ -170,7 +170,6 @@
 .popup-box {
   background: #fff;
   border-radius: 14px;
-  padding: 0;
   text-align: center;
   max-width: 360px;
   width: 92%;
@@ -180,7 +179,7 @@
 }
 @keyframes fadeInUp {from{transform:translateY(10px);opacity:0;}to{transform:translateY(0);opacity:1;}}
 
-/* Phần trên: thông báo xác nhận */
+/* Phần trên */
 .popup-top {
   padding: 20px 18px 16px;
   background: #f9f9f9;
@@ -197,19 +196,14 @@
   margin: 0;
 }
 
-/* Phần dưới: upsell */
+/* Phần dưới */
 .popup-bottom {
   padding: 18px 20px 22px;
 }
-.upsell-intro {
+.upsell-combined {
   font-size: 14px;
-  color: #000;
-  font-weight: 600;
-  margin-bottom: 4px;
-}
-.upsell-title {
-  font-size: 13px;
-  color: #444;
+  color: #111;
+  font-weight: 500;
   margin-bottom: 10px;
 }
 .popup-bottom img {
@@ -222,6 +216,7 @@
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 8px;
+  margin-bottom: 14px;
 }
 .combo-btn {
   background: #fdfdfd;
@@ -231,12 +226,11 @@
   font-size: 13px;
   cursor: pointer;
   transition: 0.25s;
-  line-height: 1.4;
   color: #111;
 }
-.combo-btn:hover {
-  background: #000;
-  color: #fff;
+.combo-btn.active {
+  border: 2px solid #e53935;
+  background: #fff5f5;
 }
 .combo-label {
   font-weight: 600;
@@ -255,19 +249,39 @@
   color: #e53935;
   font-weight: 600;
 }
+
+.action-row {
+  display: flex;
+  gap: 8px;
+}
+.confirm-btn {
+  flex: 1;
+  background: #e53935;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 0;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 14px;
+  opacity: 0.6;
+}
+.confirm-btn.enabled {
+  opacity: 1;
+}
 .close-btn {
-  margin-top: 16px;
+  flex: 1;
   background: #000;
   color: #fff;
   border: none;
   border-radius: 6px;
   padding: 10px 0;
-  width: 100%;
   font-weight: 600;
   cursor: pointer;
   font-size: 14px;
 }
-.close-btn:hover {opacity: .85;}
+.close-btn:hover,
+.confirm-btn:hover {opacity: .85;}
 
   </style>
 </head>
@@ -327,52 +341,57 @@
     </form>
   </main>
 
-  <!-- ==== POPUP UPSELL (phiên bản tối ưu) ==== -->
+  <!-- ==== POPUP UPSELL (v3) ==== -->
 <div class="popup-success" id="successPopup">
   <div class="popup-box">
     
     <!-- Phần 1: Thông báo xác nhận -->
     <div class="popup-top">
       <h4>✅ F-SPORT ĐÃ NHẬN THÔNG TIN KÍCH HOẠT</h4>
-      <p>Yêu cầu của anh/chị đã được ghi nhận.<br>
-      Thông tin xác nhận sẽ được gửi qua email trong 24h tới.</p>
+      <p>
+        Yêu cầu của anh/chị đã được ghi nhận.  
+        Thông tin xác nhận sẽ được gửi qua email trong 24h tới.
+      </p>
     </div>
 
     <!-- Phần 2: Ưu đãi upsell -->
     <div class="popup-bottom">
-      <p class="upsell-intro">🎁 Ưu đãi dành riêng cho khách hàng thân thiết!</p>
-      <p class="upsell-title">Giảm <strong>10%</strong> khi mua thêm bóng thi đấu <strong>F-SPORT PRO</strong></p>
+      <p class="upsell-combined">
+        🎁 Ưu đãi dành riêng cho khách hàng thân thiết – Giảm <strong>10%</strong> khi mua thêm bóng thi đấu <strong>F-SPORT PRO</strong>
+      </p>
 
       <img src="/assets/images/gallery/pickleball/pickleball-ball/2.webp" alt="Bóng Pickleball F-Sport Pro">
 
       <div class="combo-grid">
-        <button class="combo-btn" onclick="sendUpsell('3 quả',87,78.3)">
+        <button class="combo-btn" onclick="selectCombo(this, '3 quả',87,78.3)">
           <span class="combo-label">Mua 3 quả</span>
           <span class="old">87.000đ</span>
           <span class="new">78.300đ</span>
         </button>
-        <button class="combo-btn" onclick="sendUpsell('6 quả',156,140.4)">
+        <button class="combo-btn" onclick="selectCombo(this, '6 quả',156,140.4)">
           <span class="combo-label">Mua 6 quả</span>
           <span class="old">156.000đ</span>
           <span class="new">140.400đ</span>
         </button>
-        <button class="combo-btn" onclick="sendUpsell('9 quả',210,189)">
+        <button class="combo-btn" onclick="selectCombo(this, '9 quả',210,189)">
           <span class="combo-label">Mua 9 quả</span>
           <span class="old">210.000đ</span>
           <span class="new">189.000đ</span>
         </button>
-        <button class="combo-btn" onclick="sendUpsell('12 quả',252,226.8)">
+        <button class="combo-btn" onclick="selectCombo(this, '12 quả',252,226.8)">
           <span class="combo-label">Mua 12 quả</span>
           <span class="old">252.000đ</span>
           <span class="new">226.800đ</span>
         </button>
       </div>
 
-      <button class="close-btn" onclick="closeSuccess()">ĐÓNG</button>
+      <div class="action-row">
+        <button class="confirm-btn" id="confirmUpsell" disabled>XÁC NHẬN</button>
+        <button class="close-btn" onclick="closeSuccess()">ĐÓNG</button>
+      </div>
     </div>
   </div>
 </div>
-
   <script>
     /* Chặn zoom iOS */
     ['gesturestart','gesturechange','gestureend','dblclick'].forEach(evt=>{
