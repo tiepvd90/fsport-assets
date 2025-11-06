@@ -2,6 +2,7 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
+  <!-- ✅ Không cho zoom trên mobile -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>Xác thực chính hãng F-Sport</title>
   <style>
@@ -142,7 +143,6 @@
     .note {
       font-size:14px;
       margin-top:16px;
-      background:none;
       color:#333;
     }
     .note strong {color:#000;}
@@ -189,7 +189,7 @@
     </p>
 
     <p class="note">
-      <strong>Quý khách vui lòng sử dụng số điện thoại đã đặt hàng</strong> để kích hoạt bảo hành. 
+      <strong>Quý khách vui lòng sử dụng số điện thoại đã đặt hàng</strong> để gửi yêu cầu kích hoạt bảo hành. 
       Hệ thống sẽ đối chiếu thông tin đơn hàng nhằm xác thực quyền lợi bảo hành chính hãng.
     </p>
 
@@ -197,7 +197,9 @@
       <input type="text" name="name" placeholder="Họ và tên" required>
       <input type="tel" name="phone" placeholder="Số điện thoại" required>
       <input type="email" name="email" placeholder="Email (tùy chọn)">
-      <button type="submit">KÍCH HOẠT</button>
+      <input type="text" name="address" placeholder="Địa chỉ (tùy chọn)">
+      <input type="date" name="purchaseDate" placeholder="Ngày mua hàng" required>
+      <button type="submit">GỬI YÊU CẦU KÍCH HOẠT</button>
     </form>
   </main>
 
@@ -209,7 +211,7 @@
         document.getElementById("checkIcon").style.display = "block";
         document.getElementById("verifyMessage").innerHTML =
           "<strong>XÁC NHẬN CHÍNH HÃNG QIS<br>PHÂN PHỐI BỞI F-SPORT</strong>";
-        document.getElementById("verifySub").textContent = "Ấn Tiếp Tục Để Kích Hoạt";
+        document.getElementById("verifySub").textContent = "Ấn Tiếp Tục Để Gửi Yêu Cầu";
         document.getElementById("continueBtn").style.display = "inline-block";
       }, 1000);
     });
@@ -222,7 +224,7 @@
 
     document.getElementById("warrantyForm").addEventListener("submit", e => {
       e.preventDefault();
-      alert("Form kích hoạt sẽ được xử lý ở bước tiếp theo!");
+      alert("Thông tin kích hoạt sẽ được xử lý ở bước tiếp theo!");
     });
   </script>
 </body>
