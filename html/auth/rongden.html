@@ -2,13 +2,12 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <!-- ✅ Khóa zoom iOS & Android -->
   <meta name="viewport"
     content="width=device-width, initial-scale=1.0, minimum-scale=1.0,
              maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>Xác thực chính hãng F-Sport</title>
   <style>
-    /* === Reset & chặn zoom === */
+    /* === Reset & fix zoom iOS/Android === */
     html, body, input, textarea, select {
       -webkit-text-size-adjust: 100%;
       touch-action: manipulation;
@@ -28,9 +27,7 @@
       margin-inline: auto;
     }
 
-    input, textarea, select {
-      font-size: 16px !important;
-    }
+    input, textarea, select { font-size: 16px !important; }
 
     /* ==== POPUP xác thực ==== */
     .verify-overlay {
@@ -92,7 +89,7 @@
     }
     .verify-btn:hover {opacity:.85;}
 
-    /* ==== NỘI DUNG ==== */
+    /* ==== Nội dung ==== */
     h2 {
       text-align:center;
       font-size:20px;
@@ -128,10 +125,7 @@
       text-align:left;
     }
 
-    form {
-      margin-top:12px;
-    }
-
+    form { margin-top:12px; }
     input {
       width:100%;
       border:1px solid #ccc;
@@ -162,7 +156,7 @@
     }
     .note strong {color:#000;}
 
-    /* ==== Popup gửi thành công ==== */
+    /* ==== Popup upsell ==== */
     .popup-success {
       position: fixed;
       inset: 0;
@@ -174,30 +168,50 @@
     }
     .popup-box {
       background: #fff;
-      border-radius: 10px;
-      padding: 24px 20px;
+      border-radius: 14px;
+      padding: 22px 20px 26px;
       text-align: center;
-      max-width: 320px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+      max-width: 360px;
+      width: 92%;
+      box-shadow: 0 6px 24px rgba(0,0,0,0.2);
+      animation: fadeInUp .4s ease;
     }
-    .popup-box h4 {
-      margin: 0 0 8px;
-      font-size: 17px;
-      color: #111;
+    @keyframes fadeInUp {from{transform:translateY(10px);opacity:0;}to{transform:translateY(0);opacity:1;}}
+    .popup-box img {
+      width: 120px;
+      margin: 0 auto 12px;
+      border-radius: 10px;
+      display: block;
     }
-    .popup-box p {
-      font-size: 14px;
-      color: #555;
-      margin: 0 0 12px;
+    .popup-box h4 {margin:0 0 8px;font-size:18px;color:#111;}
+    .popup-box p {font-size:14px;color:#555;margin:0 0 12px;}
+
+    .combo-grid {
+      display: grid;
+      grid-template-columns: repeat(2,1fr);
+      gap: 8px;
+      margin-top: 10px;
     }
-    .popup-box button {
-      background: #000;
-      color: #fff;
-      border: none;
-      border-radius: 6px;
-      padding: 8px 20px;
+    .combo-btn {
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 10px 4px;
+      font-size: 13px;
       cursor: pointer;
-      font-weight: 600;
+      transition: 0.25s;
+      background: #fafafa;
+    }
+    .combo-btn:hover {background:#000;color:#fff;}
+    .combo-btn small {display:block;color:#e53935;font-weight:600;margin-top:3px;font-size:13px;}
+
+    .close-btn {
+      margin-top: 12px;
+      font-size: 14px;
+      color: #777;
+      background: none;
+      border: none;
+      cursor: pointer;
+      text-decoration: underline;
     }
   </style>
 </head>
@@ -242,7 +256,6 @@
     <p>
       Sản phẩm được bảo hành 1 tháng kể từ ngày kích hoạt bảo hành điện tử đối với các lỗi sản xuất như bong viền, gãy nứt vật liệu hoặc lỗi cấu trúc
       (không áp dụng cho trường hợp rơi, va đập hoặc sử dụng sai cách).
-      Việc kích hoạt bảo hành giúp xác nhận sản phẩm chính hãng và đảm bảo quyền lợi khách hàng.
     </p>
 
     <p class="note">
@@ -258,23 +271,34 @@
     </form>
   </main>
 
-  <!-- ✅ POPUP GỬI THÀNH CÔNG -->
+  <!-- ==== POPUP UPSELL ==== -->
   <div class="popup-success" id="successPopup">
     <div class="popup-box">
-      <h4>ĐÃ GỬI THÀNH CÔNG</h4>
-      <p>Yêu cầu kích hoạt bảo hành của bạn đã được ghi nhận.<br>
-         F-Sport sẽ gửi email xác nhận trong thời gian sớm nhất.</p>
-      <button onclick="closeSuccess()">ĐÓNG</button>
+      <img src="/assets/images/gallery/pickleball/pickleball-ball/2.webp" alt="Bóng Pickleball F-Sport Pro">
+      <h4>🎉 F-SPORT ĐÃ NHẬN THÔNG TIN!</h4>
+      <p>Yêu cầu kích hoạt bảo hành của anh/chị đã được ghi nhận.<br>
+         Thông tin xác nhận sẽ được gửi qua email trong 24h tới.</p>
+      <p><strong>ĐẶC QUYỀN HÔM NAY:</strong><br>
+         Giảm ngay <span style="color:#e53935;">10%</span> khi mua thêm combo bóng thi đấu F-SPORT PRO!</p>
+
+      <div class="combo-grid">
+        <div class="combo-btn" onclick="sendUpsell('3 quả',87,78.3)">Combo 3 quả <small>78.300đ (tiết kiệm 8.700đ)</small></div>
+        <div class="combo-btn" onclick="sendUpsell('6 quả',156,140.4)">Combo 6 quả <small>140.400đ (tiết kiệm 15.600đ)</small></div>
+        <div class="combo-btn" onclick="sendUpsell('9 quả',210,189)">Combo 9 quả <small>189.000đ (tiết kiệm 21.000đ)</small></div>
+        <div class="combo-btn" onclick="sendUpsell('12 quả',252,226.8)">Combo 12 quả <small>226.800đ (tiết kiệm 25.200đ)</small></div>
+      </div>
+
+      <button class="close-btn" onclick="closeSuccess()">❌ Chưa mua ngay</button>
     </div>
   </div>
 
   <script>
-    // ✅ Chặn zoom iOS
-    ['gesturestart','gesturechange','gestureend','dblclick'].forEach(evt => {
-      document.addEventListener(evt, e => e.preventDefault(), { passive:false });
+    /* Chặn zoom iOS */
+    ['gesturestart','gesturechange','gestureend','dblclick'].forEach(evt=>{
+      document.addEventListener(evt,e=>e.preventDefault(),{passive:false});
     });
 
-    // ✅ Hiệu ứng xác nhận popup
+    /* Popup xác nhận chính hãng */
     window.addEventListener("DOMContentLoaded", () => {
       setTimeout(() => {
         document.getElementById("loadingIcon").style.display = "none";
@@ -286,45 +310,61 @@
       }, 1000);
     });
 
-    function showProduct() {
-      document.getElementById("verifyPopup").style.display = "none";
-      document.getElementById("productSection").style.display = "block";
-      window.scrollTo({ top: 0, behavior: "smooth" });
+    function showProduct(){
+      document.getElementById("verifyPopup").style.display="none";
+      document.getElementById("productSection").style.display="block";
+      window.scrollTo({top:0,behavior:"smooth"});
     }
 
-    // ✅ Gửi dữ liệu tới Make.com webhook
+    /* Gửi dữ liệu bảo hành */
     document.getElementById("warrantyForm").addEventListener("submit", async e => {
       e.preventDefault();
-
-      const name = document.getElementById("name").value.trim();
-      const phone = document.getElementById("phone").value.trim();
-      const email = document.getElementById("email").value.trim();
-
-      const payload = {
-        product: "Vợt Rồng Đen Pickleball",
-        name,
-        phone,
-        email,
-        date: new Date().toLocaleString("vi-VN"),
-        source: "Xác thực chính hãng - fun-sport.co"
+      const name=document.getElementById("name").value.trim();
+      const phone=document.getElementById("phone").value.trim();
+      const email=document.getElementById("email").value.trim();
+      const payload={
+        type:"warranty",
+        product:"Vợt Rồng Đen Pickleball",
+        name,phone,email,
+        date:new Date().toLocaleString("vi-VN"),
+        source:"Xác thực chính hãng - fun-sport.co"
       };
-
-      try {
-        await fetch("https://hook.eu2.make.com/dxl7ngaypediyxwb8g7jir704356vhjt", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload)
+      try{
+        await fetch("https://hook.eu2.make.com/dxl7ngaypediyxwb8g7jir704356vhjt",{
+          method:"POST",
+          headers:{"Content-Type":"application/json"},
+          body:JSON.stringify(payload)
         });
-
-        document.getElementById("successPopup").style.display = "flex";
+        document.getElementById("successPopup").style.display="flex";
         e.target.reset();
-      } catch (error) {
-        alert("Không thể gửi thông tin, vui lòng thử lại sau.");
-      }
+      }catch(err){alert("Không thể gửi thông tin, vui lòng thử lại sau.");}
     });
 
-    function closeSuccess() {
-      document.getElementById("successPopup").style.display = "none";
+    /* Gửi upsell */
+    async function sendUpsell(combo,original,discount){
+      const payload={
+        type:"upsell",
+        upsell_product:"Bóng FSport PRO",
+        combo,
+        price:discount*1000,
+        original_price:original*1000,
+        name:document.getElementById("name").value,
+        phone:document.getElementById("phone").value,
+        email:document.getElementById("email").value,
+        date:new Date().toLocaleString("vi-VN"),
+        source:"Upsell sau kích hoạt bảo hành"
+      };
+      await fetch("https://hook.eu2.make.com/dxl7ngaypediyxwb8g7jir704356vhjt",{
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify(payload)
+      });
+      alert("Cảm ơn anh/chị! Ưu đãi đã được ghi nhận.");
+      closeSuccess();
+    }
+
+    function closeSuccess(){
+      document.getElementById("successPopup").style.display="none";
     }
   </script>
 </body>
