@@ -156,63 +156,107 @@
     }
     .note strong {color:#000;}
 
-    /* ==== Popup upsell ==== */
-    .popup-success {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.4);
-      display: none;
-      justify-content: center;
-      align-items: center;
-      z-index: 10000;
-    }
-    .popup-box {
-      background: #fff;
-      border-radius: 14px;
-      padding: 22px 20px 26px;
-      text-align: center;
-      max-width: 360px;
-      width: 92%;
-      box-shadow: 0 6px 24px rgba(0,0,0,0.2);
-      animation: fadeInUp .4s ease;
-    }
-    @keyframes fadeInUp {from{transform:translateY(10px);opacity:0;}to{transform:translateY(0);opacity:1;}}
-    .popup-box img {
-      width: 120px;
-      margin: 0 auto 12px;
-      border-radius: 10px;
-      display: block;
-    }
-    .popup-box h4 {margin:0 0 8px;font-size:18px;color:#111;}
-    .popup-box p {font-size:14px;color:#555;margin:0 0 12px;}
+    /* ==== Popup upsell (new version) ==== */
+.popup-success {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+}
 
-    .combo-grid {
-      display: grid;
-      grid-template-columns: repeat(2,1fr);
-      gap: 8px;
-      margin-top: 10px;
-    }
-    .combo-btn {
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      padding: 10px 4px;
-      font-size: 13px;
-      cursor: pointer;
-      transition: 0.25s;
-      background: #fafafa;
-    }
-    .combo-btn:hover {background:#000;color:#fff;}
-    .combo-btn small {display:block;color:#e53935;font-weight:600;margin-top:3px;font-size:13px;}
+.popup-box {
+  background: #fff;
+  border-radius: 14px;
+  padding: 0;
+  text-align: center;
+  max-width: 360px;
+  width: 92%;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.25);
+  overflow: hidden;
+  animation: fadeInUp .4s ease;
+}
+@keyframes fadeInUp {from{transform:translateY(10px);opacity:0;}to{transform:translateY(0);opacity:1;}}
 
-    .close-btn {
-      margin-top: 12px;
-      font-size: 14px;
-      color: #777;
-      background: none;
-      border: none;
-      cursor: pointer;
-      text-decoration: underline;
-    }
+/* Phần trên: thông báo xác nhận */
+.popup-top {
+  padding: 20px 18px 16px;
+  background: #f9f9f9;
+  border-bottom: 1px solid #eee;
+}
+.popup-top h4 {
+  margin: 0 0 8px;
+  font-size: 17px;
+  color: #111;
+}
+.popup-top p {
+  font-size: 14px;
+  color: #444;
+  margin: 0;
+}
+
+/* Phần dưới: upsell */
+.popup-bottom {
+  padding: 18px 20px 22px;
+}
+.popup-bottom img {
+  width: 110px;
+  margin: 0 auto 8px;
+  border-radius: 10px;
+  display: block;
+}
+.upsell-title {
+  font-size: 14px;
+  color: #222;
+  margin-bottom: 10px;
+}
+.combo-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+.combo-btn {
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 8px 0;
+  font-size: 13px;
+  cursor: pointer;
+  transition: 0.25s;
+  line-height: 1.4;
+}
+.combo-btn:hover {
+  background: #000;
+  color: #fff;
+}
+.combo-btn .old {
+  display: block;
+  font-size: 12px;
+  color: #666;
+  text-decoration: line-through;
+}
+.combo-btn .new {
+  display: block;
+  font-size: 14px;
+  color: #e53935;
+  font-weight: 600;
+}
+.close-btn {
+  margin-top: 14px;
+  background: #000;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 0;
+  width: 100%;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 14px;
+}
+.close-btn:hover {opacity: .85;}
+
   </style>
 </head>
 
@@ -224,7 +268,7 @@
       <div class="verify-loading" id="loadingIcon"></div>
       <div class="verify-icon" id="checkIcon">✓</div>
       <div class="verify-message" id="verifyMessage">
-        Đang xác nhận chính hãng QIS<br>phân phối bởi F-SPORT...
+        Đang xác nhận chính hãng F-SPORT...
       </div>
       <div class="verify-sub" id="verifySub"></div>
       <button class="verify-btn" id="continueBtn" onclick="showProduct()">TIẾP TỤC</button>
@@ -271,26 +315,52 @@
     </form>
   </main>
 
-  <!-- ==== POPUP UPSELL ==== -->
-  <div class="popup-success" id="successPopup">
-    <div class="popup-box">
+  <!-- ==== POPUP UPSELL (phiên bản mới) ==== -->
+<div class="popup-success" id="successPopup">
+  <div class="popup-box">
+    
+    <!-- Phần 1: Thông báo xác nhận -->
+    <div class="popup-top">
+      <h4>✅ F-SPORT ĐÃ NHẬN THÔNG TIN KÍCH HOẠT</h4>
+      <p>Yêu cầu của anh/chị đã được ghi nhận.  
+      Thông tin xác nhận sẽ được gửi qua email trong 24h tới.</p>
+    </div>
+
+    <!-- Phần 2: Upsell -->
+    <div class="popup-bottom">
       <img src="/assets/images/gallery/pickleball/pickleball-ball/2.webp" alt="Bóng Pickleball F-Sport Pro">
-      <h4>🎉 F-SPORT ĐÃ NHẬN THÔNG TIN!</h4>
-      <p>Yêu cầu kích hoạt bảo hành của anh/chị đã được ghi nhận.<br>
-         Thông tin xác nhận sẽ được gửi qua email trong 24h tới.</p>
-      <p><strong>ĐẶC QUYỀN HÔM NAY:</strong><br>
-         Giảm ngay <span style="color:#e53935;">10%</span> khi mua thêm combo bóng thi đấu F-SPORT PRO!</p>
+      <p class="upsell-title">
+        🎁 Giảm <strong>10%</strong> khi mua thêm bóng thi đấu F-SPORT PRO
+      </p>
 
       <div class="combo-grid">
-        <div class="combo-btn" onclick="sendUpsell('3 quả',87,78.3)">Combo 3 quả <small>78.300đ (tiết kiệm 8.700đ)</small></div>
-        <div class="combo-btn" onclick="sendUpsell('6 quả',156,140.4)">Combo 6 quả <small>140.400đ (tiết kiệm 15.600đ)</small></div>
-        <div class="combo-btn" onclick="sendUpsell('9 quả',210,189)">Combo 9 quả <small>189.000đ (tiết kiệm 21.000đ)</small></div>
-        <div class="combo-btn" onclick="sendUpsell('12 quả',252,226.8)">Combo 12 quả <small>226.800đ (tiết kiệm 25.200đ)</small></div>
+        <button class="combo-btn" onclick="sendUpsell('3 quả',87,78.3)">
+          Mua 3 quả<br>
+          <span class="old">87.000đ</span>
+          <span class="new">78.300đ</span>
+        </button>
+        <button class="combo-btn" onclick="sendUpsell('6 quả',156,140.4)">
+          Mua 6 quả<br>
+          <span class="old">156.000đ</span>
+          <span class="new">140.400đ</span>
+        </button>
+        <button class="combo-btn" onclick="sendUpsell('9 quả',210,189)">
+          Mua 9 quả<br>
+          <span class="old">210.000đ</span>
+          <span class="new">189.000đ</span>
+        </button>
+        <button class="combo-btn" onclick="sendUpsell('12 quả',252,226.8)">
+          Mua 12 quả<br>
+          <span class="old">252.000đ</span>
+          <span class="new">226.800đ</span>
+        </button>
       </div>
 
-      <button class="close-btn" onclick="closeSuccess()">❌ Chưa mua ngay</button>
+      <button class="close-btn" onclick="closeSuccess()">ĐÓNG</button>
     </div>
   </div>
+</div>
+
 
   <script>
     /* Chặn zoom iOS */
@@ -304,7 +374,7 @@
         document.getElementById("loadingIcon").style.display = "none";
         document.getElementById("checkIcon").style.display = "block";
         document.getElementById("verifyMessage").innerHTML =
-          "<strong>XÁC NHẬN CHÍNH HÃNG QIS<br>PHÂN PHỐI BỞI F-SPORT</strong>";
+          "<strong>XÁC NHẬN CHÍNH HÃNG F-SPORT</strong>";
         document.getElementById("verifySub").textContent = "Ấn Tiếp Tục Để Gửi Yêu Cầu";
         document.getElementById("continueBtn").style.display = "inline-block";
       }, 1000);
