@@ -11,13 +11,13 @@
       background: #fafafa;
       color: #222;
       overflow-x: hidden;
+      line-height: 1.6;
     }
 
-    /* === POPUP OVERLAY === */
+    /* ==== POPUP === */
     .verify-overlay {
       position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
+      inset: 0;
       background: rgba(255, 255, 255, 0.6);
       backdrop-filter: blur(6px);
       display: flex;
@@ -26,227 +26,183 @@
       z-index: 9999;
       animation: fadeIn 0.5s ease forwards;
     }
-    @keyframes fadeIn { from {opacity:0;} to {opacity:1;} }
+    @keyframes fadeIn { from{opacity:0;} to{opacity:1;} }
 
     .verify-card {
       background: #fff;
       border-radius: 20px;
-      padding: 40px 32px 32px;
+      padding: 40px 32px;
       width: 90%;
       max-width: 360px;
       box-shadow: 0 8px 30px rgba(0,0,0,0.15);
       text-align: center;
       border: 1px solid rgba(0,0,0,0.1);
-      transform: translateY(10px);
-      animation: slideUp 0.5s ease forwards;
     }
-    @keyframes slideUp { to { transform: translateY(0);} }
 
+    .verify-icon, .verify-loading {
+      width: 72px; height: 72px; border-radius: 50%; margin: 0 auto 18px;
+    }
+    .verify-loading {
+      border: 4px solid #4CAF50;
+      border-top-color: transparent;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin { to {transform: rotate(360deg);} }
     .verify-icon {
-      width: 72px;
-      height: 72px;
-      border-radius: 50%;
       background: linear-gradient(135deg,#4CAF50,#2E7D32);
       color: #fff;
       font-size: 38px;
       line-height: 72px;
-      margin: 0 auto 18px;
       display: none;
     }
 
-    .verify-loading {
-      width: 72px; height: 72px;
-      border-radius: 50%;
-      border: 4px solid #4CAF50;
-      border-top-color: transparent;
-      margin: 0 auto 18px;
-      animation: spin 1s linear infinite;
-    }
-    @keyframes spin { to {transform: rotate(360deg);} }
-
-    .verify-message {
-      font-size: 15px;
-      font-weight: 600;
-      color: #111;
-      line-height: 1.6;
-      margin-bottom: 12px;
-    }
-    .verify-sub {
-      font-size: 13px;
-      color: #666;
-      margin-bottom: 22px;
-    }
-
+    .verify-message {font-size: 15px;font-weight: 600;color:#111;}
+    .verify-sub {font-size: 13px;color:#666;margin-bottom:22px;}
     .verify-btn {
       background: linear-gradient(135deg,#2EA44F,#1B7F39);
-      color: #fff;
-      border: none;
-      border-radius: 8px;
-      padding: 10px 26px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.25s ease;
-      box-shadow: 0 3px 10px rgba(46,164,79,0.3);
-      display: none;
+      color:#fff;border:none;border-radius:8px;
+      padding:10px 26px;font-weight:600;cursor:pointer;
+      box-shadow:0 3px 10px rgba(46,164,79,0.3);
+      display:none;transition:all .25s ease;
     }
-    .verify-btn:hover { transform: translateY(-2px); }
+    .verify-btn:hover {transform:translateY(-2px);}
 
-    /* === PHẦN SẢN PHẨM === */
-    .product-section {
-      display: none;
-      animation: fadeContent 0.6s ease;
+    /* ==== NỘI DUNG CHÍNH ==== */
+    main {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 24px 16px 60px;
+      background: #fafafa;
     }
-    @keyframes fadeContent { from{opacity:0;} to{opacity:1;} }
+
+    h2 {
+      text-align: center;
+      font-size: 20px;
+      color: #111;
+      margin-bottom: 16px;
+      margin-top: 32px;
+    }
 
     .product-img {
       width: 100%;
       display: block;
       object-fit: cover;
-      border-radius: 0;
-      margin-bottom: 12px;
+      border-radius: 8px;
+      margin: 0 auto 16px;
     }
-    @media (min-width:768px) {
+    @media (min-width: 768px) {
       .product-img {
-        width: 65%;
-        margin: 40px auto;
-        border-radius: 16px;
-        display: block;
+        width: 60%;
+        margin: 0 auto 24px;
       }
     }
 
-    .product-info {
-      max-width: 720px;
-      margin: 0 auto 50px;
-      background: #fff;
-      border-radius: 16px;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.08);
-      padding: 24px;
-    }
-    .product-info h2 {
-      text-align: center;
-      font-size: 20px;
-      margin-bottom: 14px;
-      color: #111;
-    }
-    .spec-table {
+    table {
       width: 100%;
       border-collapse: collapse;
-      margin-bottom: 14px;
+      margin: 0 auto 16px;
     }
-    .spec-table td {
+    td {
       border: 1px solid #000;
       padding: 10px;
       font-size: 14px;
     }
-    .spec-table td:first-child {
+    td:first-child {
       font-weight: 600;
       background: #f8f8f8;
       width: 45%;
     }
-    .desc {
-      font-size: 14px;
-      line-height: 1.6;
-      color: #444;
-      margin-top: 10px;
-    }
 
-    /* === CHÍNH SÁCH BẢO HÀNH === */
-    .warranty-policy {
-      max-width: 720px;
-      margin: 30px auto 60px;
+    p {font-size: 14px;color:#444;margin:12px 0;}
+
+    /* ==== CHÍNH SÁCH BẢO HÀNH ==== */
+    .policy {
+      margin-top: 32px;
       background: #fff;
-      border-radius: 16px;
+      padding: 20px;
+      border-radius: 12px;
       box-shadow: 0 3px 10px rgba(0,0,0,0.08);
-      padding: 24px;
     }
-    .warranty-policy h3 {
-      font-size: 18px;
+    .policy h3 {
+      font-size: 17px;
       font-weight: 700;
       text-align: center;
+      margin-bottom: 10px;
       color: #111;
-      margin-bottom: 12px;
     }
-    .warranty-policy p {
+    .policy p {
       font-size: 14px;
       color: #444;
-      line-height: 1.6;
-      margin-bottom: 24px;
       text-align: justify;
+      margin-bottom: 24px;
     }
-
     .btn-activate {
-      display: block;
-      width: fit-content;
-      margin: 0 auto;
-      background: linear-gradient(135deg,#1b7f39,#2ea44f);
-      color: #fff;
-      font-weight: 600;
-      padding: 12px 26px;
-      border-radius: 8px;
-      border: none;
-      box-shadow: 0 3px 10px rgba(27,127,57,0.3);
-      cursor: pointer;
-      transition: transform 0.25s ease;
+      display:block;
+      margin:0 auto;
+      background:linear-gradient(135deg,#1b7f39,#2ea44f);
+      color:#fff;
+      font-weight:600;
+      padding:12px 26px;
+      border:none;
+      border-radius:8px;
+      cursor:pointer;
+      box-shadow:0 3px 10px rgba(27,127,57,0.3);
+      transition:transform .25s ease;
     }
-    .btn-activate:hover {
-      transform: translateY(-2px);
-    }
+    .btn-activate:hover {transform:translateY(-2px);}
   </style>
 </head>
 <body>
 
-  <!-- === POPUP CHÍNH HÃNG === -->
+  <!-- ==== POPUP ==== -->
   <div class="verify-overlay" id="verifyPopup">
     <div class="verify-card">
       <div class="verify-loading" id="loadingIcon"></div>
       <div class="verify-icon" id="checkIcon">✓</div>
-      <div class="verify-message" id="verifyMessage">Đang xác nhận chính hãng F-SPORT...</div>
+      <div class="verify-message" id="verifyMessage">Đang xác nhận chính hãng QIS<br>phân phối bởi F-SPORT...</div>
       <div class="verify-sub" id="verifySub"></div>
       <button class="verify-btn" id="continueBtn" onclick="showProduct()">TIẾP TỤC</button>
     </div>
   </div>
 
-  <!-- === PHẦN SẢN PHẨM === -->
-  <h2 style="text-align:center; margin-top:24px;">VỢT ĐÚC NGUYÊN KHỐI RỒNG ĐEN</h2>
-  <div class="product-section" id="productSection">
-    <img src="/assets/images/gallery/pickleball/firstpickleball/rongden.webp"
-         alt="Vợt Pickleball Rồng Đen" class="product-img">
+  <!-- ==== NỘI DUNG CHÍNH ==== -->
+  <main id="productSection" style="display:none;">
+    <h2>VỢT ĐÚC NGUYÊN KHỐI RỒNG ĐEN</h2>
 
-    <div class="product-info">
-      <table class="spec-table">
-        <tr><td>Chiều cao</td><td>42 cm</td></tr>
-        <tr><td>Chiều ngang</td><td>18,5 cm</td></tr>
-        <tr><td>Độ dày</td><td>1,4 cm</td></tr>
-        <tr><td>Cân nặng</td><td>220 g</td></tr>
-        <tr><td>Bề mặt</td><td>Carbon fibre T700 nhám</td></tr>
-        <tr><td>Lõi</td><td>Tổ ong (Honeycomb Core)</td></tr>
-        <tr><td>Bảo hành điện tử</td><td>1 tháng</td></tr>
-      </table>
-      <div class="desc">
-        <p>Vợt Pickleball Đúc Nguyên Khối Rồng Đen chính hãng QIS được phân phối bởi công ty TNHH F-Sport. Thiết kế nguyên khối, bề mặt carbon T700 nhám cho cảm giác tiếp xúc bóng chắc, ổn định và chính xác trong từng cú đánh.</p>
-        <p>Trọng lượng nhẹ 220g, cán quấn tennis êm, giúp người chơi kiểm soát tốt hơn và giảm rung chấn đáng kể.</p>
-      </div>
-    </div>
+    <img src="/assets/images/gallery/pickleball/firstpickleball/rongden.webp" alt="Vợt Pickleball Rồng Đen" class="product-img">
 
-    <!-- === CHÍNH SÁCH BẢO HÀNH === -->
-    <div class="warranty-policy">
+    <table>
+      <tr><td>Chiều cao</td><td>42 cm</td></tr>
+      <tr><td>Chiều ngang</td><td>18,5 cm</td></tr>
+      <tr><td>Độ dày</td><td>1,4 cm</td></tr>
+      <tr><td>Cân nặng</td><td>220 g</td></tr>
+      <tr><td>Bề mặt</td><td>Carbon fibre T700 nhám</td></tr>
+      <tr><td>Lõi</td><td>Tổ ong (Honeycomb Core)</td></tr>
+    </table>
+
+    <p>
+      Vợt Pickleball Đúc Nguyên Khối Rồng Đen chính hãng QIS được phân phối bởi công ty TNHH F-Sport.
+      Thiết kế nguyên khối với bề mặt carbon T700 nhám giúp tăng độ ổn định và cảm giác kiểm soát bóng trong từng pha đánh.
+    </p>
+
+    <div class="policy">
       <h3>CHÍNH SÁCH BẢO HÀNH</h3>
       <p>
-        Sản phẩm vợt Pickleball F-Sport được bảo hành 1 tháng kể từ ngày kích hoạt bảo hành điện tử đối với các lỗi từ nhà sản xuất như bong viền, gãy nứt do vật liệu hoặc lỗi cấu trúc (không bao gồm các trường hợp va đập mạnh, làm rơi hoặc sử dụng sai cách).<br><br>
-        Việc kích hoạt bảo hành giúp xác nhận sản phẩm chính hãng và đảm bảo quyền lợi tốt nhất cho khách hàng.
+        Sản phẩm được bảo hành 1 tháng kể từ ngày kích hoạt bảo hành điện tử đối với các lỗi sản xuất như bong viền, gãy nứt vật liệu hoặc lỗi cấu trúc (không áp dụng cho trường hợp rơi, va đập hoặc sử dụng sai cách). 
+        Việc kích hoạt bảo hành giúp xác nhận sản phẩm chính hãng và đảm bảo quyền lợi khách hàng.
       </p>
       <button class="btn-activate">KÍCH HOẠT BẢO HÀNH ĐIỆN TỬ</button>
     </div>
-  </div>
+  </main>
 
   <script>
-    // Loading chỉ 1 giây rồi hiện check
+    // Loading 1 giây rồi hiển thị xác nhận
     window.addEventListener("DOMContentLoaded", () => {
       setTimeout(() => {
         document.getElementById("loadingIcon").style.display = "none";
         document.getElementById("checkIcon").style.display = "block";
         document.getElementById("verifyMessage").innerHTML =
-          "<strong>XÁC NHẬN CHÍNH HÃNG F-SPORT</strong>";
+          "<strong>XÁC NHẬN CHÍNH HÃNG QIS<br>PHÂN PHỐI BỞI F-SPORT</strong>";
         document.getElementById("verifySub").textContent =
           "Ấn Tiếp Tục Để Kích Hoạt Bảo Hành Điện Tử";
         document.getElementById("continueBtn").style.display = "inline-block";
