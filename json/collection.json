@@ -1,31 +1,31 @@
 [
   {
+    "id": "active",
+    "title": "F-Sport Active - Carbon Toray lõi 5s Trợ Lực Mạnh",
+    "image": "/assets/images/thumb/pickleball/active/at-xanh.webp",
+    "price": 1600000,
+    "originalPrice": 2200000,
+    "link": "/pickleball/active",
+    "category": "pickleball",
+    "tags": []
+  },
+  {
+    "id": "fastblock",
+    "title": "F-Sport FastBlock - Carbon Toray lõi Gen4 cải tiến",
+    "image": "/assets/images/thumb/pickleball/active/fa-trang.webp",
+    "price": 1250000,
+    "originalPrice": 1700000,
+    "link": "/pickleball/active",
+    "category": "pickleball",
+    "tags": []
+  },
+  {
     "id": "gen4-3lop",
     "title": "F-Sport Gen4 - Vợt Ép Nóng- Carbon 3 Lớp- dầy 16mm",
     "image": "https://i.postimg.cc/vZbZfHrc/trangnho.jpg",
-    "price": 850000,
+    "price": 739000,
     "originalPrice": 1200000,
     "link": "/pickleball/gen4",
-    "category": "pickleball",
-    "tags": []
-  },
-  {
-    "id": "phantom-carbon",
-    "title": "Vợt Pickleball Phantom – 14mm- carbon Tràn Viền, lõi gen4",
-    "image": "https://i.postimg.cc/xCMjLbDC/Capture.jpg",
-    "price": 1800000,
-    "originalPrice": 2700000,
-    "link": "/pickleball/phantom",
-    "category": "pickleball",
-    "tags": []
-  },
-  {
-    "id": "omega",
-    "title": "Vợt Pickleball Omega",
-    "image": "https://fun-sport.co/assets/images/gallery/pickleball/omega/2.webp",
-    "price": 2090000,
-    "originalPrice": 2700000,
-    "link": "/pickleball/omega",
     "category": "pickleball",
     "tags": []
   },
@@ -46,16 +46,6 @@
     "price": 849000,
     "originalPrice": 1500000,
     "link": "/product/firstpickleball",
-    "category": "pickleball",
-    "tags": []
-  },
-  {
-    "id": "tera-16mm",
-    "title": "Vợt Pickleball Tera – 16mm- lõi gen4 siêu trợ lực",
-    "image": "https://i.postimg.cc/26c1VD3m/3.webp",
-    "price": 1900000,
-    "originalPrice": 2700000,
-    "link": "/pickleball/tera",
     "category": "pickleball",
     "tags": []
   },
