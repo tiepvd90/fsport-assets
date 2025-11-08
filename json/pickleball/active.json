@@ -35,28 +35,11 @@
   ],
   "biến_thể": [
     {
-      "id": "active-xanhla",
+      "id": "pickleball-active",
       "category": "pickleball",
       "Giá": 1600000,
       "Giá gốc": 2200000
-    },
-    {
-      "id": "active-hong",
-      "category": "pickleball",
-      "Giá": 1600000,
-      "Giá gốc": 2200000
-    },
-    {
-      "id": "fastblock-trang",
-      "category": "pickleball",
-      "Giá": 1250000,
-      "Giá gốc": 1700000
-    },
-    {
-      "id": "fastblock-xanh",
-      "category": "pickleball",
-      "Giá": 1250000,
-      "Giá gốc": 1700000
     }
-  ]
+  ],
+  "mainImageKey": "Màu Sắc"
 }
