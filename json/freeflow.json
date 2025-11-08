@@ -332,40 +332,6 @@
     "sellerID": "huyenle"
   },
   {
-    "itemId": "shorts1",
-    "title": "Quần Chạy Bộ Nữ 2 Lớp Xẻ Lai Cao Cấp Cạp Cao",
-    "price": 189000,
-    "originalPrice": 240000,
-    "contentType": "image",
-    "image": "https://i.postimg.cc/zXZ4CjLg/vangnhat.webp",
-    "youtube": "",
-    "productPage": "/product/shorts",
-    "tags": [
-      "shorts",
-      "ysandal"
-    ],
-    "basePriority": 15,
-    "productCategory": "ysandal",
-    "sellerID": "huyenle"
-  },
-  {
-    "itemId": "shorts2",
-    "title": "Màu Xám Quần Chạy Bộ Nữ Cao Cấp Cạp Cao",
-    "price": 189000,
-    "originalPrice": 240000,
-    "contentType": "image",
-    "image": "https://i.postimg.cc/0jgXCkNs/xam.webp",
-    "youtube": "",
-    "productPage": "/product/shorts",
-    "tags": [
-      "shorts",
-      "ysandal"
-    ],
-    "basePriority": 15,
-    "productCategory": "ysandal",
-    "sellerID": "huyenle"
-  },
-  {
     "itemId": "shorts3",
     "title": "Xanh Cốm Quần Chạy Bộ Nữ Cao Cấp Cạp Cao",
     "price": 189000,
@@ -423,6 +389,20 @@
     "youtube": "liogWPMDXuQ",
     "productPage": "/pickleball/gen4",
     "tags": ["pickleball", "gen4"],
+    "basePriority": 18,
+    "productCategory": "pickleball",
+    "sellerID": "huyenle"
+  },
+    {
+    "itemId": "pickleball-active-1",
+    "title": "Carbon Toray - Pickleball F Sport",
+    "price": 1250000,
+    "originalPrice": 1700000,
+    "contentType": "youtube",
+    "image": "/assets/images/gallery/thumb/active/1.webp",
+    "youtube": "dZcHSJHnGDI",
+    "productPage": "/pickleball/active",
+    "tags": ["pickleball", "active"],
     "basePriority": 18,
     "productCategory": "pickleball",
     "sellerID": "huyenle"
