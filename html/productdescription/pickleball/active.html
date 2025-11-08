@@ -1,47 +1,96 @@
-<div class="core-video">
-  <div class="video-wrapper">
-    <div class="video-frame">
-      <iframe
-        src="https://www.youtube.com/embed/fKpvvNFbkbQ"
-        title="Video lõi vợt F-Sport"
-        frameborder="0"
-        allowfullscreen>
-      </iframe>
+<section class="core-section">
+  <div class="core-container">
+
+    <!-- CỘT TRÁI -->
+    <div class="core-text">
+      <h2>KẾT CẤU LÕI VỢT</h2>
+      <p><strong>ACTIVE:</strong> LÕI 5S TRỢ LỰC MẠNH, CHO TIẾNG BÓNG ĐANH.</p>
+      <p><strong>FASTBLOCK:</strong> DÙNG LÕI GEN4 CẢI TIẾN, THIÊN VỀ KIỂM SOÁT.</p>
     </div>
-    <div class="video-label">🎬 VIDEO MÔ TẢ</div>
+
+    <!-- CỘT PHẢI -->
+    <div class="core-video">
+      <div class="video-wrapper">
+        <div class="video-frame">
+          <iframe
+            src="https://www.youtube.com/embed/fKpvvNFbkbQ"
+            title="Video lõi vợt F-Sport"
+            frameborder="0"
+            allowfullscreen>
+          </iframe>
+        </div>
+        <div class="video-label">🎬 VIDEO MÔ TẢ</div>
+      </div>
+    </div>
+
   </div>
-</div>
+</section>
 
 <style>
+.core-section {
+  background: linear-gradient(135deg, #ffffff 0%, #e8f8ff 100%);
+  padding: 60px 8%;
+  font-family: 'Be Vietnam Pro', sans-serif;
+}
+
+.core-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+/* === Text bên trái === */
+.core-text {
+  flex: 1 1 60%;
+  color: #000;
+}
+.core-text h2 {
+  font-size: 40px;
+  font-weight: 800;
+  margin-bottom: 30px;
+  color: #0b1a2b;
+}
+.core-text p {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 14px;
+  line-height: 1.4;
+}
+.core-text strong {
+  color: #0072ff;
+}
+
+/* === Video bên phải === */
+.core-video {
+  flex: 1 1 30%;
+  text-align: center;
+}
 .video-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
 }
-
 .video-frame {
-  position: relative;
-  display: inline-block;
   border-radius: 16px;
   overflow: hidden;
   box-shadow: 0 8px 24px rgba(0,0,0,0.15);
   background: #000;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
-
 .video-frame iframe {
   width: 220px;
   height: 390px; /* 9:16 */
-  display: block;
   border: none;
+  display: block;
 }
-
 .video-label {
   background: #ffeb3b;
   padding: 6px 16px;
   font-weight: 700;
-  font-size: 16px;
+  font-size: 15px;
   color: #111;
   border-radius: 8px;
   display: inline-flex;
@@ -49,7 +98,18 @@
   gap: 6px;
 }
 
+/* === Mobile === */
 @media (max-width: 768px) {
+  .core-container {
+    flex-direction: column;
+    text-align: center;
+  }
+  .core-text h2 {
+    font-size: 32px;
+  }
+  .core-text p {
+    font-size: 18px;
+  }
   .video-frame iframe {
     width: 180px;
     height: 320px;
