@@ -128,10 +128,19 @@
     "https://www.youtube.com/shorts/jb6egrT-FsU"
   ],
   "active": [
-    "https://www.youtube.com/shorts/fKpvvNFbkbQ",
-    "https://www.youtube.com/shorts/hu0699aGMMA",
-    "https://www.youtube.com/shorts/dZcHSJHnGDI"
-  ],
+  {
+    "url": "https://www.youtube.com/shorts/fKpvvNFbkbQ",
+    "title": "Video Test bóng – Kiểm Tra Độ Nảy"
+  },
+  {
+    "url": "https://www.youtube.com/shorts/hu0699aGMMA",
+    "title": "Giới Thiệu Tại Xưởng"
+  },
+  {
+    "url": "https://www.youtube.com/shorts/dZcHSJHnGDI",
+    "title": "Giới Thiệu 2 Dòng Vợt"
+  }
+],
   "tera": [
     "https://www.youtube.com/shorts/7ncFVliNdYY",
     "https://www.youtube.com/shorts/5csY-HNpJ1k",
