@@ -11,43 +11,57 @@ function extractVideoId(url) {
   return null;
 }
 
-function renderProductVideos(videoUrls) {
+function renderProductVideos(videoList) {
   const slider = document.getElementById("videoSlider");
   if (!slider) {
     console.warn("❌ Không tìm thấy #videoSlider");
     return;
   }
 
-  videoUrls.forEach((url, index) => {
+  slider.innerHTML = ""; // reset trước khi render
+
+  videoList.forEach((itemData, index) => {
+    // ✅ Cho phép đọc cả kiểu string (URL cũ) hoặc object (có title)
+    const { url, title } =
+      typeof itemData === "string"
+        ? { url: itemData, title: "" }
+        : itemData;
+
     const id = extractVideoId(url);
     if (!id) return;
 
     const item = document.createElement("div");
     item.className = "video-item";
 
-    if (index === 0) {
-      // 🔴 Video đầu tiên: autoplay với iframe, không cần overlay thumbnail
-      item.innerHTML = `
-  <div style="position: relative; width: 100%; aspect-ratio: 9/16; border-radius: 8px; overflow: hidden;">
-    <iframe 
-      src="https://www.youtube.com/embed/${id}?autoplay=1&mute=1&playsinline=1&controls=1&loop=1&playlist=${id}"
-      frameborder="0"
-      allow="autoplay; encrypted-media"
-      allowfullscreen
-      playsinline
-      muted
-      style="width: 100%; height: 100%;"
-    ></iframe>
-    <div onclick="openProductVideoPopup('${id}')" 
-         style="position: absolute; inset: 0; cursor: pointer;"></div>
-  </div>
-  <button class="atc-button" onclick="addToCart()">THÊM VÀO GIỎ</button>
-`;
+    // ✅ Nếu có title thì thêm tiêu đề in hoa, căn giữa
+    const titleHTML = title
+      ? `<h3 class="video-title">${title.toUpperCase()}</h3>`
+      : "";
 
+    if (index === 0) {
+      // 🔴 Video đầu tiên: iframe autoplay
+      item.innerHTML = `
+        ${titleHTML}
+        <div style="position: relative; width: 100%; aspect-ratio: 9/16; border-radius: 8px; overflow: hidden;">
+          <iframe 
+            src="https://www.youtube.com/embed/${id}?autoplay=1&mute=1&playsinline=1&controls=1&loop=1&playlist=${id}"
+            frameborder="0"
+            allow="autoplay; encrypted-media"
+            allowfullscreen
+            playsinline
+            muted
+            style="width: 100%; height: 100%;"
+          ></iframe>
+          <div onclick="openProductVideoPopup('${id}')"
+               style="position: absolute; inset: 0; cursor: pointer;"></div>
+        </div>
+        <button class="atc-button" onclick="addToCart()">THÊM VÀO GIỎ</button>
+      `;
     } else {
-      // 🟡 Các video khác: hiển thị thumbnail YouTube, click để mở popup
+      // 🟡 Các video khác: thumbnail
       const thumb = `https://img.youtube.com/vi/${id}/hqdefault.jpg`;
       item.innerHTML = `
+        ${titleHTML}
         <div class="video-thumb" onclick="openProductVideoPopup('${id}')">
           <img src="${thumb}" loading="lazy" alt="Video ${index + 1}"
                style="width: 100%; aspect-ratio: 9/16; object-fit: cover; border-radius: 8px;" />
@@ -59,7 +73,6 @@ function renderProductVideos(videoUrls) {
     slider.appendChild(item);
   });
 }
-
 
 function openProductVideoPopup(id) {
   const popup = document.getElementById("videoPopup");
@@ -88,7 +101,7 @@ function buyNow() {
   addToCart();
 }
 
-// ✅ HÀM TOÀN CỤC KHỞI TẠO VIDEO
+// ✅ KHỞI TẠO TOÀN CỤC
 window.initProductVideo = function () {
   const productPage = window.productPage || "default";
   const jsonUrl = "/json/productvideo.json";
