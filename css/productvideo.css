@@ -170,3 +170,38 @@
   height: 100%;
   border: none;
 }
+/* Căn thẳng hàng các video item */
+.video-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start; /* luôn bắt đầu từ trên */
+}
+
+/* Đảm bảo iframe và thumbnail cùng chiều cao */
+.video-item iframe,
+.video-item .video-thumb {
+  display: block;
+  width: 100%;
+  aspect-ratio: 9 / 16;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* Gỡ mọi khoảng trống không cần thiết */
+.video-item iframe {
+  margin: 0;
+  padding: 0;
+  vertical-align: top;
+}
+
+/* Đảm bảo tiêu đề và video cùng baseline */
+.video-item .video-title {
+  margin-top: 0;
+  margin-bottom: 8px;
+  min-height: 36px; /* giữ khoảng cho các item không có tiêu đề */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
