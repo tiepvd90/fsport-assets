@@ -43,6 +43,7 @@
     });
     document.body.appendChild(pickle);
 
+    /*
     // --- ART ---
     const art = document.createElement("a");
     art.id = "bstArtIcon";
@@ -73,8 +74,9 @@
       lineHeight: "1.1"
     });
     document.body.appendChild(art);
+    */
 
-    console.log("✅ collectionIcon.js: icons rendered");
+    console.log("✅ collectionIcon.js: Pickleball icon rendered");
   }
 
   // Nếu DOM đã sẵn → render ngay
