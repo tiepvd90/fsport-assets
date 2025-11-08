@@ -379,20 +379,6 @@
     "productCategory": "pickleball",
     "sellerID": "huyenle"
   },
-  {
-    "itemId": "pickleball-gen4-2",
-    "title": "Gen4 Pickleball F Sport",
-    "price": 739000,
-    "originalPrice": 1700000,
-    "contentType": "youtube",
-    "image": "https://i.postimg.cc/vZbZfHrc/trangnho.jpg",
-    "youtube": "liogWPMDXuQ",
-    "productPage": "/pickleball/gen4",
-    "tags": ["pickleball", "gen4"],
-    "basePriority": 18,
-    "productCategory": "pickleball",
-    "sellerID": "huyenle"
-  },
     {
     "itemId": "pickleball-active-1",
     "title": "Carbon Toray - Pickleball F Sport",
