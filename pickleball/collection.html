@@ -194,191 +194,48 @@
   </script>
 </head>
 <body>
-  <!-- Cover-->
-  <img src="https://i.postimg.cc/MZcDkGHQ/funsport-cover.jpg" alt="Fun Sport Cover" class="cover-img" /> 
+  <img src="https://i.postimg.cc/MZcDkGHQ/funsport-cover.jpg" alt="Fun Sport Cover" class="cover-img" />
 
-  <div class="page-container">
-    <!-- Túi -->
-    <div class="product-horizontal">
-      <a href="https://fun-sport.co/pickleball/bag">
-        <img src="https://i.postimg.cc/L63ttgmT/Capture.jpg" alt="Túi Pickleball" class="product-image" />
-      </a>
-      <div class="product-info">
-        <div class="product-title">Túi Pickleball Nam Nữ – Vải Dù Chống Thấm</div>
-        <div class="product-meta">
-          <div class="price-wrap">
-            <span class="price-sale">269.000đ</span>
-            <span class="price-original">425.000đ</span>
-          </div>
-          <a href="https://fun-sport.co/pickleball/bag" class="buy-btn">XEM SẢN PHẨM</a>
-        </div>
-      </div>
-    </div>
+  <div class="page-container" id="productList"></div>
 
-    <!-- Vợt Gen4 (vị trí 2) -->
-    <div class="product-horizontal">
-  <a href="/pickleball/gen4">
-    <img src="https://i.postimg.cc/vZbZfHrc/trangnho.jpg" 
-     alt="F-Sport Gen4" 
-     class="product-image product-image-gen4" />
-  </a>
-  <div class="product-info">
-    <div class="product-title">
-      <div class="promo-banner inline-banner">Tặng 1 Túi Pickleball 269K</div>
-      F-Sport Gen4 - Vợt Ép Nóng - Carbon 3 Lớp - dày 16mm
-    </div>
-    <div class="product-meta">
-      <div class="price-wrap">
-        <span class="price-sale">849.000đ</span>
-        <span class="price-original">1.200.000đ</span>
-      </div>
-      <a href="/pickleball/gen4" class="buy-btn">XEM SẢN PHẨM</a>
-    </div>
-  </div>
-</div>
-<!-- Vợt Omega (vị trí 3) -->
-    <div class="product-horizontal">
-  <a href="/pickleball/omega">
-    <img src="/assets/images/gallery/pickleball/omega/8.webp" 
-     alt="F-Sport Gen4" 
-     class="product-image product-image-gen4" />
-  </a>
-  <div class="product-info">
-    <div class="product-title">
-      <div class="promo-banner inline-banner">Tặng 1 Túi Pickleball 269K</div>
-      Vợt Pickleball Jusain Omega-ELS Gen 4 YNXZ-14 (16mm)
-    </div>
-    <div class="product-meta">
-      <div class="price-wrap">
-        <span class="price-sale">2.090.000đ</span>
-        <span class="price-original">3.000.000đ</span>
-      </div>
-      <a href="/pickleball/omega" class="buy-btn">XEM SẢN PHẨM</a>
-    </div>
-  </div>
-</div>
-    <!-- Bóng -->
-    <div class="product-horizontal">
-      <a href="https://fun-sport.co/pickleball/ball">
-        <img src="https://i.postimg.cc/N0mGVKsP/1.webp" alt="Bóng Pickleball" class="product-image" />
-      </a>
-      <div class="product-info">
-        <div class="product-title">Bóng Pickleball Chuẩn Thi Đấu – Dạ Quang</div>
-        <div class="product-meta">
-          <div class="price-wrap">
-            <span class="price-sale">9.000đ</span>
-            <span class="price-original">50.000đ</span>
-          </div>
-          <a href="https://fun-sport.co/pickleball/ball" class="buy-btn">XEM SẢN PHẨM</a>
-        </div>
-      </div>
-    </div>
+  <div id="checkoutPopup-placeholder"></div>
 
-    <!-- Túi bảo vệ -->
-    <div class="product-horizontal">
-      <a href="https://fun-sport.co/pickleball/cover">
-        <img src="https://i.postimg.cc/2SsWKtMJ/1.webp" alt="Túi bảo vệ mặt vợt" class="product-image" />
-      </a>
-      <div class="product-info">
-        <div class="product-title">Túi Bảo Vệ Mặt Vợt</div>
-        <div class="product-meta">
-          <div class="price-wrap">
-            <span class="price-sale">50.000đ</span>
-            <span class="price-original">70.000đ</span>
-          </div>
-          <a href="https://fun-sport.co/pickleball/cover" class="buy-btn">XEM SẢN PHẨM</a>
-        </div>
-      </div>
-    </div>
-
-    <!-- Danh sách vợt khác -->
-    <div id="paddle-list"></div>
-
-    <div id="checkoutPopup-placeholder"></div>
-  </div>
-
-  <!-- Render danh sách vợt khác (trừ Gen4) -->
   <script>
-    const paddles = [
-      {
-        title: "Vợt Phantom Carbon Tràn Viền",
-        image: "/assets/images/thumb/pickleball/phantom/CHUTIM.webp",
-        price: "1.700.000đ",
-        originalPrice: "2.500.000đ",
-        link: "/pickleball/phantom"
-      },
-      {
-        title: "Rồng Đen - 14mm - Đúc nguyên khối- thiên công",
-        image: "https://i.postimg.cc/Y06dCv4z/IMG-8564.jpg",
-        price: "849.000đ",
-        originalPrice: "1.100.000đ",
-        link: "/product/firstpickleball"
-      },
-      {
-        title: "Vợt Đúc Nguyên Khối The Black - 14mm",
-        image: "/assets/images/gallery/pickleball/firstpickleball/5.webp",
-        price: "849.000đ",
-        originalPrice: "1.100.000đ",
-        link: "/product/firstpickleball"
-      },
-      {
-        title: "F-Sport Titan – 16mm- sợi titanium siêu bền",
-        image: "https://i.postimg.cc/Prk55WrK/titan16.jpg",
-        price: "599.000đ",
-        originalPrice: "900.000đ",
-        link: "/product/secpickleball"
-      },
-      {
-        title: "Vợt Pickleball Arena – Lõi Gen 3 Foam, Kiểm Soát Chuẩn Xác, Độ Bền Vượt Trội",
-        image: "https://fun-sport.co/assets/images/thumb/pickleball/arena/xanh.webp",
-        price: "1.450.000đ",
-        originalPrice: "1.800.000đ",
-        link: "/pickleball/arena"
-      },
-      {
-        title: "F-Sport-Flexion - 16mm - Mặt Vợt Nhám",
-        image: "https://i.postimg.cc/KcP0dbKj/5.webp",
-        price: "399.000đ",
-        originalPrice: "500.000đ",
-        link: "/product/secpickleball"
-      },
-      {
-        title: "[Liên Kết Shopee] Vợt Kamito Alpha2",
-        image: "https://down-vn.img.susercontent.com/file/vn-11134207-820l4-mfndhvwpyl1p68.webp",
-        link: "/pickleball/aff/alpha2"
-      },
-      {
-        title: "[Liên Kết Shopee] Facolos Elite X",
-        image: "https://down-vn.img.susercontent.com/file/vn-11134207-7ra0g-m8r6too0xlc4fc.webp",
-        link: "/pickleball/aff/facolos-elite"
-      }
-    ];
+    window.productCategory = "pickleball";
 
-    const container = document.getElementById("paddle-list");
+    async function renderCollection() {
+      const res = await fetch("/json/collection.json");
+      const data = await res.json();
+      const list = document.getElementById("productList");
 
-    paddles.forEach(p => {
-      const html = `
-        <div class="product-horizontal">
-          <a href="${p.link}">
-            <img src="${p.image}" alt="${p.title}" class="product-image" />
-          </a>
-          <div class="product-info">
-            <div class="product-title">${p.title}</div>
-            <div class="product-meta">
-              <div class="price-wrap">
-                <span class="price-sale">${p.price}</span>
-                <span class="price-original">${p.originalPrice}</span>
+      const filtered = data.filter(item => item.category === window.productCategory);
+
+      filtered.forEach(item => {
+        const html = `
+          <div class="product-horizontal">
+            <a href="${item.link}">
+              <img src="${item.image}" alt="${item.title}" class="product-image" />
+            </a>
+            <div class="product-info">
+              <div class="product-title">${item.title}</div>
+              <div class="product-meta">
+                <div class="price-wrap">
+                  <span class="price-sale">${item.price.toLocaleString()}đ</span>
+                  <span class="price-original">${item.originalPrice.toLocaleString()}đ</span>
+                </div>
+                <a href="${item.link}" class="buy-btn">XEM SẢN PHẨM</a>
               </div>
-              <a href="${p.link}" class="buy-btn">XEM SẢN PHẨM</a>
             </div>
           </div>
-        </div>
-      `;
-      container.insertAdjacentHTML("beforeend", html);
-    });
+        `;
+        list.insertAdjacentHTML("beforeend", html);
+      });
+    }
+
+    renderCollection();
   </script>
 
-  <!-- Giữ checkoutpopup -->
+  <!-- Giữ nguyên phần checkoutpopup và tracking -->
   <script>
     async function injectHTML(file, placeholderId) {
       const res = await fetch(file);
@@ -420,7 +277,6 @@
     setupPage();
   </script>
 
-  <!-- Tracking -->
   <script src="https://friendly-kitten-d760ff.netlify.app/js/tracking.js"></script>
   <div id="base-placeholder"></div>
   <script>
@@ -440,7 +296,6 @@
       });
   </script>
   <script src="/js/base.js"></script>
-      <!-- Flash Sale Popup -->
   <script src="/js/voucherpopup.js"></script>
 </body>
 </html>
