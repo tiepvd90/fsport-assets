@@ -394,13 +394,13 @@
     "sellerID": "huyenle"
   },
   {
-    "itemId": "pickleball-active-1",
+    "itemId": "pickleball-active-2",
     "title": "Carbon Toray - Pickleball F Sport",
     "price": 1250000,
     "originalPrice": 1700000,
     "contentType": "image",
     "image": "/assets/images/gallery/pickleball/active/active22.webp",
-    "youtube": "dZcHSJHnGDI",
+    "youtube": "",
     "productPage": "/pickleball/active",
     "tags": ["pickleball", "active"],
     "basePriority": 20,
