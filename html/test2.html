@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>F-Sport Pickleball — Active & Fastblock</title>
+
+  <!-- Font & Style -->
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Be Vietnam Pro', sans-serif;
+      background: #fffef9;
+      color: #1a1a1a;
+      overflow-x: hidden;
+    }
+
+    /* ===== Hero Section ===== */
+    .hero {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 80px;
+      padding: 80px 10%;
+      min-height: 100vh;
+      box-sizing: border-box;
+    }
+
+    .hero-text {
+      flex: 1 1 55%;
+      max-width: 600px;
+    }
+
+    .hero-text h1 {
+      font-size: 54px;
+      font-weight: 800;
+      line-height: 1.15;
+      margin: 0 0 24px;
+      color: #0b1a2b;
+    }
+
+    .hero-text p {
+      font-size: 18px;
+      color: #444;
+      line-height: 1.6;
+      margin-bottom: 30px;
+    }
+
+    .cta-group {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .cta-btn {
+      background: #0072ff;
+      color: #fff;
+      border: none;
+      padding: 14px 30px;
+      border-radius: 50px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 16px;
+      transition: 0.3s;
+    }
+    .cta-btn:hover {
+      background: #005ed1;
+      transform: translateY(-2px);
+    }
+
+    .tag {
+      background: #e7f4ff;
+      color: #0072ff;
+      padding: 6px 16px;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    /* ===== Phone Mockup ===== */
+    .hero-phone {
+      flex: 1 1 40%;
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .phone-frame {
+      width: 280px;
+      height: 560px;
+      border-radius: 40px;
+      background: #000;
+      position: relative;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+      overflow: hidden;
+    }
+
+    .phone-notch {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 120px;
+      height: 28px;
+      background: #000;
+      border-bottom-left-radius: 14px;
+      border-bottom-right-radius: 14px;
+      z-index: 2;
+    }
+
+    .phone-screen iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      border-radius: 40px;
+      display: block;
+    }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 900px) {
+      .hero {
+        flex-direction: column;
+        text-align: center;
+        padding: 60px 6%;
+      }
+      .hero-text {
+        flex: 1 1 100%;
+      }
+      .hero-phone {
+        flex: 1 1 100%;
+      }
+      .hero-text h1 {
+        font-size: 38px;
+      }
+      .hero-text p {
+        font-size: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <section class="hero">
+    <div class="hero-text">
+      <div class="tag">F-SPORT PICKLEBALL</div>
+      <h1>Active & Fastblock<br>— Sức Mạnh Và Kiểm Soát</h1>
+      <p>
+        Dòng vợt thế hệ mới của F-Sport sử dụng Toray Carbon nhám bền,  
+        lõi 5S trợ lực mạnh cho Active và lõi Gen4 cải tiến cho Fastblock —  
+        cân bằng hoàn hảo giữa tốc độ và độ chính xác.
+      </p>
+      <div class="cta-group">
+        <button class="cta-btn">Khám Phá Ngay</button>
+        <span class="tag">Video Minh Họa</span>
+      </div>
+    </div>
+
+    <div class="hero-phone">
+      <div class="phone-frame">
+        <div class="phone-notch"></div>
+        <div class="phone-screen">
+          <iframe 
+            src="https://www.youtube.com/embed/fKpvvNFbkbQ"
+            title="Video mô tả vợt F-Sport"
+            allowfullscreen>
+          </iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>
