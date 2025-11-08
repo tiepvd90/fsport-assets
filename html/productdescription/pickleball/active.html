@@ -1,71 +1,117 @@
-<div class="feature-row">
-  <div class="feature-text">
-    <h2>Lõi Vợt F-Sport — Active & Fastblock</h2>
-    <p><strong>Active</strong> sử dụng lõi <strong>5S trợ lực mạnh</strong>, cho <em>tiếng bóng đanh</em> và phản lực cực tốt.</p>
-    <p><strong>Fastblock</strong> dùng lõi <strong>Gen4 cải tiến</strong> thiên về <em>kiểm soát</em>, mặt phủ thêm vải giúp <em>giữ độ nhám bền hơn</em>.</p>
-  </div>
+<section class="core-section">
+  <div class="core-container">
+    <!-- Cột trái -->
+    <div class="core-text">
+      <h2>KẾT CẤU LÕI VỢT</h2>
+      <p><strong>ACTIVE:</strong> LÕI 5S TRỢ LỰC MẠNH, CHO TIẾNG BÓNG ĐANH.</p>
+      <p><strong>FASTBLOCK:</strong> DÙNG LÕI GEN4 CẢI TIẾN, THIÊN VỀ KIỂM SOÁT.</p>
+    </div>
 
-  <div class="feature-video">
-    <div class="video-title">Video Test Tiếng Bóng</div>
-    <iframe 
-      src="https://www.youtube.com/embed/fKpvvNFbkbQ"
-      title="Video mô tả lõi vợt F-Sport"
-      frameborder="0"
-      allowfullscreen>
-    </iframe>
+    <!-- Cột phải -->
+    <div class="core-video">
+      <div class="video-label">🎬 VIDEO MÔ TẢ</div>
+      <div class="video-frame">
+        <iframe
+          src="https://www.youtube.com/embed/fKpvvNFbkbQ"
+          title="Video lõi vợt F-Sport"
+          frameborder="0"
+          allowfullscreen>
+        </iframe>
+      </div>
+    </div>
   </div>
-</div>
+</section>
 
 <style>
-.feature-row {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 24px;
-  margin: 40px 0;
+.core-section {
+  background: linear-gradient(135deg, #ffffff 0%, #e8f8ff 100%);
+  padding: 60px 8%;
   font-family: 'Be Vietnam Pro', sans-serif;
 }
 
-.feature-text {
-  flex: 0 0 65%;
-  font-size: 18px;
-  line-height: 1.6;
-  color: #222;
+.core-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+  flex-wrap: wrap;
 }
 
-.feature-text h2 {
-  font-size: 22px;
-  font-weight: 700;
-  margin-bottom: 14px;
+/* === Text bên trái === */
+.core-text {
+  flex: 1 1 60%;
+  color: #000;
 }
 
-.feature-video {
-  flex: 0 0 30%;
-  text-align: center;
+.core-text h2 {
+  font-size: 46px;
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 30px;
+  color: #0b1a2b;
+  letter-spacing: -1px;
 }
 
-.video-title {
+.core-text p {
+  font-size: 24px;
   font-weight: 600;
-  font-size: 16px;
-  margin-bottom: 10px;
+  line-height: 1.4;
+  margin-bottom: 16px;
+}
+
+.core-text strong {
   color: #0072ff;
 }
 
-.feature-video iframe {
-  aspect-ratio: 9/16;
-  width: 100%;
-  max-width: 240px;
-  border-radius: 10px;
-  box-shadow: 0 4px 14px rgba(0,0,0,0.15);
+/* === Video bên phải === */
+.core-video {
+  flex: 1 1 30%;
+  text-align: center;
 }
 
+.video-label {
+  background: #ffeb3b;
+  display: inline-block;
+  padding: 6px 16px;
+  font-weight: 700;
+  font-size: 16px;
+  color: #111;
+  border-radius: 8px;
+  margin-bottom: 14px;
+}
+
+.video-frame {
+  position: relative;
+  display: inline-block;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  background: #000;
+}
+
+.video-frame iframe {
+  width: 220px;
+  height: 390px; /* Giữ đúng tỷ lệ video Shorts */
+  display: block;
+  border: none;
+}
+
+/* === Mobile responsive === */
 @media (max-width: 768px) {
-  .feature-row {
+  .core-container {
     flex-direction: column;
-  }
-  .feature-text, .feature-video {
-    flex: 1 1 100%;
+    align-items: center;
     text-align: center;
+  }
+  .core-text h2 {
+    font-size: 34px;
+  }
+  .core-text p {
+    font-size: 18px;
+  }
+  .video-frame iframe {
+    width: 180px;
+    height: 320px;
   }
 }
 </style>
