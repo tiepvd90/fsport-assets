@@ -26,7 +26,7 @@
       position: "fixed",
       top: "12px",
       left: "12px",
-      zIndex: "999999",
+      zIndex: "99999",
       background: "rgba(255,255,255,0.85)",
       borderRadius: "8px",
       padding: "4px 6px",
