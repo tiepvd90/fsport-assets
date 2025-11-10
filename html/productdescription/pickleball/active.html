@@ -1,12 +1,16 @@
 <!-- ✅ MÔ TẢ SẢN PHẨM -->
 <div class="desc-container" id="descContainer">
-  <!-- Ảnh đầu tiên hiển thị ngay -->
-  <img
-    src="/assets/images/gallery/pickleball/active/description/SALE11-11.webp"
-    alt="Vợt Pickleball F-Sport Active & Fastblock"
-    class="desc-img"
-    style="width:100%;border-radius:8px;margin-bottom:16px;"
-  >
+  <img src="/assets/images/gallery/pickleball/active/description/SALE11-11.webp" alt="F-Sport Active" class="desc-img">
+  <img src="/assets/images/gallery/pickleball/active/description/13.webp" alt="F-Sport Active" class="desc-img">
+  <img src="/assets/images/gallery/pickleball/active/description/14.webp" alt="F-Sport Active" class="desc-img">
+  <img src="/assets/images/gallery/pickleball/active/des2.webp" alt="F-Sport Active" class="desc-img">
+  <img src="/assets/images/gallery/pickleball/active/description/7.webp" alt="F-Sport Active" class="desc-img">
+  <img src="/assets/images/gallery/pickleball/active/description/2.webp" alt="F-Sport Active" class="desc-img">
+  <img src="/assets/images/gallery/pickleball/active/active22.webp" alt="F-Sport Active" class="desc-img">
+  <img src="/assets/images/gallery/pickleball/active/description/3.webp" alt="F-Sport Active" class="desc-img">
+  <img src="/assets/images/gallery/pickleball/active/description/5.webp" alt="F-Sport Active" class="desc-img">
+  <img src="/assets/images/gallery/pickleball/active/description/6.webp" alt="F-Sport Active" class="desc-img">
+  <img src="/assets/images/gallery/pickleball/active/description/8.webp" alt="F-Sport Active" class="desc-img">
 </div>
 
 <h2 class="desc-title">Vợt Pickleball F-Sport — Active & Fastblock (16mm)</h2>
@@ -48,58 +52,3 @@
 </button>
 
 <script src="/js/productdescription.js"></script>
-
-<script>
-  // ===== DANH SÁCH ẢNH (trừ ảnh đầu tiên đã hiển thị sẵn) =====
-  const imageList = [
-    "/assets/images/gallery/pickleball/active/description/13.webp",
-    "/assets/images/gallery/pickleball/active/description/14.webp",
-    "/assets/images/gallery/pickleball/active/des2.webp",
-    "/assets/images/gallery/pickleball/active/description/7.webp",
-    "/assets/images/gallery/pickleball/active/description/2.webp",
-    "/assets/images/gallery/pickleball/active/active22.webp",
-    "/assets/images/gallery/pickleball/active/description/3.webp",
-    "/assets/images/gallery/pickleball/active/description/5.webp",
-    "/assets/images/gallery/pickleball/active/description/6.webp",
-    "/assets/images/gallery/pickleball/active/description/8.webp"
-  ];
-
-  const container = document.getElementById("descContainer");
-
-  // ===== HÀM HIỂN THỊ ẢNH DẦN =====
-  function showImagesGradually(images, delay = 500) {
-    images.forEach((src, index) => {
-      setTimeout(() => {
-        const img = document.createElement("img");
-        img.src = src;
-        img.className = "desc-img";
-        img.loading = "lazy";
-        img.style.cssText = `
-          width: 100%;
-          border-radius: 8px;
-          margin-bottom: 16px;
-          opacity: 0;
-          transform: translateY(10px);
-          transition: opacity 0.8s ease, transform 0.8s ease;
-        `;
-        container.appendChild(img);
-        requestAnimationFrame(() => {
-          img.style.opacity = 1;
-          img.style.transform = "translateY(0)";
-        });
-      }, delay * index);
-    });
-  }
-
-  // ===== LAZY LOAD KHI CUỘN TỚI MÔ TẢ =====
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        showImagesGradually(imageList, 600);
-        observer.disconnect();
-      }
-    });
-  }, { threshold: 0.2 });
-
-  observer.observe(container);
-</script>
