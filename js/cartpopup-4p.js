@@ -298,6 +298,38 @@
         window.voucherByProduct[data.id] = window.__voucherWaiting.amount;
       }
     }
+// ✅ Kiểm tra xem sản phẩm hiện tại có nằm trong danh sách giảm giá không
+function applyVoucherFromSettings(data) {
+  // Nếu chưa tải settings.json thì fetch một lần
+  if (!window.voucherConfig) {
+    fetch("/json/settings.json")
+      .then(res => res.json())
+      .then(cfg => {
+        window.voucherConfig = cfg.vouchers || [];
+        const match = window.voucherConfig.find(v => v.id === data.id);
+        if (match) {
+          window.voucherByProduct = window.voucherByProduct || {};
+          window.voucherByProduct[data.id] = match.amount;
+        }
+        // Sau khi tải xong, chỉ render lại nếu chưa từng áp voucher
+if (!window._voucherAppliedOnce) {
+  window._voucherAppliedOnce = true;
+  selectVariant(data);
+}
+      })
+      .catch(err => console.warn("⚠️ Không thể tải settings.json:", err));
+  } else {
+    // Nếu đã có dữ liệu settings rồi thì check trực tiếp
+    const match = window.voucherConfig.find(v => v.id === data.id);
+    if (match) {
+      window.voucherByProduct = window.voucherByProduct || {};
+      window.voucherByProduct[data.id] = match.amount;
+    }
+  }
+}
+
+// --- Gọi hàm ngay tại vị trí render variant ---
+applyVoucherFromSettings(data);
 
     window.selectedVariant = data;
 
