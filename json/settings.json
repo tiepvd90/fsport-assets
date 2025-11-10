@@ -1,4 +1,10 @@
 {
-  "tel": "0384735980",
-  "fb-page": "https://m.me/fsportsvn"
+  "vouchers": [
+    {
+      "id": "pickleball-active",
+      "category": "pickleball",
+      "amount": 110000,
+      "note": "Voucher 11/11 – Giảm 110k cho F-Sport Active"
+    }
+  ]
 }
