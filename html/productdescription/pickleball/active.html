@@ -1,5 +1,12 @@
+<!-- ✅ MÔ TẢ SẢN PHẨM -->
 <div class="desc-container" id="descContainer">
-  <!-- Ảnh sẽ được chèn tự động khi người dùng cuộn tới -->
+  <!-- Ảnh đầu tiên hiển thị ngay -->
+  <img
+    src="/assets/images/gallery/pickleball/active/description/SALE11-11.webp"
+    alt="Vợt Pickleball F-Sport Active & Fastblock"
+    class="desc-img"
+    style="width:100%;border-radius:8px;margin-bottom:16px;"
+  >
 </div>
 
 <h2 class="desc-title">Vợt Pickleball F-Sport — Active & Fastblock (16mm)</h2>
@@ -43,9 +50,8 @@
 <script src="/js/productdescription.js"></script>
 
 <script>
-  // ===== DANH SÁCH ẢNH =====
+  // ===== DANH SÁCH ẢNH (trừ ảnh đầu tiên đã hiển thị sẵn) =====
   const imageList = [
-    "/assets/images/gallery/pickleball/active/description/SALE11-11.webp",
     "/assets/images/gallery/pickleball/active/description/13.webp",
     "/assets/images/gallery/pickleball/active/description/14.webp",
     "/assets/images/gallery/pickleball/active/des2.webp",
@@ -67,7 +73,7 @@
         const img = document.createElement("img");
         img.src = src;
         img.className = "desc-img";
-        img.loading = "lazy"; // native lazy load
+        img.loading = "lazy";
         img.style.cssText = `
           width: 100%;
           border-radius: 8px;
@@ -85,7 +91,7 @@
     });
   }
 
-  // ===== LAZY LOAD BẰNG INTERSECTION OBSERVER =====
+  // ===== LAZY LOAD KHI CUỘN TỚI MÔ TẢ =====
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
@@ -93,7 +99,7 @@
         observer.disconnect();
       }
     });
-  });
+  }, { threshold: 0.2 });
 
   observer.observe(container);
 </script>
