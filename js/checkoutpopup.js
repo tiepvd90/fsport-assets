@@ -236,12 +236,25 @@ function saveCart() {
 // ------------------------
 // 🔹 PHÍ VẬN CHUYỂN
 // ------------------------
-
 function loadShippingFee() {
   fetch("https://friendly-kitten-d760ff.netlify.app/json/shippingfee.json")
     .then(res => res.json())
     .then(data => {
-      const fees = window.cart.map(i => data[i.loai] || 0);
+      const fees = window.cart.map(i => {
+        // Tầng 1: ưu tiên lấy theo ID (fix cứng)
+        if (i.id && data.byId && data.byId.hasOwnProperty(i.id)) {
+          return data.byId[i.id];
+        }
+
+        // Tầng 2: nếu không có ID, lấy theo category
+        if (i.category && data.byCategory && data.byCategory.hasOwnProperty(i.category)) {
+          return data.byCategory[i.category];
+        }
+
+        // Nếu không có cả hai
+        return 0;
+      });
+
       const maxFee = Math.max(...fees, 0);
       shippingFeeOriginal = maxFee;
       shippingFee = Math.round(maxFee * 0.4); // Giảm 60%
