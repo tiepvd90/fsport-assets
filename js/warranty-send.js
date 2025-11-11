@@ -14,6 +14,7 @@
 
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
+
       const phone = form.phone.value.trim();
       const email = form.email.value.trim();
 
@@ -22,14 +23,15 @@
         return;
       }
 
+      // ✅ Lấy sản phẩm từ biến toàn cục
+      const authProduct = window.authProduct || "Không xác định";
+
       const payload = {
         type: "warranty",
-        product: "Vợt Pickleball F-Sport Active",
-        name: "Khách hàng",
+        authProduct, // chỉ cần 1 trường duy nhất
         phone,
         email,
         date: new Date().toLocaleString("vi-VN"),
-        source: "Xác thực chính hãng - fun-sport.co",
       };
 
       try {
@@ -42,9 +44,7 @@
         if (res.ok) {
           document.getElementById(SUCCESS_POPUP_ID).style.display = "flex";
           form.reset();
-
-          // ✅ Phát sự kiện để module khác (upsell) biết form đã gửi thành công
-          document.dispatchEvent(new CustomEvent("warrantySuccess"));
+          document.dispatchEvent(new CustomEvent("warrantySuccess", { detail: payload }));
         } else {
           throw new Error("Webhook lỗi");
         }
