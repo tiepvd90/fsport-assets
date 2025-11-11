@@ -13,6 +13,23 @@ function updateCartItemCount() {
   const totalQty = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
   badge.textContent = totalQty;
 }
+// ✅ Tự động cập nhật số lượng trên icon giỏ hàng mỗi khi giỏ thay đổi
+(function autoUpdateCartBadge() {
+  const _setItem = localStorage.setItem;
+  localStorage.setItem = function (key, value) {
+    const result = _setItem.apply(this, arguments);
+    if (key === "cart") {
+      try {
+        const data = JSON.parse(value || "[]");
+        window.cart = Array.isArray(data) ? data : [];
+        updateCartItemCount();
+      } catch (e) {
+        console.warn("Không thể cập nhật cart badge:", e);
+      }
+    }
+    return result;
+  };
+})();
 
 function loadCart() {
   try {
