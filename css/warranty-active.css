@@ -1,0 +1,170 @@
+html, body, input, textarea, select {
+  -webkit-text-size-adjust: 100%;
+  touch-action: pan-y;
+  overscroll-behavior-y: contain;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #222;
+  box-sizing: border-box;
+}
+*, *::before, *::after {
+  box-sizing: inherit;
+}
+
+body {
+  margin: 0;
+  background: #fff;
+  padding: 0 16px 60px;
+  max-width: 720px;
+  margin-inline: auto;
+  overflow-x: hidden;
+}
+
+img {
+  width: 100%;
+  border-radius: 8px;
+  display: block;
+  margin-bottom: 16px;
+}
+
+h2 {
+  text-align: center;
+  margin: 32px 0 16px;
+  font-size: 20px;
+}
+h3 {
+  font-size: 17px;
+  margin: 28px 0 10px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 18px;
+}
+td {
+  border: 1px solid #000;
+  padding: 10px;
+  font-size: 14px;
+  word-break: break-word;
+}
+td:first-child {
+  background: #f8f8f8;
+  font-weight: 600;
+  width: 40%;
+}
+
+input {
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 10px;
+  margin-bottom: 10px;
+  font-size: 16px !important;
+}
+input:focus {
+  outline: none;
+  border-color: #000;
+}
+
+button {
+  background: #000;
+  color: #fff;
+  font-weight: 600;
+  border: none;
+  border-radius: 6px;
+  padding: 12px 0;
+  width: 100%;
+  cursor: pointer;
+  transition: opacity .25s;
+  font-size: 15px;
+}
+button:hover {
+  opacity: .85;
+}
+
+.note {
+  font-size: 14px;
+  margin-top: 16px;
+  color: #333;
+}
+.note strong {
+  color: #000;
+}
+
+/* Overlay xác nhận */
+.verify-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(255,255,255,0.6);
+  backdrop-filter: blur(6px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  animation: fadeIn .4s ease forwards;
+}
+@keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+
+.verify-card {
+  background: #fff;
+  border-radius: 14px;
+  padding: 28px 24px;
+  max-width: 340px;
+  width: 92%;
+  text-align: center;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.1);
+}
+
+.verify-loading {
+  width: 70px;
+  height: 70px;
+  border: 4px solid #4caf50;
+  border-top-color: transparent;
+  border-radius: 50%;
+  margin: 0 auto 16px;
+  animation: spin 1s linear infinite;
+}
+@keyframes spin {
+  to {transform: rotate(360deg);}
+}
+
+.verify-icon {
+  width: 70px;
+  height: 70px;
+  background: linear-gradient(135deg, #4CAF50, #2E7D32);
+  border-radius: 50%;
+  color: #fff;
+  font-size: 36px;
+  line-height: 70px;
+  display: none;
+  margin: 0 auto 16px;
+}
+
+.verify-message {
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+.verify-sub {
+  font-size: 13px;
+  color: #666;
+  margin-bottom: 20px;
+}
+.verify-btn {
+  background: #000;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 24px;
+  font-weight: 600;
+  cursor: pointer;
+  display: none;
+  transition: .25s;
+}
+.verify-btn:hover {
+  opacity: .85;
+}
