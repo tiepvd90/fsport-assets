@@ -5,6 +5,7 @@
   <meta name="viewport"
     content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>Xác thực chính hãng F-Sport – Vợt Pickleball Active</title>
+
   <style>
     html, body, input, textarea, select {
       -webkit-text-size-adjust: 100%;
@@ -96,7 +97,7 @@
       margin: 0 auto 16px;
       animation: spin 1s linear infinite;
     }
-    @keyframes spin {to{transform:rotate(360deg);}}
+    @keyframes spin {to{transform:rotate(360deg);} }
     .verify-icon {
       width:70px;height:70px;background:linear-gradient(135deg,#4CAF50,#2E7D32);
       border-radius:50%;color:#fff;font-size:36px;line-height:70px;
@@ -156,7 +157,7 @@
       <div class="verify-icon" id="checkIcon">✓</div>
       <div class="verify-message" id="verifyMessage">Đang xác nhận chính hãng F-SPORT...</div>
       <div class="verify-sub" id="verifySub"></div>
-      <button class="verify-btn" id="continueBtn" onclick="showProduct()">TIẾP TỤC</button>
+      <button class="verify-btn" id="continueBtn">TIẾP TỤC</button>
     </div>
   </div>
 
@@ -212,32 +213,35 @@
         </p>
         <img src="/assets/images/gallery/pickleball/pickleball-ball/2.webp" alt="Bóng Pickleball F-Sport Pro">
         <div class="combo-grid">
-          <button class="combo-btn" onclick="selectCombo(this, '3 quả',87,78.3)">
+          <button class="combo-btn">
             <span class="combo-label">Mua 3 quả</span><span class="old">87 000đ</span><span class="new">78 300đ</span>
           </button>
-          <button class="combo-btn" onclick="selectCombo(this, '6 quả',156,140.4)">
+          <button class="combo-btn">
             <span class="combo-label">Mua 6 quả</span><span class="old">156 000đ</span><span class="new">140 400đ</span>
           </button>
-          <button class="combo-btn" onclick="selectCombo(this, '9 quả',210,189)">
+          <button class="combo-btn">
             <span class="combo-label">Mua 9 quả</span><span class="old">210 000đ</span><span class="new">189 000đ</span>
           </button>
-          <button class="combo-btn" onclick="selectCombo(this, '12 quả',252,226.8)">
+          <button class="combo-btn">
             <span class="combo-label">Mua 12 quả</span><span class="old">252 000đ</span><span class="new">226 800đ</span>
           </button>
         </div>
         <div class="action-row">
           <button class="confirm-btn" id="confirmUpsell" disabled>XÁC NHẬN</button>
-          <button class="close-btn" onclick="closeSuccess()">ĐÓNG</button>
+          <button class="close-btn">ĐÓNG</button>
         </div>
       </div>
     </div>
   </div>
 
+  <!-- Script khởi tạo -->
   <script>
+    // Chặn zoom và gesture trên iOS
     ['gesturestart','gesturechange','gestureend','dblclick'].forEach(evt=>{
       document.addEventListener(evt,e=>e.preventDefault(),{passive:false});
     });
 
+    // Hiệu ứng mở đầu: Xác thực chính hãng
     window.addEventListener("DOMContentLoaded",()=>{
       setTimeout(()=>{
         document.getElementById("loadingIcon").style.display="none";
@@ -248,66 +252,18 @@
       },1000);
     });
 
-    function showProduct(){
-      document.getElementById("verifyPopup").style.display="none";
-      document.getElementById("productSection").style.display="block";
-      window.scrollTo({top:0,behavior:"smooth"});
-    }
-
-    document.getElementById("warrantyForm").addEventListener("submit",async e=>{
-      e.preventDefault();
-      const phone=document.getElementById("phone").value.trim();
-      const email=document.getElementById("email").value.trim();
-      const payload={
-        type:"warranty",
-        product:"Vợt Pickleball F-Sport Active",
-        name:"Khách hàng",
-        phone,email,
-        date:new Date().toLocaleString("vi-VN"),
-        source:"Xác thực chính hãng - fun-sport.co"
-      };
-      try{
-        await fetch("https://hook.eu2.make.com/dxl7ngaypediyxwb8g7jir704356vhjt",{
-          method:"POST",headers:{"Content-Type":"application/json"},
-          body:JSON.stringify(payload)
-        });
-        document.getElementById("successPopup").style.display="flex";
-        e.target.reset();
-      }catch(err){alert("Không thể gửi thông tin, vui lòng thử lại sau.");}
+    // Mở nội dung chính
+    document.addEventListener("click",(e)=>{
+      if(e.target.id==="continueBtn"){
+        document.getElementById("verifyPopup").style.display="none";
+        document.getElementById("productSection").style.display="block";
+        window.scrollTo({top:0,behavior:"smooth"});
+      }
     });
-
-    let selectedCombo=null;
-    function selectCombo(button,label,oldPrice,newPrice){
-      document.querySelectorAll(".combo-btn").forEach(btn=>btn.classList.remove("active"));
-      button.classList.add("active");
-      selectedCombo={label,oldPrice,newPrice};
-      const confirmBtn=document.getElementById("confirmUpsell");
-      confirmBtn.disabled=false;
-      confirmBtn.classList.add("enabled");
-    }
-
-    document.getElementById("confirmUpsell").addEventListener("click",()=>{
-      if(!selectedCombo)return alert("Vui lòng chọn combo trước.");
-      const payload={
-        type:"upsell",
-        product:"Bóng F-Sport Pro",
-        combo:selectedCombo.label,
-        original_price:selectedCombo.oldPrice,
-        price:selectedCombo.newPrice,
-        date:new Date().toLocaleString("vi-VN"),
-        source:"Kích hoạt bảo hành - upsell fun-sport.co"
-      };
-      fetch("https://hook.eu2.make.com/dxl7ngaypediyxwb8g7jir704356vhjt",{
-        method:"POST",headers:{"Content-Type":"application/json"},
-        body:JSON.stringify(payload)
-      })
-      .then(()=>{alert("✅ Cảm ơn anh/chị! Ưu đãi đã được ghi nhận.");closeSuccess();})
-      .catch(()=>alert("Lỗi mạng, vui lòng thử lại sau."));
-    });
-
-    function closeSuccess(){
-      document.getElementById("successPopup").style.display="none";
-    }
   </script>
+
+  <!-- Gọi hai module JS -->
+  <script src="/js/warranty-send.js"></script>
+  <script src="/js/upsell-module.js"></script>
 </body>
 </html>
