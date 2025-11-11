@@ -47,29 +47,18 @@
     <!-- Script xử lý slideshow + zoom -->
     <script src="/js/slideshow-2p.js"></script>
 
-    <!-- ✅ Flash Banner -->
-<div id="flashbanner-placeholder"></div>
-<script>
-  fetch("/html/flashsalebanner/countdown.html")
-    .then(res => res.text())
-    .then(html => {
-      // inject cả HTML + JS bên trong file phantom.html
-      document.getElementById("flashbanner-placeholder").innerHTML = html;
-
-      // tìm và chạy các <script> trong nội dung vừa inject
-      const tempDiv = document.createElement("div");
-      tempDiv.innerHTML = html;
-      tempDiv.querySelectorAll("script").forEach(oldScript => {
-        const newScript = document.createElement("script");
-        if (oldScript.src) {
-          newScript.src = oldScript.src; // nếu script có src thì load
-        } else {
-          newScript.textContent = oldScript.textContent; // nếu script inline thì chạy luôn
-        }
-        document.body.appendChild(newScript);
-      });
-    });
-</script>
+     <!-- ✅ Flash Banner -->
+    <div id="flashbanner-placeholder"></div>
+    <script>
+      fetch("/html/flashsalebanner/template01.html")
+        .then(res => res.text())
+        .then(html => {
+          document.getElementById("flashbanner-placeholder").innerHTML = html;
+          const s = document.createElement("script");
+          s.src = "/js/flashsalebanner/template01.js";
+          document.body.appendChild(s);
+        });
+    </script>
 
     <!-- ✅ Tiêu đề + Shipping -->
     <div class="product-hero">
