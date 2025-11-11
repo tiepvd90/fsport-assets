@@ -1,9 +1,14 @@
 {
-  "chair": 35000,
-  "tshirt": 40000,
-  "sup": 80000,
-  "pickleball": 25000,
-  "giadung": 25000,
-  "art": 40000,
-  "ysandal": 25000
+  "byId": {
+    "pickleball-active": 0
+  },
+  "byCategory": {
+    "chair": 35000,
+    "tshirt": 40000,
+    "sup": 80000,
+    "pickleball": 25000,
+    "giadung": 25000,
+    "art": 40000,
+    "ysandal": 25000
+  }
 }
