@@ -78,9 +78,26 @@
 <div class="product-hero" style="margin-top: 12px;">
   <div id="video-placeholder">Đang tải video...</div>
 </div>
-<!-- ✅ Gọi JS tự động render video + popup -->
-<script src="/js/productvideo-2.js"></script>
+
+<script>
+  // ✅ Gọi file JS mới (tự tạo HTML + tự load CSS + tự khởi tạo)
+  fetch("/js/productvideo-2.js")
+    .then(res => {
+      if (!res.ok) throw new Error("Không tìm thấy productvideo-2.js");
+      return res.text();
+    })
+    .then(jsCode => {
+      // ✅ Tạo thẻ <script> để thực thi code
+      const script = document.createElement("script");
+      script.type = "text/javascript";
+      script.text = jsCode;
+      document.body.appendChild(script);
+      console.log("✅ Đã load JS productvideo-2 (2 hàng)");
+    })
+    .catch(err => console.warn("❌ Lỗi khi tải productvideo-2.js:", err));
+</script>
 <!-- 🔚 Hết KHỐI 3 -->
+
     <!-- ✅ Mô tả sản phẩm -->
     <div class="product-hero" style="margin-top: 12px;">
       <div id="productdescription-placeholder" data-src="/html/productdescription/pickleball/active.html"></div>
