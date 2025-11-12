@@ -74,29 +74,36 @@
         </div>
       </div>
     </div>
-<!-- ✅ KHỐI 3: Video sản phẩm (bản 2 hàng) -->
+<!-- ✅ KHỐI 3: Video sản phẩm -->
 <div class="product-hero" style="margin-top: 12px;">
   <div id="video-placeholder">Đang tải video...</div>
 </div>
 
 <script>
-  // ✅ Gọi file JS mới (tự tạo HTML + tự load CSS + tự khởi tạo)
-  fetch("/js/productvideo-2.js")
-    .then(res => {
-      if (!res.ok) throw new Error("Không tìm thấy productvideo-2.js");
-      return res.text();
-    })
-    .then(jsCode => {
-      // ✅ Tạo thẻ <script> để thực thi code
+  // ✅ Gọi file HTML video (gồm khung & ID #videoSlider)
+  fetch("/html/productvideo.html")
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById("video-placeholder").innerHTML = html;
+
+      // ✅ Gọi JS sau khi HTML có mặt
       const script = document.createElement("script");
-      script.type = "text/javascript";
-      script.text = jsCode;
+      script.src = "/js/productvideo.js";
+      script.onload = () => {
+        console.log("✅ Đã load JS, gọi init...");
+        if (typeof initProductVideo === "function") {
+          initProductVideo();
+        } else {
+          console.warn("❌ Không tìm thấy initProductVideo()");
+        }
+      };
       document.body.appendChild(script);
-      console.log("✅ Đã load JS productvideo-2 (2 hàng)");
     })
-    .catch(err => console.warn("❌ Lỗi khi tải productvideo-2.js:", err));
+    .catch(err => console.warn("❌ Lỗi khi chèn productvideo.html:", err));
 </script>
 <!-- 🔚 Hết KHỐI 3 -->
+
+
 
     <!-- ✅ Mô tả sản phẩm -->
     <div class="product-hero" style="margin-top: 12px;">
