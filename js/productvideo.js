@@ -23,9 +23,7 @@ function renderProductVideos(videoList) {
   videoList.forEach((itemData, index) => {
     // ✅ Cho phép đọc cả kiểu string (URL cũ) hoặc object (có title)
     const { url, title } =
-      typeof itemData === "string"
-        ? { url: itemData, title: "" }
-        : itemData;
+      typeof itemData === "string" ? { url: itemData, title: "" } : itemData;
 
     const id = extractVideoId(url);
     if (!id) return;
@@ -43,7 +41,7 @@ function renderProductVideos(videoList) {
       item.innerHTML = `
         ${titleHTML}
         <div style="position: relative; width: 100%; aspect-ratio: 9/16; border-radius: 8px; overflow: hidden;">
-          <iframe 
+          <iframe
             src="https://www.youtube.com/embed/${id}?autoplay=1&mute=1&playsinline=1&controls=1&loop=1&playlist=${id}"
             frameborder="0"
             allow="autoplay; encrypted-media"
@@ -52,10 +50,8 @@ function renderProductVideos(videoList) {
             muted
             style="width: 100%; height: 100%;"
           ></iframe>
-          <div onclick="openProductVideoPopup('${id}')"
-               style="position: absolute; inset: 0; cursor: pointer;"></div>
+          <div onclick="openProductVideoPopup('${id}')" style="position: absolute; inset: 0; cursor: pointer;"></div>
         </div>
-        <button class="atc-button" onclick="addToCart()">THÊM VÀO GIỎ</button>
       `;
     } else {
       // 🟡 Các video khác: thumbnail
@@ -63,10 +59,13 @@ function renderProductVideos(videoList) {
       item.innerHTML = `
         ${titleHTML}
         <div class="video-thumb" onclick="openProductVideoPopup('${id}')">
-          <img src="${thumb}" loading="lazy" alt="Video ${index + 1}"
-               style="width: 100%; aspect-ratio: 9/16; object-fit: cover; border-radius: 8px;" />
+          <img
+            src="${thumb}"
+            loading="lazy"
+            alt="Video ${index + 1}"
+            style="width: 100%; aspect-ratio: 9/16; object-fit: cover; border-radius: 8px;"
+          />
         </div>
-        <button class="atc-button" onclick="addToCart()">THÊM VÀO GIỎ</button>
       `;
     }
 
@@ -105,12 +104,11 @@ function buyNow() {
 window.initProductVideo = function () {
   const productPage = window.productPage || "default";
   const jsonUrl = "/json/productvideo.json";
-
   console.log("📦 Bắt đầu tải video cho:", productPage);
 
   fetch(jsonUrl)
-    .then(res => res.json())
-    .then(data => {
+    .then((res) => res.json())
+    .then((data) => {
       const productData = data[productPage];
       if (!Array.isArray(productData)) {
         console.warn("⚠️ Không có video cho:", productPage);
@@ -118,7 +116,7 @@ window.initProductVideo = function () {
       }
       renderProductVideos(productData);
     })
-    .catch(err => {
+    .catch((err) => {
       console.error("❌ Lỗi khi tải productvideo.json:", err);
     });
 };
