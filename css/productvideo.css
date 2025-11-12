@@ -17,15 +17,16 @@
 .video-item {
   width: calc((100vw - 56px) / 3);
   flex-shrink: 0;
-  border-radius: 12px;
   background: #fff;
   display: flex;
   flex-direction: column;
   align-items: center;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  overflow: hidden;
-  padding: 0px;
+  justify-content: flex-start;
   text-align: center;
+  border: 1px solid #ccc; /* ✅ Viền xám nhỏ */
+  border-radius: 0;       /* ✅ Không bo góc */
+  box-shadow: none;       /* ✅ Bỏ đổ bóng */
+  padding: 6px;
 }
 
 @media (min-width: 768px) {
@@ -46,6 +47,10 @@
   padding: 0 4px;
   white-space: normal;
   word-break: break-word;
+  min-height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* ==== KHUNG VIDEO ==== */
@@ -53,9 +58,10 @@
   position: relative;
   aspect-ratio: 9 / 16;
   background: #eee;
-  border-radius: 8px;
+  border-radius: 0;
   cursor: pointer;
   overflow: hidden;
+  width: 100%;
 }
 
 .video-thumb img {
@@ -108,7 +114,7 @@
 #videoPopup {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.85);
+  background: rgba(0, 0, 0, 0.85);
   display: none;
   align-items: center;
   justify-content: center;
@@ -170,38 +176,3 @@
   height: 100%;
   border: none;
 }
-/* Căn thẳng hàng các video item */
-.video-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start; /* luôn bắt đầu từ trên */
-}
-
-/* Đảm bảo iframe và thumbnail cùng chiều cao */
-.video-item iframe,
-.video-item .video-thumb {
-  display: block;
-  width: 100%;
-  aspect-ratio: 9 / 16;
-  border-radius: 8px;
-  overflow: hidden;
-}
-
-/* Gỡ mọi khoảng trống không cần thiết */
-.video-item iframe {
-  margin: 0;
-  padding: 0;
-  vertical-align: top;
-}
-
-/* Đảm bảo tiêu đề và video cùng baseline */
-.video-item .video-title {
-  margin-top: 0;
-  margin-bottom: 8px;
-  min-height: 36px; /* giữ khoảng cho các item không có tiêu đề */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
