@@ -1,4 +1,4 @@
-<!-- ✅ FREESHIP Banner – Orange Gradient + Sharp Glint -->
+<!-- ✅ FREESHIP Banner – Red to Orange Gradient + Sharp Glint -->
 <div class="freeship-banner">
   <div class="freeship-inner">
     <span class="freeship-text">SẢN PHẨM ĐANG ĐƯỢC <b>FREESHIP</b></span>
@@ -11,10 +11,10 @@
     width:100%;
     height:48px;
     overflow:hidden;
-    /* Nền cam gradient sắc độ mạnh */
-    background: linear-gradient(135deg,#FF7A00 0%, #FF8F1F 35%, #FF6A00 70%, #FF9D2E 100%);
-    border-radius:10px;
-    box-shadow: 0 6px 20px rgba(255,106,0,0.3), inset 0 1px 0 rgba(255,255,255,0.2);
+    /* 🔥 Nền đỏ chuyển cam sắc độ mạnh */
+    background: linear-gradient(135deg, #FF2B00 0%, #FF3D00 25%, #FF6A00 65%, #FF9D2E 100%);
+    border-radius:0; /* ✅ Bỏ bo góc */
+    box-shadow: 0 6px 20px rgba(255,80,0,0.35), inset 0 1px 0 rgba(255,255,255,0.2);
   }
 
   .freeship-inner{
@@ -30,14 +30,14 @@
     font-weight:700;
     letter-spacing: .3px;
     text-transform: uppercase;
-    text-shadow: 0 1px 0 rgba(0,0,0,.2);
+    text-shadow: 0 1px 0 rgba(0,0,0,.25);
   }
 
   .freeship-text b{
     font-weight:900;
   }
 
-  /* Ánh sáng lướt sắc bén – như liếm qua bề mặt inox dưới nắng */
+  /* ⚡ Ánh sáng lướt sắc bén */
   .freeship-banner::after{
     content:"";
     position:absolute;
@@ -46,20 +46,18 @@
     width:80px;
     height:160%;
     transform: skewX(-18deg);
-    /* vệt sáng lõi trắng sắc + viền loang */
-    background:
-      linear-gradient(90deg,
-        rgba(255,255,255,0) 0%,
-        rgba(255,255,255,0) 35%,
-        rgba(255,255,255,0.85) 50%,
-        rgba(255,255,255,0) 65%,
-        rgba(255,255,255,0) 100%);
-    filter: blur(0.2px);
+    background: linear-gradient(90deg,
+      rgba(255,255,255,0) 0%,
+      rgba(255,255,255,0) 35%,
+      rgba(255,255,255,0.9) 50%,
+      rgba(255,255,255,0) 65%,
+      rgba(255,255,255,0) 100%);
+    filter: blur(0.3px);
     mix-blend-mode: screen;
     animation: glint 3.2s cubic-bezier(.22,.61,.36,1) infinite;
   }
 
-  /* Thêm một vệt ánh nhỏ sắc như cạnh kim loại */
+  /* ✴️ Vệt ánh kim loại mảnh */
   .freeship-banner::before{
     content:"";
     position:absolute;
@@ -68,13 +66,12 @@
     width:42px;
     height:180%;
     transform: skewX(-20deg);
-    background:
-      linear-gradient(90deg,
-        rgba(255,255,255,0) 0%,
-        rgba(255,255,255,0.0) 40%,
-        rgba(255,255,255,0.95) 50%,
-        rgba(255,255,255,0.0) 60%,
-        rgba(255,255,255,0) 100%);
+    background: linear-gradient(90deg,
+      rgba(255,255,255,0) 0%,
+      rgba(255,255,255,0.0) 40%,
+      rgba(255,255,255,1) 50%,
+      rgba(255,255,255,0.0) 60%,
+      rgba(255,255,255,0) 100%);
     filter: blur(0.4px);
     mix-blend-mode: screen;
     opacity:.9;
@@ -82,28 +79,24 @@
     animation-delay: .08s;
   }
 
-  /* highlight mịn trên nền để tạo cảm giác kim loại bóng */
-  .freeship-banner .shine-top,
-  .freeship-banner .shine-bottom{ display:none; } /* placeholder nếu cần mở rộng */
-
   @keyframes glint{
-    0%{ left:-30%; opacity:.0; }
+    0%{ left:-30%; opacity:0; }
     8%{ opacity: .95; }
     45%{ left:60%; opacity:1; }
-    60%{ left:100%; opacity:.0; }
-    100%{ left:100%; opacity:.0; }
-  }
-  @keyframes glintSharp{
-    0%{ left:-40%; opacity:.0; }
-    10%{ opacity:1; }
-    44%{ left:52%; opacity:.95; }
-    65%{ left:100%; opacity:.0; }
-    100%{ left:100%; opacity:.0; }
+    60%{ left:100%; opacity:0; }
+    100%{ left:100%; opacity:0; }
   }
 
-  /* Responsive */
+  @keyframes glintSharp{
+    0%{ left:-40%; opacity:0; }
+    10%{ opacity:1; }
+    44%{ left:52%; opacity:.95; }
+    65%{ left:100%; opacity:0; }
+    100%{ left:100%; opacity:0; }
+  }
+
   @media (max-width: 420px){
-    .freeship-banner{ height:44px; border-radius:8px; }
+    .freeship-banner{ height:44px; border-radius:0; }
     .freeship-inner{ font-size:13.5px; }
   }
 </style>
