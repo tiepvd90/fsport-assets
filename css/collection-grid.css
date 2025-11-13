@@ -1,0 +1,134 @@
+/* ==========================================================
+   🎨 COLLECTION GRID — CSS RIÊNG
+   - Không trùng với art.css
+   - Không override layout khác
+   ========================================================== */
+
+/* Khung tổng */
+#collectionContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 16px 32px;
+  box-sizing: border-box;
+}
+
+/* Mỗi nhóm JSON */
+.cgrid-block {
+  margin-bottom: 24px;
+}
+
+/* Tiêu đề collection */
+.cgrid-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0 0 10px 0;
+  text-transform: uppercase;
+  border-left: 4px solid #000;
+  padding-left: 8px;
+  display: flex;
+  align-items: center;
+}
+
+/* Shopee badge */
+.cgrid-tag-shopee {
+  background: #EE4D2D;
+  color: #fff;
+  font-weight: 600;
+  font-size: 11px;
+  padding: 3px 6px;
+  border-radius: 4px;
+  margin-left: 8px;
+  display: inline-block;
+  text-transform: uppercase;
+}
+
+/* GRID chứa card */
+.cgrid-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: flex-start;
+}
+
+/* Card tổng */
+.cgrid-card {
+  width: calc(50% - 6px);
+  cursor: pointer;
+}
+
+@media (min-width: 600px) {
+  .cgrid-card {
+    width: calc(33.333% - 8px);
+  }
+}
+
+@media (min-width: 1024px) {
+  .cgrid-card {
+    width: calc(20% - 10px);
+  }
+}
+
+/* Hộp ảnh */
+.cgrid-thumb {
+  width: 100%;
+  height: 160px;
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (min-width: 600px) {
+  .cgrid-thumb { height: 180px; }
+}
+@media (min-width: 1024px) {
+  .cgrid-thumb { height: 200px; }
+}
+
+.cgrid-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Tên sản phẩm */
+.cgrid-name {
+  font-size: 13px;
+  font-weight: 600;
+  margin-top: 6px;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Giá */
+.cgrid-price-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2px;
+}
+
+.cgrid-price {
+  font-size: 13px;
+  font-weight: 700;
+  color: #d32f2f;
+}
+
+.cgrid-original {
+  font-size: 12px;
+  color: #999;
+  text-decoration: line-through;
+  margin-left: 6px;
+}
+
+/* Divider */
+.cgrid-divider {
+  height: 1px;
+  background: #eee;
+  margin: 16px 0;
+}
