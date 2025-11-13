@@ -53,12 +53,17 @@ h1 {
   align-items: center;
 }
 
-/* Tag Shopee ngay sau tiêu đề */
+/* ⭐ Tag Shopee dạng button (đẹp như Shopee Mall) */
 .tag-shopee {
-  color: #EE4D2D;
+  background: #EE4D2D;
+  color: #fff;
   font-weight: 600;
-  font-size: 12px;
+  font-size: 11px;
+  padding: 2px 6px;
+  border-radius: 4px;
   margin-left: 8px;
+  display: inline-block;
+  text-transform: uppercase;
 }
 
 /* GRID chứa card */
@@ -126,13 +131,26 @@ h1 {
   padding: 0 4px;
 }
 
-/* Giá đỏ */
+/* ⭐ Giá sale + giá gốc */
+.art-price-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2px;
+}
+
 .art-price {
   font-size: 13px;
   font-weight: 700;
   color: #d32f2f;
-  text-align: center;
-  margin-top: 2px;
+}
+
+.art-original-price {
+  font-size: 12px;
+  color: #999;
+  text-decoration: line-through;
+  margin-left: 6px;
+  font-weight: 400;
 }
 
 /* Divider nếu cần */
