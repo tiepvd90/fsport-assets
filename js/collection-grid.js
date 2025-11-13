@@ -1,34 +1,20 @@
 /* ==========================================================
-   📦 COLLECTION GRID — Bản cập nhật FULL
+   📦 COLLECTION GRID — READ FROM window.collectionList
    ----------------------------------------------------------
-   - Đọc 4 file JSON
-   - Nếu không tìm thấy JSON → chỉ log lỗi, không render block
-   - Render gallery 2–3–6 cột theo art.css
-   - Hiển thị giá sale + giá gốc (nếu có)
-   - Tách token "| SHOPEE PRODUCT" → thành badge shopee
+   - Không chứa COLLECTIONS cứng trong file JS
+   - Trang HTML tự khai báo window.collectionList = [...]
+   - JS chỉ đọc và render
    ========================================================== */
 
 (function () {
   "use strict";
 
-  const COLLECTIONS = [
-    {
-      title: "VỢT VÀ BÓNG PICKLEBALL",
-      json: "/json/pickleball-collection.json"
-    },
-    {
-      title: "DÉP CHẠY Y-SANDAL ĐÀI LOAN",
-      json: "/json/ysandal-collection.json"
-    },
-    {
-      title: "TÚI, BALO PICKLEBALL | SHOPEE PRODUCT",
-      json: "/json/aff/bag-collection.json"
-    },
-    {
-      title: "QUẦN ÁO THỂ THAO | SHOPEE PRODUCT",
-      json: "/json/aff/apparel-collection.json"
-    }
-  ];
+  const COLLECTIONS = window.collectionList || [];
+
+  if (!Array.isArray(COLLECTIONS) || COLLECTIONS.length === 0) {
+    console.warn("⚠️ Không có window.collectionList trong trang HTML");
+    return;
+  }
 
   const container = document.getElementById("collectionContainer");
   if (!container) {
@@ -58,7 +44,7 @@
 
         if (!res.ok) {
           console.warn("⚠️ Không tìm thấy JSON:", block.json);
-          continue; // bỏ block
+          continue;
         }
 
         const data = await res.json();
@@ -73,14 +59,10 @@
 
         const grid = blockEl.querySelector(".art-grid");
 
-        // Render từng item
         data.forEach(item => {
           const hasPrice = item.price && item.price > 0;
-          const hasOriginal =
-            item.originalPrice &&
-            item.originalPrice > item.price;
+          const hasOriginal = item.originalPrice && item.originalPrice > item.price;
 
-          // Giá sale + giá gốc gạch
           const priceHTML = hasPrice
             ? `
               <div class="art-price-wrap">
