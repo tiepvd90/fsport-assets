@@ -16,7 +16,7 @@
     }
   }
 
-  // Load HTML của FreeFlow
+  // Load HTML của FreeFlow (DÙNG ĐƯỜNG DẪN GỐC "/")
   fetch("/html/freeflow.html")
     .then(res => res.text())
     .then(html => {
@@ -30,21 +30,26 @@
         }
       });
 
-      // Load script FreeFlow logic
+      // Load script FreeFlow logic (DÙNG "/js/")
       const ffScript = document.createElement("script");
-      ffScript.src = "https://friendly-kitten-d760ff.netlify.app/js/freeflow.js";
+      ffScript.src = "/js/freeflow.js";
+
       ffScript.onload = () => {
-  // Ưu tiên init mới:
-  if (window.freeflowInit) {
-    window.freeflowInit({
-      sheetUrl: "https://script.google.com/macros/s/AKfycbwuEh9sP65vyQL0XzU8gY1Os0QYV_K5egKJgm8OhImAPjvdyrQiU7XCY909N99TnltP/exec",
-      startNow: true // nếu muốn bỏ delay 1s trong stories
-    });
-  } else if (typeof fetchFreeFlowData === "function") {
-    // Tương thích ngược
-    fetchFreeFlowData("https://script.google.com/macros/s/AKfycbwuEh9sP65vyQL0XzU8gY1Os0QYV_K5egKJgm8OhImAPjvdyrQiU7XCY909N99TnltP/exec");
-  }
-};
+        // Ưu tiên init mới
+        if (window.freeflowInit) {
+          window.freeflowInit({
+            sheetUrl:
+              "https://script.google.com/macros/s/AKfycbwuEh9sP65vyQL0XzU8gY1Os0QYV_K5egKJgm8OhImAPjvdyrQiU7XCY909N99TnltP/exec",
+            startNow: true
+          });
+        } else if (typeof fetchFreeFlowData === "function") {
+          // Tương thích ngược
+          fetchFreeFlowData(
+            "https://script.google.com/macros/s/AKfycbwuEh9sP65vyQL0XzU8gY1Os0QYV_K5egKJgm8OhImAPjvdyrQiU7XCY909N99TnltP/exec"
+          );
+        }
+      };
+
       document.body.appendChild(ffScript);
     });
 
