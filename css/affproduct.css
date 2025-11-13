@@ -1,0 +1,86 @@
+/* ============================================================
+   ✅ affproduct.css — CSS riêng cho trang affiliate sản phẩm
+   ============================================================ */
+
+/* Fix lỗi ảnh mô tả tràn trên mobile */
+.desc-container {
+  width: 100%;
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.desc-container img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin: 8px 0;
+  object-fit: contain;
+}
+
+/* Mobile: đảm bảo không overflow */
+@media (max-width: 768px) {
+  .desc-container {
+    padding: 0;
+    margin: 0;
+  }
+  .desc-container img {
+    width: 100vw;
+    max-width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+    border-radius: 0;
+  }
+}
+
+/* Hero section */
+.product-hero {
+  margin-top: 12px;
+  font-family: 'Be Vietnam Pro', sans-serif;
+}
+
+.product-hero h1 {
+  font-size: 14px;
+  font-weight: bold;
+  margin-top: 8px;
+  line-height: 1.4;
+}
+
+.mall-tag {
+  background: black;
+  color: white;
+  font-size: 11px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-right: 4px;
+}
+
+.official-tag {
+  background: #007BFF;
+  color: white;
+  font-size: 11px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-right: 6px;
+  text-transform: uppercase;
+}
+
+/* FreeFlow heading */
+.freeflow-heading {
+  font-size: 18px;
+  margin: 24px 12px 12px;
+  font-family: 'Be Vietnam Pro', sans-serif;
+}
+.shopee-tag {
+  display: inline-block;
+  background: #EE4D2D; /* Cam Shopee */
+  color: #fff;
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-weight: 600;
+  margin-right: 6px;
+  text-transform: uppercase;
+}
