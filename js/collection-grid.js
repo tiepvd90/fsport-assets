@@ -1,10 +1,11 @@
 /* ==========================================================
-   📦 COLLECTION GRID — Render 4 nhóm sản phẩm
+   📦 COLLECTION GRID — Bản cập nhật FULL
    ----------------------------------------------------------
    - Đọc 4 file JSON
-   - Nếu không tìm thấy JSON → chỉ log lỗi, bỏ qua block
-   - Hiển thị grid 2–3–6 cột theo CSS art.css
-   - Item: ảnh + title rút gọn + giá (nếu price > 0)
+   - Nếu không tìm thấy JSON → chỉ log lỗi, không render block
+   - Render gallery 2–3–6 cột theo art.css
+   - Hiển thị giá sale + giá gốc (nếu có)
+   - Tách token "| SHOPEE PRODUCT" → thành badge shopee
    ========================================================== */
 
 (function () {
@@ -40,26 +41,33 @@
     return v.toLocaleString("vi-VN") + "đ";
   }
 
-  // Render các block
+  // Tách Shopee tag trong title → chuyển thành badge cam
+  function renderTitle(rawTitle) {
+    if (rawTitle.includes("| SHOPEE PRODUCT")) {
+      const name = rawTitle.split("|")[0].trim();
+      return `${name} <span class="tag-shopee">Shopee Product</span>`;
+    }
+    return rawTitle;
+  }
+
+  // Render từng block
   async function renderCollections() {
     for (const block of COLLECTIONS) {
       try {
         const res = await fetch(block.json);
 
-        // Nếu file JSON không tồn tại → bỏ qua block này
         if (!res.ok) {
           console.warn("⚠️ Không tìm thấy JSON:", block.json);
-          continue;
+          continue; // bỏ block
         }
 
         const data = await res.json();
 
-        // Tạo block
         const blockEl = document.createElement("div");
         blockEl.className = "collection-block";
 
         blockEl.innerHTML = `
-          <div class="collection-title">${block.title}</div>
+          <div class="collection-title">${renderTitle(block.title)}</div>
           <div class="art-grid"></div>
         `;
 
@@ -68,9 +76,18 @@
         // Render từng item
         data.forEach(item => {
           const hasPrice = item.price && item.price > 0;
+          const hasOriginal =
+            item.originalPrice &&
+            item.originalPrice > item.price;
 
+          // Giá sale + giá gốc gạch
           const priceHTML = hasPrice
-            ? `<div class="art-price">${formatPrice(item.price)}</div>`
+            ? `
+              <div class="art-price-wrap">
+                <div class="art-price">${formatPrice(item.price)}</div>
+                ${hasOriginal ? `<div class="art-original-price">${formatPrice(item.originalPrice)}</div>` : ""}
+              </div>
+            `
             : "";
 
           const card = document.createElement("div");
@@ -84,7 +101,6 @@
             ${priceHTML}
           `;
 
-          // Click mở product page
           card.addEventListener("click", () => {
             window.location.href = item.link;
           });
