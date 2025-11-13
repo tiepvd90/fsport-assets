@@ -1,5 +1,5 @@
 [
-{
+  {
     "id": "balo01",
     "title": "Balo Cầu Lông-Pickleball-Tennis Yonex",
     "image": "https://down-vn.img.susercontent.com/file/vn-11134207-7ras8-mb27ob6uucngdf.webp",
@@ -8,18 +8,18 @@
     "link": "/affproduct/bag/balo1",
     "category": "bag",
     "tags": ["shopee"]
-},
-{
+  },
+  {
     "id": "balo02",
-    "title": "Ba lô kết hợp túi đeo chéo thời trang ",
+    "title": "Ba lô kết hợp túi đeo chéo thời trang",
     "image": "https://down-vn.img.susercontent.com/file/vn-11134207-7r98o-lni0l2svfqeye3.webp",
     "price": 0,
     "originalPrice": 0,
     "link": "/affproduct/bag/balo2",
     "category": "bag",
     "tags": ["shopee"]
-},
-{
+  },
+  {
     "id": "balo03",
     "title": "BALO PICKLEBALL FULL DA CHỐNG THẤM NƯỚC",
     "image": "https://down-vn.img.susercontent.com/file/vn-11134207-7ras8-mc06qnsppwum27.webp",
@@ -28,18 +28,8 @@
     "link": "/affproduct/bag/balo3",
     "category": "bag",
     "tags": ["shopee"]
-},
-{
-    "id": "balo03",
-    "title": "BALO PICKLEBALL FULL DA CHỐNG THẤM NƯỚC",
-    "image": "https://down-vn.img.susercontent.com/file/vn-11134207-7ras8-mc06qnsppwum27.webp",
-    "price": 0,
-    "originalPrice": 0,
-    "link": "/affproduct/bag/balo3",
-    "category": "bag",
-    "tags": ["shopee"]
-},
-{
+  },
+  {
     "id": "balo04",
     "title": "Balo thể thao thời trang đựng vợt Pickleball Vessel da PU",
     "image": "https://down-vn.img.susercontent.com/file/vn-11134207-7ra0g-m93u7e7lf0xzc5.webp",
@@ -48,8 +38,8 @@
     "link": "/affproduct/bag/balo4",
     "category": "bag",
     "tags": ["shopee"]
-},
-{
+  },
+  {
     "id": "balo05",
     "title": "Wilson Triangle Túi đeo Pickleball Navy WR8907701001",
     "image": "https://down-vn.img.susercontent.com/file/vn-11134207-7ra0g-m7c27vyl4oos7f.webp",
@@ -58,8 +48,8 @@
     "link": "/affproduct/bag/balo5",
     "category": "bag",
     "tags": ["shopee"]
-},
-{
+  },
+  {
     "id": "balo06",
     "title": "BALO PICKLEBALL FULL DA CHỐNG THẤM NƯỚC",
     "image": "https://down-vn.img.susercontent.com/file/vn-11134207-7ras8-mc06qnsppwum27.webp",
@@ -68,5 +58,5 @@
     "link": "/affproduct/bag/balo6",
     "category": "bag",
     "tags": ["shopee"]
-},
+  }
 ]
