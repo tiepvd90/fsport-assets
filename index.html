@@ -1,4 +1,4 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="vi">
 <head>
   <meta charset="UTF-8" />
@@ -12,7 +12,9 @@
   <!-- CSS chung -->
   <link rel="stylesheet" href="/stories/css/stories.css">
   <link rel="stylesheet" href="/css/base.css">
-  <link rel="stylesheet" href="/css/art.css"> <!-- Dùng cho collection-grid & art-gallery -->
+
+  <!-- CSS riêng cho COLLECTION GRID (tự load bởi JS cũng được, nhưng vẫn include để an toàn) -->
+  <link rel="stylesheet" href="/css/collection-grid.css">
 
   <!-- Popup CSS -->
   <link rel="stylesheet" href="https://friendly-kitten-d760ff.netlify.app/css/checkoutpopup.css" />
@@ -21,7 +23,7 @@
   <script>
     window.productPage = "homepage";
 
-    /* 🟧 KHAI BÁO DANH SÁCH COLLECTION — TÁI SỬ DỤNG */
+    /* 🟧 CÁC COLLECTION SẼ HIỂN THỊ TRÊN TRANG */
     window.collectionList = [
       {
         title: "VỢT VÀ BÓNG PICKLEBALL",
@@ -86,23 +88,13 @@
        class="cover-img" />
 
   <!-- ========================================================= -->
-  <!--  🔥 COLLECTION GRID -->
+  <!--  🔥 COLLECTION GRID — PICKLEBALL, YSANDAL, BAG, APPAREL   -->
   <!-- ========================================================= -->
-  <div class="collection-container" id="collectionContainer"></div>
+  <div id="collectionContainer"></div>
   <script src="/js/collection-grid.js" defer></script>
 
   <!-- ========================================================= -->
-  <!--  🔥 ART COLLECTION GALLERY  (NOW CLEAN) -->
-  <!-- ========================================================= -->
-  <h1 style="text-align:center; margin-top:32px;">BỘ SƯU TẬP TRANH DECOR</h1>
-  <div class="collection-container" id="artCollectionContainer"></div>
-  <script>
-    window.artCollectionTarget = "artCollectionContainer"; // nơi JS sẽ render
-  </script>
-  <script src="/js/art-collection.js" defer></script>
-
-  <!-- ========================================================= -->
-  <!--  CHECKOUT POPUP -->
+  <!--  CHECKOUT POPUP                                           -->
   <!-- ========================================================= -->
   <div id="checkoutPopup-placeholder"></div>
   <script>
