@@ -159,3 +159,44 @@ h1 {
   background: #eee;
   margin: 12px 0;
 }
+/* ===============================
+   🔥 Nút Xem Thêm – Minimal Style
+   =============================== */
+
+.view-more {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  margin: 14px auto 18px;
+  width: 100%;
+  text-align: center;
+
+  font-size: 14px;
+  font-weight: 600;
+  color: #000;
+
+  text-decoration: none;
+  cursor: pointer;
+
+  padding: 8px 0;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+/* Hover: hơi đậm & nhích nhẹ */
+.view-more:hover {
+  color: #111;
+  transform: translateY(-1px);
+}
+
+/* Mũi tên nhỏ gọn */
+.view-more span {
+  margin-left: 6px;
+  font-size: 12px;
+  transition: transform 0.2s ease;
+}
+
+/* Hover: mũi tên nhích xuống 2px */
+.view-more:hover span {
+  transform: translateY(2px);
+}
