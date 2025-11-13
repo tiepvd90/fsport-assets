@@ -1,59 +1,90 @@
-/* ==============================
- *
- * FREEFLOW (loader-friendly)
- *
- * 1s fetch-all (no render yet)
- * Render 4 on approach, then
- * lazy-load 12/item block + AF
- * Keep autoplay logic as-is
- *
- * ============================== */
+/* =============================================
+   FREEFLOW v7.1 — NO ART / NO GALLERY
+   ------------------------------------------------
+   ✓ Không chứa logic ART
+   ✓ Không load /css/art.css
+   ✓ Không fetch /json/art/index.json
+   ✓ FREEFLOW load xong → bắn event "freeflowReady" (1 lần)
+   ✓ Sau freeflowReady → load /js/collection-grid.js (1 lần)
+   ✓ Tự khai báo window.collectionList
+   ============================================= */
 
-// ====== CONFIG (override via freeflowInit) ======
+// -------------- CONFIG ----------------
 let fallbackUrl =
   "https://script.google.com/macros/s/AKfycbwuEh9sP65vyQL0XzU8gY1Os0QYV_K5egKJgm8OhImAPjvdyrQiU7XCY909N99TnltP/exec";
+
 const CACHE_KEY = "freeflowCache";
 const CACHE_DURATION_MS = 30 * 60 * 1000; // 30 phút
-const INITIAL_DELAY_MS_DEFAULT = 1000; // 1 giây
+const INITIAL_DELAY_MS_DEFAULT = 1000;
 const FIRST_BATCH_SIZE = 4;
 const BLOCK_SIZE = 12;
 const FEED_ID = "freeflowFeed";
 
-// ====== State ======
+// -------------- STATE ----------------
 let freeflowData = [];
 let itemsLoaded = 0;
-let productCategory = (window.productCategory || "0").toString().toLowerCase();
+let productCategory = (window.productCategory || "0")
+  .toString()
+  .toLowerCase();
 const renderedIds = new Set();
-let dataReady = false; // dữ liệu đã process xong
-let initialRendered = false; // đã render 4 item đầu chưa
-let pagerObserver = null; // IO cho sentinel
-let bootstrapped = false; // đã init UI chưa
-let scrollTick = null; // throttle scroll
+let dataReady = false;
+let initialRendered = false;
+let pagerObserver = null;
+let bootstrapped = false;
+let scrollTick = null;
+let freeflowReadyFired = false;
+let collectionGridLoaded = false;
 
-// =================== Cache helpers ===================
+/* ------------------------------------
+   COLLECTION GRID CONFIG
+------------------------------------ */
+    window.collectionList = [
+      {
+        title: "TÚI, BALO PICKLEBALL | SHOPEE PRODUCT",
+        json: "/json/aff/bag-collection.json"
+      },
+      {
+        title: "QUẦN ÁO THỂ THAO | SHOPEE PRODUCT",
+        json: "/json/aff/apparel-collection.json"
+      }
+    ];
+
+/* ======================================
+   CACHE
+====================================== */
 function loadCachedFreeFlow() {
   try {
     const cached = JSON.parse(localStorage.getItem(CACHE_KEY));
     if (cached && Date.now() - cached.timestamp < CACHE_DURATION_MS) {
       return cached.data;
     }
-  } catch (e) {}
+  } catch (e) {
+    console.warn("⚠️ Lỗi đọc cache FREEFLOW:", e);
+  }
   return null;
 }
 
 function saveCache(data) {
-  const payload = { timestamp: Date.now(), data };
-  localStorage.setItem(CACHE_KEY, JSON.stringify(payload));
+  try {
+    const payload = { timestamp: Date.now(), data };
+    localStorage.setItem(CACHE_KEY, JSON.stringify(payload));
+  } catch (e) {
+    console.warn("⚠️ Lỗi ghi cache FREEFLOW:", e);
+  }
 }
 
-// =================== Process & sort ===================
+/* ======================================
+   PROCESS DATA
+====================================== */
 function processAndSortData(data) {
-  // random nhẹ để tránh thứ tự cứng ngắc
   const random = () => Math.floor(Math.random() * 10) + 1;
 
-  // --- 1. Chia preferred (cùng category) và others (khác category) ---
   const preferred = data
-  .filter((item) => (item.productCategory || "").toString().toLowerCase() === productCategory)
+    .filter(
+      (item) =>
+        (item.productCategory || "").toString().toLowerCase() ===
+        productCategory
+    )
     .map((item) => ({
       ...item,
       finalPriority: (item.basePriority || 0) + random()
@@ -61,27 +92,32 @@ function processAndSortData(data) {
     .sort((a, b) => b.finalPriority - a.finalPriority);
 
   const others = data
-  .filter((item) => (item.productCategory || "").toString().toLowerCase() !== productCategory)
+    .filter(
+      (item) =>
+        (item.productCategory || "").toString().toLowerCase() !==
+        productCategory
+    )
     .map((item) => ({
       ...item,
       finalPriority: (item.basePriority || 0) + random()
     }))
     .sort((a, b) => b.finalPriority - a.finalPriority);
 
-  // --- 2. Gộp lại: ưu tiên category hiện tại lên đầu ---
-  freeflowData = [...(freeflowData || []), ...preferred, ...others]
-  .filter((v,i,a) => a.findIndex(t=>t.itemId===v.itemId)===i); // loại trùng
+  // Gộp + dedupe theo itemId
+  freeflowData = [...preferred, ...others].filter(
+    (v, i, a) => a.findIndex((t) => t.itemId === v.itemId) === i
+  );
 }
 
-
-
-// =================== Rendering ===================
+/* ======================================
+   RENDER ITEM
+====================================== */
 function renderFeedItem(item, container) {
-  if (renderedIds.has(item.itemId)) return;
+  if (!item || renderedIds.has(item.itemId)) return;
   renderedIds.add(item.itemId);
 
   const div = document.createElement("div");
-  div.className = `feed-item ${item.contentType || ""}`;
+  div.className = `feed-item ${item.contentType || ""}`.trim();
 
   let mediaHtml = "";
 
@@ -109,28 +145,36 @@ function renderFeedItem(item, container) {
       }
     `;
   } else if (item.contentType === "youtube") {
+    // item.youtube được coi là ID video (hoặc chuỗi để đưa vào embed)
     mediaHtml = `
       <div class="video-wrapper" style="position: relative;">
-        <img class="video-thumb" src="https://fun-sport.co/assets/images/thumb/vid-thumb.webp"
-          style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; border-radius: 8px; z-index: 1;" />
-        <iframe data-video-id="${item.youtube}" src="" frameborder="0"
-          allow="autoplay; encrypted-media" allowfullscreen playsinline muted
-          style="width: 100%; aspect-ratio: 9/16; border-radius: 8px; position: relative; z-index: 2;">
+        <img class="video-thumb"
+          src="/assets/images/thumb/vid-thumb.webp"
+          style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:8px;z-index:1;"
+        />
+        <iframe data-video-id="${item.youtube}"
+          src=""
+          allow="autoplay; encrypted-media"
+          allowfullscreen muted playsinline
+          style="width:100%;aspect-ratio:9/16;border-radius:8px;position:relative;z-index:2;">
         </iframe>
-        <div class="video-overlay" data-video="${item.youtube}"
-          style="position: absolute; inset: 0; cursor: pointer; z-index: 3;"></div>
+        <div class="video-overlay"
+          data-video="${item.youtube}"
+          style="position:absolute;inset:0;cursor:pointer;z-index:3;">
+        </div>
       </div>
-      <div class="video-info" style="display: flex; align-items: center; gap: 8px; padding: 4px 8px 0;">
+
+      <div class="video-info" style="display:flex;align-items:center;gap:8px;padding:4px 8px 0;">
         <a href="${item.productPage}">
           <img src="${item.image}"
-            style="width: 36px; height: 36px; object-fit: cover; border-radius: 6px;" />
+            style="width:36px;height:36px;object-fit:cover;border-radius:6px;" />
         </a>
-        <div style="flex: 1; min-width: 0;">
-          <h4 style="font-size: 13px; line-height: 1.3; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-            ${item.title}
+        <div style="flex:1;min-width:0;">
+          <h4 style="font-size:13px;margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+            ${item.title || ""}
           </h4>
-          <div style="font-size: 13px; color: #f53d2d; font-weight: bold;">
-            ${Number(item.price).toLocaleString()}đ
+          <div style="font-size:13px;color:#f53d2d;font-weight:bold;">
+            ${item.price ? Number(item.price).toLocaleString() + "đ" : ""}
           </div>
         </div>
       </div>
@@ -139,500 +183,354 @@ function renderFeedItem(item, container) {
 
   div.innerHTML = mediaHtml;
 
-  if (item.contentType === "image") {
-    div.onclick = () => (window.location.href = item.productPage);
-  } else if (item.contentType === "youtube") {
+  if (item.contentType === "image" && item.productPage) {
+    div.addEventListener("click", () => {
+      window.location.href = item.productPage;
+    });
+  }
+
+  if (item.contentType === "youtube") {
+    // Gắn event mở popup video lớn
     setTimeout(() => {
       const overlay = div.querySelector(".video-overlay");
-      if (overlay) {
-        overlay.onclick = () => {
-          const id = overlay.getAttribute("data-video");
-          const popup = document.getElementById("videoOverlay");
-          const frame = document.getElementById("videoFrame");
-          if (frame)
-            frame.src = `https://www.youtube.com/embed/${id}?autoplay=1&mute=0&playsinline=1&controls=1`;
-          if (popup) popup.style.display = "flex";
-          const viewBtn = document.getElementById("viewProductBtn");
-          if (viewBtn) viewBtn.onclick = () => (window.location.href = item.productPage);
-        };
-      }
+      if (!overlay) return;
+
+      overlay.onclick = () => {
+        const id = overlay.dataset.video;
+        const popup = document.getElementById("videoOverlay");
+        const frame = document.getElementById("videoFrame");
+
+        if (frame) {
+          frame.src = `https://www.youtube.com/embed/${id}?autoplay=1&mute=0&playsinline=1&controls=1`;
+        }
+        if (popup) popup.style.display = "flex";
+
+        const viewBtn = document.getElementById("viewProductBtn");
+        if (viewBtn && item.productPage) {
+          viewBtn.onclick = () => (window.location.href = item.productPage);
+        }
+      };
     }, 0);
   }
 
   container.appendChild(div);
-
-  // 🔁 Ảnh load xong có thể giãn layout → auto-fill nếu gần đáy
-  if (item.contentType === "image") {
-    const img = div.querySelector("img");
-    if (img) {
-      const onDone = () => {
-        setTimeout(() => {
-          autofillToViewport();
-        }, 20);
-      };
-      if (img.complete) onDone();
-      else {
-        img.addEventListener("load", onDone, { once: true });
-        img.addEventListener("error", onDone, { once: true });
-      }
-    }
-  }
 }
 
-// ▶️ YouTube autoplay (GIỮ NGUYÊN)
-function ytCmd(iframe, func) {
+/* ======================================
+   AUTOPLAY YOUTUBE
+====================================== */
+function ytCmd(ifr, func) {
   try {
-    iframe.contentWindow?.postMessage(
+    ifr.contentWindow?.postMessage(
       JSON.stringify({ event: "command", func, args: [] }),
       "*"
     );
-  } catch (e) {}
+  } catch (e) {
+    console.warn("YT cmd error:", e);
+  }
 }
-function ytPlay(iframe) {
-  ytCmd(iframe, "playVideo");
+
+function ytPlay(ifr) {
+  ytCmd(ifr, "playVideo");
 }
-function ytPause(iframe) {
-  ytCmd(iframe, "pauseVideo");
+function ytPause(ifr) {
+  ytCmd(ifr, "pauseVideo");
 }
 
 function setupAutoplayObserver() {
   const iframes = document.querySelectorAll("iframe[data-video-id]");
-  const observer = new IntersectionObserver(
+  if (!iframes.length) return;
+
+  const io = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
-        const iframe = entry.target;
-        const id = iframe.getAttribute("data-video-id");
-        if (entry.isIntersecting && !iframe.dataset.inited) {
-          const initSrc = `https://www.youtube.com/embed/${id}?enablejsapi=1&autoplay=0&mute=1&playsinline=1&controls=0&rel=0&origin=${location.origin}`;
-          iframe.src = initSrc;
-          iframe.dataset.inited = "1";
+        const ifr = entry.target;
+        const id = ifr.dataset.videoId;
+
+        // Lần đầu vào viewport: gắn src + enable JS API
+        if (entry.isIntersecting && !ifr.dataset.inited) {
+          ifr.src = `https://www.youtube.com/embed/${id}?enablejsapi=1&autoplay=0&mute=1&playsinline=1&controls=0&rel=0&origin=${location.origin}`;
+          ifr.dataset.inited = "1";
+
           const onLoadOnce = () => {
-            setTimeout(() => {
-              ytPlay(iframe);
-            }, 50);
-            iframe.removeEventListener("load", onLoadOnce);
+            setTimeout(() => ytPlay(ifr), 80);
+            ifr.removeEventListener("load", onLoadOnce);
           };
-          iframe.addEventListener("load", onLoadOnce);
-          setTimeout(() => {
-            ytPlay(iframe);
-          }, 300);
+          ifr.addEventListener("load", onLoadOnce);
           return;
         }
-        if (entry.isIntersecting) ytPlay(iframe);
-        else if (iframe.dataset.inited === "1") ytPause(iframe);
+
+        if (entry.isIntersecting) {
+          ytPlay(ifr);
+        } else if (ifr.dataset.inited) {
+          ytPause(ifr);
+        }
       });
     },
     { threshold: 0.75 }
   );
-  iframes.forEach((iframe) => observer.observe(iframe));
+
+  iframes.forEach((ifr) => io.observe(ifr));
 }
 
-// =================== Lazy pager ===================
+/* ======================================
+   PAGER
+====================================== */
 function ensureSentinel(container) {
-  let sentinel = document.getElementById("freeflowSentinel");
-  if (!sentinel) {
-    sentinel = document.createElement("div");
-    sentinel.id = "freeflowSentinel";
-    sentinel.style.width = "100%";
-    sentinel.style.height = "1px";
-    sentinel.style.opacity = "0";
-    container.appendChild(sentinel);
+  let s = document.getElementById("freeflowSentinel");
+  if (!s) {
+    s = document.createElement("div");
+    s.id = "freeflowSentinel";
+    s.style.height = "1px";
+    container.appendChild(s);
   }
-  return sentinel;
+  return s;
 }
 
 function renderNextBlock(blockSize = BLOCK_SIZE) {
   const container = document.getElementById(FEED_ID);
   if (!container) return;
+
   const slice = freeflowData.slice(itemsLoaded, itemsLoaded + blockSize);
   slice.forEach((item) => renderFeedItem(item, container));
+
   itemsLoaded += slice.length;
   setupAutoplayObserver();
-  if (itemsLoaded >= freeflowData.length && pagerObserver) {
-    pagerObserver.disconnect();
-    pagerObserver = null;
-  } else {
-    setTimeout(() => {
-      autofillToViewport();
-    }, 30);
-  }
 }
 
 function setupLazyPager() {
   const container = document.getElementById(FEED_ID);
   if (!container) return;
+
   const sentinel = ensureSentinel(container);
-  if (pagerObserver) pagerObserver.disconnect();
+
+  if (pagerObserver) {
+    pagerObserver.disconnect();
+  }
+
   pagerObserver = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
-        if (entry.isIntersecting) renderNextBlock(BLOCK_SIZE);
+        if (entry.isIntersecting) {
+          renderNextBlock(BLOCK_SIZE);
+        }
       });
     },
-    { root: null, rootMargin: "800px 0px", threshold: 0 }
+    { rootMargin: "800px 0px" }
   );
   pagerObserver.observe(sentinel);
-  setTimeout(() => {
-    autofillToViewport();
-  }, 30);
 }
 
-// =================== Auto-fill helpers ===================
-function nearBottom(offset = 900) {
-  const doc = document.documentElement;
-  const scrollY = window.scrollY || doc.scrollTop || 0;
-  const vh = window.innerHeight || doc.clientHeight || 0;
-  const docH = Math.max(
-    doc.scrollHeight,
-    doc.offsetHeight,
-    doc.clientHeight,
-    document.body?.scrollHeight || 0,
-    document.body?.offsetHeight || 0
-  );
-  return scrollY + vh >= docH - offset;
-}
-
-function autofillToViewport(maxPasses = 3) {
-  let passes = 0;
-  while (
-    passes < maxPasses &&
-    itemsLoaded < freeflowData.length &&
-    nearBottom(900)
-  ) {
-    renderNextBlock(BLOCK_SIZE);
-    passes++;
-  }
-}
-
-// =================== Kick & gating ===================
-function isNearViewport(el, margin = 800) {
-  if (!el) return false;
-  const rect = el.getBoundingClientRect();
-  const vh = window.innerHeight || document.documentElement.clientHeight;
-  return rect.top <= vh + margin && rect.bottom >= -margin;
-}
-
+/* ======================================
+   INITIAL RENDER
+====================================== */
 function renderInitialAndStartPager() {
   const container = document.getElementById(FEED_ID);
   if (!container) return;
+
+  // 🔒 Đảm bảo chỉ render initial 1 lần
+  if (initialRendered) return;
+  initialRendered = true;
+
   const firstBatch = freeflowData.slice(0, FIRST_BATCH_SIZE);
   firstBatch.forEach((item) => renderFeedItem(item, container));
-  itemsLoaded = FIRST_BATCH_SIZE;
+
+  itemsLoaded = firstBatch.length;
   setupAutoplayObserver();
   setupLazyPager();
-  setTimeout(() => {
-    autofillToViewport();
-  }, 30);
 
-  // 🔹 Báo hiệu FreeFlow đã sẵn sàng
-  document.dispatchEvent(new Event("freeflowReady"));
+  // 🔥 freeflowReady chỉ bắn đúng 1 lần
+  if (!freeflowReadyFired) {
+    freeflowReadyFired = true;
+    document.dispatchEvent(new Event("freeflowReady"));
+  }
 }
 
-
 function maybeStartRender() {
-  if (initialRendered) return;
+  if (initialRendered || !dataReady) return;
+
   const container = document.getElementById(FEED_ID);
   if (!container) return;
-  if (dataReady && isNearViewport(container, 800)) {
-    initialRendered = true;
+
+  const rect = container.getBoundingClientRect();
+  const vh = window.innerHeight || document.documentElement.clientHeight;
+
+  if (rect.top <= vh + 800) {
     renderInitialAndStartPager();
   }
 }
 
-// =================== Data fetching ===================
-async function fetchFreeFlowData(sheetUrlOverride) {
-  if (sheetUrlOverride) fallbackUrl = sheetUrlOverride;
+/* ======================================
+   FETCH FREEFLOW (NO ART)
+====================================== */
+async function fetchFreeFlowData(sheetOverride) {
+  if (sheetOverride) {
+    fallbackUrl = sheetOverride;
+  }
 
   const cached = loadCachedFreeFlow();
-  if (cached) {
+  if (cached && Array.isArray(cached) && cached.length) {
     processAndSortData(cached);
-  }
-
-  // =========================================
-  // 🧩 Nếu category là ART → load ART trước rồi tới freeflow
-  // =========================================
-  if (productCategory === "art") {
-    try {
-      console.log("🎨 ART mode: load art trước, rồi freeflow");
-
-      loadArtCSS();
-
-      // 1️⃣ Load ART trước
-      const resArt = await fetch("/json/art/index.json");
-      const dataArt = await resArt.json();
-      renderCollectionsInline(dataArt);
-
-      // 2️⃣ Tiếp theo load FREEFLOW
-      const res = await fetch("/json/freeflow.json");
-      const data = await res.json();
-      const validData = Array.isArray(data) ? data : [];
-      processAndSortData(validData);
-      saveCache(validData);
-      dataReady = true;
-      maybeStartRender();
-
-    } catch (err) {
-      console.error("⚠️ Lỗi khi tải ART hoặc FREEFLOW:", err);
-    }
-    return;
-  }
-
-  // =========================================
-  // 🧩 Ngược lại: category KHÔNG phải ART → load FREEFLOW trước, rồi ART sau
-  // =========================================
-  try {
-    console.log("🪶 Normal mode: load freeflow trước, rồi art sau");
-
-    // 2️⃣ Đăng ký listener sớm để tránh miss event
-const onFreeflowReady = async () => {
-  try {
-    loadArtCSS();
-    const resArt = await fetch("/json/art/index.json");
-    const dataArt = await resArt.json();
-    renderCollectionsInline(dataArt);
-  } catch (err) {
-    console.error("⚠️ Lỗi khi tải /json/art/index.json:", err);
-  }
-};
-document.addEventListener("freeflowReady", onFreeflowReady, { once: true });
-
-// 1️⃣ Load FREEFLOW trước
-const res = await fetch("/json/freeflow.json");
-const data = await res.json();
-const validData = Array.isArray(data) ? data : [];
-processAndSortData(validData);
-saveCache(validData);
-dataReady = true;
-maybeStartRender();
-  } catch (err) {
-    console.error("⚠️ Lỗi khi tải FREEFLOW:", err);
-    fetchFromGoogleSheet([]);
-  }
-}
-
-
-
-
-async function fetchFromGoogleSheet(existingData) {
-  try {
-    const res = await fetch(fallbackUrl);
-    const sheetData = await res.json();
-    if (!Array.isArray(sheetData)) return;
-    const existingIds = new Set(existingData.map((i) => i.itemId));
-    const newItems = sheetData.filter((i) => !existingIds.has(i.itemId));
-    if (newItems.length === 0) return;
-    const combined = [...existingData, ...newItems];
-    processAndSortData(combined);
-    saveCache(combined);
     dataReady = true;
-    if (!initialRendered) maybeStartRender();
-    else
-      setTimeout(() => {
-        autofillToViewport();
-      }, 30);
-  } catch (e) {
-    console.error("Không thể fetch từ Google Sheet:", e);
+    maybeStartRender();
+  }
+
+  try {
+    const res = await fetch("/json/freeflow.json", { cache: "no-cache" });
+    const data = await res.json();
+
+    const validData = Array.isArray(data) ? data : [];
+    processAndSortData(validData);
+    saveCache(validData);
+
+    dataReady = true;
+    maybeStartRender();
+  } catch (err) {
+    console.error("⚠️ Lỗi tải FREEFLOW /json/freeflow.json:", err);
+    // Fallback qua Google Sheet, truyền freeflowData hiện tại để merge
+    fetchFromGoogleSheet(freeflowData || []);
   }
 }
 
-// =================== Bootstrap (works with loader) ===================
-function bindClosePopup() {
-  const closeBtn = document.getElementById("videoCloseBtn");
-  if (closeBtn)
-    closeBtn.onclick = () => {
-      const popup = document.getElementById("videoOverlay");
-      const frame = document.getElementById("videoFrame");
-      if (popup) popup.style.display = "none";
-      if (frame) frame.src = "";
-    };
+/* ======================================
+   FALLBACK GOOGLE SHEET
+====================================== */
+async function fetchFromGoogleSheet(existing) {
+  try {
+    const res = await fetch(fallbackUrl, { cache: "no-cache" });
+    const sheet = await res.json();
+    if (!Array.isArray(sheet)) return;
+
+    const ids = new Set(existing.map((x) => x.itemId));
+    const newItems = sheet.filter((i) => !ids.has(i.itemId));
+
+    if (!newItems.length) return;
+
+    const merged = [...existing, ...newItems];
+    processAndSortData(merged);
+    saveCache(merged);
+
+    dataReady = true;
+    maybeStartRender();
+  } catch (e) {
+    console.error("⚠️ Lỗi fallback Google Sheet FREEFLOW:", e);
+  }
 }
 
-function observeFeedApproach() {
-  const container = document.getElementById(FEED_ID);
-  if (!container) return;
-  const io = new IntersectionObserver(
-    () => {
-      maybeStartRender();
-    },
-    { root: null, rootMargin: "800px 0px", threshold: 0 }
-  );
-  io.observe(container);
+/* ======================================
+   COLLECTION CONTAINER HELPER
+====================================== */
+function ensureCollectionContainer() {
+  let container = document.getElementById("collectionContainer");
+  if (!container) {
+    container = document.createElement("div");
+    container.id = "collectionContainer";
+
+    const feed = document.getElementById(FEED_ID);
+    if (feed && feed.parentNode) {
+      if (feed.nextSibling) {
+        feed.parentNode.insertBefore(container, feed.nextSibling);
+      } else {
+        feed.parentNode.appendChild(container);
+      }
+    } else {
+      document.body.appendChild(container);
+    }
+  }
+  return container;
 }
 
-function attachScrollAutofill() {
-  window.addEventListener(
-    "scroll",
-    () => {
-      if (!initialRendered) return;
-      if (scrollTick) return;
-      scrollTick = setTimeout(() => {
-        scrollTick = null;
-        autofillToViewport();
-      }, 120);
-    },
-    { passive: true }
-  );
-}
-
-/**
- * Bootstrap UI & (optionally) start fetching
- * options:
- * - sheetUrl: string (override Google Sheet URL)
- * - startNow: boolean (bắt đầu fetch ngay, bỏ delay 1s)
- * - initialDelayMs: number (ms) (mặc định 1000)
- */
+/* ======================================
+   BOOTSTRAP
+====================================== */
 function bootstrapFreeflow(options = {}) {
-  if (bootstrapped) return; // tránh gắn 2 lần
+  if (bootstrapped) return;
   bootstrapped = true;
-
-  if (options.sheetUrl) fallbackUrl = options.sheetUrl;
-
-  bindClosePopup();
-  observeFeedApproach();
-  attachScrollAutofill();
 
   const delay = options.startNow
     ? 0
     : options.initialDelayMs ?? INITIAL_DELAY_MS_DEFAULT;
 
+  observeFeedApproach();
+
   setTimeout(() => {
     fetchFreeFlowData();
   }, delay);
 
-  // Fallback sau 2 giây, nếu chưa render thì ép render
-setTimeout(() => {
-  if (!initialRendered && dataReady) renderInitialAndStartPager();
-}, 2000);
+  // Fallback ép render sau 2s nếu đã có data nhưng chưa render
+  setTimeout(() => {
+    if (!initialRendered && dataReady) {
+      renderInitialAndStartPager();
+    }
+  }, 2000);
 
+  // ⬇ TẢI JS COLLECTION-GRID SAU KHI FREEFLOW READY
+  document.addEventListener("freeflowReady", () => {
+    // Đảm bảo luôn có #collectionContainer trước khi load collection-grid.js
+    ensureCollectionContainer();
+
+    if (collectionGridLoaded) return; // tránh load trùng
+    collectionGridLoaded = true;
+
+    const script = document.createElement("script");
+    script.src = "/js/collection-grid.js";
+    script.async = true;
+    document.body.appendChild(script);
+  });
 }
 
-// ✅ Public API cho loader
-window.freeflowInit = bootstrapFreeflow;
+function observeFeedApproach() {
+  const feed = document.getElementById(FEED_ID);
+  if (!feed) return;
 
-// ✅ Tương thích loader cũ
+  const io = new IntersectionObserver(
+    () => {
+      // debounce nhẹ nếu cần
+      if (scrollTick) cancelAnimationFrame(scrollTick);
+      scrollTick = requestAnimationFrame(() => {
+        maybeStartRender();
+      });
+    },
+    { rootMargin: "800px 0px" }
+  );
+  io.observe(feed);
+}
+
+/* ======================================
+   PUBLIC API
+====================================== */
+window.freeflowInit = bootstrapFreeflow;
 window.fetchFreeFlowData = fetchFreeFlowData;
 
-// ✅ Auto-bootstrap nếu file được nhúng trực tiếp (không qua loader)
-(function autoBootstrapIfNeeded() {
+/* ======================================
+   AUTO START
+====================================== */
+(function autoBootstrap() {
   const tryStart = () => {
     if (bootstrapped) return;
     if (document.getElementById(FEED_ID)) {
-      bootstrapFreeflow(); // dùng delay mặc định 1s
+      bootstrapFreeflow();
     }
   };
+
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", () =>
-      setTimeout(tryStart, 0)
-    );
+    document.addEventListener("DOMContentLoaded", tryStart);
   } else {
-    setTimeout(tryStart, 0);
+    tryStart();
   }
 })();
-// =====================================================
-// 🖼️ SAU KHI FREEFLOW LOAD XONG → GỌI /art.html
-// =====================================================
-// =====================================================
-// 🎨 SAU KHI FREEFLOW LOAD XONG → GỌI /css/art.css + render JSON
-// =====================================================
 
-// 🧩 Hàm load file CSS ngoài
-function loadArtCSS() {
-  if (document.querySelector('link[href="/css/art.css"]')) return;
-  const link = document.createElement("link");
-  link.rel = "stylesheet";
-  link.href = "/css/art.css";
-  link.type = "text/css";
-  link.onload = () => console.log("🎨 Đã load /css/art.css");
-  link.onerror = () => console.warn("⚠️ Không thể tải /css/art.css");
-  document.head.appendChild(link);
-}
-
-// 🧱 Hàm hiển thị gallery từ JSON
-function renderCollectionsInline(data) {
-  if (!data || !Array.isArray(data.collections)) return;
-
-  const wrapper = document.createElement("section");
-  wrapper.className = "art-section-wrapper";
-  wrapper.style.marginTop = "40px";
-
-  const h1 = document.createElement("h1");
-  h1.textContent = "BỘ SƯU TẬP TRANH DECOR";
-  h1.style.textAlign = "center";
-  h1.style.margin = "24px 0 16px";
-  wrapper.appendChild(h1);
-
-  const container = document.createElement("div");
-  container.className = "collection-container";
-  wrapper.appendChild(container);
-
-  data.collections.forEach(col => {
-    const block = document.createElement("div");
-    block.className = "collection-block";
-
-    const title = document.createElement("div");
-    title.className = "collection-title";
-    title.textContent = col.title;
-    block.appendChild(title);
-
-    const grid = document.createElement("div");
-    grid.className = "art-grid";
-
-    (col.images || []).forEach(imgObj => {
-      const item = document.createElement("div");
-      item.className = "art-item";
-
-      const img = document.createElement("img");
-      img.loading = "lazy";
-      img.src = imgObj.image;
-      img.alt = col.title;
-
-      item.appendChild(img);
-      item.onclick = () =>
-        (window.location.href = imgObj.slug || col.slug || "#");
-      grid.appendChild(item);
-    });
-
-    block.appendChild(grid);
-
-    const moreBtn = document.createElement("a");
-    moreBtn.className = "view-more";
-    moreBtn.href = col.slug || "#";
-    moreBtn.innerHTML = `Xem Thêm Tranh ${col.title} <span>▼</span>`;
-    block.appendChild(moreBtn);
-
-    container.appendChild(block);
-
-    const divider = document.createElement("div");
-    divider.className = "divider";
-    container.appendChild(divider);
-  });
-
-  const feed = document.getElementById("freeflowFeed");
-const isArt = (window.productCategory || "").toString().toLowerCase() === "art";
-
-if (feed && feed.parentNode) {
-  if (isArt) {
-    // ✅ ART đứng TRƯỚC feed
-    feed.parentNode.insertBefore(wrapper, feed);
-  } else {
-    // các category khác: gắn sau như cũ
-    feed.parentNode.appendChild(wrapper);
-  }
-} else {
-  (document.body).appendChild(wrapper);
-}
-
-}
-
-
-
-
-// ✅ Safari back-forward cache
-window.addEventListener("pageshow", function (event) {
-  if (
-    event.persisted ||
-    performance.getEntriesByType("navigation")[0]?.type === "back_forward"
-  ) {
-    location.reload();
+/* ======================================
+   SAFARI BFCache FIX
+====================================== */
+window.addEventListener("pageshow", (e) => {
+  try {
+    const navEntries = performance.getEntriesByType("navigation");
+    const navType = navEntries[0]?.type;
+    if (e.persisted || navType === "back_forward") {
+      location.reload();
+    }
+  } catch (_) {
+    if (e.persisted) location.reload();
   }
 });
