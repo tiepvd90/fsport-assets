@@ -1,8 +1,17 @@
 [
-  {
+    {
+    "id": "pickleball-bag",
+    "title": "Túi Pickleball Nam Nữ – Vải Dù Chống Thấm",
+    "image": "https://i.postimg.cc/L63ttgmT/Capture.jpg",
+    "price": 269000,
+    "originalPrice": 425000,
+    "link": "/pickleball/bag",
+    "category": "pickleball",
+    "tags": []
+  },{
     "id": "active",
     "title": "F-Sport Active - Carbon Toray lõi 5s Trợ Lực Mạnh",
-    "image": "/assets/images/thumb/pickleball/active/at-xanh.webp",
+    "image": "/assets/images/gallery/pickleball/active/active22.webp",
     "price": 1600000,
     "originalPrice": 2200000,
     "link": "/pickleball/active",
@@ -12,7 +21,7 @@
   {
     "id": "fastblock",
     "title": "F-Sport FastBlock - Carbon Toray lõi Gen4 cải tiến",
-    "image": "/assets/images/thumb/pickleball/active/fa-trang.webp",
+    "image": "/assets/images/gallery/pickleball/active/description/3.webp",
     "price": 1250000,
     "originalPrice": 1700000,
     "link": "/pickleball/active",
@@ -22,7 +31,7 @@
   {
     "id": "gen4-3lop",
     "title": "F-Sport Gen4 - Vợt Ép Nóng- Carbon 3 Lớp- dầy 16mm",
-    "image": "https://i.postimg.cc/vZbZfHrc/trangnho.jpg",
+    "image": "/assets/images/gallery/pickleball/gen4/3.webp",
     "price": 739000,
     "originalPrice": 1200000,
     "link": "/pickleball/gen4",
@@ -32,7 +41,7 @@
   {
     "id": "titan-16mm",
     "title": "F-Sport Titan – 16mm- sợi titanium siêu bền",
-    "image": "https://i.postimg.cc/Prk55WrK/titan16.jpg",
+    "image": "/assets/images/gallery/pickleball/secpickleball/2.webp",
     "price": 599000,
     "originalPrice": 900000,
     "link": "/product/secpickleball",
@@ -56,26 +65,6 @@
     "price": 849000,
     "originalPrice": 1400000,
     "link": "/product/firstpickleball",
-    "category": "pickleball",
-    "tags": []
-  },
-  {
-    "id": "flexion",
-    "title": "F-Sport-Flexion - 16mm - Mặt Vợt Nhám",
-    "image": "https://i.postimg.cc/1zSt7Dbf/4.webp",
-    "price": 399000,
-    "originalPrice": 500000,
-    "link": "/product/secpickleball",
-    "category": "pickleball",
-    "tags": []
-  },
-  {
-    "id": "pickleball-bag",
-    "title": "Túi Pickleball Nam Nữ – Vải Dù Chống Thấm",
-    "image": "https://i.postimg.cc/L63ttgmT/Capture.jpg",
-    "price": 269000,
-    "originalPrice": 425000,
-    "link": "/pickleball/bag",
     "category": "pickleball",
     "tags": []
   },
