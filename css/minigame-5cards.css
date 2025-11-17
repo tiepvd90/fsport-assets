@@ -1,0 +1,203 @@
+/* ============================================================
+   MINI GAME 5 CARDS — CSS RIÊNG
+   Không đụng vào popupmessage.css
+   Chỉ chứa CSS nội bộ của game
+   ============================================================ */
+
+/* ===== BODY ===== */
+body.fs-5cards {
+  margin: 0;
+  padding: 20px 10px;
+  font-family: "Be Vietnam Pro", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  background: #f5f7fb;
+}
+
+.fs-5cards-title {
+  text-align: center;
+  font-size: 20px;
+  margin-bottom: 12px;
+  color: #222;
+}
+
+.fs-5cards-desc {
+  text-align: center;
+  font-size: 13px;
+  color: #555;
+  margin-bottom: 18px;
+  line-height: 1.5;
+}
+
+/* ===== CARD WRAPPER ===== */
+.fs-card-wrap {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+/* ===== CARD ===== */
+.fs-card {
+  width: 90px;
+  height: 130px;
+  perspective: 900px;
+  cursor: pointer;
+  transition: transform .2s ease;
+}
+
+.fs-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  transform-style: preserve-3d;
+  transition: transform 0.6s ease;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+}
+
+.fs-card.flipped {
+  transform: scale(1.18);
+  z-index: 3;
+}
+
+.fs-card.flipped .fs-card-inner {
+  transform: rotateY(180deg);
+}
+
+.fs-card-face {
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  backface-visibility: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  padding: 8px;
+}
+
+/* ===== FRONT ===== */
+.fs-card-front .fs-element-label {
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 4px;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.4);
+}
+
+.fs-card-front .fs-element-icon {
+  font-size: 24px;
+  margin-bottom: 4px;
+}
+
+.fs-card-front .fs-element-sub {
+  font-size: 11px;
+  opacity: 0.9;
+}
+
+.fs-card-front::after {
+  content: "";
+  position: absolute;
+  width: 160%;
+  height: 30%;
+  background: linear-gradient(90deg, rgba(255,255,255,0.28), transparent);
+  top: -40%;
+  left: -30%;
+  transform: rotate(20deg);
+  animation: fsShine 2.4s infinite;
+}
+
+@keyframes fsShine {
+  0%   { transform: translateX(-50%) rotate(20deg); opacity: 0; }
+  40%  { opacity: 1; }
+  100% { transform: translateX(80%) rotate(20deg); opacity: 0; }
+}
+
+/* ===== BACK (tối giản) ===== */
+.fs-card-back {
+  transform: rotateY(180deg);
+  background: #ffffff;
+  color: #d32f2f;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.35;
+  border-radius: 12px;
+}
+
+.fs-prize-label,
+.fs-prize-note {
+  display: none !important;
+}
+
+.fs-prize-text {
+  color: #d32f2f;
+  font-size: 15px;
+  font-weight: 700;
+  padding: 0 6px;
+}
+
+/* ===== COLORS BY ELEMENT ===== */
+.fs-card[data-element="Kim"] .fs-card-front {
+  background: linear-gradient(135deg, #f7f7f7, #f1c40f);
+  color: #3d3d3d;
+}
+
+.fs-card[data-element="Mộc"] .fs-card-front {
+  background: linear-gradient(135deg, #2ecc71, #145a32);
+}
+
+.fs-card[data-element="Thủy"] .fs-card-front {
+  background: linear-gradient(135deg, #3498db, #0f4c75);
+}
+
+.fs-card[data-element="Hỏa"] .fs-card-front {
+  background: linear-gradient(135deg, #e74c3c, #f39c12);
+}
+
+.fs-card[data-element="Thổ"] .fs-card-front {
+  background: linear-gradient(135deg, #c49a6c, #8d6e63);
+}
+
+/* ===== FIREWORKS EFFECT ===== */
+.fs-fireworks {
+  position: relative;
+  width: 100%;
+  height: 0;
+  overflow: visible;
+  margin-bottom: 6px;
+}
+
+.fs-fireworks span {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  opacity: 0;
+  animation: fsFire 1.4s ease-out forwards;
+}
+
+.fs-fireworks span:nth-child(1){ left:20%; top:-8px; background:#ff7675; animation-delay:0s; }
+.fs-fireworks span:nth-child(2){ left:50%; top:-10px; background:#ffeaa7; animation-delay:.1s; }
+.fs-fireworks span:nth-child(3){ left:80%; top:-6px; background:#74b9ff; animation-delay:.2s; }
+.fs-fireworks span:nth-child(4){ left:35%; top:-14px; background:#55efc4; animation-delay:.25s; }
+.fs-fireworks span:nth-child(5){ left:65%; top:-18px; background:#fd79a8; animation-delay:.3s; }
+
+@keyframes fsFire {
+  0% {transform:translateY(0) scale(.5); opacity:0;}
+  40% {opacity:1;}
+  100% {transform:translateY(-20px) scale(1.5); opacity:0;}
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width:480px){
+  .fs-card {
+    width: 80px;
+    height: 115px;
+  }
+}
