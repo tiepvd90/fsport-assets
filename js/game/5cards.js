@@ -58,7 +58,7 @@
 
           <input id="fs-user-name"
                  type="text"
-                 placeholder="VD: Nguyễn Minh Tùng"
+                 placeholder="VD: Minh Tùng"
                  style="width:96%; max-width:260px; padding:7px 9px; border-radius:6px; border:1px solid #ccc; font-size:13px; margin-bottom:10px;" />
 
           <button class="btn-ball" id="fs-confirm-btn">Xác nhận</button>
