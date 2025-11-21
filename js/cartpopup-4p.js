@@ -245,7 +245,11 @@
       const matchedValue = mainAttr?.values?.find(v => (typeof v === "object" ? v.text === mainVal : v === mainVal));
       if (matchedValue && typeof matchedValue === "object" && matchedValue.image) {
         variant["Ảnh"] = matchedValue.image;
-      } else if (!variant["Ảnh"]) {
+      } 
+      // 🔥 Override ID theo lựa chọn màu
+if (matchedValue?.id) {
+    variant.id = matchedValue.id;
+}else if (!variant["Ảnh"]) {
         variant["Ảnh"] = "";
       }
     }
