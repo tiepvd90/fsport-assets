@@ -16,8 +16,8 @@
   <!-- ✅ JS định nghĩa -->
   <script>
     window.loai = "pickleball";
-    window.productCategory = "pickleballkm";
-    window.productPage = "active";
+    window.productCategory = "pickleball";
+    window.productPage = "activekm";
     window.imageCount = 5;
     window.imageFormat = "webp";
   </script>
@@ -166,9 +166,9 @@
       await injectHTML("/html/checkoutpopup.html", "checkoutPopup-placeholder");
       await injectHTML("/html/stickyfooter.html", "sticky-footer-placeholder");
 
-      await loadScript("https://friendly-kitten-d760ff.netlify.app/js/voucherpopup.js");
-      await loadScript("https://friendly-kitten-d760ff.netlify.app/js/cartpopup-4p.js");
-      await loadScript("https://friendly-kitten-d760ff.netlify.app/js/checkoutpopup.js");
+      await loadScript("/js/voucherpopup.js");
+      await loadScript("/js/cartpopup-4p.js");
+      await loadScript("/js/js/checkoutpopup.js");
 
       setTimeout(async () => {
         const map = await fetchVoucherMap();
