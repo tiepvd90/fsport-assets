@@ -10,22 +10,22 @@
           "text": "Active Xanh Dương / Xanh Lá",
           "image": "/assets/images/thumb/pickleball/active/at-xanh.webp",
           "id": "active-xanh",
-          "Gia": 1600000,
-          "GiaGoc": 2200000
+          "GiaOverride": 1600000,
+          "GiaGocOverride": 2200000
         },
         {
           "text": "Active Xanh / Hồng",
           "image": "/assets/images/thumb/pickleball/active/at-hong.webp",
           "id": "active-hong",
-          "Gia": 1600000,
-          "GiaGoc": 2200000
+          "GiaOverride": 1600000,
+          "GiaGocOverride": 2200000
         },
         {
           "text": "FastBlock Trắng",
           "image": "/assets/images/thumb/pickleball/active/fa-trang.webp",
           "id": "fastblock-trang",
-          "Gia": 1250000,
-          "GiaGoc": 1700000
+          "GiaOverride": 1250000,
+          "GiaGocOverride": 1700000
         }
       ]
     }
