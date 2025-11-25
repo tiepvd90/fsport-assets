@@ -1,0 +1,74 @@
+{
+  "category": "art",
+  "mainImageKey": "Thiết Kế",
+  "thuộc_tính": [
+    {
+      "label": "Thiết Kế",
+      "key": "Thiết Kế",
+      "display": "thumbnail",
+      "values": [
+        {
+          "text": "SET01",
+          "image": "/assets/images/gallery/art/noel/1.webp"
+        },
+        {
+          "text": "SET02",
+          "image": "/assets/images/gallery/art/noel/2.webp"
+        },
+        {
+          "text": "SET03",
+          "image": "/assets/images/gallery/art/noel/3.webp"
+        },
+        {
+          "text": "SET04",
+          "image": "/assets/images/gallery/art/noel/4.webp"
+        },
+        {
+          "text": "SET05",
+          "image": "/assets/images/gallery/art/noel/5.webp"
+        },
+        {
+          "text": "SET06",
+          "image": "/assets/images/gallery/art/noel/6.webp"
+        },
+        {
+          "text": "SET08",
+          "image": "/assets/images/gallery/art/noel/7.webp"
+        },
+        {
+          "text": "SET09",
+          "image": "/assets/images/gallery/art/noel/8.webp"
+        },
+        {
+          "text": "SET10",
+          "image": "/assets/images/gallery/art/noel/9.webp"
+        }
+      ]
+    },
+    {
+      "label": "Kích cỡ",
+      "key": "Kích cỡ",
+      "display": "button",
+      "values": [
+        {
+          "text": "Set Vừa(70x100cm)",
+          "GiaOverride": 299000,
+          "GiaGocOverride": 400000
+        },
+        {
+          "text": "Set Lớn(100x150cm)",
+          "GiaOverride": 449000,
+          "GiaGocOverride": 600000
+        }
+      ]
+    }
+  ],
+  "biến_thể": [
+    {
+      "id": "noel",
+      "category": "art",
+      "Giá": 299000,
+      "Giá gốc": 400000
+    }
+  ]
+}
