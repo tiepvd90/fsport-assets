@@ -19,6 +19,12 @@
           "GiaGocOverride": 2200000
         },
         {
+          "text": "Active Đen",
+          "image": "/assets/images/thumb/pickleball/active/black.webp",
+          "GiaOverride": 1600000,
+          "GiaGocOverride": 2200000
+        },
+        {
           "text": "FastBlock Trắng",
           "image": "/assets/images/thumb/pickleball/active/fa-trang.webp",
           "GiaOverride": 1250000,
