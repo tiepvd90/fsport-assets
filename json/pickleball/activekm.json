@@ -23,6 +23,7 @@
         {
           "text": "Active Đen",
           "image": "/assets/images/thumb/pickleball/active/black.webp",
+          "id": "active-den",
           "GiaOverride": 1600000,
           "GiaGocOverride": 2200000
         },
