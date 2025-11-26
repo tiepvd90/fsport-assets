@@ -52,13 +52,13 @@
       "values": [
         {
           "text": "Set Vừa(70x100cm)",
-          "GiaOverride": 249000,
-          "GiaGocOverride": 400000
+          "GiaOverride": 229000,
+          "GiaGocOverride": 300000
         },
         {
           "text": "Set Lớn(100x150cm)",
-          "GiaOverride": 419000,
-          "GiaGocOverride": 600000
+          "GiaOverride": 379000,
+          "GiaGocOverride": 500000
         }
       ]
     }
@@ -67,8 +67,8 @@
     {
       "id": "noel",
       "category": "art",
-      "Giá": 249000,
-      "Giá gốc": 400000
+      "Giá": 229000,
+      "Giá gốc": 300000
     }
   ]
 }
