@@ -8,11 +8,42 @@
     "link": "/pickleball/bag",
     "category": "pickleball",
     "tags": []
-  },{
-    "id": "active",
-    "title": "F-Sport Active - Carbon Toray lõi 5s Trợ Lực Mạnh",
-    "image": "/assets/images/gallery/pickleball/active/active22.webp",
-    "price": 1600000,
+  },
+  {
+    "id": "foam",
+    "title": "F-Sport FOAM Xanh Lá",
+    "image": "/assets/images/gallery/pickleball/foam/2.webp",
+    "price": 2200000,
+    "originalPrice": 2700000,
+    "link": "/pickleball/foam",
+    "category": "pickleball",
+    "tags": []
+  },
+  {
+    "id": "active-green",
+    "title": "F-Sport Active - Xanh Lá",
+    "image": "/assets/images/gallery/pickleball/active/1.webp",
+    "price": 1450000,
+    "originalPrice": 2200000,
+    "link": "/pickleball/active",
+    "category": "pickleball",
+    "tags": []
+  },
+  {
+    "id": "active-pink",
+    "title": "F-Sport Active - Hồng",
+    "image": "/assets/images/gallery/pickleball/active/3.webp",
+    "price": 1450000,
+    "originalPrice": 2200000,
+    "link": "/pickleball/active",
+    "category": "pickleball",
+    "tags": []
+  },
+  {
+    "id": "active-black",
+    "title": "F-Sport Active - Đen",
+    "image": "/assets/images/thumb/pickleball/active/black.webp",
+    "price": 1450000,
     "originalPrice": 2200000,
     "link": "/pickleball/active",
     "category": "pickleball",
@@ -22,7 +53,7 @@
     "id": "fastblock",
     "title": "F-Sport FastBlock - Carbon Toray lõi Gen4 cải tiến",
     "image": "/assets/images/gallery/pickleball/active/description/3.webp",
-    "price": 1250000,
+    "price": 1130000,
     "originalPrice": 1700000,
     "link": "/pickleball/active",
     "category": "pickleball",
