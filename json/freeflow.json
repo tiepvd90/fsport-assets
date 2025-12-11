@@ -229,22 +229,6 @@
     "productCategory": "pickleball",
     "sellerID": "huyenle"
   },
-    {
-    "itemId": "pickleball-ball-2",
-    "title": "Bóng Pickleball PRO Dạ Quang Tiêu Chuẩn Thi Đấu",
-    "price": 20000,
-    "originalPrice": 40000,
-    "contentType": "youtube",
-    "image": "https://fun-sport.co/assets/images/gallery/pickleball/pickleball-ball/2.webp",
-    "youtube": "mfcqGrHI2Bk",
-    "productPage": "/pickleball/ball",
-    "tags": [
-      "pickleball"
-    ],
-    "basePriority": 18,
-    "productCategory": "pickleball",
-    "sellerID": "huyenle"
-  },
   {
     "itemId": "pickleball-foam",
     "title": "Vợt Pickleball Lõi FOAM",
@@ -257,7 +241,7 @@
     "tags": [
       "pickleball"
     ],
-    "basePriority": 36,
+    "basePriority": 30,
     "productCategory": "pickleball",
     "sellerID": "huyenle"
   },
@@ -289,7 +273,7 @@
     "tags": [
       "pickleball"
     ],
-    "basePriority": 20,
+    "basePriority": 25,
     "productCategory": "pickleball",
     "sellerID": "huyenle"
   },
@@ -305,7 +289,7 @@
     "tags": [
       "pickleball"
     ],
-    "basePriority": 16,
+    "basePriority": 20,
     "productCategory": "pickleball",
     "sellerID": "huyenle"
   },
@@ -367,7 +351,7 @@
     "youtube": "dZcHSJHnGDI",
     "productPage": "/pickleball/active",
     "tags": ["pickleball", "active"],
-    "basePriority": 50,
+    "basePriority": 30,
     "productCategory": "pickleball",
     "sellerID": "huyenle"
   },
@@ -378,11 +362,25 @@
     "originalPrice": 2000000,
     "contentType": "youtube",
     "image": "/assets/images/thumb/pickleball/active/at-xanh.webp",
-    "youtube": "8efvPfoM0ww",
+    "youtube": "NU6QBSG7DO8",
     "productPage": "/pickleball/active",
     "tags": ["pickleball", "active"],
-    "basePriority": 50,
+    "basePriority": 30,
     "productCategory": "pickleball",
+    "sellerID": "huyenle"
+  },
+  {
+    "itemId": "setnoel-1",
+    "title": "Set Trang Trí Noel",
+    "price": 159000,
+    "originalPrice": 249000,
+    "contentType": "youtube",
+    "image": "/assets/images/gallery/art/noel/1.webp",
+    "youtube": "5kyVNWLHaFU",
+    "productPage": "/art/noel",
+    "tags": ["noel", "tranh"],
+    "basePriority": 99,
+    "productCategory": "art",
     "sellerID": "huyenle"
   },
   {
@@ -395,7 +393,7 @@
     "youtube": "",
     "productPage": "/pickleball/active",
     "tags": ["pickleball", "active"],
-    "basePriority": 20,
+    "basePriority": 30,
     "productCategory": "pickleball",
     "sellerID": "huyenle"
   },
