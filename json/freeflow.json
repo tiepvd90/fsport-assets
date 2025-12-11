@@ -311,7 +311,39 @@
     "tags": [
       "pickleball"
     ],
+    "basePriority": 18,
+    "productCategory": "pickleball",
+    "sellerID": "huyenle"
+  },
+  {
+    "itemId": "pickleball-foam",
+    "title": "Vợt Pickleball Lõi FOAM",
+    "price": 2200000,
+    "originalPrice": 3000000,
+    "contentType": "youtube",
+    "image": "/assets/images/gallery/pickleball/foam/1.webp",
+    "youtube": "mTjwnIJCL_o",
+    "productPage": "/pickleball/foam",
+    "tags": [
+      "pickleball"
+    ],
     "basePriority": 36,
+    "productCategory": "pickleball",
+    "sellerID": "huyenle"
+  },
+  {
+    "itemId": "pickleball-fastblock",
+    "title": "Vợt Pickleball Fastblock",
+    "price": 1130000,
+    "originalPrice": 2000000,
+    "contentType": "youtube",
+    "image": "/assets/images/gallery/pickleball/active/2.webp",
+    "youtube": "5a0uT2fN5Lg",
+    "productPage": "/pickleball/foam",
+    "tags": [
+      "pickleball"
+    ],
+    "basePriority": 20,
     "productCategory": "pickleball",
     "sellerID": "huyenle"
   },
