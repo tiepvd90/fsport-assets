@@ -1,0 +1,27 @@
+{
+  "thuộc_tính": [
+    {
+      "label": "Màu Sắc",
+      "key": "Màu Sắc",
+      "type": "option",
+      "display": "thumbnail",
+      "values": [
+        {
+          "text": "Xanh Lá",
+          "image": "/assets/images/gallery/pickleball/foam/6.webp",
+          "GiaOverride": 2200000,
+          "GiaGocOverride": 3000000
+        }
+      ]
+    }
+  ],
+  "biến_thể": [
+    {
+      "id": "pickleball-active",
+      "category": "pickleball",
+      "Giá": 2200000,
+      "Giá gốc": 3000000
+    }
+  ],
+  "mainImageKey": "Màu Sắc"
+}
