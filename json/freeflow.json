@@ -383,6 +383,20 @@
     "productCategory": "art",
     "sellerID": "huyenle"
   },
+    {
+    "itemId": "setnoel-2",
+    "title": "Set Trang Trí Noel",
+    "price": 159000,
+    "originalPrice": 249000,
+    "contentType": "image",
+    "image": "/assets/images/gallery/art/noel/1.webp",
+    "youtube": "",
+    "productPage": "/art/noel",
+    "tags": ["noel", "tranh"],
+    "basePriority": 99,
+    "productCategory": "art",
+    "sellerID": "huyenle"
+  },
   {
     "itemId": "pickleball-active-2",
     "title": "Carbon Toray - Pickleball F Sport",
