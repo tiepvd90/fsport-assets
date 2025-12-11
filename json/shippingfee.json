@@ -1,6 +1,7 @@
 {
   "byId": {
-    "pickleball-active": 0
+    "pickleball-active": 0,
+    "pickleball-foam": 0
   },
   "byCategory": {
     "chair": 35000,
