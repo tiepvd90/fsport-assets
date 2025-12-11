@@ -91,14 +91,19 @@ function processAndSortData(data) {
     return;
   }
 
-  // Không tách preferred / others nữa → tránh load lệch category
-  freeflowData = shuffle(
-    data.map((item) => ({
-      ...item,
-      finalPriority: (item.basePriority || 1) + Math.random() * 3
-    }))
-  );
+  // Tính finalPriority = basePriority + 1 chút random cho đỡ cứng
+  const arr = data.map(item => ({
+    ...item,
+    finalPriority: (item.basePriority || 1) + Math.random() * 0.01
+  }));
+
+  // Sắp xếp đúng nguyên tắc: basePriority cao → lên trên
+  arr.sort((a, b) => b.finalPriority - a.finalPriority);
+
+  // Lưu vào freeflowData
+  freeflowData = arr;
 }
+
 
 /* ======================================
    RENDER ITEM
