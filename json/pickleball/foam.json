@@ -7,9 +7,16 @@
       "display": "thumbnail",
       "values": [
         {
-          "text": "Xanh Lá",
+          "text": "Xanh Lá 16mm",
           "image": "/assets/images/gallery/pickleball/foam/6.webp",
           "id": "foam-green",
+          "GiaOverride": 2500000,
+          "GiaGocOverride": 3000000
+        },
+        {
+          "text": "Phantom 14mm",
+          "image": "/assets/images/gallery/pickleball/foam/9.webp",
+          "id": "foam-phantom",
           "GiaOverride": 2500000,
           "GiaGocOverride": 3000000
         }
