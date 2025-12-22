@@ -370,34 +370,6 @@
     "sellerID": "huyenle"
   },
   {
-    "itemId": "setnoel-1",
-    "title": "Set Trang Trí Noel",
-    "price": 159000,
-    "originalPrice": 249000,
-    "contentType": "youtube",
-    "image": "/assets/images/gallery/art/noel/1.webp",
-    "youtube": "5kyVNWLHaFU",
-    "productPage": "/art/noel",
-    "tags": ["noel", "tranh"],
-    "basePriority": 99,
-    "productCategory": "art",
-    "sellerID": "huyenle"
-  },
-    {
-    "itemId": "setnoel-2",
-    "title": "Set Trang Trí Noel",
-    "price": 159000,
-    "originalPrice": 249000,
-    "contentType": "image",
-    "image": "/assets/images/gallery/art/noel/1.webp",
-    "youtube": "",
-    "productPage": "/art/noel",
-    "tags": ["noel", "tranh"],
-    "basePriority": 99,
-    "productCategory": "art",
-    "sellerID": "huyenle"
-  },
-  {
     "itemId": "pickleball-active-2",
     "title": "Carbon Toray - Pickleball F Sport",
     "price": 1250000,
@@ -407,6 +379,20 @@
     "youtube": "",
     "productPage": "/pickleball/active",
     "tags": ["pickleball", "active"],
+    "basePriority": 30,
+    "productCategory": "pickleball",
+    "sellerID": "huyenle"
+  },
+  {
+    "itemId": "pickleball-phantom-1",
+    "title": "Carbon Tràn Viền - Lõi TruFoam 14mm",
+    "price": 2200000,
+    "originalPrice": 2500000,
+    "contentType": "youtube",
+    "image": "/assets/images/gallery/pickleball/foam/9.webp",
+    "youtube": "dq2EXladdEo",
+    "productPage": "/pickleball/foam",
+    "tags": ["pickleball", "phantom", "foam"],
     "basePriority": 30,
     "productCategory": "pickleball",
     "sellerID": "huyenle"
