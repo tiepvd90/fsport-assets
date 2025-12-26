@@ -7,7 +7,9 @@
 "id": "active-xanh": 0,
 "id": "active-hong": 0,
 "id": "active-den": 0,
-"id": "fastblock-trang" : 0
+"id": "fastblock-trang" : 0,
+    "id": "foam-hmhong": 0,
+    "id": "foam-hmden": 0
   },
   "byCategory": {
     "chair": 35000,
