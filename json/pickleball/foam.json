@@ -14,6 +14,27 @@
           "GiaGocOverride": 2500000
         },
         {
+          "text": "HM Hồng Đen 16mm",
+          "image": "/assets/images/gallery/pickleball/foam/hm-hong.webp",
+          "id": "foam-hmhong",
+          "GiaOverride": 2200000,
+          "GiaGocOverride": 2500000
+        },
+        {
+          "text": "HM Đen 16mm",
+          "image": "/assets/images/gallery/pickleball/foam/hm-den.webp",
+          "id": "foam-hmden",
+          "GiaOverride": 2200000,
+          "GiaGocOverride": 2500000
+        },
+        {
+          "text": "Xanh Lá 16mm",
+          "image": "/assets/images/gallery/pickleball/foam/6.webp",
+          "id": "foam-hmhong",
+          "GiaOverride": 2200000,
+          "GiaGocOverride": 2500000
+        },
+        {
           "text": "Phantom 14mm",
           "image": "/assets/images/gallery/pickleball/foam/9.webp",
           "id": "foam-phantom",
