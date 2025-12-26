@@ -9,12 +9,22 @@
     "category": "pickleball",
     "tags": []
   },
+{
+    "id": "foam-phantom",
+    "title": "FOAM Phantom Carbon Tràn Viền 14mm",
+    "image": "/assets/images/gallery/pickleball/foam/phantom.webp",
+    "price": 1900000,
+    "originalPrice": 2500000,
+    "link": "/pickleball/foam",
+    "category": "pickleball",
+    "tags": []
+  },
   {
-    "id": "foam",
+    "id": "foam-xanhla",
     "title": "F-Sport FOAM Xanh Lá",
     "image": "/assets/images/gallery/pickleball/foam/2.webp",
-    "price": 2200000,
-    "originalPrice": 2700000,
+    "price": 1900000,
+    "originalPrice": 2500000,
     "link": "/pickleball/foam",
     "category": "pickleball",
     "tags": []
