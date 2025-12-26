@@ -10,15 +10,15 @@
           "text": "Xanh Lá 16mm",
           "image": "/assets/images/gallery/pickleball/foam/6.webp",
           "id": "foam-green",
-          "GiaOverride": 2500000,
-          "GiaGocOverride": 3000000
+          "GiaOverride": 2200000,
+          "GiaGocOverride": 2500000
         },
         {
           "text": "Phantom 14mm",
           "image": "/assets/images/gallery/pickleball/foam/9.webp",
           "id": "foam-phantom",
-          "GiaOverride": 2500000,
-          "GiaGocOverride": 3000000
+          "GiaOverride": 2200000,
+          "GiaGocOverride": 2500000
         }
       ]
     }
@@ -27,8 +27,8 @@
     {
       "id": "pickleball-foam",
       "category": "pickleball",
-      "Giá": 2500000,
-      "Giá gốc": 3000000
+      "Giá": 2200000,
+      "Giá gốc": 2500000
     }
   ],
   "mainImageKey": "Màu Sắc"
