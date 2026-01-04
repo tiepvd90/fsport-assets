@@ -59,6 +59,46 @@
     "category": "pickleball",
     "tags": []
   },
+    {
+    "id": "foam-citizen",
+    "title": "F-Sport FOAM Citizen",
+    "image": "/assets/images/gallery/pickleball/foam/citizen/1.webp",
+    "price": 1900000,
+    "originalPrice": 2500000,
+    "link": "/pickleball/foam",
+    "category": "pickleball",
+    "tags": []
+  }, 
+    {
+    "id": "foam-gunner",
+    "title": "F-Sport FOAM Gunner",
+    "image": "/assets/images/gallery/pickleball/foam/gunner/1.webp",
+    "price": 1900000,
+    "originalPrice": 2500000,
+    "link": "/pickleball/foam",
+    "category": "pickleball",
+    "tags": []
+  }, 
+{
+    "id": "foam-hmden",
+    "title": "F-Sport FOAM HM Đen",
+    "image": "/assets/images/gallery/pickleball/foam/HM/5.webp",
+    "price": 1900000,
+    "originalPrice": 2500000,
+    "link": "/pickleball/foam",
+    "category": "pickleball",
+    "tags": []
+  }, 
+ {
+    "id": "foam-hmhong",
+    "title": "F-Sport FOAM HM Hồng Đen",
+    "image": "/assets/images/gallery/pickleball/foam/HM/2.webp",
+    "price": 1900000,
+    "originalPrice": 2500000,
+    "link": "/pickleball/foam",
+    "category": "pickleball",
+    "tags": []
+  },    
   {
     "id": "fastblock",
     "title": "F-Sport FastBlock - Carbon Toray lõi Gen4 cải tiến",
