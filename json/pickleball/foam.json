@@ -28,17 +28,17 @@
           "GiaGocOverride": 2500000
         },
         {
-          "text": "Gunner Đỏ(Đặt Trước)",
-          "image": "/assets/images/gallery/pickleball/foam/gunner/1.webp",
-          "id": "foam-gunner",
-          "GiaOverride": 2000000,
+          "text": "Đỏ Đen 16mm",
+          "image": "/assets/images/gallery/pickleball/foam/red/red-tam.webp",
+          "id": "foam-red",
+          "GiaOverride": 2200000,
           "GiaGocOverride": 2500000
         },
         {
-          "text": "Citizen Xanh Dương(Đặt Trước)",
-          "image": "/assets/images/gallery/pickleball/foam/citizen/1.webp",
-          "id": "foam-citizen",
-          "GiaOverride": 2000000,
+          "text": "Vàng 16mm",
+          "image": "/assets/images/gallery/pickleball/foam/yellow/yellow-tam.webp",
+          "id": "foam-yellow",
+          "GiaOverride": 2200000,
           "GiaGocOverride": 2500000
         },
         {
