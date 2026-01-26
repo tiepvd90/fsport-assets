@@ -1,25 +1,9 @@
 {
-  "byId": {
-    "pickleball-active": 0,
-    "pickleball-foam": 0,
-    "id": "foam-green": 0,
-"id": "foam-phantom": 0,
-"id": "active-xanh": 0,
-"id": "active-hong": 0,
-"id": "active-den": 0,
-"id": "fastblock-trang" : 0,
-    "id": "foam-hmhong": 0,
-    "id": "foam-hmden": 0,
-    "id": "foam-red": 0,
-    "id": "foam-yellow": 0
-  },
-  "byCategory": {
-    "chair": 35000,
-    "tshirt": 40000,
-    "sup": 80000,
-    "pickleball": 25000,
+    "chair": 15000,
+    "tshirt": 20000,
+    "sup": 50000,
+    "pickleball": 0,
     "giadung": 25000,
-    "art": 40000,
-    "ysandal": 25000
-  }
+    "art": 20000,
+    "ysandal": 15000
 }
