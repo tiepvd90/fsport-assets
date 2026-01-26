@@ -254,31 +254,26 @@ function saveCart() {
 // 🔹 PHÍ VẬN CHUYỂN
 // ------------------------
 function loadShippingFee() {
-  fetch("https://friendly-kitten-d760ff.netlify.app/json/shippingfee.json")
+  fetch("/json/shippingfee.json", { cache: "no-store" })
     .then(res => res.json())
     .then(data => {
-      const fees = window.cart.map(i => {
-        // Tầng 1: ưu tiên lấy theo ID (fix cứng)
-        if (i.id && data.byId && data.byId.hasOwnProperty(i.id)) {
-          return data.byId[i.id];
-        }
-
-        // Tầng 2: nếu không có ID, lấy theo category
-        if (i.category && data.byCategory && data.byCategory.hasOwnProperty(i.category)) {
-          return data.byCategory[i.category];
-        }
-
-        // Nếu không có cả hai
-        return 0;
+      const fees = (window.cart || []).map(item => {
+        const cat = String(item?.category || "").trim();
+        if (!cat) return 0;
+        // ✅ JSON là map thẳng: data[category]
+        return Number(data[cat]) || 0;
       });
 
-      const maxFee = Math.max(...fees, 0);
+      const maxFee = Math.max(0, ...fees);
       shippingFeeOriginal = maxFee;
       shippingFee = Math.round(maxFee * 0.4); // Giảm 60%
       updateCheckoutSummary();
+
+      // Debug nhanh (có thể xoá sau)
+      console.log("✅ Shipping loaded:", { fees, maxFee, shippingFee, sampleCart: window.cart?.slice?.(0, 5) });
     })
     .catch(err => {
-      console.warn("Không thể tải shippingfee.json:", err);
+      console.warn("Không thể tải /json/shippingfee.json:", err);
       shippingFeeOriginal = 0;
       shippingFee = 0;
       updateCheckoutSummary();
