@@ -266,7 +266,8 @@ function loadShippingFee() {
 
       const maxFee = Math.max(0, ...fees);
       shippingFeeOriginal = maxFee;
-      shippingFee = Math.round(maxFee * 0.4); // Giảm 60%
+      //bỏ lấy 40%: shippingFee = Math.round(maxFee * 0.4); // Giảm 60%
+      shippingFee = maxFee; // ✅ lấy đúng phí ship theo json (100%)
       updateCheckoutSummary();
 
       // Debug nhanh (có thể xoá sau)
