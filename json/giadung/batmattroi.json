@@ -1,0 +1,77 @@
+{
+  "thuộc_tính": [
+    {
+      "label": "Phân Loại",
+      "key": "Phân Loại",
+      "type": "option",
+      "display": "thumbnail",
+      "values": [
+        {
+          "text": "Bộ 7 món – Hoa Sen",
+          "image": "/assets/images/gallery/giadung/batmattroi/sen/8.webp",
+          "id": "hoasen7",
+          "GiaOverride": 225000,
+          "GiaGocOverride": 337500
+        },
+        {
+          "text": "Bộ 15 món – Hoa Sen",
+          "image": "/assets/images/gallery/giadung/batmattroi/1.webp",
+          "id": "hoasen15",
+          "GiaOverride": 315000,
+          "GiaGocOverride": 472500
+        },
+        {
+          "text": "Bộ 7 món – Vân Đá",
+          "image": "/assets/images/gallery/giadung/batmattroi/4.webp",
+          "id": "vanda7",
+          "GiaOverride": 239000,
+          "GiaGocOverride": 358500
+        },
+        {
+          "text": "Bộ 15 món – Vân Đá",
+          "image": "/assets/images/gallery/giadung/batmattroi/3.webp",
+          "id": "vanda15",
+          "GiaOverride": 329000,
+          "GiaGocOverride": 493500
+        },
+        {
+          "text": "Bát Gà Trắng",
+          "image": "/assets/images/gallery/giadung/batmattroi/batga-trang.webp",
+          "id": "batga-trang",
+          "GiaOverride": 129000,
+          "GiaGocOverride": 193500
+        },
+        {
+          "text": "Bát Gà Hoa Sen",
+          "image": "/assets/images/gallery/giadung/batmattroi/batga-hoasen.webp",
+          "id": "batga-hoasen",
+          "GiaOverride": 139000,
+          "GiaGocOverride": 208500
+        },
+        {
+          "text": "Mâm Vân Đỏ",
+          "image": "/assets/images/gallery/giadung/batmattroi/mam-vando.webp",
+          "id": "mam-vando",
+          "GiaOverride": 129000,
+          "GiaGocOverride": 193500
+        },
+        {
+          "text": "Mâm Vân Tre",
+          "image": "/assets/images/gallery/giadung/batmattroi/mam-vantre.webp",
+          "id": "mam-vantrang",
+          "GiaOverride": 129000,
+          "GiaGocOverride": 193500
+        }
+      ]
+    }
+  ],
+  "biến_thể": [
+    {
+      "id": "batdia-mattroi",
+      "category": "giadung",
+      "Giá": 129000,
+      "Giá gốc": 193500
+    }
+  ],
+  "mainImageKey": "Phân Loại"
+}
