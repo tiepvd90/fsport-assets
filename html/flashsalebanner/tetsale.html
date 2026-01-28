@@ -1,0 +1,108 @@
+<!-- 🧧 TẾT SALE BANNER – RED & GOLD FESTIVE STYLE -->
+<div class="tet-sale-banner">
+  <div class="tet-sale-inner">
+    <span class="tet-sale-text">ƯU ĐÃI KỊCH SÀN – TẾT RỘN RÀNG</span>
+  </div>
+</div>
+
+<style>
+  .tet-sale-banner{
+    position: relative;
+    width:100%;
+    height:50px;
+    overflow:hidden;
+    background: linear-gradient(
+      135deg,
+      #B80000 0%,
+      #D40000 30%,
+      #FF1A1A 55%,
+      #FFB000 100%
+    );
+    box-shadow:
+      0 6px 22px rgba(180,0,0,.45),
+      inset 0 1px 0 rgba(255,215,120,.45);
+  }
+
+  .tet-sale-inner{
+    position: relative;
+    z-index: 2;
+    height:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:0 16px;
+    color:#FFF8E1;
+    font-family: "Be Vietnam Pro", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    font-weight:800;
+    letter-spacing:.6px;
+    text-transform: uppercase;
+    text-shadow:
+      0 1px 0 rgba(120,0,0,.6),
+      0 2px 6px rgba(0,0,0,.35);
+  }
+
+  /* ✨ Kim tuyến vàng lướt ngang */
+  .tet-sale-banner::after{
+    content:"";
+    position:absolute;
+    top:-35%;
+    left:-30%;
+    width:90px;
+    height:180%;
+    transform: skewX(-18deg);
+    background: linear-gradient(
+      90deg,
+      rgba(255,215,120,0) 0%,
+      rgba(255,215,120,0.0) 35%,
+      rgba(255,240,180,1) 50%,
+      rgba(255,215,120,0.0) 65%,
+      rgba(255,215,120,0) 100%
+    );
+    filter: blur(.6px);
+    mix-blend-mode: screen;
+    animation: tetGlint 3.8s ease-in-out infinite;
+  }
+
+  /* 🟡 Ánh vàng mảnh kiểu lân – pháo */
+  .tet-sale-banner::before{
+    content:"";
+    position:absolute;
+    top:-45%;
+    left:-40%;
+    width:36px;
+    height:200%;
+    transform: skewX(-22deg);
+    background: linear-gradient(
+      90deg,
+      rgba(255,255,255,0) 0%,
+      rgba(255,255,255,.9) 50%,
+      rgba(255,255,255,0) 100%
+    );
+    opacity:.85;
+    filter: blur(.3px);
+    mix-blend-mode: screen;
+    animation: tetGlintThin 3.8s ease-in-out infinite;
+    animation-delay:.12s;
+  }
+
+  @keyframes tetGlint{
+    0%{ left:-35%; opacity:0; }
+    10%{ opacity:1; }
+    45%{ left:60%; opacity:1; }
+    65%{ left:110%; opacity:0; }
+    100%{ left:110%; opacity:0; }
+  }
+
+  @keyframes tetGlintThin{
+    0%{ left:-45%; opacity:0; }
+    12%{ opacity:1; }
+    42%{ left:52%; opacity:.9; }
+    65%{ left:110%; opacity:0; }
+    100%{ left:110%; opacity:0; }
+  }
+
+  @media (max-width:420px){
+    .tet-sale-banner{ height:46px; }
+    .tet-sale-inner{ font-size:13.5px; }
+  }
+</style>
