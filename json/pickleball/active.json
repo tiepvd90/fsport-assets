@@ -10,28 +10,28 @@
           "text": "Active Xanh Dương / Xanh Lá",
           "image": "/assets/images/thumb/pickleball/active/at-xanh.webp",
           "id": "active-xanh",
-          "GiaOverride": 1600000,
+          "GiaOverride": 1299000,
           "GiaGocOverride": 2200000
         },
         {
           "text": "Active Xanh / Hồng",
           "image": "/assets/images/thumb/pickleball/active/at-hong.webp",
           "id": "active-hong",
-          "GiaOverride": 1600000,
+          "GiaOverride": 1299000,
           "GiaGocOverride": 2200000
         },
         {
           "text": "Active Đen",
           "image": "/assets/images/thumb/pickleball/active/black.webp",
           "id": "active-den",
-          "GiaOverride": 1600000,
+          "GiaOverride": 1299000,
           "GiaGocOverride": 2200000
         },
         {
           "text": "FastBlock Trắng",
           "image": "/assets/images/thumb/pickleball/active/fa-trang.webp",
           "id": "fastblock-trang",
-          "GiaOverride": 1250000,
+          "GiaOverride": 999000,
           "GiaGocOverride": 1700000
         }
       ]
@@ -42,7 +42,7 @@
     {
       "id": "pickleball-active",
       "category": "pickleball",
-      "Giá": 1600000,
+      "Giá": 1299000,
       "Giá gốc": 2200000
     }
   ],
