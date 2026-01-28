@@ -24,42 +24,49 @@
           "text": "Bộ 7 món – Vân Đá",
           "image": "/assets/images/gallery/giadung/batmattroi/4.webp",
           "id": "vanda7",
-          "GiaOverride": 239000,
+          "GiaOverride": 240000,
           "GiaGocOverride": 358500
         },
         {
           "text": "Bộ 15 món – Vân Đá",
           "image": "/assets/images/gallery/giadung/batmattroi/3.webp",
           "id": "vanda15",
-          "GiaOverride": 329000,
+          "GiaOverride": 330000,
           "GiaGocOverride": 493500
+        },
+                {
+          "text": "Bộ 7 món – Thủy Tiên",
+          "image": "/assets/images/gallery/giadung/batmattroi/5.webp",
+          "id": "hoasen7",
+          "GiaOverride": 225000,
+          "GiaGocOverride": 337500
+        },
+        {
+          "text": "Bộ 15 món – Thủy Tiên",
+          "image": "/assets/images/gallery/giadung/batmattroi/thuytien/77.webp",
+          "id": "hoasen15",
+          "GiaOverride": 315000,
+          "GiaGocOverride": 472500
         },
         {
           "text": "Bát Gà Trắng",
           "image": "/assets/images/gallery/giadung/batmattroi/batga-trang.webp",
           "id": "batga-trang",
-          "GiaOverride": 129000,
+          "GiaOverride": 130000,
           "GiaGocOverride": 193500
         },
         {
           "text": "Bát Gà Hoa Sen",
           "image": "/assets/images/gallery/giadung/batmattroi/batga-hoasen.webp",
           "id": "batga-hoasen",
-          "GiaOverride": 139000,
+          "GiaOverride": 140000,
           "GiaGocOverride": 208500
         },
         {
-          "text": "Mâm Vân Đỏ",
-          "image": "/assets/images/gallery/giadung/batmattroi/mam-vando.webp",
+          "text": "Mâm Gỗ Xịn",
+          "image": "/assets/images/gallery/giadung/batmattroi/mam-go2.webp",
           "id": "mam-vando",
-          "GiaOverride": 129000,
-          "GiaGocOverride": 193500
-        },
-        {
-          "text": "Mâm Vân Tre",
-          "image": "/assets/images/gallery/giadung/batmattroi/mam-vantre.webp",
-          "id": "mam-vantrang",
-          "GiaOverride": 129000,
+          "GiaOverride": 150000,
           "GiaGocOverride": 193500
         }
       ]
