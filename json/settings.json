@@ -1,63 +1,9 @@
 {
   "vouchers": [
     {
-      "id": "foam-phantom",
+      "id": "example",
       "category": "pickleball",
       "amount": 300000,
-      "note": ""
-    },
-    {
-      "id": "foam-hmhong",
-      "category": "pickleball",
-      "amount": 300000,
-      "note": ""
-    },
-    {
-      "id": "foam-hmden",
-      "category": "pickleball",
-      "amount": 300000,
-      "note": ""
-    },
-    {
-      "id": "foam-red",
-      "category": "pickleball",
-      "amount": 300000,
-      "note": ""
-    },
-    {
-      "id": "foam-yellow",
-      "category": "pickleball",
-      "amount": 300000,
-      "note": ""
-    },
-    {
-      "id": "foam-green",
-      "category": "pickleball",
-      "amount": 300000,
-      "note": ""
-    },
-    {
-      "id": "active-hong",
-      "category": "pickleball",
-      "amount": 150000,
-      "note": ""
-    },
-    {
-      "id": "active-xanh",
-      "category": "pickleball",
-      "amount": 150000,
-      "note": ""
-    },
-    {
-      "id": "active-den",
-      "category": "pickleball",
-      "amount": 150000,
-      "note": ""
-    },
-    {
-      "id": "fastblock-trang",
-      "category": "pickleball",
-      "amount": 120000,
       "note": ""
     }
   ]
