@@ -144,7 +144,11 @@
   {
     "url": "https://www.youtube.com/shorts/f0olxjvqwA0",
     "title": "Khách Test Tại Sân"
-  },  
+  },
+  {
+    "url": "https://www.youtube.com/shorts/Ibzji1UdfJ8",
+    "title": "Dòng FullFoam Mới"
+  },
   {
     "url": "https://www.youtube.com/shorts/eMXa3Gwt3_Y",
     "title": "FOAM dưới 2M"
@@ -174,10 +178,10 @@
     "title": "video lõi vợt"
   }
 ],
-  "foam": [
+  "fullfoam": [
   {
     "url": "https://www.youtube.com/shorts/Ibzji1UdfJ8",
-    "title": "Dòng Vợt FullFoam Mới"
+    "title": "Dòng FullFoam Mới"
   },
   {
     "url": "https://www.youtube.com/shorts/mTjwnIJCL_o",
