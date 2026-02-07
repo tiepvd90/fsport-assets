@@ -246,6 +246,22 @@
     "sellerID": "huyenle"
   },
     {
+    "itemId": "pickleball-foam-10",
+    "title": "Tổng Hợp Lõi FOAM",
+    "price": 1699000,
+    "originalPrice": 3000000,
+    "contentType": "youtube",
+    "image": "/assets/images/gallery/pickleball/foam/1.webp",
+    "youtube": "h5ItZuHE3QA",
+    "productPage": "/pickleball/foam",
+    "tags": [
+      "pickleball"
+    ],
+    "basePriority": 30,
+    "productCategory": "pickleball",
+    "sellerID": "huyenle"
+  },
+    {
     "itemId": "pickleball-fullfoam-1",
     "title": "Vợt Lõi FOAM- Viền Crom",
     "price": 2090000,
