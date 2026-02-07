@@ -246,6 +246,38 @@
     "sellerID": "huyenle"
   },
     {
+    "itemId": "pickleball-fullfoam-1",
+    "title": "Vợt Lõi FOAM- Viền Crom",
+    "price": 2090000,
+    "originalPrice": 3000000,
+    "contentType": "youtube",
+    "image": "/assets/images/gallery/pickleball/fullfoam/1.webp",
+    "youtube": "Ibzji1UdfJ8",
+    "productPage": "/pickleball/fullfoam",
+    "tags": [
+      "pickleball"
+    ],
+    "basePriority": 30,
+    "productCategory": "pickleball",
+    "sellerID": "huyenle"
+  },
+      {
+    "itemId": "pickleball-fullfoam-2",
+    "title": "Vợt Lõi FOAM- Viền Crom",
+    "price": 2090000,
+    "originalPrice": 3000000,
+    "contentType": "image",
+    "image": "/assets/images/gallery/pickleball/fullfoam/1.webp",
+    "youtube": "",
+    "productPage": "/pickleball/fullfoam",
+    "tags": [
+      "pickleball"
+    ],
+    "basePriority": 30,
+    "productCategory": "pickleball",
+    "sellerID": "huyenle"
+  },
+    {
     "itemId": "pickleball-foam-2",
     "title": "Vợt Pickleball Lõi FOAM",
     "price": 1699000,
