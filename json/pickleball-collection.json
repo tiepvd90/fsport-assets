@@ -9,13 +9,23 @@
     "category": "pickleball",
     "tags": []
   },
+  {
+    "id": "fullfoam-cam",
+    "title": "F-Sport FullFOAM Cam Vũ Trụ",
+    "image": "/assets/images/gallery/pickleball/fullfoam/2.webp",
+    "price": 2090000,
+    "originalPrice": 2700000,
+    "link": "/pickleball/fullfoam",
+    "category": "pickleball",
+    "tags": []
+  },
 {
-    "id": "foam-phantom",
-    "title": "FOAM Phantom Carbon Tràn Viền 14mm",
-    "image": "/assets/images/gallery/pickleball/foam/phantom.webp",
-    "price": 1699000,
-    "originalPrice": 2500000,
-    "link": "/pickleball/foam",
+    "id": "fullfoam-xanh",
+    "title": "F-Sport FullFOAM Xanh Dương",
+    "image": "/assets/images/gallery/pickleball/fullfoam/8.webp",
+    "price": 2090000,
+    "originalPrice": 2700000,
+    "link": "/pickleball/fullfoam",
     "category": "pickleball",
     "tags": []
   },
@@ -78,7 +88,7 @@
     "link": "/pickleball/foam",
     "category": "pickleball",
     "tags": []
-  },    
+  },
   {
     "id": "fastblock",
     "title": "F-Sport FastBlock - Carbon Toray lõi Gen4 cải tiến",
@@ -89,16 +99,16 @@
     "category": "pickleball",
     "tags": []
   },
-{
-    "id": "foam-gunner",
-    "title": "F-Sport FOAM Gunner",
-    "image": "/assets/images/gallery/pickleball/foam/gunner/1.webp",
+  {
+    "id": "foam-phantom",
+    "title": "FOAM Phantom Carbon Tràn Viền 14mm",
+    "image": "/assets/images/gallery/pickleball/foam/phantom.webp",
     "price": 1699000,
     "originalPrice": 2500000,
     "link": "/pickleball/foam",
     "category": "pickleball",
     "tags": []
-  }, 
+  },
   {
     "id": "gen4-3lop",
     "title": "F-Sport Gen4 - Vợt Ép Nóng- Carbon 3 Lớp- dầy 16mm",
@@ -146,16 +156,6 @@
     "price": 21000,
     "originalPrice": 50000,
     "link": "/pickleball/ball",
-    "category": "pickleball",
-    "tags": []
-  },
-  {
-    "id": "pickleball-cover",
-    "title": "Túi Bảo Vệ Mặt Vợt",
-    "image": "https://i.postimg.cc/2SsWKtMJ/1.webp",
-    "price": 50000,
-    "originalPrice": 70000,
-    "link": "/pickleball/cover",
     "category": "pickleball",
     "tags": []
   }
