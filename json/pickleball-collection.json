@@ -10,21 +10,21 @@
     "tags": []
   },
   {
-    "id": "fullfoam-cam",
-    "title": "F-Sport FullFOAM Cam Vũ Trụ",
+    "id": "CONTROL-cam",
+    "title": "F-Sport SMART CONTROL Cam Vũ Trụ",
     "image": "/assets/images/gallery/pickleball/fullfoam/2.webp",
-    "price": 2090000,
-    "originalPrice": 2700000,
+    "price": 1499000,
+    "originalPrice": 1900000,
     "link": "/pickleball/fullfoam",
     "category": "pickleball",
     "tags": []
   },
 {
-    "id": "fullfoam-xanh",
+    "id": "CONTROL-xanh",
     "title": "F-Sport FullFOAM Xanh Dương",
     "image": "/assets/images/gallery/pickleball/fullfoam/8.webp",
-    "price": 2090000,
-    "originalPrice": 2700000,
+    "price": 1499000,
+    "originalPrice": 1900000,
     "link": "/pickleball/fullfoam",
     "category": "pickleball",
     "tags": []
@@ -39,6 +39,16 @@
     "category": "pickleball",
     "tags": []
   },
+ {
+    "id": "foam-do",
+    "title": "F-Sport FOAM Xanh Lá",
+    "image": "/assets/images/gallery/pickleball/foam/red/red-tam.webp",
+    "price": 1699000,
+    "originalPrice": 2500000,
+    "link": "/pickleball/foam",
+    "category": "pickleball",
+    "tags": []
+  }, 
   {
     "id": "active-green",
     "title": "F-Sport Active - Xanh Lá",
