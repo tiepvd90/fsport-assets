@@ -1,6 +1,6 @@
 /* ======================================================
  * 🎯 OUTBOUND CLICK TRACKER — fun-sport.co (SYNCED FINAL)
- * Gửi log click về Make.com và chuyển hướng Shopee (same tab)
+ * Gửi log click về Make.com và chuyển hướng Shopee (new tab)
  * ====================================================== */
 
 (function () {
@@ -29,7 +29,7 @@
         console.warn("⚠️ Lỗi khi gửi log:", err);
       })
       .finally(() => {
-        // ✅ Chuyển hướng Shopee trong cùng tab (trải nghiệm tốt hơn trên mobile)
+        // ✅ Chuyển hướng Shopee tab mới
         if (window.shopeeLink) {
           window.open(window.shopeeLink, "_blank");
         } else {
