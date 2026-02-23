@@ -31,7 +31,7 @@
       .finally(() => {
         // ✅ Chuyển hướng Shopee trong cùng tab (trải nghiệm tốt hơn trên mobile)
         if (window.shopeeLink) {
-          window.location.href = window.shopeeLink;
+          window.open(window.shopeeLink, "_blank");
         } else {
           alert("⚠️ Thiếu window.shopeeLink — không thể mở Shopee!");
         }
