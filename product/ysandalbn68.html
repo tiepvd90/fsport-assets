@@ -339,6 +339,26 @@
         }, 200);
       });
   </script>
+
+        <!-- ✅ Outbound click tracking -->
+    <script src="/js/aff/outbound-click.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const btn = document.getElementById("buyShopeeBtn");
+        if (btn) {
+          btn.addEventListener("click", e => {
+            e.preventDefault();
+            if (typeof trackOutboundClick === "function") {
+              trackOutboundClick();
+            } else {
+              console.warn("⚠️ outbound-click.js chưa load — mở trực tiếp Shopee");
+              window.location.href = window.shopeeLink;
+            }
+          });
+        }
+      });
+    </script>
+
     <script src="/js/base.js"></script>
 </body>
 </html>
