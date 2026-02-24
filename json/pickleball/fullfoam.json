@@ -19,13 +19,6 @@
           "id": "control-xanh",
           "GiaOverride": 1499000,
           "GiaGocOverride": 1900000
-        },
-		{
-          "text": "FullFoam-Cam Vũ Trụ 16mm",
-          "image": "/assets/images/gallery/pickleball/fullfoam/fullfoam1.webp",
-          "id": "control-cam",
-          "GiaOverride": 2090000,
-          "GiaGocOverride": 2500000
         }
       ]
     }
