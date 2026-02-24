@@ -25,7 +25,8 @@
           "image": "/assets/images/gallery/pickleball/fullfoam/fullfoam1.webp",
           "id": "control-cam",
           "GiaOverride": 2090000,
-          "GiaGocOverride": 2500000
+          "GiaGocOverride": 2500000,
+			"disabled": true
         }
       ]
     }
