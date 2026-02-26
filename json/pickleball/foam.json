@@ -7,20 +7,6 @@
       "display": "thumbnail",
       "values": [
         {
-          "text": "Xanh Lá 16mm",
-          "image": "/assets/images/gallery/pickleball/foam/6.webp",
-          "id": "foam-green",
-          "GiaOverride": 1699000,
-          "GiaGocOverride": 2500000
-        },
-		{
-          "text": "Màu Đỏ Đen 16mm",
-          "image": "/assets/images/gallery/pickleball/foam/red/red-tam.webp",
-          "id": "foam-red",
-          "GiaOverride": 1699000,
-          "GiaGocOverride": 2500000
-        },  
-        {
           "text": "HM Hồng Đen 16mm",
           "image": "/assets/images/gallery/pickleball/foam/HM/2.webp",
           "id": "foam-hmhong",
@@ -34,13 +20,41 @@
           "GiaOverride": 1699000,
           "GiaGocOverride": 2500000
         },
+		{
+          "text": "Control-Cam Vũ Trụ 16mm",
+          "image": "/assets/images/gallery/pickleball/fullfoam/5.webp",
+          "id": "control-cam",
+          "GiaOverride": 1499000,
+          "GiaGocOverride": 1900000
+        },
+		{
+          "text": "Control-Xanh Dương 16mm",
+          "image": "/assets/images/gallery/pickleball/fullfoam/6.webp",
+          "id": "control-xanh",
+          "GiaOverride": 1499000,
+          "GiaGocOverride": 1900000
+        },  
         {
           "text": "Phantom 14mm",
           "image": "/assets/images/gallery/pickleball/foam/9.webp",
           "id": "foam-phantom",
           "GiaOverride": 1699000,
           "GiaGocOverride": 2500000
-        }
+        },
+		{
+          "text": "Xanh Lá 16mm(Đặt Trước, có hàng sau 1 tuần)",
+          "image": "/assets/images/gallery/pickleball/foam/6.webp",
+          "id": "foam-green",
+          "GiaOverride": 1699000,
+          "GiaGocOverride": 2500000
+        },  
+		{
+          "text": "Màu Đỏ Đen 16mm(Đặt Trước, có hàng sau 1 tuần)"",
+          "image": "/assets/images/gallery/pickleball/foam/red/red-tam.webp",
+          "id": "foam-red",
+          "GiaOverride": 1699000,
+          "GiaGocOverride": 2500000
+        } 
       ]
     }
   ],
