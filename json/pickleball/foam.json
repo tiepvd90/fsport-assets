@@ -40,7 +40,8 @@
           "id": "control-cam",
           "GiaOverride": 1499000,
           "GiaGocOverride": 1900000
-        }
+        },
+		{  
           "text": "Phantom 14mm",
           "image": "/assets/images/gallery/pickleball/foam/9.webp",
           "id": "foam-phantom",
