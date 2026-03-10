@@ -254,27 +254,31 @@ function saveCart() {
 // 🔹 PHÍ VẬN CHUYỂN
 // ------------------------
 function loadShippingFee() {
-  fetch("/json/shippingfee.json", { cache: "no-store" })
+  fetch("https://friendly-kitten-d760ff.netlify.app/json/shippingfee.json")
     .then(res => res.json())
     .then(data => {
-      const fees = (window.cart || []).map(item => {
-        const cat = String(item?.category || "").trim();
-        if (!cat) return 0;
-        // ✅ JSON là map thẳng: data[category]
-        return Number(data[cat]) || 0;
+      const fees = window.cart.map(i => {
+        // Tầng 1: ưu tiên lấy theo ID (fix cứng)
+        if (i.id && data.byId && data.byId.hasOwnProperty(i.id)) {
+          return data.byId[i.id];
+        }
+
+        // Tầng 2: nếu không có ID, lấy theo category
+        if (i.category && data.byCategory && data.byCategory.hasOwnProperty(i.category)) {
+          return data.byCategory[i.category];
+        }
+
+        // Nếu không có cả hai
+        return 0;
       });
 
-      const maxFee = Math.max(0, ...fees);
+      const maxFee = Math.max(...fees, 0);
       shippingFeeOriginal = maxFee;
-      //bỏ lấy 40%: shippingFee = Math.round(maxFee * 0.4); // Giảm 60%
-      shippingFee = maxFee; // ✅ lấy đúng phí ship theo json (100%)
+      shippingFee = Math.round(maxFee * 0.4); // Giảm 60%
       updateCheckoutSummary();
-
-      // Debug nhanh (có thể xoá sau)
-      console.log("✅ Shipping loaded:", { fees, maxFee, shippingFee, sampleCart: window.cart?.slice?.(0, 5) });
     })
     .catch(err => {
-      console.warn("Không thể tải /json/shippingfee.json:", err);
+      console.warn("Không thể tải shippingfee.json:", err);
       shippingFeeOriginal = 0;
       shippingFee = 0;
       updateCheckoutSummary();
@@ -419,17 +423,30 @@ window.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-// ✅ Inject HTML thankyouPopup từ file riêng
-fetch("/html/thanksandupsell.html")
-  .then(res => res.text())
+// ✅ Inject HTML thankyouPopup từ file /html/thanks-afterpurchase.html
+fetch("/html/thanks-afterpurchase.html")
+  .then(res => {
+    if (!res.ok) throw new Error("Không load được thanks-afterpurchase.html");
+    return res.text();
+  })
   .then(html => {
     const temp = document.createElement("div");
     temp.innerHTML = html;
+
+    // 1) Inject style
+    temp.querySelectorAll("style").forEach(styleTag => {
+      document.head.appendChild(styleTag.cloneNode(true));
+    });
+
+    // 2) Inject popup HTML
     const popup = temp.querySelector("#thankyouPopup");
     if (popup) {
       document.body.appendChild(popup);
+    } else {
+      console.warn("⚠ Không tìm thấy #thankyouPopup trong thanks-afterpurchase.html");
     }
-    // Inject script trong file
+
+    // 3) Inject script
     temp.querySelectorAll("script").forEach(s => {
       const newScript = document.createElement("script");
       if (s.src) {
@@ -439,5 +456,7 @@ fetch("/html/thanksandupsell.html")
       }
       document.body.appendChild(newScript);
     });
+
+    console.log("✅ Đã inject thankyou popup");
   })
   .catch(err => console.warn("Không load được thankyouPopup:", err));
