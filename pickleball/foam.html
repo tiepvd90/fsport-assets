@@ -7,8 +7,8 @@
 
   <!-- ✅ CSS -->
   <link rel="stylesheet" href="/css/base.css" />
-  <link rel="stylesheet" href="https://friendly-kitten-d760ff.netlify.app/css/cartpopup.css" />
-  <link rel="stylesheet" href="https://friendly-kitten-d760ff.netlify.app/css/checkoutpopup.css" />
+  <link rel="stylesheet" href="/css/cartpopup.css" />
+  <link rel="stylesheet" href="/css/checkoutpopup.css" />
   <link rel="stylesheet" href="/css/productdescription.css" />
   <link rel="stylesheet" href="../css/slideshow.css" />
   <link rel="icon" type="image/png" href="/favicon.png" />
@@ -155,9 +155,9 @@
       await injectHTML("/html/checkoutpopup.html", "checkoutPopup-placeholder");
       await injectHTML("/html/stickyfooter.html", "sticky-footer-placeholder");
 
-      await loadScript("https://friendly-kitten-d760ff.netlify.app/js/voucherpopup.js");
-      await loadScript("https://friendly-kitten-d760ff.netlify.app/js/cartpopup-4p.js");
-      await loadScript("https://friendly-kitten-d760ff.netlify.app/js/checkoutpopup.js");
+      await loadScript("/js/voucherpopup.js");
+      await loadScript("/js/cartpopup-4p.js");
+      await loadScript("/js/checkoutpopup.js");
 
       setTimeout(async () => {
         const map = await fetchVoucherMap();
@@ -171,7 +171,7 @@
   </script>
 
   <!-- ✅ Tracking -->
-  <script src="https://friendly-kitten-d760ff.netlify.app/js/tracking.js"></script>
+  <script src="/js/tracking.js"></script>
   <div id="base-placeholder"></div>
   <script>
     fetch("/html/base.html")
@@ -189,6 +189,86 @@
         }
       });
   </script>
+  <!-- ✅ Popup Voucher 150K Active - 120K Fastblock -->
+<style>
+  #voucherNotice {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60%;
+    max-width: 340px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    padding: 18px 20px;
+    text-align: center;
+    z-index: 99999;
+    font-family: 'Be Vietnam Pro', sans-serif;
+    display: none;
+    animation: fadeIn 0.4s ease;
+  }
+  #voucherNotice h3 {
+    font-size: 15px;
+    font-weight: 700;
+    color: #d32f2f;
+    margin: 0 0 8px;
+  }
+  #voucherNotice p {
+    font-size: 13px;
+    color: #444;
+    margin: 0 0 8px;
+  }
+  #voucherNotice .note {
+    font-size: 12px;
+    color: #666;
+    font-style: italic;
+    margin-bottom: 12px;
+  }
+  #voucherNotice button {
+    background: #d32f2f;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+  #voucherNotice button:hover {
+    background: #b71c1c;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translate(-50%, -45%); }
+    to { opacity: 1; transform: translate(-50%, -50%); }
+  }
+</style>
+
+<div id="voucherNotice">
+  <h3>🎁 Voucher 300K cho vợt FOAM</h3>
+  <p>Đang được áp dụng cho đơn hàng này!</p>
+  <div class="note">*Mỗi ngày chỉ áp dụng cho 5 đơn hàng*</div>
+  <button id="getVoucherBtn">Lấy Voucher Ngay</button>
+</div>
+
+<script>
+  // Hiển thị popup sau 1 giây khi load trang
+  window.addEventListener("load", () => {
+    setTimeout(() => {
+      const popup = document.getElementById("voucherNotice");
+      if (popup) popup.style.display = "block";
+    }, 1000);
+  });
+
+  // Đóng popup khi click nút
+  document.addEventListener("click", (e) => {
+    if (e.target.id === "getVoucherBtn") {
+      const popup = document.getElementById("voucherNotice");
+      popup.style.display = "none";
+    }
+  });
+</script>
   <!-- ✅ Base script -->
   <script src="/js/base.js"></script>
 </body>
