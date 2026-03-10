@@ -1,0 +1,248 @@
+<!-- ✅ POPUP ĐẶT HÀNG THÀNH CÔNG file /html/thanks-afterpurchase.html -->
+<div id="thankyouPopup" class="thankyou-popup-overlay">
+  <div class="thankyou-popup-card">
+
+    <button class="thankyou-close-btn" onclick="hideThankyouPopup()" aria-label="Đóng popup">
+      ×
+    </button>
+
+    <div class="thankyou-header">
+      <div class="thankyou-icon-circle">✓</div>
+      <h2 class="thankyou-title">ĐẶT HÀNG THÀNH CÔNG</h2>
+    </div>
+
+    <div class="thankyou-body">
+      <div class="thankyou-message-box">
+        <p class="thankyou-message">
+          Cảm ơn bạn đã tin tưởng đặt hàng tại <b>Fun-Sport</b>.
+        </p>
+        <p class="thankyou-message">
+          Nhân viên sẽ sớm liên hệ để <b>xác nhận đơn hàng</b> và hỗ trợ giao hàng.
+        </p>
+        <p class="thankyou-message thankyou-phone">
+          Cần gửi hàng sớm hơn? Liên hệ ngay:
+          <b>0384735980</b>
+        </p>
+      </div>
+
+      <p class="thankyou-note">
+        Vui lòng để ý điện thoại trong thời gian tới để shop xác nhận đơn nhé.
+      </p>
+
+      <div class="thankyou-actions">
+        <a href="https://zalo.me/3913722836443497435" class="thankyou-btn thankyou-btn-zalo">
+          CHAT ZALO
+        </a>
+        <button onclick="hideThankyouPopup()" class="thankyou-btn thankyou-btn-close">
+          HOÀN TẤT
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<style>
+  #thankyouPopup.thankyou-popup-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(4px);
+    font-family: 'Be Vietnam Pro', sans-serif;
+    box-sizing: border-box;
+  }
+
+  .thankyou-popup-card {
+    position: relative;
+    width: 100%;
+    max-width: 390px;
+    background: #ffffff;
+    border-radius: 26px;
+    overflow: hidden;
+    box-shadow:
+      0 24px 60px rgba(0, 0, 0, 0.20),
+      0 8px 20px rgba(0, 0, 0, 0.08);
+    animation: thankyouPopupFadeUp 0.25s ease;
+  }
+
+  @keyframes thankyouPopupFadeUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px) scale(0.98);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  .thankyou-close-btn {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    width: 38px;
+    height: 38px;
+    border: none;
+    border-radius: 999px;
+    background: rgba(0, 0, 0, 0.06);
+    color: #111;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1;
+    cursor: pointer;
+    z-index: 3;
+    transition: 0.2s ease;
+  }
+
+  .thankyou-close-btn:hover {
+    background: rgba(0, 0, 0, 0.12);
+  }
+
+  .thankyou-header {
+    padding: 34px 22px 20px;
+    text-align: center;
+    background:
+      radial-gradient(circle at top, rgba(34, 197, 94, 0.14), transparent 58%),
+      linear-gradient(180deg, #f8fffa 0%, #ffffff 100%);
+  }
+
+  .thankyou-icon-circle {
+    width: 74px;
+    height: 74px;
+    margin: 0 auto 18px;
+    border-radius: 999px;
+    background: linear-gradient(180deg, #22c55e 0%, #16a34a 100%);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    font-weight: 800;
+    box-shadow: 0 14px 28px rgba(34, 197, 94, 0.28);
+  }
+
+  .thankyou-title {
+    margin: 0;
+    font-size: 24px;
+    line-height: 1.2;
+    font-weight: 900;
+    color: #111;
+    letter-spacing: 0.3px;
+  }
+
+  .thankyou-body {
+    padding: 0 20px 22px;
+  }
+
+  .thankyou-message-box {
+    background: linear-gradient(180deg, #fafafa 0%, #f6f6f6 100%);
+    border: 1px solid #ececec;
+    border-radius: 18px;
+    padding: 18px 16px;
+  }
+
+  .thankyou-message {
+    margin: 0 0 12px;
+    font-size: 16px;
+    line-height: 1.7;
+    color: #2a2a2a;
+  }
+
+  .thankyou-message:last-child {
+    margin-bottom: 0;
+  }
+
+  .thankyou-phone {
+    color: #111;
+  }
+
+  .thankyou-note {
+    margin: 16px 4px 0;
+    text-align: center;
+    font-size: 14px;
+    line-height: 1.65;
+    color: #666;
+    font-weight: 500;
+  }
+
+  .thankyou-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+  }
+
+  .thankyou-btn {
+    flex: 1;
+    height: 50px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    border: none;
+    border-radius: 16px;
+    font-size: 16px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: transform 0.18s ease, opacity 0.18s ease, box-shadow 0.18s ease;
+  }
+
+  .thankyou-btn:hover {
+    transform: translateY(-1px);
+    opacity: 0.97;
+  }
+
+  .thankyou-btn-zalo {
+    background: linear-gradient(180deg, #1d72ff 0%, #0b5cff 100%);
+    color: #fff;
+    box-shadow: 0 10px 24px rgba(13, 92, 255, 0.22);
+  }
+
+  .thankyou-btn-close {
+    background: #0f0f10;
+    color: #fff;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.14);
+  }
+
+  @media (max-width: 480px) {
+    .thankyou-popup-card {
+      max-width: 100%;
+      border-radius: 24px;
+    }
+
+    .thankyou-header {
+      padding: 32px 18px 18px;
+    }
+
+    .thankyou-body {
+      padding: 0 16px 18px;
+    }
+
+    .thankyou-title {
+      font-size: 22px;
+    }
+
+    .thankyou-message {
+      font-size: 15px;
+    }
+
+    .thankyou-note {
+      font-size: 13px;
+    }
+
+    .thankyou-actions {
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .thankyou-btn {
+      height: 48px;
+      font-size: 15px;
+      border-radius: 15px;
+    }
+  }
+</style>
