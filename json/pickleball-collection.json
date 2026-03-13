@@ -30,16 +30,6 @@
     "tags": []
   },
   {
-    "id": "fullfoam-tim",
-    "title": "F-Sport FULLFOAM- Viền Bóng Metallic",
-    "image": "/assets/images/gallery/pickleball/fullfoam/tim/1.webp",
-    "price": 2090000,
-    "originalPrice": 2900000,
-    "link": "/pickleball/foam",
-    "category": "pickleball",
-    "tags": []
-  },
-  {
     "id": "active-green",
     "title": "F-Sport Active - Xanh Lá",
     "image": "/assets/images/gallery/pickleball/active/1.webp",
@@ -116,16 +106,6 @@
     "price": 739000,
     "originalPrice": 1200000,
     "link": "/pickleball/gen4",
-    "category": "pickleball",
-    "tags": []
-  },
-  {
-    "id": "titan-16mm",
-    "title": "F-Sport Titan – 16mm- sợi titanium siêu bền",
-    "image": "/assets/images/gallery/pickleball/secpickleball/2.webp",
-    "price": 599000,
-    "originalPrice": 900000,
-    "link": "/product/secpickleball",
     "category": "pickleball",
     "tags": []
   },
