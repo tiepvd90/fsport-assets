@@ -29,10 +29,30 @@
     "category": "pickleball",
     "tags": []
   },
-  {
+ {
     "id": "active-green",
-    "title": "F-Sport Active - Xanh Lá",
-    "image": "/assets/images/gallery/pickleball/active/1.webp",
+    "title": "Hyper Active - Xanh",
+    "image": "/assets/images/gallery/pickleball/active/4.webp",
+    "price": 1299000,
+    "originalPrice": 2200000,
+    "link": "/pickleball/active",
+    "category": "pickleball",
+    "tags": []
+  },
+{
+    "id": "active-green",
+    "title": "Hyper Active - Đỏ",
+    "image": "/assets/images/gallery/pickleball/active/5.webp",
+    "price": 1299000,
+    "originalPrice": 2200000,
+    "link": "/pickleball/active",
+    "category": "pickleball",
+    "tags": []
+  },
+{
+    "id": "active-green",
+    "title": "Hyper Active - Hồng",
+    "image": "/assets/images/gallery/pickleball/active/6.webp",
     "price": 1299000,
     "originalPrice": 2200000,
     "link": "/pickleball/active",
@@ -40,9 +60,9 @@
     "tags": []
   },
   {
-    "id": "active-pink",
-    "title": "F-Sport Active - Hồng",
-    "image": "/assets/images/gallery/pickleball/active/3.webp",
+    "id": "active-green",
+    "title": "F-Sport Active - Xanh Lá",
+    "image": "/assets/images/gallery/pickleball/active/1.webp",
     "price": 1299000,
     "originalPrice": 2200000,
     "link": "/pickleball/active",
