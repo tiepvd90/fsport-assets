@@ -7,16 +7,30 @@
       "display": "thumbnail",
       "values": [
         {
-          "text": "Active Xanh Dương / Xanh Lá",
-          "image": "/assets/images/thumb/pickleball/active/at-xanh.webp",
+          "text": "Hyper Active Xanh",
+          "image": "/assets/images/gallery/pickleball/active/4.webp",
           "id": "active-xanh",
           "GiaOverride": 1299000,
           "GiaGocOverride": 2200000
         },
         {
-          "text": "Active Xanh / Hồng",
-          "image": "/assets/images/thumb/pickleball/active/at-hong.webp",
-          "id": "active-hong",
+          "text": "Hyper Active Đỏ",
+          "image": "/assets/images/gallery/pickleball/active/5.webp",
+          "id": "active-xanh",
+          "GiaOverride": 1299000,
+          "GiaGocOverride": 2200000
+        },
+        {
+          "text": "Hyper Active Hồng",
+          "image": "/assets/images/gallery/pickleball/active/6.webp",
+          "id": "active-xanh",
+          "GiaOverride": 1299000,
+          "GiaGocOverride": 2200000
+        },
+        {
+          "text": "Active Xanh",
+          "image": "/assets/images/thumb/pickleball/active/at-xanh.webp",
+          "id": "active-xanh",
           "GiaOverride": 1299000,
           "GiaGocOverride": 2200000
         },
