@@ -67,43 +67,17 @@
     <span style="background: #007BFF; color: white; font-size: 11px; padding: 2px 6px; border-radius: 4px; margin-right: 6px; text-transform: uppercase;">Hàng Chính Hãng</span>
     Vợt Pickleball F-Sport Active và FastBlock – Carbon Toray lõi Gen4 Gen 5s- Kiểm soát và Trợ Lực
   </h1>
-      <div class="shipping-wrapper">
-        <div class="shipping-info">
-          <div class="shipping-line"><span class="icon">🚚</span>Ship từ Hà Nội – Giao Hàng Toàn Quốc, Nhận Hàng Trong Vòng 3 Ngày</div>
-          <div class="shipping-line"><span class="icon">🔍</span>Kiểm Tra Hàng Trước Khi Thanh Toán</div>
-        </div>
-      </div>
-    </div>
-<!-- ✅ KHỐI 3: Video sản phẩm -->
-<div class="product-hero" style="margin-top: 12px;">
-  <div id="video-placeholder">Đang tải video...</div>
-</div>
+    <!-- ✅ KHỐI 3: Video sản phẩm -->
+<div id="video-placeholder"></div>
+
+<link rel="stylesheet" href="/css/productvideo-v3.css">
+
+<script src="/js/productvideo-v3.js"></script>
 
 <script>
-  // ✅ Gọi file HTML video (gồm khung & ID #videoSlider)
-  fetch("/html/productvideo.html")
-    .then(res => res.text())
-    .then(html => {
-      document.getElementById("video-placeholder").innerHTML = html;
-
-      // ✅ Gọi JS sau khi HTML có mặt
-      const script = document.createElement("script");
-      script.src = "/js/productvideo.js";
-      script.onload = () => {
-        console.log("✅ Đã load JS, gọi init...");
-        if (typeof initProductVideo === "function") {
-          initProductVideo();
-        } else {
-          console.warn("❌ Không tìm thấy initProductVideo()");
-        }
-      };
-      document.body.appendChild(script);
-    })
-    .catch(err => console.warn("❌ Lỗi khi chèn productvideo.html:", err));
+initProductVideo();
 </script>
 <!-- 🔚 Hết KHỐI 3 -->
-
-
 
     <!-- ✅ Mô tả sản phẩm -->
     <div class="product-hero" style="margin-top: 12px;">
