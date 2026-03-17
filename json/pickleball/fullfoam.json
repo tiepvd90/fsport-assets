@@ -6,19 +6,19 @@
       "type": "option",
       "display": "thumbnail",
       "values": [
-        {
-          "text": "Control-Cam Vũ Trụ 16mm",
-          "image": "/assets/images/gallery/pickleball/fullfoam/5.webp",
-          "id": "control-cam",
-          "GiaOverride": 1499000,
-          "GiaGocOverride": 1900000
+		{
+          "text": "FullFoam Cam Vũ Trụ 16mm",
+          "image": "/assets/images/gallery/pickleball/fullfoam/fullfoam1.webp",
+          "id": "fullfoam-cam",
+          "GiaOverride": 2090000,
+          "GiaGocOverride": 2500000
         },
 		{
-          "text": "Control-Xanh Dương 16mm",
-          "image": "/assets/images/gallery/pickleball/fullfoam/6.webp",
-          "id": "control-xanh",
-          "GiaOverride": 1499000,
-          "GiaGocOverride": 1900000
+          "text": "FullFoam Tím 16mm",
+          "image": "/assets/images/gallery/pickleball/fullfoam/tim/2.webp",
+          "id": "fullfoam-green",
+          "GiaOverride": 2090000,
+          "GiaGocOverride": 2500000
         }
       ]
     }
@@ -27,7 +27,7 @@
     {
       "id": "pickleball-fullfoam",
       "category": "pickleball",
-      "Giá": 1499000,
+      "Giá": 2090000,
       "Giá gốc": 1900000
     }
   ],
