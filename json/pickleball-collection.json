@@ -20,17 +20,7 @@
     "tags": []
   },
  {
-    "id": "foam-do",
-    "title": "F-Sport FOAM Đỏ",
-    "image": "/assets/images/gallery/pickleball/foam/red/1.webp",
-    "price": 1699000,
-    "originalPrice": 2500000,
-    "link": "/pickleball/foam",
-    "category": "pickleball",
-    "tags": []
-  },
- {
-    "id": "active-green",
+    "id": "hyperactive-xanh",
     "title": "Hyper Active - Xanh",
     "image": "/assets/images/gallery/pickleball/active/4.webp",
     "price": 1299000,
@@ -40,7 +30,7 @@
     "tags": []
   },
 {
-    "id": "active-green",
+    "id": "hyperactive-do",
     "title": "Hyper Active - Đỏ",
     "image": "/assets/images/gallery/pickleball/active/5.webp",
     "price": 1299000,
@@ -50,7 +40,7 @@
     "tags": []
   },
 {
-    "id": "active-green",
+    "id": "hyeractive-hong",
     "title": "Hyper Active - Hồng",
     "image": "/assets/images/gallery/pickleball/active/6.webp",
     "price": 1299000,
@@ -59,10 +49,30 @@
     "category": "pickleball",
     "tags": []
   },
+ {
+    "id": "fullfoam-tim",
+    "title": "FullFOAM - Tím",
+    "image": "/assets/images/gallery/pickleball/fullfoam/tim/1.webp",
+    "price": 2090000,
+    "originalPrice": 2500000,
+    "link": "/pickleball/active",
+    "category": "pickleball",
+    "tags": []
+  },
+{
+    "id": "fullfoam-tim",
+    "title": "FullFOAM - Cam Vũ Trụ",
+    "image": "/assets/images/gallery/pickleball/fullfoam/fullfoam1.webp",
+    "price": 2090000,
+    "originalPrice": 2500000,
+    "link": "/pickleball/active",
+    "category": "pickleball",
+    "tags": []
+  },
   {
     "id": "active-green",
     "title": "F-Sport Active - Xanh Lá",
-    "image": "/assets/images/gallery/pickleball/active/1.webp",
+    "image": "/assets/images/gallery/pickleball/active/description/7.webp",
     "price": 1299000,
     "originalPrice": 2200000,
     "link": "/pickleball/active",
@@ -76,6 +86,16 @@
     "price": 1299000,
     "originalPrice": 2200000,
     "link": "/pickleball/active",
+    "category": "pickleball",
+    "tags": []
+  },
+{
+    "id": "foam-do",
+    "title": "F-Sport FOAM Đỏ",
+    "image": "/assets/images/gallery/pickleball/foam/red/1.webp",
+    "price": 1699000,
+    "originalPrice": 2500000,
+    "link": "/pickleball/foam",
     "category": "pickleball",
     "tags": []
   },
