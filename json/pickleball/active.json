@@ -14,15 +14,22 @@
           "GiaGocOverride": 2200000
         },
         {
-          "text": "Hyper Active Đỏ",
-          "image": "/assets/images/gallery/pickleball/active/5.webp",
+          "text": "Hyper Active Hồng",
+          "image": "/assets/images/gallery/pickleball/active/6.webp",
           "id": "active-xanh",
           "GiaOverride": 1299000,
           "GiaGocOverride": 2200000
         },
         {
-          "text": "Hyper Active Hồng",
-          "image": "/assets/images/gallery/pickleball/active/6.webp",
+          "text": "Active Viền ĐỎ - thiết kế Hồng",
+          "image": "/assets/images/gallery/pickleball/active/hyperactive/dovienhong.webp",
+          "id": "active-xanh",
+          "GiaOverride": 1299000,
+          "GiaGocOverride": 2200000
+        },
+        {
+          "text": "Active Viền HỒNG - thiết kế Đỏ",
+          "image": "/assets/images/gallery/pickleball/active/hyperactive/dovienhong.webp",
           "id": "active-xanh",
           "GiaOverride": 1299000,
           "GiaGocOverride": 2200000
