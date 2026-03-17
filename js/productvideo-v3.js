@@ -1,263 +1,201 @@
 (function () {
+  let videoList = [];
+  const initialLimit = 6;
+  let expanded = false;
 
-let videoList = [];
-let rendered = 0;
-const batchSize = 6;
+  function getYoutubeId(url) {
+    const patterns = [
+      /youtu\.be\/([a-zA-Z0-9_-]{11})/,
+      /youtube\.com\/shorts\/([a-zA-Z0-9_-]{11})/,
+      /youtube\.com\/watch\?v=([a-zA-Z0-9_-]{11})/
+    ];
 
-/* ===== LẤY VIDEO ID ===== */
+    for (let p of patterns) {
+      const m = url.match(p);
+      if (m) return m[1];
+    }
 
-function getYoutubeId(url) {
-
-  const patterns = [
-    /youtu\.be\/([a-zA-Z0-9_-]{11})/,
-    /youtube\.com\/shorts\/([a-zA-Z0-9_-]{11})/,
-    /youtube\.com\/watch\?v=([a-zA-Z0-9_-]{11})/
-  ];
-
-  for (let p of patterns) {
-    const m = url.match(p);
-    if (m) return m[1];
+    return null;
   }
 
-  return null;
+  function injectHTML(container) {
+    container.innerHTML = `
+      <div class="product-video-section">
+        <h3 class="product-video-heading">VIDEO THỰC TẾ SẢN PHẨM</h3>
 
-}
+        <div class="video-grid" id="videoGrid"></div>
 
+        <div class="video-load-more" id="videoLoadMoreWrap">
+          <button class="video-load-more-btn" id="videoLoadMoreBtn">
+            Xem Thêm Video ▼
+          </button>
+        </div>
+      </div>
 
-/* ===== HTML TEMPLATE ===== */
+      <div id="videoPopup">
+        <div class="popup-video-frame">
+          <div class="popup-header">
+            <button class="popup-buy" id="popupBuy">MUA NGAY</button>
+            <button class="popup-close" id="popupClose">ĐÓNG</button>
+          </div>
 
-function injectHTML(container) {
-
-container.innerHTML = `
-
-<div class="product-video-section">
-
-  <h3 class="product-video-heading">
-    VIDEO THỰC TẾ SẢN PHẨM
-  </h3>
-
-  <div class="video-grid" id="videoGrid"></div>
-
-  <div class="video-load-more" id="videoLoadMoreWrap">
-    <button class="video-load-more-btn" id="videoLoadMoreBtn">
-      ▶ Xem thêm video
-    </button>
-  </div>
-
-</div>
-
-<div id="videoPopup">
-
-  <div class="popup-video-frame">
-
-    <div class="popup-header">
-      <button class="popup-buy" id="popupBuy">MUA NGAY</button>
-      <button class="popup-close" id="popupClose">ĐÓNG</button>
-    </div>
-
-    <iframe id="popupIframe"
-      allow="autoplay; encrypted-media"
-      allowfullscreen>
-    </iframe>
-
-  </div>
-
-</div>
-
-`;
-
-}
-
-
-/* ===== RENDER VIDEO ===== */
-
-function renderBatch() {
-
-const grid = document.getElementById("videoGrid");
-
-const next = videoList.slice(rendered, rendered + batchSize);
-
-next.forEach((item, index) => {
-
-  const { url, title = "" } =
-    typeof item === "string" ? { url: item, title: "" } : item;
-
-  const id = getYoutubeId(url);
-  if (!id) return;
-
-  const card = document.createElement("div");
-  card.className = "video-card";
-
-  /* ===== VIDEO ĐẦU AUTOPLAY ===== */
-
-  if (rendered === 0 && index === 0) {
-
-    card.classList.add("is-live");
-
-    card.innerHTML = `
-      <iframe
-        src="https://www.youtube.com/embed/${id}?autoplay=1&mute=1&playsinline=1&controls=1&loop=1&playlist=${id}"
-        allow="autoplay; encrypted-media"
-        allowfullscreen>
-      </iframe>
-
-      <div class="video-title-overlay">
-        ${title}
+          <iframe
+            id="popupIframe"
+            allow="autoplay; encrypted-media"
+            allowfullscreen>
+          </iframe>
+        </div>
       </div>
     `;
-
-  } else {
-
-    const thumb = `https://img.youtube.com/vi/${id}/hqdefault.jpg`;
-
-    card.classList.add("is-thumb");
-
-    card.innerHTML = `
-      <img src="${thumb}" loading="lazy">
-
-      <div class="video-title-overlay">
-        ${title}
-      </div>
-    `;
-
-    card.onclick = () => openPopup(id);
-
   }
 
-  grid.appendChild(card);
+  function openPopup(id) {
+    const popup = document.getElementById("videoPopup");
+    const iframe = document.getElementById("popupIframe");
 
-});
+    iframe.src = `https://www.youtube.com/embed/${id}?autoplay=1&rel=0&playsinline=1`;
+    popup.classList.add("show");
+    document.body.style.overflow = "hidden";
+  }
 
-rendered += next.length;
+  function closePopup() {
+    const popup = document.getElementById("videoPopup");
+    const iframe = document.getElementById("popupIframe");
 
+    iframe.src = "";
+    popup.classList.remove("show");
+    document.body.style.overflow = "";
+  }
 
-/* ===== HẾT VIDEO → ẨN NÚT ===== */
+  function addToCart() {
+    const btn = document.getElementById("btn-atc");
+    if (btn) btn.click();
+    else console.warn("Không tìm thấy btn-atc");
+  }
 
-if (rendered >= videoList.length) {
+  function getVisibleList() {
+    return expanded ? videoList : videoList.slice(0, initialLimit);
+  }
 
-  const wrap = document.getElementById("videoLoadMoreWrap");
-  if (wrap) wrap.hidden = true;
+  function updateToggleButton() {
+    const wrap = document.getElementById("videoLoadMoreWrap");
+    const btn = document.getElementById("videoLoadMoreBtn");
 
-}
+    if (!wrap || !btn) return;
 
-}
-
-
-/* ===== POPUP VIDEO ===== */
-
-function openPopup(id) {
-
-const popup = document.getElementById("videoPopup");
-const iframe = document.getElementById("popupIframe");
-
-iframe.src =
-  `https://www.youtube.com/embed/${id}?autoplay=1&rel=0&playsinline=1`;
-
-popup.classList.add("show");
-
-document.body.style.overflow = "hidden";
-
-}
-
-
-function closePopup() {
-
-const popup = document.getElementById("videoPopup");
-const iframe = document.getElementById("popupIframe");
-
-iframe.src = "";
-
-popup.classList.remove("show");
-
-document.body.style.overflow = "";
-
-}
-
-
-/* ===== ADD TO CART ===== */
-
-function addToCart() {
-
-const btn = document.getElementById("btn-atc");
-
-if (btn) btn.click();
-else console.warn("Không tìm thấy btn-atc");
-
-}
-
-
-/* ===== INIT ===== */
-
-window.initProductVideo = function () {
-
-const container = document.getElementById("video-placeholder");
-
-if (!container) {
-  console.warn("Không tìm thấy video-placeholder");
-  return;
-}
-
-injectHTML(container);
-
-
-/* ===== LOAD JSON ===== */
-
-const productPage = window.productPage || "default";
-
-fetch("/json/productvideo.json")
-  .then(res => res.json())
-  .then(data => {
-
-    const list = data[productPage];
-
-    if (!Array.isArray(list)) {
-      console.warn("Không có video cho", productPage);
+    if (videoList.length <= initialLimit) {
+      wrap.hidden = true;
       return;
     }
 
-    videoList = list;
+    wrap.hidden = false;
+    btn.textContent = expanded ? "Rút gọn Video ▲" : "Xem Thêm Video ▼";
+  }
 
-    renderBatch();
+  function renderVideos() {
+    const grid = document.getElementById("videoGrid");
+    if (!grid) return;
 
+    const visibleList = getVisibleList();
+    grid.innerHTML = "";
 
-    /* ===== LOAD MORE ===== */
+    visibleList.forEach((item, index) => {
+      const { url, title = "" } =
+        typeof item === "string" ? { url: item, title: "" } : item;
 
-    const loadBtn =
-      document.getElementById("videoLoadMoreBtn");
+      const id = getYoutubeId(url);
+      if (!id) return;
 
-    if (loadBtn) {
-      loadBtn.onclick = renderBatch;
+      const card = document.createElement("div");
+      card.className = "video-card";
+
+      if (index === 0) {
+        card.classList.add("is-live");
+
+        card.innerHTML = `
+          <iframe
+            src="https://www.youtube.com/embed/${id}?autoplay=1&mute=1&playsinline=1&controls=1&loop=1&playlist=${id}"
+            allow="autoplay; encrypted-media"
+            allowfullscreen>
+          </iframe>
+
+          <div class="video-title-overlay">${title}</div>
+        `;
+      } else {
+        const thumb = `https://img.youtube.com/vi/${id}/hqdefault.jpg`;
+
+        card.classList.add("is-thumb");
+        card.innerHTML = `
+          <img src="${thumb}" loading="lazy" alt="${title || "Video sản phẩm"}">
+          <div class="video-title-overlay">${title}</div>
+        `;
+
+        card.onclick = () => openPopup(id);
+      }
+
+      grid.appendChild(card);
+    });
+
+    updateToggleButton();
+  }
+
+  function toggleExpand() {
+    expanded = !expanded;
+    renderVideos();
+
+    const section = document.querySelector(".product-video-section");
+    if (!expanded && section) {
+      section.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }
+
+  window.initProductVideo = function () {
+    const container = document.getElementById("video-placeholder");
+
+    if (!container) {
+      console.warn("Không tìm thấy video-placeholder");
+      return;
     }
 
+    injectHTML(container);
 
-    /* ===== POPUP BUTTON ===== */
+    const productPage = window.productPage || "default";
 
-    const closeBtn =
-      document.getElementById("popupClose");
+    fetch("/json/productvideo.json")
+      .then(res => res.json())
+      .then(data => {
+        const list = data[productPage];
 
-    if (closeBtn) {
-      closeBtn.onclick = closePopup;
-    }
+        if (!Array.isArray(list)) {
+          console.warn("Không có video cho", productPage);
+          document.getElementById("videoLoadMoreWrap")?.setAttribute("hidden", "hidden");
+          return;
+        }
 
-    const buyBtn =
-      document.getElementById("popupBuy");
+        videoList = list;
+        expanded = false;
+        renderVideos();
 
-    if (buyBtn) {
+        const toggleBtn = document.getElementById("videoLoadMoreBtn");
+        if (toggleBtn) {
+          toggleBtn.onclick = toggleExpand;
+        }
 
-      buyBtn.onclick = () => {
+        const closeBtn = document.getElementById("popupClose");
+        if (closeBtn) {
+          closeBtn.onclick = closePopup;
+        }
 
-        closePopup();
-        addToCart();
-
-      };
-
-    }
-
-  })
-  .catch(err =>
-    console.error("Lỗi tải productvideo.json", err)
-  );
-
-};
-
+        const buyBtn = document.getElementById("popupBuy");
+        if (buyBtn) {
+          buyBtn.onclick = () => {
+            closePopup();
+            addToCart();
+          };
+        }
+      })
+      .catch(err => {
+        console.error("Lỗi tải productvideo.json", err);
+      });
+  };
 })();
