@@ -106,7 +106,7 @@
   }
 }
 
-/* ===== AUTOPLAY CARD ===== */
+/* ===== VIDEO ĐẦU AUTOPLAY ===== */
 
 .video-card.is-live {
   cursor: default;
@@ -116,10 +116,10 @@
   display: none;
 }
 
-/* ===== LOAD MORE ===== */
+/* ===== XEM THÊM / RÚT GỌN ===== */
 
 .video-load-more {
-  margin-top: 12px;
+  margin-top: 10px;
   display: flex;
   justify-content: center;
 }
@@ -128,28 +128,20 @@
   appearance: none;
   border: 0;
   outline: 0;
+  background: transparent;
+  color: #444;
   cursor: pointer;
 
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-
-  min-height: 42px;
-  padding: 0 18px;
-  border-radius: 999px;
-
-  background: #111;
-  color: #fff;
-
   font-family: 'Be Vietnam Pro', sans-serif;
-  font-size: 14px;
-  font-weight: 800;
-  line-height: 1;
+  font-size: 15px;
+  line-height: 1.4;
+  font-weight: 600;
+
+  padding: 4px 8px;
 }
 
 .video-load-more-btn:hover {
-  opacity: 0.92;
+  color: #111;
 }
 
 .video-load-more-btn:active {
