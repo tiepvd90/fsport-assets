@@ -89,7 +89,7 @@
     }
 
     wrap.hidden = false;
-    btn.textContent = expanded ? "Rút gọn Video ▲" : "Xem Thêm Video ▼";
+    btn.textContent = expanded ? "Ẩn Bớt Video ▲" : "Xem Thêm Video ▼";
   }
 
   function renderVideos() {
