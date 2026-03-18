@@ -110,18 +110,25 @@
       card.className = "video-card";
 
       if (index === 0) {
-        card.classList.add("is-live");
+  card.classList.add("is-live");
 
-        card.innerHTML = `
-          <iframe
-            src="https://www.youtube.com/embed/${id}?autoplay=1&mute=1&playsinline=1&controls=1&loop=1&playlist=${id}"
-            allow="autoplay; encrypted-media"
-            allowfullscreen>
-          </iframe>
+  card.innerHTML = `
+    <iframe
+      src="https://www.youtube.com/embed/${id}?autoplay=1&mute=1&playsinline=1&controls=1&loop=1&playlist=${id}"
+      allow="autoplay; encrypted-media"
+      allowfullscreen>
+    </iframe>
 
-          <div class="video-title-overlay">${title}</div>
-        `;
-      } else {
+    <div class="video-live-overlay" aria-label="Mở video lớn"></div>
+
+    <div class="video-title-overlay">${title}</div>
+  `;
+
+  const overlay = card.querySelector(".video-live-overlay");
+  if (overlay) {
+    overlay.onclick = () => openPopup(id);
+  }
+} else {
         const thumb = `https://img.youtube.com/vi/${id}/hqdefault.jpg`;
 
         card.classList.add("is-thumb");
