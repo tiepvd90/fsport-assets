@@ -238,3 +238,10 @@
 .popup-video-frame * {
   box-sizing: border-box;
 }
+.video-live-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  cursor: pointer;
+  background: transparent;
+}
