@@ -5,7 +5,7 @@
 // ------------------------
 // 🔹 CART STATE
 // ------------------------
-
+let __purchaseLocked = sessionStorage.getItem("purchase_done") === "1";
 function updateCartItemCount() {
   const badge = document.getElementById("cartItemCount");
   if (!badge) return;
@@ -290,6 +290,10 @@ function loadShippingFee() {
 // ------------------------
 
 function submitOrder() {
+  if (__purchaseLocked) {
+  console.warn("⚠ Đã submit rồi, chặn double");
+  return;
+}
   const name = document.getElementById("checkoutName")?.value.trim();
   const phone = document.getElementById("checkoutPhone")?.value.trim();
   const address = document.getElementById("checkoutAddress")?.value.trim();
@@ -300,7 +304,7 @@ function submitOrder() {
   if (!window.cart.length) {
     return alert("Giỏ hàng của bạn đang trống.");
   }
-
+__purchaseLocked = true;
   const firstItem = window.cart[0] || {};
   const category = firstItem.category || "unknown";
 
@@ -343,16 +347,24 @@ function submitOrder() {
       return res.text();
     })
     .then(() => {
-      if (typeof trackBothPixels === "function" && firstItem) {
-        trackBothPixels("Purchase", {
-          content_id: firstItem.id || "unknown",
-          content_name: firstItem["Phân loại"] || "unknown",
-          content_category: firstItem.category || "unknown",
-          content_page: window.productPage || "unknown",
-          value: orderData.total,
-          currency: "VND"
-        });
-      }
+
+  // ✅ CHỈ BẮN PURCHASE SAU KHI WEBHOOK OK
+  if (typeof trackBothPixels === "function" && orderData.total > 0) {
+
+    trackBothPixels("Purchase", {
+      content_ids: window.cart.map(i => i.id).filter(Boolean),
+      contents: window.cart.map(i => ({
+        id: i.id || "",
+        quantity: i.quantity || 1,
+        item_price: Number(i.Giá || 0)
+      })),
+      content_type: "product",
+      value: orderData.total,
+      currency: "VND"
+    });
+    sessionStorage.setItem("purchase_done", "1");
+    console.log("✅ Purchase tracked");
+  }
 
       // ❗ Không xóa checkoutInfo — giữ lại cho lần sau
       showThankyouPopup();
@@ -361,6 +373,7 @@ function submitOrder() {
       hideCheckoutPopup();
     })
     .catch(err => {
+      __purchaseLocked = false;
       console.error("❌ Lỗi khi gửi về Make.com:", err);
       alert("Có lỗi xảy ra khi gửi đơn hàng, vui lòng thử lại sau.");
     });
