@@ -27,14 +27,15 @@ const META_PIXEL_ID = '2551563688514905';
 // Init
 fbq('init', META_PIXEL_ID);
 
-// PageView (bắn luôn khi load)
+// PageView
 fbq('track', 'PageView');
 
+
 // ============================================
-// ✅ HÀM TRACK DUY NHẤT
+// ✅ HÀM TRACK DUY NHẤT (GIỮ TÊN CŨ)
 // ============================================
 
-function trackMeta(eventName, params = {}) {
+function trackBothPixels(eventName, params = {}) {
   if (typeof fbq === 'undefined') return;
 
   const safeEvent = String(eventName || '').trim();
@@ -45,12 +46,12 @@ function trackMeta(eventName, params = {}) {
   console.log(`[Meta] ${safeEvent}`, safeParams);
 }
 
-// expose global
-window.trackMeta = trackMeta;
+// expose global (QUAN TRỌNG – giữ nguyên API cũ)
+window.trackBothPixels = trackBothPixels;
 
 
 // ============================================
-// ✅ GOOGLE ANALYTICS (giữ nguyên nếu cần)
+// ✅ GOOGLE ANALYTICS (GIỮ NGUYÊN)
 // ============================================
 
 const GA_ID = 'G-RXC205951M';
