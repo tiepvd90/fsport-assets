@@ -41,8 +41,8 @@
       /* 👉 MOBILE */
       @media (max-width: 768px) {
         #${ICON_ID} img {
-          width: 50px;
-          height: 41px;
+          width: 75px;
+          height: 61px;
         }
       }
 
