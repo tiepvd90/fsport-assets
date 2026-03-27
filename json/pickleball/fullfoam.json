@@ -7,13 +7,6 @@
       "display": "thumbnail",
       "values": [
 		{
-          "text": "FullFoam Cam Vũ Trụ 16mm",
-          "image": "/assets/images/gallery/pickleball/fullfoam/fullfoam1.webp",
-          "id": "fullfoam-cam",
-          "GiaOverride": 2090000,
-          "GiaGocOverride": 2500000
-        },
-		{
           "text": "FullFoam Tím 16mm",
           "image": "/assets/images/gallery/pickleball/fullfoam/tim/2.webp",
           "id": "fullfoam-tim",
@@ -24,13 +17,6 @@
           "text": "FullFoam Đỏ 16mm",
           "image": "/assets/images/gallery/pickleball/fullfoam/temp/do.webp",
           "id": "fullfoam-do",
-          "GiaOverride": 2090000,
-          "GiaGocOverride": 2500000
-        },
-		{
-          "text": "FullFoam Xám 16mm",
-          "image": "/assets/images/gallery/pickleball/fullfoam/temp/xam.webp",
-          "id": "fullfoam-xam",
           "GiaOverride": 2090000,
           "GiaGocOverride": 2500000
         },
