@@ -55,17 +55,7 @@
     "image": "/assets/images/gallery/pickleball/fullfoam/tim/1.webp",
     "price": 2090000,
     "originalPrice": 2500000,
-    "link": "/pickleball/foam",
-    "category": "pickleball",
-    "tags": []
-  },
-{
-    "id": "fullfoam-tim",
-    "title": "FullFOAM - Cam Vũ Trụ",
-    "image": "/assets/images/gallery/pickleball/fullfoam/fullfoam1.webp",
-    "price": 2090000,
-    "originalPrice": 2500000,
-    "link": "/pickleball/foam",
+    "link": "/pickleball/fullfoam",
     "category": "pickleball",
     "tags": []
   },
