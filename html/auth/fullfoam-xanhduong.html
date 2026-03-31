@@ -5,7 +5,6 @@
   <meta name="viewport"
     content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>Xác thực chính hãng F-Sport – Vợt Pickleball PRIME FULLFOAM</title>
-
   <style>
     html, body, input, textarea, select {
       -webkit-text-size-adjust: 100%;
@@ -17,7 +16,10 @@
       color: #222;
       box-sizing: border-box;
     }
-    *, *::before, *::after { box-sizing: inherit; }
+
+    *, *::before, *::after {
+      box-sizing: inherit;
+    }
 
     body {
       margin: 0;
@@ -35,62 +37,117 @@
       margin-bottom: 16px;
     }
 
-    h2 { text-align: center; margin: 32px 0 16px; font-size: 20px; }
-    h3 { font-size: 17px; margin: 28px 0 10px; }
+    h2 {
+      text-align: center;
+      margin: 32px 0 16px;
+      font-size: 20px;
+    }
 
-    table { width:100%; border-collapse:collapse; margin-bottom:18px; }
-    td { border:1px solid #000; padding:10px; font-size:14px; word-break: break-word; }
-    td:first-child { background:#f8f8f8; font-weight:600; width:40%; }
+    h3 {
+      font-size: 17px;
+      margin: 28px 0 10px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 18px;
+    }
+
+    td {
+      border: 1px solid #000;
+      padding: 10px;
+      font-size: 14px;
+      word-break: break-word;
+    }
+
+    td:first-child {
+      background: #f8f8f8;
+      font-weight: 600;
+      width: 40%;
+    }
 
     input {
-      width:100%;
-      border:1px solid #ccc;
-      border-radius:4px;
-      padding:10px;
-      margin-bottom:10px;
-      font-size:16px !important;
+      width: 100%;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      padding: 12px 14px;
+      margin-bottom: 12px;
+      font-size: 16px !important;
+      background: #fff;
+      transition: border-color .2s ease, box-shadow .2s ease;
     }
-    input:focus { outline:none; border-color:#000; }
+
+    input:focus {
+      outline: none;
+      border-color: #000;
+      box-shadow: 0 0 0 3px rgba(0,0,0,0.06);
+    }
 
     button {
-      background:#000;
-      color:#fff;
-      font-weight:600;
-      border:none;
-      border-radius:6px;
-      padding:12px 0;
-      width:100%;
-      cursor:pointer;
-      transition:opacity .25s;
-      font-size:15px;
+      background: #000;
+      color: #fff;
+      font-weight: 600;
+      border: none;
+      border-radius: 10px;
+      padding: 13px 0;
+      width: 100%;
+      cursor: pointer;
+      transition: opacity .25s, transform .15s ease;
+      font-size: 15px;
     }
-    button:hover {opacity:.85;}
 
-    .note { font-size:14px; margin-top:16px; color:#333; }
-    .note strong {color:#000;}
+    button:hover {
+      opacity: .9;
+    }
 
+    button:active {
+      transform: scale(0.99);
+    }
+
+    .note {
+      font-size: 14px;
+      margin-top: 16px;
+      color: #333;
+    }
+
+    .note strong {
+      color: #000;
+    }
+
+    /* Overlay xác nhận ban đầu */
     .verify-overlay {
-      position: fixed; inset: 0;
-      background: rgba(255,255,255,0.6);
-      backdrop-filter: blur(6px);
-      display: flex; justify-content: center; align-items: center;
+      position: fixed;
+      inset: 0;
+      background: rgba(255,255,255,0.68);
+      backdrop-filter: blur(8px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
       z-index: 9999;
-      animation: fadeIn .4s ease forwards;
+      animation: fadeIn .35s ease forwards;
+      padding: 18px;
     }
-    @keyframes fadeIn {from{opacity:0;} to{opacity:1;}}
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
 
     .verify-card {
       background: #fff;
-      border-radius: 14px;
-      padding: 28px 24px;
-      max-width: 340px;
-      width: 92%;
+      border-radius: 20px;
+      padding: 30px 24px 24px;
+      max-width: 360px;
+      width: 100%;
       text-align: center;
-      box-shadow: 0 6px 24px rgba(0,0,0,0.1);
+      box-shadow: 0 18px 40px rgba(0,0,0,0.12);
+      border: 1px solid rgba(0,0,0,0.05);
     }
 
     .verify-loading {
-      width: 70px; height: 70px;
+      width: 70px;
+      height: 70px;
       border: 4px solid #4caf50;
       border-top-color: transparent;
       border-radius: 50%;
@@ -98,53 +155,160 @@
       animation: spin 1s linear infinite;
     }
 
-    @keyframes spin {to{transform:rotate(360deg);}}
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
 
     .verify-icon {
-      width:70px;height:70px;background:linear-gradient(135deg,#4CAF50,#2E7D32);
-      border-radius:50%;color:#fff;font-size:36px;line-height:70px;
-      display:none;margin:0 auto 16px;
+      width: 72px;
+      height: 72px;
+      background: linear-gradient(135deg, #4CAF50, #2E7D32);
+      border-radius: 50%;
+      color: #fff;
+      font-size: 36px;
+      line-height: 72px;
+      display: none;
+      margin: 0 auto 16px;
+      box-shadow: 0 10px 20px rgba(76, 175, 80, 0.25);
     }
 
-    .verify-message{font-weight:600;margin-bottom:6px;}
-    .verify-sub{font-size:13px;color:#666;margin-bottom:20px;}
-
-    .verify-btn{
-      background:#000;color:#fff;border:none;border-radius:6px;
-      padding:10px 24px;font-weight:600;cursor:pointer;display:none;
+    .verify-message {
+      font-weight: 700;
+      margin-bottom: 6px;
+      font-size: 17px;
+      color: #111;
     }
 
+    .verify-sub {
+      font-size: 13px;
+      color: #666;
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+
+    .verify-btn {
+      background: #000;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 12px 24px;
+      font-weight: 700;
+      cursor: pointer;
+      display: none;
+      transition: .25s;
+    }
+
+    .verify-btn:hover {
+      opacity: .88;
+    }
+
+    /* Form */
+    #warrantyForm {
+      margin-top: 14px;
+    }
+
+    /* Popup thành công cuối */
     .popup-success {
-      position: fixed; inset: 0;
-      background: rgba(0,0,0,0.4);
+      position: fixed;
+      inset: 0;
+      background: rgba(10,10,10,0.52);
+      backdrop-filter: blur(6px);
       display: none;
       justify-content: center;
       align-items: center;
       z-index: 10000;
+      padding: 18px;
     }
 
     .popup-box {
-      background:#fff;border-radius:14px;text-align:center;
-      max-width:360px;width:92%;box-shadow:0 6px 24px rgba(0,0,0,0.25);
-      overflow:hidden;
+      background: #fff;
+      border-radius: 22px;
+      text-align: center;
+      max-width: 380px;
+      width: 100%;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.22);
+      overflow: hidden;
+      animation: fadeInUp .35s ease;
     }
 
-    .popup-top{padding:20px 18px 16px;background:#f9f9f9;border-bottom:1px solid #eee;}
-    .popup-top h4{margin:0 0 8px;font-size:17px;color:#111;}
-    .popup-top p{font-size:14px;color:#444;margin:0;}
+    @keyframes fadeInUp {
+      from {
+        transform: translateY(16px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
 
-    .popup-bottom{padding:18px 20px 22px;}
+    .popup-inner {
+      padding: 28px 22px 24px;
+    }
 
-    .close-btn{
-      background:#000;color:#fff;border:none;border-radius:6px;
-      padding:10px 0;font-weight:600;cursor:pointer;width:100%;
+    .success-icon {
+      width: 78px;
+      height: 78px;
+      margin: 0 auto 16px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #34c759, #1f9d45);
+      color: #fff;
+      font-size: 38px;
+      line-height: 78px;
+      font-weight: 700;
+      box-shadow: 0 12px 26px rgba(52, 199, 89, 0.28);
+    }
+
+    .popup-title {
+      margin: 0 0 10px;
+      font-size: 21px;
+      line-height: 1.35;
+      color: #111;
+      font-weight: 800;
+    }
+
+    .popup-text {
+      margin: 0 0 22px;
+      font-size: 14px;
+      color: #555;
+      line-height: 1.6;
+    }
+
+    .finish-btn {
+      background: #000;
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      padding: 13px 18px;
+      width: 100%;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .finish-btn:hover {
+      opacity: .9;
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 0 14px 50px;
+      }
+
+      h2 {
+        font-size: 18px;
+      }
+
+      .popup-title {
+        font-size: 19px;
+      }
     }
   </style>
 </head>
 
 <body>
 
-  <!-- Verify -->
+  <!-- Popup xác thực -->
   <div class="verify-overlay" id="verifyPopup">
     <div class="verify-card">
       <div class="verify-loading" id="loadingIcon"></div>
@@ -155,65 +319,131 @@
     </div>
   </div>
 
-  <!-- Main -->
+  <!-- Nội dung chính -->
   <main id="productSection" style="display:none;">
-    <h2>VỢT PICKLEBALL F-SPORT PRIME FULLFOAM</h2>
+    <h2>VỢT PICKLEBALL F-SPORT FULL FOAM</h2>
     <img src="/assets/images/gallery/pickleball/fullfoam/AUTH-xanhduong.webp">
 
     <table>
       <tr><td>Chiều cao</td><td>42 cm</td></tr>
       <tr><td>Chiều ngang</td><td>19 cm</td></tr>
       <tr><td>Độ dày</td><td>16 mm</td></tr>
-      <tr><td>Cân nặng</td><td>225 g ±5g</td></tr>
-      <tr><td>Bề mặt</td><td>Carbon Toray</td></tr>
-      <tr><td>Lõi</td><td>FullFoam</td></tr>
+      <tr><td>Cân nặng</td><td>225g ±5g</td></tr>
+      <tr><td>Bề mặt</td><td>Carbon Toray nhám cao cấp</td></tr>
+      <tr><td>Lõi</td><td>Công nghệ lõi foam EPP kết hợp EVA</td></tr>
     </table>
 
+    <p>
+      <strong>F-Sport FULL FOAM</strong> là dòng vợt <strong>đúc ép nóng 16 mm</strong> hướng tới người chơi thích cảm giác
+      <strong>trợ lực mạnh – tiếng bóng giòn</strong>.
+      Lõi foam EPP kết hợp EVA giúp hấp thụ rung chấn tốt, thân vợt cân bằng đều toàn bộ, cho cảm giác đánh ổn định và chắc tay hơn trong từng pha bóng.
+      Bề mặt carbon Toray nhám giúp tăng khả năng xoáy, đồng thời đảm bảo độ bền vượt trội qua thời gian sử dụng.
+    </p>
+
+    <h3>CHÍNH SÁCH BẢO HÀNH</h3>
+    <p>
+      Sản phẩm được <strong>bảo hành 30 ngày</strong> kể từ ngày kích hoạt điện tử đối với các lỗi sản xuất liên quan đến lõi,
+      gãy nứt vật liệu hoặc lỗi cấu trúc.
+      (không áp dụng cho rơi, va đập hoặc sử dụng sai cách).
+    </p>
+
+    <p class="note">
+      <strong>Vui lòng sử dụng số điện thoại đã đặt hàng</strong> để gửi yêu cầu kích hoạt bảo hành.
+      Hệ thống sẽ đối chiếu thông tin đơn hàng nhằm xác thực quyền lợi chính hãng.
+    </p>
+
     <form id="warrantyForm">
-      <input type="tel" id="phone" placeholder="Số điện thoại" required>
-      <input type="email" id="email" placeholder="Email" required>
+      <input type="tel" id="phone" name="phone" placeholder="Số điện thoại" required>
+      <input type="email" id="email" name="email" placeholder="Email" required>
       <button type="submit">GỬI YÊU CẦU KÍCH HOẠT</button>
     </form>
   </main>
 
-  <!-- Success -->
+  <!-- Popup thành công -->
   <div class="popup-success" id="successPopup">
     <div class="popup-box">
-      <div class="popup-top">
-        <h4>✅ ĐÃ NHẬN THÔNG TIN</h4>
-        <p>Sẽ gửi xác nhận qua email trong 24h.</p>
-      </div>
-      <div class="popup-bottom">
-        <button class="close-btn" onclick="closeSuccess()">ĐÓNG</button>
+      <div class="popup-inner">
+        <div class="success-icon">✓</div>
+        <h4 class="popup-title">KÍCH HOẠT BẢO HÀNH THÀNH CÔNG</h4>
+        <p class="popup-text">
+          Thông tin bảo hành của anh/chị đã được ghi nhận thành công trong hệ thống F-SPORT.
+          Vui lòng lưu lại email và số điện thoại để tiện đối chiếu khi cần hỗ trợ sau này.
+        </p>
+        <button class="finish-btn" onclick="finishAndExit()">HOÀN TẤT</button>
       </div>
     </div>
   </div>
 
   <script>
-    function showProduct(){
-      document.getElementById("verifyPopup").style.display="none";
-      document.getElementById("productSection").style.display="block";
-    }
-
-    document.getElementById("warrantyForm").addEventListener("submit", async e=>{
-      e.preventDefault();
-
-      await fetch("https://hook.eu2.make.com/dxl7ngaypediyxwb8g7jir704356vhjt",{
-        method:"POST",
-        headers:{"Content-Type":"application/json"},
-        body:JSON.stringify({
-          type:"warranty"
-        })
-      });
-
-      document.getElementById("successPopup").style.display="flex";
-      e.target.reset();
+    ['gesturestart', 'gesturechange', 'gestureend', 'dblclick'].forEach(evt => {
+      document.addEventListener(evt, e => e.preventDefault(), { passive: false });
     });
 
-    function closeSuccess(){
-      document.getElementById("successPopup").style.display="none";
-    }
-  </script>
+    window.addEventListener("DOMContentLoaded", () => {
+      setTimeout(() => {
+        document.getElementById("loadingIcon").style.display = "none";
+        document.getElementById("checkIcon").style.display = "block";
+        document.getElementById("verifyMessage").innerHTML = "<strong>XÁC NHẬN CHÍNH HÃNG F-SPORT</strong>";
+        document.getElementById("verifySub").textContent = "Ấn Tiếp Tục Để Kích Hoạt Bảo Hành";
+        document.getElementById("continueBtn").style.display = "inline-block";
+      }, 1000);
+    });
 
+    function showProduct() {
+      document.getElementById("verifyPopup").style.display = "none";
+      document.getElementById("productSection").style.display = "block";
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    document.getElementById("warrantyForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const phone = document.getElementById("phone").value.trim();
+      const email = document.getElementById("email").value.trim();
+
+      if (!phone || !email) {
+        alert("Vui lòng nhập đầy đủ số điện thoại và email.");
+        return;
+      }
+
+      const submitBtn = e.target.querySelector('button[type="submit"]');
+      const originalText = submitBtn.textContent;
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = "ĐANG GỬI...";
+
+      const payload = {
+        type: "warranty",
+        product: "Vợt Pickleball F-Sport FULL FOAM",
+        name: "Khách hàng",
+        phone,
+        email,
+        date: new Date().toLocaleString("vi-VN"),
+        source: "Xác thực chính hãng - fun-sport.co"
+      };
+
+      try {
+        await fetch("https://hook.eu2.make.com/dxl7ngaypediyxwb8g7jir704356vhjt", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(payload)
+        });
+
+        e.target.reset();
+        document.getElementById("successPopup").style.display = "flex";
+      } catch (err) {
+        alert("Không thể gửi thông tin, vui lòng thử lại sau.");
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalText;
+      }
+    });
+
+function finishAndExit(){
+  window.location.replace("https://fun-sport.co");
+}
+  </script>
 </body>
 </html>
