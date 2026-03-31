@@ -49,13 +49,6 @@
           "GiaGocOverride": 2500000
         },
 		{
-          "text": "FullFoam Xanh Dương 16mm",
-          "image": "/assets/images/gallery/pickleball/fullfoam/temp/xanhduong.webp",
-          "id": "fullfoam-xanhduong",
-          "GiaOverride": 2090000,
-          "GiaGocOverride": 2500000
-        },
-		{
           "text": "FullFoam Xanh Lá 16mm",
           "image": "/assets/images/gallery/pickleball/fullfoam/temp/xanhla.webp",
           "id": "fullfoam-xanhla",
@@ -69,6 +62,13 @@
           "GiaOverride": 2090000,
           "GiaGocOverride": 2500000
         },
+		{
+          "text": "FullFoam Xanh Dương 16mm",
+          "image": "/assets/images/gallery/pickleball/fullfoam/temp/xanhduong.webp",
+          "id": "fullfoam-xanhduong",
+          "GiaOverride": 2090000,
+          "GiaGocOverride": 2500000
+        }
       ]
     }
   ],
