@@ -10,6 +10,56 @@
     "tags": []
   },
   {
+    "id": "fullfoam-do",
+    "title": "FullFOAM - Đỏ",
+    "image": "/assets/images/gallery/pickleball/fullfoam/do/31.webp",
+    "price": 1940000,
+    "originalPrice": 2500000,
+    "link": "/pickleball/fullfoam",
+    "category": "pickleball",
+    "tags": []
+  },
+{
+    "id": "fullfoam-vang",
+    "title": "FullFOAM - Vàng",
+    "image": "/assets/images/gallery/pickleball/fullfoam/vang/27.webp",
+    "price": 1940000,
+    "originalPrice": 2500000,
+    "link": "/pickleball/fullfoam",
+    "category": "pickleball",
+    "tags": []
+  },
+  {
+    "id": "fullfoam-xanhduong",
+    "title": "FullFOAM - Xanh Dương",
+    "image": "/assets/images/gallery/pickleball/fullfoam/xanhduong/28.webp",
+    "price": 1940000,
+    "originalPrice": 2500000,
+    "link": "/pickleball/fullfoam",
+    "category": "pickleball",
+    "tags": []
+  },
+  {
+    "id": "fullfoam-xanhduong",
+    "title": "FullFOAM - Xanh Lá",
+    "image": "/assets/images/gallery/pickleball/fullfoam/xanhla/29.webp",
+    "price": 1940000,
+    "originalPrice": 2500000,
+    "link": "/pickleball/fullfoam",
+    "category": "pickleball",
+    "tags": []
+  },
+  {
+    "id": "fullfoam-tim",
+    "title": "FullFOAM - Tím",
+    "image": "/assets/images/gallery/pickleball/fullfoam/tim/30.webp",
+    "price": 1940000,
+    "originalPrice": 2500000,
+    "link": "/pickleball/fullfoam",
+    "category": "pickleball",
+    "tags": []
+  },
+  {
     "id": "foam-xanhla",
     "title": "F-Sport FOAM Xanh Lá",
     "image": "/assets/images/gallery/pickleball/foam/2.webp",
@@ -32,7 +82,7 @@
 {
     "id": "hyperactive-do",
     "title": "Hyper Active - Đỏ",
-    "image": "/assets/images/gallery/pickleball/active/5.webp",
+    "image": "/assets/images/gallery/pickleball/active/hyperactive/6.webp",
     "price": 1299000,
     "originalPrice": 2200000,
     "link": "/pickleball/active",
@@ -42,27 +92,17 @@
 {
     "id": "hyeractive-hong",
     "title": "Hyper Active - Hồng",
-    "image": "/assets/images/gallery/pickleball/active/6.webp",
+    "image": "/assets/images/gallery/pickleball/active/hyperactive/3.webp",
     "price": 1299000,
     "originalPrice": 2200000,
     "link": "/pickleball/active",
     "category": "pickleball",
     "tags": []
   },
- {
-    "id": "fullfoam-tim",
-    "title": "FullFOAM - Tím",
-    "image": "/assets/images/gallery/pickleball/fullfoam/tim/1.webp",
-    "price": 2090000,
-    "originalPrice": 2500000,
-    "link": "/pickleball/fullfoam",
-    "category": "pickleball",
-    "tags": []
-  },
   {
     "id": "active-green",
     "title": "F-Sport Active - Xanh Lá",
-    "image": "/assets/images/gallery/pickleball/active/description/7.webp",
+    "image": "/assets/images/gallery/pickleball/active/hyperactive/4.webp",
     "price": 1299000,
     "originalPrice": 2200000,
     "link": "/pickleball/active",
@@ -83,26 +123,6 @@
     "id": "foam-do",
     "title": "F-Sport FOAM Đỏ",
     "image": "/assets/images/gallery/pickleball/foam/red/1.webp",
-    "price": 1699000,
-    "originalPrice": 2500000,
-    "link": "/pickleball/foam",
-    "category": "pickleball",
-    "tags": []
-  },
-{
-    "id": "foam-hmden",
-    "title": "F-Sport FOAM HM Đen",
-    "image": "/assets/images/gallery/pickleball/foam/HM/5.webp",
-    "price": 1699000,
-    "originalPrice": 2500000,
-    "link": "/pickleball/foam",
-    "category": "pickleball",
-    "tags": []
-  }, 
- {
-    "id": "foam-hmhong",
-    "title": "F-Sport FOAM HM Hồng Đen",
-    "image": "/assets/images/gallery/pickleball/foam/HM/2.webp",
     "price": 1699000,
     "originalPrice": 2500000,
     "link": "/pickleball/foam",
@@ -136,26 +156,6 @@
     "price": 739000,
     "originalPrice": 1200000,
     "link": "/pickleball/gen4",
-    "category": "pickleball",
-    "tags": []
-  },
-  {
-    "id": "rong-den",
-    "title": "Rồng Đen - 14mm - Đúc nguyên khối- thiên công",
-    "image": "https://i.postimg.cc/Y06dCv4z/IMG-8564.jpg",
-    "price": 849000,
-    "originalPrice": 1500000,
-    "link": "/product/firstpickleball",
-    "category": "pickleball",
-    "tags": []
-  },
-  {
-    "id": "jusain-black",
-    "title": "The Black - 14mm - Đúc nguyên khối- thiên công",
-    "image": "https://i.postimg.cc/MZVF3k4k/3.jpg",
-    "price": 849000,
-    "originalPrice": 1400000,
-    "link": "/product/firstpickleball",
     "category": "pickleball",
     "tags": []
   },
