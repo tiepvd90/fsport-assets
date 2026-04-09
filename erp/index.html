@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>F-Sport ERP</title>
+
+  <!-- Base từ site -->
+  <link rel="stylesheet" href="../css/base.css" />
+
+  <!-- ERP CSS -->
+  <link rel="stylesheet" href="./css/erp.css" />
+
+  <link rel="icon" href="../favicon.png" />
+</head>
+
+<body class="erp-body">
+
+<div class="erp-login-screen" id="erpLoginScreen">
+  <div class="erp-login-card">
+    <div class="erp-login-header">
+      <img src="../favicon.png" class="erp-login-logo" />
+      <div class="erp-login-title">F-SPORT ERP</div>
+      <div class="erp-login-sub">Đăng nhập để tiếp tục</div>
+    </div>
+    
+    <div class="erp-login-form">
+      <div class="erp-form-group">
+        <label class="erp-label">Tên người dùng</label>
+        <input 
+          type="text" 
+          class="erp-input" 
+          id="erpLoginUserInput" 
+          placeholder="Nhập username của bạn"
+          autocomplete="off"
+        />
+      </div>
+      
+      <button class="erp-login-btn" id="erpLoginBtn">
+        <span>Đăng nhập</span>
+        <span class="erp-login-arrow">→</span>
+      </button>
+      
+      <div class="erp-login-error" id="erpLoginError"></div>
+    </div> <!-- đóng erp-login-form -->
+  </div> <!-- đóng erp-login-card -->
+</div> <!-- đóng erp-login-screen -->
+
+<div class="erp-app" id="erpApp" style="display: none;">
+
+  <<div class="erp-header">
+  <!-- Logo bên trái -->
+  <div class="erp-brand">
+    <img src="../favicon.png" class="erp-brand-logo" />
+    <div class="erp-brand-text">
+      <div class="erp-brand-title">
+        <span class="erp-brand-name">F-SPORT</span>
+        <span class="erp-brand-sub">ERP</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2 chỉ số ở giữa (đẩy sang phải bằng margin-left: auto) -->
+  <div class="erp-stats-right">
+    <div class="erp-stat-item">
+      <span class="erp-stat-label">TỔNG KHO HÀNG</span>
+      <span class="erp-stat-value" id="headerTotalInventory">0đ</span>
+    </div>
+    <div class="erp-stat-item">
+      <span class="erp-stat-label">TIỀN MẶT</span>
+      <span class="erp-stat-value" id="headerActualCash">0đ</span>
+    </div>
+  </div>
+
+  <!-- Nút user bên phải cùng -->
+  <div class="erp-header-right">
+    <button class="erp-user-btn" id="erpUserBtn">T</button>
+  </div>
+</div>
+
+  <!-- ===== PAGE ===== -->
+  <div class="erp-page">
+
+    <!-- SEARCH -->
+    <div class="erp-search-wrap">
+
+      <div class="erp-search-box" id="erpSearchBox">
+
+        <span class="erp-search-icon">🔍</span>
+
+        <input
+          type="text"
+          class="erp-search-input"
+          id="erpSearchInput"
+          placeholder="Tìm sản phẩm..."
+          autocomplete="off"
+        />
+
+        <button class="erp-search-clear" id="erpSearchClear">✕</button>
+
+      </div>
+
+      <div class="erp-search-meta">
+        <span class="erp-search-hint">Nhập tên, mã, màu...</span>
+        <span class="erp-search-count" id="erpSearchCount"></span>
+      </div>
+
+    </div>
+
+    <!-- PRODUCT LIST -->
+    <div class="erp-section">
+
+      <div class="erp-card">
+
+        <div class="erp-section-head">
+          <div>
+            <div class="erp-section-title">Sản phẩm</div>
+            <div class="erp-section-sub">Kết quả tìm kiếm</div>
+          </div>
+        </div>
+
+        <div class="erp-group-list" id="erpProductList">
+
+          <div class="erp-empty" id="erpEmptyState">
+            <div class="erp-empty-icon">🔍</div>
+            <div class="erp-empty-title">Tìm sản phẩm</div>
+            <div class="erp-empty-text">
+              Nhập tên, mã hoặc màu để bắt đầu
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- CASHFLOW LOGS SECTION -->
+<div class="erp-section">
+  <div class="erp-card">
+    <div class="erp-section-head">
+      <div>
+        <div class="erp-section-title">Thu / Chi gần đây</div>
+        <div class="erp-section-sub">5 giao dịch mới nhất</div>
+      </div>
+      <div style="display: flex; gap: 8px;">
+        <button class="erp-link-btn" id="btnNewCashflow">➕ TẠO PHIẾU THU/CHI</button>
+        <button class="erp-link-btn" id="btnViewAllLogs">Xem tất cả</button>
+      </div>
+    </div>
+    <div class="erp-cashflow-list" id="erpCashflowList">
+      <div class="erp-empty" id="erpCashflowEmpty">
+        <div class="erp-empty-icon">💰</div>
+        <div class="erp-empty-title">Chưa có giao dịch</div>
+        <div class="erp-empty-text">Tạo phiếu thu/chi đầu tiên</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+    <!-- DEBT -->
+    <div class="erp-debt-wrap">
+
+      <div class="erp-card erp-debt-card">
+
+        <div class="erp-debt-head">
+          <div>
+            <div class="erp-debt-title">Công nợ</div>
+          </div>
+
+          <div class="erp-debt-balance">
+            <div class="erp-debt-balance-value" id="erpDebtBalance">0đ</div>
+          </div>
+        </div>
+
+        <div class="erp-debt-grid">
+
+          <div class="erp-debt-box is-receivable">
+            <div class="erp-debt-box-label">Phải thu</div>
+            <div class="erp-debt-box-value" id="erpReceivable">0đ</div>
+          </div>
+
+          <div class="erp-debt-box is-payable">
+            <div class="erp-debt-box-label">Phải trả</div>
+            <div class="erp-debt-box-value" id="erpPayable">0đ</div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+
+<!-- CONFIRM DIALOG -->
+<div class="erp-dialog-backdrop" id="erpDialogBackdrop"></div>
+
+<div class="erp-dialog" id="erpConfirmDialog">
+  <div class="erp-dialog-header">
+    <div class="erp-dialog-icon" id="dialogIcon">⚠️</div>
+    <div class="erp-dialog-title" id="dialogTitle">Xác nhận</div>
+  </div>
+  <div class="erp-dialog-body" id="dialogBody">
+    Bạn có chắc muốn thực hiện hành động này?
+  </div>
+  <div class="erp-dialog-actions">
+    <button class="erp-dialog-btn is-cancel" id="dialogCancelBtn">Hủy</button>
+    <button class="erp-dialog-btn is-confirm" id="dialogConfirmBtn">Đồng ý</button>
+  </div>
+</div>
+
+<!-- SLIDE -->
+<div class="erp-sheet-backdrop" id="erpSheetBackdrop"></div>
+
+<div class="erp-sheet" id="erpSheet">
+
+  <div class="erp-sheet-handle"></div>
+
+  <div class="erp-sheet-head">
+    <div>
+      <div class="erp-sheet-title" id="erpDetailTitle">Tên sản phẩm</div>
+      <div class="erp-sheet-sub">Chi tiết tồn kho</div>
+    </div>
+    <button class="erp-sheet-close" id="erpSheetClose">✕</button>
+  </div>
+
+  <div class="erp-sheet-scroll" id="erpSheetContent"></div>
+
+</div>
+
+<!-- TOAST -->
+<div class="erp-toast-stack" id="erpToastStack"></div>
+
+<!-- JS -->
+<script src="./js/erp-config.js"></script>
+<script src="./js/erp-state.js"></script>
+<script src="./js/erp-utils.js"></script>
+<script src="./js/erp-api.js"></script>
+
+<script src="./js/modules/auth.js"></script>
+<script src="./js/modules/dialog.js"></script>
+<script src="./js/modules/search.js"></script>
+<script src="./js/modules/ui-product-detail.js"></script>
+<script src="./js/modules/ui-toast.js"></script>
+<script src="./js/modules/cashflow-logs.js"></script>
+<script src="./js/modules/cashflow-form.js"></script>
+
+<script src="./js/app.js"></script>
+
+</body>
+</html>
