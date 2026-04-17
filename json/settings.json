@@ -29,6 +29,12 @@
       "category": "pickleball",
       "amount": 150000,
       "note": "Giảm 150K"
+    },
+        {
+      "id": "fullfoam-xam",
+      "category": "pickleball",
+      "amount": 150000,
+      "note": "Giảm 150K"
     }
   ]
 }
