@@ -13,13 +13,20 @@
           "GiaOverride": 1699000,
           "GiaGocOverride": 2500000
         },
-		{
-          "text": "Màu Đỏ Đen 16mm",
-          "image": "/assets/images/gallery/pickleball/foam/red/2.webp",
-          "id": "foam-red",
+		  {
+          "text": "Hammer Xanh Dương 16mm",
+          "image": "/assets/images/gallery/pickleball/foam/hammerxanh.webp",
+          "id": "hammer-xanhduong",
           "GiaOverride": 1699000,
           "GiaGocOverride": 2500000
-        },  
+        },
+		{
+          "text": "Hammer Đỏ 16mm",
+          "image": "/assets/images/gallery/pickleball/foam/hammer-do.webp",
+          "id": "hammer-xanhduong",
+          "GiaOverride": 1699000,
+          "GiaGocOverride": 2500000
+        },
 		{  
           "text": "Phantom 14mm",
           "image": "/assets/images/gallery/pickleball/foam/9.webp",
@@ -27,41 +34,6 @@
           "GiaOverride": 1699000,
           "GiaGocOverride": 2500000
         },
-		{
-          "text": "FullFoam Đỏ 16mm",
-          "image": "/assets/images/gallery/pickleball/fullfoam/do/31.webp",
-          "id": "fullfoam-do",
-          "GiaOverride": 2090000,
-          "GiaGocOverride": 2500000
-        },
-		{
-          "text": "FullFoam Vàng 16mm",
-          "image": "/assets/images/gallery/pickleball/fullfoam/vang/27.webp",
-          "id": "fullfoam-vang",
-          "GiaOverride": 2090000,
-          "GiaGocOverride": 2500000
-        },
-		{
-          "text": "FullFoam Tím 16mm",
-          "image": "/assets/images/gallery/pickleball/fullfoam/tim/30.webp",
-          "id": "fullfoam-tim",
-          "GiaOverride": 2090000,
-          "GiaGocOverride": 2500000
-        },
-		{
-          "text": "FullFoam Xanh Dương 16mm",
-          "image": "/assets/images/gallery/pickleball/fullfoam/xanhduong/28.webp",
-          "id": "fullfoam-xanhduong",
-          "GiaOverride": 2090000,
-          "GiaGocOverride": 2500000
-        },
-		  {
-          "text": "FullFoam Xanh Lá 16mm",
-          "image": "/assets/images/gallery/pickleball/fullfoam/xanhla/29.webp",
-          "id": "fullfoam-xanhla",
-          "GiaOverride": 2090000,
-          "GiaGocOverride": 2500000
-        }
       ]
     }
   ],
