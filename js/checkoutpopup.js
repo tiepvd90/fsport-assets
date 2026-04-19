@@ -286,15 +286,31 @@ function loadShippingFee() {
 // ------------------------
 
 function submitOrder() {
+  const btn = document.getElementById("checkoutSubmitBtn");
+  if (!btn) return;
+
+  // Chặn click lần 2 (cả trước khi disable DOM)
+  if (btn.disabled) return;
+  btn.disabled = true;
+  const originalText = btn.textContent;
+  btn.textContent = "Đang xử lý...";
+
+  // Validate thông tin
   const name = document.getElementById("checkoutName")?.value.trim();
   const phone = document.getElementById("checkoutPhone")?.value.trim();
   const address = document.getElementById("checkoutAddress")?.value.trim();
 
   if (!name || !phone || !address) {
-    return alert("Vui lòng nhập đầy đủ thông tin.");
+    alert("Vui lòng nhập đầy đủ thông tin.");
+    btn.disabled = false;
+    btn.textContent = originalText;
+    return;
   }
   if (!window.cart.length) {
-    return alert("Giỏ hàng của bạn đang trống.");
+    alert("Giỏ hàng của bạn đang trống.");
+    btn.disabled = false;
+    btn.textContent = originalText;
+    return;
   }
 
   const firstItem = window.cart[0] || {};
@@ -339,6 +355,7 @@ function submitOrder() {
       return res.text();
     })
     .then(() => {
+      // Tracking chỉ gọi 1 lần
       if (typeof trackBothPixels === "function" && orderData.total > 0) {
         trackBothPixels("Purchase", {
           content_ids: window.cart.map(i => i.id).filter(Boolean),
@@ -362,6 +379,11 @@ function submitOrder() {
     .catch(err => {
       console.error("❌ Lỗi khi gửi về Make.com:", err);
       alert("Có lỗi xảy ra khi gửi đơn hàng, vui lòng thử lại sau.");
+    })
+    .finally(() => {
+      // Luôn kích hoạt lại nút dù thành công hay thất bại
+      btn.disabled = false;
+      btn.textContent = originalText;
     });
 }
 
