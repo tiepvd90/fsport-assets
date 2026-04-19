@@ -1,5 +1,4 @@
 // tracking.js
-
 // ======= Meta Pixel chính (2551563688514905) =======
 !function(f,b,e,v,n,t,s)
 {if(f.fbq)return;n=f.fbq=function(){n.callMethod ?
@@ -14,8 +13,10 @@ fbq('init', '2551563688514905'); // Pixel chính
 fbq('track', 'PageView');
 
 // ======= Meta Pixel phụ (644988365190821 - Funsports) =======
-fbq('init', '644988365190821'); // Pixel phụ
-fbq('track', 'PageView');
+// VẪN KHỞI TẠO để không ảnh hưởng đến các tính năng khác (audience, custom conversions...)
+// NHƯNG SẼ KHÔNG ĐƯỢC GỬI SỰ KIỆN TỪ HÀM trackBothPixels (chỉ gửi đến pixel chính)
+fbq('init', '644988365190821');
+fbq('track', 'PageView'); // PageView vẫn gửi đến cả hai (giữ nguyên như cũ)
 
 // ======= TikTok Pixel (CVPMFPRC77U7H4FD4TVG) =======
 !function (w, d, t) {
@@ -53,22 +54,23 @@ fbq('track', 'PageView');
   ttq.page();
 }(window, document, 'ttq');
 
-// ======= Hàm gọi cả Meta & TikTok Pixel với tham số =======
+// ======= Hàm gọi tracking (Meta Pixel CHÍNH + TikTok) =======
+// GIỮ NGUYÊN TÊN HÀM "trackBothPixels" – KHÔNG CẦN SỬA CÁC TRANG KHÁC
 function trackBothPixels(eventName, params = {}) {
-  // Facebook Pixel (2 ID)
+  // Meta Pixel: CHỈ gửi đến Pixel chính (2551563688514905)
   if (typeof fbq !== 'undefined') {
-    fbq('track', eventName, params);
-    console.log(`[Facebook Pixel] Tracked: ${eventName}`, params);
+    fbq('trackSingle', '2551563688514905', eventName, params);
+    console.log(`[Meta Pixel] Tracked (single): ${eventName}`, params);
   }
 
-  // TikTok Pixel
+  // TikTok Pixel (giữ nguyên)
   if (typeof ttq !== 'undefined') {
     ttq.track(eventName, params);
     console.log(`[TikTok Pixel] Tracked: ${eventName}`, params);
   }
 }
 
-// GA
+// GA (giữ nguyên)
 (function() {
   const s1 = document.createElement('script');
   s1.src = 'https://www.googletagmanager.com/gtag/js?id=G-RXC205951M';
