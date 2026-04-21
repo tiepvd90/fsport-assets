@@ -187,11 +187,6 @@ function selectVariant(data) {
     window.voucherByProduct[data.id] = window.__voucherWaiting.amount;
   }
 }
-
-// ✅ Phantom mặc định giảm 300k
-if (["phantom","omega"].includes(data.id)) {
-  window.voucherByProduct[data.id] = 300000;
-}
   window.selectedVariant = data;
 
   const mainImage = document.getElementById("mainImage");
