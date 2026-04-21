@@ -9,20 +9,15 @@
         {
           "text": "Chữ PHANTOM Màu XANH",
           "image": "/assets/images/gallery/pickleball/phantom/3.webp",
-          "GiaOverride": 2200000,
-          "GiaGocOverride": 2800000
+          "GiaOverride": 1699000,
+          "GiaGocOverride": 2500000
+        },
+        {
+          "text": "Chữ PHANTOM Màu TÍM",
+          "image": "/assets/images/gallery/pickleball/phantom/3.webp",
+          "GiaOverride": 1699000,
+          "GiaGocOverride": 2500000
         }
-      ]
-    },
-    {
-      "label": "Quà Tặng",
-      "key": "Quà Tặng",
-      "type": "option",
-      "display": "button",
-      "values": [
-        "Túi Pick Màu Ghi Xám",
-        "Túi Pick Màu Hồng",
-        "Túi Pick Màu Đen"
       ]
     }
   ],
@@ -30,8 +25,8 @@
     {
       "id": "phantom",
       "category": "pickleball",
-      "Giá": 2200000,
-      "Giá gốc": 2700000
+      "Giá": 1699000,
+      "Giá gốc": 2500000
     }
   ]
 }
