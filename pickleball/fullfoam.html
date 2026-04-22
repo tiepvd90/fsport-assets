@@ -84,6 +84,30 @@ initProductVideo();
       <div id="productdescription-placeholder" data-src="/html/productdescription/pickleball/fullfoam.html"></div>
     </div>
     <script src="/js/productdescription.js"></script>
+  <!-- ✅ KHỐI 2: Reviews -->
+    <div class="product-hero" style="margin-top: 12px;">
+      <div id="review-placeholder"></div>
+    </div>
+    <script>
+  fetch("/html/reviewblock/fullfoam.html")
+    .then(res => res.text())
+    .then(html => {
+      const container = document.getElementById("review-placeholder");
+      container.innerHTML = html;
+      // ✅ Kích hoạt lại các <script> thủ công
+      const scripts = container.querySelectorAll("script");
+      scripts.forEach(oldScript => {
+        const newScript = document.createElement("script");
+        if (oldScript.src) {
+          newScript.src = oldScript.src;
+        } else {
+          newScript.textContent = oldScript.textContent;
+        }
+        document.body.appendChild(newScript);
+      });
+    });
+</script>
+<!-- HẾT KHỐI 2: review -->    
     <!-- ✅ FreeFlow -->
     <h2 class="freeflow-heading" style="font-size: 18px; margin: 24px 12px 12px;">CÓ THỂ BẠN SẼ THÍCH</h2>
     <script src="/js/freeflow-loader.js"></script>
