@@ -10,22 +10,23 @@
   <link rel="icon" type="image/png" href="/favicon.png" />
 
   <style>
-    /* Riêng ảnh của Gen4: cao hơn một chút */
-.product-image-gen4 {
-  height: 200px;   /* cao hơn 20px */
-}
+    /* Riêng ảnh của Gen4: cao hơn một chút (giữ nguyên nếu cần) */
+    .product-image-gen4 {
+      height: 200px;
+    }
+
     /* Banner inline nằm ngay dưới tiêu đề */
-.inline-banner {
-  display: inline-block;
-  background: linear-gradient(45deg, #ff4d4d, #ff9900);
-  color: #fff;
-  font-size: 13px;
-  font-weight: 600;
-  padding: 2px 8px;
-  margin-left: 6px;
-  border-radius: 4px;
-  animation: pulse 2s infinite;
-}
+    .inline-banner {
+      display: inline-block;
+      background: linear-gradient(45deg, #ff4d4d, #ff9900);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 2px 8px;
+      margin-left: 6px;
+      border-radius: 4px;
+      animation: pulse 2s infinite;
+    }
 
     body {
       background: #fff;
@@ -46,7 +47,18 @@
       border-radius: 12px;
     }
 
-    /* ==== Product horizontal ==== */
+    /* Tiêu đề nhóm (group) */
+    .group-title {
+      font-size: 24px;
+      font-weight: 700;
+      margin: 32px 0 16px 0;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #ddd;
+      color: #000;
+      letter-spacing: -0.3px;
+    }
+
+    /* Horizontal product card */
     .product-horizontal {
       display: flex;
       align-items: flex-start;
@@ -115,40 +127,34 @@
       white-space: nowrap;
     }
 
-    /* ==== Banner khuyến mãi ==== */
-.promo-banner {
-  position: relative;
-  background: linear-gradient(45deg, #ff4d4d, #ff9900);
-  color: #fff;
-  font-size: 15px;
-  font-weight: 600;
-  padding: 12px;
-  text-align: center;
-  overflow: hidden;
-  margin: 0 -16px 16px; /* full chiều ngang */
-}
+    .promo-banner {
+      position: relative;
+      background: linear-gradient(45deg, #ff4d4d, #ff9900);
+      color: #fff;
+      font-size: 15px;
+      font-weight: 600;
+      padding: 12px;
+      text-align: center;
+      overflow: hidden;
+      margin: 0 -16px 16px;
+    }
 
-.promo-banner::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -75%;
-  width: 50%;
-  height: 100%;
-  background: linear-gradient(
-    120deg,
-    rgba(255, 255, 255, 0) 0%,
-    rgba(255, 255, 255, 0.6) 50%,
-    rgba(255, 255, 255, 0) 100%
-  );
-  transform: skewX(-20deg);
-  animation: shine 3s infinite;
-}
+    .promo-banner::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -75%;
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(120deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.6) 50%, rgba(255,255,255,0) 100%);
+      transform: skewX(-20deg);
+      animation: shine 3s infinite;
+    }
 
-@keyframes shine {
-  0% { left: -75%; }
-  100% { left: 125%; }
-}
+    @keyframes shine {
+      0% { left: -75%; }
+      100% { left: 125%; }
+    }
 
     @keyframes pulse {
       0% { opacity: 1; }
@@ -156,33 +162,32 @@
       100% { opacity: 1; }
     }
 
-    /* ==== Mobile ==== */
+    /* Mobile */
     @media screen and (max-width: 600px) {
       body {
         padding: 8px;
       }
-
       .product-image {
         width: 130px;
         height: 130px;
       }
-
       .product-title {
         font-size: 15px;
       }
-
       .price-sale {
         font-size: 14px;
       }
-
       .buy-btn {
         font-size: 13px;
         padding: 6px 12px;
       }
-
       .promo-banner {
         font-size: 14px;
         margin: 0 -8px 12px;
+      }
+      .group-title {
+        font-size: 20px;
+        margin: 24px 0 12px;
       }
     }
   </style>
@@ -194,48 +199,102 @@
   </script>
 </head>
 <body>
-  <img src="/assets/images/website-cover.webp" alt="Fun Sport Cover" class="cover-img" />
+  <img src="/assets/images/F-SPORT COVER.webp" alt="Fun Sport Cover" class="cover-img" />
 
   <div class="page-container" id="productList"></div>
 
   <div id="checkoutPopup-placeholder"></div>
 
   <script>
-    window.productCategory = "pickleball";
+    window.productCategory = window.productCategory || "pickleball";
 
-    async function renderCollection() {
-      const res = await fetch("/json/pickleball-collection.json");
-      const data = await res.json();
-      const list = document.getElementById("productList");
-
-      const filtered = data.filter(item => item.category === window.productCategory);
-
-      filtered.forEach(item => {
-        const html = `
-          <div class="product-horizontal">
-            <a href="${item.link}">
-              <img src="${item.image}" alt="${item.title}" class="product-image" />
-            </a>
-            <div class="product-info">
-              <div class="product-title">${item.title}</div>
-              <div class="product-meta">
-                <div class="price-wrap">
-                  <span class="price-sale">${item.price.toLocaleString()}đ</span>
-                  <span class="price-original">${item.originalPrice.toLocaleString()}đ</span>
-                </div>
-                <a href="${item.link}" class="buy-btn">XEM SẢN PHẨM</a>
+    // Helper: tạo HTML cho một sản phẩm (horizontal card)
+    function renderProductCard(item) {
+      return `
+        <div class="product-horizontal">
+          <a href="${item.link}">
+            <img src="${item.image}" alt="${item.title}" class="product-image" />
+          </a>
+          <div class="product-info">
+            <div class="product-title">${escapeHtml(item.title)}</div>
+            <div class="product-meta">
+              <div class="price-wrap">
+                <span class="price-sale">${Number(item.price).toLocaleString()}đ</span>
+                <span class="price-original">${Number(item.originalPrice).toLocaleString()}đ</span>
               </div>
+              <a href="${item.link}" class="buy-btn">XEM SẢN PHẨM</a>
             </div>
           </div>
-        `;
-        list.insertAdjacentHTML("beforeend", html);
+        </div>
+      `;
+    }
+
+    // Helper: escape HTML để tránh XSS
+    function escapeHtml(str) {
+      if (!str) return '';
+      return str.replace(/[&<>]/g, function(m) {
+        if (m === '&') return '&amp;';
+        if (m === '<') return '&lt;';
+        if (m === '>') return '&gt;';
+        return m;
+      }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
+        return c;
       });
+    }
+
+    async function renderCollection() {
+      const container = document.getElementById("productList");
+      if (!container) return;
+
+      try {
+        const res = await fetch("/json/pickleball-collection.json");
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+
+        // Kiểm tra cấu trúc: nếu data là mảng và phần tử đầu có groupName -> dạng nhóm
+        const isGroupStructure = Array.isArray(data) && data.length > 0 && data[0].hasOwnProperty("groupName") && data[0].hasOwnProperty("items");
+
+        if (isGroupStructure) {
+          // Dạng mới: mảng các group
+          for (const group of data) {
+            // Lọc sản phẩm theo category (nếu cần). Ở đây lọc theo window.productCategory
+            let items = group.items || [];
+            if (window.productCategory) {
+              items = items.filter(item => item.category === window.productCategory);
+            }
+            if (items.length === 0) continue;
+
+            // Thêm tiêu đề nhóm
+            const groupTitleDiv = document.createElement("div");
+            groupTitleDiv.className = "group-title";
+            groupTitleDiv.textContent = group.groupName;
+            container.appendChild(groupTitleDiv);
+
+            // Thêm từng card sản phẩm
+            items.forEach(item => {
+              container.insertAdjacentHTML("beforeend", renderProductCard(item));
+            });
+          }
+        } else {
+          // Dạng cũ: mảng sản phẩm phẳng
+          let products = Array.isArray(data) ? data : [];
+          if (window.productCategory) {
+            products = products.filter(item => item.category === window.productCategory);
+          }
+          products.forEach(item => {
+            container.insertAdjacentHTML("beforeend", renderProductCard(item));
+          });
+        }
+      } catch (err) {
+        console.error("Lỗi tải collection:", err);
+        container.innerHTML = "<p>Không thể tải sản phẩm. Vui lòng thử lại sau.</p>";
+      }
     }
 
     renderCollection();
   </script>
 
-  <!-- Giữ nguyên phần checkoutpopup và tracking -->
+  <!-- Các script tiện ích (giữ nguyên) -->
   <script>
     async function injectHTML(file, placeholderId) {
       const res = await fetch(file);
