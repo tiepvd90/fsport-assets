@@ -1,172 +1,207 @@
 [
-    {
-    "id": "pickleball-bag",
-    "title": "Túi Pickleball Nam Nữ – Vải Dù Chống Thấm",
-    "image": "https://i.postimg.cc/L63ttgmT/Capture.jpg",
-    "price": 269000,
-    "originalPrice": 425000,
-    "link": "/pickleball/bag",
-    "category": "pickleball",
-    "tags": []
-  },
-    {
-    "id": "fullfoam-xam",
-    "title": "FullFOAM - XÁM",
-    "image": "/assets/images/gallery/pickleball/fullfoam/xam/xam-2.webp",
-    "price": 1940000,
-    "originalPrice": 2500000,
-    "link": "/pickleball/fullfoam",
-    "category": "pickleball",
-    "tags": []
+  {
+    "groupName": "TÚI & BÓNG PICKLEBALL",
+    "items": [
+      {
+        "id": "pickleball-bag",
+        "title": "Túi Pickleball Nam Nữ – Vải Dù Chống Thấm",
+        "image": "https://i.postimg.cc/L63ttgmT/Capture.jpg",
+        "price": 269000,
+        "originalPrice": 425000,
+        "link": "/pickleball/bag",
+        "category": "pickleball",
+        "tags": []
+      },
+      {
+        "id": "pickleball-ball",
+        "title": "Bóng Pickleball Chuẩn Thi Đấu – Dạ Quang",
+        "image": "/assets/images/gallery/pickleball/pickleball-ball/1.webp",
+        "price": 21000,
+        "originalPrice": 50000,
+        "link": "/pickleball/ball",
+        "category": "pickleball",
+        "tags": []
+      }
+    ]
   },
   {
-    "id": "fullfoam-do",
-    "title": "FullFOAM - Đỏ",
-    "image": "/assets/images/gallery/pickleball/fullfoam/do/31.webp",
-    "price": 1940000,
-    "originalPrice": 2500000,
-    "link": "/pickleball/fullfoam",
-    "category": "pickleball",
-    "tags": []
-  },
-{
-    "id": "fullfoam-vang",
-    "title": "FullFOAM - Vàng",
-    "image": "/assets/images/gallery/pickleball/fullfoam/vang/27.webp",
-    "price": 1940000,
-    "originalPrice": 2500000,
-    "link": "/pickleball/fullfoam",
-    "category": "pickleball",
-    "tags": []
-  },
-  {
-    "id": "fullfoam-xanhduong",
-    "title": "FullFOAM - Xanh Dương",
-    "image": "/assets/images/gallery/pickleball/fullfoam/xanhduong/28.webp",
-    "price": 1940000,
-    "originalPrice": 2500000,
-    "link": "/pickleball/fullfoam",
-    "category": "pickleball",
-    "tags": []
-  },
-  {
-    "id": "fullfoam-xanhduong",
-    "title": "FullFOAM - Xanh Lá",
-    "image": "/assets/images/gallery/pickleball/fullfoam/xanhla/29.webp",
-    "price": 1940000,
-    "originalPrice": 2500000,
-    "link": "/pickleball/fullfoam",
-    "category": "pickleball",
-    "tags": []
-  },
-  {
-    "id": "fullfoam-tim",
-    "title": "FullFOAM - Tím",
-    "image": "/assets/images/gallery/pickleball/fullfoam/tim/30.webp",
-    "price": 1940000,
-    "originalPrice": 2500000,
-    "link": "/pickleball/fullfoam",
-    "category": "pickleball",
-    "tags": []
-  },
-  {
-    "id": "foam-xanhla",
-    "title": "F-Sport FOAM Xanh Lá",
-    "image": "/assets/images/gallery/pickleball/foam/6.webp",
-    "price": 1699000,
-    "originalPrice": 2500000,
-    "link": "/pickleball/foam",
-    "category": "pickleball",
-    "tags": []
-  },
-    {
-    "id": "hammer-xanhduong",
-    "title": "F-Sport HAMMER XANH DƯƠNG",
-    "image": "/assets/images/gallery/pickleball/hammer/xanhduong/hammerxanh-2.webp",
-    "price": 1699000,
-    "originalPrice": 2500000,
-    "link": "/pickleball/foam",
-    "category": "pickleball",
-    "tags": []
-  },
-    {
-    "id": "hammer-do",
-    "title": "F-Sport HAMMER ĐỎ",
-    "image": "/assets/images/gallery/pickleball/hammer/do/hammerdo-3.webp",
-    "price": 1699000,
-    "originalPrice": 2500000,
-    "link": "/pickleball/foam",
-    "category": "pickleball",
-    "tags": []
-  },
-{
-    "id": "hyperactive-do",
-    "title": "Hyper Active - Đỏ",
-    "image": "/assets/images/gallery/pickleball/active/hyperactive/6.webp",
-    "price": 1299000,
-    "originalPrice": 2200000,
-    "link": "/pickleball/active",
-    "category": "pickleball",
-    "tags": []
-  },
-{
-    "id": "hyeractive-hong",
-    "title": "Hyper Active - Hồng",
-    "image": "/assets/images/gallery/pickleball/active/hyperactive/3.webp",
-    "price": 1299000,
-    "originalPrice": 2200000,
-    "link": "/pickleball/active",
-    "category": "pickleball",
-    "tags": []
+    "groupName": "VỢT LÕI FUL-FOAM VIỀN METALLIC CHROME",
+    "items": [
+      {
+        "id": "fullfoam-xam",
+        "title": "FullFOAM - XÁM",
+        "image": "/assets/images/gallery/pickleball/fullfoam/xam/xam-NFC.webp",
+        "price": 1940000,
+        "originalPrice": 2500000,
+        "link": "/pickleball/fullfoam",
+        "category": "pickleball",
+        "tags": []
+      },
+      {
+        "id": "fullfoam-do",
+        "title": "FullFOAM - Đỏ",
+        "image": "/assets/images/gallery/pickleball/fullfoam/AUTH-do.webp",
+        "price": 1940000,
+        "originalPrice": 2500000,
+        "link": "/pickleball/fullfoam",
+        "category": "pickleball",
+        "tags": []
+      },
+      {
+        "id": "fullfoam-vang",
+        "title": "FullFOAM - Vàng",
+        "image": "/assets/images/gallery/pickleball/fullfoam/AUTH-vang.webp",
+        "price": 1940000,
+        "originalPrice": 2500000,
+        "link": "/pickleball/fullfoam",
+        "category": "pickleball",
+        "tags": []
+      },
+      {
+        "id": "fullfoam-xanhduong",
+        "title": "FullFOAM - Xanh Dương",
+        "image": "/assets/images/gallery/pickleball/fullfoam/AUTH-xanhduong.webp",
+        "price": 1940000,
+        "originalPrice": 2500000,
+        "link": "/pickleball/fullfoam",
+        "category": "pickleball",
+        "tags": []
+      },
+      {
+        "id": "fullfoam-xanhla",
+        "title": "FullFOAM - Xanh Lá",
+        "image": "/assets/images/gallery/pickleball/fullfoam/AUTH-xanhduong.webp",
+        "price": 1940000,
+        "originalPrice": 2500000,
+        "link": "/pickleball/fullfoam",
+        "category": "pickleball",
+        "tags": []
+      },
+      {
+        "id": "fullfoam-tim",
+        "title": "FullFOAM - Tím",
+        "image": "/assets/images/gallery/pickleball/fullfoam/tim-NFC.webp",
+        "price": 1940000,
+        "originalPrice": 2500000,
+        "link": "/pickleball/fullfoam",
+        "category": "pickleball",
+        "tags": []
+      }
+    ]
   },
   {
-    "id": "active-green",
-    "title": "F-Sport Active - Xanh Lá",
-    "image": "/assets/images/gallery/pickleball/active/hyperactive/4.webp",
-    "price": 1299000,
-    "originalPrice": 2200000,
-    "link": "/pickleball/active",
-    "category": "pickleball",
-    "tags": []
+    "groupName": "VỢT LÕI FULL-FOAM",
+    "items": [
+      {
+        "id": "foam-xanhla",
+        "title": "FOAM RAZER XANH LÁ",
+        "image": "/assets/images/gallery/pickleball/foam/razer-NFC.webp",
+        "price": 1699000,
+        "originalPrice": 2500000,
+        "link": "/pickleball/foam",
+        "category": "pickleball",
+        "tags": []
+      },
+      {
+        "id": "hammer-xanhduong",
+        "title": "FOAM HAMMER XANH DƯƠNG",
+        "image": "/assets/images/gallery/pickleball/hammer/xanhNFC.webp",
+        "price": 1699000,
+        "originalPrice": 2500000,
+        "link": "/pickleball/foam",
+        "category": "pickleball",
+        "tags": []
+      },
+      {
+        "id": "hammer-do",
+        "title": "FOAM HAMMER ĐỎ",
+        "image": "/assets/images/gallery/pickleball/hammer/do-NFC.webp",
+        "price": 1699000,
+        "originalPrice": 2500000,
+        "link": "/pickleball/foam",
+        "category": "pickleball",
+        "tags": []
+      },
+      {
+        "id": "foam-phantom",
+        "title": "FOAM PHANTOM - 14mm",
+        "image": "/assets/images/gallery/pickleball/phantom/1.webp",
+        "price": 1699000,
+        "originalPrice": 2500000,
+        "link": "/pickleball/foam",
+        "category": "pickleball",
+        "tags": []
+      }
+    ]
   },
   {
-    "id": "fastblock",
-    "title": "F-Sport FastBlock - Carbon Toray lõi Gen4 cải tiến",
-    "image": "/assets/images/gallery/pickleball/active/description/3.webp",
-    "price": 999000,
-    "originalPrice": 1700000,
-    "link": "/pickleball/active",
-    "category": "pickleball",
-    "tags": []
+    "groupName": "VỢT LÕI TỔ ONG GEN5",
+    "items": [
+      {
+        "id": "hyperactive-do",
+        "title": "Hyper Active - Đỏ",
+        "image": "/assets/images/gallery/pickleball/active/hyperactive/nfc/do-NFC.jpg",
+        "price": 1299000,
+        "originalPrice": 2200000,
+        "link": "/pickleball/active",
+        "category": "pickleball",
+        "tags": []
+      },
+      {
+        "id": "hyeractive-hong",
+        "title": "Hyper Active - Hồng",
+        "image": "/assets/images/gallery/pickleball/active/hyperactive/nfc/hong-NFC.jpg",
+        "price": 1299000,
+        "originalPrice": 2200000,
+        "link": "/pickleball/active",
+        "category": "pickleball",
+        "tags": []
+      },
+      {
+        "id": "active-green",
+        "title": "Hyper Active - Xanh Lá",
+        "image": "/assets/images/gallery/pickleball/active/hyperactive/nfc/xanh-NFC.jpg",
+        "price": 1299000,
+        "originalPrice": 2200000,
+        "link": "/pickleball/active",
+        "category": "pickleball",
+        "tags": []
+      }
+    ]
   },
   {
-    "id": "foam-phantom",
-    "title": "FOAM Phantom Carbon Tràn Viền 14mm",
-    "image": "/assets/images/gallery/pickleball/phantom/3.webp",
-    "price": 1699000,
-    "originalPrice": 2500000,
-    "link": "/pickleball/phantom",
-    "category": "pickleball",
-    "tags": []
-  },
-  {
-    "id": "gen4-3lop",
-    "title": "F-Sport Gen4 - Vợt Ép Nóng- Carbon 3 Lớp- dầy 16mm",
-    "image": "/assets/images/gallery/pickleball/gen4/3.webp",
-    "price": 739000,
-    "originalPrice": 1200000,
-    "link": "/pickleball/gen4",
-    "category": "pickleball",
-    "tags": []
-  },
-  {
-    "id": "pickleball-ball",
-    "title": "Bóng Pickleball Chuẩn Thi Đấu – Dạ Quang",
-    "image": "/assets/images/gallery/pickleball/pickleball-ball/1.webp",
-    "price": 21000,
-    "originalPrice": 50000,
-    "link": "/pickleball/ball",
-    "category": "pickleball",
-    "tags": []
+    "groupName": "VỢT LÕI TỔ ONG GEN4",
+    "items": [
+      {
+        "id": "fastblock",
+        "title": "F-Sport FastBlock - Carbon Toray lõi Gen4 cải tiến",
+        "image": "/assets/images/gallery/pickleball/active/description/3.webp",
+        "price": 999000,
+        "originalPrice": 1700000,
+        "link": "/pickleball/active",
+        "category": "pickleball",
+        "tags": []
+      },
+      {
+        "id": "gen4-trang",
+        "title": "Gen4 - Trắng - 16mm",
+        "image": "/assets/images/gallery/pickleball/gen4/1.webp",
+        "price": 739000,
+        "originalPrice": 1200000,
+        "link": "/pickleball/gen4",
+        "category": "pickleball",
+        "tags": []
+      },
+      {
+        "id": "gen4-hong",
+        "title": "Gen4 - Hồng - 16mm",
+        "image": "/assets/images/gallery/pickleball/gen4/7.webp",
+        "price": 739000,
+        "originalPrice": 1200000,
+        "link": "/pickleball/gen4",
+        "category": "pickleball",
+        "tags": []
+      }
+    ]
   }
-  ]
+]
