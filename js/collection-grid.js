@@ -1,17 +1,15 @@
 /* ==========================================================
-   📦 COLLECTION GRID — V3 (TỰ ĐỘNG LOAD CSS)
+   📦 COLLECTION GRID — V4 (HỖ TRỢ NHÓM SẢN PHẨM)
    ----------------------------------------------------------
-   - Đọc window.collectionList
-   - Fetch JSON & render grid
-   - CSS được inject tự động => không bị ảnh hưởng bởi art.css
+   - Tự động nhận diện: mảng sản phẩm phẳng hoặc mảng nhóm (groupName + items)
+   - Hiển thị tiêu đề nhóm nếu có
+   - Grid responsive: 2 cột mobile, tối đa 5 cột desktop
    ========================================================== */
 
 (function () {
   "use strict";
 
-  /* --------------------------------------------------------
-     1) TỰ ĐỘNG NẠP CSS RIÊNG CHO COLLECTION GRID
-  -------------------------------------------------------- */
+  // 1) Tự động nạp CSS (đảm bảo grid responsive)
   (function loadCSS() {
     const cssURL = "/css/collection-grid.css";
     if (!document.querySelector('link[href="' + cssURL + '"]')) {
@@ -22,153 +20,128 @@
     }
   })();
 
-  /* --------------------------------------------------------
-     2) LẤY LIST COLLECTION
-  -------------------------------------------------------- */
   const COLLECTIONS = window.collectionList || [];
-
   if (!Array.isArray(COLLECTIONS) || COLLECTIONS.length === 0) {
-    console.warn("⚠️ Không có window.collectionList trong HTML");
+    console.warn("⚠️ Không có window.collectionList");
     return;
   }
 
   const container = document.getElementById("collectionContainer");
-  if (!container) {
-    console.warn("❌ Không tìm thấy #collectionContainer");
-    return;
-  }
+  if (!container) return;
 
-  /* --------------------------------------------------------
-     3) FORMAT GIÁ TIỀN
-  -------------------------------------------------------- */
   function formatPrice(v) {
-    if (v === undefined || v === null) return "";
-    if (isNaN(v)) return "";
-    v = Number(v);
-    if (v <= 0) return "";
-    return v.toLocaleString("vi-VN") + "đ";
+    if (v == null || isNaN(v) || v <= 0) return "";
+    return Number(v).toLocaleString("vi-VN") + "đ";
   }
 
-  /* --------------------------------------------------------
-     4) CHUẨN HOÁ JSON ITEMS
-  -------------------------------------------------------- */
-  function extractItems(data) {
-    if (Array.isArray(data)) return data;
+  // Lấy items từ JSON (hỗ trợ cả dạng phẳng và dạng nhóm)
+  function getItemsFromData(data) {
+    if (Array.isArray(data)) return data; // dạng cũ: mảng sản phẩm
     if (Array.isArray(data.items)) return data.items;
     if (Array.isArray(data.products)) return data.products;
     if (Array.isArray(data.data)) return data.data;
     return [];
   }
 
-  /* --------------------------------------------------------
-     5) TẠO TIÊU ĐỀ COLLECTION
-  -------------------------------------------------------- */
-  function renderTitle(title) {
-    if (typeof title !== "string") return "";
-
-    if (title.includes("| SHOPEE PRODUCT")) {
-      const name = title.split("|")[0].trim();
-      return `
-        ${name}
-        <span class="cgrid-tag-shopee">Shopee Product</span>
-      `;
-    }
-    return title;
+  // Kiểm tra có phải cấu trúc nhóm không (phần tử đầu tiên có groupName)
+  function isGroupStructure(items) {
+    return (
+      Array.isArray(items) &&
+      items.length > 0 &&
+      items[0].hasOwnProperty("groupName") &&
+      items[0].hasOwnProperty("items")
+    );
   }
 
-  /* --------------------------------------------------------
-     6) TẠO 1 CARD SẢN PHẨM
-  -------------------------------------------------------- */
   function createCard(item) {
     const price = formatPrice(item.price);
     const original = formatPrice(item.originalPrice);
-
-    const showOriginal =
-      original &&
-      item.originalPrice &&
-      Number(item.originalPrice) > Number(item.price);
+    const showOriginal = original && item.originalPrice && Number(item.originalPrice) > Number(item.price);
 
     const div = document.createElement("div");
     div.className = "cgrid-card";
-
     div.innerHTML = `
       <div class="cgrid-thumb">
         <img src="${item.image || ""}" alt="${item.title || ""}">
       </div>
-
       <div class="cgrid-name">${item.title || ""}</div>
-
-      ${
-        price
-          ? `
-        <div class="cgrid-price-wrap">
+      ${price ? `<div class="cgrid-price-wrap">
           <div class="cgrid-price">${price}</div>
-          ${
-            showOriginal
-              ? `<div class="cgrid-original">${original}</div>`
-              : ""
-          }
-        </div>
-      `
-          : ""
-      }
+          ${showOriginal ? `<div class="cgrid-original">${original}</div>` : ""}
+        </div>` : ""}
     `;
-
     div.addEventListener("click", () => {
       if (item.link) window.location.href = item.link;
     });
-
     return div;
   }
 
-  /* --------------------------------------------------------
-     7) RENDER TẤT CẢ COLLECTION
-  -------------------------------------------------------- */
+  // Render một nhóm (có tiêu đề)
+  function renderGroup(groupName, items) {
+    if (!items || items.length === 0) return null;
+
+    const block = document.createElement("div");
+    block.className = "cgrid-block";
+
+    // Hiển thị tên nhóm (tầng)
+    block.innerHTML = `
+      <div class="cgrid-group-title">${groupName}</div>
+      <div class="cgrid-grid"></div>
+    `;
+    const grid = block.querySelector(".cgrid-grid");
+    items.forEach(item => grid.appendChild(createCard(item)));
+    return block;
+  }
+
+  // Render danh sách phẳng (không nhóm)
+  function renderFlat(items, title) {
+    const block = document.createElement("div");
+    block.className = "cgrid-block";
+    block.innerHTML = `
+      <div class="cgrid-title">${title}</div>
+      <div class="cgrid-grid"></div>
+    `;
+    const grid = block.querySelector(".cgrid-grid");
+    items.forEach(item => grid.appendChild(createCard(item)));
+    return block;
+  }
+
   async function renderCollections() {
     for (const col of COLLECTIONS) {
       try {
         const res = await fetch(col.json);
-
-        if (!res.ok) {
-          console.warn("⚠️ Không fetch được JSON:", col.json);
-          continue;
-        }
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
         const data = await res.json();
-        const items = extractItems(data);
+        let rawItems = getItemsFromData(data);
 
-        if (!items || items.length === 0) {
+        if (!rawItems || rawItems.length === 0) {
           console.warn("⚠️ JSON rỗng:", col.json);
           continue;
         }
 
-        const block = document.createElement("div");
-        block.className = "cgrid-block";
+        // 🔥 Phân biệt cấu trúc: có nhóm hay không?
+        if (isGroupStructure(rawItems)) {
+          // Dạng mới: mảng các nhóm
+          for (const group of rawItems) {
+            const groupBlock = renderGroup(group.groupName, group.items);
+            if (groupBlock) container.appendChild(groupBlock);
+          }
+        } else {
+          // Dạng cũ: mảng sản phẩm phẳng
+          const flatBlock = renderFlat(rawItems, col.title);
+          container.appendChild(flatBlock);
+        }
 
-        block.innerHTML = `
-          <div class="cgrid-title">${renderTitle(col.title)}</div>
-          <div class="cgrid-grid"></div>
-        `;
-
-        const grid = block.querySelector(".cgrid-grid");
-
-        items.forEach((item) => {
-          grid.appendChild(createCard(item));
-        });
-
-        container.appendChild(block);
-
+        // Thêm đường kẻ ngăn cách giữa các collection (nếu cần)
         const divider = document.createElement("div");
         divider.className = "cgrid-divider";
         container.appendChild(divider);
       } catch (err) {
-        console.error("❌ Lỗi đọc JSON:", col.json, err);
+        console.error("❌ Lỗi load collection:", col.json, err);
       }
     }
   }
 
-  /* --------------------------------------------------------
-     8) KHỞI CHẠY
-  -------------------------------------------------------- */
   renderCollections();
 })();
