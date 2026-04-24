@@ -480,13 +480,17 @@ applyVoucherFromSettings(data);
         // Pixels (nếu có)
         if (typeof window.trackBothPixels === "function") {
           window.trackBothPixels("AddToCart", {
-            content_id: product.id,
-            content_name: phanLoaiText,
-            content_category: product.category || loai,
-            content_page: window.productPage || "unknown",
-            value: product.Giá,
-            currency: "VND"
-          });
+  content_type: "product",
+  contents: [{
+    content_id: product.id,
+    content_name: phanLoaiText,
+    content_category: product.category || loai,
+    quantity: quantity,          // số lượng vừa thêm
+    price: product.Giá
+  }],
+  value: product.Giá * quantity,
+  currency: "VND"
+});
         }
 
         // Make webhook (nếu có)
