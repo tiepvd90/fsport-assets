@@ -154,12 +154,17 @@ initProductVideo();
         document.getElementById("base-placeholder").outerHTML = html;
         if (typeof trackBothPixels === "function") {
           trackBothPixels("ViewContent", {
-            content_id: window.productPage,
-            content_name: window.productPage,
-            content_category: window.productCategory,
-            value: 0,
-            currency: "VND"
-          });
+  content_type: "product",
+  contents: [{
+    content_id: window.productPage,
+    content_name: window.productPage,
+    content_category: window.productCategory,
+    quantity: 1,
+    price: 0   // hoặc giá sản phẩm thực tế nếu có
+  }],
+  value: 0,
+  currency: "VND"
+});
         }
       });
   </script>
