@@ -360,10 +360,11 @@ function submitOrder() {
         trackBothPixels("Purchase", {
           content_ids: window.cart.map(i => i.id).filter(Boolean),
           contents: window.cart.map(i => ({
-            id: i.id || "",
-            quantity: i.quantity || 1,
-            item_price: Number(i.Giá || 0)
-          })),
+  content_id: i.id || "",
+  content_type: "product",
+  quantity: i.quantity || 1,
+  price: Number(i.Giá || 0)
+})),
           content_type: "product",
           value: orderData.total,
           currency: "VND"
