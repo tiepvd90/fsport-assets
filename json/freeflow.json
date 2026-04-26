@@ -213,6 +213,54 @@
     "productCategory": "pickleball",
     "sellerID": "huyenle"
   },
+  {
+    "itemId": "pickleball-panther1",
+    "title": "ReviewTruFoam Panther",
+    "price": 2090000,
+    "originalPrice": 3000000,
+    "contentType": "youtube",
+    "image": "/assets/images/gallery/pickleball/panther/panther.webp",
+    "youtube": "JSXXnkIRgG0",
+    "productPage": "/pickleball/panther",
+    "tags": [
+      "pickleball"
+    ],
+    "basePriority": 30,
+    "productCategory": "pickleball",
+    "sellerID": "huyenle"
+  },
+    {
+    "itemId": "pickleball-panther2",
+    "title": "Unbox TruFoam Panther",
+    "price": 2090000,
+    "originalPrice": 3000000,
+    "contentType": "youtube",
+    "image": "/assets/images/gallery/pickleball/panther/panther.webp",
+    "youtube": "JNycn8Cm088",
+    "productPage": "/pickleball/panther",
+    "tags": [
+      "pickleball"
+    ],
+    "basePriority": 30,
+    "productCategory": "pickleball",
+    "sellerID": "huyenle"
+  },
+      {
+    "itemId": "pickleball-panther3",
+    "title": "Unbox TruFoam Panther",
+    "price": 2090000,
+    "originalPrice": 3000000,
+    "contentType": "youtube",
+    "image": "/assets/images/gallery/pickleball/panther/panther.webp",
+    "youtube": "YSYrbd3uV2k",
+    "productPage": "/pickleball/panther",
+    "tags": [
+      "pickleball"
+    ],
+    "basePriority": 30,
+    "productCategory": "pickleball",
+    "sellerID": "huyenle"
+  },
     {
     "itemId": "pickleball-foam-10",
     "title": "Tổng Hợp Lõi FOAM",
