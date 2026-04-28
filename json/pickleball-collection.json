@@ -28,6 +28,26 @@
     "groupName": "VỢT LÕI FUL-FOAM VIỀN METALLIC CHROME",
     "items": [
       {
+        "id": "panther-orange",
+        "title": "Panther - Cam Vũ Trụ",
+        "image": "/assets/images/gallery/pickleball/panther/panther-orange-NFC.webp",
+        "price": 2090000,
+        "originalPrice": 2500000,
+        "link": "/pickleball/panther",
+        "category": "pickleball",
+        "tags": []
+      },
+        {
+        "id": "panther-matcha",
+        "title": "Panther - Xanh Matcha",
+        "image": "/assets/images/gallery/pickleball/panther/panther-matcha-NFC.webp",
+        "price": 2090000,
+        "originalPrice": 2500000,
+        "link": "/pickleball/panther",
+        "category": "pickleball",
+        "tags": []
+      },
+      {
         "id": "fullfoam-xam",
         "title": "FullFOAM - XÁM",
         "image": "/assets/images/gallery/pickleball/fullfoam/xam/xam-NFC.webp",
