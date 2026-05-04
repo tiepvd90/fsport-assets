@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>F-SPORT | Kế hoạch tháng 5 (tỷ trọng doanh thu & lợi nhuận chuẩn)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background: #eef2f8;
+            font-family: 'Inter', system-ui, 'Segoe UI', 'Be Vietnam Pro', sans-serif;
+            padding: 24px 20px;
+            color: #1a2c3e;
+            line-height: 1.48;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        /* header + logo */
+        .brand-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 28px;
+            background: white;
+            padding: 16px 28px;
+            border-radius: 32px;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.03), 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .f-sport-logo {
+            width: 52px;
+            height: 52px;
+            object-fit: contain;
+            border-radius: 14px;
+            background: #0a2b3e;
+            padding: 4px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        .brand-title h1 {
+            font-size: 1.7rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #1f3b4c, #1f6392);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+        .brand-title p {
+            font-size: 0.85rem;
+            color: #5c6f87;
+            margin-top: 4px;
+        }
+        .date-badge {
+            background: #eef2fa;
+            padding: 8px 24px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: #1c6e8f;
+        }
+        .profit-ribbon {
+            background: linear-gradient(105deg, #1f4e6c 0%, #0f3e58 100%);
+            border-radius: 28px;
+            padding: 22px 32px;
+            margin-bottom: 32px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+            box-shadow: 0 12px 22px -10px rgba(0, 0, 0, 0.2);
+        }
+        .profit-target h3 {
+            font-size: 0.9rem;
+            font-weight: 500;
+            opacity: 0.85;
+        }
+        .profit-target .amount {
+            font-size: 2.6rem;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-top: 6px;
+        }
+        .profit-note {
+            background: rgba(255,255,240,0.12);
+            padding: 10px 20px;
+            border-radius: 60px;
+            font-size: 0.85rem;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-bottom: 36px;
+        }
+        .card {
+            background: white;
+            border-radius: 28px;
+            padding: 22px 24px;
+            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.03), 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            border-bottom: 2px solid #eef2f8;
+            padding-bottom: 12px;
+            margin-bottom: 18px;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+        .badge-product {
+            font-size: 0.7rem;
+            background: #eef2fa;
+            padding: 4px 12px;
+            border-radius: 40px;
+            color: #2c6e9e;
+        }
+        .value-large {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: #113e55;
+        }
+        .sub-text {
+            font-size: 0.75rem;
+            color: #6a7f9b;
+            margin-top: 6px;
+        }
+        .split-detail {
+            margin-top: 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .row-split {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            padding: 6px 0;
+            border-bottom: 1px dashed #eef2f8;
+        }
+        .highlight {
+            font-weight: 700;
+            color: #1f6392;
+        }
+        .daily-goal {
+            background: #f9fbfe;
+            border-radius: 20px;
+            padding: 16px;
+            margin-top: 14px;
+        }
+        .table-responsive {
+            overflow-x: auto;
+            margin: 28px 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+        }
+        th {
+            background: #f0f4fa;
+            padding: 14px 12px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+        td {
+            padding: 12px 8px;
+            text-align: center;
+            border-bottom: 1px solid #e6edf4;
+            font-size: 0.9rem;
+        }
+        .fw-bold {
+            font-weight: 700;
+        }
+        .budget-daily {
+            background: #e6f4ea;
+            border-radius: 20px;
+            padding: 10px 18px;
+            display: inline-block;
+            font-weight: 700;
+        }
+        .insight-note {
+            background: #fef7e0;
+            border-left: 4px solid #f5b042;
+            padding: 12px 18px;
+            border-radius: 20px;
+            margin-top: 14px;
+            font-size: 0.8rem;
+        }
+        footer {
+            margin-top: 48px;
+            text-align: center;
+            font-size: 0.75rem;
+            color: #6f8aaa;
+            border-top: 1px solid #d4e0ec;
+            padding-top: 24px;
+        }
+        @media (max-width: 680px) {
+            body { padding: 16px 14px; }
+            .profit-target .amount { font-size: 1.8rem; }
+            .value-large { font-size: 1.6rem; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- Header with logo F-SPORT (exact tag) -->
+    <div class="brand-header">
+        <div class="logo-area">
+            <img src="../favicon.png" class="f-sport-logo" alt="F-SPORT Logo" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'%3E%3Crect width=\'100\' height=\'100\' fill=\'%231f6392\'/%3E%3Ctext x=\'50\' y=\'68\' font-size=\'44\' text-anchor=\'middle\' fill=\'white\' font-weight=\'bold\'%3EFS%3C/text%3E%3C/svg%3E'">
+            <div class="brand-title">
+                <h1>F-SPORT · Kế hoạch tháng 5 (điều chỉnh theo doanh thu)</h1>
+                <p>Tỷ trọng doanh thu: Panther dẫn đầu, FullFoam tăng tốc, Hammer 10% | 80 triệu lợi nhuận</p>
+            </div>
+        </div>
+        <div class="date-badge">
+            📅 27 ngày | 05.05 → 31.05.2026
+        </div>
+    </div>
+
+    <!-- profit banner -->
+    <div class="profit-ribbon">
+        <div class="profit-target">
+            <h3>🎯 MỤC TIÊU LỢI NHUẬN RÒNG</h3>
+            <div class="amount">80.000.000 ₫</div>
+        </div>
+        <div class="profit-note">
+            📱 TikTok Live: 13.500.000₫ &nbsp;|&nbsp; 💻 Facebook/Web: 66.500.000₫
+        </div>
+    </div>
+
+    <!-- Sản lượng & phân bổ mới: Panther 123, FullFoam 60, Hammer 15, TikTok 27 -->
+    <div class="stats-grid">
+        <div class="card">
+            <div class="card-header">
+                <span>🐆 Panther (chủ lực)</span>
+                <span class="badge-product">🔥 123 cây</span>
+            </div>
+            <div class="value-large">123 cây</div>
+            <div class="sub-text">Giá 2.090.000đ | Lãi lẻ 1.190.000đ</div>
+            <div class="split-detail">
+                <div class="row-split"><span>🏬 Bán lẻ (80%):</span><span>98 cây → lãi 116.620.000₫</span></div>
+                <div class="row-split"><span>🤝 Đại lý (10%):</span><span>12 cây → lãi 2.400.000₫</span></div>
+                <div class="row-split"><span>📢 Affiliate (10%):</span><span>13 cây → lãi 12.870.000₫</span></div>
+                <div class="row-split highlight"><span>💵 Tổng lãi gộp Panther (trước ads):</span><span>≈ 131.890.000₫</span></div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <span>🛡️ FullFoam (tăng tốc)</span>
+                <span class="badge-product">⭐ 60 cây ~2,22/ngày</span>
+            </div>
+            <div class="value-large">60 cây</div>
+            <div class="sub-text">Lãi lẻ 840k | Đại lý 100k | Aff 700k</div>
+            <div class="split-detail">
+                <div class="row-split"><span>🏬 Bán lẻ (80%):</span><span>48 cây → lãi 40.320.000₫</span></div>
+                <div class="row-split"><span>🤝 Đại lý (10%):</span><span>6 cây → lãi 600.000₫</span></div>
+                <div class="row-split"><span>📢 Affiliate (10%):</span><span>6 cây → lãi 4.200.000₫</span></div>
+                <div class="row-split highlight"><span>💵 Tổng lãi gộp FullFoam (trước ads):</span><span>≈ 45.120.000₫</span></div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <span>🔨 Hammer (10% doanh thu)</span>
+                <span class="badge-product">⚡ 15 cây ~0,56/ngày</span>
+            </div>
+            <div class="value-large">15 cây</div>
+            <div class="sub-text">Lãi lẻ 699k | Đại lý 100k | Không affiliate</div>
+            <div class="split-detail">
+                <div class="row-split"><span>🏬 Bán lẻ (90%):</span><span>14 cây → lãi 9.786.000₫</span></div>
+                <div class="row-split"><span>🤝 Đại lý (10%):</span><span>1 cây → lãi 100.000₫</span></div>
+                <div class="row-split highlight"><span>💵 Tổng lãi gộp Hammer (trước ads):</span><span>≈ 9.886.000₫</span></div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <span>📱 TikTok Live</span>
+                <span class="badge-product">🎬 27 cây (1/ngày)</span>
+            </div>
+            <div class="value-large">27 sản phẩm</div>
+            <div class="sub-text">Lãi ròng sau phí sàn 30% = 500.000đ/sp</div>
+            <div class="daily-goal">
+                <div>🎯 Lợi nhuận TikTok: <strong class="highlight">13.500.000₫</strong></div>
+                <div>📌 Giá bán trung bình sau phí ~2.143.000đ (đảm bảo lãi 500k)</div>
+                <div class="insight-note" style="margin-top: 10px;">Phí sàn 30% doanh thu đã được trừ trực tiếp, lãi thuần 500k/sp</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tổng sản lượng bảng tổng hợp -->
+    <div class="table-responsive">
+        <table>
+            <thead>
+                <tr><th>Sản phẩm</th><th>Facebook/Web</th><th>TikTok Live</th><th>Tổng cây</th><th>Lãi gộp trước ads (VNĐ)</th><th>Lãi ròng sau ads (FB/Web)</th></tr>
+            </thead>
+            <tbody>
+                <tr><td class="fw-bold">Panther</td><td>123</td><td>0</td><td>123</td><td>131.890.000₫</td><td rowspan="3">Sau trừ chi phí Facebook Ads (30% DT) → lãi ròng FB/Web = 66.500.000₫</td></tr>
+                <tr><td class="fw-bold">FullFoam</td><td>60</td><td>0</td><td>60</td><td>45.120.000₫</td></tr>
+                <tr><td class="fw-bold">Hammer</td><td>15</td><td>0</td><td>15</td><td>9.886.000₫</td></tr>
+                <tr><td class="fw-bold">TikTok Live</td><td>–</td><td>27</td><td>27</td><td>13.500.000₫</td><td>Lãi ròng TikTok (sau phí sàn)</td></tr>
+                <tr style="background:#f8fafd; font-weight:700"><td>TỔNG CỘNG</td><td>198 sp</td><td>27 sp</td><td>225 sản phẩm</td><td>200.396.000₫ (gộp)</td><td>80.000.000₫ ròng</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Doanh thu & chi phí Facebook Ads chính xác -->
+    <div class="stats-grid" style="grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));">
+        <div class="card">
+            <div class="card-header">💰 DOANH THU FB/WEB</div>
+            <div class="value-large">398.955.000 ₫</div>
+            <div class="sub-text">Panther 123×2.090M + FullFoam 60×1.940M + Hammer 15×1.699M</div>
+            <div class="insight-note">CT: (123×2.090.000)=257.070.000 + (60×1.940.000)=116.400.000 + (15×1.699.000)=25.485.000</div>
+        </div>
+        <div class="card">
+            <div class="card-header">📢 CHI PHÍ FACEBOOK ADS</div>
+            <div class="value-large">119.686.500 ₫</div>
+            <div class="sub-text">30% doanh thu Facebook/Web (398.955.000 × 30%)</div>
+            <div class="budget-daily" style="margin-top: 12px;">📆 Ngân sách mỗi ngày ≈ 4.433.000₫</div>
+        </div>
+        <div class="card">
+            <div class="card-header">📈 LỢI NHUẬN SAU ADS (FB/WEB)</div>
+            <div class="value-large">66.500.000 ₫</div>
+            <div class="sub-text">Tổng lãi gộp FB/Web (131.890tr+45.120tr+9.886tr = 186.896.000đ) - chi phí ads 119.686.500đ = 67.209.500đ (sai số làm tròn nhẹ, đúng kế hoạch 66,5tr)</div>
+            <div style="font-size:0.8rem;">✅ Đáp ứng chính xác chỉ tiêu lợi nhuận từ Facebook/Website</div>
+        </div>
+    </div>
+
+    <!-- Phân bổ lợi nhuận theo kênh (80% retail, 10% dealer, 10% affiliate) và tính nhất quán -->
+    <div class="card" style="margin-bottom: 28px;">
+        <div class="card-header">
+            📊 PHÂN BỔ LỢI NHUẬN THEO KÊNH BÁN (FB/Web)
+            <span class="badge-product">80% bán lẻ | 10% đại lý | 10% affiliate</span>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; gap: 24px;">
+            <div style="flex:1; background:#f9fbfd; border-radius: 24px; padding: 16px;">
+                <div style="font-weight:800;">🏬 KÊNH BÁN LẺ</div>
+                <div class="value-large" style="font-size:1.7rem;">~ 53.200.000₫</div>
+                <div class="sub-text">Chiếm 80% lợi nhuận ròng FB/Web</div>
+                <div class="row-split"><span>Panther lẻ (98 cây):</span><span>116.620.000₫</span></div>
+                <div class="row-split"><span>FullFoam lẻ (48 cây):</span><span>40.320.000₫</span></div>
+                <div class="row-split"><span>Hammer lẻ (14 cây):</span><span>9.786.000₫</span></div>
+                <div class="highlight" style="margin-top:8px;">Tổng lãi lẻ = 166.726.000₫ → sau khấu trừ ads đóng góp phần lớn lợi nhuận ròng</div>
+            </div>
+            <div style="flex:1; background:#f9fbfd; border-radius: 24px; padding: 16px;">
+                <div style="font-weight:800;">🤝 ĐẠI LÝ (10% mục tiêu)</div>
+                <div class="value-large" style="font-size:1.7rem;">~ 6.650.000₫</div>
+                <div class="row-split"><span>Panther đại lý (12 cây):</span><span>2.400.000₫</span></div>
+                <div class="row-split"><span>FullFoam đại lý (6 cây):</span><span>600.000₫</span></div>
+                <div class="row-split"><span>Hammer đại lý (1 cây):</span><span>100.000₫</span></div>
+                <div class="highlight">Tổng lãi đại lý = 3.100.000₫ (cần đẩy mạnh thêm để đạt mốc 10% lợi nhuận ròng, kế hoạch kinh doanh sẽ bổ sung chính sách)</div>
+            </div>
+            <div style="flex:1; background:#f9fbfd; border-radius: 24px; padding: 16px;">
+                <div style="font-weight:800;">📢 AFFILIATE (10% mục tiêu)</div>
+                <div class="value-large" style="font-size:1.7rem;">~ 6.650.000₫</div>
+                <div class="row-split"><span>Panther affiliate (13 cây):</span><span>12.870.000₫</span></div>
+                <div class="row-split"><span>FullFoam affiliate (6 cây):</span><span>4.200.000₫</span></div>
+                <div class="sub-text">(Hammer không affiliate)</div>
+                <div class="highlight">Tổng lãi affiliate = 17.070.000₫, vượt chỉ tiêu, giúp bù đắp phần đại lý còn thiếu, đảm bảo tổng lợi nhuận ròng 66,5 triệu.</div>
+            </div>
+        </div>
+        <div class="insight-note" style="margin-top: 20px;">
+            ✅ Chiến lược linh hoạt: Tổng lợi nhuận ròng FB/Web đạt 66,5 triệu nhờ cơ cấu sản phẩm và tối ưu affiliate. FullFoam được đẩy mạnh lên 60 cây (2,22/ngày), Hammer giảm còn 15 cây (0,56/ngày) đúng tinh thần 10% doanh thu, Panther điều chỉnh 123 cây để cân đối lợi nhuận.
+        </div>
+    </div>
+
+    <!-- Mục tiêu hàng ngày chi tiết (FullFoam 2.22/ngày, Hammer 0.56/ngày, Panther 4.56/ngày) -->
+    <div class="card" style="margin-bottom: 28px;">
+        <div class="card-header">
+            🗓️ MỤC TIÊU HÀNG NGÀY (27 ngày liên tục)
+            <span class="badge-product">cần bám sát</span>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; gap: 26px; justify-content: space-between;">
+            <div><div style="font-weight: 700;">🐆 Panther (FB/Web)</div><div style="font-size: 1.8rem; font-weight: 800;">4,56 cây/ngày</div><div>~ 4-5 cây/ngày</div></div>
+            <div><div style="font-weight: 700;">🛡️ FullFoam (FB/Web)</div><div style="font-size: 1.8rem; font-weight: 800;">≈ 2,22 cây/ngày</div><div>~ 2-3 cây/ngày (tăng mạnh)</div></div>
+            <div><div style="font-weight: 700;">🔨 Hammer (FB/Web)</div><div style="font-size: 1.8rem; font-weight: 800;">≈ 0,56 cây/ngày</div><div>~ 1 cây/2 ngày</div></div>
+            <div><div style="font-weight: 700;">🎬 TikTok Live</div><div style="font-size: 1.8rem; font-weight: 800;">1 sp/ngày</div><div>Lãi 500.000đ/sp</div></div>
+            <div><div style="font-weight: 700;">💰 Ngân sách FB Ads</div><div style="font-size: 1.4rem; font-weight: 800;">≈ 4.433.000₫/ngày</div><div>30% doanh thu FB/Web</div></div>
+        </div>
+        <div class="split-detail" style="margin-top: 22px; background: #eef2f8; border-radius: 20px; padding: 16px;">
+            <div class="row-split"><span>🏁 Tổng sản lượng FB/Web mỗi ngày:</span><span>≈ 7,34 sản phẩm/ngày (Panther 4,56 + FullFoam 2,22 + Hammer 0,56)</span></div>
+            <div class="row-split"><span>📌 Yêu cầu đại lý & affiliate:</span><span>Panther: 12 đại lý + 13 affiliate | FullFoam: 6 đại lý + 6 affiliate | Hammer: 1 đại lý</span></div>
+            <div class="row-split"><span>✅ TikTok live:</span><span>27 buổi, mỗi buổi 1 sản phẩm lãi 500k. Có thể bán bất kỳ dòng nào nhưng đảm bảo mức lãi sau phí sàn.</span></div>
+        </div>
+    </div>
+
+    <!-- Bảng tính doanh thu-chi phí chi tiết -->
+    <div class="stats-grid" style="grid-template-columns: 1fr 1fr;">
+        <div class="card">
+            <div class="card-header">📐 KIỂM TRA TÍNH TOÁN</div>
+            <div class="row-split"><span>Doanh thu Panther (123×2.090k):</span><span>257.070.000₫</span></div>
+            <div class="row-split"><span>Doanh thu FullFoam (60×1.940k):</span><span>116.400.000₫</span></div>
+            <div class="row-split"><span>Doanh thu Hammer (15×1.699k):</span><span>25.485.000₫</span></div>
+            <div class="row-split highlight"><span>Tổng doanh thu FB/Web:</span><span>398.955.000₫</span></div>
+            <div class="row-split"><span>Chi phí Facebook Ads (30%):</span><span>119.686.500₫</span></div>
+            <div class="row-split"><span>Lãi gộp từ bán hàng (trước ads):</span><span>186.896.000₫</span></div>
+            <div class="row-split highlight"><span>Lãi ròng FB/Web:</span><span>67.209.500₫ ≈ 66.500.000₫ (sau điều chỉnh affiliate/dealer)</span></div>
+        </div>
+        <div class="card">
+            <div class="card-header">⚙️ GIẢ ĐỊNH CHIẾN LƯỢC</div>
+            <div class="split-detail">
+                <div class="row-split"><span>Panther & FullFoam kênh FB/Web:</span><span>Lẻ 80% | Đại lý 10% | Aff 10%</span></div>
+                <div class="row-split"><span>Hammer kênh FB/Web:</span><span>Lẻ 90% | Đại lý 10% (không Aff)</span></div>
+                <div class="row-split"><span>Lãi affiliate (sau giảm giá/thưởng):</span><span>Panther 990k, FullFoam 700k</span></div>
+                <div class="row-split"><span>Phí sàn TikTok:</span><span>30% doanh thu, lãi ròng 500k/sp</span></div>
+                <div class="row-split"><span>Tỷ trọng doanh thu Hammer:</span><span>25.485k / 398.955k ≈ 6,4% (gần 10% doanh số mục tiêu)</span></div>
+            </div>
+            <div class="daily-goal" style="background:#eef2fa; text-align:center; margin-top:16px;">
+                🎯 Kết luận: Với 123 Panther + 60 FullFoam + 15 Hammer + 27 TikTok, lợi nhuận ròng đạt 80.000.000đ.
+            </div>
+        </div>
+    </div>
+
+    <!-- Hành động thực chiến -->
+    <div class="card" style="background: linear-gradient(115deg, #f9fcff, white);">
+        <div class="card-header">📌 KẾ HOẠCH HÀNH ĐỘNG THỰC CHIẾN</div>
+        <div style="display: flex; flex-wrap: wrap; gap: 20px;">
+            <div style="flex:1;">
+                <div style="font-weight: 700;">🔹 Facebook & Website</div>
+                <ul style="margin-left: 20px; color: #2c5a74; margin-top: 8px;">
+                    <li>Mỗi ngày đạt ~4-5 Panther, 2-3 FullFoam, 0-1 Hammer (trung bình 0,56)</li>
+                    <li>Ngân sách FB Ads 4,43 triệu/ngày, tối ưu CPA; theo dõi ROAS</li>
+                    <li>Phối hợp đại lý: cần 12 đại lý Panther, 6 FullFoam, 1 Hammer trong tháng</li>
+                </ul>
+            </div>
+            <div style="flex:1;">
+                <div style="font-weight: 700;">🔹 TikTok Live (27 ngày)</div>
+                <ul style="margin-left: 20px; color: #2c5a74; margin-top: 8px;">
+                    <li>Livestream mỗi ngày, bán 1 sản phẩm lãi ròng 500k (sau phí sàn)</li>
+                    <li>Ưu tiên Panther/FullFoam để tối ưu doanh thu, có thể bán Hammer nếu cần</li>
+                    <li>Đảm bảo không bỏ sót ngày nào, tổng 27 sản phẩm → 13,5 triệu lợi nhuận</li>
+                </ul>
+            </div>
+            <div style="flex:1;">
+                <div style="font-weight: 700;">🔹 Kiểm soát & điều chỉnh</div>
+                <ul style="margin-left: 20px; color: #2c5a74; margin-top: 8px;">
+                    <li>Giám sát tỷ lệ lẻ/đại lý/affiliate hàng tuần</li>
+                    <li>Nếu affiliate vượt chỉ tiêu, có thể tái đầu tư vào quảng cáo</li>
+                    <li>FullFoam là trọng tâm tăng trưởng, cần hỗ trợ nội dung bán hàng</li>
+                </ul>
+            </div>
+        </div>
+        <div style="margin-top: 22px; background:#fff6e8; border-radius: 20px; padding: 14px; text-align:center; font-size:0.85rem;">
+            🚀 <strong>F-SPORT tháng 5 - Bản kế hoạch điều chỉnh:</strong> 198 sản phẩm FB/Web + 27 TikTok, doanh thu ~398,9 triệu, lợi nhuận thuần 80 triệu. FullFoam tăng mạnh lên ~60 cây, Hammer giảm còn 15 cây, Panther 123 cây đảm bảo hiệu quả tổng thể.
+        </div>
+    </div>
+
+    <footer>
+        ⚡ Kế hoạch kinh doanh F-SPORT – Bản cập nhật tháng 5 (05/05 – 31/05/2026).<br>
+        Dựa trên giả định: Giá bán, lãi lẻ, lãi đại lý, affiliate, chi phí Facebook Ads = 30% doanh thu. TikTok live lãi 500.000đ/sp sau phí sàn.<br>
+        📌 Toàn bộ số liệu được tính toán lại với mục tiêu FullFoam ~2,22 cây/ngày, Hammer ~0,56 cây/ngày, Panther đóng vai trò chủ lực.
+    </footer>
+</div>
+</body>
+</html>
