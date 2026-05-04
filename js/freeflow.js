@@ -32,20 +32,6 @@ let bootstrapped = false;
 let freeflowReadyFired = false;
 let collectionGridLoaded = false;
 
-/* ------------------------------------
-   COLLECTION GRID CONFIG
------------------------------------- */
-window.collectionList = [
-  {
-    title: "TÚI, BALO | SHOPEE PRODUCT",
-    json: "/json/aff/bag-collection.json"
-  },
-  {
-    title: "QUẦN ÁO THỂ THAO | SHOPEE PRODUCT",
-    json: "/json/aff/apparel-collection.json"
-  }
-];
-
 /* ======================================
    CACHE
 ====================================== */
