@@ -119,11 +119,3 @@ setInterval(() => {
 //sc.src = "/js/supportchat.js";
 //document.body.appendChild(sc);
 // ============================================
-// 🎾 GỌI FLOAT IMAGE PICKLEBALL
-// ============================================
-(function loadFloatImage() {
-  const script = document.createElement("script");
-  script.src = "/js/floatimage.js";
-  script.defer = true;
-  document.body.appendChild(script);
-})();
