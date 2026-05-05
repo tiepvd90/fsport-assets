@@ -359,3 +359,25 @@ body {
   text-rendering: auto !important;
 }
 
+/* ===== DESKTOP: co footer + cart popup vào giữa ===== */
+@media (min-width: 769px) {
+
+  /* Sticky Footer */
+  .sticky-footer {
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: 100% !important;
+    max-width: 1180px !important;
+    border-radius: 12px 12px 0 0 !important;
+    box-shadow: 0 -2px 12px rgba(0,0,0,0.08) !important;
+  }
+
+  /* Cart Popup */
+  .cart-popup-content {
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: 1180px !important;
+    max-width: 1180px !important;
+    border-radius: 12px 12px 0 0 !important;
+  }
+}
