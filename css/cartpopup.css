@@ -290,3 +290,11 @@
   font-size: 13px;    /* nhỏ hơn */
   font-style: italic; /* in nghiêng */
 }
+@media (min-width: 769px) {
+  .cart-popup-content {
+    left: 50%;
+    transform: translateX(-50%);
+    width: 768px;
+    border-radius: 12px 12px 0 0;
+  }
+}
