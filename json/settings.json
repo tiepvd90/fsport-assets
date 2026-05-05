@@ -1,43 +1,7 @@
 {
   "vouchers": [
     {
-      "id": "fullfoam-do",
-      "category": "pickleball",
-      "amount": 150000,
-      "note": "Giảm 150K"
-    },
-     {
-      "id": "fullfoam-xanhduong",
-      "category": "pickleball",
-      "amount": 150000,
-      "note": "Giảm 150K"
-    },
-    {
-      "id": "fullfoam-xam",
-      "category": "pickleball",
-      "amount": 150000,
-      "note": "Giảm 150K"
-    },
-    {
-      "id": "fullfoam-vang",
-      "category": "pickleball",
-      "amount": 150000,
-      "note": "Giảm 150K"
-    },
-    {
-      "id": "fullfoam-tim",
-      "category": "pickleball",
-      "amount": 150000,
-      "note": "Giảm 150K"
-    },
-    {
-      "id": "fullfoam-xanhla",
-      "category": "pickleball",
-      "amount": 150000,
-      "note": "Giảm 150K"
-    },
-        {
-      "id": "fullfoam-xam",
+      "id": "demo-do",
       "category": "pickleball",
       "amount": 150000,
       "note": "Giảm 150K"
