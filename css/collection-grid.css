@@ -2,12 +2,12 @@
 #collectionContainer {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 16px 32px;
+  padding: 0 16px 0px;
   box-sizing: border-box;
 }
 
 .cgrid-block {
-  margin-bottom: 32px;
+  margin-bottom: 8px;
 }
 
 .cgrid-title {
