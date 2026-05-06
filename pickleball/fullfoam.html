@@ -7,6 +7,8 @@
 
   <!-- ✅ CSS -->
   <link rel="stylesheet" href="/css/base.css" />
+  <link rel="stylesheet" href="/css/photo-gallery.css" />
+  <link rel="stylesheet" href="/css/collection-grid.css" />
   <link rel="stylesheet" href="https://friendly-kitten-d760ff.netlify.app/css/cartpopup.css" />
   <link rel="stylesheet" href="https://friendly-kitten-d760ff.netlify.app/css/checkoutpopup.css" />
   <link rel="stylesheet" href="/css/productdescription.css" />
@@ -47,7 +49,7 @@
     <!-- Script xử lý slideshow + zoom -->
     <script src="/js/slideshow-2p.js"></script>
 
-     <!-- ✅ Flash Banner -->
+    <!-- ✅ Flash Banner -->
     <div id="flashbanner-placeholder"></div>
     <script>
       fetch("/html/flashsalebanner/150kvoucher.html")
@@ -63,54 +65,38 @@
     <!-- ✅ Tiêu đề + Shipping -->
     <div class="product-hero">
       <h1 style="font-size: 14px; font-weight: bold; margin-top: 8px; font-family: 'Be Vietnam Pro', sans-serif; line-height: 1.4; text-align: left;">
-    <span style="background: black; color: white; font-size: 11px; padding: 2px 6px; border-radius: 4px; margin-right: 4px;">Mall</span>
-    <span style="background: #007BFF; color: white; font-size: 11px; padding: 2px 6px; border-radius: 4px; margin-right: 6px; text-transform: uppercase;">Hàng Chính Hãng</span>
-    Vợt Pickleball F-Sport FullFoam siêu trợ lực - viền mettalic ánh kim – mặt vợt Carbon Toray, - Giảm Rung Chấn
-  </h1>
+        <span style="background: black; color: white; font-size: 11px; padding: 2px 6px; border-radius: 4px; margin-right: 4px;">Mall</span>
+        <span style="background: #007BFF; color: white; font-size: 11px; padding: 2px 6px; border-radius: 4px; margin-right: 6px; text-transform: uppercase;">Hàng Chính Hãng</span>
+        Vợt Pickleball F-Sport FullFoam siêu trợ lực - viền mettalic ánh kim – mặt vợt Carbon Toray - Giảm Rung Chấn
+      </h1>
+
       <!-- ✅ KHỐI 3: Video sản phẩm -->
-<div id="video-placeholder"></div>
+      <div id="video-placeholder"></div>
+      <link rel="stylesheet" href="/css/productvideo-v3.css">
+      <script src="/js/productvideo-v3.js"></script>
+      <script>
+        initProductVideo();
+      </script>
+      <!-- 🔚 Hết KHỐI 3 -->
 
-<link rel="stylesheet" href="/css/productvideo-v3.css">
+      <!-- ✅ Mô tả sản phẩm -->
+      <div class="product-hero" style="margin-top: 12px;">
+        <div id="productdescription-placeholder" data-src="/html/productdescription/pickleball/fullfoam.html"></div>
+      </div>
+      <script src="/js/productdescription.js"></script>
 
-<script src="/js/productvideo-v3.js"></script>
+      <!-- ✅ KHỐI 2: PHOTO GALLERY (thay thế review cũ) -->
+      <div class="product-hero" style="margin-top: 12px;">
+        <div id="photo-gallery-container"></div>
+      </div>
+      <!-- HẾT KHỐI 2: photo-gallery -->
 
-<script>
-initProductVideo();
-</script>
-<!-- 🔚 Hết KHỐI 3 -->
+      <!-- ✅ COLLECTION GRID - PICKLEBALL -->
+      <div style="margin-top: 32px;">
+        <div id="collectionContainer"></div>
+      </div>
 
-    <!-- ✅ Mô tả sản phẩm -->
-    <div class="product-hero" style="margin-top: 12px;">
-      <div id="productdescription-placeholder" data-src="/html/productdescription/pickleball/fullfoam.html"></div>
     </div>
-    <script src="/js/productdescription.js"></script>
-  <!-- ✅ KHỐI 2: Reviews -->
-    <div class="product-hero" style="margin-top: 12px;">
-      <div id="review-placeholder"></div>
-    </div>
-    <script>
-  fetch("/html/reviewblock/fullfoam.html")
-    .then(res => res.text())
-    .then(html => {
-      const container = document.getElementById("review-placeholder");
-      container.innerHTML = html;
-      // ✅ Kích hoạt lại các <script> thủ công
-      const scripts = container.querySelectorAll("script");
-      scripts.forEach(oldScript => {
-        const newScript = document.createElement("script");
-        if (oldScript.src) {
-          newScript.src = oldScript.src;
-        } else {
-          newScript.textContent = oldScript.textContent;
-        }
-        document.body.appendChild(newScript);
-      });
-    });
-</script>
-<!-- HẾT KHỐI 2: review -->    
-    <!-- ✅ FreeFlow -->
-    <h2 class="freeflow-heading" style="font-size: 18px; margin: 24px 12px 12px;">CÓ THỂ BẠN SẼ THÍCH</h2>
-    <script src="/js/freeflow-loader.js"></script>
 
   </div>
 
@@ -168,6 +154,17 @@ initProductVideo();
     setupPage();
   </script>
 
+  <!-- ✅ Collection Grid Script (chỉ pickleball) -->
+  <script>
+    window.collectionList = [
+      {
+        title: "PICKLEBALL COLLECTION",
+        json: "/json/pickleball-collection.json"
+      }
+    ];
+  </script>
+  <script src="/js/collection-grid.js" defer></script>
+
   <!-- ✅ Tracking -->
   <script src="/js/tracking.js"></script>
   <div id="base-placeholder"></div>
@@ -178,22 +175,24 @@ initProductVideo();
         document.getElementById("base-placeholder").outerHTML = html;
         if (typeof trackBothPixels === "function") {
           trackBothPixels("ViewContent", {
-  content_type: "product",
-  contents: [{
-    content_id: window.productPage,
-    content_name: window.productPage,
-    content_category: window.productCategory,
-    quantity: 1,
-    price: 0   // hoặc giá sản phẩm thực tế nếu có
-  }],
-  value: 0,
-  currency: "VND"
-});
+            content_type: "product",
+            contents: [{
+              content_id: window.productPage,
+              content_name: window.productPage,
+              content_category: window.productCategory,
+              quantity: 1,
+              price: 0
+            }],
+            value: 0,
+            currency: "VND"
+          });
         }
       });
   </script>
+
   <!-- ✅ Base script -->
   <script src="/js/base.js"></script>
-  <script src="/js/floatimage.js"></script>
+  <script src="/js/photo-gallery.js"></script>
+
 </body>
 </html>
