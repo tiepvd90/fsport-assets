@@ -12,8 +12,7 @@
   <!-- CSS chung -->
   <link rel="stylesheet" href="/stories/css/stories.css">
   <link rel="stylesheet" href="/css/base.css">
-
-  <!-- CSS riêng cho COLLECTION GRID (tự load bởi JS cũng được, nhưng vẫn include để an toàn) -->
+  <link rel="stylesheet" href="/css/photo-gallery.css">
   <link rel="stylesheet" href="/css/collection-grid.css">
 
   <!-- Popup CSS -->
@@ -22,18 +21,6 @@
 
   <script>
     window.productPage = "homepage";
-
-    /* 🟧 CÁC COLLECTION SẼ HIỂN THỊ TRÊN TRANG */
-    window.collectionList = [
-      {
-        title: "PICKLEBALL COLLECTION",
-        json: "/json/pickleball-collection.json"
-      },
-      {
-        title: "DÉP CHẠY Y-SANDAL ĐÀI LOAN",
-        json: "/json/ysandal-collection.json"
-      }
-    ];
   </script>
 
   <script src="https://friendly-kitten-d760ff.netlify.app/js/voucherpopup.js" defer></script>
@@ -69,6 +56,11 @@
         box-sizing: border-box;
       }
     }
+
+    .gallery-wrapper {
+      margin: 50px 0;
+    }
+    /* Thu hẹp khoảng cách dưới collection trên trang index */
   </style>
 </head>
 
@@ -80,10 +72,27 @@
        class="cover-img" />
 
   <!-- ========================================================= -->
-  <!--  🔥 COLLECTION GRID — PICKLEBALL, YSANDAL, BAG, APPAREL   -->
+  <!--  🔥 COLLECTION GRID — PICKLEBALL + Y-SANDAL               -->
   <!-- ========================================================= -->
   <div id="collectionContainer"></div>
+  <script>
+    window.collectionList = [
+      {
+        title: "PICKLEBALL COLLECTION",
+        json: "/json/pickleball-collection.json"
+      },
+      {
+        title: "DÉP CHẠY Y-SANDAL ĐÀI LOAN",
+        json: "/json/ysandal-collection.json"
+      }
+    ];
+  </script>
   <script src="/js/collection-grid.js" defer></script>
+
+  <!-- ========================================================= -->
+  <!--  📸 PHOTO GALLERY (FSPORT CLUB)                           -->
+  <!-- ========================================================= -->
+  <div id="photo-gallery-container" class="gallery-wrapper"></div>
 
   <!-- ========================================================= -->
   <!--  CHECKOUT POPUP                                           -->
@@ -100,7 +109,9 @@
       });
   </script>
 
+  <!-- BASE JS & PHOTO GALLERY JS (cuối body) -->
   <script src="/js/base.js" defer></script>
+  <script src="/js/photo-gallery.js"></script>
 
 </body>
 </html>
