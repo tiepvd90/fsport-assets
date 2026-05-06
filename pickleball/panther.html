@@ -8,6 +8,7 @@
   <!-- ✅ CSS -->
   <link rel="stylesheet" href="/css/base.css" />
   <link rel="stylesheet" href="/css/photo-gallery.css" />
+  <link rel="stylesheet" href="/css/collection-grid.css" />
   <link rel="stylesheet" href="https://friendly-kitten-d760ff.netlify.app/css/cartpopup.css" />
   <link rel="stylesheet" href="https://friendly-kitten-d760ff.netlify.app/css/checkoutpopup.css" />
   <link rel="stylesheet" href="/css/productdescription.css" />
@@ -90,6 +91,11 @@
       </div>
       <!-- HẾT KHỐI 2: photo-gallery -->
 
+      <!-- ✅ COLLECTION GRID - PICKLEBALL (bỏ Y-Sandal) -->
+      <div style="margin-top: 32px;">
+        <div id="collectionContainer"></div>
+      </div>
+
     </div>
 
   </div>
@@ -147,6 +153,17 @@
 
     setupPage();
   </script>
+
+  <!-- ✅ Collection Grid Script (chỉ pickleball) -->
+  <script>
+    window.collectionList = [
+      {
+        title: "PICKLEBALL COLLECTION",
+        json: "/json/pickleball-collection.json"
+      }
+    ];
+  </script>
+  <script src="/js/collection-grid.js" defer></script>
 
   <!-- ✅ Tracking -->
   <script src="/js/tracking.js"></script>
