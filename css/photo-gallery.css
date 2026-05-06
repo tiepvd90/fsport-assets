@@ -1,302 +1,157 @@
 /* ========================================
-   PHOTO GALLERY - FSPORT CLUB
-   Style chính cho album ảnh
+   REVIEW POOL GALLERY - FSPORT CLUB
+   Grid siêu sát, lightbox với nút X sát ảnh
    ======================================== */
 
-/* Reset và container chính */
 .photo-gallery-wrapper {
     width: 100%;
     max-width: 1400px;
     margin: 0 auto;
-    padding: 2rem 1rem;
-    font-family: 'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+    padding: 0;               /* Xóa padding để ảnh sát mép */
+    font-family: 'Poppins', system-ui, sans-serif;
     background: #0b0c10;
+    margin-top: 0px;
 }
 
-/* Header section */
+/* Header chỉ còn brand, không có SEE ALL */
 .gallery-header-fsport {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    flex-wrap: wrap;
-    margin-bottom: 2rem;
-    border-bottom: 2px solid rgba(0, 255, 255, 0.6);
-    padding-bottom: 0.75rem;
+    padding: 0.3rem 0.5rem;
+    border-bottom: 1px solid rgba(0, 255, 255, 0.6);
+    margin-bottom: 0px;
 }
-
 .brand-fsport {
-    font-size: 1.8rem;
+    font-size: 1.6rem;
     font-weight: 800;
-    letter-spacing: 2px;
     background: linear-gradient(135deg, #00ffff, #0099ff);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
-    text-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    text-align: center;
 }
 
-.see-all-fsport {
-    font-size: 0.9rem;
-    font-weight: 500;
-    color: #00ffff;
-    cursor: pointer;
-    transition: 0.2s;
-    border-bottom: 1px dashed rgba(0, 255, 255, 0.5);
-}
-
-.see-all-fsport:hover {
-    color: #0099ff;
-    border-bottom-color: #0099ff;
-}
-
-/* Grid album ảnh */
-.album-grid-fsport {
+/* GRID CỐ ĐỊNH 8 CỘT - SIÊU SÁT */
+.review-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    gap: 1.25rem;
-    margin: 2rem 0 2.5rem;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 2px;                /* Khoảng cách siêu nhỏ */
+    background-color: #0b0c10;
 }
 
-/* Card ảnh */
-.photo-card-fsport {
-    position: relative;
-    border-radius: 20px;
-    overflow: hidden;
+/* Mỗi item chỉ có ảnh, không có info */
+.review-item {
     cursor: pointer;
-    transition: transform 0.25s ease, box-shadow 0.3s ease;
-    background: rgba(30, 32, 40, 0.7);
-    box-shadow: 0 12px 20px -12px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+    background: #000;
+}
+.review-img {
     aspect-ratio: 1 / 1;
-}
-
-.photo-card-fsport:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 20px 28px -12px black;
-}
-
-.photo-card-fsport img {
     width: 100%;
-    height: 100%;
     object-fit: cover;
     display: block;
-    transition: all 0.2s;
+    transition: transform 0.2s;
+}
+.review-item:hover .review-img {
+    transform: scale(1.02);
 }
 
-/* Overlay icon zoom */
-.photo-card-fsport::after {
-    content: "🔍";
-    position: absolute;
-    bottom: 12px;
-    right: 12px;
-    background: rgba(0,0,0,0.6);
-    backdrop-filter: blur(3px);
-    font-size: 1rem;
-    padding: 4px 8px;
-    border-radius: 30px;
-    opacity: 0;
-    transition: opacity 0.2s;
-    pointer-events: none;
-    color: #00ffff;
-    font-weight: 500;
-}
-
-.photo-card-fsport:hover::after {
-    opacity: 1;
-}
-
-/* Caption ảnh */
-.photo-caption-fsport {
-    text-align: center;
-    font-size: 0.75rem;
-    margin-top: 0.6rem;
-    color: #ccc;
-    font-weight: 500;
-    letter-spacing: 0.5px;
-}
-
-/* Swipe message */
-.swipe-more-fsport {
-    text-align: center;
-    margin-top: 1rem;
-    padding: 0.8rem;
-    font-size: 0.9rem;
-    letter-spacing: 1px;
-    color: rgba(0, 255, 255, 0.8);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    font-weight: 500;
-    border-top: 1px solid rgba(0, 255, 255, 0.2);
-}
-
-/* ========== LIGHTBOX MODAL ========== */
+/* ========== LIGHTBOX ========== */
 .lightbox-fsport {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.95);
-    backdrop-filter: blur(8px);
+    background: rgba(0,0,0,0.96);
+    backdrop-filter: blur(5px);
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 10000;
+    z-index: 20000;
     visibility: hidden;
     opacity: 0;
-    transition: visibility 0.2s, opacity 0.3s ease;
+    transition: 0.2s;
 }
-
 .lightbox-fsport.active {
     visibility: visible;
     opacity: 1;
 }
-
-.lightbox-content-fsport {
+.lightbox-content {
     position: relative;
-    max-width: 90vw;
-    max-height: 90vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    animation: scaleFade 0.25s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-}
-
-@keyframes scaleFade {
-    0% {
-        transform: scale(0.92);
-        opacity: 0;
-    }
-    100% {
-        transform: scale(1);
-        opacity: 1;
-    }
-}
-
-.lightbox-img-fsport {
-    max-width: 100%;
+    max-width: 85vw;
     max-height: 85vh;
-    width: auto;
-    height: auto;
+    background: #111;
+    border-radius: 12px;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0;          /* Xóa padding để nút X sát ảnh */
+}
+.lightbox-img {
+    max-width: 100%;
+    max-height: 70vh;
     object-fit: contain;
-    border-radius: 20px;
-    box-shadow: 0 30px 40px rgba(0, 0, 0, 0.6);
-    border: 3px solid rgba(0, 255, 255, 0.4);
+    display: block;
+    border-radius: 12px 12px 0 0;
+}
+.lightbox-details {
+    padding: 16px 20px 20px;
+    width: 100%;
+    background: #111;
+    color: white;
+    text-align: left;
+    border-top: 1px solid #333;
+}
+.lightbox-name {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #00ffff;
+    margin-bottom: 8px;
+}
+.lightbox-review {
+    font-size: 0.95rem;
+    line-height: 1.4;
+    color: #ddd;
 }
 
-/* Nút đóng */
-.close-lightbox-fsport {
+/* Nút X - đặt trực tiếp trong .lightbox-content, góc trên cùng bên phải của ảnh */
+.close-lightbox {
     position: absolute;
-    top: 20px;
-    right: 30px;
-    font-size: 2.5rem;
-    font-weight: 300;
-    color: white;
-    background: rgba(0,0,0,0.6);
-    width: 48px;
-    height: 48px;
+    top: 10px;
+    right: 10px;
+    width: 36px;
+    height: 36px;
+    background: rgba(0,0,0,0.7);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
+    font-size: 24px;
+    font-weight: bold;
     cursor: pointer;
+    color: white;
     transition: 0.2s;
-    backdrop-filter: blur(6px);
-    font-family: monospace;
-    line-height: 1;
-    z-index: 10001;
+    z-index: 20001;
+    backdrop-filter: blur(4px);
 }
-
-.close-lightbox-fsport:hover {
-    background: #0099ff;
-    color: #1e1e2a;
+.close-lightbox:hover {
+    background: #ff4444;
     transform: rotate(90deg);
 }
 
-/* Nút điều hướng */
-.nav-btn-fsport {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: rgba(20, 20, 30, 0.7);
-    backdrop-filter: blur(6px);
-    border: none;
-    font-size: 2rem;
-    width: 48px;
-    height: 48px;
-    border-radius: 60px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    color: #00ffff;
-    transition: all 0.2s;
-    font-weight: bold;
-    z-index: 10001;
-}
-
-.nav-btn-fsport:hover {
-    background: #0099ff;
-    color: #0a0a0f;
-    transform: translateY(-50%) scale(1.05);
-}
-
-.prev-btn-fsport {
-    left: 20px;
-}
-
-.next-btn-fsport {
-    right: 20px;
-}
-
-/* Counter */
-.lightbox-counter-fsport {
-    position: absolute;
-    bottom: 20px;
-    left: 0;
-    right: 0;
-    text-align: center;
-    font-size: 0.9rem;
-    background: rgba(0,0,0,0.6);
-    padding: 6px 14px;
-    width: fit-content;
-    margin: 0 auto;
-    border-radius: 40px;
-    backdrop-filter: blur(5px);
-    color: #00ffff;
-    font-weight: 500;
-    pointer-events: none;
-}
-
-/* Footer badge */
-.extra-badge-fsport {
-    text-align: center;
-    font-size: 0.7rem;
-    margin-top: 1.2rem;
-    color: #aaa;
-    font-style: italic;
-}
-
-/* Responsive */
-@media (max-width: 560px) {
-    .album-grid-fsport {
-        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-        gap: 1rem;
+/* Responsive: vẫn giữ 8 cột */
+@media (max-width: 1024px) {
+    .review-grid {
+        gap: 1px;
     }
-    .brand-fsport {
-        font-size: 1.3rem;
+}
+@media (max-width: 768px) {
+    .review-grid {
+        gap: 1px;
     }
-    .close-lightbox-fsport {
-        top: 12px;
-        right: 12px;
-        width: 40px;
-        height: 40px;
-        font-size: 1.8rem;
-    }
-    .nav-btn-fsport {
-        width: 38px;
-        height: 38px;
-        font-size: 1.4rem;
+}
+@media (max-width: 480px) {
+    .review-grid {
+        gap: 1px;
     }
 }
