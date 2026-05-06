@@ -1,30 +1,5 @@
 [
   {
-    "groupName": "TÚI & BÓNG PICKLEBALL",
-    "items": [
-      {
-        "id": "pickleball-bag",
-        "title": "Túi Pickleball Nam Nữ – Vải Dù Chống Thấm",
-        "image": "https://i.postimg.cc/L63ttgmT/Capture.jpg",
-        "price": 269000,
-        "originalPrice": 425000,
-        "link": "/pickleball/bag",
-        "category": "pickleball",
-        "tags": []
-      },
-      {
-        "id": "pickleball-ball",
-        "title": "Bóng Pickleball Chuẩn Thi Đấu – Dạ Quang",
-        "image": "/assets/images/gallery/pickleball/pickleball-ball/1.webp",
-        "price": 21000,
-        "originalPrice": 50000,
-        "link": "/pickleball/ball",
-        "category": "pickleball",
-        "tags": []
-      }
-    ]
-  },
-  {
     "groupName": "VỢT LÕI FUL-FOAM VIỀN METALLIC CHROME",
     "items": [
       {
@@ -219,6 +194,31 @@
         "price": 739000,
         "originalPrice": 1200000,
         "link": "/pickleball/gen4",
+        "category": "pickleball",
+        "tags": []
+      }
+    ]
+  },
+    {
+    "groupName": "TÚI & BÓNG PICKLEBALL",
+    "items": [
+      {
+        "id": "pickleball-bag",
+        "title": "Túi Pickleball Nam Nữ – Vải Dù Chống Thấm",
+        "image": "https://i.postimg.cc/L63ttgmT/Capture.jpg",
+        "price": 269000,
+        "originalPrice": 425000,
+        "link": "/pickleball/bag",
+        "category": "pickleball",
+        "tags": []
+      },
+      {
+        "id": "pickleball-ball",
+        "title": "Bóng Pickleball Chuẩn Thi Đấu – Dạ Quang",
+        "image": "/assets/images/gallery/pickleball/pickleball-ball/1.webp",
+        "price": 21000,
+        "originalPrice": 50000,
+        "link": "/pickleball/ball",
         "category": "pickleball",
         "tags": []
       }
