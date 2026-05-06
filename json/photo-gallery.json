@@ -1,0 +1,244 @@
+{
+    "reviews": [
+        {
+            "id": 1,
+            "image": "/assets/images/gallery/reviewpool/1.webp",
+            "name": "Ngô Thu Hải",
+            "review": "Bảo hành dòng Foam 3 tháng yên tâm quá — team F-sport hỗ trợ siêu nhanh."
+        },
+        {
+            "id": 2,
+            "image": "/assets/images/gallery/reviewpool/2.webp",
+            "name": "Phan Thanh Nam",
+            "review": "Cầm lần đầu mà ôm bóng rất ổn, không nẩy như các dòng foam hãng khác."
+        },
+        {
+            "id": 3,
+            "image": "/assets/images/gallery/reviewpool/3.webp",
+            "name": "Võ Như Sơn",
+            "review": "Đã thử vài hãng khác cuối cùng dừng lại ở f-sport cho cảm giác bóng tốt nhất."
+        },
+        {
+            "id": 4,
+            "image": "/assets/images/gallery/reviewpool/4.webp",
+            "name": "Phạm Đức Khoa",
+            "review": "Vợt kiểm soát tốt, spin mạnh — quyết định trận đấu trong khoảnh khắc."
+        },
+        {
+            "id": 5,
+            "image": "/assets/images/gallery/reviewpool/5.webp",
+            "name": "Bùi Nhật Minh",
+            "review": "Lõi êm, nhám nhiều xoáy ngon, đấu súng ở bếp siêu sướng."
+        },
+        {
+            "id": 6,
+            "image": "/assets/images/gallery/reviewpool/6.webp",
+            "name": "Lê Thị Huyền",
+            "review": "Cầm vợt f-sport là vô địch ngay, cám ơn team F-sport đã giải vía."
+        },
+        {
+            "id": 7,
+            "image": "/assets/images/gallery/reviewpool/7.webp",
+            "name": "Phạm Văn Tâm",
+            "review": "Từ ngày biết đến vợt F-Sport đã giới thiệu cho cả team hơn chục người, giờ thành fan trung thành."
+        },
+        {
+            "id": 8,
+            "image": "/assets/images/gallery/reviewpool/8.webp",
+            "name": "Dương Tuấn Anh",
+            "review": "Chơi bóng 48 lỗ dùng vợt lõi tổ ong 3 hôm là hỏng, chơi cây TruFoam Panther thì yên tâm, độ bền quá tốt."
+        },
+        {
+            "id": 9,
+            "image": "/assets/images/gallery/reviewpool/9.webp",
+            "name": "Trần Thanh Tâm",
+            "review": "Cây Panther này nổ to lắm anh em ơi, đẹp, hoàn thiện tốt có phần nhìn hơn cả boom."
+        },
+        {
+            "id": 10,
+            "image": "/assets/images/gallery/reviewpool/10.webp",
+            "name": "Lê Văn Hiếu",
+            "review": "F-sport đúng là chất lượng cao cấp mà giá chỉ 1/3 các hãng khác, đáng đồng tiền bát gạo."
+        },
+        {
+            "id": 11,
+            "image": "/assets/images/gallery/reviewpool/11.webp",
+            "name": "Hoàng Minh Đức",
+            "review": "Vợt f-sport nhẹ, quật bóng ngọt, kiểm soát đường bóng tốt."
+        },
+        {
+            "id": 12,
+            "image": "/assets/images/gallery/reviewpool/12.webp",
+            "name": "Nguyễn Thanh Lân",
+            "review": "Lần đầu chơi pickleball mà thấy vợt dễ cầm, không bị mỏi tay."
+        },
+        {
+            "id": 13,
+            "image": "/assets/images/gallery/reviewpool/13.webp",
+            "name": "Trương Văn Bảo",
+            "review": "So với các dòng vợt cao cấp, f-sport không thua kém mà giá mềm hơn nhiều."
+        },
+        {
+            "id": 14,
+            "image": "/assets/images/gallery/reviewpool/14.webp",
+            "name": "Lý Văn Minh",
+            "review": "Mặt vợt bám xoáy tốt, phù hợp với lối đánh kỹ thuật."
+        },
+        {
+            "id": 15,
+            "image": "/assets/images/gallery/reviewpool/15.webp",
+            "name": "Đinh Văn Cường",
+            "review": "Cân bằng giữa công và thủ, mình thấy rất ưng nhất trong các cây đã sử dụng."
+        },
+        {
+            "id": 16,
+            "image": "/assets/images/gallery/reviewpool/16.webp",
+            "name": "Mai Thị Thu",
+            "review": "Tay yếu nên cần vợt trợ lực nhiều, vợt xinh ạ."
+        },
+        {
+            "id": 17,
+            "image": "/assets/images/gallery/reviewpool/17.webp",
+            "name": "Đỗ Quang Hưng",
+            "review": "cán vợt cầm êm, thoát mồ hôi tốt, shop cho nhiều quà quá"
+        },
+        {
+            "id": 18,
+            "image": "/assets/images/gallery/reviewpool/18.webp",
+            "name": "Vũ Ngọc Thịnh",
+            "review": "Màu sắc đẹp, thiết kế thể thao, cầm rất sang."
+        },
+        {
+            "id": 19,
+            "image": "/assets/images/gallery/reviewpool/19.webp",
+            "name": "Lương Văn Thắng",
+            "review": "Bền hơn mong đợi, dùng 6 tháng rồi như mới."
+        },
+        {
+            "id": 20,
+            "image": "/assets/images/gallery/reviewpool/20.webp",
+            "name": "Trần Xuân Ánh",
+            "review": "Giao hàng nhanh, đóng gói cẩn thận, vợt như hình."
+        },
+        {
+            "id": 21,
+            "image": "/assets/images/gallery/reviewpool/21.webp",
+            "name": "Bùi Thu Hải",
+            "review": "Lõi Foam mà cảm giác tiếp xúc bóng vẫn thật tay."
+        },
+        {
+            "id": 22,
+            "image": "/assets/images/gallery/reviewpool/22.webp",
+            "name": "Phạm Nhật Anh",
+            "review": "Nhẹ, mạnh, vung thoải mái, đánh cả buổi không mỏi."
+        },
+        {
+            "id": 23,
+            "image": "/assets/images/gallery/reviewpool/23.webp",
+            "name": "Nguyễn Trọng Khang",
+            "review": "Đánh ổn áp, spin nhiều, đối thủ khó đỡ."
+        },
+        {
+            "id": 24,
+            "image": "/assets/images/gallery/reviewpool/24.webp",
+            "name": "Hà Xuân Thanh",
+            "review": "Đẹp từ thiết kế đến màu viền metallic, cầm lên là thích ngay."
+        },
+        {
+            "id": 25,
+            "image": "/assets/images/gallery/reviewpool/25.webp",
+            "name": "Lê Huy Hoàng",
+            "review": "So với vợt cùng tầm giá thì f-sport vượt trội hẳn."
+        },
+        {
+            "id": 26,
+            "image": "/assets/images/gallery/reviewpool/26.webp",
+            "name": "Ngô Văn Trường",
+            "review": "Cảm ơn team đã tư vấn nhiệt tình, mua đúng cây phù hợp."
+        },
+        {
+            "id": 27,
+            "image": "/assets/images/gallery/reviewpool/27.webp",
+            "name": "Phan Văn Lộc",
+            "review": "Đập bóng uy lực, âm thanh giòn bộp bộp nghe phê."
+        },
+        {
+            "id": 28,
+            "image": "/assets/images/gallery/reviewpool/28.webp",
+            "name": "Đặng Văn Thuận",
+            "review": "Nhẹ tay, phù hợp với nữ tay yếu newbie"
+        },
+        {
+            "id": 29,
+            "image": "/assets/images/gallery/reviewpool/29.webp",
+            "name": "Trịnh Văn Hiệp",
+            "review": "Foam 3 lớp dày và mềm mặt, êm tay, kiểm soát bóng tốt."
+        },
+        {
+            "id": 30,
+            "image": "/assets/images/gallery/reviewpool/30.webp",
+            "name": "Lâm Vũ",
+            "review": "Sản phẩm chất lượng, xứng đáng với số tiền bỏ ra."
+        },
+        {
+            "id": 31,
+            "image": "/assets/images/gallery/reviewpool/31.webp",
+            "name": "Tạ Văn Minh",
+            "review": "Đội hình f-sport ngày càng mạnh, ủng hộ dài dài."
+        },
+        {
+            "id": 32,
+            "image": "/assets/images/gallery/reviewpool/32.webp",
+            "name": "Vương Thị Bích",
+            "review": "Vợt đẹp, đánh hay, lại được bảo hành tốt."
+        },
+        {
+            "id": 33,
+            "image": "/assets/images/gallery/reviewpool/33.webp",
+            "name": "Hồ Văn Đạt",
+            "review": "Hàng có tâm, team tư vấn chuyên nghiệp."
+        },
+        {
+            "id": 34,
+            "image": "/assets/images/gallery/reviewpool/34.webp",
+            "name": "Chu Sơn",
+            "review": "Vợt nhẹ, khoan tay, hợp với người mới tập."
+        },
+        {
+            "id": 35,
+            "image": "/assets/images/gallery/reviewpool/35.webp",
+            "name": "Trần Văn Phong",
+            "review": "Chơi bền, đẹp, lại được cộng đồng f-sport hỗ trợ nhiệt tình."
+        },
+        {
+            "id": 36,
+            "image": "/assets/images/gallery/reviewpool/36.webp",
+            "name": "Sơn Lý",
+            "review": "Quá hài lòng, sẽ ủng hộ f-sport lâu dài."
+        },
+        {
+            "id": 37,
+            "image": "/assets/images/gallery/reviewpool/37.webp",
+            "name": "Nguyễn Văn Lợi",
+            "review": "Không có gì để chê ở tầm giá này."
+        },
+        {
+            "id": 38,
+            "image": "/assets/images/gallery/reviewpool/38.webp",
+            "name": "Phùng Thị Nhung",
+            "review": "Cầm chắc tay, không bị trơn khi ra mồ hôi."
+        },
+        {
+            "id": 39,
+            "image": "/assets/images/gallery/reviewpool/39.webp",
+            "name": "Đỗ Minh Quân",
+            "review": "Tập được 2 tháng, vợt vẫn như mới, chưa mất tí nhám nào."
+        },
+        {
+            "id": 40,
+            "image": "/assets/images/gallery/reviewpool/40.webp",
+            "name": "Trương Thục Anh",
+            "review": "Thích nhất là nhiều màu sắc, tha hộ lựa chọn, thiết kế trẻ trung trending."
+        }
+    ]
+}
