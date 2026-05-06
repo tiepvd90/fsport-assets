@@ -5,7 +5,7 @@
       {
         "id": "panther-orange",
         "title": "Panther - Cam Vũ Trụ",
-        "image": "/assets/images/gallery/pickleball/panther/panther-orange-NFC.webp",
+        "image": "/assets/images/gallery/pickleball/homepage/panther-cam.webp",
         "price": 2090000,
         "originalPrice": 2500000,
         "link": "/pickleball/panther",
@@ -15,7 +15,7 @@
         {
         "id": "panther-matcha",
         "title": "Panther - Xanh Matcha",
-        "image": "/assets/images/gallery/pickleball/panther/panther-matcha-NFC.webp",
+        "image": "/assets/images/gallery/pickleball/homepage/panther-matcha.webp",
         "price": 2090000,
         "originalPrice": 2500000,
         "link": "/pickleball/panther",
@@ -25,7 +25,7 @@
       {
         "id": "fullfoam-xam",
         "title": "FullFOAM - XÁM",
-        "image": "/assets/images/gallery/pickleball/fullfoam/xam/xam-NFC.webp",
+        "image": "/assets/images/gallery/pickleball/homepage/ff-xam.webp",
         "price": 1940000,
         "originalPrice": 2500000,
         "link": "/pickleball/fullfoam",
@@ -35,7 +35,7 @@
       {
         "id": "fullfoam-do",
         "title": "FullFOAM - Đỏ",
-        "image": "/assets/images/gallery/pickleball/fullfoam/AUTH-do.webp",
+        "image": "/assets/images/gallery/pickleball/homepage/ff-do.webp",
         "price": 1940000,
         "originalPrice": 2500000,
         "link": "/pickleball/fullfoam",
@@ -45,7 +45,7 @@
       {
         "id": "fullfoam-vang",
         "title": "FullFOAM - Vàng",
-        "image": "/assets/images/gallery/pickleball/fullfoam/AUTH-vang.webp",
+        "image": "/assets/images/gallery/pickleball/homepage/ff-vang.webp",
         "price": 1940000,
         "originalPrice": 2500000,
         "link": "/pickleball/fullfoam",
@@ -55,7 +55,7 @@
       {
         "id": "fullfoam-xanhduong",
         "title": "FullFOAM - Xanh Dương",
-        "image": "/assets/images/gallery/pickleball/fullfoam/AUTH-xanhduong.webp",
+        "image": "/assets/images/gallery/pickleball/homepage/ff-xanhduong.webp",
         "price": 1940000,
         "originalPrice": 2500000,
         "link": "/pickleball/fullfoam",
@@ -65,7 +65,7 @@
       {
         "id": "fullfoam-xanhla",
         "title": "FullFOAM - Xanh Lá",
-        "image": "/assets/images/gallery/pickleball/fullfoam/AUTH-xanhla.webp",
+        "image": "/assets/images/gallery/pickleball/homepage/ff-xanhla.webp",
         "price": 1940000,
         "originalPrice": 2500000,
         "link": "/pickleball/fullfoam",
@@ -75,7 +75,7 @@
       {
         "id": "fullfoam-tim",
         "title": "FullFOAM - Tím",
-        "image": "/assets/images/gallery/pickleball/fullfoam/tim-NFC.webp",
+        "image": "/assets/images/gallery/pickleball/homepage/ff-tim.webp",
         "price": 1940000,
         "originalPrice": 2500000,
         "link": "/pickleball/fullfoam",
