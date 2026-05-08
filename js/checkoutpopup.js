@@ -289,13 +289,11 @@ function submitOrder() {
   const btn = document.getElementById("checkoutSubmitBtn");
   if (!btn) return;
 
-  // Chặn click lần 2 (cả trước khi disable DOM)
   if (btn.disabled) return;
   btn.disabled = true;
   const originalText = btn.textContent;
   btn.textContent = "Đang xử lý...";
 
-  // Validate thông tin
   const name = document.getElementById("checkoutName")?.value.trim();
   const phone = document.getElementById("checkoutPhone")?.value.trim();
   const address = document.getElementById("checkoutAddress")?.value.trim();
@@ -355,16 +353,14 @@ function submitOrder() {
       return res.text();
     })
     .then(() => {
-      // Tracking chỉ gọi 1 lần
       if (typeof trackBothPixels === "function" && orderData.total > 0) {
         trackBothPixels("Purchase", {
           content_ids: window.cart.map(i => i.id).filter(Boolean),
           contents: window.cart.map(i => ({
-  content_id: i.id || "",
-  content_type: "product",
-  quantity: i.quantity || 1,
-  price: Number(i.Giá || 0)
-})),
+            id: i.id || "",
+            quantity: i.quantity || 1,
+            item_price: Number(i.Giá || 0)
+          })),
           content_type: "product",
           value: orderData.total,
           currency: "VND"
@@ -382,7 +378,6 @@ function submitOrder() {
       alert("Có lỗi xảy ra khi gửi đơn hàng, vui lòng thử lại sau.");
     })
     .finally(() => {
-      // Luôn kích hoạt lại nút dù thành công hay thất bại
       btn.disabled = false;
       btn.textContent = originalText;
     });
@@ -401,7 +396,7 @@ function bindCheckoutEvents() {
 }
 
 // ------------------------
-// 🔹 THANK YOU POPUP (anti-flash)
+// 🔹 THANK YOU POPUP
 // ------------------------
 
 function showThankyouPopup() {
@@ -418,10 +413,14 @@ function hideThankyouPopup() {
   document.body.style.overflow = "auto";
 }
 
+// Load promo code module - ĐÚNG ĐƯỜNG DẪN CHO CẤU TRÚC THƯ MỤC CỦA BẠN
+const promoScript = document.createElement("script");
+promoScript.src = "/js/promocode.js";  // ← thêm "js/" vào trước tên file
+document.head.appendChild(promoScript);
+
 // ------------------------
 // 🔹 KHI LOAD TRANG
 // ------------------------
-
 window.addEventListener("DOMContentLoaded", () => {
   loadCart();
   bindCheckoutEvents();
@@ -441,7 +440,7 @@ window.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-// ✅ Inject HTML thankyouPopup từ file /html/thanks-afterpurchase.html
+// ✅ Inject HTML thankyouPopup
 fetch("/html/thanks-afterpurchase.html")
   .then(res => {
     if (!res.ok) throw new Error("Không load được thanks-afterpurchase.html");
