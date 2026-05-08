@@ -277,3 +277,76 @@
   pointer-events: none;
   box-shadow: 0 0 3px rgba(0,0,0,0.2);
 }
+
+
+/* PROMO CODE - NHẸ NHÀNG, KHÔNG NỔI BẬT */
+.promo-code-wrapper {
+  margin: 4px 0 2px;
+  padding: 2px 0;
+}
+.promo-toggle-btn {
+  background: #f0f0f0;
+  border: 1px solid #ddd;
+  color: #555;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  cursor: pointer;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  transition: 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.promo-toggle-btn:hover {
+  background: #e0e0e0;
+}
+.promo-input-group {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+.promo-input {
+  flex: 1;
+  padding: 6px 8px;
+  border: 1px solid #ccc;
+  border-radius: 16px;
+  font-size: 12px;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  background: #fff;
+}
+.promo-apply-gray {
+  background: #e0e0e0;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  cursor: pointer;
+  color: #333;
+  font-weight: 500;
+}
+.promo-apply-gray:hover {
+  background: #d0d0d0;
+}
+.promo-message {
+  font-size: 11px;
+  margin-top: 4px;
+  color: #e53935;
+}
+.promo-applied {
+  background: #f1f8e9;
+  padding: 4px 8px;
+  border-radius: 16px;
+  font-size: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #2e7d32;
+}
+.promo-remove-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  color: #777;
+}
