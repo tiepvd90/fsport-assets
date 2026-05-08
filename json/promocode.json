@@ -1,0 +1,9 @@
+{
+  "promoCodes": [
+    {
+      "code": "PA200",
+      "discount": 200000,
+      "applicableProductIds": ["panther-cam", "panther-matcha"]
+    }
+  ]
+}
