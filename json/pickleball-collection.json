@@ -1,6 +1,6 @@
 [
   {
-    "groupName": "VỢT LÕI FUL-FOAM VIỀN METALLIC CHROME",
+    "groupName": "VỢT PICKLEBALL LÕI FUL-FOAM VIỀN METALLIC CHROME",
     "items": [
       {
         "id": "panther-orange",
@@ -85,22 +85,12 @@
     ]
   },
   {
-    "groupName": "VỢT LÕI FULL-FOAM",
+    "groupName": "VỢT PICKLEBALL LÕI FULL-FOAM",
     "items": [
-      {
-        "id": "foam-xanhla",
-        "title": "FOAM RAZER XANH LÁ",
-        "image": "/assets/images/gallery/pickleball/foam/razer-NFC.webp",
-        "price": 1699000,
-        "originalPrice": 2500000,
-        "link": "/pickleball/foam",
-        "category": "pickleball",
-        "tags": []
-      },
       {
         "id": "hammer-xanhduong",
         "title": "FOAM HAMMER XANH DƯƠNG",
-        "image": "/assets/images/gallery/pickleball/hammer/xanhNFC.webp",
+        "image": "/assets/images/gallery/pickleball/homepage/hammer-xanh.webp",
         "price": 1699000,
         "originalPrice": 2500000,
         "link": "/pickleball/foam",
@@ -110,7 +100,17 @@
       {
         "id": "hammer-do",
         "title": "FOAM HAMMER ĐỎ",
-        "image": "/assets/images/gallery/pickleball/hammer/do-NFC.webp",
+        "image": "/assets/images/gallery/pickleball/homepage/hammer-do.webp",
+        "price": 1699000,
+        "originalPrice": 2500000,
+        "link": "/pickleball/foam",
+        "category": "pickleball",
+        "tags": []
+      },
+      {
+        "id": "foam-xanhla",
+        "title": "FOAM RAZER XANH LÁ",
+        "image": "/assets/images/gallery/pickleball/foam/razer-NFC.webp",
         "price": 1699000,
         "originalPrice": 2500000,
         "link": "/pickleball/foam",
@@ -130,7 +130,7 @@
     ]
   },
   {
-    "groupName": "VỢT LÕI TỔ ONG GEN5",
+    "groupName": "VỢT PICKLEBALL LÕI TỔ ONG",
     "items": [
       {
         "id": "hyperactive-do",
@@ -161,21 +161,6 @@
         "link": "/pickleball/active",
         "category": "pickleball",
         "tags": []
-      }
-    ]
-  },
-  {
-    "groupName": "VỢT LÕI TỔ ONG GEN4",
-    "items": [
-      {
-        "id": "fastblock",
-        "title": "F-Sport FastBlock - Carbon Toray lõi Gen4 cải tiến",
-        "image": "/assets/images/gallery/pickleball/active/description/3.webp",
-        "price": 999000,
-        "originalPrice": 1700000,
-        "link": "/pickleball/active",
-        "category": "pickleball",
-        "tags": []
       },
       {
         "id": "gen4-trang",
@@ -194,6 +179,16 @@
         "price": 739000,
         "originalPrice": 1200000,
         "link": "/pickleball/gen4",
+        "category": "pickleball",
+        "tags": []
+      },
+      {
+        "id": "fastblock",
+        "title": "F-Sport FastBlock - Carbon Toray lõi Gen4 cải tiến",
+        "image": "/assets/images/gallery/pickleball/active/description/3.webp",
+        "price": 999000,
+        "originalPrice": 1700000,
+        "link": "/pickleball/active",
         "category": "pickleball",
         "tags": []
       }
