@@ -135,7 +135,7 @@
       {
         "id": "hyperactive-do",
         "title": "Hyper Active - Đỏ",
-        "image": "/assets/images/gallery/pickleball/active/hyperactive/nfc/do-NFC.jpg",
+        "image": "/assets/images/gallery/pickleball/homepage/active-do.webp",
         "price": 1299000,
         "originalPrice": 2200000,
         "link": "/pickleball/active",
@@ -145,7 +145,7 @@
       {
         "id": "hyeractive-hong",
         "title": "Hyper Active - Hồng",
-        "image": "/assets/images/gallery/pickleball/active/hyperactive/nfc/hong-NFC.jpg",
+        "image": "/assets/images/gallery/pickleball/homepage/active-hong.webp",
         "price": 1299000,
         "originalPrice": 2200000,
         "link": "/pickleball/active",
@@ -155,7 +155,7 @@
       {
         "id": "active-green",
         "title": "Hyper Active - Xanh Lá",
-        "image": "/assets/images/gallery/pickleball/active/hyperactive/nfc/xanh-NFC.jpg",
+        "image": "/assets/images/gallery/pickleball/homepage/active-xanh.webp",
         "price": 1299000,
         "originalPrice": 2200000,
         "link": "/pickleball/active",
