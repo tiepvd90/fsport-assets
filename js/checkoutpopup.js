@@ -338,7 +338,11 @@ function submitOrder() {
     }),
     shippingFee,
     voucherValue,
-    total: window.cart.reduce((sum, i) => sum + (i.Giá || 0) * (i.quantity || 1), 0) + shippingFee - voucherValue
+    promoDiscount: window.promoCodeDiscount || 0,
+    total: window.cart.reduce((sum, i) => sum + (i.Giá || 0) * (i.quantity || 1), 0) 
+       + shippingFee 
+       - voucherValue 
+       - (window.promoCodeDiscount || 0)
   };
 
   console.log("📦 Sending orderData:", orderData);
