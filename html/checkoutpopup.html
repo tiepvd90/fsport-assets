@@ -3,32 +3,33 @@
   <div class="checkout-overlay" onclick="hideCheckoutPopup()"></div>
 
   <div class="checkout-content">
-    <!-- ❌ Nút đóng cố định -->
     <button class="checkout-close" onclick="hideCheckoutPopup()">&times;</button>
 
-    <!-- 🔄 Nội dung có thể cuộn -->
     <div class="checkout-inner-scroll">
 
-      <!-- === MỤC 1: DANH SÁCH SẢN PHẨM === -->
+      <!-- MỤC 1: DANH SÁCH SẢN PHẨM -->
       <div class="checkout-section-title">1. Danh sách sản phẩm</div>
       <div id="checkoutCartList"></div>
       <div id="emptyCartText" style="display: none; color: #888; font-size: 14px; margin-bottom: 12px;">
         Giỏ hàng của bạn hiện đang trống.
       </div>
 
-      <!-- === MỤC 2: TỔNG KẾT ĐƠN HÀNG === -->
+      <!-- MỤC 2: THÔNG TIN ĐƠN HÀNG -->
       <div class="checkout-section-title">2. Thông tin đơn hàng</div>
       <div class="checkout-summary">
         <div class="row">
-          <span>
-            Tạm tính <span id="itemQuantityText"></span>
-          </span>
+          <span>Tạm tính <span id="itemQuantityText"></span></span>
           <span id="subtotalText">0₫</span>
         </div>
 
         <div class="row">
           <span>Phí vận chuyển</span>
           <span id="shippingFeeText">0₫</span>
+        </div>
+
+        <!-- 🎟️ PROMO CODE: container rỗng, JS sẽ tự tạo button -->
+        <div class="row promo-code-wrapper">
+          <div id="promoCodeContainer"></div>
         </div>
 
         <div class="row">
@@ -47,7 +48,7 @@
         </div>
       </div>
 
-      <!-- === MỤC 3: THÔNG TIN NGƯỜI NHẬN === -->
+      <!-- MỤC 3: THÔNG TIN NGƯỜI NHẬN -->
       <div class="checkout-section-title">3. Thông tin người nhận</div>
       <div class="checkout-form">
         <div class="form-row">
@@ -57,13 +58,12 @@
         <input type="text" id="checkoutAddress" placeholder="Địa chỉ nhận hàng" />
       </div>
 
-      <!-- 🔘 Nút đặt hàng -->
       <button id="checkoutSubmitBtn">ĐẶT HÀNG NGAY</button>
     </div>
   </div>
 </div>
 
-<!-- ✅ ICON GIỎ HÀNG GÓC PHẢI TRÊN -->
+<!-- ICON GIỎ HÀNG -->
 <div id="cartIcon" onclick="showCheckoutPopup()">
   <img src="/assets/images/carticon.png" alt="Giỏ hàng" class="cart-icon-img">
   <div id="cartItemCount">0</div>
