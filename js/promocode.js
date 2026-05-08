@@ -49,6 +49,7 @@
     });
     let shipping = window.shippingFee || 0;
     let promoDiscount = currentPromo ? currentPromo.totalDiscount : 0;
+    window.promoCodeDiscount = promoDiscount; // ✅ THÊM DÒNG NÀY
     let totalDiscount = voucherFromCart + promoDiscount;
     let total = subtotal + shipping - totalDiscount;
 
@@ -94,6 +95,7 @@
   // 6. Xóa mã
   window.removePromoCode = function() {
     currentPromo = null;
+    window.promoCodeDiscount = 0; // ✅ THÊM DÒNG NÀY
     renderButtonUI();
     updateTotalDisplay();
   };
