@@ -1,0 +1,323 @@
+/* responsive.css - Mobile and tablet breakpoints */
+
+/* ============ Tablet (768px - 1023px) ============ */
+@media (max-width: 1023px) {
+  .container,
+  .container-wide {
+    padding: 0 var(--spacing-md);
+  }
+
+  .dashboard-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .cart-summary {
+    position: static;
+  }
+
+  .grid-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .grid-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+  .hero h1 {
+    font-size: 1.5rem;
+  }
+}
+
+/* ============ Mobile (320px - 767px) ============ */
+@media (max-width: 767px) {
+  body {
+    font-size: 0.875rem;
+  }
+
+  /* Main content - Bỏ padding 2 bên ở mobile */
+  .site-main {
+    padding: var(--spacing-md) 0;
+  }
+
+  .container-wide {
+    padding: 0 var(--spacing-md);
+  }
+
+  /* Hero */
+  .hero {
+    padding: var(--spacing-2xl) 0;
+  }
+
+  .hero h1 {
+    font-size: 1.25rem;
+  }
+
+  .hero p {
+    font-size: 1rem;
+  }
+
+  /* Sections */
+  .features,
+  .products-preview,
+  .register-section {
+    padding: var(--spacing-2xl) 0;
+  }
+
+  .features h2,
+  .products-preview h2,
+  .register-section h2 {
+    font-size: 1.25rem;
+  }
+
+  /* Auth */
+  .auth-card {
+    padding: var(--spacing-lg);
+  }
+
+  .auth-card h1 {
+    font-size: 1.25rem;
+  }
+
+  /* ---- Sticky Header mobile ---- */
+  .site-header {
+    height: auto;
+    padding: 0.4rem 0;
+  }
+
+  .site-header .container {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding: 0 0.75rem;
+  }
+
+  /*
+   * Dashboard header layout mobile — 4 direct children của .dashboard-header:
+   *   1. .logo              → hàng 1, cột 1
+   *   2. .dashboard-welcome → hàng 1, cột 2 (co giãn)
+   *   3. .dashboard-actions → hàng 1, cột 3 (nút Đăng xuất, ngoài cùng phải)
+   *   4. .header-menu-dropdown → hàng 2, trải hết 3 cột
+   *
+   * Grid: 3 cột [auto | 1fr | auto], 2 hàng
+   */
+  .dashboard-header {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    grid-template-rows: auto auto;
+    align-items: center;
+    column-gap: 0.5rem;
+    row-gap: 0;
+    width: 100%;
+  }
+
+  /* 1. Logo – hàng 1 cột 1 */
+  .dashboard-header > .logo {
+    grid-column: 1;
+    grid-row: 1;
+    white-space: nowrap;
+    font-size: 0.95rem;
+  }
+
+  /* 2. Welcome – hàng 1 cột 2 */
+  .dashboard-welcome {
+    grid-column: 2;
+    grid-row: 1;
+    text-align: left;
+    font-size: 0.78rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--gray-500);
+    padding: 0 0.25rem;
+  }
+
+  /* 3. dashboard-actions – hàng 1 cột 3, sát phải */
+  .dashboard-actions {
+    grid-column: 3;
+    grid-row: 1;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-shrink: 0;
+  }
+
+  .dashboard-actions > #logoutBtn {
+    font-size: 0.75rem;
+    padding: 0.3rem 0.65rem;
+    min-height: 30px;
+    white-space: nowrap;
+  }
+
+  /* 4. header-menu-dropdown – hàng 2, full width */
+  .header-menu-dropdown {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    gap: 0.1rem;
+    padding: 0.3rem 0 0.15rem;
+    border-top: 1px solid var(--gray-100);
+    margin-top: 0.3rem;
+  }
+  .header-menu-dropdown::-webkit-scrollbar { display: none; }
+
+  .header-menu-dropdown .btn {
+    flex: 0 0 auto;
+    font-size: 0.78rem;
+    padding: 0.3rem 0.75rem;
+    min-height: 30px;
+    white-space: nowrap;
+    border-radius: 6px;
+  }
+
+  .dashboard-section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-sm);
+  }
+
+  .dashboard-section-body {
+    padding: var(--spacing-md);
+  }
+
+  /* Product grid */
+  .product-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--spacing-md);
+  }
+
+  .product-body {
+    padding: var(--spacing-sm);
+  }
+
+  .product-name {
+    font-size: 0.875rem;
+  }
+
+  .product-price {
+    font-size: 1rem;
+  }
+
+  .qty-btn {
+    width: 32px;
+    height: 32px;
+    font-size: 1rem;
+  }
+
+  .qty-input {
+    width: 48px;
+    height: 32px;
+  }
+
+  /* Preview grid */
+  .preview-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  /* Forms */
+  .register-form {
+    padding: var(--spacing-md);
+  }
+
+  .form-control {
+    font-size: 16px; /* prevent iOS zoom */
+  }
+
+  /* Tables collapse to cards on mobile */
+  /* Cart summary on mobile - don't stick, just flow naturally */
+  .cart-summary {
+    position: static;
+    margin-top: var(--spacing-lg);
+  }
+
+  .table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .table thead {
+    display: none;
+  }
+
+  .table tbody tr {
+    display: block;
+    margin-bottom: var(--spacing-md);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--border-radius-md);
+    padding: var(--spacing-sm);
+    background-color: var(--color-white);
+  }
+
+  .table tbody td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-xs) 0;
+    border: none;
+    text-align: right;
+  }
+
+  .table tbody td::before {
+    content: attr(data-label);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    font-size: var(--font-size-xs);
+    letter-spacing: 0.5px;
+    text-align: left;
+    flex: 1;
+    margin-right: var(--spacing-md);
+  }
+
+  /* Modal */
+  .modal {
+    max-width: 100%;
+    border-radius: var(--border-radius-md);
+  }
+
+  .modal-body {
+    padding: var(--spacing-md);
+  }
+
+  /* Toast */
+  .toast-container {
+    top: var(--spacing-sm);
+    right: var(--spacing-sm);
+    left: var(--spacing-sm);
+    max-width: none;
+  }
+
+  /* Buttons */
+  .btn-block-mobile {
+    width: 100%;
+  }
+
+  /* Badge on mobile - smaller and more compact */
+  .badge {
+    padding: 0.2rem 0.5rem;
+    font-size: 0.65rem;
+    display: inline-block;
+  }
+}
+
+/* ============ Small mobile (320px - 480px) ============ */
+@media (max-width: 480px) {
+  /* Giữ 2 cột cho product-grid dù màn hình nhỏ */
+  /* .product-grid {
+    grid-template-columns: 1fr;
+  } */
+
+  /* Giữ 2 cột cho preview-grid dù màn hình nhỏ */
+  /* .preview-grid {
+    grid-template-columns: 1fr;
+  } */
+
+  /* Giữ feature-grid responsive như cũ */
+  .feature-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .grid-2,
+  .grid-3,
+  .grid-4 {
+    grid-template-columns: 1fr;
+  }
+}
