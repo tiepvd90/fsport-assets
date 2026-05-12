@@ -75,6 +75,17 @@ async function handleSubmit(e) {
       // Đăng ký thành công - tự động chuyển vào dashboard (không cần thông báo)
       form.reset();
       console.log("[register] Registration successful, redirecting to dashboard in 500ms");
+
+      // Track Lead event for Meta pixel
+      if (typeof trackBothPixels === 'function') {
+        trackBothPixels('Lead', {
+          content_name: 'Dealer Registration',
+          content_category: 'Wholesale Dealer',
+          status: 'completed'
+        });
+        console.log("[register] Lead event tracked for Meta pixel");
+      }
+
       // Delay a bit to ensure all data is saved
       setTimeout(() => {
         window.location.href = CONFIG.paths.dashboard;
