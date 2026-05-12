@@ -296,14 +296,17 @@
 
 /* ============ Small mobile (320px - 480px) ============ */
 @media (max-width: 480px) {
-  .product-grid {
+  /* Giữ 2 cột cho product-grid dù màn hình nhỏ */
+  /* .product-grid {
     grid-template-columns: 1fr;
-  }
+  } */
 
-  .preview-grid {
+  /* Giữ 2 cột cho preview-grid dù màn hình nhỏ */
+  /* .preview-grid {
     grid-template-columns: 1fr;
-  }
+  } */
 
+  /* Giữ feature-grid responsive như cũ */
   .feature-grid {
     grid-template-columns: 1fr;
   }
