@@ -295,7 +295,6 @@ function renderOrderHistory(orders) {
 
         return `
           <tr class="order-row" data-order-id="${UI.escapeHtml(o.orderId || "")}">
-            <td data-label="Mã đơn">${UI.escapeHtml(o.orderId || "-")}</td>
             <td data-label="Ngày">${UI.formatDate(o.createdAt)}</td>
             <td data-label="Sản phẩm" class="order-items-cell">${itemsDisplay}</td>
             <td data-label="SL">${UI.escapeHtml(o.totalQuantity ?? "-")}</td>
