@@ -35,7 +35,7 @@
   }
 
   .container-wide {
-    padding: 0 var(--spacing-md);
+    padding: 0;
   }
 
   /* Hero */
@@ -175,13 +175,13 @@
   }
 
   .dashboard-section-body {
-    padding: var(--spacing-md);
+    padding: var(--spacing-md) 0;
   }
 
   /* Product grid */
   .product-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: var(--spacing-md);
+    gap: var(--spacing-sm);
+    padding: 0 var(--spacing-md);
   }
 
   .product-body {
