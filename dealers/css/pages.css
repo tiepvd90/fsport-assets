@@ -520,10 +520,10 @@
   color: var(--gray-400);
 }
 
-/* Product grid - Luôn 2 cột dù màn hình nhỏ */
+/* Product grid - 4 cột ở desktop, 2 cột ở mobile */
 .product-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: var(--spacing-lg);
 }
 
@@ -535,6 +535,12 @@
   grid-column: 1 / -1;
 }
 
+@media (max-width: 1023px) {
+  .product-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
 @media (max-width: 768px) {
   .product-grid {
     grid-template-columns: repeat(2, 1fr);
@@ -543,7 +549,7 @@
 
 @media (max-width: 480px) {
   .product-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, 1fr) !important;
   }
 }
 
