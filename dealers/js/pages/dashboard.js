@@ -222,10 +222,14 @@ function renderProducts(products) {
           <div class="product-body">
             <h3 class="product-name">${UI.escapeHtml(p.name)}</h3>
             <div class="product-prices">
-              <div class="product-price-label product-price-label-dealer">Giá nhập:</div>
-              <div class="product-price">${UI.formatCurrency(dealerPrice)}</div>
-              <div class="product-price-label product-price-label-retail">Giá bán lẻ tối thiểu:</div>
-              <div class="product-price-min">${UI.formatCurrency(minRetailPrice)}</div>
+              <div class="product-price-row">
+                <div class="product-price-label product-price-label-dealer">Giá nhập:</div>
+                <div class="product-price">${UI.formatCurrency(dealerPrice)}</div>
+              </div>
+              <div class="product-price-row">
+                <div class="product-price-label product-price-label-retail">Giá bán lẻ tối thiểu:</div>
+                <div class="product-price-min">${UI.formatCurrency(minRetailPrice)}</div>
+              </div>
             </div>
             <div class="qty-controls">
               <button type="button" class="qty-btn" data-action="decrement" aria-label="Giảm">−</button>
