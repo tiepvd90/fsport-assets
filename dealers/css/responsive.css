@@ -278,30 +278,11 @@
   }
 
   /* Tables collapse to cards on mobile */
-  /* Cart summary on mobile - sticky footer */
-  #cartSummary {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    z-index: 50;
-    border-top: 1px solid var(--gray-200);
-    background-color: var(--white);
-    max-height: 50vh;
-    overflow-y: auto;
-  }
-
+  /* Cart summary on mobile - don't stick, just flow naturally */
   .cart-summary {
     position: static;
-    margin-top: 0;
+    margin-top: 0.75rem;
     padding: 0.75rem;
-    border-radius: 0;
-    box-shadow: none;
-  }
-
-  /* Add padding to main content so it doesn't go under sticky footer */
-  .site-main {
-    padding-bottom: 350px;
   }
 
   .table-responsive {
@@ -476,30 +457,5 @@
   .grid-3,
   .grid-4 {
     grid-template-columns: 1fr;
-  }
-
-  /* Sticky footer for cart on small mobile */
-  #cartSummary {
-    position: fixed !important;
-    bottom: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
-    z-index: 50 !important;
-    border-top: 1px solid var(--gray-200) !important;
-    background-color: var(--white) !important;
-    max-height: 45vh !important;
-    overflow-y: auto !important;
-  }
-
-  .cart-summary {
-    position: static !important;
-    margin-top: 0 !important;
-    padding: 0.6rem !important;
-    border-radius: 0 !important;
-    box-shadow: none !important;
-  }
-
-  .site-main {
-    padding-bottom: 320px !important;
   }
 }

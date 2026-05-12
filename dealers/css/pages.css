@@ -847,7 +847,7 @@
 }
 
 .policy-accordion-header {
-  padding: var(--spacing-lg);
+  padding: 0.75rem var(--spacing-lg);
   background-color: var(--black);
   color: var(--white);
   cursor: pointer;
@@ -865,7 +865,7 @@
 
 .policy-accordion-header h3 {
   margin: 0;
-  font-size: 1.15rem;
+  font-size: 1rem;
   font-weight: 700;
   flex: 1;
   text-transform: uppercase;
