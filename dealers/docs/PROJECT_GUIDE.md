@@ -487,6 +487,31 @@ async function myFunction() {
 }
 ```
 
+#### 5. **Chặn Zoom trên Mobile iOS**
+**File**: `css/reset.css`
+
+```css
+/* === Reset font và fix zoom iOS === */
+html, body, input, textarea {
+  -webkit-text-size-adjust: 100%;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #222;
+}
+
+input, textarea, select {
+  font-size: 16px !important;
+}
+```
+
+**Giải thích**:
+- `-webkit-text-size-adjust: 100%` - Chặn Safari iOS tự động zoom
+- `font-size: 16px` - Font size ≥ 16px sẽ không trigger auto-zoom iOS
+- `font-size: 16px !important` - Đảm bảo input/textarea không bị override
+
+**Hiệu quả**: Zoom sẽ bị chặn hoàn toàn khi tap vào input ở iOS Safari
+
 ### Debug Tools
 
 #### 1. **Console Logs**
