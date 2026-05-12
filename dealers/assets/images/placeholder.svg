@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" preserveAspectRatio="xMidYMid meet">
+  <rect width="400" height="400" fill="#f1f3f5"/>
+  <g fill="#adb5bd">
+    <circle cx="200" cy="170" r="60" fill="#dee2e6"/>
+    <rect x="170" y="220" width="60" height="120" rx="8" fill="#dee2e6"/>
+  </g>
+  <text x="200" y="370" text-anchor="middle" fill="#6c757d" font-family="sans-serif" font-size="18">F-Sport Paddle</text>
+</svg>

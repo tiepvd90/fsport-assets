@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="description" content="Chính sách đại lý F-Sport">
+  <title>Chính sách đại lý | F-Sport Dealer</title>
+
+  <link rel="icon" href="./assets/favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="./css/reset.css">
+  <link rel="stylesheet" href="./css/variables.css">
+  <link rel="stylesheet" href="./css/layout.css">
+  <link rel="stylesheet" href="./css/components.css">
+  <link rel="stylesheet" href="./css/pages.css">
+  <link rel="stylesheet" href="./css/responsive.css">
+  <style>
+    .policy-container {
+      max-width: 900px;
+      margin: var(--spacing-xl) auto;
+      padding: 0 var(--spacing-md);
+    }
+
+    .policy-section {
+      background: var(--white);
+      border-radius: var(--border-radius-lg);
+      box-shadow: var(--shadow-sm);
+      margin-bottom: var(--spacing-lg);
+      overflow: hidden;
+    }
+
+    .policy-header {
+      padding: var(--spacing-lg);
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      color: var(--white);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: all 0.3s ease;
+      user-select: none;
+    }
+
+    .policy-header:hover {
+      box-shadow: var(--shadow-md);
+    }
+
+    .policy-header h2 {
+      margin: 0;
+      font-size: 1.25rem;
+      font-weight: 700;
+      flex: 1;
+    }
+
+    .policy-toggle {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--white);
+      transition: transform 0.3s ease;
+      flex-shrink: 0;
+      margin-left: var(--spacing-md);
+    }
+
+    .policy-header.collapsed .policy-toggle {
+      transform: rotate(-90deg);
+    }
+
+    .policy-content {
+      padding: var(--spacing-lg);
+      max-height: 2000px;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .policy-content.hidden {
+      max-height: 0;
+      padding: 0;
+    }
+
+    .policy-content h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin: var(--spacing-lg) 0 var(--spacing-md) 0;
+    }
+
+    .policy-content h3:first-child {
+      margin-top: 0;
+    }
+
+    .policy-content p {
+      color: var(--gray-700);
+      line-height: 1.8;
+      margin-bottom: var(--spacing-md);
+    }
+
+    .policy-content ul {
+      margin: var(--spacing-md) 0 var(--spacing-md) var(--spacing-xl);
+      padding: 0;
+    }
+
+    .policy-content li {
+      color: var(--gray-700);
+      line-height: 1.8;
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .policy-intro {
+      background: var(--white);
+      border-radius: var(--border-radius-lg);
+      box-shadow: var(--shadow-sm);
+      padding: var(--spacing-xl);
+      margin-bottom: var(--spacing-lg);
+    }
+
+    .policy-intro h1 {
+      font-size: 2rem;
+      color: var(--black);
+      margin-bottom: var(--spacing-md);
+      text-align: center;
+    }
+
+    .policy-intro p {
+      color: var(--gray-700);
+      line-height: 1.8;
+      font-size: 1.05rem;
+    }
+
+    @media (max-width: 768px) {
+      .policy-header h2 {
+        font-size: 1.1rem;
+      }
+
+      .policy-toggle {
+        font-size: 1.25rem;
+      }
+
+      .policy-content h3 {
+        font-size: 1rem;
+      }
+
+      .policy-content ul {
+        margin-left: var(--spacing-lg);
+      }
+    }
+  </style>
+</head>
+<body data-page="policy">
+
+  <header class="site-header">
+    <div class="container">
+      <a href="./dashboard.html" class="logo">
+        <img src="https://i.postimg.cc/XNCBfXM5/fsport-logo-2.webp" alt="F-Sport">
+        <span>ĐẠI LÝ</span>
+      </a>
+      <nav class="nav-links">
+        <a href="./dashboard.html" class="btn btn-outline btn-sm">Quay lại</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="policy-container">
+      <div class="policy-intro">
+        <h1>CHÍNH SÁCH ĐẠI LÝ F-SPORT</h1>
+        <p>F-SPORT xây dựng hệ thống đại lý với định hướng hợp tác lâu dài, minh bạch và phát triển bền vững. Chúng tôi cam kết mang đến sản phẩm chất lượng, chính sách hỗ trợ rõ ràng cùng mức lợi nhuận cạnh tranh dành cho đối tác trên toàn quốc.</p>
+      </div>
+
+      <!-- Section 1 -->
+      <div class="policy-section">
+        <div class="policy-header" onclick="togglePolicy(this)">
+          <h2>1. Chính sách giá bán</h2>
+          <span class="policy-toggle">+</span>
+        </div>
+        <div class="policy-content hidden">
+          <ul>
+            <li>Đại lý được áp dụng mức giá sỉ theo bảng giá do F-SPORT công bố cho từng dòng sản phẩm.</li>
+            <li>Đại lý cam kết không bán thấp hơn giá bán lẻ đề xuất mà F-SPORT quy định nhằm đảm bảo quyền lợi chung cho toàn hệ thống.</li>
+            <li>Trong trường hợp vi phạm chính sách giá, F-SPORT có quyền tạm ngưng hỗ trợ hoặc điều chỉnh quyền lợi đại lý.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Section 2 -->
+      <div class="policy-section">
+        <div class="policy-header" onclick="togglePolicy(this)">
+          <h2>2. Chính sách đổi trả & thu hồi hàng</h2>
+          <span class="policy-toggle">+</span>
+        </div>
+        <div class="policy-content hidden">
+          <p>Với các sản phẩm bán chậm hoặc chưa tiêu thụ được, F-SPORT hỗ trợ thu hồi theo thỏa thuận.</p>
+          <h3>Điều kiện thu hồi:</h3>
+          <ul>
+            <li>Sản phẩm còn mới 100%</li>
+            <li>Chưa qua sử dụng</li>
+            <li>Không trầy xước, hư hỏng</li>
+          </ul>
+          <p>F-SPORT có quyền từ chối thu hồi đối với sản phẩm không đạt điều kiện.</p>
+        </div>
+      </div>
+
+      <!-- Section 3 -->
+      <div class="policy-section">
+        <div class="policy-header" onclick="togglePolicy(this)">
+          <h2>3. Chính sách phụ kiện & đóng gói</h2>
+          <span class="policy-toggle">+</span>
+        </div>
+        <div class="policy-content hidden">
+          <p>Giá đại lý áp dụng là giá thân vợt/sản phẩm cơ bản, chưa bao gồm:</p>
+          <ul>
+            <li>Hộp sản phẩm</li>
+            <li>Túi đựng</li>
+            <li>Quấn cán</li>
+            <li>Phụ kiện đi kèm khác</li>
+          </ul>
+          <p>Nếu đại lý có nhu cầu bổ sung phụ kiện hoặc hộp riêng, vui lòng đặt thêm theo bảng giá phụ kiện của F-SPORT.</p>
+        </div>
+      </div>
+
+      <!-- Section 4 -->
+      <div class="policy-section">
+        <div class="policy-header" onclick="togglePolicy(this)">
+          <h2>4. Chính sách vận chuyển</h2>
+          <span class="policy-toggle">+</span>
+        </div>
+        <div class="policy-content hidden">
+          <ul>
+            <li>Giá đại lý chưa bao gồm phí vận chuyển.</li>
+            <li>F-SPORT hỗ trợ gửi hàng qua các bưu cục và đơn vị vận chuyển phù hợp trên toàn quốc.</li>
+            <li>Phí ship sẽ thay đổi tùy khu vực, số lượng và kích thước đơn hàng.</li>
+            <li>F-SPORT luôn tối ưu phương án vận chuyển nhằm đảm bảo chi phí tốt nhất cho đại lý.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Section 5 -->
+      <div class="policy-section">
+        <div class="policy-header" onclick="togglePolicy(this)">
+          <h2>5. Hỗ trợ hình ảnh & marketing</h2>
+          <span class="policy-toggle">+</span>
+        </div>
+        <div class="policy-content hidden">
+          <p>Đại lý được cung cấp:</p>
+          <ul>
+            <li>Hình ảnh sản phẩm chất lượng cao</li>
+            <li>Video quảng bá</li>
+            <li>Banner, poster truyền thông</li>
+            <li>Nội dung đăng bán</li>
+          </ul>
+          <p>F-SPORT hỗ trợ tư vấn cách xây dựng kênh bán hàng và phát triển thương hiệu tại địa phương.</p>
+        </div>
+      </div>
+
+      <!-- Section 6 -->
+      <div class="policy-section">
+        <div class="policy-header" onclick="togglePolicy(this)">
+          <h2>6. Chính sách bảo hành</h2>
+          <span class="policy-toggle">+</span>
+        </div>
+        <div class="policy-content hidden">
+          <ul>
+            <li>Sản phẩm được bảo hành theo chính sách riêng của từng dòng sản phẩm.</li>
+            <li>Các lỗi do nhà sản xuất sẽ được hỗ trợ xử lý nhanh chóng.</li>
+            <li>Không áp dụng bảo hành với các trường hợp hư hỏng do va đập, sử dụng sai cách hoặc tự ý sửa chữa.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Section 7 -->
+      <div class="policy-section">
+        <div class="policy-header" onclick="togglePolicy(this)">
+          <h2>7. Chính sách hợp tác lâu dài</h2>
+          <span class="policy-toggle">+</span>
+        </div>
+        <div class="policy-content hidden">
+          <p>Đại lý hoạt động ổn định và đạt doanh số tốt sẽ được:</p>
+          <ul>
+            <li>Ưu đãi giá tốt hơn theo cấp độ</li>
+            <li>Hỗ trợ nhập hàng linh hoạt</li>
+            <li>Ưu tiên các sản phẩm mới</li>
+            <li>Hỗ trợ truyền thông riêng theo khu vực</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Section 8 -->
+      <div class="policy-section">
+        <div class="policy-header" onclick="togglePolicy(this)">
+          <h2>8. Cam kết từ F-SPORT</h2>
+          <span class="policy-toggle">+</span>
+        </div>
+        <div class="policy-content hidden">
+          <p>F-SPORT mong muốn xây dựng mạng lưới đại lý chuyên nghiệp, ổn định và phát triển lâu dài. Chúng tôi luôn đồng hành cùng đối tác trong quá trình kinh doanh với tinh thần hợp tác minh bạch – hỗ trợ nhanh – lợi ích bền vững.</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>&copy; 2026 F-Sport Pickleball. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    function togglePolicy(element) {
+      const header = element;
+      const content = header.nextElementSibling;
+
+      header.classList.toggle('collapsed');
+      content.classList.toggle('hidden');
+    }
+  </script>
+</body>
+</html>

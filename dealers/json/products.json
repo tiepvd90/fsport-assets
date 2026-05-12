@@ -1,0 +1,180 @@
+  [{
+    "id": "panther_cam",
+    "name": "Panther Cam Vũ Trụ",
+    "category": "",
+    "series": "",
+    "dealerPrice": 1100000,
+    "minRetailPrice": 1900000,
+    "image": "https://fun-sport.co/assets/images/gallery/pickleball/homepage/panther-cam.webp",
+    "description": "HOT, Được Trợ Giá"
+  },
+  {
+    "id": "panther_matcha",
+    "name": "Panther Xanh Matcha",
+    "category": "",
+    "series": "",
+    "dealerPrice": 1100000,
+    "minRetailPrice": 1900000,
+    "image": "https://fun-sport.co/assets/images/gallery/pickleball/homepage/panther-matcha.webp",
+    "description": "HOT, Được Trợ Giá"
+  },
+    {
+    "id": "fullfoam_xanhduong",
+    "name": "FullFoam Xanh Dương",
+    "category": "",
+    "series": "",
+    "dealerPrice": 1150000,
+    "minRetailPrice": 1800000,
+    "image": "https://fun-sport.co/assets/images/gallery/pickleball/homepage/ff-xanhduong.webp",
+    "description": ""
+  },
+  {
+    "id": "fullfoam_xanhla",
+    "name": "FullFoam Xanh Lá",
+    "category": "",
+    "series": "",
+    "dealerPrice": 1150000,
+    "minRetailPrice": 1800000,
+    "image": "https://fun-sport.co/assets/images/gallery/pickleball/homepage/ff-xanhla.webp",
+    "description": ""
+  },
+  {
+    "id": "fullfoam_vang",
+    "name": "FullFoam Vàng",
+    "category": "",
+    "series": "",
+    "dealerPrice": 1150000,
+    "minRetailPrice": 1800000,
+    "image": "https://fun-sport.co/assets/images/gallery/pickleball/homepage/ff-vang.webp",
+    "description": ""
+  },
+  {
+    "id": "fullfoam_do",
+    "name": "FullFoam Đỏ",
+    "category": "",
+    "series": "",
+    "dealerPrice": 1150000,
+    "minRetailPrice": 1800000,
+    "image": "https://fun-sport.co/assets/images/gallery/pickleball/homepage/ff-do.webp",
+    "description": ""
+  },
+  {
+    "id": "fullfoam_tim",
+    "name": "FullFoam Tím",
+    "category": "",
+    "series": "",
+    "dealerPrice": 1150000,
+    "minRetailPrice": 1800000,
+    "image": "https://fun-sport.co/assets/images/gallery/pickleball/homepage/ff-tim.webp",
+    "description": ""
+  },
+  {
+    "id": "fullfoam_xam",
+    "name": "FullFoam Xám",
+    "category": "",
+    "series": "",
+    "dealerPrice": 1150000,
+    "minRetailPrice": 1800000,
+    "image": "https://fun-sport.co/assets/images/gallery/pickleball/homepage/ff-xam.webp",
+    "description": ""
+  },
+  {
+    "id": "hammer_xanhduong",
+    "name": "Hammer Xanh Dương",
+    "category": "",
+    "series": "",
+    "dealerPrice": 1050000,
+    "minRetailPrice": 1600000,
+    "image": "https://fun-sport.co/assets/images/gallery/pickleball/homepage/hammer-xanh.webp",
+    "description": ""
+  },
+  {
+    "id": "hammer_do",
+    "name": "Hammer Đỏ",
+    "category": "",
+    "series": "",
+    "dealerPrice": 1050000,
+    "minRetailPrice": 1600000,
+    "image": "https://fun-sport.co/assets/images/gallery/pickleball/homepage/hammer-do.webp",
+    "description": ""
+  },
+   {
+    "id": "foam-razer",
+    "name": "Foam Razer Xanh Lá",
+    "category": "",
+    "series": "",
+    "dealerPrice": 1050000,
+    "minRetailPrice": 1600000,
+    "image": "https://fun-sport.co/assets/images/gallery/pickleball/foam/razer-NFC.webp",
+    "description": ""
+  },
+     {
+    "id": "phantom",
+    "name": "Phantom 14mm",
+    "category": "",
+    "series": "",
+    "dealerPrice": 950000,
+    "minRetailPrice": 1400000,
+    "image": "https://fun-sport.co/assets/images/gallery/pickleball/phantom/1.webp",
+    "description": ""
+  },
+  {
+    "id": "active-do",
+    "name": "Active Đỏ",
+    "category": "",
+    "series": "",
+    "dealerPrice": 850000,
+    "minRetailPrice": 1200000,
+    "image": "https://fun-sport.co/assets/images/gallery/pickleball/homepage/active-do.webp",
+    "description": ""
+  },
+    {
+    "id": "active-xanh",
+    "name": "Active Xanh",
+    "category": "",
+    "series": "",
+    "dealerPrice": 850000,
+    "minRetailPrice": 1200000,
+    "image": "https://fun-sport.co/assets/images/gallery/pickleball/homepage/active-xanh.webp",
+    "description": ""
+  },
+   {
+    "id": "active-hong",
+    "name": "Active Hồng",
+    "category": "",
+    "series": "",
+    "dealerPrice": 850000,
+    "minRetailPrice": 1200000,
+    "image": "https://fun-sport.co/assets/images/gallery/pickleball/homepage/active-hong.webp",
+    "description": ""
+  },
+  {
+    "id": "fastblock",
+    "name": "FastBlock",
+    "category": "",
+    "series": "",
+    "dealerPrice": 650000,
+    "minRetailPrice": 900000,
+    "image": "https://fun-sport.co/assets/images/gallery/pickleball/active/description/3.webp",
+    "description": ""
+  },
+     {
+    "id": "gen4-trang",
+    "name": "Gen4 Trắng",
+    "category": "",
+    "series": "",
+    "dealerPrice": 540000,
+    "minRetailPrice": 700000,
+    "image": "https://fun-sport.co/assets/images/gallery/pickleball/gen4/1.webp",
+    "description": ""
+  },
+ {
+    "id": "gen4-hong",
+    "name": "Gen4 Hồng",
+    "category": "",
+    "series": "",
+    "dealerPrice": 540000,
+    "minRetailPrice": 700000,
+    "image": "https://fun-sport.co/assets/images/gallery/pickleball/gen4/7.webp",
+    "description": ""
+  }]

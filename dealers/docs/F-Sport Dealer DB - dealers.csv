@@ -1,0 +1,4 @@
+id,fullname,email,phone,password,address,minOrderQuantity,createdAt,updatedAt
+D-2026050900001,admin,tiepvd90@gmail.com,0972733386,123456,"tàm xá, đông anh",7,2026-05-09T10:30:00Z,2026-05-09T10:30:00Z
+D-20260512-014541,Tiếp Vũ,test@gmail.com,84972733386,111111,"vũ chính, việt nam",10,2026-05-11T18:45:41.399Z,2026-05-11T18:45:41.399Z
+D-20260512-015201,Tiếp Vũ,test33333@gmail.com,84972733386,333333,vũ chính,10,2026-05-11T18:52:01.141Z,2026-05-11T18:52:01.142Z

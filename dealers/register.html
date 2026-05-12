@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="description" content="Trở thành đại lý F-Sport - Vợt pickleball cao cấp">
+  <title>Đăng ký đại lý | F-Sport Dealer</title>
+
+  <link rel="icon" href="./assets/favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="./css/reset.css">
+  <link rel="stylesheet" href="./css/variables.css">
+  <link rel="stylesheet" href="./css/layout.css">
+  <link rel="stylesheet" href="./css/components.css">
+  <link rel="stylesheet" href="./css/pages.css">
+  <link rel="stylesheet" href="./css/responsive.css">
+</head>
+<body data-page="register">
+
+  <header class="site-header">
+    <div class="container">
+      <div id="headerLogo" class="logo"></div>
+      <nav class="nav-links">
+        <a href="./index.html" class="btn btn-outline btn-sm">Đăng nhập</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO -->
+    <section class="hero">
+      <div class="container">
+        <h1>TRỞ THÀNH ĐẠI LÝ F-SPORT</h1>
+        <p class="subtitle-desc">Cơ hội kinh doanh hấp dẫn với chính sách linh hoạt, sản phẩm chất lượng và hỗ trợ toàn diện từ F-Sport.</p>
+        <button id="ctaRegister" class="btn btn-secondary btn-lg">
+          Đăng ký ngay
+        </button>
+      </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section class="features">
+      <div class="container">
+        <h2>VÌ SAO NÊN CHỌN F-SPORT?</h2>
+        <div class="feature-grid">
+          <div class="feature-item">
+            <h3>Nhập hàng dễ dàng</h3>
+            <p>Chỉ từ 10 sản phẩm — phù hợp cho cả cửa hàng mới bắt đầu.</p>
+          </div>
+          <div class="feature-item">
+            <h3>Giá sỉ cạnh tranh</h3>
+            <p>Tối ưu lợi nhuận với nhiều ưu đãi cho đại lý.</p>
+          </div>
+          <div class="feature-item">
+            <h3>Hỗ trợ thu hồi hàng tồn</h3>
+            <p>Giảm áp lực tồn kho, an tâm kinh doanh dài hạn.</p>
+          </div>
+          <div class="feature-item">
+            <h3>Giao hàng COD toàn quốc, không đặt cọc</h3>
+            <p>Vận hành nhanh chóng, thanh toán thuận tiện và an toàn.</p>
+          </div>
+          <div class="feature-item">
+            <h3>Sản phẩm đa dạng, thiết kế đẹp mắt, trending</h3>
+            <p>Lõi Full-Foam • Lõi Tổ Ong • Nhiều phân khúc sản phẩm.</p>
+          </div>
+          <div class="feature-item">
+            <h3>Hỗ trợ bán hàng & marketing</h3>
+            <p>Cung cấp hình ảnh, nội dung, tư vấn chiến lược bán hàng.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRODUCTS PREVIEW -->
+    <section class="products-preview">
+      <div class="container">
+        <h2>Sản phẩm tiêu biểu</h2>
+        <div class="preview-grid">
+          <div class="product-card">
+            <img src="https://fun-sport.co/assets/images/gallery/pickleball/fullfoam/1.webp" alt="F-Sport Pickleball Full Foam">
+          </div>
+            <div class="product-card">
+            <img src="https://i.postimg.cc/VstZnHrz/thong-so-3d.webp" alt="F-Sport Pickleball Full Foam">
+          </div>
+          <div class="product-card">
+            <img src="https://fun-sport.co/assets/images/gallery/pickleball/panther/2.webp" alt="F-Sport Panther Pickleball">
+          </div>
+          <div class="product-card">
+            <img src="https://fun-sport.co/assets/images/gallery/pickleball/panther/3.webp" alt="F-Sport Panther Pickleball">
+          </div>
+        </div>
+        <p class="text-center text-muted mt-lg">
+          Xem toàn bộ catalog sau khi đăng nhập vào dashboard.
+        </p>
+      </div>
+    </section>
+
+    <!-- CTA SECTION -->
+    <section class="cta-section">
+      <div class="container">
+        <h2>ĐĂNG KÝ TRỞ THÀNH ĐẠI LÝ ĐỂ XEM ĐẦY ĐỦ GIÁ VÀ CHÍNH SÁCH</h2>
+      </div>
+    </section>
+
+    <!-- REGISTRATION FORM -->
+    <section class="register-section">
+      <div class="container">
+        <h2>Đăng ký tài khoản</h2>
+        <p class="subtitle">Điền thông tin để bắt đầu hợp tác cùng F-Sport</p>
+
+        <form id="registerForm" class="register-form" novalidate>
+          <div class="form-group">
+            <label class="form-label" for="regFullname">
+              TÊN ĐẠI LÝ <span class="required">*</span>
+            </label>
+            <input
+              type="text"
+              id="regFullname"
+              name="fullname"
+              class="form-control"
+              autocomplete="name"
+              placeholder="Tên đại lý / Tên cửa hàng"
+              required>
+            <span class="form-error" data-error="fullname"></span>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="regEmail">
+              Email <span class="required">*</span>
+            </label>
+            <input
+              type="email"
+              id="regEmail"
+              name="email"
+              class="form-control"
+              autocomplete="email"
+              placeholder="dealer@example.com"
+              required>
+            <span class="form-error" data-error="email"></span>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="regPhone">
+              Số điện thoại <span class="required">*</span>
+            </label>
+            <input
+              type="tel"
+              id="regPhone"
+              name="phone"
+              class="form-control"
+              autocomplete="tel"
+              placeholder="0901234567"
+              required>
+            <span class="form-error" data-error="phone"></span>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="regAddress">
+              Địa chỉ nhận hàng <span class="required">*</span>
+            </label>
+            <textarea
+              id="regAddress"
+              name="address"
+              class="form-control"
+              autocomplete="street-address"
+              placeholder="Số nhà, đường, phường, quận, tỉnh..."
+              rows="3"
+              required></textarea>
+            <span class="form-error" data-error="address"></span>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="regPassword">
+              Mật khẩu <span class="required">*</span>
+            </label>
+            <input
+              type="password"
+              id="regPassword"
+              name="password"
+              class="form-control"
+              autocomplete="new-password"
+              minlength="6"
+              placeholder="Tối thiểu 6 ký tự"
+              required>
+            <span class="form-error" data-error="password"></span>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="regConfirmPassword">
+              Xác nhận mật khẩu <span class="required">*</span>
+            </label>
+            <input
+              type="password"
+              id="regConfirmPassword"
+              name="confirmPassword"
+              class="form-control"
+              autocomplete="new-password"
+              minlength="6"
+              placeholder="Nhập lại mật khẩu"
+              required>
+            <span class="form-error" data-error="confirmPassword"></span>
+          </div>
+
+
+          <button type="submit" class="btn btn-primary btn-block btn-lg">
+            Đăng Ký Làm Đại Lý
+          </button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-content">
+      <p class="footer-contact">Liên Hệ: SĐT/ZALO 0384735980</p>
+      <div class="footer-links">
+        <p>Website: <a href="https://fun-sport.co" target="_blank">fun-sport.co</a></p>
+        <p>Facebook: <a href="https://web.facebook.com/funsport1" target="_blank">facebook.com/funsport1</a></p>
+      </div>
+      <p>&copy; 2026 F-Sport Pickleball. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script type="module" src="./js/app.js"></script>
+</body>
+</html>

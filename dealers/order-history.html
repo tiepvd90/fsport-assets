@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="description" content="F-Sport Dealer - Lịch sử đơn hàng">
+  <title>Lịch sử đơn hàng | F-Sport Dealer</title>
+
+  <link rel="icon" href="./assets/favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="./css/reset.css">
+  <link rel="stylesheet" href="./css/variables.css">
+  <link rel="stylesheet" href="./css/layout.css">
+  <link rel="stylesheet" href="./css/components.css">
+  <link rel="stylesheet" href="./css/pages.css">
+  <link rel="stylesheet" href="./css/responsive.css">
+</head>
+<body data-page="order-history">
+
+<header class="site-header">
+  <div class="container">
+    <div class="dashboard-header">
+      <div id="headerLogo" class="logo"></div>
+      <div id="dashboardWelcome" class="dashboard-welcome">
+        Xin chào
+      </div>
+      <div class="dashboard-actions">
+        <button id="logoutBtn" class="btn btn-outline btn-sm" type="button" title="Đăng xuất">
+          Đăng xuất
+        </button>
+      </div>
+      <div class="header-menu-dropdown">
+        <a href="./dashboard.html" class="btn btn-ghost btn-sm" title="Tạo đơn hàng">
+          Tạo Đơn
+        </a>
+        <a href="./order-history.html" class="btn btn-ghost btn-sm" title="Lịch sử đơn hàng">
+          Lịch Sử Đơn Hàng
+        </a>
+        <a href="./account.html" class="btn btn-ghost btn-sm" title="Thông tin tài khoản">
+          Thông Tin Tài Khoản
+        </a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="site-main">
+  <div class="container-wide">
+    <section class="dashboard-section" id="historySection">
+      <div class="dashboard-section-header">
+        <h2>Lịch sử đơn hàng</h2>
+        <button id="refreshHistoryBtn" type="button" class="btn btn-ghost btn-sm">
+          Làm mới
+        </button>
+      </div>
+      <div class="dashboard-section-body">
+        <div id="orderHistoryEmpty" class="empty-state hidden">
+          <div class="empty-state-icon">📭</div>
+          <p>Chưa có đơn hàng nào.</p>
+        </div>
+
+        <div class="table-responsive" id="orderHistoryWrapper">
+          <table class="order-history-table">
+            <thead>
+              <tr>
+                <th>Mã đơn</th>
+                <th>Ngày đặt</th>
+                <th>Sản phẩm</th>
+                <th>SL</th>
+                <th>Tổng tiền</th>
+                <th>Trạng thái</th>
+                <th>Hành động</th>
+              </tr>
+            </thead>
+            <tbody id="orderHistoryBody">
+              <!-- Loaded via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-content">
+    <p class="footer-contact">Liên Hệ: SĐT/ZALO 0384735980</p>
+    <div class="footer-links">
+      <p>Website: <a href="https://fun-sport.co" target="_blank">fun-sport.co</a></p>
+      <p>Facebook: <a href="https://web.facebook.com/funsport1" target="_blank">facebook.com/funsport1</a></p>
+    </div>
+    <p>&copy; 2026 F-Sport Pickleball. All rights reserved.</p>
+  </div>
+</footer>
+
+<script type="module" src="./js/app.js"></script>
+<script type="module" src="./js/pages/order-history.js"></script>
+</body>
+</html>
