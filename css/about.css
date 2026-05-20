@@ -1,0 +1,143 @@
+/* ============================================================
+   F-SPORT About Section — Accordion
+   Mobile-first, white background, premium feel
+   ============================================================ */
+
+.fsport-about {
+  background-color: #ffffff;
+  padding: 32px 16px 48px;
+}
+
+.fsport-about__container {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+/* ── Accordion list ─────────────────────────────────────────── */
+.fsport-about__list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* ── Each card ──────────────────────────────────────────────── */
+.fsport-about__item {
+  background: #ffffff;
+  border: 1px solid #e8e8e8;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.05);
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.fsport-about__item:hover {
+  box-shadow: 0 3px 14px rgba(0, 0, 0, 0.09);
+}
+
+.fsport-about__item.fsport-about__item--open {
+  border-color: rgba(192, 57, 43, 0.3);
+}
+
+/* ── Trigger button ─────────────────────────────────────────── */
+.fsport-about__trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 20px 22px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  gap: 16px;
+  -webkit-tap-highlight-color: transparent;
+  box-sizing: border-box;
+}
+
+.fsport-about__trigger:focus-visible {
+  outline: 2px solid #c0392b;
+  outline-offset: -2px;
+  border-radius: 20px;
+}
+
+.fsport-about__trigger-text {
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: #111111;
+  line-height: 1.35;
+  flex: 1;
+}
+
+/* ── +/– icon ───────────────────────────────────────────────── */
+.fsport-about__icon {
+  font-size: 24px;
+  font-weight: 300;
+  color: #111111;
+  line-height: 1;
+  flex-shrink: 0;
+  width: 24px;
+  text-align: center;
+  user-select: none;
+  transition: color 0.2s ease;
+}
+
+.fsport-about__item--open .fsport-about__icon {
+  color: #c0392b;
+}
+
+/* ── Collapsible panel — CSS-only max-height trick ───────────── */
+.fsport-about__panel {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.28s ease;
+}
+
+.fsport-about__item--open .fsport-about__panel {
+  max-height: 600px; /* lớn hơn nội dung thực để animation chạy đủ */
+}
+
+/* ── Content text ────────────────────────────────────────────── */
+.fsport-about__content {
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-size: 15px;
+  color: #444444;
+  line-height: 1.75;
+  margin: 0;
+  padding: 0 22px 22px;
+}
+
+/* ── Desktop ─────────────────────────────────────────────────── */
+@media (min-width: 768px) {
+  .fsport-about {
+    padding: 48px 24px 64px;
+  }
+
+  .fsport-about__list {
+    gap: 14px;
+  }
+
+  .fsport-about__trigger {
+    padding: 24px 32px;
+  }
+
+  .fsport-about__trigger-text {
+    font-size: 22px;
+  }
+
+  .fsport-about__icon {
+    font-size: 28px;
+    width: 28px;
+  }
+
+  .fsport-about__content {
+    font-size: 16px;
+    padding: 0 32px 28px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .fsport-about__trigger-text {
+    font-size: 24px;
+  }
+}
