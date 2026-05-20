@@ -30,8 +30,7 @@
   ];
 
   const PRODUCT_POOL = (window.FAKE_NOTIFY && window.FAKE_NOTIFY.products) || [
-    "Dép Chạy BCU5568","Vợt Gen4 Hồng","Vợt AirForce","Dép Chạy BN68", "Set Tranh Decor",
-    "Vợt Rồng Đen","Vợt Gen4 Xám","Vợt T700 Pro","Thuyền SUP","Vợt Rồng Trắng"
+    "Dép Chạy BCU5568","Vợt Hammer Đỏ","Vợt Prime FullFoam","Dép Chạy BN68", "Vợt TruFoam Panther Cam", "Vợt Gen4 Trắng", "Vợt Gen4 Hồng", "Vợt TruFoam Panther Xanh", "Vợt Active Xanh", "Vợt Active Đỏ",
   ];
 
   const ACTION_POOL = (window.FAKE_NOTIFY && window.FAKE_NOTIFY.actions) || [
