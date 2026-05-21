@@ -1,0 +1,152 @@
+F-SPORT WARRANTY ACTIVATION SYSTEM
+===================================
+
+CẤU TRÚC DỰ ÁN
+==============
+
+1. HTML FILES (12 sản phẩm)
+   Vị trí: hyperactive.html, foam-razer.html, fullfoam-*.html, hammer-*.html, panther*.html
+   Nội dung:
+   - productSettings object: id, name, title, image, specs (6 thông số), description, description2, warrantyDays
+   - Script imports: config.js → warrantyHandler.js → handlers → app.js
+
+   Ví dụ:
+   const productSettings = {
+     id: 'hyperactive',
+     name: 'VỢT PICKLEBALL F-SPORT HYPERACTIVE',
+     title: '...',
+     image: '/assets/images/...',
+     specs: [['Chiều cao', '42 cm'], ...],
+     description: '<strong>F-Sport Hyperactive</strong> ...',
+     description2: 'Lõi tổ ong...',
+     warrantyDays: 30
+   };
+
+2. CONFIG.JS
+   Vị trí: js/config.js
+   Nội dung:
+   - UIConfig: Tất cả UI messages (verify popup, form labels, warranty text, success message, buttons)
+   - WarrantyConfig: Webhook URL, handlers settings, error handling, validation rules
+
+   Nội dung cụ thể:
+   - Messages: "Đang xác nhận...", "Tiếp tục", "Vui lòng nhập...", "Bảo hành {days} ngày", "Yêu cầu đã ghi nhận...", v.v.
+   - Validation: Phone pattern, Email pattern
+   - Webhook: Make.com URL
+   - Handlers: Bật/tắt validation, webhook, email, v.v.
+   - Error handling: Log errors, show to user, continue on fail
+
+3. APP.JS
+   Vị trí: js/app.js
+   Nội dung:
+   - initApp(): Load productSettings từ HTML, validate, render HTML
+   - renderTemplate(product): Tạo HTML structure từ UIConfig + product data (name, image, specs, description, warrantyDays)
+   - renderSpecs(product): Render bảng thông số kỹ thuật
+   - simulateVerification(): Verify popup animation (1s)
+   - showProduct(): Hiển thị phần sản phẩm sau khi click "Tiếp tục"
+   - setupFormHandler(product): Xử lý form submit, gọi warranty.execute()
+   - closeSuccess(): Đóng success popup
+
+4. WARRANTYHANDLER.JS
+   Vị trí: js/warrantyHandler.js
+   Nội dung:
+   - WarrantyHandler class: Handler chain pipeline
+   - execute(formData): Chạy tuần tự: validate → webhook → popup
+   - warranty singleton: Khởi tạo sẵn với 3 handler
+
+5. HANDLERS (3 files)
+   Vị trí: js/handlers/
+
+   5.1 validate.js
+   - validateHandler: Kiểm tra phone (10 số, bắt đầu 0), email hợp lệ
+   - Nếu lỗi: hiển thị alert, dừng pipeline
+   - Nếu OK: tiếp tục
+
+   5.2 webhook.js
+   - webhookHandler: Gửi POST tới Make.com với payload
+   - Payload: type, product, phone, email, warrantyDays, date, timestamp
+   - Nếu fail: vẫn tiếp tục (continueOnWebhookFail: true)
+
+   5.3 popup.js
+   - popupHandler: Hiển thị success popup
+   - Cập nhật warranty days vào popup
+   - Countdown 5 giây
+   - Redirect tới https://fun-sport.co
+
+6. CSS
+   Vị trí: css/styles.css
+   Nội dung: Styling cho verify popup, product section, form, success popup
+
+7. ASSETS
+   Vị trí: assets/images/gallery/pickleball/
+   Nội dung: Product images (hyperactive/auth.webp, foam/auth.webp, fullfoam/auth.webp, hammer/auth.webp, panther/auth.webp)
+
+
+FLOW HOÀN CHỈNH
+===============
+
+1. User mở hyperactive.html
+   ↓
+2. HTML load: productSettings → config.js → warrantyHandler.js → handlers → app.js
+   ↓
+3. app.js DOMContentLoaded event:
+   - initApp() → Load productSettings
+   - renderTemplate(product) → Tạo HTML từ UIConfig + product data
+   - simulateVerification() → Verify popup animation 1s
+   ↓
+4. User click "TIẾP TỤC"
+   - showProduct() → Hiển thị product section (name, image, specs, description)
+   ↓
+5. User nhập phone + email, click "GỬI YÊU CẦU KÍCH HOẠT"
+   - setupFormHandler() → warranty.execute()
+   ↓
+6. Pipeline chạy:
+   ✓ validateHandler: Kiểm tra phone/email
+   ✓ webhookHandler: Gửi tới Make.com
+   ✓ popupHandler: Hiển thị success popup
+   ↓
+7. Success popup:
+   - Hiển thị "✅ F-SPORT ĐÃ NHẬN THÔNG TIN KÍCH HOẠT"
+   - Hiển thị "Yêu cầu đã ghi nhận. Email trong 24h"
+   - Hiển thị warranty days (30 hoặc 90 ngày)
+   - Countdown: "Chuyển hướng trong 5 giây..."
+   ↓
+8. Redirect: https://fun-sport.co
+
+
+SỬA ĐỔI SETTING
+===============
+
+Thay đổi tên sản phẩm:
+→ Edit hyperactive.html → productSettings.name
+
+Thay đổi thông số kỹ thuật:
+→ Edit hyperactive.html → productSettings.specs
+
+Thay đổi ngày bảo hành:
+→ Edit hyperactive.html → productSettings.warrantyDays (30 hoặc 90)
+
+Thay đổi UI messages (chung cho tất cả):
+→ Edit config.js → UIConfig.messages
+
+Thay đổi validation rules:
+→ Edit config.js → UIConfig.validation
+
+Thay đổi webhook URL:
+→ Edit config.js → WarrantyConfig.webhook.url
+
+Thay đổi countdown trước redirect:
+→ Edit config.js → UIConfig.popup.countdownSeconds
+
+Thay đổi redirect URL:
+→ Edit config.js → UIConfig.popup.redirectUrl
+
+
+KEY POINTS
+==========
+
+✓ Mỗi HTML file độc lập (productSettings riêng biệt)
+✓ Config tập trung (UIConfig + WarrantyConfig chung cho 12 sản phẩm)
+✓ HTML structure được render động từ app.js (không lặp code)
+✓ Handler chain pattern (dễ thêm/bớt handler mà không sửa logic)
+✓ Success popup hiển thị → Redirect fun-sport.co sau 5s
+✓ Minimal files, clean structure
