@@ -33,9 +33,9 @@
     }
   ],
   "biến_thể": [
-    { "Màu Sắc": "Màu Hồng", "id": "mauhong", "category": "pickleball" },
-    { "Màu Sắc": "Màu Ghi Xám", "id": "mauxam", "category": "pickleball" },
-    { "Màu Sắc": "Màu Đen Quai Xám", "id": "maudenquaixam", "category": "pickleball" },
-    { "Màu Sắc": "Màu Đen Quai Vàng", "id": "maudenquaivang", "category": "pickleball" }
+    { "Màu Sắc": "Màu Hồng", "id": "bag-mauhong", "category": "pickleball" },
+    { "Màu Sắc": "Màu Ghi Xám", "id": "bag-mauxam", "category": "pickleball" },
+    { "Màu Sắc": "Màu Đen Quai Xám", "id": "bag-maudenquaixam", "category": "pickleball" },
+    { "Màu Sắc": "Màu Đen Quai Vàng", "id": "bag-maudenquaivang", "category": "pickleball" }
   ]
 }
