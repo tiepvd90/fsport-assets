@@ -1,5 +1,18 @@
 // ✅ cartpopup-2p.js: Dùng cho sản phẩm có 2 phân loại (ví dụ Màu & Size)
 
+// ✅ Chuẩn hoá tiếng Việt → ASCII uppercase, dùng để build composite id
+// Ví dụ: "Đen" → "DEN", "Vàng Chanh" → "VANG-CHANH", "Đỏ Hồng" → "DO-HONG"
+function normalizeVN(str) {
+  if (!str) return "";
+  return str
+    .normalize("NFD")                    // tách dấu ra khỏi chữ cái
+    .replace(/[̀-ͯ]/g, "")     // xoá combining diacritical marks
+    .replace(/[đĐ]/g, "d")              // đ/Đ không qua NFD, xử lý riêng
+    .replace(/\s+/g, "-")               // khoảng trắng → gạch ngang
+    .toUpperCase()
+    .replace(/[^A-Z0-9\-]/g, "");       // giữ lại A-Z, 0-9, dấu -
+}
+
 window.selectedVariant = null;
 window.cart = window.cart || [];
 let isCartEventBound = false;
@@ -121,6 +134,18 @@ function updateSelectedVariant() {
   const colorOptions = window.allAttributes?.find(a => a.key === colorKey)?.values || [];
   const matchedColor = colorOptions.find(v => typeof v === "object" && v.text === colorVal);
   variant["Ảnh"] = matchedColor?.image || "";
+
+  // ✅ Build composite id cho ysandal: baseId-COLOR-SIZE
+  // Ví dụ: BCU5568 + "Đen" + "34" → "BCU5568-DEN-34"
+  if (window.baseVariant?.category === "ysandal") {
+    const sizeKey = Object.keys(selected).find(k => /size/i.test(k));
+    const sizeVal = selected[sizeKey];
+    const colorCode = colorVal ? normalizeVN(colorVal) : "";
+    // Size có thể có dạng "33/34" → đổi thành "33-34"
+    const sizeCode = sizeVal ? sizeVal.replace(/\//g, "-") : "";
+    const parts = [window.baseVariant.id, colorCode, sizeCode].filter(Boolean);
+    if (parts.length > 1) variant.id = parts.join("-");
+  }
 
   selectVariant(variant);
 }
