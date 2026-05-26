@@ -6,7 +6,7 @@
       "type": "option",
       "display": "thumbnail",
       "values": [
-  { "text": "Đỏ Hồng", "image": "https://i.postimg.cc/6qbPsVJ0/dohong.jpg" },
+  { "text": "Đỏ", "image": "https://i.postimg.cc/6qbPsVJ0/dohong.jpg" },
   { "text": "Hồng", "image": "https://i.postimg.cc/prLS1G7r/hong.jpg" },
   { "text": "Lam", "image": "https://i.postimg.cc/X7XhfPdD/lam.jpg" },
   { "text": "Lục Lam", "image": "https://i.postimg.cc/Fsq6DxxF/luclam.jpg" },
@@ -23,12 +23,12 @@
       "key": "Size",
       "type": "option",
       "display": "button",
-      "values": ["33/34", "35", "36", "37", "38", "39", "40", "41/42", "43", "44", "45", "46"]
+      "values": ["33/34", "35", "36", "37", "38", "39", "40", "41/42", "43/44","45/46"]
     }
   ],
   "biến_thể": [
     {
-      "id": "ysandalbn68",
+      "id": "BN68",
       "category": "ysandal",
       "Giá": 479000,
       "Giá gốc": 600000
