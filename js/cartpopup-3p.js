@@ -1,5 +1,18 @@
 // ✅ cartpopup-3p.js: Dùng cho sản phẩm nhiều phân loại (hỗ trợ input text)
 
+// ✅ Chuẩn hoá tiếng Việt → ASCII uppercase, dùng để build composite id
+// Ví dụ: "Đen" → "DEN", "Vàng Chanh" → "VANG-CHANH", "Đỏ Hồng" → "DO-HONG"
+function normalizeVN(str) {
+  if (!str) return "";
+  return str
+    .normalize("NFD")                    // tách dấu ra khỏi chữ cái
+    .replace(/[̀-ͯ]/g, "")     // xoá combining diacritical marks
+    .replace(/[đĐ]/g, "d")              // đ/Đ không qua NFD, xử lý riêng
+    .replace(/\s+/g, "-")               // khoảng trắng → gạch ngang
+    .toUpperCase()
+    .replace(/[^A-Z0-9\-]/g, "");       // giữ lại A-Z, 0-9, dấu -
+}
+
 window.selectedVariant = null;
 window.cart = window.cart || [];
 let isCartEventBound = false;
@@ -165,13 +178,27 @@ function updateSelectedVariant() {
   variant["Giá"] = price;
   variant["Giá gốc"] = priceOrig;
 
-  // 6) (Tuỳ chọn) cập nhật id theo thuộc tính phân biệt (ví dụ Kích cỡ) để tách SKU
-  // Giữ nguyên nếu không muốn đổi
-  const sizeKey = (window.sizeKeyOverride || "Kích cỡ");
-  if (selected[sizeKey]) {
-    variant.id = `${(window.baseVariant?.id || "item")}-${selected[sizeKey]}`
-      .replace(/\s+/g, "")
-      .toLowerCase();
+  // 6) Cập nhật id theo thuộc tính phân biệt để tách SKU
+  if (window.baseVariant?.category === "ysandal") {
+    // ysandal: build composite id → baseId-COLOR-SIZE
+    // Ví dụ: BCU5568 + "Đen" + "34" → "BCU5568-DEN-34"
+    const colorKey = Object.keys(selected).find(k => /màu/i.test(k));
+    const colorVal = selected[colorKey];
+    const sizeKey = Object.keys(selected).find(k => /size/i.test(k));
+    const sizeVal = selected[sizeKey];
+    const colorCode = colorVal ? normalizeVN(colorVal) : "";
+    // Size có thể có dạng "33/34" → đổi thành "33-34"
+    const sizeCode = sizeVal ? sizeVal.replace(/\//g, "-") : "";
+    const parts = [window.baseVariant.id, colorCode, sizeCode].filter(Boolean);
+    if (parts.length > 1) variant.id = parts.join("-");
+  } else {
+    // Mặc định: build id theo Kích cỡ (giữ tương thích cũ)
+    const sizeKey = (window.sizeKeyOverride || "Kích cỡ");
+    if (selected[sizeKey]) {
+      variant.id = `${(window.baseVariant?.id || "item")}-${selected[sizeKey]}`
+        .replace(/\s+/g, "")
+        .toLowerCase();
+    }
   }
 
   // 7) Kết thúc: chuyển cho renderer
