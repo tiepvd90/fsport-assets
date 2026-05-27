@@ -344,21 +344,20 @@ async function submitOrder() {
       window.cart = [];
       saveCart();
       hideCheckoutPopup();
-      // 🟢 Mở chatbox xác nhận đơn (nếu feature bật)
-      // OC_CHAT.open() tự kiểm tra enabled; nếu OFF sẽ tự gọi showThankyouPopup()
-      if (window.OC_CHAT && typeof OC_CHAT.open === "function") {
-        OC_CHAT.open({
-          orderId:         _orderId,
-          orderCode:       _orderCode,
-          customerName:    orderData.name,
-          customerPhone:   orderData.phone,
-          customerAddress: orderData.address,
-          items:           orderData.items,
-          total:           orderData.total
-        });
-      } else {
-        showThankyouPopup();
-      }
+      // 🟢 Luôn mở chatbox xác nhận đơn sau khi đặt hàng thành công
+if (window.OC_CHAT && typeof window.OC_CHAT.open === "function") {
+  window.OC_CHAT.open({
+    orderId:         _orderId,
+    orderCode:       _orderCode,
+    customerName:    orderData.name,
+    customerPhone:   orderData.phone,
+    customerAddress: orderData.address,
+    items:           orderData.items,
+    total:           orderData.total
+  });
+} else {
+  console.warn("OC_CHAT chưa load kịp, không mở thankyou popup nữa");
+}
     })
     .catch(err => {
       console.error("❌ Lỗi khi gửi về Make.com:", err);
