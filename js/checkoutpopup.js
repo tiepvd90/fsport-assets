@@ -296,11 +296,23 @@ async function submitOrder() {
        - voucherValue
        - (window.promoCodeDiscount || 0)
   };
-  console.log("📦 Sending orderData:", orderData);
+  // 🔵 Tạo orderId + orderCode TRƯỚC — dùng chung cho ERP và chatbox
+  var _orderId = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function(c) {
+    var r = Math.random() * 16 | 0, v = c === "x" ? r : (r & 0x3 | 0x8);
+    return v.toString(16);
+  });
+  var _now = new Date(Date.now() + 7 * 3600 * 1000);
+  var _mm  = String(_now.getUTCMonth() + 1).padStart(2, "0");
+  var _dd  = String(_now.getUTCDate()).padStart(2, "0");
+  var _yy  = String(_now.getUTCFullYear()).slice(-2);
+  var _seq = String(Date.now()).slice(-4);
+  var _orderCode = "#" + _mm + _dd + _yy + "-" + _seq;
+
+  console.log("📦 Sending orderData:", orderData, "orderId:", _orderId, "orderCode:", _orderCode);
 
   // 🔵 Gửi vào Supabase ERP song song (non-blocking, không ảnh hưởng Make.com flow)
   if (typeof sendOrderToERP === "function") {
-    sendOrderToERP(orderData).catch(function(e) {
+    sendOrderToERP(orderData, _orderId, _orderCode).catch(function(e) {
       console.warn("⚠ ERP error (non-critical):", e.message);
     });
   }
@@ -329,10 +341,24 @@ async function submitOrder() {
         });
         console.log("✅ Purchase tracked");
       }
-      showThankyouPopup();
       window.cart = [];
       saveCart();
       hideCheckoutPopup();
+      // 🟢 Mở chatbox xác nhận đơn (nếu feature bật)
+      // OC_CHAT.open() tự kiểm tra enabled; nếu OFF sẽ tự gọi showThankyouPopup()
+      if (window.OC_CHAT && typeof OC_CHAT.open === "function") {
+        OC_CHAT.open({
+          orderId:         _orderId,
+          orderCode:       _orderCode,
+          customerName:    orderData.name,
+          customerPhone:   orderData.phone,
+          customerAddress: orderData.address,
+          items:           orderData.items,
+          total:           orderData.total
+        });
+      } else {
+        showThankyouPopup();
+      }
     })
     .catch(err => {
       console.error("❌ Lỗi khi gửi về Make.com:", err);
@@ -372,6 +398,11 @@ function hideThankyouPopup() {
 const promoScript = document.createElement("script");
 promoScript.src = "/js/promocode.js";
 document.head.appendChild(promoScript);
+
+// Load chatbox xác nhận đơn (lazy — chỉ cần khi đặt hàng xong)
+const ocChatScript = document.createElement("script");
+ocChatScript.src = "/js/order-confirm-chat.js";
+document.head.appendChild(ocChatScript);
 // ------------------------
 // 🔹 KHI LOAD TRANG
 // ------------------------
@@ -573,7 +604,9 @@ async function _erpUpsertCustomer(url, anon, opts) {
 }
 
 // Gửi đơn hàng vào Supabase ERP (chạy song song Make.com, non-blocking)
-async function sendOrderToERP(orderData) {
+// orderId và orderCode được tạo trong submitOrder() và truyền vào đây
+// để chatbox và ERP dùng cùng 1 ID
+async function sendOrderToERP(orderData, orderId, orderCode) {
   try {
     var _url  = window.FSPORT_SUPABASE_URL;
     var _anon = window.FSPORT_SUPABASE_ANON;
@@ -583,17 +616,8 @@ async function sendOrderToERP(orderData) {
       return s + (i.Giá || 0) * (i.quantity || 1);
     }, 0);
 
-    // Tạo UUID và order_code
-    var orderId = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function(c) {
-      var r = Math.random() * 16 | 0, v = c === "x" ? r : (r & 0x3 | 0x8);
-      return v.toString(16);
-    });
-    var _now = new Date(Date.now() + 7 * 3600 * 1000); // UTC+7
-    var _mm  = String(_now.getUTCMonth() + 1).padStart(2, "0");
-    var _dd  = String(_now.getUTCDate()).padStart(2, "0");
-    var _yy  = String(_now.getUTCFullYear()).slice(-2);
-    var _seq = String(Date.now()).slice(-4);
-    var orderCode = "#" + _mm + _dd + _yy + "-" + _seq;
+    // orderId và orderCode nhận từ submitOrder() — không tạo lại ở đây
+    // (giữ nguyên định dạng: #MMDDYY-XXXX)
 
     // 1. INSERT order — chỉ gửi các cột thực sự có trong schema
     var orderRes = await _erpPost(_url + "/rest/v1/orders", _anon, {
