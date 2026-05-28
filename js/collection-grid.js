@@ -22,6 +22,7 @@
   })();
 
   const COLLECTIONS = window.collectionList || [];
+
   if (!Array.isArray(COLLECTIONS) || COLLECTIONS.length === 0) {
     console.warn("⚠️ Không có window.collectionList");
     return;
@@ -30,42 +31,60 @@
   const container = document.getElementById("collectionContainer");
   if (!container) return;
 
-  <!-- =========================
-  F-SPORT FULLFOAM VIETNAM EDITION BANNER - START
-  ========================= -->
+  /* =========================
+     F-SPORT FULLFOAM VIETNAM EDITION BANNER - START
+     Banner global hiển thị đầu trang collection
+     Click chuyển tới:
+     /pickleball/fullfoam-vietnam
+  ========================= */
 
-  <a 
-    href="/pickleball/fullfoam-vietnam" 
-    class="product-top-banner-link"
-    style="
-      display:block;
-      width:100%;
-      margin:0 0 12px 0;
-      overflow:hidden;
-      border-radius:8px;
-      line-height:0;
-    "
-  >
-    <img 
-      src="/assets/images/gallery/pickleball/fullfoam-vietnam/banner.webp"
-      alt="F-Sport Prime FullFoam Vietnam Edition"
-      class="product-top-banner-image"
-      style="
-        display:block;
-        width:100%;
-        height:auto;
-        max-height:260px;
-        object-fit:cover;
-        object-position:center top;
-        border-radius:8px;
-      "
-    >
-  </a>
+  function renderVietnamEditionBanner() {
+    const banner = document.createElement("div");
 
-  <!-- =========================
-  F-SPORT FULLFOAM VIETNAM EDITION BANNER - END
-  ========================= -->
+    banner.className = "product-top-banner";
+    banner.style.width = "100%";
+    banner.style.margin = "0 0 12px 0";
+    banner.style.overflow = "hidden";
+    banner.style.borderRadius = "8px";
+    banner.style.lineHeight = "0";
 
+    banner.innerHTML = `
+      <a 
+        href="/pickleball/fullfoam-vietnam" 
+        class="product-top-banner-link"
+        style="
+          display:block;
+          width:100%;
+          overflow:hidden;
+          border-radius:8px;
+          line-height:0;
+        "
+      >
+        <img 
+          src="/assets/images/gallery/pickleball/fullfoam-vietnam/banner.webp"
+          alt="F-Sport Prime FullFoam Vietnam Edition"
+          class="product-top-banner-image"
+          style="
+            display:block;
+            width:100%;
+            height:auto;
+            max-height:260px;
+            object-fit:cover;
+            object-position:center top;
+            border-radius:8px;
+          "
+        >
+      </a>
+    `;
+
+    container.appendChild(banner);
+  }
+
+  renderVietnamEditionBanner();
+
+  /* =========================
+     F-SPORT FULLFOAM VIETNAM EDITION BANNER - END
+  ========================= */
 
   function formatPrice(v) {
     if (v == null || isNaN(v) || v <= 0) return "";
@@ -94,19 +113,27 @@
   function createCard(item) {
     const price = formatPrice(item.price);
     const original = formatPrice(item.originalPrice);
-    const showOriginal = original && item.originalPrice && Number(item.originalPrice) > Number(item.price);
+    const showOriginal =
+      original &&
+      item.originalPrice &&
+      Number(item.originalPrice) > Number(item.price);
 
     const div = document.createElement("div");
     div.className = "cgrid-card";
+
     div.innerHTML = `
       <div class="cgrid-thumb">
         <img src="${item.image || ""}" alt="${item.title || ""}">
       </div>
       <div class="cgrid-name">${item.title || ""}</div>
-      ${price ? `<div class="cgrid-price-wrap">
-          <div class="cgrid-price">${price}</div>
-          ${showOriginal ? `<div class="cgrid-original">${original}</div>` : ""}
-        </div>` : ""}
+      ${
+        price
+          ? `<div class="cgrid-price-wrap">
+              <div class="cgrid-price">${price}</div>
+              ${showOriginal ? `<div class="cgrid-original">${original}</div>` : ""}
+            </div>`
+          : ""
+      }
     `;
 
     div.addEventListener("click", () => {
@@ -157,23 +184,27 @@
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
         const data = await res.json();
-        let rawItems = getItemsFromData(data);
+        const rawItems = getItemsFromData(data);
 
         if (!rawItems || rawItems.length === 0) {
           console.warn("⚠️ JSON rỗng:", col.json);
           continue;
         }
 
+        // 🔥 Phân biệt cấu trúc: có nhóm hay không?
         if (isGroupStructure(rawItems)) {
+          // Dạng mới: mảng các nhóm
           for (const group of rawItems) {
             const groupBlock = renderGroup(group.groupName, group.items);
             if (groupBlock) container.appendChild(groupBlock);
           }
         } else {
+          // Dạng cũ: mảng sản phẩm phẳng
           const flatBlock = renderFlat(rawItems, col.title);
           container.appendChild(flatBlock);
         }
 
+        // Thêm đường kẻ ngăn cách giữa các collection
         const divider = document.createElement("div");
         divider.className = "cgrid-divider";
         container.appendChild(divider);
