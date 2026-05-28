@@ -3,14 +3,15 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>Vợt Pickleball F-Sport Active và FastBlock – Carbon Toray lõi Gen4 Gen 5s- Kiểm soát , Thật Tay</title>
+  <title>Vợt Pickleball F-Sport Active và FastBlock – Carbon Toray lõi Gen4 Gen 5s- Kiểm soát và Trợ Lực</title>
 
   <!-- ✅ CSS -->
   <link rel="stylesheet" href="/css/base.css" />
   <link rel="stylesheet" href="/css/cartpopup.css" />
   <link rel="stylesheet" href="/css/checkoutpopup.css" />
   <link rel="stylesheet" href="/css/productdescription.css" />
-  <link rel="stylesheet" href="../css/slideshow.css" />
+  <link rel="stylesheet" href="/css/collection-grid.css" />
+  <link rel="stylesheet" href="/css/slideshow.css" />
   <link rel="icon" type="image/png" href="/favicon.png" />
 
   <!-- ✅ JS định nghĩa -->
@@ -18,7 +19,7 @@
     window.loai = "pickleball";
     window.productCategory = "pickleball";
     window.productPage = "active";
-    window.imageCount = 7;
+    window.imageCount = 11;
     window.imageFormat = "webp";
   </script>
 </head>
@@ -36,7 +37,7 @@
       <div class="slide-counter" id="slideCounter">1/1</div>
     </div>
 
-    <!-- Zoom toàn màn hình khi click ảnh -->
+    <!-- ✅ Zoom toàn màn hình khi click ảnh -->
     <div id="fullscreenZoom" style="display: none;">
       <div id="zoomWrapper">
         <img id="zoomedImg" src="" alt="Zoomed" />
@@ -44,10 +45,10 @@
       </div>
     </div>
 
-    <!-- Script xử lý slideshow + zoom -->
+    <!-- ✅ Script xử lý slideshow + zoom -->
     <script src="/js/slideshow-2p.js"></script>
 
-     <!-- ✅ Flash Banner -->
+    <!-- ✅ Flash Banner -->
     <div id="flashbanner-placeholder"></div>
     <script>
       fetch("/html/flashsalebanner/freeship.html")
@@ -60,40 +61,35 @@
         });
     </script>
 
-    <!-- ✅ Tiêu đề + Shipping -->
+    <!-- ✅ Tiêu đề + nội dung sản phẩm -->
     <div class="product-hero">
       <h1 style="font-size: 14px; font-weight: bold; margin-top: 8px; font-family: 'Be Vietnam Pro', sans-serif; line-height: 1.4; text-align: left;">
-    <span style="background: black; color: white; font-size: 11px; padding: 2px 6px; border-radius: 4px; margin-right: 4px;">Mall</span>
-    <span style="background: #007BFF; color: white; font-size: 11px; padding: 2px 6px; border-radius: 4px; margin-right: 6px; text-transform: uppercase;">Hàng Chính Hãng</span>
-    Vợt Pickleball F-Sport Active và FastBlock – Carbon Toray lõi Gen4 Gen 5s- Kiểm soát , Thật Tay
-  </h1>
-    <!-- ✅ KHỐI 3: Video sản phẩm -->
-<div id="video-placeholder"></div>
+        <span style="background: black; color: white; font-size: 11px; padding: 2px 6px; border-radius: 4px; margin-right: 4px;">Mall</span>
+        <span style="background: #007BFF; color: white; font-size: 11px; padding: 2px 6px; border-radius: 4px; margin-right: 6px; text-transform: uppercase;">Hàng Chính Hãng</span>
+        Vợt Pickleball F-Sport Active và FastBlock – Carbon Toray lõi Gen4 Gen 5s- Kiểm soát và Trợ Lực
+      </h1>
 
-<link rel="stylesheet" href="/css/productvideo-v3.css">
+      <!-- ✅ KHỐI 3: Video sản phẩm -->
+      <div id="video-placeholder"></div>
+      <link rel="stylesheet" href="/css/productvideo-v3.css">
+      <script src="/js/productvideo-v3.js"></script>
+      <script>
+        initProductVideo();
+      </script>
+      <!-- 🔚 Hết KHỐI 3 -->
 
-<script src="/js/productvideo-v3.js"></script>
+      <!-- ✅ Mô tả sản phẩm -->
+      <div class="product-hero" style="margin-top: 12px;">
+        <div id="productdescription-placeholder" data-src="/html/productdescription/pickleball/active.html"></div>
+      </div>
+      <script src="/js/productdescription.js"></script>
 
-<script>
-initProductVideo();
-</script>
-<!-- 🔚 Hết KHỐI 3 -->
+      <!-- ✅ COLLECTION GRID - PICKLEBALL -->
+      <div style="margin-top: 32px;">
+        <div id="collectionContainer"></div>
+      </div>
 
-    <!-- ✅ Mô tả sản phẩm -->
-    <div class="product-hero" style="margin-top: 12px;">
-      <div id="productdescription-placeholder" data-src="/html/productdescription/pickleball/active.html"></div>
     </div>
-    <script src="/js/productdescription.js"></script>
-      <!-- ✅ Collection Grid Script (chỉ pickleball) -->
-  <script>
-    window.collectionList = [
-      {
-        title: "PICKLEBALL COLLECTION",
-        json: "/json/pickleball-collection.json"
-      }
-    ];
-  </script>
-  <script src="/js/collection-grid.js" defer></script>
 
   </div>
 
@@ -138,7 +134,7 @@ initProductVideo();
 
       await loadScript("/js/voucherpopup.js");
       await loadScript("/js/cartpopup-4p.js");
-      await loadScript("/js/checkoutpopup.js");
+      await loadScript("/js/checkoutpopup.js?v=" + Date.now());
 
       setTimeout(async () => {
         const map = await fetchVoucherMap();
@@ -151,6 +147,17 @@ initProductVideo();
     setupPage();
   </script>
 
+  <!-- ✅ Collection Grid Script -->
+  <script>
+    window.collectionList = [
+      {
+        title: "PICKLEBALL COLLECTION",
+        json: "/json/pickleball-collection.json"
+      }
+    ];
+  </script>
+  <script src="/js/collection-grid.js" defer></script>
+
   <!-- ✅ Tracking -->
   <script src="/js/tracking.js"></script>
   <div id="base-placeholder"></div>
@@ -161,22 +168,23 @@ initProductVideo();
         document.getElementById("base-placeholder").outerHTML = html;
         if (typeof trackBothPixels === "function") {
           trackBothPixels("ViewContent", {
-  content_type: "product",
-  contents: [{
-    content_id: window.productPage,
-    content_name: window.productPage,
-    content_category: window.productCategory,
-    quantity: 1,
-    price: 0   // hoặc giá sản phẩm thực tế nếu có
-  }],
-  value: 0,
-  currency: "VND"
-});
+            content_type: "product",
+            contents: [{
+              content_id: window.productPage,
+              content_name: window.productPage,
+              content_category: window.productCategory,
+              quantity: 1,
+              price: 0
+            }],
+            value: 0,
+            currency: "VND"
+          });
         }
       });
   </script>
-  
+
   <!-- ✅ Base script -->
   <script src="/js/base.js"></script>
+
 </body>
 </html>
