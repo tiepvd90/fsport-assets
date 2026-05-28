@@ -84,9 +84,16 @@ initProductVideo();
       <div id="productdescription-placeholder" data-src="/html/productdescription/pickleball/active.html"></div>
     </div>
     <script src="/js/productdescription.js"></script>
-    <!-- ✅ FreeFlow -->
-    <h2 class="freeflow-heading" style="font-size: 18px; margin: 24px 12px 12px;">CÓ THỂ BẠN SẼ THÍCH</h2>
-    <script src="/js/freeflow-loader.js"></script>
+      <!-- ✅ Collection Grid Script (chỉ pickleball) -->
+  <script>
+    window.collectionList = [
+      {
+        title: "PICKLEBALL COLLECTION",
+        json: "/json/pickleball-collection.json"
+      }
+    ];
+  </script>
+  <script src="/js/collection-grid.js" defer></script>
 
   </div>
 
