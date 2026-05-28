@@ -584,7 +584,7 @@
   }
 
   // ─── LOCK BY ADMIN ─────────────────────────────────────────
-  // Được gọi khi admin ấn "Kết thúc phiên" — chỉ lock UI, không patch DB thêm
+  // Được gọi khi admin ấn "Kết thúc phiên" — đóng chatbox + hiện toast, không patch DB
   function _lockSessionByAdmin() {
     // Dọn timers + listeners (không patch DB — admin đã set rồi)
     if (_inactivityTimer)        { clearTimeout(_inactivityTimer);        _inactivityTimer = null }
@@ -594,11 +594,39 @@
     window.removeEventListener('pagehide',     _handleUnload)
     // Huỷ realtime
     if (_realtimeSub && _sbClient) { _sbClient.removeChannel(_realtimeSub); _realtimeSub = null }
-    // Thay input bar bằng banner kết thúc
-    var inputBar = document.getElementById('oc-input-bar')
-    if (inputBar) {
-      inputBar.innerHTML = '<div style="flex:1;text-align:center;font-size:13px;color:#6b7280;padding:4px 0">Phiên chat đã kết thúc 🙏</div>'
+    // Đóng overlay chatbox
+    var overlay = document.getElementById('oc-overlay')
+    if (overlay) {
+      if (overlay._removeResizeListener) overlay._removeResizeListener()
+      overlay.remove()
     }
+    document.body.style.overflow = ''
+    document.documentElement.style.overflow = ''
+    _isOpen = false
+    _conversationId = null
+    // Hiện toast "Phiên chat đã kết thúc" rồi tự mất sau 3 giây
+    var toast = document.createElement('div')
+    toast.textContent = 'PHIÊN CHAT ĐÃ KẾT THÚC'
+    toast.style.cssText = [
+      'position:fixed',
+      'bottom:80px',
+      'left:50%',
+      'transform:translateX(-50%)',
+      'background:rgba(30,41,59,.88)',
+      'color:#fff',
+      'font-size:13px',
+      'font-weight:600',
+      'letter-spacing:.05em',
+      'padding:10px 20px',
+      'border-radius:24px',
+      'z-index:99999',
+      'pointer-events:none',
+      'opacity:1',
+      'transition:opacity .4s ease'
+    ].join(';')
+    document.body.appendChild(toast)
+    setTimeout(function() { toast.style.opacity = '0' }, 2600)
+    setTimeout(function() { if (toast.parentNode) toast.parentNode.removeChild(toast) }, 3000)
   }
 
   // ─── CLOSE ─────────────────────────────────────────────────
