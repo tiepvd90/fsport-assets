@@ -30,34 +30,42 @@
   const container = document.getElementById("collectionContainer");
   if (!container) return;
 
-  /* =========================
-     F-SPORT FULLFOAM VIETNAM EDITION BANNER - START
-     Banner global hiển thị đầu trang collection
-     Click chuyển tới:
-     /pickleball/fullfoam-vietnam
-  ========================= */
+  <!-- =========================
+  F-SPORT FULLFOAM VIETNAM EDITION BANNER - START
+  ========================= -->
 
-  function renderVietnamEditionBanner() {
-    const banner = document.createElement("div");
-    banner.className = "product-top-banner";
-    banner.innerHTML = `
-      <a href="/pickleball/fullfoam-vietnam" class="product-top-banner-link">
-        <img 
-          src="/assets/images/gallery/pickleball/fullfoam-vietnam/banner.webp"
-          alt="F-Sport Prime FullFoam Vietnam Edition"
-          class="product-top-banner-image"
-        >
-      </a>
-    `;
+  <a 
+    href="/pickleball/fullfoam-vietnam" 
+    class="product-top-banner-link"
+    style="
+      display:block;
+      width:100%;
+      margin:0 0 12px 0;
+      overflow:hidden;
+      border-radius:8px;
+      line-height:0;
+    "
+  >
+    <img 
+      src="/assets/images/gallery/pickleball/fullfoam-vietnam/banner.webp"
+      alt="F-Sport Prime FullFoam Vietnam Edition"
+      class="product-top-banner-image"
+      style="
+        display:block;
+        width:100%;
+        height:auto;
+        max-height:260px;
+        object-fit:cover;
+        object-position:center top;
+        border-radius:8px;
+      "
+    >
+  </a>
 
-    container.appendChild(banner);
-  }
+  <!-- =========================
+  F-SPORT FULLFOAM VIETNAM EDITION BANNER - END
+  ========================= -->
 
-  renderVietnamEditionBanner();
-
-  /* =========================
-     F-SPORT FULLFOAM VIETNAM EDITION BANNER - END
-  ========================= */
 
   function formatPrice(v) {
     if (v == null || isNaN(v) || v <= 0) return "";
