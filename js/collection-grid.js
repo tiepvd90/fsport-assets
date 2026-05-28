@@ -10,7 +10,6 @@
 (function () {
   "use strict";
 
-  // 1) Tự động nạp CSS (đảm bảo grid responsive)
   (function loadCSS() {
     const cssURL = "/css/collection-grid.css";
     if (!document.querySelector('link[href="' + cssURL + '"]')) {
@@ -33,20 +32,11 @@
 
   /* =========================
      F-SPORT FULLFOAM VIETNAM EDITION BANNER - START
-     Banner global hiển thị đầu trang collection
-     Click chuyển tới:
-     /pickleball/fullfoam-vietnam
   ========================= */
 
   function renderVietnamEditionBanner() {
     const banner = document.createElement("div");
-
     banner.className = "product-top-banner";
-    banner.style.width = "100%";
-    banner.style.margin = "0 0 12px 0";
-    banner.style.overflow = "hidden";
-    banner.style.borderRadius = "8px";
-    banner.style.lineHeight = "0";
 
     banner.innerHTML = `
       <a 
@@ -55,6 +45,7 @@
         style="
           display:block;
           width:100%;
+          margin:0 0 16px 0;
           overflow:hidden;
           border-radius:8px;
           line-height:0;
@@ -68,9 +59,9 @@
             display:block;
             width:100%;
             height:auto;
-            max-height:260px;
-            object-fit:cover;
-            object-position:center top;
+            aspect-ratio:1/1;
+            object-fit:contain;
+            object-position:center center;
             border-radius:8px;
           "
         >
@@ -91,7 +82,6 @@
     return Number(v).toLocaleString("vi-VN") + "đ";
   }
 
-  // Lấy items từ JSON (hỗ trợ cả dạng phẳng và dạng nhóm)
   function getItemsFromData(data) {
     if (Array.isArray(data)) return data;
     if (Array.isArray(data.items)) return data.items;
@@ -100,7 +90,6 @@
     return [];
   }
 
-  // Kiểm tra có phải cấu trúc nhóm không (phần tử đầu tiên có groupName)
   function isGroupStructure(items) {
     return (
       Array.isArray(items) &&
@@ -143,7 +132,6 @@
     return div;
   }
 
-  // Render một nhóm (có tiêu đề)
   function renderGroup(groupName, items) {
     if (!items || items.length === 0) return null;
 
@@ -161,7 +149,6 @@
     return block;
   }
 
-  // Render danh sách phẳng (không nhóm)
   function renderFlat(items, title) {
     const block = document.createElement("div");
     block.className = "cgrid-block";
@@ -191,20 +178,16 @@
           continue;
         }
 
-        // 🔥 Phân biệt cấu trúc: có nhóm hay không?
         if (isGroupStructure(rawItems)) {
-          // Dạng mới: mảng các nhóm
           for (const group of rawItems) {
             const groupBlock = renderGroup(group.groupName, group.items);
             if (groupBlock) container.appendChild(groupBlock);
           }
         } else {
-          // Dạng cũ: mảng sản phẩm phẳng
           const flatBlock = renderFlat(rawItems, col.title);
           container.appendChild(flatBlock);
         }
 
-        // Thêm đường kẻ ngăn cách giữa các collection
         const divider = document.createElement("div");
         divider.className = "cgrid-divider";
         container.appendChild(divider);
