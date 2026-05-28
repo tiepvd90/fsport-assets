@@ -569,7 +569,36 @@
         // Chỉ hiển thị tin nhắn từ shop (customer đã optimistic append rồi)
         if (msg.sender === 'shop') { hideTyping(); appendShopBubble(msg.content) }
       })
+      .on('postgres_changes', {
+        event:  'UPDATE',
+        schema: 'public',
+        table:  'order_confirm_conversations',
+        filter: 'id=eq.' + _conversationId
+      }, function(payload) {
+        // Admin ấn "Kết thúc phiên" → customer_closed = true → lock frontend khách
+        if (payload.new && payload.new.customer_closed) {
+          _lockSessionByAdmin()
+        }
+      })
       .subscribe()
+  }
+
+  // ─── LOCK BY ADMIN ─────────────────────────────────────────
+  // Được gọi khi admin ấn "Kết thúc phiên" — chỉ lock UI, không patch DB thêm
+  function _lockSessionByAdmin() {
+    // Dọn timers + listeners (không patch DB — admin đã set rồi)
+    if (_inactivityTimer)        { clearTimeout(_inactivityTimer);        _inactivityTimer = null }
+    if (_visibilityOfflineTimer) { clearTimeout(_visibilityOfflineTimer); _visibilityOfflineTimer = null }
+    document.removeEventListener('visibilitychange', _handleVisibility)
+    window.removeEventListener('beforeunload', _handleUnload)
+    window.removeEventListener('pagehide',     _handleUnload)
+    // Huỷ realtime
+    if (_realtimeSub && _sbClient) { _sbClient.removeChannel(_realtimeSub); _realtimeSub = null }
+    // Thay input bar bằng banner kết thúc
+    var inputBar = document.getElementById('oc-input-bar')
+    if (inputBar) {
+      inputBar.innerHTML = '<div style="flex:1;text-align:center;font-size:13px;color:#6b7280;padding:4px 0">Phiên chat đã kết thúc 🙏</div>'
+    }
   }
 
   // ─── CLOSE ─────────────────────────────────────────────────
