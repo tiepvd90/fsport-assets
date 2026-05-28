@@ -1,0 +1,28 @@
+{
+  "thuộc_tính": [
+    {
+      "label": "Màu Sắc",
+      "key": "Màu Sắc",
+      "type": "option",
+      "display": "thumbnail",
+      "values": [
+		  {
+          "text": "FullFoam Đỏ - Cờ Đỏ Sao Vàng- 16mm",
+          "image": "/assets/images/gallery/pickleball/fullfoam-vietnam/nentrang.webp",
+          "id": "fullfoam-do-vietnam",
+          "GiaOverride": 1940000,
+          "GiaGocOverride": 2500000
+        }
+      ]
+    }
+  ],
+  "biến_thể": [
+    {
+      "id": "fullfoam-do-vietnam",
+      "category": "pickleball",
+      "Giá": 1940000,
+      "Giá gốc": 1900000
+    }
+  ],
+  "mainImageKey": "Màu Sắc"
+}
