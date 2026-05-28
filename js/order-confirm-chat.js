@@ -10,15 +10,16 @@
   // Đọc dynamic thay vì capture 1 lần — tránh lỗi timing khi script load trước khi biến được set
   function SUPABASE_URL()  { return window.FSPORT_SUPABASE_URL  || '' }
   function SUPABASE_ANON() { return window.FSPORT_SUPABASE_ANON || '' }
-  var _conversationId  = null
-  var _realtimeSub     = null
-  var _isOpen          = false
-  var _sbClient        = null   // Supabase JS client cho Realtime
-  var _heartbeatTimer   = null   // Interval gửi heartbeat mỗi 30 giây
-  var _inactivityTimer  = null   // Timeout tự đóng khi khách không hoạt động
-  var _inactivityMs     = 30 * 60 * 1000  // mặc định 30 phút
-  var _handleUnload     = null   // beforeunload/pagehide handler
-  var _handleVisibility = null   // visibilitychange handler
+  var _conversationId        = null
+  var _realtimeSub           = null
+  var _isOpen                = false
+  var _sbClient              = null   // Supabase JS client cho Realtime
+  var _heartbeatTimer        = null   // Interval gửi heartbeat mỗi 30 giây
+  var _inactivityTimer       = null   // Timeout tự đóng khi khách không hoạt động
+  var _inactivityMs          = 30 * 60 * 1000  // mặc định 30 phút
+  var _handleUnload          = null   // beforeunload/pagehide handler
+  var _handleVisibility      = null   // visibilitychange handler
+  var _visibilityOfflineTimer = null  // Debounce 45s trước khi mark offline (tránh false-offline khi đổi app)
 
   // Patch đồng bộ (dùng cho unload — không async)
   function _patchSync(id, body) {
@@ -45,6 +46,8 @@
   function _cleanupSession() {
     if (_heartbeatTimer)  { clearInterval(_heartbeatTimer);  _heartbeatTimer  = null }
     if (_inactivityTimer) { clearTimeout(_inactivityTimer);  _inactivityTimer = null }
+    // Huỷ debounce offline nếu đang pending
+    if (_visibilityOfflineTimer) { clearTimeout(_visibilityOfflineTimer); _visibilityOfflineTimer = null }
     if (_handleUnload) {
       window.removeEventListener('beforeunload', _handleUnload)
       window.removeEventListener('pagehide',     _handleUnload)
@@ -258,23 +261,43 @@
     // Inactivity timeout
     _resetInactivity()
 
-    // visibilitychange — tab ẩn/đóng → offline; hiện lại → online
+    // visibilitychange — tab ẩn/đóng → offline (debounce 45s); hiện lại → online + huỷ debounce
+    // Lý do debounce: mobile thường fire 'hidden' khi chuyển app ngắn hạn, kéo notification,
+    // tắt màn hình tạm — nếu mark offline ngay thì backend sẽ khoá input admin oan
     _handleVisibility = function() {
       if (!_conversationId) return
       if (document.visibilityState === 'hidden') {
-        _patchSync(_conversationId, { customer_online: false, updated_at: new Date().toISOString() })
+        // Chờ 45 giây — nếu khách quay lại trong thời gian đó thì không mark offline
+        if (_visibilityOfflineTimer) return  // debounce đã đang chờ, không tạo thêm
+        _visibilityOfflineTimer = setTimeout(function() {
+          _visibilityOfflineTimer = null
+          // Chỉ mark offline nếu tab vẫn còn bị ẩn sau 45s
+          if (document.visibilityState === 'hidden' && _conversationId) {
+            _patchSync(_conversationId, { customer_online: false, updated_at: new Date().toISOString() })
+          }
+        }, 45000)
       } else if (document.visibilityState === 'visible') {
+        // Khách quay lại → huỷ debounce offline, mark online lại
+        // customer_closed: false vì khách chưa thực sự tắt tab
+        if (_visibilityOfflineTimer) {
+          clearTimeout(_visibilityOfflineTimer)
+          _visibilityOfflineTimer = null
+        }
         _patch('/rest/v1/order_confirm_conversations?id=eq.' + _conversationId, {
-          customer_online: true, updated_at: new Date().toISOString()
+          customer_online: true, customer_closed: false, updated_at: new Date().toISOString()
         })
         _resetInactivity()
       }
     }
     document.addEventListener('visibilitychange', _handleVisibility)
 
-    // beforeunload / pagehide — set offline đồng bộ khi thoát hẳn
+    // beforeunload / pagehide — khách tắt tab thật → set customer_closed: true (hard lock backend)
     _handleUnload = function() {
-      if (_conversationId) _patchSync(_conversationId, { customer_online: false, updated_at: new Date().toISOString() })
+      if (_conversationId) _patchSync(_conversationId, {
+        customer_online: false,
+        customer_closed: true,
+        updated_at: new Date().toISOString()
+      })
     }
     window.addEventListener('beforeunload', _handleUnload)
     window.addEventListener('pagehide',     _handleUnload)
@@ -389,13 +412,40 @@
     document.body.style.overflow = 'hidden'
     document.documentElement.style.overflow = 'hidden'
 
-    overlay._removeResizeListener = function() {} // no-op, kept for compat
+    // 📱 Fix bàn phím ảo mobile: dùng visualViewport API để giữ đúng kích thước
+    // Khi bàn phím bật lên, visualViewport.height thu nhỏ → cập nhật overlay tương ứng
+    // → header (tên + logo shop) luôn hiển thị, không bị đẩy khỏi màn hình
+    function _handleVpResize() {
+      var el = document.getElementById('oc-overlay')
+      if (!el) return
+      var vp = window.visualViewport
+      if (vp) {
+        el.style.top    = vp.offsetTop + 'px'
+        el.style.height = vp.height + 'px'
+        el.style.bottom = 'auto'
+      }
+      // Giữ scroll về cuối danh sách tin nhắn sau khi bàn phím xuất hiện
+      var list = document.getElementById('oc-msg-list')
+      if (list) { list.scrollTop = list.scrollHeight }
+    }
 
-    // Focus input sau khi render
-    setTimeout(function() {
-      var inp = document.getElementById('oc-text-input')
-      if (inp) inp.focus()
-    }, 400)
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener('resize', _handleVpResize)
+      window.visualViewport.addEventListener('scroll', _handleVpResize)
+      overlay._removeResizeListener = function() {
+        window.visualViewport.removeEventListener('resize', _handleVpResize)
+        window.visualViewport.removeEventListener('scroll', _handleVpResize)
+      }
+    } else {
+      // Fallback cho trình duyệt không hỗ trợ visualViewport
+      window.addEventListener('resize', _handleVpResize)
+      overlay._removeResizeListener = function() {
+        window.removeEventListener('resize', _handleVpResize)
+      }
+    }
+    _handleVpResize() // Gọi ngay để set kích thước ban đầu đúng
+
+    // KHÔNG auto-focus — để khách xem tin nhắn trước, tránh bàn phím bật lên ngay
 
     // Events
     document.getElementById('oc-close-btn').addEventListener('click', close)
@@ -526,10 +576,12 @@
   function close() {
     // Dọn timers + event listeners
     _cleanupSession()
-    // Đánh dấu khách offline
+    // Đánh dấu khách offline + closed (gọi bởi inactivity timeout hoặc user chủ động đóng)
+    // customer_closed: true → backend hard lock input admin
     if (_conversationId) {
       _patch('/rest/v1/order_confirm_conversations?id=eq.' + _conversationId, {
         customer_online: false,
+        customer_closed: true,
         updated_at: new Date().toISOString()
       })
     }
