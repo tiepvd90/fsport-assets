@@ -14,6 +14,8 @@
   var _realtimeSub           = null
   var _isOpen                = false
   var _sbClient              = null   // Supabase JS client cho Realtime
+  var _settings              = null   // Cache settings (ai_enabled, ai_context, ai_api_key...)
+  var _orderData             = null   // Cache order data cho AI context
   var _heartbeatTimer        = null   // Interval gửi heartbeat mỗi 30 giây
   var _inactivityTimer       = null   // Timeout tự đóng khi khách không hoạt động
   var _inactivityMs          = 30 * 60 * 1000  // mặc định 30 phút
@@ -163,6 +165,7 @@
     var sRes = await _get('/rest/v1/order_confirm_settings?id=eq.1&select=*')
     console.log('[OC_CHAT] settings response:', sRes)
     var settings = (sRes.ok && sRes.data && sRes.data[0]) || null
+    _settings = settings  // cache cho _callAI dùng
 
     // 2. Kiểm tra enabled
     if (!settings || !settings.enabled) {
@@ -232,6 +235,36 @@
         sender:          'shop',
         content:         starterText
       })
+    }
+
+    // 3b. Cache order data để _callAI không cần fetch lại mỗi tin nhắn
+    _orderData = null
+    var _orderId = opts.orderId
+    if (_orderId) {
+      var oRes = await _get(
+        '/rest/v1/orders?id=eq.' + _orderId +
+        '&select=order_code,customer_name,customer_phone,customer_address,total,order_items(product_name,color,size,quantity,unit_price)'
+      )
+      _orderData = (oRes.ok && oRes.data && oRes.data[0]) || null
+    }
+    // Nếu không lấy được từ DB thì tổng hợp từ opts (fallback)
+    if (!_orderData) {
+      _orderData = {
+        order_code:       opts.orderCode || '',
+        customer_name:    opts.customerName || '',
+        customer_phone:   opts.customerPhone || '',
+        customer_address: opts.customerAddress || '',
+        total:            opts.total || 0,
+        order_items:      (opts.items || []).map(function(i) {
+          return {
+            product_name: i['Phân loại'] || i.product_name || '',
+            color:        i.color || null,
+            size:         i.size || null,
+            quantity:     i.quantity || 1,
+            unit_price:   i.Giá || i.unit_price || 0
+          }
+        })
+      }
     }
 
     // 4. Lấy avatar — ưu tiên settings.shop_avatar_url, fallback về erp_settings.iconUrl
@@ -313,10 +346,11 @@
       var style = document.createElement('style')
       style.id = 'oc-chat-style'
       style.textContent = [
-        // Mobile: full màn hình — chỉ dùng top/bottom/left/right:0, không set height để tránh conflict
-        '#oc-overlay{position:fixed;top:0;left:0;right:0;bottom:0;z-index:99999;display:flex;flex-direction:column;background:#EDEFF3;overflow:hidden}',
-        '#oc-panel{display:flex;flex-direction:column;flex:1;width:100%;min-height:0;overflow:hidden}',
-        '#oc-header{background:linear-gradient(135deg,#007AFF 0%,#00A6FF 100%);padding-top:env(safe-area-inset-top,0);flex-shrink:0}',
+        // Mobile: bottom sheet 70% — backdrop mờ, panel trượt lên từ dưới
+        '#oc-overlay{position:fixed;top:0;left:0;right:0;bottom:0;z-index:99999;display:flex;flex-direction:column;justify-content:flex-end;background:rgba(0,0,0,.4);overflow:hidden}',
+        '#oc-panel{display:flex;flex-direction:column;width:100%;height:70%;min-height:0;overflow:hidden;border-radius:16px 16px 0 0}',
+        '#oc-drag-handle{width:36px;height:4px;background:rgba(0,0,0,.18);border-radius:2px;margin:8px auto 4px;flex-shrink:0}',
+        '#oc-header{background:linear-gradient(135deg,#007AFF 0%,#00A6FF 100%);padding-top:0;flex-shrink:0}',
         '#oc-header-inner{display:flex;align-items:center;gap:10px;padding:12px 16px;height:56px;box-sizing:content-box;position:relative}',
         '#oc-close-btn{background:none;border:none;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:6px;flex-shrink:0;-webkit-tap-highlight-color:transparent;margin-left:auto}',
         '#oc-shop-info{display:flex;align-items:center;gap:10px;flex:1;min-width:0}',
@@ -381,6 +415,8 @@
     overlay.innerHTML = (
       '<div id="oc-panel">' +
 
+        '<div id="oc-drag-handle" aria-hidden="true"></div>' +
+
         '<div id="oc-header">' +
           '<div id="oc-header-inner">' +
             '<div id="oc-shop-info">' +
@@ -412,9 +448,22 @@
     document.body.style.overflow = 'hidden'
     document.documentElement.style.overflow = 'hidden'
 
-    // 📱 Fix bàn phím ảo mobile: dùng visualViewport API để giữ đúng kích thước
-    // Khi bàn phím bật lên, visualViewport.height thu nhỏ → cập nhật overlay tương ứng
-    // → header (tên + logo shop) luôn hiển thị, không bị đẩy khỏi màn hình
+    // ① Chặn scroll trang phía sau (iOS Safari không đủ chỉ với overflow:hidden)
+    overlay.addEventListener('touchmove', function(e) {
+      var panel = document.getElementById('oc-panel')
+      if (panel && panel.contains(e.target)) return   // scroll trong panel vẫn chạy bình thường
+      e.preventDefault()                               // chặn scroll backdrop
+    }, { passive: false })
+
+    // ② Tap backdrop (ngoài panel) → đóng chatbox
+    overlay.addEventListener('click', function(e) {
+      if (e.target === overlay) close()
+    })
+
+    // 📱 Fix bàn phím ảo mobile: dùng visualViewport API
+    // - Overlay co theo visual viewport để input bar không bị keyboard che
+    // - Khi keyboard bật: mở rộng panel lên 100% để giữ tối đa vùng xem tin nhắn
+    // - Khi keyboard tắt: trở về 70% CSS default
     function _handleVpResize() {
       var el = document.getElementById('oc-overlay')
       if (!el) return
@@ -423,10 +472,15 @@
         el.style.top    = vp.offsetTop + 'px'
         el.style.height = vp.height + 'px'
         el.style.bottom = 'auto'
+        // Phát hiện bàn phím: viewport < 75% chiều cao thực của thiết bị
+        var screenH = window.screen.availHeight || window.screen.height || window.innerHeight
+        var keyboardOpen = vp.height < screenH * 0.75
+        var panel = document.getElementById('oc-panel')
+        if (panel) panel.style.height = keyboardOpen ? '100%' : ''  // '' → CSS 70%
       }
       // Giữ scroll về cuối danh sách tin nhắn sau khi bàn phím xuất hiện
       var list = document.getElementById('oc-msg-list')
-      if (list) { list.scrollTop = list.scrollHeight }
+      if (list) list.scrollTop = list.scrollHeight
     }
 
     if (window.visualViewport) {
@@ -461,13 +515,21 @@
       appendCustomerBubble(text)
       // Reset inactivity timer mỗi khi khách nhắn
       _resetInactivity()
-      // Hiện typing indicator
-      showTyping()
-      // Gửi lên Supabase
+      // Gửi lên Supabase — sau đó gọi AI nếu bật
       _post('/rest/v1/order_confirm_messages', {
         conversation_id: _conversationId,
         sender:          'customer',
         content:         text
+      }).then(function(res) {
+        if (!res.ok) return
+        // Chỉ gọi AI khi ai_enabled = true
+        if (_settings && _settings.ai_enabled) {
+          showTyping()
+          _callAI(text).catch(function(e) {
+            console.warn('[OC_CHAT] AI error:', e)
+            hideTyping()
+          })
+        }
       })
     }
 
@@ -552,6 +614,125 @@
     list.scrollTop = list.scrollHeight
   }
 
+  // ─── AI AGENT — gọi Gemini trực tiếp, không qua Make.com ──
+  // Được gọi sau khi customer POST tin nhắn lên Supabase.
+  // Flow: check admin_took_over → fetch full history → call Gemini → POST reply
+  // Realtime subscription sẽ tự hiển thị reply và gọi hideTyping()
+  async function _callAI(latestMessage) {
+    if (!_settings || !_settings.ai_enabled || !_conversationId) {
+      hideTyping(); return
+    }
+
+    // 1. Check admin_took_over — nếu admin đã can thiệp thì im lặng
+    var convRes = await _get(
+      '/rest/v1/order_confirm_conversations?id=eq.' + _conversationId +
+      '&select=admin_took_over'
+    )
+    var conv = convRes.ok && convRes.data && convRes.data[0]
+    if (!conv || conv.admin_took_over) { hideTyping(); return }
+
+    // 2. Fetch toàn bộ lịch sử hội thoại (kể cả starter message)
+    var histRes = await _get(
+      '/rest/v1/order_confirm_messages?conversation_id=eq.' + _conversationId +
+      '&order=created_at.asc&limit=100&select=sender,content'
+    )
+    var history = (histRes.ok && histRes.data) || []
+
+    // 3. Build order info từ cache _orderData
+    var orderInfo = ''
+    if (_orderData) {
+      var o = _orderData
+      var itemLines = (o.order_items || []).map(function(i) {
+        var line = '  - ' + (i.product_name || '(không tên)')
+        if (i.color) line += ' | Màu: ' + i.color
+        if (i.size)  line += ' | Size: ' + i.size
+        line += ' | SL: ' + (i.quantity || 1)
+        line += ' | ' + Number(i.unit_price || 0).toLocaleString('vi-VN') + 'đ'
+        return line
+      }).join('\n')
+      orderInfo = [
+        'Mã đơn:    ' + (o.order_code || ''),
+        'Khách:     ' + (o.customer_name || '') + ' | SĐT: ' + (o.customer_phone || ''),
+        'Địa chỉ:   ' + (o.customer_address || ''),
+        'Tổng tiền: ' + Number(o.total || 0).toLocaleString('vi-VN') + 'đ',
+        'Sản phẩm:\n' + itemLines
+      ].join('\n')
+    }
+
+    // 4. Build conversation history text (bỏ tin system)
+    var historyText = history
+      .filter(function(m) { return m.sender !== 'system' })
+      .map(function(m) {
+        return (m.sender === 'shop' ? 'SHOP' : 'KHÁCH') + ': ' + m.content
+      })
+      .join('\n')
+
+    // 5. Tổng hợp system prompt:
+    //    [context từ settings] + [thông tin đơn] + [lịch sử hội thoại]
+    var baseContext = (_settings.ai_context || '').trim()
+    var systemText =
+      baseContext +
+      '\n\n=== THÔNG TIN ĐƠN HÀNG ===\n' + orderInfo +
+      '\n\n=== TOÀN BỘ LỊCH SỬ HỘI THOẠI (từ đầu đến hiện tại) ===\n' + historyText +
+      '\n\nDựa trên lịch sử hội thoại trên, hãy trả lời tin nhắn cuối cùng của KHÁCH. ' +
+      'Chỉ trả lời đúng trọng tâm. Không bịa thông tin. ' +
+      "Nếu không biết, nói 'Em sẽ hỏi lại shop và phản hồi anh/chị sớm nhé'."
+
+    // 6. Gọi Gemini API trực tiếp
+    var apiKey = (_settings.ai_api_key || '').trim() ||
+      'AIzaSyCurFmPCmvp0fJ_qdtgozJw0G1Tl6i1seg'  // fallback key
+    var geminiUrl =
+      'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=' + apiKey
+
+    var reqBody = JSON.stringify({
+      system_instruction: {
+        parts: [{ text: systemText }]
+      },
+      contents: [{
+        role: 'user',
+        parts: [{ text: latestMessage }]
+      }],
+      generationConfig: {
+        maxOutputTokens: 300,
+        temperature: 0.7
+      }
+    })
+
+    var gemRes = await new Promise(function(resolve) {
+      var xhr = new XMLHttpRequest()
+      xhr.open('POST', geminiUrl, true)
+      xhr.setRequestHeader('Content-Type', 'application/json')
+      xhr.onload = function() {
+        try { resolve({ ok: xhr.status < 300, data: JSON.parse(xhr.responseText) }) }
+        catch(e) { resolve({ ok: false, data: null }) }
+      }
+      xhr.onerror = function() { resolve({ ok: false, data: null }) }
+      xhr.send(reqBody)
+    })
+
+    // 7. Trích xuất text từ response Gemini (index 0 — JS 0-based, khác Make.com 1-based)
+    var aiText = gemRes.ok &&
+      gemRes.data &&
+      gemRes.data.candidates &&
+      gemRes.data.candidates[0] &&
+      gemRes.data.candidates[0].content &&
+      gemRes.data.candidates[0].content.parts &&
+      gemRes.data.candidates[0].content.parts[0] &&
+      gemRes.data.candidates[0].content.parts[0].text
+
+    if (!aiText || !aiText.trim()) {
+      console.warn('[OC_CHAT] AI returned empty response')
+      hideTyping(); return
+    }
+
+    // 8. POST AI reply vào Supabase — Realtime sub sẽ tự hiển thị + gọi hideTyping()
+    await _post('/rest/v1/order_confirm_messages', {
+      conversation_id: _conversationId,
+      sender:          'shop',
+      content:         aiText.trim()
+    })
+  }
+
   // ─── REALTIME ──────────────────────────────────────────────
   async function subscribeRealtime() {
     if (!_conversationId) return
@@ -566,6 +747,11 @@
         filter: 'conversation_id=eq.' + _conversationId
       }, function(payload) {
         var msg = payload.new
+        // Tin nhắn hệ thống — admin kết thúc phiên
+        if (msg.sender === 'system' && msg.content === '__SESSION_ENDED__') {
+          _lockSessionByAdmin()
+          return
+        }
         // Chỉ hiển thị tin nhắn từ shop (customer đã optimistic append rồi)
         if (msg.sender === 'shop') { hideTyping(); appendShopBubble(msg.content) }
       })
@@ -604,6 +790,8 @@
     document.documentElement.style.overflow = ''
     _isOpen = false
     _conversationId = null
+    _settings = null
+    _orderData = null
     // Hiện toast "Phiên chat đã kết thúc" rồi tự mất sau 3 giây
     var toast = document.createElement('div')
     toast.textContent = 'PHIÊN CHAT ĐÃ KẾT THÚC'
@@ -657,6 +845,8 @@
     document.documentElement.style.overflow = ''
     _isOpen = false
     _conversationId = null
+    _settings = null
+    _orderData = null
   }
 
   // ─── HELPERS ───────────────────────────────────────────────
