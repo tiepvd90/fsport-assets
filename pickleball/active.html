@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>Vợt Pickleball F-Sport Active và FastBlock – Carbon Toray lõi Gen4 Gen 5s- Kiểm soát và Trợ Lực</title>
+  <title>Vợt Pickleball F-Sport Active và FastBlock – Carbon Toray lõi Gen4 Gen 5s- Kiểm soát , Thật Tay</title>
 
   <!-- ✅ CSS -->
   <link rel="stylesheet" href="/css/base.css" />
-  <link rel="stylesheet" href="https://friendly-kitten-d760ff.netlify.app/css/cartpopup.css" />
-  <link rel="stylesheet" href="https://friendly-kitten-d760ff.netlify.app/css/checkoutpopup.css" />
+  <link rel="stylesheet" href="/css/cartpopup.css" />
+  <link rel="stylesheet" href="/css/checkoutpopup.css" />
   <link rel="stylesheet" href="/css/productdescription.css" />
   <link rel="stylesheet" href="../css/slideshow.css" />
   <link rel="icon" type="image/png" href="/favicon.png" />
@@ -18,7 +18,7 @@
     window.loai = "pickleball";
     window.productCategory = "pickleball";
     window.productPage = "active";
-    window.imageCount = 11;
+    window.imageCount = 7;
     window.imageFormat = "webp";
   </script>
 </head>
@@ -65,7 +65,7 @@
       <h1 style="font-size: 14px; font-weight: bold; margin-top: 8px; font-family: 'Be Vietnam Pro', sans-serif; line-height: 1.4; text-align: left;">
     <span style="background: black; color: white; font-size: 11px; padding: 2px 6px; border-radius: 4px; margin-right: 4px;">Mall</span>
     <span style="background: #007BFF; color: white; font-size: 11px; padding: 2px 6px; border-radius: 4px; margin-right: 6px; text-transform: uppercase;">Hàng Chính Hãng</span>
-    Vợt Pickleball F-Sport Active và FastBlock – Carbon Toray lõi Gen4 Gen 5s- Kiểm soát và Trợ Lực
+    Vợt Pickleball F-Sport Active và FastBlock – Carbon Toray lõi Gen4 Gen 5s- Kiểm soát , Thật Tay
   </h1>
     <!-- ✅ KHỐI 3: Video sản phẩm -->
 <div id="video-placeholder"></div>
@@ -129,9 +129,9 @@ initProductVideo();
       await injectHTML("/html/checkoutpopup.html", "checkoutPopup-placeholder");
       await injectHTML("/html/stickyfooter.html", "sticky-footer-placeholder");
 
-      await loadScript("https://friendly-kitten-d760ff.netlify.app/js/voucherpopup.js");
-      await loadScript("https://friendly-kitten-d760ff.netlify.app/js/cartpopup-4p.js");
-      await loadScript("https://friendly-kitten-d760ff.netlify.app/js/checkoutpopup.js");
+      await loadScript("/js/voucherpopup.js");
+      await loadScript("/js/cartpopup-4p.js");
+      await loadScript("/js/checkoutpopup.js");
 
       setTimeout(async () => {
         const map = await fetchVoucherMap();
@@ -145,7 +145,7 @@ initProductVideo();
   </script>
 
   <!-- ✅ Tracking -->
-  <script src="https://friendly-kitten-d760ff.netlify.app/js/tracking.js"></script>
+  <script src="/js/tracking.js"></script>
   <div id="base-placeholder"></div>
   <script>
     fetch("/html/base.html")
