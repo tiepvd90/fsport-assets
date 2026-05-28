@@ -157,7 +157,12 @@
   async function open(opts) {
     // opts: { orderId, orderCode, customerName, customerPhone, customerAddress, items, total }
     console.log('[OC_CHAT] open() called', opts)
-    if (_isOpen) { console.log('[OC_CHAT] already open, skip'); return }
+    // Nếu đang có chatbox cũ (đơn khác) → đóng hẳn rồi mở mới
+    // Tránh trường hợp khách đặt đơn mới trước khi đóng chatbox cũ → chat lạc conversation
+    if (_isOpen) {
+      console.log('[OC_CHAT] force-closing existing session before opening new order')
+      close()
+    }
     _isOpen = true
 
     // 1. Load settings
@@ -348,7 +353,7 @@
       style.textContent = [
         // Mobile: bottom sheet 70% — backdrop mờ, panel trượt lên từ dưới
         '#oc-overlay{position:fixed;top:0;left:0;right:0;bottom:0;z-index:99999;display:flex;flex-direction:column;justify-content:flex-end;background:rgba(0,0,0,.4);overflow:hidden}',
-        '#oc-panel{display:flex;flex-direction:column;width:100%;height:70%;min-height:0;overflow:hidden;border-radius:16px 16px 0 0}',
+        '#oc-panel{display:flex;flex-direction:column;width:100%;height:70%;min-height:0;overflow:hidden;border-radius:16px 16px 0 0;background:#EDEFF3}',
         '#oc-drag-handle{width:36px;height:4px;background:rgba(0,0,0,.18);border-radius:2px;margin:8px auto 4px;flex-shrink:0}',
         '#oc-header{background:linear-gradient(135deg,#007AFF 0%,#00A6FF 100%);padding-top:0;flex-shrink:0}',
         '#oc-header-inner{display:flex;align-items:center;gap:10px;padding:12px 16px;height:56px;box-sizing:content-box;position:relative}',
@@ -619,7 +624,10 @@
   // Flow: check admin_took_over → fetch full history → call Gemini → POST reply
   // Realtime subscription sẽ tự hiển thị reply và gọi hideTyping()
   async function _callAI(latestMessage) {
+    console.log('[OC_AI] _callAI() called, message:', latestMessage)
+    console.log('[OC_AI] _settings:', _settings)
     if (!_settings || !_settings.ai_enabled || !_conversationId) {
+      console.warn('[OC_AI] Guard fail — ai_enabled:', _settings && _settings.ai_enabled, '| conversationId:', _conversationId)
       hideTyping(); return
     }
 
@@ -628,14 +636,19 @@
       '/rest/v1/order_confirm_conversations?id=eq.' + _conversationId +
       '&select=admin_took_over'
     )
+    console.log('[OC_AI] conversation check:', convRes)
     var conv = convRes.ok && convRes.data && convRes.data[0]
-    if (!conv || conv.admin_took_over) { hideTyping(); return }
+    if (!conv || conv.admin_took_over) {
+      console.warn('[OC_AI] admin_took_over=true hoặc không lấy được conversation — bỏ qua')
+      hideTyping(); return
+    }
 
     // 2. Fetch toàn bộ lịch sử hội thoại (kể cả starter message)
     var histRes = await _get(
       '/rest/v1/order_confirm_messages?conversation_id=eq.' + _conversationId +
       '&order=created_at.asc&limit=100&select=sender,content'
     )
+    console.log('[OC_AI] history fetch:', histRes.ok, '| count:', histRes.data && histRes.data.length)
     var history = (histRes.ok && histRes.data) || []
 
     // 3. Build order info từ cache _orderData
@@ -676,13 +689,23 @@
       '\n\n=== TOÀN BỘ LỊCH SỬ HỘI THOẠI (từ đầu đến hiện tại) ===\n' + historyText +
       '\n\nDựa trên lịch sử hội thoại trên, hãy trả lời tin nhắn cuối cùng của KHÁCH. ' +
       'Chỉ trả lời đúng trọng tâm. Không bịa thông tin. ' +
-      "Nếu không biết, nói 'Em sẽ hỏi lại shop và phản hồi anh/chị sớm nhé'."
+      "Nếu không biết, nói 'Em sẽ hỏi lại shop và phản hồi anh/chị sớm nhé'.\n\n" +
+      'ĐẶC BIỆT: Nếu hội thoại đã kết thúc tự nhiên (khách nói cảm ơn, tạm biệt, xác nhận không cần thêm gì, hoặc vấn đề đã được giải quyết hoàn toàn), ' +
+      'hãy gửi thêm 1 tin nhắn lời chào kết thúc lịch sự (ví dụ: "Dạ em xin phép kết thúc phiên chat tại đây, anh/chị có cần hỗ trợ thêm bất cứ lúc nào cứ liên hệ F-SPORT nhé 🙏"), ' +
+      'sau đó thêm [[END]] vào CUỐI CÙNG của tin nhắn đó. ' +
+      'Chỉ dùng [[END]] khi thực sự chắc chắn hội thoại đã xong — không dùng khi khách vẫn còn thắc mắc.'
 
     // 6. Gọi Gemini API trực tiếp
-    var apiKey = (_settings.ai_api_key || '').trim() ||
-      'AIzaSyCurFmPCmvp0fJ_qdtgozJw0G1Tl6i1seg'  // fallback key
+    var apiKey = (_settings.ai_api_key || '').trim()
+    console.log('[OC_AI] api_key present:', !!apiKey, '| key prefix:', apiKey.substring(0, 8) + '...')
+    if (!apiKey) {
+      console.warn('[OC_AI] Không có API key — vào ERP > Inbox > Settings > Gemini API Key')
+      hideTyping(); return
+    }
+    console.log('[OC_AI] systemText length:', systemText.length)
+    console.log('[OC_AI] calling Gemini...')
     var geminiUrl =
-      'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=' + apiKey
+      'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=' + apiKey
 
     var reqBody = JSON.stringify({
       system_instruction: {
@@ -693,7 +716,7 @@
         parts: [{ text: latestMessage }]
       }],
       generationConfig: {
-        maxOutputTokens: 300,
+        maxOutputTokens: 2000,
         temperature: 0.7
       }
     })
@@ -720,17 +743,35 @@
       gemRes.data.candidates[0].content.parts[0] &&
       gemRes.data.candidates[0].content.parts[0].text
 
-    if (!aiText || !aiText.trim()) {
-      console.warn('[OC_CHAT] AI returned empty response')
+    console.log('[OC_AI] Gemini response ok:', gemRes.ok, '| full response:', JSON.stringify(gemRes.data))
+    if (!gemRes.ok) {
+      console.error('[OC_AI] Gemini API error:', JSON.stringify(gemRes.data))
       hideTyping(); return
     }
+    if (!aiText || !aiText.trim()) {
+      console.warn('[OC_AI] AI trả về rỗng — full response:', gemRes.data)
+      hideTyping(); return
+    }
+    // Kiểm tra marker [[END]] — AI muốn kết thúc hội thoại
+    var shouldEnd = aiText.indexOf('[[END]]') >= 0
+    var cleanText = aiText.replace(/\[\[END\]\]/g, '').trim()
+
+    console.log('[OC_AI] AI reply:', cleanText, '| shouldEnd:', shouldEnd)
 
     // 8. POST AI reply vào Supabase — Realtime sub sẽ tự hiển thị + gọi hideTyping()
     await _post('/rest/v1/order_confirm_messages', {
       conversation_id: _conversationId,
       sender:          'shop',
-      content:         aiText.trim()
+      content:         cleanText
     })
+
+    // 9. Nếu AI đánh dấu kết thúc → đóng chatbox sau 4 giây (để khách đọc tin cuối)
+    if (shouldEnd && _conversationId) {
+      console.log('[OC_AI] AI kết thúc hội thoại — đóng sau 4 giây')
+      setTimeout(function() {
+        if (_isOpen) close()
+      }, 4000)
+    }
   }
 
   // ─── REALTIME ──────────────────────────────────────────────
