@@ -119,3 +119,62 @@ setInterval(() => {
 //sc.src = "/js/supportchat.js";
 //document.body.appendChild(sc);
 // ============================================
+
+// ================================================================
+// AI TƯ VẤN — Auto inject (không cần động vào từng trang product)
+// ================================================================
+;(function () {
+  var slug = window.location.pathname.replace(/^.*\//, '') // 'panther.html'
+  // Nếu không có slug .html, vẫn tiếp tục nếu #aic-container đã được đặt sẵn trong HTML
+  var hasPrePlaced = !!document.getElementById('aic-container')
+  if ((!slug || slug.indexOf('.html') < 0) && !hasPrePlaced) return
+  if (!slug) slug = 'index.html' // trường hợp truy cập qua /
+
+  function injectWidget () {
+    var existing = document.getElementById('aic-container')
+
+    if (!existing) {
+      // Tìm điểm chèn: SAU .product-hero chứa productdescription-placeholder
+      var descEl = document.querySelector('[data-src*="productdescription"]')
+      if (!descEl) return
+      var descWrapper = descEl.closest('.product-hero') || descEl.parentElement
+
+      var container = document.createElement('div')
+      container.id = 'aic-container'
+      container.style.margin = '16px 0'
+      // Chèn SAU descWrapper (không phải trước)
+      descWrapper.parentNode.insertBefore(container, descWrapper.nextSibling)
+    }
+
+    // Gọi init — dù tự tạo hay đã có sẵn trong HTML
+    if (window.AiChat) {
+      window.AiChat.init({ slug: slug, productGroup: '' })
+    }
+  }
+
+  function loadAiChat () {
+    if (window.AiChat) { injectWidget(); return }
+    var s = document.createElement('script')
+    s.src = '/js/ai-chat.js'
+    s.onload = function () { injectWidget() }
+    s.onerror = function () { console.warn('[AiChat] Không load được /js/ai-chat.js') }
+    document.head.appendChild(s)
+  }
+
+  // Poll chờ FSPORT_SUPABASE_URL được set bởi checkoutpopup.js (tối đa 6s)
+  var _attempts = 0
+  function waitForCredentials () {
+    if (window.FSPORT_SUPABASE_URL) {
+      loadAiChat()
+    } else if (_attempts < 30) {
+      _attempts++
+      setTimeout(waitForCredentials, 200)
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', waitForCredentials)
+  } else {
+    waitForCredentials()
+  }
+})()
