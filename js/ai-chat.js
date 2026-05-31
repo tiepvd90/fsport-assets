@@ -23,6 +23,7 @@
   var _history        = []
   var _isOpen         = false
   var _isThinking     = false
+  var _scrollY        = 0   // lưu vị trí cuộn khi mở panel
   var _slug           = ''
   var _group          = ''
   var _MAX            = 20
@@ -56,6 +57,15 @@
     return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')
   }
 
+  function _parseMarkdown(s) {
+    if (!s) return ''
+    var h = String(s)
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')
+    h = h.replace(/\*\*([^*\n]+)\*\*/g, '<strong>$1</strong>')
+    h = h.replace(/\n/g, '<br>')
+    return h
+  }
+
   // ─── PHONE DETECTION ────────────────────────────────────────
   function _extractPhone(text) {
     var matches = text.replace(/[\s\-\.]/g,'').match(PHONE_RE)
@@ -72,10 +82,11 @@
   }
 
   // ─── SESSION ────────────────────────────────────────────────
-  async function _initSession() {
-    var ls = _lsGet()
+  // Chỉ kiểm tra session cũ, KHÔNG tạo mới (tránh ghi DB khi chưa có tin)
+  async function _checkSession() {
+    var ls  = _lsGet()
     var key = (ls && ls.session_key) ? ls.session_key : _uuid()
-
+    if (!ls || !ls.session_key) _lsSet({ session_key: key })
     var res = await _get(
       '/rest/v1/ai_chat_sessions?session_key=eq.' + key +
       '&slug=eq.' + encodeURIComponent(_slug) +
@@ -83,22 +94,29 @@
       '&order=created_at.desc&limit=1'
     )
     var existing = res.ok && res.data && res.data[0]
-
     if (existing) {
       _session = existing
       _nonsenseStreak = existing.nonsense_count || 0
     } else {
-      var cr = await _post('/rest/v1/ai_chat_sessions', {
-        session_key: key, slug: _slug, product_group: _group,
-        message_count: 0, is_blocked: false, nonsense_count: 0, has_phone: false
-      })
-      _session = (cr.ok && cr.data && cr.data[0]) || {
-        id: null, session_key: key, message_count: 0,
-        is_blocked: false, nonsense_count: 0, has_phone: false
-      }
+      // Giữ session_key nhưng chưa tạo record
+      _session = { id: null, session_key: key, message_count: 0,
+        is_blocked: false, nonsense_count: 0, has_phone: false }
+    }
+    return _session
+  }
+
+  // Tạo session thực khi gửi tin đầu tiên
+  async function _initSession() {
+    var key = (_session && _session.session_key) || _lsGet()?.session_key || _uuid()
+    var cr  = await _post('/rest/v1/ai_chat_sessions', {
+      session_key: key, slug: _slug, product_group: _group,
+      message_count: 0, is_blocked: false, nonsense_count: 0, has_phone: false
+    })
+    var created = (cr.ok && cr.data && cr.data[0]) || null
+    if (created) {
+      _session = created
       _nonsenseStreak = 0
     }
-    _lsSet({ session_key: key })
     return _session
   }
 
@@ -238,6 +256,7 @@
     var max       = cfg.max_messages_per_session || 20
     var count     = (_session && _session.message_count) || 0
     var color     = _color()
+    var bgColor   = (cfg && cfg.chat_bg_color) || '#f8fafc'
     var questions = Array.isArray(cfg.suggested_questions) ? cfg.suggested_questions : []
 
     // Bar logo — full width, auto height (fill hết chiều ngang)
@@ -270,25 +289,39 @@
         '.aic-typing span{display:inline-block;width:6px;height:6px;border-radius:50%;background:#94a3b8;animation:aicDot 1.2s infinite}' +
         '.aic-typing span:nth-child(2){animation-delay:.2s}.aic-typing span:nth-child(3){animation-delay:.4s}' +
         '@keyframes aicDot{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-6px)}}' +
-        '#aic-chips::-webkit-scrollbar{display:none}' +
+        '#aic-chips::-webkit-scrollbar{height:5px}' +
+        '#aic-chips::-webkit-scrollbar-track{background:transparent}' +
+        '#aic-chips::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:3px}' +
         '@media(max-width:767px){' +
-          '#aic-panel{position:fixed!important;inset:auto 0 0 0!important;width:100%!important;' +
-          'max-width:100%!important;height:80vh!important;border-radius:16px 16px 0 0!important}' +
-          '#' + WIDGET_ID + ' .aic-bubble-ai,#' + WIDGET_ID + ' .aic-bubble-user{font-size:15px!important}' +
-          '#' + WIDGET_ID + ' #aic-input{font-size:15px!important}' +
+          '#aic-panel{position:fixed!important;bottom:0!important;left:0!important;right:0!important;' +
+          'width:100%!important;height:82vh!important;height:82dvh!important;' +
+          'border-radius:16px 16px 0 0!important;flex-direction:column!important;' +
+          'box-shadow:0 -4px 32px rgba(0,0,0,.22)!important;overflow:hidden!important}' +
+          '#aic-panel>div:first-child{flex-shrink:0!important;z-index:1!important}' +
+          '#' + WIDGET_ID + ' .aic-bubble-ai,#' + WIDGET_ID + ' .aic-bubble-user{font-size:16px!important}' +
+          '#' + WIDGET_ID + ' .aic-bubble-sys{font-size:14px!important}' +
+          '#' + WIDGET_ID + ' #aic-input{font-size:18px!important}' +
+          '#' + WIDGET_ID + ' #aic-bar-inner span{font-size:15px!important}' +
+          '#' + WIDGET_ID + ' .aic-chip{font-size:14px!important}' +
+          '#' + WIDGET_ID + ' #aic-counter{font-size:12px!important}' +
+          '#' + WIDGET_ID + ' button,#' + WIDGET_ID + ' input{touch-action:manipulation!important}' +
         '}' +
         '@media(min-width:768px){' +
-          '#aic-panel{position:relative!important;width:100%!important;border-radius:12px!important;' +
-          'height:500px!important;box-shadow:0 4px 24px rgba(0,0,0,.12)!important}' +
-          '#' + WIDGET_ID + ' .aic-bubble-ai,#' + WIDGET_ID + ' .aic-bubble-user{font-size:21px!important;max-width:80%}' +
-          '#' + WIDGET_ID + ' #aic-input{font-size:21px!important}' +
-          '#' + WIDGET_ID + ' #aic-bar-inner span{font-size:19px!important}' +
-          '#' + WIDGET_ID + ' .aic-chip{font-size:18px!important;padding:7px 16px!important}' +
+          '#aic-panel{position:fixed!important;bottom:20px!important;left:50%!important;' +
+          'transform:translateX(-50%)!important;margin-left:0!important;' +
+          'width:min(860px,calc(100vw - 40px))!important;border-radius:16px!important;' +
+          'height:min(780px,calc(100vh - 40px))!important;box-shadow:0 8px 40px rgba(0,0,0,.22)!important}' +
+          '#' + WIDGET_ID + ' .aic-bubble-ai,#' + WIDGET_ID + ' .aic-bubble-user{font-size:28px!important;max-width:80%;word-break:break-word!important}' +
+          '#' + WIDGET_ID + ' .aic-bubble-sys{font-size:24px!important}' +
+          '#' + WIDGET_ID + ' #aic-input{font-size:32px!important}' +
+          '#' + WIDGET_ID + ' #aic-bar-inner span{font-size:26px!important}' +
+          '#' + WIDGET_ID + ' .aic-chip{font-size:24px!important;padding:6px 14px!important}' +
+          '#' + WIDGET_ID + ' #aic-counter{font-size:20px!important}' +
         '}' +
       '</style>' +
 
-      // BAR
-      '<div id="aic-bar">' +
+      // BAR — bọc ngoài bằng màu nền setting
+      '<div id="aic-bar" style="background:' + esc(bgColor) + ';padding:12px;border-radius:16px">' +
         // Logo strip — full width, colored background
         '<div id="aic-bar-logo" style="background:' + esc(color) + ';border-radius:12px 12px 0 0;padding:8px 14px;cursor:pointer;overflow:hidden">' +
           logoHTML +
@@ -301,7 +334,7 @@
             '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>' +
           '</div>' +
         '</div>' +
-        (chipsHTML ? '<div id="aic-chips" style="display:flex;gap:6px;overflow-x:auto;padding:8px 2px 2px;-webkit-overflow-scrolling:touch;scrollbar-width:none">' + chipsHTML + '</div>' : '') +
+        (chipsHTML ? '<div id="aic-chips" style="display:flex;gap:6px;overflow-x:auto;padding:8px 8px 10px;-webkit-overflow-scrolling:touch;scrollbar-width:thin;scrollbar-color:#cbd5e1 transparent">' + chipsHTML + '</div>' : '') +
       '</div>' +
 
       // BACKDROP
@@ -320,13 +353,16 @@
         '</div>' +
 
         // Messages
-        '<div id="aic-messages" style="flex:1;overflow-y:auto;padding:14px;background:#f8fafc;display:flex;flex-direction:column;gap:10px"></div>' +
+        '<div id="aic-messages" style="flex:1;min-height:0;overflow-y:auto;padding:14px;background:#fff;display:flex;flex-direction:column;gap:10px"></div>' +
+
+        // Chips gợi ý trong panel
+        (chipsHTML ? '<div id="aic-panel-chips" style="flex-shrink:0;display:flex;gap:6px;overflow-x:auto;padding:8px 12px;border-top:1px solid #f1f5f9;background:#fff;-webkit-overflow-scrolling:touch;scrollbar-width:thin;scrollbar-color:#cbd5e1 transparent">' + chipsHTML + '</div>' : '') +
 
         // Input area
         '<div style="flex-shrink:0;background:#fff;border-top:1px solid #e2e8f0">' +
           '<div style="display:flex;align-items:center;gap:8px;padding:10px 12px">' +
             '<input id="aic-input" type="text" placeholder="' + (isBlocked ? 'Phiên chat bị chặn' : 'Nhập câu hỏi...') + '" ' + inputDisabled + ' style="' +
-              'flex:1;border:1px solid #e2e8f0;border-radius:22px;padding:9px 14px;font-size:14px;' +
+              'flex:1;border:1px solid #e2e8f0;border-radius:22px;padding:9px 14px;font-size:16px;' +
               'outline:none;background:#f8fafc;color:#1e293b' +
             '" maxlength="500">' +
             '<button id="aic-send" class="aic-send-btn" ' + (inputDisabled ? 'disabled' : '') + ' style="' +
@@ -336,7 +372,7 @@
               '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>' +
             '</button>' +
           '</div>' +
-          '<div style="padding:0 14px 8px;display:flex;justify-content:space-between;align-items:center">' +
+          '<div style="padding:0 14px 14px;display:flex;justify-content:space-between;align-items:center">' +
             '<span id="aic-counter" style="font-size:10px;color:#94a3b8">' + count + '/' + max + '</span>' +
           '</div>' +
         '</div>' +
@@ -356,8 +392,8 @@
         var txt = text.slice(lastIdx, m.index).trim()
         if (txt) {
           var span = document.createElement('p')
-          span.style.cssText = 'margin:0 0 6px;white-space:pre-wrap'
-          span.textContent = txt
+          span.style.cssText = 'margin:0 0 6px'
+          span.innerHTML = _parseMarkdown(txt)
           el.appendChild(span)
         }
       }
@@ -378,8 +414,8 @@
       var rem = text.slice(lastIdx).trim()
       if (rem) {
         var span2 = document.createElement('p')
-        span2.style.cssText = 'margin:0;white-space:pre-wrap'
-        span2.textContent = rem
+        span2.style.cssText = 'margin:0'
+        span2.innerHTML = _parseMarkdown(rem)
         el.appendChild(span2)
       }
     }
@@ -394,8 +430,12 @@
     var cls = sender === 'user' ? 'aic-bubble-user' : sender === 'system' ? 'aic-bubble-sys' : 'aic-bubble-ai'
     el.className = cls
     el.style.cssText = 'padding:9px 13px;font-size:14px;line-height:1.55;word-break:break-word'
-    if (sender === 'ai' && IMG_URL_RE.test(text)) {
-      _renderBubbleContent(el, text)
+    if (sender === 'ai') {
+      if (IMG_URL_RE.test(text)) {
+        _renderBubbleContent(el, text)
+      } else {
+        el.innerHTML = _parseMarkdown(text)
+      }
     } else {
       el.textContent = text
     }
@@ -430,7 +470,6 @@
     if (!list) return
     list.innerHTML = ''
     if (!_history.length) {
-      _appendBubble('ai', 'Xin chào! Mình có thể tư vấn cho bạn về ' + _group + '. Bạn cần biết gì ạ? 😊')
       return
     }
     _history.forEach(function(m) { _appendBubble(m.sender, m.content) })
@@ -439,28 +478,56 @@
   function _openPanel(prefillText) {
     if (_isOpen) return
     _isOpen = true
-    var bar      = document.getElementById('aic-bar')
-    var panel    = document.getElementById('aic-panel')
-    var backdrop = document.getElementById('aic-backdrop')
-    var isMobile = window.innerWidth < 768
-    if (bar)     bar.style.display = 'none'
-    if (panel)   panel.style.display = 'flex'
-    if (isMobile && backdrop) backdrop.style.display = 'block'
+    var container = document.getElementById('aic-container')
+    var bar       = document.getElementById('aic-bar')
+    var panel     = document.getElementById('aic-panel')
+    var backdrop  = document.getElementById('aic-backdrop')
+    // Đưa container ra khỏi page flow để bar không còn chiếm chỗ
+    if (container) { container.dataset.origPos = container.style.position || ''; container.style.position = 'fixed'; container.style.inset = '0'; container.style.zIndex = '9990'; container.style.pointerEvents = 'none'; container.style.maxWidth = 'none'; container.style.padding = '0'; container.style.margin = '0' }
+    var sf = document.querySelector('.sticky-footer'); if (sf) { sf.dataset.origDisplay = sf.style.display || ''; sf.style.display = 'none' }
+    if (bar)      { bar.style.display = 'none' }
+    if (panel)    { panel.style.display = 'flex'; panel.style.pointerEvents = 'auto' }
+    if (backdrop) { backdrop.style.display = 'block'; backdrop.style.pointerEvents = 'auto' }
+    // Lock cuộn — iOS cần position:fixed trick
+    _scrollY = window.scrollY || window.pageYOffset
+    document.body.style.overflow = 'hidden'
+    document.body.style.position = 'fixed'
+    document.body.style.top      = '-' + _scrollY + 'px'
+    document.body.style.width    = '100%'
     _renderHistory()
     _updateCounter()
     if (_session && _session.is_blocked) return
-    setTimeout(function() {
-      var inp = document.getElementById('aic-input')
-      if (inp) { inp.focus(); if (prefillText) inp.value = prefillText }
-    }, 150)
+    // Không autofocus trên mobile để tránh iOS zoom vào input
+    if (window.innerWidth >= 768) {
+      setTimeout(function() {
+        var inp = document.getElementById('aic-input')
+        if (inp) { inp.focus(); if (prefillText) inp.value = prefillText }
+      }, 150)
+    } else if (prefillText) {
+      setTimeout(function() {
+        var inp = document.getElementById('aic-input')
+        if (inp) inp.value = prefillText
+      }, 150)
+    }
   }
 
   function _closePanel() {
     _isOpen = false
-    var bar = document.getElementById('aic-bar'), panel = document.getElementById('aic-panel')
-    var backdrop = document.getElementById('aic-backdrop')
-    if (bar)     bar.style.display = ''
-    if (panel)   panel.style.display = 'none'
+    // Restore cuộn — khôi phục đúng vị trí
+    document.body.style.overflow = ''
+    document.body.style.position = ''
+    document.body.style.top      = ''
+    document.body.style.width    = ''
+    window.scrollTo(0, _scrollY)
+    var container = document.getElementById('aic-container')
+    var bar       = document.getElementById('aic-bar')
+    var panel     = document.getElementById('aic-panel')
+    var backdrop  = document.getElementById('aic-backdrop')
+    // Trả container về page flow
+    if (container) { container.style.position = container.dataset.origPos || ''; container.style.inset = ''; container.style.zIndex = ''; container.style.pointerEvents = ''; container.style.maxWidth = ''; container.style.padding = ''; container.style.margin = '' }
+    var sf = document.querySelector('.sticky-footer'); if (sf) sf.style.display = sf.dataset.origDisplay || ''
+    if (bar)      bar.style.display = ''
+    if (panel)    panel.style.display = 'none'
     if (backdrop) backdrop.style.display = 'none'
   }
 
@@ -474,6 +541,14 @@
     var text = (inp.value || '').trim()
     if (!text) return
 
+    // Tạo session DB nếu chưa có (lần gửi đầu tiên)
+    if (!_session || !_session.id) {
+      await _initSession()
+      if (!_session || !_session.id) {
+        _isThinking = false
+        return
+      }
+    }
     var max   = (_cfg && _cfg.max_messages_per_session) || _MAX
     var count = (_session && _session.message_count) || 0
 
@@ -616,7 +691,7 @@
     if (!_group && _slug) _group = _slug.replace(/\.html$/i, '')
     _MAX = _cfg.max_messages_per_session || 20
 
-    var results = await Promise.all([_initSession(), _fetchProducts()])
+    var results = await Promise.all([_checkSession(), _fetchProducts()])
     _session = results[0]
 
     await _loadHistory()
