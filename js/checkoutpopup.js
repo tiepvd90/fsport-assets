@@ -341,6 +341,17 @@ async function submitOrder() {
         });
         console.log("✅ Purchase tracked");
       }
+      // Analytics nội bộ
+      if (typeof window.fsport !== 'undefined') {
+        window.fsport.track('purchase', {
+          order_id:   _orderId,
+          order_code: _orderCode,
+          total:      orderData.total,
+          products:   (orderData.items || []).map(function(i) {
+            return { id: i.id, name: i["Tên"] || i.name || '', qty: i.quantity || 1, price: i["Giá"] || 0 }
+          })
+        })
+      }
       window.cart = [];
       saveCart();
       hideCheckoutPopup();

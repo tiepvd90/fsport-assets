@@ -50,6 +50,9 @@
   }
 
   function openPopup(id) {
+    if (typeof window.fsport !== 'undefined') {
+      window.fsport.track('review_video', { video_id: id, product_id: window.productPage || null })
+    }
     const popup = document.getElementById("videoPopup");
     const iframe = document.getElementById("popupIframe");
 

@@ -60,6 +60,9 @@
 
     // Lightbox hiển thị ảnh lớn + tên + review
     function openLightbox(review) {
+        if (typeof window.fsport !== 'undefined') {
+            window.fsport.track('club_post_view', { post_id: review.id, post_title: review.name })
+        }
         CONFIG.currentReview = review;
         const lightbox = document.getElementById('lightboxFsport');
         const img = document.getElementById('lightboxImg');

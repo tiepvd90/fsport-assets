@@ -305,6 +305,15 @@ function bindAddToCartButton() {
 // END Gửi log về Make.com để kiểm tra sau
           
         }
+        // Analytics nội bộ
+        if (typeof window.fsport !== 'undefined') {
+          window.fsport.track('add_to_cart', {
+            product_id:   window.productPage || null,
+            variant:      phanLoaiText,
+            quantity:     quantity,
+            price:        product.Giá || 0
+          })
+        }
         toggleCartPopup(false);
         if (typeof showCheckoutPopup === "function") showCheckoutPopup();
       }

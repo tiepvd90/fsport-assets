@@ -74,6 +74,9 @@ function renderProductVideos(videoList) {
 }
 
 function openProductVideoPopup(id) {
+  if (typeof window.fsport !== 'undefined') {
+    window.fsport.track('review_video', { video_id: id, product_id: window.productPage || null })
+  }
   const popup = document.getElementById("videoPopup");
   const iframe = document.getElementById("popupIframe");
   iframe.src = `https://www.youtube.com/embed/${id}?autoplay=1&rel=0&playsinline=1`;

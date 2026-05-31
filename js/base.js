@@ -114,6 +114,30 @@ setInterval(() => {
   document.head.appendChild(s);
 })();
 
+// ✅ FSPORT ANALYTICS — load sau khi credentials sẵn sàng
+;(function loadAnalytics() {
+  if (window.__analyticsInjected) return
+  window.__analyticsInjected = true
+
+  function inject() {
+    var s = document.createElement('script')
+    s.src = '/js/analytics.js'
+    s.async = true
+    s.onerror = function() { console.warn('[Analytics] Không load được /js/analytics.js') }
+    document.head.appendChild(s)
+  }
+
+  // Đợi FSPORT_SUPABASE_URL (cùng pattern với AI chat)
+  var _att = 0
+  function wait() {
+    if (window.FSPORT_SUPABASE_URL) { inject() }
+    else if (_att < 30) { _att++; setTimeout(wait, 200) }
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', wait)
+  else wait()
+})()
+
 // ✅ Gọi supportchat nếu có
 //const sc = document.createElement("script");
 //sc.src = "/js/supportchat.js";

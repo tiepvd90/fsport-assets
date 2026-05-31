@@ -453,6 +453,15 @@ const cartItem = {
 
         }).catch((err) => console.warn("⚠️ Không thể gửi Make:", err));
 
+        if (typeof window.fsport !== 'undefined') {
+          window.fsport.track('add_to_cart', {
+            product_id: window.productPage || null,
+            product_name: window.productName || null,
+            variant: phanLoaiText,
+            quantity: quantity,
+            price: product.Giá || 0
+          })
+        }
         toggleCartPopup(false);
         if (typeof window.showCheckoutPopup === "function") {
           window.showCheckoutPopup();

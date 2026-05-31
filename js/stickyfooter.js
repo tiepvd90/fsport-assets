@@ -46,6 +46,14 @@ setTimeout(() => {
     });
   }
 
+  // ✅ Analytics nội bộ
+  if (typeof window.fsport !== 'undefined') {
+    window.fsport.track('wishlist_add', {
+      product_id: window.productPage || loai,
+      product_name: window.productName || null
+    })
+  }
+
   tryOpenCartPopup();
 });
   } else {

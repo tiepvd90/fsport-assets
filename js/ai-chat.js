@@ -108,8 +108,10 @@
   // Tạo session thực khi gửi tin đầu tiên
   async function _initSession() {
     var key = (_session && _session.session_key) || _lsGet()?.session_key || _uuid()
+    var uid = (typeof window.fsport !== 'undefined') ? window.fsport.getUserId() : null
     var cr  = await _post('/rest/v1/ai_chat_sessions', {
       session_key: key, slug: _slug, product_group: _group,
+      user_id: uid,
       message_count: 0, is_blocked: false, nonsense_count: 0, has_phone: false
     })
     var created = (cr.ok && cr.data && cr.data[0]) || null
@@ -658,6 +660,15 @@
 
     inp.value = ''
     _isThinking = true
+
+    // Analytics nội bộ
+    if (typeof window.fsport !== 'undefined') {
+      window.fsport.track('ai_chat_message', {
+        question: text,
+        product_id: _group || _slug || null,
+        session_id: _session ? _session.id : null
+      })
+    }
 
     // Hiện tin khách
     _appendBubble('user', text)
