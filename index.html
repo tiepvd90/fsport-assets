@@ -43,6 +43,16 @@
       font-family: 'Be Vietnam Pro', sans-serif;
     }
 
+    /* ── Chuẩn chung: tất cả section canh giữa, max 1200px, padding 16px 2 bên ── */
+    .idx-section {
+      max-width: 1200px;
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: 16px;
+      padding-right: 16px;
+      box-sizing: border-box;
+    }
+
     .cover-img {
       display: block;
       width: 100%;
@@ -58,10 +68,8 @@
       }
     }
 
-    .gallery-wrapper {
-      margin: 50px 0;
-    }
-    /* Thu hẹp khoảng cách dưới collection trên trang index */
+    #aic-container  { margin-top: 16px; margin-bottom: 16px; }
+    .gallery-wrapper { margin-top: 50px; margin-bottom: 50px; }
   </style>
 </head>
 
@@ -91,12 +99,12 @@
   <script src="/js/collection-grid.js" defer></script>
 
   <!-- ✅ AI TƯ VẤN -->
-  <div id="aic-container" style="margin:16px 0"></div>
+  <div id="aic-container" class="idx-section"></div>
 
   <!-- ========================================================= -->
   <!--  📸 PHOTO GALLERY (FSPORT CLUB)                           -->
   <!-- ========================================================= -->
-  <div id="photo-gallery-container" class="gallery-wrapper"></div>
+  <div id="photo-gallery-container" class="gallery-wrapper idx-section"></div>
 
   <!-- ========================================================= -->
   <!--  CHECKOUT POPUP                                           -->
@@ -116,7 +124,7 @@
   <!-- ========================================================= -->
   <!--  ℹ️  ABOUT / ACCORDION SECTION                            -->
   <!-- ========================================================= -->
-  <div id="about-placeholder"></div>
+  <div id="about-placeholder" class="idx-section"></div>
   <script src="/js/about.js"></script>
 
   <!-- BASE JS & PHOTO GALLERY JS (cuối body) -->
