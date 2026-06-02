@@ -1,15 +1,15 @@
 <!-- ✅ Gọi CSS & JS chung -->
-<link rel="stylesheet" href="https://friendly-kitten-d760ff.netlify.app/css/base.css">
-<link rel="stylesheet" href="https://friendly-kitten-d760ff.netlify.app/css/stickyfooter.css">
+<link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/css/stickyfooter.css">
 
-<script src="https://friendly-kitten-d760ff.netlify.app/js/base.js"></script>
-<script src="https://friendly-kitten-d760ff.netlify.app/js/stickyfooter.js"></script>
-<script src="https://friendly-kitten-d760ff.netlify.app/js/tracking.js"></script>
+<script src="/js/base.js"></script>
+<script src="/js/stickyfooter.js"></script>
+<script src="/js/tracking.js"></script>
 
 <!-- ✅ Gọi sticky footer (nội dung HTML sẽ được nhúng động) -->
 <div id="footer-container"></div>
 <script>
-  fetch("https://friendly-kitten-d760ff.netlify.app/html/sticky-footer.html")
+  fetch("/html/stickyfooter.html")
     .then(res => res.text())
     .then(html => {
       document.getElementById("footer-container").innerHTML = html;

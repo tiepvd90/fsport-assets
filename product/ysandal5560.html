@@ -6,8 +6,8 @@
   <title>Dép Chạy Bộ Ysandal Chính Hãng B&M Đài Loan Mã BCU5560 Quai Hậu Siêu Nhẹ</title>
   
   <!-- ✅ CSS -->
-  <link rel="stylesheet" href="https://friendly-kitten-d760ff.netlify.app/css/cartpopup.css" />
-  <link rel="stylesheet" href="https://friendly-kitten-d760ff.netlify.app/css/checkoutpopup.css" />
+  <link rel="stylesheet" href="../css/cartpopup.css" />
+  <link rel="stylesheet" href="../css/checkoutpopup.css" />
   <link rel="stylesheet" href="../css/slideshow.css" />
 <link rel="icon" type="image/png" href="/favicon.png" />
   <!-- ✅ JS định nghĩa -->
@@ -15,7 +15,7 @@
   window.loai = "ysandal";
   window.productCategory = "ysandal";     // Nhóm sản phẩm
   window.productPage = "ysandal5560";      // Trang cụ thể
-  window.cartpopupType = "cartpopup-2p";
+  window.cartpopupType = "cartpopup";
 </script>
   <style>
     body {
@@ -69,7 +69,7 @@
 </head>
 <body>
   <!-- ✅ Tracking trực tiếp -->
-<script src="https://friendly-kitten-d760ff.netlify.app/js/tracking.js"></script>
+<script src="../js/tracking.js"></script>
 <script>
   trackBothPixels("ViewContent", {
     content_id: window.productPage || "unknown",
@@ -252,9 +252,9 @@
       await injectHTML("/html/checkoutpopup.html", "checkoutPopup-placeholder");
       await injectHTML("/html/stickyfooter.html", "sticky-footer-placeholder");
 
-      await loadScript("https://friendly-kitten-d760ff.netlify.app/js/voucherpopup.js");
-      await loadScript("https://friendly-kitten-d760ff.netlify.app/js/cartpopup-2p.js");
-      await loadScript("https://friendly-kitten-d760ff.netlify.app/js/checkoutpopup.js");
+      await loadScript("../js/voucherpopup.js");
+      await loadScript("/js/cartpopup.js");
+      await loadScript("../js/checkoutpopup.js");
 
       setTimeout(async () => {
         const map = await fetchVoucherMap();
@@ -287,7 +287,7 @@
   </script>
 
   <!-- ✅ Load FreeFlow -->
-  <script src="https://friendly-kitten-d760ff.netlify.app/js/freeflow.js"></script>
+  <script src="../js/freeflow.js"></script>
   <script>
     fetch("/html/freeflow.html")
       .then(res => res.text())

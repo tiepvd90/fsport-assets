@@ -216,7 +216,7 @@ function saveCart() {
 // 🔹 PHÍ VẬN CHUYỂN
 // ------------------------
 function loadShippingFee() {
-  fetch("https://friendly-kitten-d760ff.netlify.app/json/shippingfee.json")
+  fetch("/json/shippingfee.json")
     .then(res => res.json())
     .then(data => {
       const fees = window.cart.map(i => {

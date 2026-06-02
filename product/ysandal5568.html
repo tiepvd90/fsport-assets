@@ -7,8 +7,8 @@
 
   <!-- ✅ CSS -->
   <link rel="stylesheet" href="/css/base.css" />
-  <link rel="stylesheet" href="https://friendly-kitten-d760ff.netlify.app/css/cartpopup.css" />
-  <link rel="stylesheet" href="https://friendly-kitten-d760ff.netlify.app/css/checkoutpopup.css" />
+  <link rel="stylesheet" href="../css/cartpopup.css" />
+  <link rel="stylesheet" href="../css/checkoutpopup.css" />
   <link rel="stylesheet" href="/css/productdescription.css" />
   <link rel="stylesheet" href="../css/slideshow.css" />
   <link rel="stylesheet" href="/css/collection-slider.css" />
@@ -19,7 +19,7 @@
     window.loai = "ysandal";
     window.productCategory = "ysandal";
     window.productPage = "ysandal5568";
-    window.cartpopupType = "cartpopup-2p";
+    window.cartpopupType = "cartpopup";
     window.shopeeLink = "https://s.shopee.vn/5VQ63Pip4e"; // ✅ Link Shopee có Aff
   </script>
 
@@ -45,7 +45,7 @@
 
 <body>
   <!-- ✅ Tracking -->
-  <script src="https://friendly-kitten-d760ff.netlify.app/js/tracking.js"></script>
+  <script src="../js/tracking.js"></script>
   <script>
     trackBothPixels("ViewContent", {
       content_id: window.productPage,
@@ -206,9 +206,9 @@
         await injectHTML("/html/cartpopup.html", "cartPopup-placeholder");
         await injectHTML("/html/checkoutpopup.html", "checkoutPopup-placeholder");
         await injectHTML("/html/stickyfooter.html", "sticky-footer-placeholder");
-        await loadScript("https://friendly-kitten-d760ff.netlify.app/js/voucherpopup.js");
-        await loadScript("https://friendly-kitten-d760ff.netlify.app/js/cartpopup-2p.js");
-        await loadScript("https://friendly-kitten-d760ff.netlify.app/js/checkoutpopup.js");
+        await loadScript("../js/voucherpopup.js");
+        await loadScript("/js/cartpopup.js");
+        await loadScript("../js/checkoutpopup.js");
         setTimeout(async () => {
           const map = await fetchVoucherMap();
           window.__vouchersRaw = map[window.loai] || {};

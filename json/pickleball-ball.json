@@ -1,4 +1,50 @@
 {
+  "cartSchema": "fsport-product-v1",
+  "schemaVersion": 1,
+  "category": "pickleball",
+  "mainImageKey": "Màu Sắc",
+  "base": {
+    "id": "3bongpro",
+    "category": "pickleball",
+    "price": 87000,
+    "originalPrice": 110000
+  },
+  "attributes": [
+    {
+      "key": "Màu Sắc",
+      "label": "Màu Sắc",
+      "display": "thumbnail",
+      "values": [
+        {
+          "text": "Combo 3 Bóng Pro",
+          "image": "/assets/images/gallery/pickleball/pickleball-ball/3.webp",
+          "price": 87000,
+          "originalPrice": 110000
+        },
+        {
+          "text": "Combo 6 Bóng Pro",
+          "image": "/assets/images/gallery/pickleball/pickleball-ball/4.webp",
+          "price": 156000,
+          "originalPrice": 200000
+        },
+        {
+          "text": "Combo 9 Bóng Pro",
+          "image": "/assets/images/gallery/pickleball/pickleball-ball/2.webp",
+          "price": 210000,
+          "originalPrice": 280000
+        },
+        {
+          "text": "Combo 12 Bóng Pro",
+          "image": "/assets/images/gallery/pickleball/pickleball-ball/2.webp",
+          "price": 252000,
+          "originalPrice": 280000
+        }
+      ]
+    }
+  ],
+  "sku": {
+    "mode": "variant-match"
+  },
   "thuộc_tính": [
     {
       "key": "Màu Sắc",

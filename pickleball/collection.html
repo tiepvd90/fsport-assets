@@ -340,7 +340,7 @@
 
     async function setupPage() {
       await injectHTML("/html/checkoutpopup.html", "checkoutPopup-placeholder");
-      await loadScript("https://friendly-kitten-d760ff.netlify.app/js/checkoutpopup.js");
+      await loadScript("../js/checkoutpopup.js");
     }
 
     function loadScript(src) {
@@ -355,7 +355,7 @@
     setupPage();
   </script>
 
-  <script src="https://friendly-kitten-d760ff.netlify.app/js/tracking.js"></script>
+  <script src="../js/tracking.js"></script>
   <div id="base-placeholder"></div>
   <script>
     fetch("/html/base.html")

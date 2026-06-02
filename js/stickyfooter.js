@@ -61,7 +61,7 @@ setTimeout(() => {
   }
 
   // ✅ CẬP NHẬT LINK GỌI/CHAT TỪ settings.json
-  fetch("https://friendly-kitten-d760ff.netlify.app/json/settings.json")
+  fetch("/json/settings.json")
     .then(res => res.json())
     .then(data => {
       if (callLink && data.tel) callLink.href = "tel:" + data.tel;

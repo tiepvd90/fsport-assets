@@ -6,12 +6,12 @@
   <title>Fun-Sport</title>
 
   <!-- ✅ CSS -->
-  <link rel="stylesheet" href="https://friendly-kitten-d760ff.netlify.app/css/base.css">
-  <link rel="stylesheet" href="https://friendly-kitten-d760ff.netlify.app/css/stickyfooter.css">
-  <link rel="stylesheet" href="https://friendly-kitten-d760ff.netlify.app/css/cartpopup.css">
-  <link rel="stylesheet" href="https://friendly-kitten-d760ff.netlify.app/css/voucherpopup.css">
-  <link rel="stylesheet" href="https://friendly-kitten-d760ff.netlify.app/css/checkoutpopup.css">
-  <link rel="stylesheet" href="https://friendly-kitten-d760ff.netlify.app/css/fakenotify.css">
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/stickyfooter.css">
+  <link rel="stylesheet" href="/css/cartpopup.css">
+  <link rel="stylesheet" href="/css/voucherpopup.css">
+  <link rel="stylesheet" href="/css/checkoutpopup.css">
+  <link rel="stylesheet" href="/css/fakenotify.css">
 
   <!-- ✅ Favicon -->
   <link rel="icon" type="image/png" href="/favicon.png" />
@@ -32,13 +32,13 @@
   <div id="fakeNotification" class="fake-notify"></div>
 
   <!-- ✅ JS -->
-  <script src="https://friendly-kitten-d760ff.netlify.app/js/base.js"></script>
-  <script src="https://friendly-kitten-d760ff.netlify.app/js/stickyfooter.js"></script>
-  <script src="https://friendly-kitten-d760ff.netlify.app/js/cartpopup.js"></script>
-  <script src="https://friendly-kitten-d760ff.netlify.app/js/checkoutpopup.js"></script>
-  <script src="https://friendly-kitten-d760ff.netlify.app/js/voucherpopup.js"></script>
-  <script src="https://friendly-kitten-d760ff.netlify.app/js/fakenotify.js" defer></script>
-  <script src="https://friendly-kitten-d760ff.netlify.app/js/collectionIcon.js" defer></script>
+  <script src="/js/base.js"></script>
+  <script src="/js/stickyfooter.js"></script>
+  <script src="/js/cartpopup.js"></script>
+  <script src="/js/checkoutpopup.js"></script>
+  <script src="/js/voucherpopup.js"></script>
+  <script src="/js/fakenotify.js" defer></script>
+  <script src="/js/collectionIcon.js" defer></script>
   <script>console.log("✅ Base.html scripts loaded");</script>
 
   <!-- ✅ Biến toàn cục -->
@@ -47,13 +47,13 @@
     window.currentVoucherValue = 0;
 
     // 🚚 Tải bảng phí vận chuyển
-    fetch("https://friendly-kitten-d760ff.netlify.app/json/shippingfee.json")
+    fetch("/json/shippingfee.json")
       .then(res => res.json())
       .then(data => window.shippingFeeMap = data)
       .catch(err => console.warn("Không thể load shippingfee.json", err));
 
     // ⚙️ Tải config hệ thống
-    fetch("https://friendly-kitten-d760ff.netlify.app/json/settings.json")
+    fetch("/json/settings.json")
       .then(res => res.json())
       .then(data => window.globalSettings = data)
       .catch(err => console.warn("Không thể tải settings.json", err));

@@ -7,8 +7,8 @@
 
   <!-- ✅ CSS -->
   <link rel="stylesheet" href="/css/base.css" />
-  <link rel="stylesheet" href="https://friendly-kitten-d760ff.netlify.app/css/cartpopup.css" />
-  <link rel="stylesheet" href="https://friendly-kitten-d760ff.netlify.app/css/checkoutpopup.css" />
+  <link rel="stylesheet" href="../css/cartpopup.css" />
+  <link rel="stylesheet" href="../css/checkoutpopup.css" />
   <link rel="stylesheet" href="/css/productdescription.css" />
   <link rel="stylesheet" href="../css/slideshow.css" />
   <link rel="icon" type="image/png" href="/favicon.png" />
@@ -165,9 +165,9 @@
       await injectHTML("/html/checkoutpopup.html", "checkoutPopup-placeholder");
       await injectHTML("/html/stickyfooter.html", "sticky-footer-placeholder");
 
-      await loadScript("https://friendly-kitten-d760ff.netlify.app/js/voucherpopup.js");
-      await loadScript("https://friendly-kitten-d760ff.netlify.app/js/cartpopup-3p.js");
-      await loadScript("https://friendly-kitten-d760ff.netlify.app/js/checkoutpopup.js");
+      await loadScript("../js/voucherpopup.js");
+      await loadScript("/js/cartpopup.js");
+      await loadScript("../js/checkoutpopup.js");
 
       setTimeout(async () => {
         const map = await fetchVoucherMap();
@@ -181,7 +181,7 @@
   </script>
 
   <!-- ✅ Tracking -->
-  <script src="https://friendly-kitten-d760ff.netlify.app/js/tracking.js"></script>
+  <script src="../js/tracking.js"></script>
   <div id="base-placeholder"></div>
   <script>
     fetch("/html/base.html")

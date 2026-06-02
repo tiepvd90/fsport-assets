@@ -1,4 +1,50 @@
 {
+  "cartSchema": "fsport-product-v1",
+  "schemaVersion": 1,
+  "category": "pickleball",
+  "mainImageKey": "Màu Sắc",
+  "base": {
+    "id": "bag-mauhong",
+    "category": "pickleball",
+    "price": 269000,
+    "originalPrice": 330000
+  },
+  "attributes": [
+    {
+      "key": "Màu Sắc",
+      "label": "Màu Sắc",
+      "display": "thumbnail",
+      "values": [
+        {
+          "text": "Màu Hồng",
+          "image": "/assets/images/thumb/pickleball/bag/hong.webp",
+          "price": 269000,
+          "originalPrice": 330000
+        },
+        {
+          "text": "Màu Ghi Xám",
+          "image": "/assets/images/thumb/pickleball/bag/xam.webp",
+          "price": 269000,
+          "originalPrice": 330000
+        },
+        {
+          "text": "Màu Đen Quai Xám",
+          "image": "/assets/images/thumb/pickleball/bag/den.webp",
+          "price": 269000,
+          "originalPrice": 330000
+        },
+        {
+          "text": "Màu Đen Quai Vàng",
+          "image": "/assets/images/thumb/pickleball/bag/denquaivang.webp",
+          "price": 269000,
+          "originalPrice": 330000
+        }
+      ]
+    }
+  ],
+  "sku": {
+    "mode": "variant-match"
+  },
   "thuộc_tính": [
     {
       "key": "Màu Sắc",
@@ -33,9 +79,25 @@
     }
   ],
   "biến_thể": [
-    { "Màu Sắc": "Màu Hồng", "id": "bag-mauhong", "category": "pickleball" },
-    { "Màu Sắc": "Màu Ghi Xám", "id": "bag-mauxam", "category": "pickleball" },
-    { "Màu Sắc": "Màu Đen Quai Xám", "id": "bag-maudenquaixam", "category": "pickleball" },
-    { "Màu Sắc": "Màu Đen Quai Vàng", "id": "bag-maudenquaivang", "category": "pickleball" }
+    {
+      "Màu Sắc": "Màu Hồng",
+      "id": "bag-mauhong",
+      "category": "pickleball"
+    },
+    {
+      "Màu Sắc": "Màu Ghi Xám",
+      "id": "bag-mauxam",
+      "category": "pickleball"
+    },
+    {
+      "Màu Sắc": "Màu Đen Quai Xám",
+      "id": "bag-maudenquaixam",
+      "category": "pickleball"
+    },
+    {
+      "Màu Sắc": "Màu Đen Quai Vàng",
+      "id": "bag-maudenquaivang",
+      "category": "pickleball"
+    }
   ]
 }

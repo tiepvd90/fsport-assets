@@ -1,4 +1,92 @@
 {
+  "cartSchema": "fsport-product-v1",
+  "schemaVersion": 1,
+  "category": "ysandal",
+  "mainImageKey": "Màu Sắc",
+  "base": {
+    "id": "ysandal5560",
+    "category": "ysandal",
+    "price": 679000,
+    "originalPrice": 800000
+  },
+  "attributes": [
+    {
+      "key": "Màu Sắc",
+      "label": "Màu Sắc",
+      "display": "thumbnail",
+      "type": "option",
+      "values": [
+        {
+          "text": "Hồng",
+          "image": "https://i.postimg.cc/Df4Z5LRv/hong.jpg"
+        },
+        {
+          "text": "Vàng Chanh",
+          "image": "https://i.postimg.cc/dtM0fDK8/vangchanh.jpg"
+        },
+        {
+          "text": "Đen",
+          "image": "https://i.postimg.cc/MGr6mpDf/den.jpg"
+        },
+        {
+          "text": "Rêu",
+          "image": "https://i.postimg.cc/XJGVH6HH/reu.jpg"
+        },
+        {
+          "text": "Trắng Xám",
+          "image": "https://i.postimg.cc/4dDXj2jJ/trangxam.jpg"
+        },
+        {
+          "text": "Xanh",
+          "image": "https://i.postimg.cc/rs5qTCL5/xanh.jpg"
+        }
+      ]
+    },
+    {
+      "key": "Size",
+      "label": "Size",
+      "display": "button",
+      "type": "option",
+      "values": [
+        {
+          "text": "34"
+        },
+        {
+          "text": "35"
+        },
+        {
+          "text": "36"
+        },
+        {
+          "text": "37"
+        },
+        {
+          "text": "38"
+        },
+        {
+          "text": "39"
+        },
+        {
+          "text": "40"
+        },
+        {
+          "text": "41"
+        },
+        {
+          "text": "42"
+        }
+      ]
+    }
+  ],
+  "sku": {
+    "mode": "template",
+    "parts": [
+      "baseId",
+      "Màu Sắc",
+      "Size"
+    ],
+    "normalize": "vn-ascii-uppercase"
+  },
   "thuộc_tính": [
     {
       "label": "Màu Sắc",
@@ -6,20 +94,48 @@
       "type": "option",
       "display": "thumbnail",
       "values": [
-  { "text": "Hồng", "image": "https://i.postimg.cc/Df4Z5LRv/hong.jpg" },
-  { "text": "Vàng Chanh", "image": "https://i.postimg.cc/dtM0fDK8/vangchanh.jpg" },
-  { "text": "Đen", "image": "https://i.postimg.cc/MGr6mpDf/den.jpg" },
-  { "text": "Rêu", "image": "https://i.postimg.cc/XJGVH6HH/reu.jpg" },
-  { "text": "Trắng Xám", "image": "https://i.postimg.cc/4dDXj2jJ/trangxam.jpg" },
-  { "text": "Xanh", "image": "https://i.postimg.cc/rs5qTCL5/xanh.jpg" }
-]
+        {
+          "text": "Hồng",
+          "image": "https://i.postimg.cc/Df4Z5LRv/hong.jpg"
+        },
+        {
+          "text": "Vàng Chanh",
+          "image": "https://i.postimg.cc/dtM0fDK8/vangchanh.jpg"
+        },
+        {
+          "text": "Đen",
+          "image": "https://i.postimg.cc/MGr6mpDf/den.jpg"
+        },
+        {
+          "text": "Rêu",
+          "image": "https://i.postimg.cc/XJGVH6HH/reu.jpg"
+        },
+        {
+          "text": "Trắng Xám",
+          "image": "https://i.postimg.cc/4dDXj2jJ/trangxam.jpg"
+        },
+        {
+          "text": "Xanh",
+          "image": "https://i.postimg.cc/rs5qTCL5/xanh.jpg"
+        }
+      ]
     },
     {
       "label": "Size",
       "key": "Size",
       "type": "option",
       "display": "button",
-      "values": ["34", "35", "36", "37", "38", "39", "40", "41", "42"]
+      "values": [
+        "34",
+        "35",
+        "36",
+        "37",
+        "38",
+        "39",
+        "40",
+        "41",
+        "42"
+      ]
     }
   ],
   "biến_thể": [

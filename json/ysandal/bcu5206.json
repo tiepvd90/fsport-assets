@@ -1,4 +1,80 @@
 {
+  "cartSchema": "fsport-product-v1",
+  "schemaVersion": 1,
+  "category": "ysandal",
+  "mainImageKey": "Màu Sắc",
+  "base": {
+    "id": "bcu5206",
+    "category": "ysandal",
+    "price": 670000,
+    "originalPrice": 1000000
+  },
+  "attributes": [
+    {
+      "key": "Màu Sắc",
+      "label": "Màu Sắc",
+      "display": "thumbnail",
+      "type": "option",
+      "values": [
+        {
+          "text": "Vàng Chanh",
+          "image": "https://fun-sport.co/assets/images/thumb/ysandal/bcu5206/vangchanh.JPG"
+        },
+        {
+          "text": "Trắng",
+          "image": "https://fun-sport.co/assets/images/thumb/ysandal/bcu5206/trang.JPG"
+        },
+        {
+          "text": "Xám",
+          "image": "https://fun-sport.co/assets/images/thumb/ysandal/bcu5206/xam.JPG"
+        },
+        {
+          "text": "Đen",
+          "image": "https://fun-sport.co/assets/images/thumb/ysandal/bcu5206/den.JPG"
+        },
+        {
+          "text": "Be",
+          "image": "https://fun-sport.co/assets/images/thumb/ysandal/bcu5206/be.JPG"
+        },
+        {
+          "text": "Hồng",
+          "image": "https://fun-sport.co/assets/images/thumb/ysandal/bcu5206/hong.JPG"
+        }
+      ]
+    },
+    {
+      "key": "Size",
+      "label": "Size",
+      "display": "button",
+      "type": "option",
+      "values": [
+        {
+          "text": "36"
+        },
+        {
+          "text": "37"
+        },
+        {
+          "text": "38"
+        },
+        {
+          "text": "39"
+        },
+        {
+          "text": "40"
+        }
+      ]
+    }
+  ],
+  "sku": {
+    "mode": "template",
+    "parts": [
+      "baseId",
+      "Màu Sắc",
+      "Size"
+    ],
+    "normalize": "vn-ascii-uppercase"
+  },
   "thuộc_tính": [
     {
       "label": "Màu Sắc",
@@ -6,12 +82,30 @@
       "type": "option",
       "display": "thumbnail",
       "values": [
-        { "text": "Vàng Chanh", "image": "https://fun-sport.co/assets/images/thumb/ysandal/bcu5206/vangchanh.JPG" },
-        { "text": "Trắng", "image": "https://fun-sport.co/assets/images/thumb/ysandal/bcu5206/trang.JPG" },
-        { "text": "Xám", "image": "https://fun-sport.co/assets/images/thumb/ysandal/bcu5206/xam.JPG" },
-        { "text": "Đen", "image": "https://fun-sport.co/assets/images/thumb/ysandal/bcu5206/den.JPG" },
-        { "text": "Be", "image": "https://fun-sport.co/assets/images/thumb/ysandal/bcu5206/be.JPG" },
-        { "text": "Hồng", "image": "https://fun-sport.co/assets/images/thumb/ysandal/bcu5206/hong.JPG" }
+        {
+          "text": "Vàng Chanh",
+          "image": "https://fun-sport.co/assets/images/thumb/ysandal/bcu5206/vangchanh.JPG"
+        },
+        {
+          "text": "Trắng",
+          "image": "https://fun-sport.co/assets/images/thumb/ysandal/bcu5206/trang.JPG"
+        },
+        {
+          "text": "Xám",
+          "image": "https://fun-sport.co/assets/images/thumb/ysandal/bcu5206/xam.JPG"
+        },
+        {
+          "text": "Đen",
+          "image": "https://fun-sport.co/assets/images/thumb/ysandal/bcu5206/den.JPG"
+        },
+        {
+          "text": "Be",
+          "image": "https://fun-sport.co/assets/images/thumb/ysandal/bcu5206/be.JPG"
+        },
+        {
+          "text": "Hồng",
+          "image": "https://fun-sport.co/assets/images/thumb/ysandal/bcu5206/hong.JPG"
+        }
       ]
     },
     {

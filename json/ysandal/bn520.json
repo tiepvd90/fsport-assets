@@ -1,4 +1,82 @@
 {
+  "cartSchema": "fsport-product-v1",
+  "schemaVersion": 1,
+  "category": "ysandal",
+  "mainImageKey": "Màu Sắc",
+  "base": {
+    "id": "bn520",
+    "category": "ysandal",
+    "price": 579000,
+    "originalPrice": 800000
+  },
+  "attributes": [
+    {
+      "key": "Màu Sắc",
+      "label": "Màu Sắc",
+      "display": "thumbnail",
+      "type": "option",
+      "values": [
+        {
+          "text": "Xanh",
+          "image": "https://fun-sport.co/assets/images/thumb/ysandal/bn520/xanh.JPG"
+        },
+        {
+          "text": "Đen",
+          "image": "https://fun-sport.co/assets/images/thumb/ysandal/bn520/den.JPG"
+        },
+        {
+          "text": "Hồng",
+          "image": "https://fun-sport.co/assets/images/thumb/ysandal/bn520/hong.JPG"
+        },
+        {
+          "text": "Xám",
+          "image": "https://fun-sport.co/assets/images/thumb/ysandal/bn520/xam.JPG"
+        },
+        {
+          "text": "Trắng",
+          "image": "https://fun-sport.co/assets/images/thumb/ysandal/bn520/trang.JPG"
+        }
+      ]
+    },
+    {
+      "key": "Size",
+      "label": "Size",
+      "display": "button",
+      "type": "option",
+      "values": [
+        {
+          "text": "35"
+        },
+        {
+          "text": "36"
+        },
+        {
+          "text": "37"
+        },
+        {
+          "text": "38"
+        },
+        {
+          "text": "39"
+        },
+        {
+          "text": "40"
+        },
+        {
+          "text": "41/42"
+        }
+      ]
+    }
+  ],
+  "sku": {
+    "mode": "template",
+    "parts": [
+      "baseId",
+      "Màu Sắc",
+      "Size"
+    ],
+    "normalize": "vn-ascii-uppercase"
+  },
   "thuộc_tính": [
     {
       "label": "Màu Sắc",
@@ -6,11 +84,26 @@
       "type": "option",
       "display": "thumbnail",
       "values": [
-        { "text": "Xanh", "image": "https://fun-sport.co/assets/images/thumb/ysandal/bn520/xanh.JPG" },
-        { "text": "Đen", "image": "https://fun-sport.co/assets/images/thumb/ysandal/bn520/den.JPG" },
-        { "text": "Hồng", "image": "https://fun-sport.co/assets/images/thumb/ysandal/bn520/hong.JPG" },
-        { "text": "Xám", "image": "https://fun-sport.co/assets/images/thumb/ysandal/bn520/xam.JPG" },
-        { "text": "Trắng", "image": "https://fun-sport.co/assets/images/thumb/ysandal/bn520/trang.JPG" }
+        {
+          "text": "Xanh",
+          "image": "https://fun-sport.co/assets/images/thumb/ysandal/bn520/xanh.JPG"
+        },
+        {
+          "text": "Đen",
+          "image": "https://fun-sport.co/assets/images/thumb/ysandal/bn520/den.JPG"
+        },
+        {
+          "text": "Hồng",
+          "image": "https://fun-sport.co/assets/images/thumb/ysandal/bn520/hong.JPG"
+        },
+        {
+          "text": "Xám",
+          "image": "https://fun-sport.co/assets/images/thumb/ysandal/bn520/xam.JPG"
+        },
+        {
+          "text": "Trắng",
+          "image": "https://fun-sport.co/assets/images/thumb/ysandal/bn520/trang.JPG"
+        }
       ]
     },
     {

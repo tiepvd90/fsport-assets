@@ -17,14 +17,14 @@
   <link rel="stylesheet" href="/css/about.css">
 
   <!-- Popup CSS -->
-  <link rel="stylesheet" href="https://friendly-kitten-d760ff.netlify.app/css/checkoutpopup.css" />
-  <link rel="stylesheet" href="https://friendly-kitten-d760ff.netlify.app/css/voucherpopup.css" />
+  <link rel="stylesheet" href="/css/checkoutpopup.css" />
+  <link rel="stylesheet" href="/css/voucherpopup.css" />
 
   <script>
     window.productPage = "homepage";
   </script>
 
-  <script src="https://friendly-kitten-d760ff.netlify.app/js/voucherpopup.js" defer></script>
+  <script src="/js/voucherpopup.js" defer></script>
 
   <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-RXC205951M"></script>
@@ -116,7 +116,7 @@
       .then(html => {
         document.getElementById("checkoutPopup-placeholder").innerHTML = html;
         const script = document.createElement("script");
-        script.src = "https://friendly-kitten-d760ff.netlify.app/js/checkoutpopup.js";
+        script.src = "/js/checkoutpopup.js";
         document.body.appendChild(script);
       });
   </script>

@@ -1,4 +1,39 @@
 {
+  "cartSchema": "fsport-product-v1",
+  "schemaVersion": 1,
+  "category": "pickleball",
+  "mainImageKey": "Màu Sắc",
+  "base": {
+    "id": "phantom",
+    "category": "pickleball",
+    "price": 1699000,
+    "originalPrice": 2500000
+  },
+  "attributes": [
+    {
+      "key": "Màu Sắc",
+      "label": "Màu Sắc",
+      "display": "thumbnail",
+      "type": "option",
+      "values": [
+        {
+          "text": "Chữ PHANTOM Màu XANH",
+          "image": "/assets/images/gallery/pickleball/phantom/3.webp",
+          "price": 1699000,
+          "originalPrice": 2500000
+        },
+        {
+          "text": "Chữ PHANTOM Màu TÍM",
+          "image": "/assets/images/gallery/pickleball/phantom/6.webp",
+          "price": 1699000,
+          "originalPrice": 2500000
+        }
+      ]
+    }
+  ],
+  "sku": {
+    "mode": "base-id"
+  },
   "thuộc_tính": [
     {
       "label": "Màu Sắc",

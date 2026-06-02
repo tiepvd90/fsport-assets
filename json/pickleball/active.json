@@ -1,4 +1,56 @@
 {
+  "cartSchema": "fsport-product-v1",
+  "schemaVersion": 1,
+  "category": "pickleball",
+  "mainImageKey": "Màu Sắc",
+  "base": {
+    "id": "pickleball-active",
+    "category": "pickleball",
+    "price": 1299000,
+    "originalPrice": 2200000
+  },
+  "attributes": [
+    {
+      "key": "Màu Sắc",
+      "label": "Màu Sắc",
+      "display": "thumbnail",
+      "type": "option",
+      "values": [
+        {
+          "text": "Hyper Active Xanh",
+          "image": "/assets/images/gallery/pickleball/active/xanh.webp",
+          "id": "hyperActive-xanh",
+          "price": 1299000,
+          "originalPrice": 2200000
+        },
+        {
+          "text": "Hyper Active Hồng",
+          "image": "/assets/images/gallery/pickleball/active/hong.webp",
+          "id": "hyperActive-hong",
+          "price": 1299000,
+          "originalPrice": 2200000
+        },
+        {
+          "text": "Hyper Active Đỏ",
+          "image": "/assets/images/gallery/pickleball/active/do.webp",
+          "id": "hyperActive-do",
+          "price": 1299000,
+          "originalPrice": 2200000
+        },
+        {
+          "text": "FastBlock Trắng",
+          "image": "/assets/images/gallery/pickleball/active/11.webp",
+          "id": "fastblock-trang",
+          "price": 999000,
+          "originalPrice": 1700000
+        }
+      ]
+    }
+  ],
+  "sku": {
+    "mode": "option-id",
+    "idFrom": "selectedOption"
+  },
   "thuộc_tính": [
     {
       "label": "Màu Sắc",
@@ -37,7 +89,6 @@
       ]
     }
   ],
-
   "biến_thể": [
     {
       "id": "pickleball-active",
@@ -45,7 +96,5 @@
       "Giá": 1299000,
       "Giá gốc": 2200000
     }
-  ],
-
-  "mainImageKey": "Màu Sắc"
+  ]
 }

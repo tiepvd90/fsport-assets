@@ -1,4 +1,35 @@
 {
+  "cartSchema": "fsport-product-v1",
+  "schemaVersion": 1,
+  "category": "pickleball",
+  "mainImageKey": "Màu Sắc",
+  "base": {
+    "id": "fullfoam-do-vietnam",
+    "category": "pickleball",
+    "price": 1940000,
+    "originalPrice": 1900000
+  },
+  "attributes": [
+    {
+      "key": "Màu Sắc",
+      "label": "Màu Sắc",
+      "display": "thumbnail",
+      "type": "option",
+      "values": [
+        {
+          "text": "FullFoam Đỏ - Cờ Đỏ Sao Vàng- 16mm",
+          "image": "/assets/images/gallery/pickleball/fullfoam-vietnam/nentrang.webp",
+          "id": "fullfoam-do-vietnam",
+          "price": 1940000,
+          "originalPrice": 2500000
+        }
+      ]
+    }
+  ],
+  "sku": {
+    "mode": "option-id",
+    "idFrom": "selectedOption"
+  },
   "thuộc_tính": [
     {
       "label": "Màu Sắc",
@@ -6,7 +37,7 @@
       "type": "option",
       "display": "thumbnail",
       "values": [
-		  {
+        {
           "text": "FullFoam Đỏ - Cờ Đỏ Sao Vàng- 16mm",
           "image": "/assets/images/gallery/pickleball/fullfoam-vietnam/nentrang.webp",
           "id": "fullfoam-do-vietnam",
@@ -23,6 +54,5 @@
       "Giá": 1940000,
       "Giá gốc": 1900000
     }
-  ],
-  "mainImageKey": "Màu Sắc"
+  ]
 }

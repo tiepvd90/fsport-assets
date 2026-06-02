@@ -1,4 +1,99 @@
 {
+  "cartSchema": "fsport-product-v1",
+  "schemaVersion": 1,
+  "category": "ysandal",
+  "mainImageKey": "Màu Sắc",
+  "base": {
+    "id": "BAL5617",
+    "category": "ysandal",
+    "price": 1150000,
+    "originalPrice": 18000000
+  },
+  "attributes": [
+    {
+      "key": "Màu Sắc",
+      "label": "Màu Sắc",
+      "display": "thumbnail",
+      "type": "option",
+      "values": [
+        {
+          "text": "Trắng",
+          "image": "https://down-vn.img.susercontent.com/file/vn-11134207-820l4-mghkn5613gneec@resize_w450_nl.webp"
+        },
+        {
+          "text": "Đen",
+          "image": "https://down-vn.img.susercontent.com/file/vn-11134207-820l4-mghknb8lsf0t94@resize_w450_nl.webp"
+        },
+        {
+          "text": "Xanh",
+          "image": "https://down-vn.img.susercontent.com/file/vn-11134207-820l4-mghknew8m97189@resize_w450_nl.webp"
+        },
+        {
+          "text": "Xám",
+          "image": "https://down-vn.img.susercontent.com/file/vn-11134207-820l4-mghknixre1vs3c@resize_w450_nl.webp"
+        },
+        {
+          "text": "Vàng Chanh",
+          "image": "https://down-vn.img.susercontent.com/file/vn-11134207-820l4-mghknocr4bux97@resize_w450_nl.webp"
+        },
+        {
+          "text": "Rêu",
+          "image": "https://down-vn.img.susercontent.com/file/vn-11134207-820l4-mghkns0y8lc985@resize_w450_nl.webp"
+        },
+        {
+          "text": "Hồng",
+          "image": "https://down-vn.img.susercontent.com/file/vn-11134207-820l4-mghknvet1jwq09@resize_w450_nl.webp"
+        }
+      ]
+    },
+    {
+      "key": "Size",
+      "label": "Size",
+      "display": "button",
+      "type": "option",
+      "values": [
+        {
+          "text": "35"
+        },
+        {
+          "text": "36"
+        },
+        {
+          "text": "37"
+        },
+        {
+          "text": "38"
+        },
+        {
+          "text": "39"
+        },
+        {
+          "text": "40"
+        },
+        {
+          "text": "41"
+        },
+        {
+          "text": "42"
+        },
+        {
+          "text": "43"
+        },
+        {
+          "text": "44"
+        }
+      ]
+    }
+  ],
+  "sku": {
+    "mode": "template",
+    "parts": [
+      "baseId",
+      "Màu Sắc",
+      "Size"
+    ],
+    "normalize": "vn-ascii-uppercase"
+  },
   "thuộc_tính": [
     {
       "label": "Màu Sắc",
@@ -6,13 +101,34 @@
       "type": "option",
       "display": "thumbnail",
       "values": [
-        { "text": "Trắng", "image": "https://down-vn.img.susercontent.com/file/vn-11134207-820l4-mghkn5613gneec@resize_w450_nl.webp" },
-        { "text": "Đen", "image": "https://down-vn.img.susercontent.com/file/vn-11134207-820l4-mghknb8lsf0t94@resize_w450_nl.webp" },
-        { "text": "Xanh", "image": "https://down-vn.img.susercontent.com/file/vn-11134207-820l4-mghknew8m97189@resize_w450_nl.webp" },
-        { "text": "Xám", "image": "https://down-vn.img.susercontent.com/file/vn-11134207-820l4-mghknixre1vs3c@resize_w450_nl.webp" },
-        { "text": "Vàng Chanh", "image": "https://down-vn.img.susercontent.com/file/vn-11134207-820l4-mghknocr4bux97@resize_w450_nl.webp" },
-		{ "text": "Rêu", "image": "https://down-vn.img.susercontent.com/file/vn-11134207-820l4-mghkns0y8lc985@resize_w450_nl.webp" },
-		{ "text": "Hồng", "image": "https://down-vn.img.susercontent.com/file/vn-11134207-820l4-mghknvet1jwq09@resize_w450_nl.webp" }
+        {
+          "text": "Trắng",
+          "image": "https://down-vn.img.susercontent.com/file/vn-11134207-820l4-mghkn5613gneec@resize_w450_nl.webp"
+        },
+        {
+          "text": "Đen",
+          "image": "https://down-vn.img.susercontent.com/file/vn-11134207-820l4-mghknb8lsf0t94@resize_w450_nl.webp"
+        },
+        {
+          "text": "Xanh",
+          "image": "https://down-vn.img.susercontent.com/file/vn-11134207-820l4-mghknew8m97189@resize_w450_nl.webp"
+        },
+        {
+          "text": "Xám",
+          "image": "https://down-vn.img.susercontent.com/file/vn-11134207-820l4-mghknixre1vs3c@resize_w450_nl.webp"
+        },
+        {
+          "text": "Vàng Chanh",
+          "image": "https://down-vn.img.susercontent.com/file/vn-11134207-820l4-mghknocr4bux97@resize_w450_nl.webp"
+        },
+        {
+          "text": "Rêu",
+          "image": "https://down-vn.img.susercontent.com/file/vn-11134207-820l4-mghkns0y8lc985@resize_w450_nl.webp"
+        },
+        {
+          "text": "Hồng",
+          "image": "https://down-vn.img.susercontent.com/file/vn-11134207-820l4-mghknvet1jwq09@resize_w450_nl.webp"
+        }
       ]
     },
     {
@@ -28,9 +144,9 @@
         "39",
         "40",
         "41",
-		"42",
-		"43",
-		"44"
+        "42",
+        "43",
+        "44"
       ]
     }
   ],

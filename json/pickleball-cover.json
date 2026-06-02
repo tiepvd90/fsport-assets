@@ -1,4 +1,32 @@
 {
+  "cartSchema": "fsport-product-v1",
+  "schemaVersion": 1,
+  "category": "pickleball",
+  "mainImageKey": "Màu Sắc",
+  "base": {
+    "id": "cover",
+    "category": "pickleball",
+    "price": 50000,
+    "originalPrice": 70000
+  },
+  "attributes": [
+    {
+      "key": "Màu Sắc",
+      "label": "Màu Sắc",
+      "display": "thumbnail",
+      "values": [
+        {
+          "text": "Túi Bảo Vệ Mặt Vợt",
+          "image": "https://i.postimg.cc/Dy2wprMW/1.webp",
+          "price": 50000,
+          "originalPrice": 70000
+        }
+      ]
+    }
+  ],
+  "sku": {
+    "mode": "base-id"
+  },
   "thuộc_tính": [
     {
       "key": "Màu Sắc",

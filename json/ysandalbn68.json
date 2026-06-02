@@ -1,4 +1,111 @@
 {
+  "cartSchema": "fsport-product-v1",
+  "schemaVersion": 1,
+  "category": "ysandal",
+  "mainImageKey": "Màu Sắc",
+  "base": {
+    "id": "BN68",
+    "category": "ysandal",
+    "price": 479000,
+    "originalPrice": 600000
+  },
+  "attributes": [
+    {
+      "key": "Màu Sắc",
+      "label": "Màu Sắc",
+      "display": "thumbnail",
+      "type": "option",
+      "values": [
+        {
+          "text": "Đỏ",
+          "image": "https://i.postimg.cc/6qbPsVJ0/dohong.jpg"
+        },
+        {
+          "text": "Hồng",
+          "image": "https://i.postimg.cc/prLS1G7r/hong.jpg"
+        },
+        {
+          "text": "Lam",
+          "image": "https://i.postimg.cc/X7XhfPdD/lam.jpg"
+        },
+        {
+          "text": "Lục Lam",
+          "image": "https://i.postimg.cc/Fsq6DxxF/luclam.jpg"
+        },
+        {
+          "text": "Xanh Ngọc",
+          "image": "https://i.postimg.cc/bwtBM26x/mint.jpg"
+        },
+        {
+          "text": "Rêu",
+          "image": "https://i.postimg.cc/LsFbM67r/reu.jpg"
+        },
+        {
+          "text": "Tím",
+          "image": "https://i.postimg.cc/5t5k9WWj/tim.jpg"
+        },
+        {
+          "text": "Trắng",
+          "image": "https://i.postimg.cc/QtXYHYjm/trang.jpg"
+        },
+        {
+          "text": "Vàng Chanh",
+          "image": "https://i.postimg.cc/k4f18N4m/vangchanh.jpg"
+        },
+        {
+          "text": "Đen",
+          "image": "https://i.postimg.cc/c1F28Wgn/en.jpg"
+        }
+      ]
+    },
+    {
+      "key": "Size",
+      "label": "Size",
+      "display": "button",
+      "type": "option",
+      "values": [
+        {
+          "text": "33/34"
+        },
+        {
+          "text": "35"
+        },
+        {
+          "text": "36"
+        },
+        {
+          "text": "37"
+        },
+        {
+          "text": "38"
+        },
+        {
+          "text": "39"
+        },
+        {
+          "text": "40"
+        },
+        {
+          "text": "41/42"
+        },
+        {
+          "text": "43/44"
+        },
+        {
+          "text": "45/46"
+        }
+      ]
+    }
+  ],
+  "sku": {
+    "mode": "template",
+    "parts": [
+      "baseId",
+      "Màu Sắc",
+      "Size"
+    ],
+    "normalize": "vn-ascii-uppercase"
+  },
   "thuộc_tính": [
     {
       "label": "Màu Sắc",
@@ -6,24 +113,65 @@
       "type": "option",
       "display": "thumbnail",
       "values": [
-  { "text": "Đỏ", "image": "https://i.postimg.cc/6qbPsVJ0/dohong.jpg" },
-  { "text": "Hồng", "image": "https://i.postimg.cc/prLS1G7r/hong.jpg" },
-  { "text": "Lam", "image": "https://i.postimg.cc/X7XhfPdD/lam.jpg" },
-  { "text": "Lục Lam", "image": "https://i.postimg.cc/Fsq6DxxF/luclam.jpg" },
-  { "text": "Xanh Ngọc", "image": "https://i.postimg.cc/bwtBM26x/mint.jpg" },
-  { "text": "Rêu", "image": "https://i.postimg.cc/LsFbM67r/reu.jpg" },
-  { "text": "Tím", "image": "https://i.postimg.cc/5t5k9WWj/tim.jpg" },
-  { "text": "Trắng", "image": "https://i.postimg.cc/QtXYHYjm/trang.jpg" },
-  { "text": "Vàng Chanh", "image": "https://i.postimg.cc/k4f18N4m/vangchanh.jpg" },
-  { "text": "Đen", "image": "https://i.postimg.cc/c1F28Wgn/en.jpg" }
-]
+        {
+          "text": "Đỏ",
+          "image": "https://i.postimg.cc/6qbPsVJ0/dohong.jpg"
+        },
+        {
+          "text": "Hồng",
+          "image": "https://i.postimg.cc/prLS1G7r/hong.jpg"
+        },
+        {
+          "text": "Lam",
+          "image": "https://i.postimg.cc/X7XhfPdD/lam.jpg"
+        },
+        {
+          "text": "Lục Lam",
+          "image": "https://i.postimg.cc/Fsq6DxxF/luclam.jpg"
+        },
+        {
+          "text": "Xanh Ngọc",
+          "image": "https://i.postimg.cc/bwtBM26x/mint.jpg"
+        },
+        {
+          "text": "Rêu",
+          "image": "https://i.postimg.cc/LsFbM67r/reu.jpg"
+        },
+        {
+          "text": "Tím",
+          "image": "https://i.postimg.cc/5t5k9WWj/tim.jpg"
+        },
+        {
+          "text": "Trắng",
+          "image": "https://i.postimg.cc/QtXYHYjm/trang.jpg"
+        },
+        {
+          "text": "Vàng Chanh",
+          "image": "https://i.postimg.cc/k4f18N4m/vangchanh.jpg"
+        },
+        {
+          "text": "Đen",
+          "image": "https://i.postimg.cc/c1F28Wgn/en.jpg"
+        }
+      ]
     },
     {
       "label": "Size",
       "key": "Size",
       "type": "option",
       "display": "button",
-      "values": ["33/34", "35", "36", "37", "38", "39", "40", "41/42", "43/44","45/46"]
+      "values": [
+        "33/34",
+        "35",
+        "36",
+        "37",
+        "38",
+        "39",
+        "40",
+        "41/42",
+        "43/44",
+        "45/46"
+      ]
     }
   ],
   "biến_thể": [
