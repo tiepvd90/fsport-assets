@@ -251,6 +251,8 @@
   }
 
   // ─── EXPOSE ──────────────────────────────────────────────────
+  // Expose sớm ngay khi script load — slideshow/productdescription gọi được liền
+  // Trước khi init() xong thì track() tự queue, sau init() flush hết
   global.fsport = global.fsport || {}
   global.fsport.track       = track
   global.fsport.getUserId   = getUserId

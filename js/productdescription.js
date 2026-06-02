@@ -25,19 +25,26 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // ── Analytics: track khi user scroll đến mô tả (1 lần duy nhất) ──
       let _descViewed = false;
+      let _descInView = false;
+      function _tryTrackDescView() {
+        if (_descViewed || !_descInView) return;
+        if (window.fsport) {
+          _descViewed = true;
+          _descObserver.disconnect();
+          window.fsport.track('description_read', {
+            product_id:   window.productPage || window.productCategory || '',
+            product_name: window.productName || '',
+            action:       'view'
+          });
+        } else {
+          // analytics.js chưa load → thử lại sau 500ms
+          setTimeout(_tryTrackDescView, 500);
+        }
+      }
       const _descObserver = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting && !_descViewed) {
-            _descViewed = true;
-            _descObserver.disconnect();
-            if (window.fsport) {
-              window.fsport.track('description_read', {
-                product_id:   window.productPage || window.productCategory || '',
-                product_name: window.productName || '',
-                action:       'view'
-              });
-            }
-          }
+          _descInView = entry.isIntersecting;
+          if (entry.isIntersecting && !_descViewed) _tryTrackDescView();
         });
       }, { threshold: 0.25 });
       _descObserver.observe(container);
