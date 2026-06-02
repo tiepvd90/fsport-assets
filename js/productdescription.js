@@ -23,6 +23,25 @@ document.addEventListener("DOMContentLoaded", function () {
       console.log("✅ Thành công, đang chèn HTML mô tả...");
       container.innerHTML = html;
 
+      // ── Analytics: track khi user scroll đến mô tả (1 lần duy nhất) ──
+      let _descViewed = false;
+      const _descObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && !_descViewed) {
+            _descViewed = true;
+            _descObserver.disconnect();
+            if (window.fsport) {
+              window.fsport.track('description_read', {
+                product_id:   window.productPage || window.productCategory || '',
+                product_name: window.productName || '',
+                action:       'view'
+              });
+            }
+          }
+        });
+      }, { threshold: 0.25 });
+      _descObserver.observe(container);
+
       // ✅ Kích hoạt nút Xem thêm sau khi HTML được render
       const toggleBtn = container.querySelector("#toggleDesc");
       const descFull = container.querySelector("#descFull");
@@ -37,6 +56,15 @@ document.addEventListener("DOMContentLoaded", function () {
           descFull.classList.remove("hidden");
           descFade.style.display = "none";
           toggleBtn.innerHTML = `Thu Gọn <span class="arrow">&#x25B2;</span>`;
+          // Track expand (chỉ 1 lần)
+          if (window.fsport && !toggleBtn._tracked) {
+            toggleBtn._tracked = true;
+            window.fsport.track('description_read', {
+              product_id:   window.productPage || window.productCategory || '',
+              product_name: window.productName || '',
+              action:       'expand'
+            });
+          }
         } else {
           descFull.classList.add("hidden");
           descFade.style.display = "block";

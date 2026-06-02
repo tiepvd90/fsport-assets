@@ -109,6 +109,15 @@
       clearInterval(interval);
       delta < 0 ? nextSlide() : prevSlide();
       interval = setInterval(nextSlide, 4000);
+      // Track manual swipe
+      if (window.fsport) {
+        window.fsport.track('slideshow_swipe', {
+          product_id:   PAGE,
+          product_name: window.productName || PAGE,
+          slide_index:  current + 1,
+          direction:    delta < 0 ? 'next' : 'prev'
+        })
+      }
     }
   });
 
@@ -124,6 +133,15 @@
       clearInterval(interval);
       delta < 0 ? nextSlide() : prevSlide();
       interval = setInterval(nextSlide, 4000);
+      // Track manual swipe (desktop drag)
+      if (window.fsport) {
+        window.fsport.track('slideshow_swipe', {
+          product_id:   PAGE,
+          product_name: window.productName || PAGE,
+          slide_index:  current + 1,
+          direction:    delta < 0 ? 'next' : 'prev'
+        })
+      }
     }
     isDragging = false;
   });
