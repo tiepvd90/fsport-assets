@@ -53,14 +53,62 @@ document.addEventListener("DOMContentLoaded", function () {
       const toggleBtn = container.querySelector("#toggleDesc");
       const descFull = container.querySelector("#descFull");
       const descFade = container.querySelector("#descFade");
+      const descMedia = container.querySelector("#descContainer");
 
       if (!toggleBtn || !descFull || !descFade) return;
+
+      const previewImages = descMedia ? parseFloat(descMedia.dataset.previewImages || "") : NaN;
+      const useMediaPreview = descMedia && Number.isFinite(previewImages) && previewImages > 0;
+      let mediaPreviewExpanded = false;
+
+      function applyMediaPreview() {
+        if (!useMediaPreview) return;
+        if (mediaPreviewExpanded) return;
+
+        const images = Array.from(descMedia.querySelectorAll("img"));
+        if (!images.length) return;
+
+        const style = window.getComputedStyle(descMedia);
+        const gap = parseFloat(style.rowGap || style.gap || "0") || 0;
+        let remaining = previewImages;
+        let height = 0;
+
+        for (let i = 0; i < images.length && remaining > 0; i += 1) {
+          const ratio = Math.min(1, remaining);
+          const imageHeight = images[i].getBoundingClientRect().height;
+          if (!imageHeight) continue;
+
+          if (i > 0) height += gap;
+          height += imageHeight * ratio;
+          remaining -= ratio;
+        }
+
+        if (!height) return;
+        descMedia.style.maxHeight = `${height}px`;
+        descMedia.style.overflow = "hidden";
+      }
+
+      function expandMediaPreview() {
+        if (!useMediaPreview) return;
+        mediaPreviewExpanded = true;
+        descMedia.style.maxHeight = "none";
+        descMedia.style.overflow = "visible";
+      }
+
+      if (useMediaPreview) {
+        applyMediaPreview();
+        descMedia.querySelectorAll("img").forEach(img => {
+          if (!img.complete) img.addEventListener("load", applyMediaPreview, { once: true });
+        });
+        window.addEventListener("resize", applyMediaPreview);
+      }
 
       toggleBtn.addEventListener("click", () => {
         const isHidden = descFull.classList.contains("hidden");
 
         if (isHidden) {
           descFull.classList.remove("hidden");
+          expandMediaPreview();
           descFade.style.display = "none";
           toggleBtn.innerHTML = `Thu Gọn <span class="arrow">&#x25B2;</span>`;
           // Track expand (chỉ 1 lần)
@@ -74,6 +122,8 @@ document.addEventListener("DOMContentLoaded", function () {
           }
         } else {
           descFull.classList.add("hidden");
+          mediaPreviewExpanded = false;
+          applyMediaPreview();
           descFade.style.display = "block";
           toggleBtn.innerHTML = `Xem Thêm <span class="arrow">&#x25BC;</span>`;
         }
