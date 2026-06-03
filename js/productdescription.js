@@ -23,32 +23,6 @@ document.addEventListener("DOMContentLoaded", function () {
       console.log("✅ Thành công, đang chèn HTML mô tả...");
       container.innerHTML = html;
 
-      // ── Analytics: track khi user scroll đến mô tả (1 lần duy nhất) ──
-      let _descViewed = false;
-      let _descInView = false;
-      function _tryTrackDescView() {
-        if (_descViewed || !_descInView) return;
-        if (window.fsport) {
-          _descViewed = true;
-          _descObserver.disconnect();
-          window.fsport.track('description_read', {
-            product_id:   window.productPage || window.productCategory || '',
-            product_name: window.productName || '',
-            action:       'view'
-          });
-        } else {
-          // analytics.js chưa load → thử lại sau 500ms
-          setTimeout(_tryTrackDescView, 500);
-        }
-      }
-      const _descObserver = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          _descInView = entry.isIntersecting;
-          if (entry.isIntersecting && !_descViewed) _tryTrackDescView();
-        });
-      }, { threshold: 0.25 });
-      _descObserver.observe(container);
-
       // ✅ Kích hoạt nút Xem thêm sau khi HTML được render
       const toggleBtn = container.querySelector("#toggleDesc");
       const descFull = container.querySelector("#descFull");
@@ -103,6 +77,24 @@ document.addEventListener("DOMContentLoaded", function () {
         window.addEventListener("resize", applyMediaPreview);
       }
 
+      function trackDescExpand(attempt = 0) {
+        if (toggleBtn._tracked) return;
+
+        if (window.fsport && typeof window.fsport.track === "function") {
+          toggleBtn._tracked = true;
+          window.fsport.track('description_read', {
+            product_id:   window.productPage || window.productCategory || '',
+            product_name: window.productName || '',
+            action:       'expand'
+          });
+          return;
+        }
+
+        if (attempt < 20) {
+          setTimeout(() => trackDescExpand(attempt + 1), 500);
+        }
+      }
+
       toggleBtn.addEventListener("click", () => {
         const isHidden = descFull.classList.contains("hidden");
 
@@ -112,14 +104,7 @@ document.addEventListener("DOMContentLoaded", function () {
           descFade.style.display = "none";
           toggleBtn.innerHTML = `Thu Gọn <span class="arrow">&#x25B2;</span>`;
           // Track expand (chỉ 1 lần)
-          if (window.fsport && !toggleBtn._tracked) {
-            toggleBtn._tracked = true;
-            window.fsport.track('description_read', {
-              product_id:   window.productPage || window.productCategory || '',
-              product_name: window.productName || '',
-              action:       'expand'
-            });
-          }
+          trackDescExpand();
         } else {
           descFull.classList.add("hidden");
           mediaPreviewExpanded = false;
