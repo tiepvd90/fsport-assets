@@ -644,6 +644,8 @@ async function sendOrderToERP(orderData, orderId, orderCode) {
       voucher_value:    orderData.voucherValue || 0,
       promo_discount:   orderData.promoDiscount || 0,
       total:            orderData.total || subtotal,
+      carrier_fee:      null,
+      accessory_fee:    null,
       payment_method:   "cod",
       source:           "website",
       status:           "new"
