@@ -305,19 +305,21 @@ async function submitOrder() {
   var _mm  = String(_now.getUTCMonth() + 1).padStart(2, "0");
   var _dd  = String(_now.getUTCDate()).padStart(2, "0");
   var _yy  = String(_now.getUTCFullYear()).slice(-2);
-  var _seq = String(Date.now()).slice(-4);
+  var _seq = String(Date.now()).slice(-4) + String(Math.floor(Math.random() * 10000)).padStart(4, "0");
   var _orderCode = "#" + _mm + _dd + _yy + "-" + _seq;
 
   console.log("📦 Sending orderData:", orderData, "orderId:", _orderId, "orderCode:", _orderCode);
 
   // 🔵 Gửi vào Supabase ERP song song (non-blocking, không ảnh hưởng Make.com flow)
   if (typeof sendOrderToERP === "function") {
-    sendOrderToERP(orderData, _orderId, _orderCode).catch(function(e) {
+    var erpPromise = sendOrderToERP(orderData, _orderId, _orderCode).catch(function(e) {
       console.warn("⚠ ERP error (non-critical):", e.message);
+      throw e;
     });
   }
+  if (typeof erpPromise === "undefined") erpPromise = Promise.reject(new Error("ERP sender is unavailable"));
 
-  fetch("https://hook.eu2.make.com/m9o7boye6fl1hstehst7waysmt38b2ul", {
+  var makePromise = fetch("https://hook.eu2.make.com/m9o7boye6fl1hstehst7waysmt38b2ul", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(orderData)
@@ -325,8 +327,12 @@ async function submitOrder() {
     .then(res => {
       if (!res.ok) throw new Error("Gửi đơn hàng thất bại");
       return res.text();
-    })
-    .then(() => {
+    });
+
+  Promise.allSettled([makePromise, erpPromise])
+    .then(results => {
+      var failed = results.find(function(result) { return result.status === "rejected"; });
+      if (failed) throw failed.reason;
       if (typeof trackBothPixels === "function" && orderData.total > 0) {
         trackBothPixels("Purchase", {
           content_ids: window.cart.map(i => i.id).filter(Boolean),
@@ -471,20 +477,42 @@ window.FSPORT_SUPABASE_URL  = "https://xcigbbcpwfzluqazadez.supabase.co";
 window.FSPORT_SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhjaWdiYmNwd2Z6bHVxYXphZGV6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkzNTA1NjEsImV4cCI6MjA5NDkyNjU2MX0.8LGX0FkU5w9q26LynYetUY9rGN_oFnjvDFJ5tjG9QV4";
 
 // XHR POST helper
-function _erpPost(url, anon, body) {
+function _erpPost(url, anon, body, prefer) {
   return new Promise(function(resolve, reject) {
     var xhr = new XMLHttpRequest();
     xhr.open("POST", url, true);
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.setRequestHeader("apikey", anon);
     xhr.setRequestHeader("Authorization", "Bearer " + anon);
-    xhr.setRequestHeader("Prefer", "return=minimal");
+    xhr.setRequestHeader("Prefer", prefer || "return=minimal");
     xhr.onload = function() {
       resolve({ status: xhr.status, ok: xhr.status >= 200 && xhr.status < 300, text: xhr.responseText });
     };
     xhr.onerror = function() { reject(new Error("Network error")); };
     xhr.send(JSON.stringify(body));
   });
+}
+
+function _erpSleep(ms) {
+  return new Promise(function(resolve) { setTimeout(resolve, ms); });
+}
+
+async function _erpPostWithRetry(url, anon, body, prefer, maxAttempts) {
+  var attempts = maxAttempts || 3;
+  var lastResult = null;
+  var lastError = null;
+  for (var attempt = 1; attempt <= attempts; attempt++) {
+    try {
+      lastResult = await _erpPost(url, anon, body, prefer);
+      if (lastResult.ok) return lastResult;
+      if (lastResult.status < 500 && lastResult.status !== 408 && lastResult.status !== 429) return lastResult;
+    } catch (err) {
+      lastError = err;
+    }
+    if (attempt < attempts) await _erpSleep(500 * attempt);
+  }
+  if (lastError && !lastResult) throw lastError;
+  return lastResult || { status: 0, ok: false, text: "ERP request failed" };
 }
 
 // XHR GET helper
@@ -631,7 +659,7 @@ async function sendOrderToERP(orderData, orderId, orderCode) {
     // (giữ nguyên định dạng: #MMDDYY-XXXX)
 
     // 1. INSERT order — chỉ gửi các cột thực sự có trong schema
-    var orderRes = await _erpPost(_url + "/rest/v1/orders", _anon, {
+    var orderRes = await _erpPostWithRetry(_url + "/rest/v1/orders", _anon, {
       id:               orderId,
       order_code:       orderCode,
       customer_name:    orderData.name,
@@ -649,10 +677,10 @@ async function sendOrderToERP(orderData, orderId, orderCode) {
       payment_method:   "cod",
       source:           "website",
       status:           "new"
-    });
+    }, "return=minimal", 3);
     if (!orderRes.ok) {
       console.error("🔴 ERP: INSERT order thất bại", orderRes.text);
-      return;
+      throw new Error("ERP order insert failed (" + orderRes.status + "): " + orderRes.text);
     }
     console.log("✅ ERP: tạo đơn", orderCode, orderId);
 
@@ -692,5 +720,6 @@ async function sendOrderToERP(orderData, orderId, orderCode) {
 
   } catch (err) {
     console.warn("⚠ ERP sendOrderToERP error:", err.message || err);
+    throw err;
   }
 }
