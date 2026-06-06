@@ -320,6 +320,24 @@ async function submitOrder() {
   }
   if (typeof erpPromise === "undefined") erpPromise = Promise.reject(new Error("ERP sender is unavailable"));
 
+  if (!trackedPurchaseOrderIds.has(_orderId) && typeof trackBothPixels === "function" && orderData.total > 0) {
+    trackedPurchaseOrderIds.add(_orderId);
+    trackBothPixels("Purchase", {
+      content_ids: window.cart.map(i => i.id).filter(Boolean),
+      contents: window.cart.map(i => ({
+        id: i.id || "",
+        quantity: i.quantity || 1,
+        item_price: Number(i["Giá"] || 0)
+      })),
+      content_type: "product",
+      value: orderData.total,
+      currency: "VND"
+    }, {
+      eventID: _orderId
+    });
+    console.log("Purchase tracked before Make.com");
+  }
+
   var makePromise = fetch("https://hook.eu2.make.com/m9o7boye6fl1hstehst7waysmt38b2ul", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -332,24 +350,6 @@ async function submitOrder() {
 
   Promise.allSettled([makePromise, erpPromise])
     .then(results => {
-      var erpResult = results[1].value;
-      if (erpResult && erpResult.created === true && !trackedPurchaseOrderIds.has(_orderId) && typeof trackBothPixels === "function" && orderData.total > 0) {
-        trackedPurchaseOrderIds.add(_orderId);
-        trackBothPixels("Purchase", {
-          content_ids: window.cart.map(i => i.id).filter(Boolean),
-          contents: window.cart.map(i => ({
-            id: i.id || "",
-            quantity: i.quantity || 1,
-            item_price: Number(i.Giá || 0)
-          })),
-          content_type: "product",
-          value: orderData.total,
-          currency: "VND"
-        }, {
-          eventID: _orderId
-        });
-        console.log("✅ Purchase tracked");
-      }
       var failed = results.find(function(result) { return result.status === "rejected"; });
       if (failed) throw failed.reason;
       // Analytics nội bộ
