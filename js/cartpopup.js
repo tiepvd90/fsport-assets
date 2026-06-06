@@ -602,6 +602,7 @@
     if (!popup || !content) return;
 
     if (show) {
+      if (!state.isOpen) trackAddToWishlist();
       popup.style.display = "flex";
       content.classList.remove("animate-slideup");
       void content.offsetWidth;
@@ -614,6 +615,36 @@
       popup.classList.add("hidden");
       setTimeout(function () { popup.style.display = "none"; }, 300);
       state.isOpen = false;
+    }
+  }
+
+  function trackAddToWishlist() {
+    var loai = window.productCategory || window.loai || state.category || "unknown";
+    var productId = window.productPage || getProductPage();
+
+    if (typeof window.trackBothPixels === "function") {
+      window.trackBothPixels("AddToWishlist", {
+        content_name: "click_btn_atc_" + loai,
+        content_category: loai
+      });
+    }
+
+    trackInternalEvent("wishlist_add", {
+      product_id: productId,
+      product_name: window.productName || null
+    });
+  }
+
+  function trackInternalEvent(eventType, metadata, attempt) {
+    attempt = attempt || 0;
+    if (window.fsport && typeof window.fsport.track === "function") {
+      window.fsport.track(eventType, metadata);
+      return;
+    }
+    if (attempt < 30) {
+      setTimeout(function () {
+        trackInternalEvent(eventType, metadata, attempt + 1);
+      }, 200);
     }
   }
 
