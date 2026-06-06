@@ -56,11 +56,11 @@ fbq('track', 'PageView'); // PageView vẫn gửi đến cả hai (giữ nguyên
 
 // ======= Hàm gọi tracking (Meta Pixel CHÍNH + TikTok) =======
 // GIỮ NGUYÊN TÊN HÀM "trackBothPixels" – KHÔNG CẦN SỬA CÁC TRANG KHÁC
-function trackBothPixels(eventName, params = {}) {
+function trackBothPixels(eventName, params = {}, options = {}) {
   // Meta Pixel: CHỈ gửi đến Pixel chính (2551563688514905)
   if (typeof fbq !== 'undefined') {
-    fbq('trackSingle', '2551563688514905', eventName, params);
-    console.log(`[Meta Pixel] Tracked (single): ${eventName}`, params);
+    fbq('trackSingle', '2551563688514905', eventName, params, options);
+    console.log(`[Meta Pixel] Tracked (single): ${eventName}`, params, options);
   }
 
   // TikTok Pixel (giữ nguyên)

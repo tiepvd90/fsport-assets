@@ -42,6 +42,7 @@ updateCartItemCount();
 let shippingFee = 0;
 let shippingFeeOriginal = 0;
 let voucherValue = 0;
+const trackedPurchaseOrderIds = new Set();
 // ------------------------
 // 🔹 AUTOSAVE – THÔNG TIN NGƯỜI NHẬN
 // ------------------------
@@ -331,9 +332,9 @@ async function submitOrder() {
 
   Promise.allSettled([makePromise, erpPromise])
     .then(results => {
-      var failed = results.find(function(result) { return result.status === "rejected"; });
-      if (failed) throw failed.reason;
-      if (typeof trackBothPixels === "function" && orderData.total > 0) {
+      var erpResult = results[1].value;
+      if (erpResult && erpResult.created === true && !trackedPurchaseOrderIds.has(_orderId) && typeof trackBothPixels === "function" && orderData.total > 0) {
+        trackedPurchaseOrderIds.add(_orderId);
         trackBothPixels("Purchase", {
           content_ids: window.cart.map(i => i.id).filter(Boolean),
           contents: window.cart.map(i => ({
@@ -344,9 +345,13 @@ async function submitOrder() {
           content_type: "product",
           value: orderData.total,
           currency: "VND"
+        }, {
+          eventID: _orderId
         });
         console.log("✅ Purchase tracked");
       }
+      var failed = results.find(function(result) { return result.status === "rejected"; });
+      if (failed) throw failed.reason;
       // Analytics nội bộ
       if (typeof window.fsport !== 'undefined') {
         window.fsport.track('purchase', {
@@ -718,6 +723,7 @@ async function sendOrderToERP(orderData, orderId, orderCode) {
       console.warn("⚠ ERP customer upsert failed (non-critical):", custErr.message);
     }
 
+    return { created: true, orderId: orderId, orderCode: orderCode };
   } catch (err) {
     console.warn("⚠ ERP sendOrderToERP error:", err.message || err);
     throw err;
