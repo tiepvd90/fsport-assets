@@ -674,6 +674,7 @@
     var box = document.querySelector('#feedProductSheet .fps-list')
     if (!sheet || !box) return
     sheet.classList.add('on')
+    document.body.classList.add('feed-product-sheet-open')
     _lockFeedPageScroll()
     box.innerHTML = _productSheet.products.map(function (p) {
       var selected = p.product_code === _productSheet.selectedCode
@@ -786,6 +787,7 @@
   function _closeFeedProductSheet() {
     var sheet = document.getElementById('feedProductSheet')
     if (sheet) sheet.classList.remove('on')
+    document.body.classList.remove('feed-product-sheet-open')
     _unlockFeedPageScroll()
   }
 
