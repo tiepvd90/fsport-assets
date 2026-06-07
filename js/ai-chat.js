@@ -308,10 +308,10 @@
         '#aic-chips::-webkit-scrollbar-track{background:#e2e8f0;border-radius:3px}' +
         '#aic-chips::-webkit-scrollbar-thumb{background:#94a3b8;border-radius:3px}' +
         '@media(max-width:767px){' +
-          '#aic-panel{position:fixed!important;left:0!important;right:0!important;top:auto!important;bottom:0!important;' +
-          'width:100%!important;height:80dvh!important;' +
-          'border-radius:18px 18px 0 0!important;flex-direction:column!important;' +
-          'box-shadow:0 -12px 44px rgba(0,0,0,.28)!important;overflow:hidden!important;z-index:9999!important;' +
+          '#aic-panel{position:fixed!important;inset:0!important;' +
+          'width:100%!important;height:100dvh!important;' +
+          'border-radius:0!important;flex-direction:column!important;' +
+          'box-shadow:none!important;overflow:hidden!important;z-index:9999!important;' +
           'animation:aicSheetUp .28s cubic-bezier(.22,.8,.25,1)!important}' +
           '#aic-panel>div:first-child{flex-shrink:0!important;z-index:1!important}' +
           '#' + WIDGET_ID + ' .aic-bubble-ai,#' + WIDGET_ID + ' .aic-bubble-user{font-size:14px!important}' +
@@ -323,10 +323,10 @@
           '#' + WIDGET_ID + ' button,#' + WIDGET_ID + ' input{touch-action:manipulation!important}' +
         '}' +
         '@media(min-width:768px){' +
-          '#aic-panel{position:fixed!important;bottom:5vh!important;left:50%!important;' +
+          '#aic-panel{position:fixed!important;bottom:24px!important;left:50%!important;' +
           'transform:translateX(-50%)!important;margin-left:0!important;' +
-          'width:min(860px,calc(100vw - 40px))!important;border-radius:16px!important;' +
-          'height:min(820px,90vh)!important;box-shadow:0 8px 40px rgba(0,0,0,.22)!important;' +
+          'width:clamp(560px,70vw,860px)!important;border-radius:16px!important;' +
+          'height:min(820px,calc(100dvh - 48px))!important;box-shadow:0 8px 40px rgba(0,0,0,.22)!important;' +
           'animation:aicPanelUp .28s cubic-bezier(.22,.8,.25,1)!important}' +
           '#' + WIDGET_ID + ' .aic-bubble-ai,#' + WIDGET_ID + ' .aic-bubble-user{font-size:19px!important;max-width:80%;word-break:break-word!important}' +
           '#' + WIDGET_ID + ' .aic-bubble-sys{font-size:16px!important}' +
@@ -800,9 +800,8 @@
         if (!panel) return
         var vp = window.visualViewport
         // Keep the whole panel inside the visible viewport above the keyboard.
-        var panelHeight = Math.min(vp.height, window.innerHeight * 0.8)
-        panel.style.setProperty('top', (vp.offsetTop + Math.max(0, vp.height - panelHeight)) + 'px', 'important')
-        panel.style.setProperty('height', panelHeight + 'px', 'important')
+        panel.style.setProperty('top', vp.offsetTop + 'px', 'important')
+        panel.style.setProperty('height', vp.height + 'px', 'important')
         panel.style.setProperty('bottom', 'auto', 'important')
       }
       var _vpReset = function() {
@@ -810,9 +809,9 @@
         var panel = document.getElementById('aic-panel')
         if (!panel) return
         // Bàn phím đóng → trả về inset:0 full screen
-        panel.style.setProperty('top', 'auto', 'important')
-        panel.style.setProperty('height', '80dvh', 'important')
-        panel.style.setProperty('bottom', '0', 'important')
+        panel.style.setProperty('top', '0', 'important')
+        panel.style.setProperty('height', '100dvh', 'important')
+        panel.style.setProperty('bottom', 'auto', 'important')
       }
       window.visualViewport.addEventListener('resize', function() {
         var vp = window.visualViewport
