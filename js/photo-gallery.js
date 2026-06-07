@@ -18,7 +18,7 @@
         return `
             <div class="photo-gallery-wrapper">
                 <div class="gallery-header-fsport">
-                    <div class="brand-fsport">#F-SPORT CLUB</div>
+                    <div class="brand-fsport">CUSTOMER REVIEW &amp; CLUB</div>
                 </div>
                 <div class="review-grid" id="reviewGrid"></div>
             </div>
