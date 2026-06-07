@@ -27,6 +27,9 @@
   var _slug           = ''
   var _group          = ''
   var _MAX            = 20
+  var _sessionIds     = []
+  var _initPromise    = null
+  var _initialized    = false
   var _nonsenseStreak = 0      // đếm liên tiếp — reset khi AI trả lời bình thường
 
   // ─── XHR ────────────────────────────────────────────────────
@@ -89,11 +92,12 @@
     if (!ls || !ls.session_key) _lsSet({ session_key: key })
     var res = await _get(
       '/rest/v1/ai_chat_sessions?session_key=eq.' + key +
-      '&slug=eq.' + encodeURIComponent(_slug) +
       '&select=id,session_key,message_count,is_blocked,block_reason,nonsense_count,has_phone,customer_phone' +
-      '&order=created_at.desc&limit=1'
+      '&order=created_at.desc&limit=1000'
     )
-    var existing = res.ok && res.data && res.data[0]
+    var sessions = (res.ok && res.data) || []
+    _sessionIds = sessions.map(function(s) { return s.id }).filter(Boolean)
+    var existing = sessions[0]
     if (existing) {
       _session = existing
       _nonsenseStreak = existing.nonsense_count || 0
@@ -110,23 +114,24 @@
     var key = (_session && _session.session_key) || _lsGet()?.session_key || _uuid()
     var uid = (typeof window.fsport !== 'undefined') ? window.fsport.getUserId() : null
     var cr  = await _post('/rest/v1/ai_chat_sessions', {
-      session_key: key, slug: _slug, product_group: _group,
+      session_key: key, slug: 'global', product_group: _group,
       user_id: uid,
       message_count: 0, is_blocked: false, nonsense_count: 0, has_phone: false
     })
     var created = (cr.ok && cr.data && cr.data[0]) || null
     if (created) {
       _session = created
+      _sessionIds = [created.id]
       _nonsenseStreak = 0
     }
     return _session
   }
 
   async function _loadHistory() {
-    if (!_session || !_session.id) return []
+    if (!_sessionIds.length) return []
     var res = await _get(
-      '/rest/v1/ai_chat_messages?session_id=eq.' + _session.id +
-      '&select=sender,content&order=created_at.asc&limit=200'
+      '/rest/v1/ai_chat_messages?session_id=in.(' + _sessionIds.join(',') + ')' +
+      '&select=sender,content&order=created_at.asc&limit=1000'
     )
     _history = (res.ok && res.data) || []
     return _history
@@ -249,6 +254,7 @@
   // UI
   // ================================================================
   var WIDGET_ID = 'fsport-ai-chat-widget'
+  var _pendingOpen = false
 
   function _color() { return (_cfg && _cfg.widget_color) || '#111827' }
 
@@ -296,15 +302,17 @@
         '.aic-typing span{display:inline-block;width:6px;height:6px;border-radius:50%;background:#94a3b8;animation:aicDot 1.2s infinite}' +
         '.aic-typing span:nth-child(2){animation-delay:.2s}.aic-typing span:nth-child(3){animation-delay:.4s}' +
         '@keyframes aicDot{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-6px)}}' +
+        '@keyframes aicSheetUp{from{transform:translateY(100%)}to{transform:translateY(0)}}' +
+        '@keyframes aicPanelUp{from{transform:translate(-50%,100%)}to{transform:translate(-50%,0)}}' +
         '#aic-chips::-webkit-scrollbar{height:5px;display:block}' +
         '#aic-chips::-webkit-scrollbar-track{background:#e2e8f0;border-radius:3px}' +
         '#aic-chips::-webkit-scrollbar-thumb{background:#94a3b8;border-radius:3px}' +
         '@media(max-width:767px){' +
-          '#aic-panel{position:fixed!important;inset:0!important;' +
-          'width:100%!important;height:100%!important;' +
-          'border-radius:0!important;flex-direction:column!important;' +
-          'box-shadow:none!important;overflow:hidden!important;z-index:9999!important}' +
-          '#aic-backdrop{display:none!important}' +
+          '#aic-panel{position:fixed!important;left:0!important;right:0!important;top:auto!important;bottom:0!important;' +
+          'width:100%!important;height:80dvh!important;' +
+          'border-radius:18px 18px 0 0!important;flex-direction:column!important;' +
+          'box-shadow:0 -12px 44px rgba(0,0,0,.28)!important;overflow:hidden!important;z-index:9999!important;' +
+          'animation:aicSheetUp .28s cubic-bezier(.22,.8,.25,1)!important}' +
           '#aic-panel>div:first-child{flex-shrink:0!important;z-index:1!important}' +
           '#' + WIDGET_ID + ' .aic-bubble-ai,#' + WIDGET_ID + ' .aic-bubble-user{font-size:14px!important}' +
           '#' + WIDGET_ID + ' .aic-bubble-sys{font-size:12px!important}' +
@@ -315,10 +323,11 @@
           '#' + WIDGET_ID + ' button,#' + WIDGET_ID + ' input{touch-action:manipulation!important}' +
         '}' +
         '@media(min-width:768px){' +
-          '#aic-panel{position:fixed!important;bottom:10px!important;left:50%!important;' +
+          '#aic-panel{position:fixed!important;bottom:5vh!important;left:50%!important;' +
           'transform:translateX(-50%)!important;margin-left:0!important;' +
           'width:min(860px,calc(100vw - 40px))!important;border-radius:16px!important;' +
-          'height:min(1040px,calc(100vh - 20px))!important;box-shadow:0 8px 40px rgba(0,0,0,.22)!important}' +
+          'height:min(820px,90vh)!important;box-shadow:0 8px 40px rgba(0,0,0,.22)!important;' +
+          'animation:aicPanelUp .28s cubic-bezier(.22,.8,.25,1)!important}' +
           '#' + WIDGET_ID + ' .aic-bubble-ai,#' + WIDGET_ID + ' .aic-bubble-user{font-size:19px!important;max-width:80%;word-break:break-word!important}' +
           '#' + WIDGET_ID + ' .aic-bubble-sys{font-size:16px!important}' +
           '#' + WIDGET_ID + ' #aic-input{font-size:21px!important}' +
@@ -582,7 +591,7 @@
       panel.style.zIndex = '2147483647'
     }
     // Backdrop chỉ cần trên desktop (mobile: panel là full screen)
-    if (backdrop && window.innerWidth >= 768) { backdrop.style.display = 'block'; backdrop.style.pointerEvents = 'auto' }
+    if (backdrop) { backdrop.style.display = 'block'; backdrop.style.pointerEvents = 'auto' }
     _renderHistory()
     _updateCounter()
     if (_session && _session.is_blocked) return
@@ -597,6 +606,21 @@
         var inp = document.getElementById('aic-input')
         if (inp) inp.value = prefillText
       }, 150)
+    }
+  }
+
+  window.FSPORT_AI_CHAT = window.FSPORT_AI_CHAT || {}
+  window.FSPORT_AI_CHAT.open = function(prefillText) {
+    if (document.getElementById('aic-panel')) {
+      return _checkSession()
+        .then(_loadHistory)
+        .then(function() {
+          _renderHistory()
+          _openPanel(prefillText)
+        })
+    } else {
+      _pendingOpen = prefillText || true
+      return Promise.resolve()
     }
   }
 
@@ -775,19 +799,20 @@
         var panel = document.getElementById('aic-panel')
         if (!panel) return
         var vp = window.visualViewport
-        // Panel co theo visual viewport (loại trừ bàn phím)
-        panel.style.top    = vp.offsetTop + 'px'
-        panel.style.height = vp.height + 'px'
-        panel.style.bottom = 'auto'
+        // Keep the whole panel inside the visible viewport above the keyboard.
+        var panelHeight = Math.min(vp.height, window.innerHeight * 0.8)
+        panel.style.setProperty('top', (vp.offsetTop + Math.max(0, vp.height - panelHeight)) + 'px', 'important')
+        panel.style.setProperty('height', panelHeight + 'px', 'important')
+        panel.style.setProperty('bottom', 'auto', 'important')
       }
       var _vpReset = function() {
         if (!_isOpen || window.innerWidth >= 768) return
         var panel = document.getElementById('aic-panel')
         if (!panel) return
         // Bàn phím đóng → trả về inset:0 full screen
-        panel.style.top    = '0'
-        panel.style.height = '100%'
-        panel.style.bottom = '0'
+        panel.style.setProperty('top', 'auto', 'important')
+        panel.style.setProperty('height', '80dvh', 'important')
+        panel.style.setProperty('bottom', '0', 'important')
       }
       window.visualViewport.addEventListener('resize', function() {
         var vp = window.visualViewport
@@ -811,7 +836,7 @@
   // ================================================================
   // INIT
   // ================================================================
-  async function init(opts) {
+  async function _doInit(opts) {
     _slug  = (opts && opts.slug)         || ''
     _group = (opts && opts.productGroup) || ''
 
@@ -834,6 +859,26 @@
     await _loadHistory()
     _renderWidget()
     _bindEvents()
+    if (_pendingOpen) {
+      var pending = _pendingOpen === true ? '' : _pendingOpen
+      _pendingOpen = false
+      _openPanel(pending)
+    }
+    _initialized = true
+  }
+
+  function init(opts) {
+    if (_initialized) return Promise.resolve()
+    if (!_initPromise) {
+      _initPromise = _doInit(opts).catch(function(err) {
+        _initPromise = null
+        throw err
+      }).then(function(result) {
+        if (!_initialized) _initPromise = null
+        return result
+      })
+    }
+    return _initPromise
   }
 
   global.AiChat = { init }

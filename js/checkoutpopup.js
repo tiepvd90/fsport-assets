@@ -6,10 +6,13 @@
 // ------------------------
 function updateCartItemCount() {
   const badge = document.getElementById("cartItemCount");
-  if (!badge) return;
   const cart = Array.isArray(window.cart) ? window.cart : [];
   const totalQty = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
-  badge.textContent = totalQty;
+  if (badge) badge.textContent = totalQty;
+  document.querySelectorAll("[data-cart-count]").forEach((el) => {
+    el.textContent = totalQty;
+    el.hidden = false;
+  });
 }
 // ✅ Tự động cập nhật số lượng trên icon giỏ hàng mỗi khi giỏ thay đổi
 (function autoUpdateCartBadge() {
@@ -117,6 +120,24 @@ function hideCheckoutPopup() {
   }
   document.body.style.overflow = "auto";
 }
+
+function cartItemName(item) {
+  return item["Ph\u00e2n lo\u1ea1i"] ||
+    item["Ph\u00c3\u00a2n lo\u00e1\u00ba\u00a1i"] ||
+    item.product_name ||
+    item.name ||
+    item.feed_product_code ||
+    item.id ||
+    "S\u1ea3n ph\u1ea9m";
+}
+
+function cartItemPrice(item) {
+  return Number(item["Gi\u00e1"] || item["Gi\u00c3\u00a1"] || item.price || item.product_price || 0);
+}
+
+function cartItemImage(item) {
+  return item["\u1ea2nh"] || item["\u00e1\u00ba\u00a2nh"] || item.image || item.image_url || item.product_image_url || "";
+}
 // ------------------------
 // 🔹 RENDER GIỎ HÀNG + TỔNG KẾT
 // ------------------------
@@ -125,7 +146,7 @@ function renderCheckoutCart() {
   if (!list) return;
   list.innerHTML = "";
   if (!window.cart.length) {
-    list.innerHTML = '<div class="cart-empty">Giỏ hàng của bạn hiện đang trống</div>';
+    list.innerHTML = '<div class="cart-empty">Gi\u1ecf h\u00e0ng c\u1ee7a b\u1ea1n hi\u1ec7n \u0111ang tr\u1ed1ng</div>';
     updateCheckoutSummary();
     return;
   }
@@ -133,21 +154,21 @@ function renderCheckoutCart() {
     const el = document.createElement("div");
     el.className = "cart-item";
     const hasVoucher = item.voucher?.amount;
-    const priceText = Number(item.Giá || 0).toLocaleString() + "₫";
+    const priceText = cartItemPrice(item).toLocaleString("vi-VN") + "\u0111";
     const voucherHtml = hasVoucher
-      ? `<span class="voucher-tag" style="background: rgba(0,160,230,0.6); color: white; font-size: 9px; padding: 2px 6px; margin-left: 6px; border-radius: 4px; vertical-align: middle;">Voucher: -${Number(item.voucher.amount).toLocaleString()}₫</span>`
+      ? `<span class="voucher-tag" style="background: rgba(0,160,230,0.6); color: white; font-size: 9px; padding: 2px 6px; margin-left: 6px; border-radius: 4px; vertical-align: middle;">Voucher: -${Number(item.voucher.amount).toLocaleString("vi-VN")}\u0111</span>`
       : "";
     el.innerHTML = `
       <button class="remove-btn" onclick="removeItem(${index})">&times;</button>
-      <img src="${item.Ảnh}" alt="img" />
+      <img src="${cartItemImage(item)}" alt="img" />
       <div class="cart-item-details">
-        <div class="cart-item-name">${item["Phân loại"]}</div>
+        <div class="cart-item-name">${cartItemName(item)}</div>
         <div class="cart-item-price-qty">
           <div class="cart-item-price">
             ${priceText} ${voucherHtml}
           </div>
           <div class="cart-item-qty">
-            <button onclick="changeItemQty(${index}, -1)">−</button>
+            <button onclick="changeItemQty(${index}, -1)">&minus;</button>
             <span>${item.quantity}</span>
             <button onclick="changeItemQty(${index}, 1)">+</button>
           </div>
@@ -159,41 +180,41 @@ function renderCheckoutCart() {
   updateCheckoutSummary();
 }
 function updateCheckoutSummary() {
-  const subtotal = window.cart.reduce((sum, item) => sum + (item.Giá || 0) * (item.quantity || 1), 0);
+  const subtotal = window.cart.reduce((sum, item) => sum + cartItemPrice(item) * (item.quantity || 1), 0);
   const totalQty = window.cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
   voucherValue = window.cart.reduce((sum, item) => sum + (item.voucher?.amount || 0) * (item.quantity || 1), 0);
   const shipping = shippingFee;
   const total = subtotal + shipping - voucherValue;
   const qtyEl = document.getElementById("itemQuantityText");
   const subtotalEl = document.getElementById("subtotalText");
-  if (qtyEl) qtyEl.textContent = `${totalQty} sản phẩm`;
-  if (subtotalEl) subtotalEl.textContent = `${subtotal.toLocaleString()}₫`;
+  if (qtyEl) qtyEl.textContent = `${totalQty} s\u1ea3n ph\u1ea9m`;
+  if (subtotalEl) subtotalEl.textContent = `${subtotal.toLocaleString("vi-VN")}\u0111`;
   const shippingEl = document.getElementById("shippingFeeText");
   if (shippingEl) {
     if (shippingFeeOriginal > shippingFee) {
       shippingEl.innerHTML = `
         <span style="text-decoration: line-through; color: gray; margin-right: 6px;">
-          ${shippingFeeOriginal.toLocaleString()}₫
+          ${shippingFeeOriginal.toLocaleString("vi-VN")}\u0111
         </span>
         <span style="color: red; font-weight: bold;">
-          ${shippingFee.toLocaleString()}₫
+          ${shippingFee.toLocaleString("vi-VN")}\u0111
         </span>
       `;
     } else {
-      shippingEl.textContent = `${shippingFee.toLocaleString()}₫`;
+      shippingEl.textContent = `${shippingFee.toLocaleString("vi-VN")}\u0111`;
     }
   }
   const voucherTextEl = document.getElementById("voucherText");
   if (voucherTextEl) {
     if (voucherValue > 0) {
-      voucherTextEl.textContent = `-${voucherValue.toLocaleString()}₫`;
+      voucherTextEl.textContent = `-${voucherValue.toLocaleString("vi-VN")}\u0111`;
       voucherTextEl.style.display = "block";
     } else {
       voucherTextEl.style.display = "none";
     }
   }
   const totalEl = document.getElementById("totalText");
-  if (totalEl) totalEl.textContent = `${total.toLocaleString()}₫`;
+  if (totalEl) totalEl.textContent = `${total.toLocaleString("vi-VN")}\u0111`;
 }
 // ------------------------
 // 🔹 SỬA SỐ LƯỢNG / XOÁ / LƯU CART
@@ -249,18 +270,18 @@ async function submitOrder() {
   if (!btn) return;
   const originalText = btn.textContent;
   btn.disabled = true;
-  btn.textContent = "Đang gửi...";
+  btn.textContent = "\u0110ang g\u1eedi...";
   const name = document.getElementById("checkoutName")?.value.trim();
   const phone = document.getElementById("checkoutPhone")?.value.trim();
   const address = document.getElementById("checkoutAddress")?.value.trim();
   if (!name || !phone || !address) {
-    alert("Vui lòng nhập đầy đủ thông tin.");
+    alert("Vui l\u00f2ng nh\u1eadp \u0111\u1ea7y \u0111\u1ee7 th\u00f4ng tin.");
     btn.disabled = false;
     btn.textContent = originalText;
     return;
   }
   if (!window.cart.length) {
-    alert("Giỏ hàng của bạn đang trống.");
+    alert("Gi\u1ecf h\u00e0ng c\u1ee7a b\u1ea1n \u0111ang tr\u1ed1ng.");
     btn.disabled = false;
     btn.textContent = originalText;
     return;
@@ -276,11 +297,16 @@ async function submitOrder() {
       const baseItem = {
         id: item.id || null,
         category: item.category || "unknown",
-        "Phân loại": item["Phân loại"],
-        Giá: item.Giá,
-        Ảnh: item.Ảnh,
+        product_name: cartItemName(item),
+        product_image_url: cartItemImage(item),
+        feed_source: item.feed_source || null,
+        feed_post_id: item.feed_post_id || null,
+        feed_product_code: item.feed_product_code || null,
         quantity: item.quantity
       };
+      baseItem["Ph\u00e2n lo\u1ea1i"] = cartItemName(item);
+      baseItem["Gi\u00e1"] = cartItemPrice(item);
+      baseItem["\u1ea2nh"] = cartItemImage(item);
       if (item.voucher && typeof item.voucher.amount === "number" && item.voucher.amount > 0) {
         baseItem.voucher = {
           amount: item.voucher.amount,
@@ -292,7 +318,7 @@ async function submitOrder() {
     shippingFee,
     voucherValue,
     promoDiscount: window.promoCodeDiscount || 0,
-    total: window.cart.reduce((sum, i) => sum + (i.Giá || 0) * (i.quantity || 1), 0)
+    total: window.cart.reduce((sum, i) => sum + cartItemPrice(i) * (i.quantity || 1), 0)
        + shippingFee
        - voucherValue
        - (window.promoCodeDiscount || 0)
@@ -311,14 +337,9 @@ async function submitOrder() {
 
   console.log("📦 Sending orderData:", orderData, "orderId:", _orderId, "orderCode:", _orderCode);
 
-  // 🔵 Gửi vào Supabase ERP song song (non-blocking, không ảnh hưởng Make.com flow)
-  if (typeof sendOrderToERP === "function") {
-    var erpPromise = sendOrderToERP(orderData, _orderId, _orderCode).catch(function(e) {
-      console.warn("⚠ ERP error (non-critical):", e.message);
-      throw e;
-    });
-  }
-  if (typeof erpPromise === "undefined") erpPromise = Promise.reject(new Error("ERP sender is unavailable"));
+  var erpPromise = typeof sendOrderToERP === "function"
+    ? sendOrderToERP(orderData, _orderId, _orderCode)
+    : Promise.reject(new Error("ERP sender is unavailable"));
 
   if (!trackedPurchaseOrderIds.has(_orderId) && typeof trackBothPixels === "function" && orderData.total > 0) {
     trackedPurchaseOrderIds.add(_orderId);
@@ -327,7 +348,7 @@ async function submitOrder() {
       contents: window.cart.map(i => ({
         id: i.id || "",
         quantity: i.quantity || 1,
-        item_price: Number(i["Giá"] || 0)
+        item_price: cartItemPrice(i)
       })),
       content_type: "product",
       value: orderData.total,
@@ -335,7 +356,7 @@ async function submitOrder() {
     }, {
       eventID: _orderId
     });
-    console.log("Purchase tracked before Make.com");
+    console.log("✅ Purchase tracked before Make.com");
   }
 
   var makePromise = fetch("https://hook.eu2.make.com/m9o7boye6fl1hstehst7waysmt38b2ul", {
@@ -354,12 +375,17 @@ async function submitOrder() {
       if (failed) throw failed.reason;
       // Analytics nội bộ
       if (typeof window.fsport !== 'undefined') {
+        var feedPostIds = Array.from(new Set((orderData.items || [])
+          .map(function(i) { return i.feed_post_id || null })
+          .filter(Boolean)))
         window.fsport.track('purchase', {
           order_id:   _orderId,
           order_code: _orderCode,
           total:      orderData.total,
+          source:     feedPostIds.length ? 'feed' : 'checkout',
+          feed_post_ids: feedPostIds,
           products:   (orderData.items || []).map(function(i) {
-            return { id: i.id, name: i["Tên"] || i.name || '', qty: i.quantity || 1, price: i["Giá"] || 0 }
+            return { id: i.id, name: i.product_name || i["T\u00ean"] || i.name || '', qty: i.quantity || 1, price: cartItemPrice(i), feed_post_id: i.feed_post_id || null }
           })
         })
       }
@@ -384,7 +410,7 @@ if (window.OC_CHAT && typeof OC_CHAT.open === "function") {
     })
     .catch(err => {
       console.error("❌ Lỗi khi gửi về Make.com:", err);
-      alert("Có lỗi xảy ra khi gửi đơn hàng, vui lòng thử lại sau.");
+      alert("C\u00f3 l\u1ed7i x\u1ea3y ra khi g\u1eedi \u0111\u01a1n h\u00e0ng, vui l\u00f2ng th\u1eed l\u1ea1i sau.");
     })
     .finally(() => {
       btn.disabled = false;
@@ -552,7 +578,7 @@ function _erpPatch(url, anon, body) {
 // Upsert customer theo phone: tạo mới hoặc cập nhật nếu đã có
 async function _erpUpsertCustomer(url, anon, opts) {
   var phone       = String(opts.phone || "").trim();
-  var name        = opts.name || "Khách";
+  var name        = opts.name || "Kh\u00e1ch";
   var address     = opts.address || "";
   var order_total = Number(opts.order_total || 0);
   var order_id    = opts.order_id || null;
@@ -601,7 +627,7 @@ async function _erpUpsertCustomer(url, anon, opts) {
     // Thêm địa chỉ mặc định
     if (customerId && address) {
       await _erpPost(url + "/rest/v1/customer_addresses", anon, {
-        customer_id: customerId, label: "Mặc định", address: address, is_default: true
+        customer_id: customerId, label: "M\u1eb7c \u0111\u1ecbnh", address: address, is_default: true
       });
     }
     console.log("✅ ERP: tạo customer mới", phone, "id:", customerId);
@@ -628,7 +654,7 @@ async function _erpUpsertCustomer(url, anon, opts) {
       if (!existingAddrs.includes(address)) {
         await _erpPost(url + "/rest/v1/customer_addresses", anon, {
           customer_id: customerId,
-          label: "Địa chỉ " + (existingAddrs.length + 1),
+          label: "\u0110\u1ecba ch\u1ec9 " + (existingAddrs.length + 1),
           address: address, is_default: false
         });
       }
@@ -657,7 +683,7 @@ async function sendOrderToERP(orderData, orderId, orderCode) {
     console.log("🔵 ERP: bắt đầu gửi đơn về Supabase...");
 
     var subtotal = (orderData.items || []).reduce(function(s, i) {
-      return s + (i.Giá || 0) * (i.quantity || 1);
+      return s + cartItemPrice(i) * (i.quantity || 1);
     }, 0);
 
     // orderId và orderCode nhận từ submitOrder() — không tạo lại ở đây
@@ -695,7 +721,7 @@ async function sendOrderToERP(orderData, orderId, orderCode) {
         order_id:       orderId,
         product_id:     item.id || null,
         category:       item.category || orderData.category || "",
-        unit_price:     Number(item.Giá || 0),
+        unit_price:     cartItemPrice(item),
         voucher_amount: Number(item.voucher && item.voucher.amount || 0),
         voucher_label:  item.voucher && item.voucher.label || null,
         quantity:       Number(item.quantity || 1)

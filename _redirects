@@ -1,0 +1,3 @@
+/feed-sitemap.xml  https://xcigbbcpwfzluqazadez.supabase.co/functions/v1/feed-sitemap  200
+/feed/:slug/  https://xcigbbcpwfzluqazadez.supabase.co/functions/v1/feed-post-seo/:slug  200
+/feed/:slug   https://xcigbbcpwfzluqazadez.supabase.co/functions/v1/feed-post-seo/:slug  200
