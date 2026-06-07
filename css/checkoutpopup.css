@@ -22,16 +22,22 @@
   width: 100%;
   max-width: 480px;
   height: 100%;
+  height: 100dvh;
+  min-width: 0;
   background: #fff;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }
 
 
 .checkout-inner-scroll {
   flex: 1;
+  min-height: 0;
   overflow-y: auto;
+  overscroll-behavior: contain;
   padding: 20px;
+  padding-bottom: max(20px, env(safe-area-inset-bottom));
 }
 
 /* === NÚT ĐÓNG === */
@@ -185,16 +191,33 @@
 .checkout-form .form-row {
   display: flex;
   gap: 8px;
+  min-width: 0;
 }
 
 .checkout-form input {
   padding: 8px;
-  font-size: 13px;
+  font-size: 16px;
+  line-height: 1.35;
   border: 1px solid #ccc;
   border-radius: 6px;
-  flex: 1;
+  flex: 1 1 0;
+  min-width: 0;
   width: 100%;
   box-sizing: border-box;
+  background: #fff;
+  color: #000;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.checkout-form .form-row input {
+  width: 0;
+}
+
+.checkout-form input:focus {
+  outline: none;
+  border-color: #777;
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.06);
 }
 
 /* === NÚT ĐẶT HÀNG === */
