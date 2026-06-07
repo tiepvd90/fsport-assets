@@ -202,7 +202,7 @@
       bodyHtml =
         '<div class="fc-body-wrap">' +
           '<div class="fc-body is-clamped" id="body-' + p.id + '">' + _nl2br(_esc(p.body)) + '</div>' +
-          '<button class="fc-see-more" id="seem-' + p.id + '" style="display:none">Xem th\u00eam</button>' +
+          '<button class="fc-see-more" id="seem-' + p.id + '" style="display:none">Xem Th\u00eam</button>' +
         '</div>'
     }
 
@@ -342,7 +342,7 @@
           seeEl.addEventListener('click', function () {
             var open = !bodyEl.classList.contains('is-clamped')
             bodyEl.classList.toggle('is-clamped', open)
-            seeEl.textContent = open ? 'Xem th\u00eam' : '\u1ea8n b\u1edbt'
+            seeEl.textContent = open ? 'Xem Th\u00eam' : '\u1ea8n B\u1edbt'
           })
         }
       })
