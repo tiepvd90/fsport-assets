@@ -108,7 +108,7 @@ setInterval(() => {
   window.__collectionIconInjected = true;
 
   const s = document.createElement('script');
-  s.src = '/js/collectionIcon.js?v=1';
+  s.src = '/js/collectionIcon.js?v=2';
   s.defer = true;
   s.onerror = (e) => console.warn('Không load được collectionIcon.js', e);
   document.head.appendChild(s);
@@ -179,7 +179,7 @@ setInterval(() => {
   function loadAiChat () {
     if (window.AiChat) { injectWidget(); return }
     var s = document.createElement('script')
-    s.src = '/js/ai-chat.js?v=20260607-2'
+    s.src = '/js/ai-chat.js?v=20260607-3'
     s.onload = function () { injectWidget() }
     s.onerror = function () { console.warn('[AiChat] Không load được /js/ai-chat.js') }
     document.head.appendChild(s)

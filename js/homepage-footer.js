@@ -141,7 +141,7 @@
       window.FSPORT_AI_CHAT_LOADING = new Promise(function(resolve, reject) {
       var script = document.createElement('script')
       script.id = 'fs-footer-ai-chat-loader'
-      script.src = '/js/ai-chat.js'
+      script.src = '/js/ai-chat.js?v=20260607-3'
         script.onload = resolve
         script.onerror = reject
       document.body.appendChild(script)

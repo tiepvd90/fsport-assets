@@ -5,7 +5,9 @@
   "use strict";
 
   function renderCollectionIcons() {
-    if (document.getElementById("bstPickleballIcon")) return;
+    const existing = document.getElementById("bstPickleballIcon");
+    if (existing) existing.remove();
+    return;
 
     // Nếu body chưa sẵn, thử lại sau 100ms
     if (!document.body) {

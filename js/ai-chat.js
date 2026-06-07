@@ -307,6 +307,7 @@
         '#aic-chips::-webkit-scrollbar{height:5px;display:block}' +
         '#aic-chips::-webkit-scrollbar-track{background:#e2e8f0;border-radius:3px}' +
         '#aic-chips::-webkit-scrollbar-thumb{background:#94a3b8;border-radius:3px}' +
+        'body.aic-panel-open #cartIcon,body.aic-panel-open #fsport-nav-footer,body.aic-panel-open #bstPickleballIcon{display:none!important}' +
         '@media(max-width:767px){' +
           '#aic-panel{position:fixed!important;inset:0!important;' +
           'width:100%!important;height:100dvh!important;' +
@@ -549,6 +550,7 @@
   function _openPanel(prefillText) {
     if (_isOpen) return
     _isOpen = true
+    document.body.classList.add('aic-panel-open')
     var container = document.getElementById('aic-container')
     var bar       = document.getElementById('aic-bar')
     var panel     = document.getElementById('aic-panel')
@@ -626,6 +628,7 @@
 
   function _closePanel() {
     _isOpen = false
+    document.body.classList.remove('aic-panel-open')
     // Restore cuộn — khôi phục đúng vị trí
     document.body.style.overflow = ''
     document.body.style.position = ''
