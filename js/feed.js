@@ -994,8 +994,8 @@
 
   // ─── ANALYTICS ────────────────────────────────────────────
   function _trackEvent(type, meta) {
-    if (global.FsportAnalytics && global.FsportAnalytics.track) {
-      global.FsportAnalytics.track(type, meta); return
+    if (global.fsport && typeof global.fsport.track === 'function') {
+      global.fsport.track(type, meta); return
     }
     var url = supaUrl(), anon = supaAnon()
     if (!url || !anon) return
