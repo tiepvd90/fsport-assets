@@ -46,6 +46,7 @@ let shippingFee = 0;
 let shippingFeeOriginal = 0;
 let voucherValue = 0;
 const trackedPurchaseOrderIds = new Set();
+const GA4_PURCHASED_ORDERS_KEY = "fsport_ga4_purchased_orders";
 // ------------------------
 // 🔹 AUTOSAVE – THÔNG TIN NGƯỜI NHẬN
 // ------------------------
@@ -137,6 +138,47 @@ function cartItemPrice(item) {
 
 function cartItemImage(item) {
   return item["\u1ea2nh"] || item["\u00e1\u00ba\u00a2nh"] || item.image || item.image_url || item.product_image_url || "";
+}
+
+function hasTrackedGA4Purchase(orderId) {
+  if (!orderId || trackedPurchaseOrderIds.has("ga4:" + orderId)) return true;
+  try {
+    const ids = JSON.parse(localStorage.getItem(GA4_PURCHASED_ORDERS_KEY) || "[]");
+    return Array.isArray(ids) && ids.includes(orderId);
+  } catch (e) {
+    return false;
+  }
+}
+
+function markGA4PurchaseTracked(orderId) {
+  if (!orderId) return;
+  trackedPurchaseOrderIds.add("ga4:" + orderId);
+  try {
+    const ids = JSON.parse(localStorage.getItem(GA4_PURCHASED_ORDERS_KEY) || "[]");
+    const next = Array.isArray(ids) ? ids.filter(Boolean) : [];
+    if (!next.includes(orderId)) next.push(orderId);
+    localStorage.setItem(GA4_PURCHASED_ORDERS_KEY, JSON.stringify(next.slice(-100)));
+  } catch (e) {}
+}
+
+function trackGA4PurchaseOnce(orderData, orderId) {
+  if (!orderData || !orderId || hasTrackedGA4Purchase(orderId)) return;
+  if (typeof window.trackGA4EcommerceEvent !== "function") return;
+  if (!orderData.total || orderData.total <= 0) return;
+
+  window.trackGA4EcommerceEvent("purchase", {
+    transaction_id: orderId,
+    currency: "VND",
+    value: orderData.total,
+    shipping: orderData.shippingFee || 0,
+    items: (orderData.items || []).map(item => ({
+      item_id: item.id || item.feed_product_code || "",
+      item_name: item.product_name || cartItemName(item),
+      price: cartItemPrice(item),
+      quantity: item.quantity || 1
+    }))
+  });
+  markGA4PurchaseTracked(orderId);
 }
 // ------------------------
 // 🔹 RENDER GIỎ HÀNG + TỔNG KẾT
@@ -389,6 +431,7 @@ async function submitOrder() {
           })
         })
       }
+      trackGA4PurchaseOnce(orderData, _orderId);
       window.cart = [];
       saveCart();
       hideCheckoutPopup();

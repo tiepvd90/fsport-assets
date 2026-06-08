@@ -730,6 +730,18 @@
     }
 
     _trackEvent('feed_atc', { post_id: _productSheet.post && _productSheet.post.id, source: 'feed_product_popup', product_code: product.product_code })
+    if (typeof global.trackGA4EcommerceEvent === 'function') {
+      global.trackGA4EcommerceEvent('add_to_cart', {
+        currency: 'VND',
+        value: Number(product.product_price || 0),
+        items: [{
+          item_id: product.product_code,
+          item_name: _productDisplayName(product),
+          price: Number(product.product_price || 0),
+          quantity: 1
+        }]
+      })
+    }
     _closeFeedProductSheet()
     _openCheckoutAfterFeedAtc()
   }

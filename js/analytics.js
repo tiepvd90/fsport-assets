@@ -54,9 +54,23 @@
       var kv = pair.split('=')
       if (kv[0]) p[decodeURIComponent(kv[0])] = decodeURIComponent(kv[1] || '')
     })
+    function refHost() {
+      if (!document.referrer) return ''
+      try { return new URL(document.referrer).hostname.replace(/^www\./, '') } catch (e) { return '' }
+    }
+    function normalizeSource(source, medium) {
+      var s = String(source || '').trim()
+      var m = String(medium || '').trim().toLowerCase()
+      var low = s.toLowerCase()
+      if (low === 'fb' || low === 'facebook' || low === 'fb ads' || low === 'facebook ads') return 'FB Ads'
+      if ((low.indexOf('facebook.') >= 0 || low.indexOf('fb.') >= 0) && /paid|cpc|ads?|social_paid/.test(m)) return 'FB Ads'
+      if (low === 'google ads' || low === 'google adwords') return 'google'
+      if (low === 'bing ads') return 'bing'
+      return s || null
+    }
     // Nhận diện click ID của từng nền tảng quảng cáo
     var clickIds = {
-      fbclid:  { source: 'facebook', medium: 'paid' },
+      fbclid:  { source: 'FB Ads',   medium: 'paid' },
       gclid:   { source: 'google',   medium: 'paid' },
       ttclid:  { source: 'tiktok',   medium: 'paid' },
       twclid:  { source: 'twitter',  medium: 'paid' },
@@ -69,15 +83,32 @@
         if (p[cid]) { detectedSource = clickIds[cid].source; detectedMedium = clickIds[cid].medium; break }
       }
     }
+    detectedSource = normalizeSource(detectedSource, detectedMedium)
+    if (!detectedSource && document.referrer) {
+      var host = refHost()
+      if (/google\./i.test(host)) {
+        detectedSource = 'google'
+        detectedMedium = 'organic'
+      } else if (/bing\./i.test(host)) {
+        detectedSource = 'bing'
+        detectedMedium = 'organic'
+      } else if (/yahoo\./i.test(host)) {
+        detectedSource = 'yahoo'
+        detectedMedium = 'organic'
+      } else if (/facebook\.|fb\./i.test(host)) {
+        detectedSource = host
+        detectedMedium = 'referral'
+      } else if (host) {
+        detectedSource = host
+        detectedMedium = 'referral'
+      }
+    }
     // Có "?" trong URL nhưng không nhận ra nguồn → dùng referrer domain hoặc 'unknown'
     // Không có "?" → mới tính là Direct (null)
+    // Direct only when there is no UTM/click-id/referrer. Unknown means URL has params but no source signal.
     var hasParams = global.location.search.length > 1
     if (!detectedSource && hasParams) {
-      if (document.referrer) {
-        try { detectedSource = new URL(document.referrer).hostname.replace('www.', '') } catch (e) {}
-      } else {
-        detectedSource = 'unknown'
-      }
+      detectedSource = 'unknown'
     }
     return {
       utm_source:   detectedSource,
@@ -105,6 +136,7 @@
   var _ready        = false
   var _queue        = []
   var _sessionStart = null
+  var _sourceContext = null
 
   function init() {
     // 1. Lấy hoặc tạo user_id
@@ -121,6 +153,7 @@
     var isNew      = !cachedUser || cachedUser.user_id !== _userId
 
     var src = getSource()
+    _sourceContext = src
 
     if (isNew) {
       // Tạo mới — chỉ cache localStorage SAU KHI insert thành công
@@ -221,10 +254,18 @@
   // ─── TRACK ───────────────────────────────────────────────────
   function _track(eventType, metadata) {
     if (!_userId) return
+    var meta = {}
+    Object.keys(metadata || {}).forEach(function (k) { meta[k] = metadata[k] })
+    if (_sourceContext) {
+      if (meta.traffic_source === undefined) meta.traffic_source = _sourceContext.utm_source || null
+      if (meta.traffic_medium === undefined) meta.traffic_medium = _sourceContext.utm_medium || null
+      if (meta.traffic_campaign === undefined) meta.traffic_campaign = _sourceContext.utm_campaign || null
+      if (meta.referrer === undefined) meta.referrer = _sourceContext.referrer || null
+    }
     xhr('POST', '/rest/v1/analytics_events', {
       user_id:    _userId,
       event_type: eventType,
-      metadata:   metadata || {},
+      metadata:   meta,
       created_at: new Date().toISOString()
     })
   }

@@ -648,6 +648,25 @@
     }
   }
 
+  function trackGA4ViewItem() {
+    if (state.ga4ViewItemTracked) return;
+    state.ga4ViewItemTracked = true;
+    if (typeof window.trackGA4EcommerceEvent !== "function") return;
+
+    var base = state.base || {};
+    var price = toNumber(base.price || base[KEY.price], 0);
+    window.trackGA4EcommerceEvent("view_item", {
+      currency: "VND",
+      value: price,
+      items: [{
+        item_id: base.id || window.productPage || getProductPage(),
+        item_name: window.productName || base.name || base.title || document.title || window.productPage || getProductPage(),
+        price: price,
+        quantity: 1
+      }]
+    });
+  }
+
   function bindAddToCartButton() {
     var atcBtn = $("#btn-atc");
     if (!atcBtn || state.isBound) return;
@@ -693,6 +712,7 @@
     var cartItem = Object.assign({}, product, {
       quantity: quantity,
       loai: loai,
+      product_name: window.productName || document.title || window.productPage || product.id,
       voucher: voucherAmount > 0 ? { amount: voucherAmount } : undefined
     });
 
@@ -759,6 +779,19 @@
         price: price
       });
     }
+
+    if (typeof window.trackGA4EcommerceEvent === "function") {
+      window.trackGA4EcommerceEvent("add_to_cart", {
+        currency: "VND",
+        value: price * quantity,
+        items: [{
+          item_id: product.id || window.productPage || getProductPage(),
+          item_name: window.productName || document.title || product.name || phanLoaiText || product.id || window.productPage || getProductPage(),
+          price: price,
+          quantity: quantity
+        }]
+      });
+    }
   }
 
   function initCartPopup() {
@@ -779,6 +812,7 @@
         window.baseVariant = state.base;
         window.allVariants = state.variants;
         window.mainImageKey = state.mainImageKey;
+        trackGA4ViewItem();
         renderOptions();
         bindAddToCartButton();
       })
