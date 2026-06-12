@@ -262,6 +262,14 @@
       if (meta.traffic_campaign === undefined) meta.traffic_campaign = _sourceContext.utm_campaign || null
       if (meta.referrer === undefined) meta.referrer = _sourceContext.referrer || null
     }
+    if (eventType === 'purchase') {
+      var phone = meta.customer_phone || meta.phone || null
+      var updates = { user_type: 'customer', last_seen: new Date().toISOString() }
+      if (phone) updates.phone = phone
+      xhr('PATCH', '/rest/v1/analytics_users?user_id=eq.' + encodeURIComponent(_userId), updates)
+      lsSet(LS_USER_KEY, { user_id: _userId, user_type: 'customer' })
+      _userType = 'customer'
+    }
     xhr('POST', '/rest/v1/analytics_events', {
       user_id:    _userId,
       event_type: eventType,

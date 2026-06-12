@@ -383,6 +383,30 @@ async function submitOrder() {
     ? sendOrderToERP(orderData, _orderId, _orderCode)
     : Promise.reject(new Error("ERP sender is unavailable"));
 
+  function trackPurchaseAfterERP() {
+    if (typeof window.fsport !== 'undefined') {
+      var feedPostIds = Array.from(new Set((orderData.items || [])
+        .map(function(i) { return i.feed_post_id || null })
+        .filter(Boolean)))
+      window.fsport.track('purchase', {
+        order_id:   _orderId,
+        order_code: _orderCode,
+        customer_phone: orderData.phone,
+        customer_name:  orderData.name,
+        total:      orderData.total,
+        source:     feedPostIds.length ? 'feed' : 'checkout',
+        feed_post_ids: feedPostIds,
+        products:   (orderData.items || []).map(function(i) {
+          return { id: i.id, name: i.product_name || i["T\u00ean"] || i.name || '', qty: i.quantity || 1, price: cartItemPrice(i), feed_post_id: i.feed_post_id || null }
+        })
+      })
+    }
+    trackGA4PurchaseOnce(orderData, _orderId);
+  }
+
+  // Purchase chỉ được ghi khi ERP đã tạo đơn; không phụ thuộc Make webhook.
+  erpPromise.then(trackPurchaseAfterERP).catch(function() {});
+
   if (!trackedPurchaseOrderIds.has(_orderId) && typeof trackBothPixels === "function" && orderData.total > 0) {
     trackedPurchaseOrderIds.add(_orderId);
     trackBothPixels("Purchase", {
@@ -413,25 +437,12 @@ async function submitOrder() {
 
   Promise.allSettled([makePromise, erpPromise])
     .then(results => {
-      var failed = results.find(function(result) { return result.status === "rejected"; });
-      if (failed) throw failed.reason;
-      // Analytics nội bộ
-      if (typeof window.fsport !== 'undefined') {
-        var feedPostIds = Array.from(new Set((orderData.items || [])
-          .map(function(i) { return i.feed_post_id || null })
-          .filter(Boolean)))
-        window.fsport.track('purchase', {
-          order_id:   _orderId,
-          order_code: _orderCode,
-          total:      orderData.total,
-          source:     feedPostIds.length ? 'feed' : 'checkout',
-          feed_post_ids: feedPostIds,
-          products:   (orderData.items || []).map(function(i) {
-            return { id: i.id, name: i.product_name || i["T\u00ean"] || i.name || '', qty: i.quantity || 1, price: cartItemPrice(i), feed_post_id: i.feed_post_id || null }
-          })
-        })
+      var makeResult = results[0];
+      var erpResult = results[1];
+      if (erpResult.status === "rejected") throw erpResult.reason;
+      if (makeResult.status === "rejected") {
+        console.warn("⚠ Make webhook thất bại nhưng ERP đã tạo đơn:", makeResult.reason);
       }
-      trackGA4PurchaseOnce(orderData, _orderId);
       window.cart = [];
       saveCart();
       hideCheckoutPopup();
