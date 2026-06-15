@@ -9,6 +9,8 @@
   var LS_UID_KEY      = 'fsport_uid'
   var LS_USER_KEY     = 'fsport_user'
   var LS_CHECKOUT_KEY = 'checkoutInfo'
+  var LS_PROFILE_TOKEN_KEY = 'fsport_profile_token'
+  var LS_PROFILE_ID_KEY    = 'fsport_profile_id'
 
   // ─── UTILS ───────────────────────────────────────────────────
   function uuid() {
@@ -44,6 +46,38 @@
       req.onerror = function () { resolve({ ok: false }) }
       req.send(body ? JSON.stringify(body) : null)
     })
+  }
+
+  function rpc(name, body) {
+    return new Promise(function (resolve) {
+      if (!supaUrl() || !supaAnon()) return resolve({ ok: false, data: null })
+      var req = new XMLHttpRequest()
+      req.open('POST', supaUrl() + '/rest/v1/rpc/' + name, true)
+      req.setRequestHeader('apikey', supaAnon())
+      req.setRequestHeader('Authorization', 'Bearer ' + supaAnon())
+      req.setRequestHeader('Accept', 'application/json')
+      req.setRequestHeader('Content-Type', 'application/json')
+      req.onload = function () {
+        var data = null
+        try { data = JSON.parse(req.responseText || 'null') } catch (e) {}
+        resolve({ ok: req.status < 300, data: data })
+      }
+      req.onerror = function () { resolve({ ok: false, data: null }) }
+      req.send(JSON.stringify(body || {}))
+    })
+  }
+
+  function profileAttribution(src) {
+    src = src || {}
+    return {
+      source: src.utm_source || null,
+      medium: src.utm_medium || null,
+      campaign: src.utm_campaign || null,
+      content: src.utm_content || null,
+      referrer: src.referrer || null,
+      landing_url: src.landing_url || null,
+      device: src.device || null
+    }
   }
 
   // ─── SOURCE / UTM ────────────────────────────────────────────
@@ -132,6 +166,8 @@
 
   // ─── INIT ────────────────────────────────────────────────────
   var _userId       = null
+  var _profileToken = null
+  var _profileId    = null
   var _userType     = 'anonymous'
   var _ready        = false
   var _queue        = []
@@ -143,6 +179,11 @@
     var stored = lsGet(LS_UID_KEY)
     _userId = (typeof stored === 'string' && stored) ? stored : uuid()
     lsSet(LS_UID_KEY, _userId)
+    var storedToken = lsGet(LS_PROFILE_TOKEN_KEY)
+    _profileToken = (typeof storedToken === 'string' && storedToken) ? storedToken : uuid()
+    lsSet(LS_PROFILE_TOKEN_KEY, _profileToken)
+    var storedProfileId = lsGet(LS_PROFILE_ID_KEY)
+    _profileId = (typeof storedProfileId === 'string' && storedProfileId) ? storedProfileId : null
 
     // 2. Detect customer
     var customer = detectCustomer()
@@ -155,7 +196,24 @@
     var src = getSource()
     _sourceContext = src
 
-    if (isNew) {
+    var resolvePromise = rpc('resolve_website_profile', {
+      p_browser_token: _profileToken,
+      p_legacy_uid: _userId,
+      p_attribution: profileAttribution(src)
+    })
+    resolvePromise.then(function (res) {
+      if (!res.ok || !res.data) return
+      _profileId = res.data.profile_id || _profileId
+      _userType = res.data.status || _userType
+      if (_profileId) lsSet(LS_PROFILE_ID_KEY, _profileId)
+    })
+
+    resolvePromise.then(function (profileRes) {
+      if (profileRes.ok && profileRes.data) {
+        lsSet(LS_USER_KEY, { user_id: _userId, user_type: _userType })
+        return
+      }
+      if (isNew) {
       // Tạo mới — chỉ cache localStorage SAU KHI insert thành công
       var payload = {
         user_id:      _userId,
@@ -174,16 +232,17 @@
       xhr('POST', '/rest/v1/analytics_users', payload).then(function (res) {
         if (res.ok) lsSet(LS_USER_KEY, { user_id: _userId, user_type: customer.user_type })
       })
-    } else {
+      } else {
       // Cập nhật last_seen + user_type (có thể đã thành customer)
       var updates = { last_seen: new Date().toISOString(), user_type: customer.user_type }
       if (customer.phone) updates.phone = customer.phone
-      xhr('PATCH', '/rest/v1/analytics_users?user_id=eq.' + _userId, updates)
+        xhr('PATCH', '/rest/v1/analytics_users?user_id=eq.' + encodeURIComponent(_userId), updates)
       // Cập nhật cache nếu user_type thay đổi
       if (cachedUser.user_type !== customer.user_type) {
         lsSet(LS_USER_KEY, { user_id: _userId, user_type: customer.user_type })
       }
-    }
+      }
+    })
 
     _ready = true
     _sessionStart = Date.now()
@@ -270,11 +329,25 @@
       lsSet(LS_USER_KEY, { user_id: _userId, user_type: 'customer' })
       _userType = 'customer'
     }
-    xhr('POST', '/rest/v1/analytics_events', {
-      user_id:    _userId,
-      event_type: eventType,
-      metadata:   meta,
-      created_at: new Date().toISOString()
+    rpc('track_profile_event', {
+      p_browser_token: _profileToken,
+      p_legacy_uid: _userId,
+      p_event_type: eventType,
+      p_metadata: meta,
+      p_attribution: profileAttribution(_sourceContext),
+      p_profile_session_id: null
+    }).then(function (res) {
+      if (res.ok && res.data) {
+        _profileId = res.data.profile_id || _profileId
+        if (_profileId) lsSet(LS_PROFILE_ID_KEY, _profileId)
+        return
+      }
+      xhr('POST', '/rest/v1/analytics_events', {
+        user_id:    _userId,
+        event_type: eventType,
+        metadata:   meta,
+        created_at: new Date().toISOString()
+      })
     })
   }
 
@@ -288,6 +361,29 @@
 
   function getUserId()   { return _userId }
   function getUserType() { return _userType }
+  function getProfileId() { return _profileId }
+  function getProfileToken() { return _profileToken }
+
+  function identifyCustomer(customer) {
+    customer = customer || {}
+    return rpc('identify_profile_customer', {
+      p_browser_token: _profileToken,
+      p_legacy_uid: _userId,
+      p_phone: customer.phone || null,
+      p_name: customer.name || null,
+      p_email: customer.email || null,
+      p_customer_id: customer.customerId || null,
+      p_order_id: customer.orderId || null
+    }).then(function (res) {
+      if (res.ok && res.data) {
+        _profileId = res.data.profile_id || _profileId
+        _userType = res.data.status || 'customer'
+        if (_profileId) lsSet(LS_PROFILE_ID_KEY, _profileId)
+        lsSet(LS_USER_KEY, { user_id: _userId, user_type: _userType })
+      }
+      return res
+    })
+  }
 
   // ─── AUTO: view_product (sau 10 giây) ────────────────────────
   function autoTrackProduct() {
@@ -306,6 +402,9 @@
   global.fsport.track       = track
   global.fsport.getUserId   = getUserId
   global.fsport.getUserType = getUserType
+  global.fsport.getProfileId = getProfileId
+  global.fsport.getProfileToken = getProfileToken
+  global.fsport.identifyCustomer = identifyCustomer
 
   // Khởi động khi DOM ready
   if (document.readyState === 'loading') {

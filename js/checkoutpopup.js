@@ -383,7 +383,15 @@ async function submitOrder() {
     ? sendOrderToERP(orderData, _orderId, _orderCode)
     : Promise.reject(new Error("ERP sender is unavailable"));
 
-  function trackPurchaseAfterERP() {
+  async function trackPurchaseAfterERP(erpResult) {
+    if (window.fsport && typeof window.fsport.identifyCustomer === 'function') {
+      await window.fsport.identifyCustomer({
+        phone: orderData.phone,
+        name: orderData.name,
+        customerId: erpResult && erpResult.customerId,
+        orderId: _orderId
+      })
+    }
     if (typeof window.fsport !== 'undefined') {
       var feedPostIds = Array.from(new Set((orderData.items || [])
         .map(function(i) { return i.feed_post_id || null })
@@ -791,8 +799,9 @@ async function sendOrderToERP(orderData, orderId, orderCode) {
     }
 
     // 3. Upsert customer (non-critical, không block)
+    var customerId = null;
     try {
-      await _erpUpsertCustomer(_url, _anon, {
+      customerId = await _erpUpsertCustomer(_url, _anon, {
         phone:       orderData.phone,
         name:        orderData.name,
         address:     orderData.address,
@@ -803,7 +812,7 @@ async function sendOrderToERP(orderData, orderId, orderCode) {
       console.warn("⚠ ERP customer upsert failed (non-critical):", custErr.message);
     }
 
-    return { created: true, orderId: orderId, orderCode: orderCode };
+    return { created: true, orderId: orderId, orderCode: orderCode, customerId: customerId };
   } catch (err) {
     console.warn("⚠ ERP sendOrderToERP error:", err.message || err);
     throw err;

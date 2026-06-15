@@ -113,11 +113,16 @@
   async function _initSession() {
     var key = (_session && _session.session_key) || _lsGet()?.session_key || _uuid()
     var uid = (typeof window.fsport !== 'undefined') ? window.fsport.getUserId() : null
-    var cr  = await _post('/rest/v1/ai_chat_sessions', {
+    var profileId = (window.fsport && typeof window.fsport.getProfileId === 'function')
+      ? window.fsport.getProfileId()
+      : null
+    var sessionPayload = {
       session_key: key, slug: 'global', product_group: _group,
       user_id: uid,
       message_count: 0, is_blocked: false, nonsense_count: 0, has_phone: false
-    })
+    }
+    if (profileId) sessionPayload.profile_id = profileId
+    var cr  = await _post('/rest/v1/ai_chat_sessions', sessionPayload)
     var created = (cr.ok && cr.data && cr.data[0]) || null
     if (created) {
       _session = created
