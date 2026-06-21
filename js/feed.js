@@ -361,15 +361,24 @@
     var bodyEl = document.getElementById('body-' + p.id)
     var seeEl  = document.getElementById('seem-' + p.id)
     if (bodyEl && seeEl) {
+      function updateSeeMoreVisibility() {
+        var wasClamped = bodyEl.classList.contains('is-clamped')
+        bodyEl.classList.remove('is-clamped')
+        var fullHeight = bodyEl.getBoundingClientRect().height
+        var lineHeight = parseFloat(global.getComputedStyle(bodyEl).lineHeight) || 22
+        if (wasClamped) bodyEl.classList.add('is-clamped')
+        seeEl.style.display = fullHeight > lineHeight * BODY_LINES + 4 ? 'block' : 'none'
+      }
+
       requestAnimationFrame(function () {
-        if (bodyEl.scrollHeight > bodyEl.clientHeight + 4) {
-          seeEl.style.display = 'block'
-          seeEl.addEventListener('click', function () {
-            var open = !bodyEl.classList.contains('is-clamped')
-            bodyEl.classList.toggle('is-clamped', open)
-            seeEl.textContent = open ? 'Xem Th\u00eam' : '\u1ea8n B\u1edbt'
-          })
-        }
+        updateSeeMoreVisibility()
+        setTimeout(updateSeeMoreVisibility, 100)
+      })
+
+      seeEl.addEventListener('click', function () {
+        var isOpening = bodyEl.classList.contains('is-clamped')
+        bodyEl.classList.toggle('is-clamped', !isOpening)
+        seeEl.textContent = isOpening ? '\u1ea8n B\u1edbt' : 'Xem Th\u00eam'
       })
     }
 
