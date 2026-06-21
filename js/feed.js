@@ -9,20 +9,24 @@
   'use strict'
 
   // ─── CONSTANTS ────────────────────────────────────────────
-  var PAGE_SIZE    = 10
+  var INITIAL_PAGE_SIZE = 6
+  var PAGE_SIZE         = 10
   var BODY_LINES   = 2   // số dòng hiển thị trước khi truncate
 
   // ─── STATE ────────────────────────────────────────────────
-  var _offset      = 0
   var _loading     = false
   var _noMore      = false
   var _allPosts    = []
+  var _postsById   = {}
+  var _cursor      = null
   var _likedSet    = {}
   var _uid         = ''
   var _viewTimers  = {}
+  var _viewObserver = null
   var _settings    = { enabled: true, likesEnabled: true, brandName: 'F-SPORT', brandLogo: '/favicon.png' }
   var _productSheet = { post: null, products: [], selectedCode: '' }
   var _feedSheetScrollY = 0
+  var _userHasScrolled = false
 
   function supaUrl()  { return global.FSPORT_SUPABASE_URL  || '' }
   function supaAnon() { return global.FSPORT_SUPABASE_ANON || '' }
@@ -44,6 +48,7 @@
       if (s.enabled === false) { _renderDisabled(); return }
       _fetchPosts(true)
       _initInfiniteScroll()
+      _initScrollToTop()
       _initLightbox()
       _trackEvent('feed_enter', { source: document.referrer ? 'referral' : 'direct' })
     })
@@ -100,19 +105,33 @@
 
   // ─── FETCH POSTS ──────────────────────────────────────────
   function _fetchPosts(reset) {
-    if (_loading || _noMore) return
+    if (_loading || (_noMore && !reset)) return
     _loading = true
-    if (reset) { _offset = 0; _allPosts = []; _noMore = false }
+    if (reset) {
+      _allPosts = []
+      _postsById = {}
+      _cursor = null
+      _noMore = false
+      Object.keys(_viewTimers).forEach(function (id) { clearTimeout(_viewTimers[id]) })
+      _viewTimers = {}
+      if (_viewObserver) _viewObserver.disconnect()
+    }
 
     var url = supaUrl(), anon = supaAnon()
     if (!url || !anon) { _renderMockPosts(); _loading = false; return }
 
+    var requestSize = reset ? INITIAL_PAGE_SIZE : PAGE_SIZE
     var q = url + '/rest/v1/feed_posts'
       + '?status=eq.published'
-      + '&order=created_at.desc'
-      + '&limit=' + PAGE_SIZE
-      + '&offset=' + _offset
+      + '&order=created_at.desc,id.desc'
+      + '&limit=' + requestSize
       + '&select=id,slug,title,body,content_type,images,video_url,video_id,tags,like_count,view_count,product_tap_count,feed_atwl_count,feed_atc_count,created_at,feed_post_products(product_code,product_name,product_image_url,product_price,product_category,product_color,product_size,display_order)'
+
+    if (_cursor) {
+      var cursorFilter = '(created_at.lt.' + _cursor.createdAt
+        + ',and(created_at.eq.' + _cursor.createdAt + ',id.lt.' + _cursor.id + '))'
+      q += '&or=' + encodeURIComponent(cursorFilter)
+    }
 
     var xhr = new XMLHttpRequest()
     xhr.open('GET', q, true)
@@ -127,9 +146,15 @@
         try {
           var posts = JSON.parse(xhr.responseText) || []
           if (!posts.length && reset) { _renderEmpty(); return }
-          if (posts.length < PAGE_SIZE) _noMore = true
-          _offset += posts.length
-          posts.forEach(function (p) { _allPosts.push(p) })
+          if (posts.length < requestSize) _noMore = true
+          if (posts.length) {
+            var lastPost = posts[posts.length - 1]
+            _cursor = { createdAt: lastPost.created_at, id: lastPost.id }
+          }
+          posts.forEach(function (p) {
+            _allPosts.push(p)
+            _postsById[p.id] = p
+          })
           _renderPosts(posts, reset)
           _updateLoadMore()
           _initViewTracking()
@@ -174,8 +199,8 @@
     var list = document.getElementById('feed-list')
     if (!list) return
     if (reset) list.innerHTML = ''
-    posts.forEach(function (p) {
-      list.insertAdjacentHTML('beforeend', _buildCard(p))
+    posts.forEach(function (p, index) {
+      list.insertAdjacentHTML('beforeend', _buildCard(p, reset && index === 0))
       _bindCard(p)
     })
   }
@@ -183,17 +208,17 @@
   // ═══════════════════════════════════════════════════════════
   // CARD HTML
   // ═══════════════════════════════════════════════════════════
-  function _buildCard(p) {
+  function _buildCard(p, prioritizeMedia) {
     var liked   = !!_likedSet[p.id]
 
     // ── Media ───────────────────────────────────────────────
     var mediaHtml = ''
     if (p.content_type === 'photo' && p.images && p.images.length > 0) {
-      mediaHtml = _buildPhotoMedia(p)
+      mediaHtml = _buildPhotoMedia(p, prioritizeMedia)
     } else if (p.content_type === 'carousel' && p.images && p.images.length > 0) {
-      mediaHtml = _buildCarouselMedia(p)
+      mediaHtml = _buildCarouselMedia(p, prioritizeMedia)
     } else if (p.content_type === 'video' && _youtubeId(p)) {
-      mediaHtml = _buildVideoMedia(p)
+      mediaHtml = _buildVideoMedia(p, prioritizeMedia)
     }
 
     // ── Body (truncated) ────────────────────────────────────
@@ -251,18 +276,18 @@
   }
 
   // ─── PHOTO MEDIA ──────────────────────────────────────────
-  function _buildPhotoMedia(p) {
+  function _buildPhotoMedia(p, prioritizeMedia) {
     var img = p.images[0]
     var url = img.url || img
     var cap = img.caption || ''
     return '<div class="fc-media fc-photo" data-id="' + p.id + '">' +
-      '<img src="' + _esc(url) + '" alt="' + _esc(cap || p.title || '') + '" loading="lazy" class="fc-media-img" draggable="false">' +
+      '<img src="' + _esc(url) + '" alt="' + _esc(cap || p.title || '') + '" loading="' + (prioritizeMedia ? 'eager' : 'lazy') + '" fetchpriority="' + (prioritizeMedia ? 'high' : 'low') + '" decoding="async" class="fc-media-img" draggable="false">' +
       (cap ? '<div class="fc-caption">' + _esc(cap) + '</div>' : '') +
     '</div>'
   }
 
   // ─── CAROUSEL MEDIA ───────────────────────────────────────
-  function _buildCarouselMedia(p) {
+  function _buildCarouselMedia(p, prioritizeMedia) {
     var total = p.images.length
     var id    = 'car-' + p.id
 
@@ -270,7 +295,7 @@
       var url = img.url || img
       var cap = img.caption || ''
       return '<div class="car-slide">' +
-        '<img src="' + _esc(url) + '" alt="' + _esc(cap || p.title || '') + '" loading="' + (i === 0 ? 'eager' : 'lazy') + '" draggable="false">' +
+        '<img src="' + _esc(url) + '" alt="' + _esc(cap || p.title || '') + '" loading="' + (prioritizeMedia && i === 0 ? 'eager' : 'lazy') + '" fetchpriority="' + (prioritizeMedia && i === 0 ? 'high' : 'low') + '" decoding="async" draggable="false">' +
         (cap ? '<div class="car-cap">' + _esc(cap) + '</div>' : '') +
       '</div>'
     }).join('')
@@ -291,12 +316,12 @@
   }
 
   // ─── VIDEO MEDIA ──────────────────────────────────────────
-  function _buildVideoMedia(p) {
+  function _buildVideoMedia(p, prioritizeMedia) {
     var videoId = _youtubeId(p)
     var thumb = 'https://img.youtube.com/vi/' + videoId + '/maxresdefault.jpg'
     return '<div class="fc-media fc-video" data-id="' + p.id + '" data-vid="' + videoId + '">' +
       '<div class="fc-video-thumb">' +
-        '<img class="fc-video-poster" src="' + thumb + '" data-video-id="' + videoId + '" data-thumb-fallback="0" alt="' + _esc(p.title || 'YouTube video') + '" loading="lazy" onerror="window.feedVideoThumbFallback(this)">' +
+        '<img class="fc-video-poster" src="' + thumb + '" data-video-id="' + videoId + '" data-thumb-fallback="0" alt="' + _esc(p.title || 'YouTube video') + '" loading="' + (prioritizeMedia ? 'eager' : 'lazy') + '" fetchpriority="' + (prioritizeMedia ? 'high' : 'low') + '" decoding="async" onerror="window.feedVideoThumbFallback(this)">' +
         '<button class="fc-video-open" aria-label="Ph\u00e1t video">' +
           '<span class="fc-video-play"><svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="30"/><path d="M26 20l20 12-20 12z"/></svg></span>' +
         '</button>' +
@@ -550,7 +575,7 @@
     _saveLikedSet()
 
     var btn  = document.querySelector('#post-' + p.id + ' .fc-like-btn')
-    var post = _allPosts.find(function (x) { return x.id === p.id }) || p
+    var post = _postsById[p.id] || p
     post.like_count = Math.max(0, (post.like_count || 0) + (was ? -1 : 1))
 
     if (btn) {
@@ -968,42 +993,79 @@
   // ═══════════════════════════════════════════════════════════
   function _initViewTracking() {
     if (!('IntersectionObserver' in global)) return
-    var obs = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        var id = entry.target.dataset.id
-        if (!id) return
-        if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
-          if (!_viewTimers[id]) {
-            _viewTimers[id] = setTimeout(function () {
-              var post = _allPosts.find(function (p) { return p.id === id })
-              if (post) _trackEvent('feed_post_view', { post_id: id, slug: post.slug, content_type: post.content_type })
-              delete _viewTimers[id]
-            }, 10000)
+    if (!_viewObserver) {
+      _viewObserver = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          var id = entry.target.dataset.id
+          if (!id) return
+          if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
+            if (!_viewTimers[id]) {
+              _viewTimers[id] = setTimeout(function () {
+                var post = _postsById[id]
+                if (post) _trackEvent('feed_post_view', { post_id: id, slug: post.slug, content_type: post.content_type })
+                delete _viewTimers[id]
+              }, 10000)
+            }
+          } else {
+            clearTimeout(_viewTimers[id])
+            delete _viewTimers[id]
           }
-        } else {
-          clearTimeout(_viewTimers[id])
-          delete _viewTimers[id]
-        }
-      })
-    }, { threshold: 0.5 })
-    document.querySelectorAll('.feed-card').forEach(function (c) { obs.observe(c) })
+        })
+      }, { threshold: 0.5 })
+    }
+    document.querySelectorAll('.feed-card:not([data-view-observed])').forEach(function (card) {
+      card.dataset.viewObserved = '1'
+      _viewObserver.observe(card)
+    })
   }
 
   // ─── INFINITE SCROLL ──────────────────────────────────────
   function _initInfiniteScroll() {
     var btn = document.getElementById('feed-load-more')
     if (btn) btn.addEventListener('click', function () { _fetchPosts(false) })
-    if (!('IntersectionObserver' in global)) return
     var sentinel = document.getElementById('feed-sentinel')
     if (!sentinel) return
-    new IntersectionObserver(function (entries) {
-      if (entries[0].isIntersecting && !_loading && !_noMore) _fetchPosts(false)
-    }, { rootMargin: '300px' }).observe(sentinel)
+
+    function maybeLoadMore() {
+      if (!_userHasScrolled || _loading || _noMore) return
+      if (sentinel.getBoundingClientRect().top <= global.innerHeight + 120) {
+        _fetchPosts(false)
+      }
+    }
+
+    global.addEventListener('scroll', function () {
+      if ((global.scrollY || document.documentElement.scrollTop || 0) > 20) {
+        _userHasScrolled = true
+      }
+      maybeLoadMore()
+    }, { passive: true })
+
+    if ('IntersectionObserver' in global) {
+      new IntersectionObserver(function (entries) {
+        if (entries[0].isIntersecting) maybeLoadMore()
+      }, { rootMargin: '120px' }).observe(sentinel)
+    }
   }
 
   function _updateLoadMore() {
     var btn = document.getElementById('feed-load-more')
-    if (btn) btn.style.display = _noMore ? 'none' : 'block'
+    if (btn) btn.style.display = _noMore || ('IntersectionObserver' in global) ? 'none' : 'block'
+  }
+
+  function _initScrollToTop() {
+    var btn = document.getElementById('feed-scroll-top')
+    if (!btn) return
+
+    function updateVisibility() {
+      var y = global.scrollY || document.documentElement.scrollTop || 0
+      btn.classList.toggle('is-visible', y > 900)
+    }
+
+    btn.addEventListener('click', function () {
+      global.scrollTo({ top: 0, behavior: 'smooth' })
+    })
+    global.addEventListener('scroll', updateVisibility, { passive: true })
+    updateVisibility()
   }
 
   // ─── ANALYTICS ────────────────────────────────────────────

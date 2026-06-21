@@ -81,6 +81,8 @@
     background: var(--surface);
     margin-bottom: 10px;
     overflow: visible;
+    content-visibility: auto;
+    contain-intrinsic-size: auto 700px;
   }
   @media (min-width:480px) {
     .feed-card { border-radius: 10px; margin: 0 12px 10px; overflow: hidden; }
@@ -528,6 +530,36 @@
   #feed-load-more:active { opacity: .8; }
   #feed-sentinel { height: 40px; }
 
+  #feed-scroll-top {
+    position: fixed;
+    right: max(16px, env(safe-area-inset-right));
+    bottom: calc(var(--nav-h) + 18px + env(safe-area-inset-bottom));
+    z-index: 1500;
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    background: rgba(5, 5, 5, .86);
+    box-shadow: 0 5px 18px rgba(0, 0, 0, .24);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(12px);
+    pointer-events: none;
+    transition: opacity .2s, visibility .2s, transform .2s, background .15s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  #feed-scroll-top.is-visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+  #feed-scroll-top:active { background: #000; transform: scale(.94); }
+  #feed-scroll-top svg { width: 22px; height: 22px; }
+
   /* ============================================================
    * LIGHTBOX
    * ============================================================ */
@@ -768,6 +800,11 @@
      TOAST
      ══════════════════════════════════════════════════════════ -->
 <div id="feed-toast"></div>
+<button id="feed-scroll-top" type="button" aria-label="Cuộn lên đầu trang" title="Lên đầu trang">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <polyline points="18 15 12 9 6 15"></polyline>
+  </svg>
+</button>
 <div id="checkoutPopup-placeholder"></div>
 
 <!-- ══════════════════════════════════════════════════════════
@@ -821,7 +858,7 @@
   })()
 </script>
 <script src="/js/analytics.js?v=20260613-1"></script>
-<script src="/js/feed.js?v=20260607-15" defer></script>
+<script src="/js/feed.js?v=20260621-2" defer></script>
 <style>
   #aic-container #aic-bar { display: none !important; }
 </style>
