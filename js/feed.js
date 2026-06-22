@@ -23,6 +23,7 @@
   var _uid         = ''
   var _viewTimers  = {}
   var _viewObserver = null
+  var _publishOrderSupported = true
   var _settings    = { enabled: true, likesEnabled: true, brandName: 'F-SPORT', brandLogo: '/favicon.png' }
   var _productSheet = { post: null, products: [], selectedCode: '' }
   var _feedSheetScrollY = 0
@@ -121,15 +122,18 @@
     if (!url || !anon) { _renderMockPosts(); _loading = false; return }
 
     var requestSize = reset ? INITIAL_PAGE_SIZE : PAGE_SIZE
+    var orderField = _publishOrderSupported ? 'feed_order_at' : 'created_at'
+    var selectFields = 'id,slug,title,body,content_type,images,video_url,video_id,tags,like_count,view_count,product_tap_count,feed_atwl_count,feed_atc_count,created_at'
+    if (_publishOrderSupported) selectFields += ',published_at,feed_order_at'
     var q = url + '/rest/v1/feed_posts'
       + '?status=eq.published'
-      + '&order=created_at.desc,id.desc'
+      + '&order=' + orderField + '.desc,id.desc'
       + '&limit=' + requestSize
-      + '&select=id,slug,title,body,content_type,images,video_url,video_id,tags,like_count,view_count,product_tap_count,feed_atwl_count,feed_atc_count,created_at,feed_post_products(product_code,product_name,product_image_url,product_price,product_category,product_color,product_size,display_order)'
+      + '&select=' + selectFields + ',feed_post_products(product_code,product_name,product_image_url,product_price,product_category,product_color,product_size,display_order)'
 
     if (_cursor) {
-      var cursorFilter = '(created_at.lt.' + _cursor.createdAt
-        + ',and(created_at.eq.' + _cursor.createdAt + ',id.lt.' + _cursor.id + '))'
+      var cursorFilter = '(' + orderField + '.lt.' + _cursor.orderAt
+        + ',and(' + orderField + '.eq.' + _cursor.orderAt + ',id.lt.' + _cursor.id + '))'
       q += '&or=' + encodeURIComponent(cursorFilter)
     }
 
@@ -142,6 +146,14 @@
     xhr.onload = function () {
       _loading = false
       _hideSkeleton()
+      if (xhr.status >= 400 && _publishOrderSupported) {
+        var errorText = xhr.responseText || ''
+        if (/published_at|feed_order_at/i.test(errorText)) {
+          _publishOrderSupported = false
+          _fetchPosts(reset)
+          return
+        }
+      }
       if (xhr.status >= 200 && xhr.status < 300) {
         try {
           var posts = JSON.parse(xhr.responseText) || []
@@ -149,7 +161,7 @@
           if (posts.length < requestSize) _noMore = true
           if (posts.length) {
             var lastPost = posts[posts.length - 1]
-            _cursor = { createdAt: lastPost.created_at, id: lastPost.id }
+            _cursor = { orderAt: lastPost.feed_order_at || lastPost.created_at, id: lastPost.id }
           }
           posts.forEach(function (p) {
             _allPosts.push(p)
@@ -250,7 +262,7 @@
         '<div class="fc-avatar"><img src="' + _esc(_settings.brandLogo || '/favicon.png') + '" alt="' + _esc(_settings.brandName || 'F-SPORT') + '" onerror="this.src=\'/favicon.png\'"/></div>' +
         '<div class="fc-meta">' +
           '<div class="fc-brand">' + _esc(_settings.brandName || 'F-SPORT') + ' <svg style="width:14px;height:14px;vertical-align:middle;fill:#1877f2;margin-left:2px" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>' +
-          '<div class="fc-time">' + _timeAgo(p.created_at) + '</div>' +
+          '<div class="fc-time">' + _timeAgo(p.published_at || p.created_at) + '</div>' +
         '</div>' +
       '</div>' +
       // Body truncated
