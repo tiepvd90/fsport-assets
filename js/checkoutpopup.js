@@ -433,7 +433,7 @@ async function submitOrder() {
     console.log("✅ Purchase tracked before Make.com");
   }
 
-  var makePromise = fetch("https://hook.eu2.make.com/m9o7boye6fl1hstehst7waysmt38b2ul", {
+  var makePromise = fetch("https://hook.eu1.make.com/e4orsidpvfuofls24k4a78msst7qgr2r", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(orderData)
