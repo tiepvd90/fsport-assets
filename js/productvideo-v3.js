@@ -189,6 +189,10 @@
       title="${title || "Video sản phẩm"}"
       loading="eager"
       allow="autoplay; encrypted-media; picture-in-picture"
+      frameborder="0"
+      playsinline
+      webkit-playsinline
+      muted
       allowfullscreen>
     </iframe>
 
