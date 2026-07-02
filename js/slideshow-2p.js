@@ -38,6 +38,18 @@
   const counterEl = document.getElementById(COUNTER_ID);
   if (!container || !counterEl) return;
 
+  // Paint the known local first image immediately. Previously the slideshow
+  // stayed completely empty until the remote admin config request completed.
+  const provisionalImage = document.createElement("img");
+  provisionalImage.className = "slide show fsport-provisional-slide";
+  provisionalImage.alt = `${PAGE} - 1`;
+  provisionalImage.decoding = "async";
+  provisionalImage.loading = "eager";
+  provisionalImage.fetchPriority = "high";
+  provisionalImage.src = `${BASE_PATH}/1.${FORMAT}`;
+  provisionalImage.addEventListener("error", () => provisionalImage.remove(), { once: true });
+  container.insertBefore(provisionalImage, counterEl);
+
   async function loadConfiguredImages() {
     const base = window.FSPORT_SUPABASE_URL || "https://xcigbbcpwfzluqazadez.supabase.co";
     const key = window.FSPORT_SUPABASE_ANON || "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhjaWdiYmNwd2Z6bHVxYXphZGV6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkzNTA1NjEsImV4cCI6MjA5NDkyNjU2MX0.8LGX0FkU5w9q26LynYetUY9rGN_oFnjvDFJ5tjG9QV4";
@@ -59,7 +71,10 @@
   const runtimeSection = runtimeConfig && window.FSPORT_PRODUCT_PAGE
     ? window.FSPORT_PRODUCT_PAGE.getSection("slideshow")
     : null;
-  if (runtimeConfig && (!runtimeSection || runtimeSection.active === false)) return;
+  if (runtimeConfig && (!runtimeSection || runtimeSection.active === false)) {
+    provisionalImage.remove();
+    return;
+  }
   const configuredImages = runtimeConfig
     ? (Array.isArray(runtimeSection.items) ? runtimeSection.items : [])
     : await loadConfiguredImages();
@@ -70,10 +85,14 @@
         alt: `${PAGE} - ${index + 1}`,
       })));
   const TOTAL_IMAGES = imageList.length;
-  if (!TOTAL_IMAGES) return;
+  if (!TOTAL_IMAGES) {
+    provisionalImage.remove();
+    return;
+  }
 
   let current = 0;
   const slides = [];
+  provisionalImage.remove();
 
   // Tạo và gắn ảnh 1 → N
   for (let i = 1; i <= TOTAL_IMAGES; i++) {

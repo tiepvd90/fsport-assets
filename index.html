@@ -8,6 +8,7 @@
 
   <title>Fun Sport</title>
   <link rel="icon" type="image/png" href="/favicon.png" />
+  <link rel="preload" as="image" href="/assets/images/F-SPORT COVER.webp" fetchpriority="high" />
 
   <link rel="stylesheet" href="/css/frontend.css?v=20260701-central-css-1">
 
@@ -15,7 +16,7 @@
     window.productPage = "homepage";
   </script>
   <script src="/js/slideshow-lazy-loader.js?v=20260701-1"></script>
-  <script src="/js/frontend-page-runtime.js?v=20260701-homepage-section-order-2"></script>
+  <script src="/js/frontend-page-runtime.js?v=20260702-instant-cover-1"></script>
 
   <script src="/js/voucherpopup.js" defer></script>
 
@@ -34,7 +35,13 @@
 <body>
 
   <!-- Cover banner -->
-  <div id="homepageBanner"></div>
+  <div id="homepageBanner">
+    <img src="/assets/images/F-SPORT COVER.webp"
+         alt="Fun Sport Cover"
+         class="cover-img"
+         fetchpriority="high"
+         decoding="async">
+  </div>
 
   <!-- Slideshow -->
   <div id="homepageSlideshow"></div>

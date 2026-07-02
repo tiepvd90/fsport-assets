@@ -85,11 +85,17 @@
       var host = document.getElementById("homepageBanner");
       if (!host) return;
       host.hidden = false;
+      if (host.querySelector("img")) return;
       host.innerHTML = '<img src="/assets/images/F-SPORT COVER.webp" alt="Fun Sport Cover" class="cover-img">';
     }
     if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", render, { once:true });
     else render();
   }
+
+  // The static cover is useful content, not a loading screen. Keep it visible
+  // while the admin configuration request is in flight, then replace or hide
+  // it when renderBanner() receives the current configuration.
+  renderStaticFallback();
 
   function applySectionOrder(settings) {
     var order = Array.isArray(settings.sectionOrder)
