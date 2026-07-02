@@ -681,6 +681,7 @@
     }
 
     trackInternalEvent("wishlist_add", {
+      page_slug: productId,
       product_id: productId,
       product_name: window.productName || null
     });
@@ -763,6 +764,7 @@
     var cartItem = Object.assign({}, product, {
       quantity: quantity,
       loai: loai,
+      page_slug: window.productPage || getProductPage(),
       product_name: window.productName || document.title || window.productPage || product.id,
       voucher: voucherAmount > 0 ? { amount: voucherAmount } : undefined
     });
@@ -823,6 +825,7 @@
 
     if (window.fsport && typeof window.fsport.track === "function") {
       window.fsport.track("add_to_cart", {
+        page_slug: window.productPage || getProductPage(),
         product_id: window.productPage || null,
         product_name: window.productName || null,
         variant: phanLoaiText,

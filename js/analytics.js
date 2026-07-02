@@ -391,7 +391,7 @@
     var productName = global.productName || null
     if (!productId) return
     setTimeout(function () {
-      track('view_product', { product_id: productId, product_name: productName })
+      track('view_product', { page_slug: productId, product_id: productId, product_name: productName })
     }, 10000)
   }
 

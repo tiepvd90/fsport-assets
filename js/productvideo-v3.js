@@ -19,70 +19,8 @@
   }
 
   function autoplayEmbedUrl(id) {
-    const origin = encodeURIComponent(window.location.origin);
-    return `https://www.youtube.com/embed/${id}?autoplay=1&mute=1&playsinline=1&controls=1&loop=1&playlist=${id}&enablejsapi=1&rel=0&origin=${origin}`;
-  }
-
-  function ensureAutoplay(iframe) {
-    if (!iframe || !iframe.contentWindow) return;
-    const command = JSON.stringify({
-      event: "command",
-      func: "playVideo",
-      args: []
-    });
-    const mute = JSON.stringify({
-      event: "command",
-      func: "mute",
-      args: []
-    });
-    function play() {
-      if (!iframe.contentWindow) return;
-      iframe.contentWindow.postMessage(mute, "https://www.youtube.com");
-      iframe.contentWindow.postMessage(command, "https://www.youtube.com");
-    }
-    iframe.addEventListener("load", function () {
-      play();
-      window.setTimeout(play, 350);
-      window.setTimeout(play, 1200);
-    }, { once: true });
-
-    // Production pages create this iframe while the video section is still
-    // below the fold. Browsers may ignore off-screen autoplay, so retry when
-    // the first video actually enters the viewport.
-    if ("IntersectionObserver" in window) {
-      const observer = new IntersectionObserver(function (entries) {
-        if (!entries.some(function (entry) { return entry.isIntersecting; })) return;
-        play();
-        window.setTimeout(play, 300);
-        observer.disconnect();
-      }, { threshold: 0.15 });
-      observer.observe(iframe);
-    }
-
-    document.addEventListener("visibilitychange", function () {
-      if (!document.hidden && iframe.isConnected) play();
-    });
-
-    // iOS Safari and every browser on iPhone use WebKit and can reject
-    // YouTube iframe autoplay even when muted. Reuse the user's first
-    // touches/scroll gestures as playback permission. Keep this listener
-    // active because an early touch can happen while the iframe is off-screen.
-    function playFromGesture() {
-      if (!iframe.isConnected) {
-        document.removeEventListener("touchstart", playFromGesture, true);
-        document.removeEventListener("pointerdown", playFromGesture, true);
-        return;
-      }
-      play();
-    }
-    document.addEventListener("touchstart", playFromGesture, {
-      capture: true,
-      passive: true
-    });
-    document.addEventListener("pointerdown", playFromGesture, {
-      capture: true,
-      passive: true
-    });
+    // Keep this identical to the v1 embed that is known to autoplay on iPhone.
+    return `https://www.youtube.com/embed/${id}?autoplay=1&mute=1&playsinline=1&controls=1&loop=1&playlist=${id}`;
   }
 
   function injectHTML(container) {
@@ -187,13 +125,12 @@
     <iframe
       src="${autoplayEmbedUrl(id)}"
       title="${title || "Video sản phẩm"}"
-      loading="eager"
-      allow="autoplay; encrypted-media; picture-in-picture"
       frameborder="0"
+      allow="autoplay; encrypted-media"
+      allowfullscreen
       playsinline
-      webkit-playsinline
       muted
-      allowfullscreen>
+      style="width: 100%; height: 100%;">
     </iframe>
 
     <div class="video-live-overlay" aria-label="Mở video lớn"></div>
@@ -202,7 +139,6 @@
   `;
 
   const overlay = card.querySelector(".video-live-overlay");
-  ensureAutoplay(card.querySelector("iframe"));
   if (overlay) {
     overlay.onclick = () => openPopup(id);
   }

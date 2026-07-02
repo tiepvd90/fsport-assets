@@ -339,11 +339,13 @@ async function submitOrder() {
     category,
     items: window.cart.map(item => {
       const baseItem = {
+        page_slug: item.page_slug || null,
         id: item.id || null,
         product_code: item.product_code || item.id || item.feed_product_code || null,
         inventory_product_id: item.inventory_product_id || null,
         category: item.category || "unknown",
         product_name: cartItemName(item),
+        variant: item["Ph\u00e2n lo\u1ea1i"] || item["Ph\u00c3\u00a2n lo\u00e1\u00ba\u00a1i"] || cartItemName(item),
         product_image_url: cartItemImage(item),
         feed_source: item.feed_source || null,
         feed_post_id: item.feed_post_id || null,
@@ -409,7 +411,7 @@ async function submitOrder() {
         source:     feedPostIds.length ? 'feed' : 'checkout',
         feed_post_ids: feedPostIds,
         products:   (orderData.items || []).map(function(i) {
-          return { id: i.id, name: i.product_name || i["T\u00ean"] || i.name || '', qty: i.quantity || 1, price: cartItemPrice(i), feed_post_id: i.feed_post_id || null }
+          return { page_slug: i.page_slug || null, id: i.id, name: i.product_name || i["T\u00ean"] || i.name || '', variant: i.variant || i["Ph\u00e2n lo\u1ea1i"] || '', qty: i.quantity || 1, price: cartItemPrice(i), feed_post_id: i.feed_post_id || null }
         })
       })
     }
