@@ -1,3 +1,7 @@
 /feed-sitemap.xml  https://xcigbbcpwfzluqazadez.supabase.co/functions/v1/feed-sitemap  200
 /feed/:slug/  https://xcigbbcpwfzluqazadez.supabase.co/functions/v1/feed-post-seo/:slug  200
 /feed/:slug   https://xcigbbcpwfzluqazadez.supabase.co/functions/v1/feed-post-seo/:slug  200
+
+# Existing static HTML files are served first. Missing two-segment product
+# paths use the shared database-driven product template.
+/:category/:slug  /dynamic-product.html  200

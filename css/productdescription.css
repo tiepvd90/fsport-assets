@@ -37,6 +37,18 @@
   color: #222;
 }
 
+/*
+ * Admin editor content can flatten the descShort wrapper and leave preview
+ * paragraphs directly under the placeholder (Panther is one such page).
+ * Keep those paragraphs visually identical to a normal .desc-text preview.
+ */
+#productdescription-placeholder > p {
+  margin: 0 0 13px;
+  color: #222;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
 /* ✅ Nút "Xem thêm / Thu gọn" */
 .desc-toggle-btn {
   margin-top: 16px;
