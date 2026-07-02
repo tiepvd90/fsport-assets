@@ -18,34 +18,6 @@
     return null;
   }
 
-  function autoplayEmbedUrl(id) {
-    return `https://www.youtube.com/embed/${id}?autoplay=1&mute=1&playsinline=1&controls=1&loop=1&playlist=${id}&enablejsapi=1&rel=0`;
-  }
-
-  function ensureAutoplay(iframe) {
-    if (!iframe || !iframe.contentWindow) return;
-    const command = JSON.stringify({
-      event: "command",
-      func: "playVideo",
-      args: []
-    });
-    const mute = JSON.stringify({
-      event: "command",
-      func: "mute",
-      args: []
-    });
-    function play() {
-      if (!iframe.contentWindow) return;
-      iframe.contentWindow.postMessage(mute, "https://www.youtube.com");
-      iframe.contentWindow.postMessage(command, "https://www.youtube.com");
-    }
-    iframe.addEventListener("load", function () {
-      play();
-      window.setTimeout(play, 350);
-      window.setTimeout(play, 1200);
-    }, { once: true });
-  }
-
   function injectHTML(container) {
     container.innerHTML = `
       <div class="product-video-section">
@@ -130,7 +102,6 @@
     const visibleList = getVisibleList();
     grid.innerHTML = "";
 
-    let renderedCount = 0;
     visibleList.forEach((item, index) => {
       const { url, title = "" } =
         typeof item === "string" ? { url: item, title: "" } : item;
@@ -141,15 +112,13 @@
       const card = document.createElement("div");
       card.className = "video-card";
 
-      if (renderedCount === 0) {
+      if (index === 0) {
   card.classList.add("is-live");
 
   card.innerHTML = `
     <iframe
-      src="${autoplayEmbedUrl(id)}"
-      title="${title || "Video sản phẩm"}"
-      loading="eager"
-      allow="autoplay; encrypted-media; picture-in-picture"
+      src="https://www.youtube.com/embed/${id}?autoplay=1&mute=1&playsinline=1&controls=1&loop=1&playlist=${id}"
+      allow="autoplay; encrypted-media"
       allowfullscreen>
     </iframe>
 
@@ -159,7 +128,6 @@
   `;
 
   const overlay = card.querySelector(".video-live-overlay");
-  ensureAutoplay(card.querySelector("iframe"));
   if (overlay) {
     overlay.onclick = () => openPopup(id);
   }
@@ -176,7 +144,6 @@
       }
 
       grid.appendChild(card);
-      renderedCount += 1;
     });
 
     updateToggleButton();

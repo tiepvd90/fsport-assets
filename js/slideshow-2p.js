@@ -40,17 +40,15 @@
 
   // Paint the known local first image immediately. Previously the slideshow
   // stayed completely empty until the remote admin config request completed.
-  const provisionalImage = window.FSPORT_DYNAMIC_PRODUCT_PAGE ? null : document.createElement("img");
-  if (provisionalImage) {
-    provisionalImage.className = "slide show fsport-provisional-slide";
-    provisionalImage.alt = `${PAGE} - 1`;
-    provisionalImage.decoding = "async";
-    provisionalImage.loading = "eager";
-    provisionalImage.fetchPriority = "high";
-    provisionalImage.src = `${BASE_PATH}/1.${FORMAT}`;
-    provisionalImage.addEventListener("error", () => provisionalImage.remove(), { once: true });
-    container.insertBefore(provisionalImage, counterEl);
-  }
+  const provisionalImage = document.createElement("img");
+  provisionalImage.className = "slide show fsport-provisional-slide";
+  provisionalImage.alt = `${PAGE} - 1`;
+  provisionalImage.decoding = "async";
+  provisionalImage.loading = "eager";
+  provisionalImage.fetchPriority = "high";
+  provisionalImage.src = `${BASE_PATH}/1.${FORMAT}`;
+  provisionalImage.addEventListener("error", () => provisionalImage.remove(), { once: true });
+  container.insertBefore(provisionalImage, counterEl);
 
   async function loadConfiguredImages() {
     const base = window.FSPORT_SUPABASE_URL || "https://xcigbbcpwfzluqazadez.supabase.co";
@@ -74,7 +72,7 @@
     ? window.FSPORT_PRODUCT_PAGE.getSection("slideshow")
     : null;
   if (runtimeConfig && (!runtimeSection || runtimeSection.active === false)) {
-    if (provisionalImage) provisionalImage.remove();
+    provisionalImage.remove();
     return;
   }
   const configuredImages = runtimeConfig
@@ -88,13 +86,13 @@
       })));
   const TOTAL_IMAGES = imageList.length;
   if (!TOTAL_IMAGES) {
-    if (provisionalImage) provisionalImage.remove();
+    provisionalImage.remove();
     return;
   }
 
   let current = 0;
   const slides = [];
-  if (provisionalImage) provisionalImage.remove();
+  provisionalImage.remove();
 
   // Tạo và gắn ảnh 1 → N
   for (let i = 1; i <= TOTAL_IMAGES; i++) {
