@@ -19,7 +19,8 @@
   }
 
   function autoplayEmbedUrl(id) {
-    return `https://www.youtube.com/embed/${id}?autoplay=1&mute=1&playsinline=1&controls=1&loop=1&playlist=${id}&enablejsapi=1&rel=0`;
+    const origin = encodeURIComponent(window.location.origin);
+    return `https://www.youtube.com/embed/${id}?autoplay=1&mute=1&playsinline=1&controls=1&loop=1&playlist=${id}&enablejsapi=1&rel=0&origin=${origin}`;
   }
 
   function ensureAutoplay(iframe) {
@@ -44,6 +45,23 @@
       window.setTimeout(play, 350);
       window.setTimeout(play, 1200);
     }, { once: true });
+
+    // Production pages create this iframe while the video section is still
+    // below the fold. Browsers may ignore off-screen autoplay, so retry when
+    // the first video actually enters the viewport.
+    if ("IntersectionObserver" in window) {
+      const observer = new IntersectionObserver(function (entries) {
+        if (!entries.some(function (entry) { return entry.isIntersecting; })) return;
+        play();
+        window.setTimeout(play, 300);
+        observer.disconnect();
+      }, { threshold: 0.15 });
+      observer.observe(iframe);
+    }
+
+    document.addEventListener("visibilitychange", function () {
+      if (!document.hidden && iframe.isConnected) play();
+    });
   }
 
   function injectHTML(container) {
