@@ -1,0 +1,102 @@
+/* Desktop typography for Homepage and centralized Product Pages. */
+@media (min-width: 769px) {
+  body {
+    font-size: 18px;
+  }
+
+  .product-hero h1 {
+    font-size: 20px !important;
+    line-height: 1.55 !important;
+  }
+
+  .shipping-info,
+  .shipping-line {
+    font-size: 18px !important;
+    line-height: 1.55;
+  }
+
+  .freeship-text,
+  .freeship-banner {
+    font-size: 18px;
+  }
+
+  .cgrid-title {
+    font-size: 24px;
+  }
+
+  .cgrid-group-title {
+    font-size: 26px;
+  }
+
+  .cgrid-tag-shopee {
+    font-size: 15px;
+  }
+
+  .cgrid-name {
+    min-height: 48px;
+    font-size: 18px;
+    line-height: 1.35;
+  }
+
+  .cgrid-price {
+    font-size: 20px;
+  }
+
+  .cgrid-original {
+    font-size: 16px;
+  }
+
+  .brand-fsport {
+    font-size: 32px;
+  }
+
+  .lightbox-name {
+    font-size: 22px;
+  }
+
+  .lightbox-review {
+    font-size: 18px;
+    line-height: 1.6;
+  }
+
+  .fsport-about {
+    background: transparent;
+  }
+
+  .fsport-about__trigger-text {
+    font-size: 28px;
+  }
+
+  .fsport-about__content {
+    font-size: 20px;
+    line-height: 1.75;
+  }
+
+  .product-video-heading {
+    font-size: 24px;
+  }
+
+  .video-title-overlay {
+    font-size: 16px;
+  }
+
+  .desc-title {
+    font-size: 22px;
+  }
+
+  .desc-text,
+  .desc-container p,
+  .desc-container li {
+    font-size: 18px;
+  }
+
+  .desc-toggle-btn {
+    font-size: 18px;
+  }
+
+  .sticky-footer,
+  .sticky-footer button,
+  .sticky-footer a {
+    font-size: 16px;
+  }
+}

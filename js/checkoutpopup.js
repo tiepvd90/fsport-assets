@@ -45,6 +45,8 @@ updateCartItemCount();
 let shippingFee = 0;
 let shippingFeeOriginal = 0;
 let voucherValue = 0;
+// Promo code is temporarily disabled.
+window.promoCodeDiscount = 0;
 const trackedPurchaseOrderIds = new Set();
 const GA4_PURCHASED_ORDERS_KEY = "fsport_ga4_purchased_orders";
 // ------------------------
@@ -338,6 +340,8 @@ async function submitOrder() {
     items: window.cart.map(item => {
       const baseItem = {
         id: item.id || null,
+        product_code: item.product_code || item.id || item.feed_product_code || null,
+        inventory_product_id: item.inventory_product_id || null,
         category: item.category || "unknown",
         product_name: cartItemName(item),
         product_image_url: cartItemImage(item),
@@ -505,9 +509,6 @@ function hideThankyouPopup() {
   document.body.style.overflow = "auto";
 }
 // Load promo code module
-const promoScript = document.createElement("script");
-promoScript.src = "/js/promocode.js";
-document.head.appendChild(promoScript);
 
 // Load chatbox xác nhận đơn (lazy — chỉ cần khi đặt hàng xong)
 const ocChatScript = document.createElement("script");
@@ -781,7 +782,10 @@ async function sendOrderToERP(orderData, orderId, orderCode) {
     var itemsPayload = (orderData.items || []).map(function(item) {
       return {
         order_id:       orderId,
-        product_id:     item.id || null,
+        product_id:     item.product_code || item.id || item.feed_product_code || null,
+        product_name:   item.product_name || cartItemName(item),
+        product_image:  cartItemImage(item),
+        inventory_product_id: item.inventory_product_id || null,
         category:       item.category || orderData.category || "",
         unit_price:     cartItemPrice(item),
         voucher_amount: Number(item.voucher && item.voucher.amount || 0),

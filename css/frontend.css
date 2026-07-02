@@ -1,0 +1,151 @@
+/* Single CSS entry for F-Sport managed frontend pages. */
+@import url("https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&display=swap");
+@import url("/stories/css/stories.css");
+@import url("./base.css?v=20260701-central-css-1");
+@import url("./slideshow.css?v=20260701-central-css-1");
+@import url("./productvideo-v3.css?v=20260701-central-css-1");
+@import url("./productdescription.css?v=20260701-central-css-1");
+@import url("./review.css?v=20260702-namespaced-1");
+@import url("./photo-gallery.css?v=20260701-central-css-1");
+@import url("./collection-grid.css?v=20260701-central-css-1");
+@import url("./about.css?v=20260701-central-css-1");
+@import url("./cartpopup.css?v=20260701-central-css-1");
+@import url("./checkoutpopup.css?v=20260701-central-css-1");
+@import url("./voucherpopup.css?v=20260701-central-css-1");
+@import url("./stickyfooter.css?v=20260701-central-css-1");
+@import url("./desktop-typography.css?v=20260701-central-css-1");
+
+:root {
+  --fs-font: "Be Vietnam Pro", system-ui, -apple-system, sans-serif;
+  --fs-page-max: 1200px;
+  --fs-page-gutter: 16px;
+  --fs-content-max: 1168px;
+  --fs-section-gap: 16px;
+  --fs-bg: #f9f9f9;
+  --fs-surface: #fff;
+  --fs-text: #111;
+  --fs-radius: 12px;
+}
+
+html, body, button, input, textarea, select { font-family: var(--fs-font); }
+body { margin: 0; background: var(--fs-bg); color: var(--fs-text); }
+.fs-hidden-initial { display: none; }
+.fs-product-title {
+  margin-top: 8px;
+  font-family: var(--fs-font);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.4;
+  text-align: left;
+}
+.fs-product-badge {
+  margin-right: 4px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  color: #fff;
+  font-size: 11px;
+}
+.fs-product-badge--mall { background: #000; }
+.fs-product-badge--official {
+  margin-right: 6px;
+  background: #007bff;
+  text-transform: uppercase;
+}
+.fs-section--compact { margin-top: 12px; }
+.fs-section--spacious { margin-top: 32px; }
+
+.page-container,
+.idx-section,
+#collectionContainer {
+  width: 100%;
+  max-width: var(--fs-page-max);
+  margin-right: auto;
+  margin-left: auto;
+  padding-right: var(--fs-page-gutter);
+  padding-left: var(--fs-page-gutter);
+  box-sizing: border-box;
+}
+
+/* Keep the final product content fully scrollable above the fixed footer. */
+.page-container {
+  padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px));
+}
+
+#homepageBanner,
+#homepageSlideshow {
+  width: min(var(--fs-content-max), calc(100% - 32px));
+  margin: 8px auto 0;
+}
+#homepageBanner .cover-img { margin: 0; }
+.homepage-slides {
+  position: relative;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: var(--fs-radius);
+  background: #eef2f7;
+}
+.homepage-slide {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity .35s ease;
+}
+.homepage-slide.is-active { opacity: 1; }
+.homepage-slide-dots {
+  position: absolute;
+  right: 0;
+  bottom: 10px;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+}
+.homepage-slide-dots button {
+  width: 7px;
+  height: 7px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255,255,255,.55);
+}
+.homepage-slide-dots button.is-active { width: 20px; border-radius: 8px; background: #fff; }
+.cover-img {
+  display: block;
+  width: 100%;
+  max-width: none;
+  margin: 8px auto 0;
+  padding: 0;
+  border-radius: var(--fs-radius);
+  box-sizing: border-box;
+}
+#aic-container { margin-top: var(--fs-section-gap); margin-bottom: var(--fs-section-gap); }
+.gallery-wrapper { margin-top: 50px; margin-bottom: 50px; }
+.fsport-about {
+  width: 100%;
+  max-width: var(--fs-page-max);
+  margin-right: auto;
+  margin-left: auto;
+  padding-right: var(--fs-page-gutter);
+  padding-left: var(--fs-page-gutter);
+  box-sizing: border-box;
+  background: transparent;
+}
+.fsport-about__container { width: 100%; max-width: none; }
+
+[data-fsport-section="product_description"],
+[data-fsport-section="photo_gallery"] { margin-top: 12px; }
+[data-fsport-section="collection_grid"] { margin-top: 32px; }
+
+@media (min-width: 769px) {
+  .fs-product-title { font-size: 18px; }
+  .fs-product-badge { font-size: 13px; }
+  .page-container { padding-bottom: 104px; }
+}
+
+@media (max-width: 600px) {
+  #homepageBanner { margin-top: 0; }
+  .homepage-slides { border-radius: 0; }
+}

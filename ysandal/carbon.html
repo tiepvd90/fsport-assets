@@ -6,12 +6,7 @@
   <title>Dép Chạy Bộ Carbon Đài Loan Ysandal B&M</title>
 
   <!-- ✅ CSS -->
-  <link rel="stylesheet" href="/css/base.css" />
-  <link rel="stylesheet" href="../css/cartpopup.css" />
-  <link rel="stylesheet" href="../css/checkoutpopup.css" />
-  <link rel="stylesheet" href="/css/productdescription.css" />
-  <link rel="stylesheet" href="../css/slideshow.css" />
-  <link rel="stylesheet" href="/css/collection-slider.css" />
+  <link rel="stylesheet" href="/css/frontend.css?v=20260701-central-css-1" />
   <link rel="icon" type="image/png" href="/favicon.png" />
 
   <!-- ✅ JS định nghĩa -->
@@ -21,7 +16,25 @@
     window.productPage = "carbon";
     window.imageCount = 8;
     window.imageFormat = "jpg";
+    window.FSPORT_DISABLE_COLLECTION_GRID = true;
     window.shopeeLink = "https://s.shopee.vn/6fZ6bQnTs2"; // ✅ Khai báo Shopee link tại đầu
+    window.FSPORT_CARTPOPUP_CONFIG_URL = "https://xcigbbcpwfzluqazadez.supabase.co/functions/v1/cart-popup-config";
+    (function () {
+      var slug = window.productPage || "carbon";
+      fetch(window.FSPORT_CARTPOPUP_CONFIG_URL + "?slug=" + encodeURIComponent(slug))
+        .then(function (res) {
+          if (!res.ok) throw new Error("cart config " + res.status);
+          return res.json();
+        })
+        .then(function (config) {
+          if (!config || config.cartSchema !== "fsport-product-v1") return;
+          window.__fsportProductPageConfig = config;
+          if (config.title) document.title = config.title;
+        })
+        .catch(function () {
+          window.__fsportProductPageConfig = null;
+        });
+    })();
   </script>
 </head>
 
@@ -41,7 +54,8 @@
         <button id="zoomCloseBtn">×</button>
       </div>
     </div>
-    <script src="/js/slideshow-2p.js"></script>
+    <script src="/js/slideshow-lazy-loader.js?v=20260701-1"></script>
+    <script src="/js/slideshow-2p.js?v=20260701-lazy-sequential-1"></script>
 
     <!-- ✅ Flash Banner -->
     <div id="flashbanner-placeholder"></div>
@@ -129,18 +143,6 @@
       </div>
       <div class="btn-note">Mua Tại Website Rẻ Hơn Mua Tại Shopee</div>
     </div>
-<!-- ✅ COLLECTION Ysandal -->
-<div class="product-hero" style="margin-top: 12px;">
-  <div class="cps-container">
-    <h3 class="cps-subtitle">Bộ Sưu Tập Dép Chạy Bộ Ysandal</h3>
-    <div class="cps-slider-wrapper">
-      <div class="cps-slider" id="slider-ysandal"></div>
-      <div class="cps-fade-right"></div>
-    </div>
-  </div>
-</div>
-<script src="/js/collection-slider.js"></script>
-
     <!-- ✅ FREEFLOW -->
     <h2 class="freeflow-heading" style="font-size: 18px; margin: 24px 12px 12px;">CÓ THỂ BẠN SẼ THÍCH</h2>
     <script src="/js/freeflow-loader.js"></script>

@@ -159,6 +159,20 @@
     }
   }
 
+  async function getAssignedVideos(productPage) {
+    const base = window.FSPORT_SUPABASE_URL;
+    const key = window.FSPORT_SUPABASE_ANON;
+    if (!base || !key || !productPage) return null;
+    const selectionRes = await fetch(`${base}/rest/v1/rpc/get_product_page_videos`, {
+      method: "POST",
+      headers: { apikey: key, Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
+      body: JSON.stringify({ p_slug: productPage })
+    });
+    if (!selectionRes.ok) return null;
+    const list = (await selectionRes.json()).map(video => ({ url: video.url, title: video.title || "" }));
+    return list.length ? list : null;
+  }
+
   window.initProductVideo = function () {
     const container = document.getElementById("video-placeholder");
 
@@ -171,10 +185,28 @@
 
     const productPage = window.productPage || "default";
 
-    fetch("/json/productvideo.json")
-      .then(res => res.json())
-      .then(data => {
-        const list = data[productPage];
+    const backendReady = window.FSPORT_PRODUCT_PAGE_CONFIG_PROMISE || Promise.resolve(null);
+
+    backendReady
+      .catch(() => null)
+      .then(config => {
+        const page = window.FSPORT_PRODUCT_PAGE;
+        const section = page && page.getSection ? page.getSection("product_video") : null;
+        if (config) {
+          if (!section || section.active === false) {
+            container.innerHTML = "";
+            return [];
+          }
+          return Array.isArray(section.items) ? section.items : [];
+        }
+        return getAssignedVideos(productPage).then(assigned => {
+          if (assigned) return assigned;
+        return fetch("/json/productvideo.json")
+          .then(res => res.json())
+          .then(data => data[productPage]);
+        });
+      })
+      .then(list => {
 
         if (!Array.isArray(list)) {
           console.warn("Không có video cho", productPage);

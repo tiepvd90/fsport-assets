@@ -36,6 +36,9 @@
     voucherConfig: null
   };
 
+  var BACKEND_CONFIG_BASE_URL = window.FSPORT_CARTPOPUP_CONFIG_URL ||
+    "https://xcigbbcpwfzluqazadez.supabase.co/functions/v1/cart-popup-config";
+
   window.selectedVariant = null;
   window.cart = window.cart || [];
   window.voucherByProduct = window.voucherByProduct || {};
@@ -115,6 +118,49 @@
     return next();
   }
 
+  function shouldUseBackendConfig() {
+    return true;
+  }
+
+  function getBackendConfigUrl() {
+    var sep = BACKEND_CONFIG_BASE_URL.indexOf("?") >= 0 ? "&" : "?";
+    return BACKEND_CONFIG_BASE_URL + sep + "slug=" + encodeURIComponent(getProductPage());
+  }
+
+  function isValidCartSchema(data) {
+    return data && typeof data === "object" &&
+      data.cartSchema === "fsport-product-v1" &&
+      (Array.isArray(data.attributes) || Array.isArray(data[KEY.attrs]));
+  }
+
+  function fetchBackendConfig() {
+    if (window.__fsportProductPageConfig && window.__fsportProductPageConfig.slug === getProductPage()) {
+      return Promise.resolve(window.__fsportProductPageConfig).then(function (json) {
+        if (!isValidCartSchema(json)) throw new Error("Invalid cached backend cart schema");
+        return json;
+      });
+    }
+
+    return fetch(getBackendConfigUrl(), { method: "GET" })
+      .then(function (res) {
+        if (!res.ok) throw new Error("Backend config HTTP " + res.status);
+        return res.json();
+      })
+      .then(function (json) {
+        if (!isValidCartSchema(json)) throw new Error("Invalid backend cart schema");
+        return json;
+      });
+  }
+
+  function fetchCartPopupData() {
+    if (!shouldUseBackendConfig()) return fetchFirstJson(getJsonCandidates());
+
+    return fetchBackendConfig().catch(function (err) {
+      console.warn("[CartPopup] Backend config fallback to static JSON", err);
+      return fetchFirstJson(getJsonCandidates());
+    });
+  }
+
   function pickPrice(obj) {
     if (!obj || typeof obj !== "object") return undefined;
     if (typeof obj.price === "number") return obj.price;
@@ -140,6 +186,9 @@
 
     if (value.image) out.image = value.image;
     if (value.id) out.id = value.id;
+    ["product_code", "inventory_product_id", "product_name", "category", "color", "size"].forEach(function (key) {
+      if (value[key] !== undefined) out[key] = value[key];
+    });
 
     var price = pickPrice(value);
     var originalPrice = pickOriginalPrice(value);
@@ -168,7 +217,9 @@
 
   function normalizeData(data) {
     var legacyAttrs = Array.isArray(data[KEY.attrs]) ? data[KEY.attrs] : [];
-    var legacyVariants = Array.isArray(data[KEY.variants]) ? data[KEY.variants] : [];
+    var legacyVariants = Array.isArray(data.variants)
+      ? data.variants
+      : (Array.isArray(data[KEY.variants]) ? data[KEY.variants] : []);
     var attrs = Array.isArray(data.attributes) && data.attributes.length
       ? data.attributes.map(normalizeAttribute)
       : legacyAttrs.map(normalizeAttribute);
@@ -798,7 +849,7 @@
     if (state.initialized) return;
     state.initialized = true;
 
-    fetchFirstJson(getJsonCandidates())
+    fetchCartPopupData()
       .then(function (json) {
         state.data = normalizeData(json);
         state.attributes = state.data.attributes;
@@ -848,6 +899,13 @@
     qty: changeQuantity,
     refresh: function () { updateSelectedVariant(false); }
   };
+
+  if (!document.querySelector('script[data-product-sticky-footer-config]')) {
+    var stickyFooterConfigScript = document.createElement('script');
+    stickyFooterConfigScript.src = '/js/product-sticky-footer-config.js?v=20260629-sticky-footer-cta-4';
+    stickyFooterConfigScript.dataset.productStickyFooterConfig = 'true';
+    document.body.appendChild(stickyFooterConfigScript);
+  }
 
   function wire() {
     $$(".cart-popup-close, .cart-popup-overlay").forEach(function (btn) {

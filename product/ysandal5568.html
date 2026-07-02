@@ -6,11 +6,7 @@
   <title>Dép Chạy Bộ Ysandal Chính Hãng B&M Đài Loan Mã BCU5568 Quai Hậu</title>
 
   <!-- ✅ CSS -->
-  <link rel="stylesheet" href="/css/base.css" />
-  <link rel="stylesheet" href="../css/cartpopup.css" />
-  <link rel="stylesheet" href="../css/checkoutpopup.css" />
-  <link rel="stylesheet" href="/css/productdescription.css" />
-  <link rel="stylesheet" href="../css/slideshow.css" />
+  <link rel="stylesheet" href="/css/frontend.css?v=20260702-review-fix-1" />
   <link rel="stylesheet" href="/css/collection-slider.css" />
   <link rel="icon" type="image/png" href="/favicon.png" />
 
@@ -65,7 +61,8 @@
     <div class="lazy-slideshow" id="lazySlideshow">
       <div class="slide-counter" id="slideCounter">1/1</div>
     </div>
-    <script src="../js/slideshow.js"></script>
+    <script src="/js/slideshow-lazy-loader.js?v=20260701-1"></script>
+    <script src="/js/slideshow-2p.js?v=20260701-unified-1"></script>
 
     <!-- ✅ Flash Banner -->
     <div id="flashbanner-placeholder"></div>
@@ -110,19 +107,9 @@
       <div id="review-placeholder"></div>
     </div>
     <script>
-      fetch("/html/reviewblock/ysandal5568.html")
-        .then(res => res.text())
-        .then(html => {
-          const c = document.getElementById("review-placeholder");
-          c.innerHTML = html;
-          c.querySelectorAll("script").forEach(old => {
-            const s = document.createElement("script");
-            if (old.src) s.src = old.src;
-            else s.textContent = old.textContent;
-            document.body.appendChild(s);
-          });
-        });
+      window.reviewDataKey = "ysandal5568";
     </script>
+    <script src="/js/review.js?v=20260702-namespaced-1"></script>
 
     <!-- ✅ KHỐI BUTTON -->
     <div class="product-hero" style="margin-top:12px;padding:0;">

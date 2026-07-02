@@ -30,6 +30,80 @@
   overflow: hidden;
 }
 
+/* Desktop only: 1.5x the original 480px checkout width. */
+@media (min-width: 769px) {
+  .checkout-content {
+    max-width: 720px;
+  }
+  .checkout-content .checkout-inner-scroll {
+    padding: 30px;
+  }
+  .checkout-content .checkout-close {
+    top: 16px;
+    right: 12px;
+    font-size: 52px;
+  }
+  .checkout-content .checkout-section-title {
+    margin: 30px 0 15px;
+    font-size: 21px;
+  }
+  .checkout-content .cart-item {
+    gap: 15px;
+    margin-bottom: 18px;
+    padding-bottom: 15px;
+  }
+  .checkout-content .cart-item img {
+    width: 90px;
+    height: 90px;
+  }
+  .checkout-content .cart-item-name,
+  .checkout-content .cart-empty {
+    font-size: 21px;
+  }
+  .checkout-content .cart-item-price {
+    font-size: 19px;
+  }
+  .checkout-content .cart-item-qty {
+    gap: 9px;
+    font-size: 18px;
+  }
+  .checkout-content .cart-item-qty button {
+    width: 36px;
+    height: 36px;
+    font-size: 18px;
+  }
+  .checkout-content .checkout-summary .row {
+    font-size: 21px;
+    margin-bottom: 9px;
+  }
+  .checkout-content .checkout-summary .total-row {
+    margin-top: 15px;
+    font-size: 24px;
+  }
+  .checkout-content .checkout-summary .note {
+    margin-top: 12px;
+    font-size: 19px;
+  }
+  .checkout-content .checkout-form {
+    margin-top: 24px;
+    gap: 12px;
+  }
+  .checkout-content .checkout-form .form-row {
+    gap: 12px;
+  }
+  .checkout-content .checkout-form input {
+    padding: 12px;
+    font-size: 21px;
+    border-radius: 9px;
+  }
+  .checkout-content #checkoutSubmitBtn {
+    padding: 21px;
+    margin-top: 24px;
+    font-size: 22px;
+    border-radius: 12px;
+  }
+}
+
 
 .checkout-inner-scroll {
   flex: 1;
@@ -238,7 +312,7 @@
 #cartIcon {
   position: fixed;
   top: 10px;
-  right: 12px;
+  right: max(12px, calc((100vw - 1168px) / 2));
   font-size: 22px;
   background: #e53935;
   color: #fff;
@@ -266,7 +340,7 @@
 #cartIcon {
   position: fixed;
   top: 12px;
-  right: 12px;
+  right: max(12px, calc((100vw - 1168px) / 2));
   background: white;
   width: 42px;
   height: 42px;

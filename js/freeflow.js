@@ -402,13 +402,14 @@ function bootstrapFreeflow() {
 
   // Lắng nghe freeflowReady → đảm bảo container + load collection-grid.js
   document.addEventListener("freeflowReady", () => {
+    if (window.FSPORT_DISABLE_COLLECTION_GRID === true) return;
     if (collectionGridLoaded) return;
     collectionGridLoaded = true;
 
     ensureCollectionContainer();
 
     const script = document.createElement("script");
-    script.src = "/js/collection-grid.js";
+    script.src = "/js/collection-grid.js?v=20260702-discount-badge-1";
     script.async = true;
     document.body.appendChild(script);
   });

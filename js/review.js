@@ -1,29 +1,33 @@
 (function () {
   const category = (window.productCategory || "").toLowerCase();
-  if (!category) {
-    console.warn("Không có giá trị productCategory.");
+  const reviewDataKey = String(
+    window.reviewDataKey || window.productPage || category
+  )
+    .trim()
+    .toLowerCase();
+
+  if (!reviewDataKey || !/^[a-z0-9_-]+$/.test(reviewDataKey)) {
+    console.warn("Không có mã dữ liệu review hợp lệ.");
     return;
   }
 
-  // ✅ Inject HTML review vào vị trí placeholder (nếu có), nếu không thì gắn vào cuối body
   const placeholder = document.getElementById("review-placeholder");
-  const container = document.createElement("div");
+  if (!placeholder || placeholder.dataset.reviewInitialized === "true") return;
+
+  placeholder.dataset.reviewInitialized = "true";
+  const container = document.createElement("section");
+  container.className = "fs-product-reviews";
   container.innerHTML = `
-    <h2 style="font-size: 16px; font-weight: bold; margin-bottom: 12px;">
-      Review Sản Phẩm
-    </h2>
-
-    <div id="review1" class="review-item"></div>
-    <div id="review2" class="review-item"></div>
-    <div id="review3" class="review-item"></div>
-    <div id="review4" class="review-item"></div>
+    <h2 class="fs-product-reviews__title">Review Sản Phẩm</h2>
+    <div class="fs-product-reviews__list"></div>
   `;
-  (placeholder || document.body).appendChild(container);
+  placeholder.replaceChildren(container);
+  const list = container.querySelector(".fs-product-reviews__list");
 
-  // ✅ Gọi JSON theo category
   async function fetchAndRenderReviews() {
     try {
-      const res = await fetch(`/json/reviewblock/${category}.json`);
+      const res = await fetch(`/json/reviewblock/${reviewDataKey}.json`);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
 
       if (!Array.isArray(data) || data.length < 4) {
@@ -32,9 +36,7 @@
       }
 
       const indices = getUniqueRandomIndices(4, data.length);
-      for (let i = 0; i < 4; i++) {
-        renderReview(`review${i + 1}`, data[indices[i]]);
-      }
+      indices.forEach(index => renderReview(data[index]));
     } catch (err) {
       console.error("Lỗi khi tải review JSON:", err);
     }
@@ -48,26 +50,33 @@
     return Array.from(set);
   }
 
-  function renderReview(containerId, reviewData) {
-    const container = document.getElementById(containerId);
-    if (!container) return;
-
+  function renderReview(reviewData) {
     const { reviewName, reviewText, reviewImages } = reviewData;
-
-    const imagesHTML = (reviewImages || [])
-      .map(
-        url => `<img src="${url}" alt="Ảnh review" class="review-image">`
-      )
-      .join("");
-
-    container.innerHTML = `
-      <div class="review-header">
-        <span class="review-name">${reviewName}</span>
+    const item = document.createElement("article");
+    item.className = "fs-product-review";
+    item.innerHTML = `
+      <div class="fs-product-review__header">
+        <span class="fs-product-review__name"></span>
       </div>
-      <div class="review-stars">★★★★★</div>
-      <div class="review-text">${reviewText}</div>
-      <div class="review-images">${imagesHTML}</div>
+      <div class="fs-product-review__stars" aria-label="5 trên 5 sao">★★★★★</div>
+      <div class="fs-product-review__text"></div>
+      <div class="fs-product-review__images"></div>
     `;
+
+    item.querySelector(".fs-product-review__name").textContent = reviewName || "";
+    item.querySelector(".fs-product-review__text").textContent = reviewText || "";
+
+    const images = item.querySelector(".fs-product-review__images");
+    (reviewImages || []).forEach(url => {
+      const image = document.createElement("img");
+      image.src = url;
+      image.alt = "Ảnh review";
+      image.className = "fs-product-review__image";
+      image.loading = "lazy";
+      images.appendChild(image);
+    });
+
+    list.appendChild(item);
   }
 
   fetchAndRenderReviews();

@@ -1,28 +1,40 @@
-.review-item {
-  margin-top: 16px;
+.fs-product-reviews {
+  color: #222;
+  background: #fff;
 }
 
-.review-header {
+.fs-product-reviews__title {
+  margin: 0 0 12px;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.fs-product-review {
+  margin-top: 16px;
+  background: transparent;
+}
+
+.fs-product-review__header {
   font-size: 13px;
   font-weight: 500;
   color: #444;
   margin-bottom: 4px;
 }
 
-.review-stars {
+.fs-product-review__stars {
   color: #FFD700;
   font-size: 14px;
   margin-bottom: 4px;
 }
 
-.review-text {
+.fs-product-review__text {
   font-size: 14px;
   color: #222;
   line-height: 1.5;
   margin-bottom: 6px;
 }
 
-.review-images {
+.fs-product-review__images {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
@@ -30,7 +42,7 @@
   box-sizing: border-box;
 }
 
-.review-image {
+.fs-product-review__image {
   width: calc(33.333% - 4px); /* 👉 Mobile: 3 ảnh 1 hàng */
   aspect-ratio: 1 / 1;
   object-fit: cover;
@@ -40,21 +52,21 @@
 
 /* ✅ Tablet: 4 ảnh 1 hàng */
 @media (min-width: 600px) {
-  .review-image {
+  .fs-product-review__image {
     width: calc(25% - 4.5px);
   }
 }
 
 /* ✅ Desktop: 6 ảnh 1 hàng */
 @media (min-width: 1024px) {
-  .review-image {
+  .fs-product-review__image {
     width: calc(16.666% - 5px);
   }
 }
 
 /* ✅ Màn hình lớn hơn nữa: 8 ảnh 1 hàng */
 @media (min-width: 1400px) {
-  .review-image {
+  .fs-product-review__image {
     width: calc(12.5% - 5px);
   }
 }

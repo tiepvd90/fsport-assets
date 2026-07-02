@@ -6,23 +6,29 @@
   <title>Vợt Pickleball F-Sport FOAM</title>
 
   <!-- ✅ CSS -->
-  <link rel="stylesheet" href="/css/base.css" />
-  <link rel="stylesheet" href="/css/photo-gallery.css" />
-  <link rel="stylesheet" href="/css/collection-grid.css" />
-  <link rel="stylesheet" href="/css/cartpopup.css" />
-  <link rel="stylesheet" href="/css/checkoutpopup.css" />
-  <link rel="stylesheet" href="/css/productdescription.css" />
-  <link rel="stylesheet" href="../css/slideshow.css" />
+  <link rel="stylesheet" href="/css/frontend.css?v=20260702-product-runtime-1" />
   <link rel="icon" type="image/png" href="/favicon.png" />
 
   <!-- ✅ JS định nghĩa -->
   <script>
+    function fsportProductSlugFromPath(path) {
+      var clean = String(path || "").split("?")[0].split("#")[0].replace(/\/+$/, "");
+      var last = clean.split("/").filter(Boolean).pop() || "";
+      return last.replace(/\.html?$/i, "").trim().toLowerCase();
+    }
+
     window.loai = "pickleball";
     window.productCategory = "pickleball";
-    window.productPage = "foam";
+    window.productPage = fsportProductSlugFromPath(window.location.pathname);
     window.imageCount = 9;
     window.imageFormat = "webp";
+    window.FSPORT_CARTPOPUP_CONFIG_URL = window.FSPORT_CARTPOPUP_CONFIG_URL ||
+      "https://xcigbbcpwfzluqazadez.supabase.co/functions/v1/cart-popup-config";
+    window.FSPORT_PRODUCT_PAGE_CONFIG_URL = window.FSPORT_PRODUCT_PAGE_CONFIG_URL ||
+      "https://xcigbbcpwfzluqazadez.supabase.co/functions/v1/product-page-config";
+
   </script>
+  <script src="/js/product-page-runtime.js?v=20260702-central-runtime-2"></script>
 </head>
 <body>
 
@@ -34,12 +40,14 @@
     <div id="sticky-footer-placeholder"></div>
 
     <!-- ✅ Slideshow chính -->
+    <div id="productPageSections">
+    <div data-fsport-section="slideshow">
     <div class="lazy-slideshow" id="lazySlideshow">
       <div class="slide-counter" id="slideCounter">1/1</div>
     </div>
 
     <!-- Zoom toàn màn hình khi click ảnh -->
-    <div id="fullscreenZoom" style="display: none;">
+    <div id="fullscreenZoom" class="fs-hidden-initial">
       <div id="zoomWrapper">
         <img id="zoomedImg" src="" alt="Zoomed" />
         <button id="zoomCloseBtn">×</button>
@@ -47,58 +55,51 @@
     </div>
 
     <!-- Script xử lý slideshow + zoom -->
-    <script src="/js/slideshow-2p.js"></script>
+    </div>
+    <script src="/js/slideshow-lazy-loader.js?v=20260701-1"></script>
+    <script src="/js/slideshow-2p.js?v=20260701-lazy-sequential-1"></script>
 
     <!-- ✅ Flash Banner -->
-    <div id="flashbanner-placeholder"></div>
-    <script>
-      fetch("/html/flashsalebanner/freeship.html")
-        .then(res => res.text())
-        .then(html => {
-          document.getElementById("flashbanner-placeholder").innerHTML = html;
-          const s = document.createElement("script");
-          s.src = "/js/flashsalebanner/template01.js";
-          document.body.appendChild(s);
-        });
-    </script>
+    <div data-fsport-section="flash_banner"><div id="flashbanner-placeholder"></div></div>
 
     <!-- ✅ Tiêu đề + Shipping -->
     <div class="product-hero">
-      <h1 style="font-size: 14px; font-weight: bold; margin-top: 8px; font-family: 'Be Vietnam Pro', sans-serif; line-height: 1.4; text-align: left;">
-        <span style="background: black; color: white; font-size: 11px; padding: 2px 6px; border-radius: 4px; margin-right: 4px;">Mall</span>
-        <span style="background: #007BFF; color: white; font-size: 11px; padding: 2px 6px; border-radius: 4px; margin-right: 6px; text-transform: uppercase;">Hàng Chính Hãng</span>
+      <h1 class="fs-product-title">
+        <span class="fs-product-badge fs-product-badge--mall">Mall</span>
+        <span class="fs-product-badge fs-product-badge--official">Hàng Chính Hãng</span>
         Vợt Pickleball F-Sport FullFoam – Carbon Toray Trợ Lực Cao - Giảm Rung Chấn
       </h1>
 
       <!-- ✅ KHỐI 3: Video sản phẩm -->
-      <div id="video-placeholder"></div>
-      <link rel="stylesheet" href="/css/productvideo-v3.css">
-      <script src="/js/productvideo-v3.js"></script>
+      <div data-fsport-section="product_video"><div id="video-placeholder"></div></div>
+      <script src="/js/productvideo-v3.js?v=20260630-central-runtime-2"></script>
       <script>
         initProductVideo();
       </script>
       <!-- 🔚 Hết KHỐI 3 -->
 
+
       <!-- ✅ Mô tả sản phẩm -->
-      <div class="product-hero" style="margin-top: 12px;">
+      <div data-fsport-section="product_description" class="product-hero">
         <div id="productdescription-placeholder" data-src="/html/productdescription/pickleball/foam.html"></div>
       </div>
-      <script src="/js/productdescription.js"></script>
+      <script src="/js/productdescription.js?v=20260630-central-runtime-1"></script>
 
       <!-- ✅ AI TƯ VẤN -->
-      <div id="aic-container" style="margin:16px 0"></div>
+      <div data-fsport-section="ai_chat"><div id="aic-container"></div></div>
 
       <!-- ✅ KHỐI 2: PHOTO GALLERY (thay thế review cũ) -->
-      <div class="product-hero" style="margin-top: 12px;">
+      <div data-fsport-section="photo_gallery" class="product-hero">
         <div id="photo-gallery-container"></div>
       </div>
       <!-- HẾT KHỐI 2: photo-gallery -->
 
-      <!-- ✅ COLLECTION GRID - PICKLEBALL -->
-      <div style="margin-top: 32px;">
+      <!-- ✅ COLLECTION GRID - PICKLEBALL (bỏ Y-Sandal) -->
+      <div data-fsport-section="collection_grid">
         <div id="collectionContainer"></div>
       </div>
 
+    </div>
     </div>
 
   </div>
@@ -141,10 +142,9 @@
       await injectHTML("/html/cartpopup.html", "cartPopup-placeholder");
       await injectHTML("/html/checkoutpopup.html", "checkoutPopup-placeholder");
       await injectHTML("/html/stickyfooter.html", "sticky-footer-placeholder");
-
       await loadScript("/js/voucherpopup.js");
-      await loadScript("/js/cartpopup.js");
-      await loadScript("/js/checkoutpopup.js");
+      await loadScript("/js/cartpopup.js?v=20260702-admin-first-1");
+      await loadScript("/js/checkoutpopup.js?v=20260701-desktop-promo-off-1");
 
       setTimeout(async () => {
         const map = await fetchVoucherMap();
@@ -166,7 +166,7 @@
       }
     ];
   </script>
-  <script src="/js/collection-grid.js" defer></script>
+  <script src="/js/collection-grid.js?v=20260702-discount-badge-1" defer></script>
 
   <!-- ✅ Tracking -->
   <script src="/js/tracking.js"></script>
@@ -194,8 +194,7 @@
   </script>
 
   <!-- ✅ Base script -->
-  <script src="/js/base.js"></script>
-  <script src="/js/photo-gallery.js"></script>
-
+  <script src="/js/base.js?v=20260701-centered-1"></script>
+  <script src="/js/photo-gallery.js?v=20260701-lazy-images-1"></script>
 </body>
 </html>

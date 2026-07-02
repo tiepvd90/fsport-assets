@@ -17,6 +17,25 @@
   var isHomepage = path === '/' || path === '/index.html'
 
   if (!isHomepage && !isFeed) return
+  var footerConfig = {}
+
+  function fetchFooterConfig(cb) {
+    var url = window.FSPORT_SUPABASE_URL || 'https://xcigbbcpwfzluqazadez.supabase.co'
+    var anon = window.FSPORT_SUPABASE_ANON || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhjaWdiYmNwd2Z6bHVxYXphZGV6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkzNTA1NjEsImV4cCI6MjA5NDkyNjU2MX0.8LGX0FkU5w9q26LynYetUY9rGN_oFnjvDFJ5tjG9QV4'
+    var xhr = new XMLHttpRequest()
+    xhr.open('POST', url + '/rest/v1/rpc/get_homepage_sticky_footer', true)
+    xhr.setRequestHeader('apikey', anon)
+    xhr.setRequestHeader('Authorization', 'Bearer ' + anon)
+    xhr.setRequestHeader('Content-Type', 'application/json')
+    xhr.onload = function() {
+      try {
+        var rows = JSON.parse(xhr.responseText)
+        cb((rows && rows[0] && rows[0].config) || {})
+      } catch (_) { cb({}) }
+    }
+    xhr.onerror = function() { cb({}) }
+    xhr.send('{}')
+  }
 
   // ── Đọc toggle từ Supabase (anon) ───────────────────────────
   function fetchFeedSettings(cb) {
@@ -57,26 +76,32 @@
     },
   }
 
+  function footerIcon(name, active) {
+    var custom = footerConfig[name + '_icon_url']
+    if (custom) return '<img class="fs-nav-icon" src="' + custom.replace(/"/g, '&quot;') + '" alt="">'
+    return ICONS[name](active)
+  }
+
   // ── Build tab ────────────────────────────────────────────────
   function tab(href, iconName, label, active) {
     var color = active ? '#050505' : '#8a8a8a'
     return '<a href="' + href + '" style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;text-decoration:none;color:' + color + ';padding:10px 0 8px;-webkit-tap-highlight-color:transparent;transition:color .15s">' +
-      ICONS[iconName](active) +
+      footerIcon(iconName, active) +
       '<span style="font-size:10px;font-weight:' + (active ? '700' : '500') + ';letter-spacing:.03em;font-family:-apple-system,\'Be Vietnam Pro\',sans-serif">' + label + '</span>' +
     '</a>'
   }
 
   function cartTab() {
     return '<button type="button" id="fs-footer-cart" aria-label="Cart" style="flex:1;border:0;background:transparent;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:#8a8a8a;padding:10px 0 8px;cursor:pointer;-webkit-tap-highlight-color:transparent">' +
-      ICONS.cart() +
-      '<span style="font-size:10px;font-weight:500;letter-spacing:.03em;font-family:-apple-system,\'Be Vietnam Pro\',sans-serif">CART</span>' +
+      footerIcon('cart') +
+      '<span style="font-size:10px;font-weight:500;letter-spacing:.03em;font-family:-apple-system,\'Be Vietnam Pro\',sans-serif">' + (footerConfig.cart_label || 'CART') + '</span>' +
     '</button>'
   }
 
   function chatTab() {
     return '<button type="button" id="fs-footer-chat" aria-label="AI Chat" style="flex:1;border:0;background:transparent;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:#8a8a8a;padding:10px 0 8px;cursor:pointer;-webkit-tap-highlight-color:transparent">' +
-      ICONS.chat() +
-      '<span style="font-size:10px;font-weight:500;letter-spacing:.03em;font-family:-apple-system,\'Be Vietnam Pro\',sans-serif">CHAT</span>' +
+      footerIcon('chat') +
+      '<span style="font-size:10px;font-weight:500;letter-spacing:.03em;font-family:-apple-system,\'Be Vietnam Pro\',sans-serif">' + (footerConfig.chat_label || 'CHAT') + '</span>' +
     '</button>'
   }
 
@@ -173,11 +198,12 @@
       'box-shadow:0 -1px 12px rgba(0,0,0,0.06)',
       'padding-bottom:env(safe-area-inset-bottom)',
       'box-sizing:border-box',
+      (footerConfig.footer_height ? 'min-height:' + Number(footerConfig.footer_height) + 'px' : ''),
     ].join(';')
 
     el.innerHTML =
-      tab(HOME_URL, 'home', 'HOME', isHomepage) +
-      tab(FEED_URL, 'feed', 'FEED', isFeed) +
+      tab(footerConfig.home_url || HOME_URL, 'home', footerConfig.home_label || 'HOME', isHomepage) +
+      tab(footerConfig.feed_url || FEED_URL, 'feed', footerConfig.feed_label || 'FEED', isFeed) +
       chatTab() +
       cartTab()
     // Slot 3 và 4 thêm vào đây sau khi có ý tưởng
@@ -202,17 +228,33 @@
     if (document.getElementById('fsport-nav-footer-style')) return
     var style = document.createElement('style')
     style.id = 'fsport-nav-footer-style'
-    style.textContent = '#fsport-nav-footer{--fs-nav-icon:30px}.fs-nav-icon{width:var(--fs-nav-icon);height:var(--fs-nav-icon);display:block}.fs-cart-icon-wrap{position:relative;display:block}.fs-cart-count{position:absolute;top:-7px;right:-10px;min-width:17px;height:17px;padding:0 4px;box-sizing:border-box;border-radius:9px;background:#e53935;color:#fff;font:700 10px/17px -apple-system,\"Be Vietnam Pro\",sans-serif;text-align:center;border:2px solid #fff}.fs-cart-count[hidden]{display:none}@media (min-width:768px){#fsport-nav-footer{--fs-nav-icon:50px}#fsport-nav-footer a,#fsport-nav-footer button{padding-top:12px!important;padding-bottom:10px!important}#fsport-nav-footer span:not(.fs-cart-count){font-size:11px!important}}'
+    style.textContent = '#fsport-nav-footer{--fs-nav-icon:30px}.fs-nav-icon{width:var(--fs-nav-icon);height:var(--fs-nav-icon);display:block;object-fit:contain}.fs-cart-icon-wrap{position:relative;display:block}.fs-cart-count{position:absolute;top:-7px;right:-10px;min-width:17px;height:17px;padding:0 4px;box-sizing:border-box;border-radius:9px;background:#e53935;color:#fff;font:700 10px/17px -apple-system,\"Be Vietnam Pro\",sans-serif;text-align:center;border:2px solid #fff}.fs-cart-count[hidden]{display:none}@media (min-width:768px){#fsport-nav-footer{--fs-nav-icon:36px}#fsport-nav-footer a,#fsport-nav-footer button{padding-top:10px!important;padding-bottom:8px!important}#fsport-nav-footer span:not(.fs-cart-count){font-size:15px!important}}'
     document.head.appendChild(style)
   }
 
   // ── Init ─────────────────────────────────────────────────────
   function init() {
-    // Local: skip Supabase, luôn hiện footer
-    if (isLocal) { buildFooter(); return }
-    fetchFeedSettings(function (cfg) {
-      if (cfg.enabled === false || cfg.stickyFooter === false) { removeFooter(); return }
-      buildFooter()
+    var frontendReady = window.FSPORT_FRONTEND_PAGE_CONFIG_PROMISE || Promise.resolve(null)
+    frontendReady.catch(function() { return null }).then(function(pageConfig) {
+      if (pageConfig && pageConfig.settings && pageConfig.settings.stickyFooter && pageConfig.settings.stickyFooter.enabled === false) {
+        removeFooter()
+        return
+      }
+      function finish(config) {
+        footerConfig = config || {}
+        if (isLocal) { buildFooter(); return }
+        fetchFeedSettings(function(cfg) {
+          if (cfg.enabled === false || cfg.stickyFooter === false) { removeFooter(); return }
+          buildFooter()
+        })
+      }
+      if (pageConfig && pageConfig.stickyFooter) {
+        finish(pageConfig.stickyFooter.config)
+        return
+      }
+      fetchFooterConfig(function(config) {
+        finish(config)
+      })
     })
   }
 

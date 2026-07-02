@@ -32,7 +32,7 @@
 
       // Load script FreeFlow logic (DÙNG "/js/")
       const ffScript = document.createElement("script");
-      ffScript.src = "/js/freeflow.js";
+      ffScript.src = "/js/freeflow.js?v=20260702-disable-collection-1";
 
       ffScript.onload = () => {
         // Ưu tiên init mới

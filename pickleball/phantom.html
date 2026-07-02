@@ -6,21 +6,29 @@
   <title>Vợt Pickleball Phantom | Lõi Gen 4 BV81, Tràn Viền Carbon Chính Hãng</title>
 
   <!-- ✅ CSS -->
-  <link rel="stylesheet" href="/css/base.css" />
-  <link rel="stylesheet" href="../css/cartpopup.css" />
-  <link rel="stylesheet" href="../css/checkoutpopup.css" />
-  <link rel="stylesheet" href="/css/productdescription.css" />
-  <link rel="stylesheet" href="../css/slideshow.css" />
+  <link rel="stylesheet" href="/css/frontend.css?v=20260702-product-runtime-1" />
   <link rel="icon" type="image/png" href="/favicon.png" />
 
   <!-- ✅ JS định nghĩa -->
   <script>
+    function fsportProductSlugFromPath(path) {
+      var clean = String(path || "").split("?")[0].split("#")[0].replace(/\/+$/, "");
+      var last = clean.split("/").filter(Boolean).pop() || "";
+      return last.replace(/\.html?$/i, "").trim().toLowerCase();
+    }
+
     window.loai = "pickleball";
     window.productCategory = "pickleball";
-    window.productPage = "phantom";
+    window.productPage = fsportProductSlugFromPath(window.location.pathname);
     window.imageCount = 7;
     window.imageFormat = "webp";
+    window.FSPORT_CARTPOPUP_CONFIG_URL = window.FSPORT_CARTPOPUP_CONFIG_URL ||
+      "https://xcigbbcpwfzluqazadez.supabase.co/functions/v1/cart-popup-config";
+    window.FSPORT_PRODUCT_PAGE_CONFIG_URL = window.FSPORT_PRODUCT_PAGE_CONFIG_URL ||
+      "https://xcigbbcpwfzluqazadez.supabase.co/functions/v1/product-page-config";
+
   </script>
+  <script src="/js/product-page-runtime.js?v=20260702-central-runtime-2"></script>
 </head>
 <body>
 
@@ -32,12 +40,14 @@
     <div id="sticky-footer-placeholder"></div>
 
     <!-- ✅ Slideshow chính -->
+    <div id="productPageSections">
+    <div data-fsport-section="slideshow">
     <div class="lazy-slideshow" id="lazySlideshow">
       <div class="slide-counter" id="slideCounter">1/1</div>
     </div>
 
     <!-- Zoom toàn màn hình khi click ảnh -->
-    <div id="fullscreenZoom" style="display: none;">
+    <div id="fullscreenZoom" class="fs-hidden-initial">
       <div id="zoomWrapper">
         <img id="zoomedImg" src="" alt="Zoomed" />
         <button id="zoomCloseBtn">×</button>
@@ -45,107 +55,52 @@
     </div>
 
     <!-- Script xử lý slideshow + zoom -->
-    <script src="/js/slideshow-2p.js"></script>
+    </div>
+    <script src="/js/slideshow-lazy-loader.js?v=20260701-1"></script>
+    <script src="/js/slideshow-2p.js?v=20260701-lazy-sequential-1"></script>
 
-   <!-- ✅ Flash Banner -->
-<div id="flashbanner-placeholder"></div>
-<script>
-  fetch("/html/flashsalebanner/freeship.html")
-    .then(res => res.text())
-    .then(html => {
-      // inject cả HTML + JS bên trong file phantom.html
-      document.getElementById("flashbanner-placeholder").innerHTML = html;
-
-      // tìm và chạy các <script> trong nội dung vừa inject
-      const tempDiv = document.createElement("div");
-      tempDiv.innerHTML = html;
-      tempDiv.querySelectorAll("script").forEach(oldScript => {
-        const newScript = document.createElement("script");
-        if (oldScript.src) {
-          newScript.src = oldScript.src; // nếu script có src thì load
-        } else {
-          newScript.textContent = oldScript.textContent; // nếu script inline thì chạy luôn
-        }
-        document.body.appendChild(newScript);
-      });
-    });
-</script>
-
+    <!-- ✅ Flash Banner -->
+    <div data-fsport-section="flash_banner"><div id="flashbanner-placeholder"></div></div>
 
     <!-- ✅ Tiêu đề + Shipping -->
     <div class="product-hero">
-      <h1 style="font-size: 14px; font-weight: bold; margin-top: 8px; font-family: 'Be Vietnam Pro', sans-serif;">
-        <span style="background: black; color: white; font-size: 11px; padding: 2px 6px; border-radius: 4px; margin-right: 4px;">Mall</span>
-        <span style="background: #007BFF; color: white; font-size: 11px; padding: 2px 6px; border-radius: 4px; margin-right: 6px; text-transform: uppercase;">Hàng Chính Hãng</span>
+      <h1 class="fs-product-title">
+        <span class="fs-product-badge fs-product-badge--mall">Mall</span>
+        <span class="fs-product-badge fs-product-badge--official">Hàng Chính Hãng</span>
         Vợt Pickleball Phantom | Lõi Gen 4 BV81, Tràn Viền Carbon Chính Hãng
       </h1>
-      <div class="shipping-wrapper">
-        <div class="shipping-info">
-          <div class="shipping-line"><span class="icon">🚚</span>Ship từ Hà Nội – Giao Hàng Toàn Quốc, Nhận Hàng Trong Vòng 3 Ngày</div>
-          <div class="shipping-line"><span class="icon">🔍</span>Kiểm Tra Hàng Trước Khi Thanh Toán</div>
-        </div>
+
+      <!-- ✅ KHỐI 3: Video sản phẩm -->
+      <div data-fsport-section="product_video"><div id="video-placeholder"></div></div>
+      <script src="/js/productvideo-v3.js?v=20260630-central-runtime-2"></script>
+      <script>
+        initProductVideo();
+      </script>
+      <!-- 🔚 Hết KHỐI 3 -->
+
+
+      <!-- ✅ Mô tả sản phẩm -->
+      <div data-fsport-section="product_description" class="product-hero">
+        <div id="productdescription-placeholder" data-src="/html/productdescription/pickleball/phantom.html"></div>
       </div>
-    </div>
-<!-- ✅ KHỐI 3: Video sản phẩm -->
-<div class="product-hero" style="margin-top: 12px;">
-  <div id="video-placeholder">Đang tải video...</div>
-</div>
+      <script src="/js/productdescription.js?v=20260630-central-runtime-1"></script>
 
-<script>
-  // ✅ Gọi file HTML video (gồm khung & ID #videoSlider)
-  fetch("/html/productvideo.html")
-    .then(res => res.text())
-    .then(html => {
-      document.getElementById("video-placeholder").innerHTML = html;
+      <!-- ✅ AI TƯ VẤN -->
+      <div data-fsport-section="ai_chat"><div id="aic-container"></div></div>
 
-      // ✅ Gọi JS sau khi HTML có mặt
-      const script = document.createElement("script");
-      script.src = "/js/productvideo.js";
-      script.onload = () => {
-        console.log("✅ Đã load JS, gọi init...");
-        if (typeof initProductVideo === "function") {
-          initProductVideo();
-        } else {
-          console.warn("❌ Không tìm thấy initProductVideo()");
-        }
-      };
-      document.body.appendChild(script);
-    })
-    .catch(err => console.warn("❌ Lỗi khi chèn productvideo.html:", err));
-</script>
-<!-- 🔚 Hết KHỐI 3 -->
-    <!-- ✅ Mô tả sản phẩm -->
-    <div class="product-hero" style="margin-top: 12px;">
-      <div id="productdescription-placeholder" data-src="/html/productdescription/pickleball/phantom.html"></div>
+      <!-- ✅ KHỐI 2: PHOTO GALLERY (thay thế review cũ) -->
+      <div data-fsport-section="photo_gallery" class="product-hero">
+        <div id="photo-gallery-container"></div>
+      </div>
+      <!-- HẾT KHỐI 2: photo-gallery -->
+
+      <!-- ✅ COLLECTION GRID - PICKLEBALL (bỏ Y-Sandal) -->
+      <div data-fsport-section="collection_grid">
+        <div id="collectionContainer"></div>
+      </div>
+
     </div>
-    <script src="/js/productdescription.js"></script>
-<!-- ✅ KHỐI 2: Reviews -->
-    <div class="product-hero" style="margin-top: 12px;">
-      <div id="review-placeholder"></div>
     </div>
-    <script>
-  fetch("/html/reviewblock/pickleball-phantom.html")
-    .then(res => res.text())
-    .then(html => {
-      const container = document.getElementById("review-placeholder");
-      container.innerHTML = html;
-      // ✅ Kích hoạt lại các <script> thủ công
-      const scripts = container.querySelectorAll("script");
-      scripts.forEach(oldScript => {
-        const newScript = document.createElement("script");
-        if (oldScript.src) {
-          newScript.src = oldScript.src;
-        } else {
-          newScript.textContent = oldScript.textContent;
-        }
-        document.body.appendChild(newScript);
-      });
-    });
-</script>
-<!-- HẾT KHỐI 2: review -->
-    <!-- ✅ FreeFlow -->
-    <h2 class="freeflow-heading" style="font-size: 18px; margin: 24px 12px 12px;">CÓ THỂ BẠN SẼ THÍCH</h2>
-    <script src="/js/freeflow-loader.js"></script>
 
   </div>
 
@@ -187,10 +142,9 @@
       await injectHTML("/html/cartpopup.html", "cartPopup-placeholder");
       await injectHTML("/html/checkoutpopup.html", "checkoutPopup-placeholder");
       await injectHTML("/html/stickyfooter.html", "sticky-footer-placeholder");
-
-      await loadScript("../js/voucherpopup.js");
-      await loadScript("/js/cartpopup.js");
-      await loadScript("../js/checkoutpopup.js");
+      await loadScript("/js/voucherpopup.js");
+      await loadScript("/js/cartpopup.js?v=20260702-admin-first-1");
+      await loadScript("/js/checkoutpopup.js?v=20260701-desktop-promo-off-1");
 
       setTimeout(async () => {
         const map = await fetchVoucherMap();
@@ -203,8 +157,19 @@
     setupPage();
   </script>
 
+  <!-- ✅ Collection Grid Script (chỉ pickleball) -->
+  <script>
+    window.collectionList = [
+      {
+        title: "PICKLEBALL COLLECTION",
+        json: "/json/pickleball-collection.json"
+      }
+    ];
+  </script>
+  <script src="/js/collection-grid.js?v=20260702-discount-badge-1" defer></script>
+
   <!-- ✅ Tracking -->
-  <script src="../js/tracking.js"></script>
+  <script src="/js/tracking.js"></script>
   <div id="base-placeholder"></div>
   <script>
     fetch("/html/base.html")
@@ -213,9 +178,14 @@
         document.getElementById("base-placeholder").outerHTML = html;
         if (typeof trackBothPixels === "function") {
           trackBothPixels("ViewContent", {
-            content_id: window.productPage,
-            content_name: window.productPage,
-            content_category: window.productCategory,
+            content_type: "product",
+            contents: [{
+              content_id: window.productPage,
+              content_name: window.productPage,
+              content_category: window.productCategory,
+              quantity: 1,
+              price: 0
+            }],
             value: 0,
             currency: "VND"
           });
@@ -223,13 +193,8 @@
       });
   </script>
 
-<script>
-  function closeVoucherPopup() {
-    const popup = document.getElementById("voucherPopup");
-    if (popup) popup.style.display = "none";
-  }
-</script>
   <!-- ✅ Base script -->
-  <script src="/js/base.js"></script>
+  <script src="/js/base.js?v=20260701-centered-1"></script>
+  <script src="/js/photo-gallery.js?v=20260701-lazy-images-1"></script>
 </body>
 </html>

@@ -75,7 +75,7 @@ window.onpopstate = function () {
 
 // ✅ Load fake notify (gọi như script thật để tránh lỗi CORS/textContent)
 const fakenotifyScript = document.createElement("script");
-fakenotifyScript.src = "/js/fakenotify.js";
+fakenotifyScript.src = "/js/fakenotify.js?v=20260701-footer-position-1";
 fakenotifyScript.defer = true;
 document.body.appendChild(fakenotifyScript);
 
@@ -90,7 +90,7 @@ document.body.appendChild(fakenotifyScript);
   window.__fakeNotifyInjected = true;
 
   const s = document.createElement('script');
-  s.src = '/js/fakenotify.js?v=1';
+  s.src = '/js/fakenotify.js?v=20260701-footer-position-1';
   s.async = true;                                  // tải song song, thực thi khi tải xong
   s.onerror = (e) => console.warn('Không load được fakenotify.js', e);
   document.head.appendChild(s);
@@ -189,7 +189,18 @@ setInterval(() => {
   var _attempts = 0
   function waitForCredentials () {
     if (window.FSPORT_SUPABASE_URL) {
-      loadAiChat()
+      var ready = window.FSPORT_FRONTEND_PAGE_CONFIG_PROMISE || window.FSPORT_PRODUCT_PAGE_CONFIG_PROMISE || Promise.resolve(null)
+      ready.catch(function () { return null }).then(function (config) {
+        if (config && config.schema === 'fsport-frontend-page-v1') {
+          if (config.settings && config.settings.aiChat && config.settings.aiChat.enabled === false) return
+          loadAiChat()
+          return
+        }
+        var page = window.FSPORT_PRODUCT_PAGE
+        var section = page && page.getSection ? page.getSection('ai_chat') : null
+        if (config && (!section || section.active === false)) return
+        loadAiChat()
+      })
     } else if (_attempts < 30) {
       _attempts++
       setTimeout(waitForCredentials, 200)

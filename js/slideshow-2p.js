@@ -1,9 +1,10 @@
-(function () {
+(async function () {
   const PAGE = (window.productPage || "").toLowerCase();
   const LOAI = (window.productCategory || "art").toLowerCase();
   const CONTAINER_ID = "lazySlideshow";
   const COUNTER_ID = "slideCounter";
-  const ORIGIN = location.origin.replace("http://", "https://");
+  // Production already uses HTTPS; local development must keep HTTP.
+  const ORIGIN = location.origin;
 
   // Config mặc định theo từng PAGE
   const IMAGE_CONFIG = {
@@ -14,6 +15,13 @@
     zen4: { count: 6, format: "jpg" },
     monk: { count: 7, format: "jpg" },
     blossom: { count: 7, format: "webp" },
+    chair001: { count: 14, format: "jpg" },
+    sup001: { count: 14, format: "jpg" },
+    ysandalbn68: { count: 9, format: "jpg" },
+    "pickleball-airforce": { count: 9, format: "jpg" },
+    ysandal5568: { count: 41, format: "jpg" },
+    ysandal5560: { count: 14, format: "jpg" },
+    meikan: { count: 9, format: "jpg" },
     // thêm cấu hình khác nếu cần
   };
 
@@ -23,7 +31,6 @@
     format: window.imageFormat || (IMAGE_CONFIG[PAGE]?.format ?? "jpg"),
   };
 
-  const TOTAL_IMAGES = config.count;
   const FORMAT = config.format;
   const BASE_PATH = `${ORIGIN}/assets/images/gallery/${LOAI}/${PAGE}`;
 
@@ -31,46 +38,65 @@
   const counterEl = document.getElementById(COUNTER_ID);
   if (!container || !counterEl) return;
 
+  async function loadConfiguredImages() {
+    const base = window.FSPORT_SUPABASE_URL || "https://xcigbbcpwfzluqazadez.supabase.co";
+    const key = window.FSPORT_SUPABASE_ANON || "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhjaWdiYmNwd2Z6bHVxYXphZGV6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkzNTA1NjEsImV4cCI6MjA5NDkyNjU2MX0.8LGX0FkU5w9q26LynYetUY9rGN_oFnjvDFJ5tjG9QV4";
+    try {
+      const response = await fetch(`${base}/rest/v1/rpc/get_product_page_slides`, {
+        method: "POST",
+        headers: { apikey: key, Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
+        body: JSON.stringify({ p_slug: PAGE }),
+      });
+      if (!response.ok) return [];
+      const rows = await response.json();
+      return Array.isArray(rows) ? rows.filter((row) => row.image_url) : [];
+    } catch (_) {
+      return [];
+    }
+  }
+
+  const runtimeConfig = await (window.FSPORT_PRODUCT_PAGE_CONFIG_PROMISE || Promise.resolve(null)).catch(() => null);
+  const runtimeSection = runtimeConfig && window.FSPORT_PRODUCT_PAGE
+    ? window.FSPORT_PRODUCT_PAGE.getSection("slideshow")
+    : null;
+  if (runtimeConfig && (!runtimeSection || runtimeSection.active === false)) return;
+  const configuredImages = runtimeConfig
+    ? (Array.isArray(runtimeSection.items) ? runtimeSection.items : [])
+    : await loadConfiguredImages();
+  const imageList = configuredImages.length
+    ? configuredImages.map((row) => ({ url: row.image_url, alt: row.alt_text || PAGE }))
+    : (runtimeConfig ? [] : Array.from({ length: config.count }, (_, index) => ({
+        url: `${BASE_PATH}/${index + 1}.${FORMAT}`,
+        alt: `${PAGE} - ${index + 1}`,
+      })));
+  const TOTAL_IMAGES = imageList.length;
+  if (!TOTAL_IMAGES) return;
+
   let current = 0;
   const slides = [];
 
-  // IntersectionObserver for lazy load
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (!entry.isIntersecting) return;
-      const el = entry.target;
-      if (el.dataset.src && !el.src) {
-        el.src = el.dataset.src;
-        el.decode?.().catch(() => {});
-        io.unobserve(el);
-        delete el.dataset.src;
-      }
-    });
-  }, {
-    root: null,
-    rootMargin: "300px 0px",
-    threshold: 0.01,
-  });
-
   // Tạo và gắn ảnh 1 → N
   for (let i = 1; i <= TOTAL_IMAGES; i++) {
+    const image = imageList[i - 1];
     const img = document.createElement("img");
     img.className = "slide";
-    img.alt = `${PAGE} - ${i}`;
+    img.alt = image.alt;
     img.decoding = "async";
     img.loading = i === 1 ? "eager" : "lazy";
+    img.fetchPriority = i === 1 ? "high" : "low";
 
     if (i === 1) {
       img.classList.add("show");
-      img.src = `${BASE_PATH}/${i}.${FORMAT}`;
+      img.src = image.url;
     } else {
-      img.dataset.src = `${BASE_PATH}/${i}.${FORMAT}`;
-      io.observe(img);
+      img.dataset.src = image.url;
     }
 
     container.insertBefore(img, counterEl);
     slides.push(img);
   }
+
+  window.FSportSlideshowLazyLoader.loadSequentially(slides);
 
   updateCounter();
 
@@ -80,6 +106,7 @@
   function nextSlide() {
     slides[current].classList.remove("show");
     current = (current + 1) % TOTAL_IMAGES;
+    window.FSportSlideshowLazyLoader.reveal(slides[current]);
     slides[current].classList.add("show");
     updateCounter();
   }
@@ -87,6 +114,7 @@
   function prevSlide() {
     slides[current].classList.remove("show");
     current = (current - 1 + TOTAL_IMAGES) % TOTAL_IMAGES;
+    window.FSportSlideshowLazyLoader.reveal(slides[current]);
     slides[current].classList.add("show");
     updateCounter();
   }
@@ -150,8 +178,15 @@
   const zoomOverlay = document.getElementById("fullscreenZoom");
   const zoomImg = document.getElementById("zoomedImg");
   const zoomClose = document.getElementById("zoomCloseBtn");
+  window.FSportSlideshowLazyLoader.bindZoom({
+    trigger: container,
+    overlay: zoomOverlay,
+    zoomImage: zoomImg,
+    closeButton: zoomClose,
+    getCurrentImage: () => slides[current],
+  });
 
-  container.addEventListener("click", () => {
+  if (false && zoomOverlay && zoomImg && zoomClose) container.addEventListener("click", () => {
     const currentSlide = slides[current];
     if (!currentSlide.classList.contains("show")) return;
 
@@ -163,14 +198,14 @@
     document.body.style.overflow = "hidden";
   });
 
-  zoomClose.addEventListener("click", () => {
+  if (zoomOverlay && zoomImg && zoomClose) zoomClose.addEventListener("click", () => {
     zoomOverlay.style.display = "none";
     zoomImg.src = "";
     zoomImg.style.transform = "translate(0, 0)";
     document.body.style.overflow = "";
   });
 
-  document.addEventListener("keydown", (e) => {
+  if (zoomOverlay && zoomImg) document.addEventListener("keydown", (e) => {
     if (e.key === "Escape" && zoomOverlay.style.display === "flex") {
       zoomOverlay.style.display = "none";
       zoomImg.src = "";
@@ -186,7 +221,7 @@
   let originX = 0;
   let originY = 0;
 
-  zoomImg.onmousedown = (e) => {
+  if (zoomImg) zoomImg.onmousedown = (e) => {
     isDraggingZoom = true;
     startXZoom = e.clientX;
     startYZoom = e.clientY;
@@ -196,13 +231,14 @@
 
   document.onmouseup = () => {
     isDraggingZoom = false;
+    if (!zoomImg) return;
     zoomImg.style.cursor = "grab";
     originX = getTranslate(zoomImg).x;
     originY = getTranslate(zoomImg).y;
   };
 
   document.onmousemove = (e) => {
-    if (!isDraggingZoom) return;
+    if (!isDraggingZoom || !zoomImg) return;
     const dx = e.clientX - startXZoom;
     const dy = e.clientY - startYZoom;
     zoomImg.style.transform = `translate(${originX + dx}px, ${originY + dy}px)`;
