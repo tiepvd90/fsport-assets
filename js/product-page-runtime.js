@@ -40,6 +40,17 @@
       }
       meta.content = description;
     }
+
+    window.productName = config.productName || config.title || config.slug;
+    function applyVisibleTitle() {
+      var dynamicTitle = document.getElementById("dynamicProductTitle");
+      if (dynamicTitle) dynamicTitle.textContent = window.productName;
+    }
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", applyVisibleTitle, { once: true });
+    } else {
+      applyVisibleTitle();
+    }
   }
 
   function cacheCartConfig(config) {
