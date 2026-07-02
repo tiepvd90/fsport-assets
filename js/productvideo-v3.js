@@ -62,6 +62,27 @@
     document.addEventListener("visibilitychange", function () {
       if (!document.hidden && iframe.isConnected) play();
     });
+
+    // iOS Safari and every browser on iPhone use WebKit and can reject
+    // YouTube iframe autoplay even when muted. Reuse the user's first
+    // touches/scroll gestures as playback permission. Keep this listener
+    // active because an early touch can happen while the iframe is off-screen.
+    function playFromGesture() {
+      if (!iframe.isConnected) {
+        document.removeEventListener("touchstart", playFromGesture, true);
+        document.removeEventListener("pointerdown", playFromGesture, true);
+        return;
+      }
+      play();
+    }
+    document.addEventListener("touchstart", playFromGesture, {
+      capture: true,
+      passive: true
+    });
+    document.addEventListener("pointerdown", playFromGesture, {
+      capture: true,
+      passive: true
+    });
   }
 
   function injectHTML(container) {
