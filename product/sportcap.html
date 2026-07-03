@@ -2,53 +2,187 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport"
-        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Mũ Lưỡi Trai Sportcap Form Basic Màu Đen</title>
 
-  <!-- SEO Title -->
-  <title>Mũ Lưỡi Trai Form Basic Màu Đen | Mũ Nam Nữ Cao Cấp, Form Đẹp</title>
-
-  <!-- SEO Meta -->
-  <meta name="description"
-        content="Mũ lưỡi trai form basic màu đen với chất liệu kaki cao cấp, form đứng đẹp, phù hợp nam và nữ. Hỗ trợ kiểm tra hàng trước khi thanh toán." />
-
-  <meta name="keywords"
-        content="mũ lưỡi trai, mũ basic, mũ lưỡi trai màu đen, nón kết nam nữ, mũ unisex, mũ form basic" />
-
-  <meta name="robots" content="index, follow" />
-  <meta name="author" content="B&M" />
-
-  <!-- Canonical -->
-  <link rel="canonical" href="https://yourdomain.com/mu-luoi-trai-form-basic-den" />
-
-  <!-- Open Graph -->
-  <meta property="og:type" content="product" />
-  <meta property="og:site_name" content="B&M" />
-  <meta property="og:title"
-        content="Mũ Lưỡi Trai Form Basic Màu Đen | Mũ Nam Nữ Cao Cấp" />
-  <meta property="og:description"
-        content="Mũ lưỡi trai form basic màu đen, chất liệu kaki cao cấp, form đẹp, phù hợp nam và nữ. Kiểm tra hàng trước khi thanh toán." />
-  <meta property="og:url"
-        content="https://yourdomain.com/mu-luoi-trai-form-basic-den" />
-  <meta property="og:image"
-        content="https://yourdomain.com/images/mu-basic-den.jpg" />
-
-  <!-- Twitter -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title"
-        content="Mũ Lưỡi Trai Form Basic Màu Đen | Mũ Nam Nữ Cao Cấp" />
-  <meta name="twitter:description"
-        content="Mũ lưỡi trai form basic màu đen, form đẹp, chất liệu cao cấp, phù hợp nam và nữ." />
-  <meta name="twitter:image"
-        content="https://yourdomain.com/images/mu-basic-den.jpg" />
-
-  <!-- Theme -->
-  <meta name="theme-color" content="#000000" />
-
-  <!-- CSS -->
-  <link rel="stylesheet"
-        href="/css/frontend.css?v=20260702-panther-preview-text-1" />
-
-  <!-- Favicon -->
+  <!-- ✅ CSS -->
+  <link rel="stylesheet" href="/css/frontend.css?v=20260702-fashion-sportcap-1" />
   <link rel="icon" type="image/png" href="/favicon.png" />
+
+  <!-- ✅ JS định nghĩa -->
+  <script>
+    function fsportProductSlugFromPath(path) {
+      var clean = String(path || "").split("?")[0].split("#")[0].replace(/\/+$/, "");
+      var last = clean.split("/").filter(Boolean).pop() || "";
+      return last.replace(/\.html?$/i, "").trim().toLowerCase();
+    }
+
+    window.loai = "fashion";
+    window.productCategory = "fashion";
+    window.productPage = fsportProductSlugFromPath(window.location.pathname);
+    window.imageCount = 8;
+    window.imageFormat = "webp";
+    window.FSPORT_CARTPOPUP_CONFIG_URL = window.FSPORT_CARTPOPUP_CONFIG_URL ||
+      "https://xcigbbcpwfzluqazadez.supabase.co/functions/v1/cart-popup-config";
+    window.FSPORT_PRODUCT_PAGE_CONFIG_URL = window.FSPORT_PRODUCT_PAGE_CONFIG_URL ||
+      "https://xcigbbcpwfzluqazadez.supabase.co/functions/v1/product-page-config";
+  </script>
+  <script src="/js/product-page-runtime.js?v=20260630-central-runtime-2"></script>
 </head>
+<body>
+
+  <div class="page-container">
+
+    <!-- ✅ Placeholders -->
+    <div id="cartPopup-placeholder"></div>
+    <div id="checkoutPopup-placeholder"></div>
+    <div id="sticky-footer-placeholder"></div>
+
+    <div id="productPageSections">
+
+      <!-- ✅ Slideshow chính -->
+      <div data-fsport-section="slideshow">
+        <div class="lazy-slideshow" id="lazySlideshow">
+          <div class="slide-counter" id="slideCounter">1/1</div>
+        </div>
+
+        <!-- Zoom toàn màn hình khi click ảnh -->
+        <div id="fullscreenZoom" class="fs-hidden-initial">
+          <div id="zoomWrapper">
+            <img id="zoomedImg" src="" alt="Zoomed" />
+            <button id="zoomCloseBtn">×</button>
+          </div>
+        </div>
+      </div>
+
+      <script src="/js/slideshow-lazy-loader.js?v=20260701-1"></script>
+      <script src="/js/slideshow-2p.js?v=20260702-instant-first-slide-1"></script>
+
+      <!-- ✅ Flash Banner -->
+      <div data-fsport-section="flash_banner">
+        <div id="flashbanner-placeholder"></div>
+      </div>
+
+      <!-- ✅ Tiêu đề + Shipping -->
+      <div class="product-hero">
+        <h1 class="fs-product-title">
+          <span class="fs-product-badge fs-product-badge--mall">Mall</span>
+          <span class="fs-product-badge fs-product-badge--official">Hàng Chính Hãng</span>
+          Mũ Lưỡi Trai Sportcap Form Basic Màu Đen
+        </h1>
+
+        <!-- ✅ Mô tả sản phẩm -->
+        <div data-fsport-section="product_description" class="product-hero">
+          <div id="productdescription-placeholder" data-src="/html/productdescription/fashion/sportcap.html"></div>
+        </div>
+        <script src="/js/productdescription.js?v=20260630-central-runtime-1"></script>
+
+        <!-- ✅ AI TƯ VẤN -->
+        <div data-fsport-section="ai_chat">
+          <div id="aic-container"></div>
+        </div>
+
+        <!-- ✅ COLLECTION GRID - FASHION -->
+        <div data-fsport-section="collection_grid">
+          <div id="collectionContainer"></div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ✅ Inject popup + footer -->
+  <script>
+    async function loadScript(src) {
+      return new Promise(resolve => {
+        const s = document.createElement("script");
+        s.src = src;
+        s.onload = resolve;
+        document.body.appendChild(s);
+      });
+    }
+
+    async function injectHTML(file, placeholderId) {
+      const res = await fetch(file);
+      const html = await res.text();
+      const container = document.getElementById(placeholderId);
+      const temp = document.createElement("div");
+      temp.innerHTML = html;
+
+      Array.from(temp.children).forEach(el => {
+        if (el.tagName === "SCRIPT") {
+          const script = document.createElement("script");
+          if (el.src) {
+            script.src = el.src;
+            script.async = false;
+          } else {
+            script.textContent = el.textContent;
+          }
+          document.body.appendChild(script);
+        } else {
+          container.appendChild(el);
+        }
+      });
+    }
+
+    async function setupPage() {
+      await injectHTML("/html/cartpopup.html", "cartPopup-placeholder");
+      await injectHTML("/html/checkoutpopup.html", "checkoutPopup-placeholder");
+      await injectHTML("/html/stickyfooter.html", "sticky-footer-placeholder");
+      await loadScript("/js/voucherpopup.js");
+      await loadScript("/js/cartpopup.js?v=20260702-admin-first-1");
+      await loadScript("/js/checkoutpopup.js?v=20260701-desktop-promo-off-1");
+
+      setTimeout(async () => {
+        const map = await fetchVoucherMap();
+        window.__vouchersRaw = map[window.loai] || {};
+        window.voucherByProduct = {};
+        initCartPopup();
+      }, 100);
+    }
+
+    setupPage();
+  </script>
+
+  <!-- ✅ Collection Grid Script -->
+  <script>
+    window.collectionList = [
+      {
+        title: "FASHION COLLECTION",
+        json: "/json/fashion-collection.json"
+      }
+    ];
+  </script>
+  <script src="/js/collection-grid.js?v=20260702-discount-badge-1" defer></script>
+
+  <!-- ✅ Tracking -->
+  <script src="/js/tracking.js"></script>
+  <div id="base-placeholder"></div>
+  <script>
+    fetch("/html/base.html")
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById("base-placeholder").outerHTML = html;
+        if (typeof trackBothPixels === "function") {
+          trackBothPixels("ViewContent", {
+            content_type: "product",
+            contents: [{
+              content_id: window.productPage,
+              content_name: window.productPage,
+              content_category: window.productCategory,
+              quantity: 1,
+              price: 0
+            }],
+            value: 0,
+            currency: "VND"
+          });
+        }
+      });
+  </script>
+
+  <!-- ✅ Base script -->
+  <script src="/js/base.js?v=20260701-centered-1"></script>
+
+</body>
+</html>
