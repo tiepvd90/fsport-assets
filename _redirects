@@ -1,4 +1,4 @@
-/feed-sitemap.xml  /feed-sitemap  200
+/feed-sitemap.xml  https://xcigbbcpwfzluqazadez.supabase.co/functions/v1/feed-sitemap  302
 
 # Dynamic product pages use a dedicated namespace so this rule can never
 # intercept existing /pickleball, /giadung, /html or asset URLs.
