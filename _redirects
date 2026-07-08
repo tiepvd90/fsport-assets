@@ -2,6 +2,9 @@
 /feed/:slug/  https://xcigbbcpwfzluqazadez.supabase.co/functions/v1/feed-post-seo/:slug  200
 /feed/:slug   https://xcigbbcpwfzluqazadez.supabase.co/functions/v1/feed-post-seo/:slug  200
 
-# Dynamic product pages use a dedicated namespace so this rule can never
-# intercept existing /pickleball, /giadung, /html or asset URLs.
+# Dynamic product pages load config by slug. Existing real files keep winning;
+# missing two-level paths can fall back to the dynamic runtime.
+/product/:slug.html  /dynamic-product.html  200
+/product/:slug       /dynamic-product.html  200
 /p/:slug  /dynamic-product.html  200
+/:namespace/:slug.html  /dynamic-product.html  200

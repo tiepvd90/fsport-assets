@@ -24,6 +24,7 @@
   var _viewTimers  = {}
   var _viewObserver = null
   var _publishOrderSupported = true
+  var _priorityOrderSupported = true
   var _settings    = { enabled: true, likesEnabled: true, brandName: 'F-SPORT', brandLogo: '/favicon.png' }
   var _productSheet = { post: null, products: [], selectedCode: '' }
   var _feedSheetScrollY = 0
@@ -124,16 +125,24 @@
     var requestSize = reset ? INITIAL_PAGE_SIZE : PAGE_SIZE
     var orderField = _publishOrderSupported ? 'feed_order_at' : 'created_at'
     var selectFields = 'id,slug,title,body,content_type,images,video_url,video_id,tags,like_count,view_count,product_tap_count,feed_atwl_count,feed_atc_count,created_at'
+    if (_priorityOrderSupported) selectFields += ',priority_score'
     if (_publishOrderSupported) selectFields += ',published_at,feed_order_at'
+    var orderClause = _priorityOrderSupported
+      ? 'priority_score.desc,' + orderField + '.desc,id.desc'
+      : orderField + '.desc,id.desc'
     var q = url + '/rest/v1/feed_posts'
       + '?status=eq.published'
-      + '&order=' + orderField + '.desc,id.desc'
+      + '&order=' + orderClause
       + '&limit=' + requestSize
       + '&select=' + selectFields + ',feed_post_products(product_code,product_name,product_image_url,product_price,product_category,product_color,product_size,display_order)'
 
     if (_cursor) {
-      var cursorFilter = '(' + orderField + '.lt.' + _cursor.orderAt
-        + ',and(' + orderField + '.eq.' + _cursor.orderAt + ',id.lt.' + _cursor.id + '))'
+      var cursorFilter = _priorityOrderSupported
+        ? '(priority_score.lt.' + _cursor.priorityScore
+          + ',and(priority_score.eq.' + _cursor.priorityScore + ',' + orderField + '.lt.' + _cursor.orderAt + ')'
+          + ',and(priority_score.eq.' + _cursor.priorityScore + ',' + orderField + '.eq.' + _cursor.orderAt + ',id.lt.' + _cursor.id + '))'
+        : '(' + orderField + '.lt.' + _cursor.orderAt
+          + ',and(' + orderField + '.eq.' + _cursor.orderAt + ',id.lt.' + _cursor.id + '))'
       q += '&or=' + encodeURIComponent(cursorFilter)
     }
 
@@ -148,6 +157,11 @@
       _hideSkeleton()
       if (xhr.status >= 400 && _publishOrderSupported) {
         var errorText = xhr.responseText || ''
+        if (_priorityOrderSupported && /priority_score/i.test(errorText)) {
+          _priorityOrderSupported = false
+          _fetchPosts(reset)
+          return
+        }
         if (/published_at|feed_order_at/i.test(errorText)) {
           _publishOrderSupported = false
           _fetchPosts(reset)
@@ -161,7 +175,11 @@
           if (posts.length < requestSize) _noMore = true
           if (posts.length) {
             var lastPost = posts[posts.length - 1]
-            _cursor = { orderAt: lastPost.feed_order_at || lastPost.created_at, id: lastPost.id }
+            _cursor = {
+              priorityScore: Number(lastPost.priority_score || 0),
+              orderAt: lastPost.feed_order_at || lastPost.created_at,
+              id: lastPost.id
+            }
           }
           posts.forEach(function (p) {
             _allPosts.push(p)
