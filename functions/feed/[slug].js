@@ -26,7 +26,7 @@ export async function onRequest(context) {
   });
 
   const headers = new Headers();
-  headers.set('content-type', upstream.headers.get('content-type') || 'text/html; charset=utf-8');
+  headers.set('content-type', 'text/html; charset=utf-8');
   headers.set('cache-control', upstream.headers.get('cache-control') || 'public, max-age=300, s-maxage=3600');
 
   return new Response(method === 'HEAD' ? null : upstream.body, {
