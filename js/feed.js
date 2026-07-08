@@ -18,12 +18,13 @@
   var _noMore      = false
   var _allPosts    = []
   var _postsById   = {}
-  var _cursor      = null
+  var _offset      = 0
   var _likedSet    = {}
   var _uid         = ''
   var _viewTimers  = {}
   var _viewObserver = null
   var _publishOrderSupported = true
+  var _publicOrderRpcSupported = true
   var _settings    = { enabled: true, likesEnabled: true, brandName: 'F-SPORT', brandLogo: '/favicon.png' }
   var _productSheet = { post: null, products: [], selectedCode: '' }
   var _feedSheetScrollY = 0
@@ -111,7 +112,7 @@
     if (reset) {
       _allPosts = []
       _postsById = {}
-      _cursor = null
+      _offset = 0
       _noMore = false
       Object.keys(_viewTimers).forEach(function (id) { clearTimeout(_viewTimers[id]) })
       _viewTimers = {}
@@ -122,20 +123,74 @@
     if (!url || !anon) { _renderMockPosts(); _loading = false; return }
 
     var requestSize = reset ? INITIAL_PAGE_SIZE : PAGE_SIZE
+    _fetchPublicFeedPage(requestSize, function (err, posts) {
+      _loading = false
+      _hideSkeleton()
+      if (err) { _renderEmpty(); return }
+      if (!posts.length && reset) { _renderEmpty(); return }
+      if (!posts.length) _noMore = true
+      if (posts.length < requestSize) _noMore = true
+      _offset += posts.length
+      posts.forEach(function (p) {
+        _allPosts.push(p)
+        _postsById[p.id] = p
+      })
+      _renderPosts(posts, reset)
+      _updateLoadMore()
+      _initViewTracking()
+    })
+  }
+
+  function _feedSelectFields() {
+    var fields = 'id,slug,title,body,content_type,images,video_url,video_id,tags,like_count,view_count,product_tap_count,feed_atwl_count,feed_atc_count,created_at'
+    if (_publishOrderSupported) fields += ',published_at,feed_order_at'
+    if (_publicOrderRpcSupported) fields += ',source_type,priority_score,generated_by,topic_source_file,feed_origin'
+    return fields
+  }
+
+  function _fetchPublicFeedPage(limit, done) {
+    if (_publicOrderRpcSupported) {
+      _fetchPublicFeedRpcPage(limit, function (err, rows) {
+        if (!err) { done(null, rows); return }
+        _publicOrderRpcSupported = false
+        _fetchLegacyFeedPage(limit, done)
+      })
+      return
+    }
+    _fetchLegacyFeedPage(limit, done)
+  }
+
+  function _fetchPublicFeedRpcPage(limit, done) {
+    var url = supaUrl(), anon = supaAnon()
+    var q = url + '/rest/v1/rpc/get_public_feed_posts'
+      + '?select=' + _feedSelectFields() + ',feed_post_products(product_code,product_name,product_image_url,product_price,product_category,product_color,product_size,display_order)'
+
+    var xhr = new XMLHttpRequest()
+    xhr.open('POST', q, true)
+    xhr.setRequestHeader('apikey', anon)
+    xhr.setRequestHeader('Authorization', 'Bearer ' + anon)
+    xhr.setRequestHeader('Content-Type', 'application/json')
+    xhr.setRequestHeader('Accept', 'application/json')
+    xhr.timeout = 8000
+    xhr.onload = function () {
+      if (xhr.status >= 400) { done(new Error(xhr.responseText || 'Feed RPC failed')); return }
+      var rows = []
+      try { rows = JSON.parse(xhr.responseText) || [] } catch (e) { done(e); return }
+      done(null, rows)
+    }
+    xhr.onerror = xhr.ontimeout = function () { done(new Error('Feed RPC timeout')) }
+    xhr.send(JSON.stringify({ p_limit: limit, p_offset: _offset }))
+  }
+
+  function _fetchLegacyFeedPage(limit, done) {
+    var url = supaUrl(), anon = supaAnon()
     var orderField = _publishOrderSupported ? 'feed_order_at' : 'created_at'
-    var selectFields = 'id,slug,title,body,content_type,images,video_url,video_id,tags,like_count,view_count,product_tap_count,feed_atwl_count,feed_atc_count,created_at'
-    if (_publishOrderSupported) selectFields += ',published_at,feed_order_at'
     var q = url + '/rest/v1/feed_posts'
       + '?status=eq.published'
       + '&order=' + orderField + '.desc,id.desc'
-      + '&limit=' + requestSize
-      + '&select=' + selectFields + ',feed_post_products(product_code,product_name,product_image_url,product_price,product_category,product_color,product_size,display_order)'
-
-    if (_cursor) {
-      var cursorFilter = '(' + orderField + '.lt.' + _cursor.orderAt
-        + ',and(' + orderField + '.eq.' + _cursor.orderAt + ',id.lt.' + _cursor.id + '))'
-      q += '&or=' + encodeURIComponent(cursorFilter)
-    }
+      + '&offset=' + _offset
+      + '&limit=' + limit
+      + '&select=' + _feedSelectFields().replace(',feed_origin', '') + ',feed_post_products(product_code,product_name,product_image_url,product_price,product_category,product_color,product_size,display_order)'
 
     var xhr = new XMLHttpRequest()
     xhr.open('GET', q, true)
@@ -144,36 +199,17 @@
     xhr.setRequestHeader('Accept', 'application/json')
     xhr.timeout = 8000
     xhr.onload = function () {
-      _loading = false
-      _hideSkeleton()
-      if (xhr.status >= 400 && _publishOrderSupported) {
-        var errorText = xhr.responseText || ''
-        if (/published_at|feed_order_at/i.test(errorText)) {
-          _publishOrderSupported = false
-          _fetchPosts(reset)
-          return
-        }
+      if (xhr.status >= 400 && _publishOrderSupported && /published_at|feed_order_at/i.test(xhr.responseText || '')) {
+        _publishOrderSupported = false
+        _fetchLegacyFeedPage(limit, done)
+        return
       }
-      if (xhr.status >= 200 && xhr.status < 300) {
-        try {
-          var posts = JSON.parse(xhr.responseText) || []
-          if (!posts.length && reset) { _renderEmpty(); return }
-          if (posts.length < requestSize) _noMore = true
-          if (posts.length) {
-            var lastPost = posts[posts.length - 1]
-            _cursor = { orderAt: lastPost.feed_order_at || lastPost.created_at, id: lastPost.id }
-          }
-          posts.forEach(function (p) {
-            _allPosts.push(p)
-            _postsById[p.id] = p
-          })
-          _renderPosts(posts, reset)
-          _updateLoadMore()
-          _initViewTracking()
-        } catch (e) { _renderEmpty() }
-      } else { _renderEmpty() }
+      if (xhr.status >= 400) { done(new Error(xhr.responseText || 'Feed query failed')); return }
+      var rows = []
+      try { rows = JSON.parse(xhr.responseText) || [] } catch (e) { done(e); return }
+      done(null, rows)
     }
-    xhr.onerror = xhr.ontimeout = function () { _loading = false; _hideSkeleton(); _renderEmpty() }
+    xhr.onerror = xhr.ontimeout = function () { done(new Error('Feed query timeout')) }
     xhr.send()
   }
 
