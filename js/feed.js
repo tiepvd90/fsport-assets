@@ -274,7 +274,7 @@
     if (p.body && p.body.trim()) {
       bodyHtml =
         '<div class="fc-body-wrap">' +
-          '<div class="fc-body is-clamped" id="body-' + p.id + '">' + _nl2br(_esc(p.body)) + '</div>' +
+          '<div class="fc-body is-clamped" id="body-' + p.id + '">' + _renderFeedMarkdown(p.body) + '</div>' +
           '<button class="fc-see-more" id="seem-' + p.id + '" style="display:none">Xem Th\u00eam</button>' +
         '</div>'
     }
@@ -1153,6 +1153,122 @@
   // ─── UTILS ────────────────────────────────────────────────
   function _esc(s) { return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;') }
   function _nl2br(s) { return s.replace(/\n/g, '<br>') }
+  function _renderInlineMarkdown(s) {
+    return _esc(s)
+      .replace(/`([^`]+)`/g, '<code>$1</code>')
+      .replace(/\*\*([^*\n][\s\S]*?[^*\n])\*\*/g, '<strong>$1</strong>')
+      .replace(/__([^_\n][\s\S]*?[^_\n])__/g, '<strong>$1</strong>')
+      .replace(/\*([^*\n]+)\*/g, '<em>$1</em>')
+      .replace(/_([^_\n]+)_/g, '<em>$1</em>')
+  }
+  function _isMarkdownTableSeparator(line) {
+    return /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/.test(line || '')
+  }
+  function _splitMarkdownTableRow(line) {
+    return String(line || '').trim().replace(/^\|/, '').replace(/\|$/, '').split('|').map(function (cell) {
+      return cell.trim()
+    })
+  }
+  function _renderMarkdownTable(lines, start) {
+    if (start + 1 >= lines.length || !_isMarkdownTableSeparator(lines[start + 1])) return null
+    var headers = _splitMarkdownTableRow(lines[start])
+    var rows = []
+    var index = start + 2
+    while (index < lines.length && /\|/.test(lines[index]) && lines[index].trim()) {
+      rows.push(_splitMarkdownTableRow(lines[index]))
+      index += 1
+    }
+    if (!headers.length || !rows.length) return null
+    var head = '<thead><tr>' + headers.map(function (cell) { return '<th>' + _renderInlineMarkdown(cell) + '</th>' }).join('') + '</tr></thead>'
+    var body = '<tbody>' + rows.map(function (row) {
+      return '<tr>' + headers.map(function (_, i) { return '<td>' + _renderInlineMarkdown(row[i] || '') + '</td>' }).join('') + '</tr>'
+    }).join('') + '</tbody>'
+    return { html: '<div class="fc-table-wrap"><table>' + head + body + '</table></div>', next: index }
+  }
+  function _renderFeedMarkdown(input) {
+    var lines = String(input || '').replace(/\r\n/g, '\n').replace(/\r/g, '\n').split('\n')
+    var html = []
+    var paragraph = []
+    var listType = ''
+
+    function flushParagraph() {
+      if (!paragraph.length) return
+      html.push('<p>' + paragraph.map(_renderInlineMarkdown).join('<br>') + '</p>')
+      paragraph = []
+    }
+    function closeList() {
+      if (!listType) return
+      html.push('</' + listType + '>')
+      listType = ''
+    }
+    function openList(type) {
+      if (listType === type) return
+      closeList()
+      html.push('<' + type + '>')
+      listType = type
+    }
+
+    for (var i = 0; i < lines.length; i += 1) {
+      var rawLine = lines[i]
+      var line = rawLine.trim()
+      var heading = /^(#{1,4})\s+(.+)$/.exec(line)
+      var unordered = /^[-*+]\s+(.+)$/.exec(line)
+      var ordered = /^\d+[\.)]\s+(.+)$/.exec(line)
+      var quote = /^>\s?(.+)$/.exec(line)
+      var table = /\|/.test(line) ? _renderMarkdownTable(lines, i) : null
+
+      if (!line) {
+        flushParagraph()
+        closeList()
+        continue
+      }
+      if (/^```/.test(line)) continue
+      if (/^---+$/.test(line)) {
+        flushParagraph()
+        closeList()
+        html.push('<hr>')
+        continue
+      }
+      if (table) {
+        flushParagraph()
+        closeList()
+        html.push(table.html)
+        i = table.next - 1
+        continue
+      }
+      if (heading) {
+        flushParagraph()
+        closeList()
+        var level = Math.min(4, Math.max(3, heading[1].length + 2))
+        html.push('<h' + level + '>' + _renderInlineMarkdown(heading[2]) + '</h' + level + '>')
+        continue
+      }
+      if (quote) {
+        flushParagraph()
+        closeList()
+        html.push('<blockquote>' + _renderInlineMarkdown(quote[1]) + '</blockquote>')
+        continue
+      }
+      if (unordered) {
+        flushParagraph()
+        openList('ul')
+        html.push('<li>' + _renderInlineMarkdown(unordered[1]) + '</li>')
+        continue
+      }
+      if (ordered) {
+        flushParagraph()
+        openList('ol')
+        html.push('<li>' + _renderInlineMarkdown(ordered[1]) + '</li>')
+        continue
+      }
+      closeList()
+      paragraph.push(line)
+    }
+
+    flushParagraph()
+    closeList()
+    return html.join('')
+  }
   function _formatCount(n) { n = n || 0; if (n >= 1000) return (n/1000).toFixed(1).replace('.0','')+'K'; return String(n) }
   function _formatPrice(p) { return Number(p).toLocaleString('vi-VN') + '\u0111' }
   function _timeAgo(iso) {
