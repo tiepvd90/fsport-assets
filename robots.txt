@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://fun-sport.co/feed-sitemap.xml
