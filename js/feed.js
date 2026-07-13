@@ -258,7 +258,6 @@
   // ═══════════════════════════════════════════════════════════
   function _buildCard(p, prioritizeMedia) {
     var liked   = !!_likedSet[p.id]
-    var postUrl = _postUrl(p)
 
     // ── Media ───────────────────────────────────────────────
     var mediaHtml = ''
@@ -302,7 +301,6 @@
           '<div class="fc-time">' + _timeAgo(p.published_at || p.created_at) + '</div>' +
         '</div>' +
       '</div>' +
-      (p.title ? '<a class="fc-title" href="' + _esc(postUrl) + '">' + _esc(p.title) + '</a>' : '') +
       // Body truncated
       bodyHtml +
       // Media
