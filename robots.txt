@@ -2,3 +2,4 @@ User-agent: *
 Allow: /
 
 Sitemap: https://www.fun-sport.co/sitemap.xml
+Sitemap: https://www.fun-sport.co/google-sitemap.xml
