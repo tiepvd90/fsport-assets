@@ -23,6 +23,8 @@ export async function onRequest(context) {
   const body = method === 'HEAD'
     ? null
     : (await upstream.text())
+        .replace(/https:\/\/\/+www\.fun-sport\.co/g, 'https://www.fun-sport.co')
+        .replace(/https:\/\/\/+fun-sport\.co/g, 'https://www.fun-sport.co')
         .replace(/https:\/\/fsport\.vn/g, 'https://www.fun-sport.co')
         .replace(/https:\/\/fun-sport\.co/g, 'https://www.fun-sport.co')
         .replace(/(<loc>https:\/\/www\.fun-sport\.co\/feed\/[^<]+?)\/(<\/loc>)/g, '$1$2')
