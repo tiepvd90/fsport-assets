@@ -20,13 +20,21 @@ export async function onRequest(context) {
     method,
     headers: forwardedHeaders(context.request)
   });
+  const body = method === 'HEAD'
+    ? null
+    : (await upstream.text())
+        .replace(/https:\/\/fsport\.vn/g, 'https://www.fun-sport.co')
+        .replace(/https:\/\/fun-sport\.co/g, 'https://www.fun-sport.co')
+        .replace(/(<loc>https:\/\/www\.fun-sport\.co\/feed\/[^<]+?)\/(<\/loc>)/g, '$1$2')
+        .replace(/\n\s*<changefreq>[^<]*<\/changefreq>/g, '')
+        .replace(/\n\s*<priority>[^<]*<\/priority>/g, '');
 
   const headers = new Headers();
   headers.set('content-type', 'application/xml; charset=utf-8');
   headers.set('cache-control', upstream.headers.get('cache-control') || 'public, max-age=300');
 
-  return new Response(method === 'HEAD' ? null : upstream.body, {
-    status: upstream.status,
+  return new Response(body, {
+    status: upstream.ok ? upstream.status : 502,
     headers
   });
 }
