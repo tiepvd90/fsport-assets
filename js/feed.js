@@ -258,6 +258,7 @@
   // ═══════════════════════════════════════════════════════════
   function _buildCard(p, prioritizeMedia) {
     var liked   = !!_likedSet[p.id]
+    var postUrl = _postUrl(p)
 
     // ── Media ───────────────────────────────────────────────
     var mediaHtml = ''
@@ -301,13 +302,14 @@
           '<div class="fc-time">' + _timeAgo(p.published_at || p.created_at) + '</div>' +
         '</div>' +
       '</div>' +
+      (p.title ? '<a class="fc-title" href="' + _esc(postUrl) + '">' + _esc(p.title) + '</a>' : '') +
       // Body truncated
       bodyHtml +
       // Media
       mediaHtml +
       // Like count + actions
       '<div class="fc-actions">' +
-        '<div class="fc-action-bar">' + likeBtn + cartBtn + '</div>' +
+        '<div class="fc-action-bar">' + likeBtn + '<a class="fc-action-btn fc-read-btn" href="' + _esc(postUrl) + '">Xem b\u00e0i</a>' + cartBtn + '</div>' +
       '</div>' +
     '</article>'
   }
@@ -663,7 +665,7 @@
 
   // ─── SHARE ────────────────────────────────────────────────
   function _sharePost(p) {
-    var url = global.location.origin + '/feed/' + p.slug
+    var url = _absolutePostUrl(p)
     if (navigator.share) {
       navigator.share({ title: p.title || 'F-SPORT', url: url }).catch(function () {})
     } else {
@@ -1152,6 +1154,8 @@
 
   // ─── UTILS ────────────────────────────────────────────────
   function _esc(s) { return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;') }
+  function _postUrl(p) { return '/feed/' + encodeURIComponent((p && p.slug) || '') }
+  function _absolutePostUrl(p) { return 'https://www.fun-sport.co' + _postUrl(p) }
   function _nl2br(s) { return s.replace(/\n/g, '<br>') }
   function _renderInlineMarkdown(s) {
     return _esc(s)

@@ -16,8 +16,13 @@ export async function onRequest(context) {
     return new Response('Method Not Allowed', { status: 405 });
   }
 
+  const requestUrl = new URL(context.request.url);
   const slug = String(context.params.slug || '').replace(/\/+$/, '');
   if (!slug) return new Response('Missing feed slug', { status: 400 });
+  if (requestUrl.pathname.endsWith('/')) {
+    requestUrl.pathname = `/feed/${slug}`;
+    return Response.redirect(requestUrl.toString(), 301);
+  }
 
   const upstreamUrl = `${FEED_SEO_FUNCTION}?slug=${encodeURIComponent(slug)}`;
   const upstream = await fetch(upstreamUrl, {

@@ -1,3 +1,6 @@
+http://fun-sport.co/*  https://www.fun-sport.co/:splat  301
+https://fun-sport.co/*  https://www.fun-sport.co/:splat  301
+
 # Dynamic product pages use a dedicated namespace so this rule can never
 # intercept existing /pickleball, /giadung, /html or asset URLs.
 /p/:slug  /dynamic-product.html  200
