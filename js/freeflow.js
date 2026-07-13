@@ -409,7 +409,7 @@ function bootstrapFreeflow() {
     ensureCollectionContainer();
 
     const script = document.createElement("script");
-    script.src = "/js/collection-grid.js?v=20260702-discount-badge-1";
+    script.src = "/js/collection-grid.js?v=20260714-admin-rest-fallback-1";
     script.async = true;
     document.body.appendChild(script);
   });
