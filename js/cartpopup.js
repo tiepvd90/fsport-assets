@@ -32,6 +32,10 @@
     selections: {},
     isBound: false,
     isOpen: false,
+    scrollLocked: false,
+    scrollLockY: 0,
+    scrollLockStyles: null,
+    scrollUnlockTimer: 0,
     voucherConfigLoaded: false,
     voucherConfig: null
   };
@@ -678,6 +682,68 @@
     if (input) input.value = Math.max(1, value + delta);
   }
 
+  function isVariantListTarget(target) {
+    var list = $("#variantList");
+    return !!(list && target && list.contains(target));
+  }
+
+  function preventBackgroundScroll(event) {
+    if (!state.isOpen) return;
+    if (isVariantListTarget(event.target)) return;
+    event.preventDefault();
+  }
+
+  function lockPageScroll() {
+    if (state.scrollLocked) return;
+
+    var body = document.body;
+    var html = document.documentElement;
+    state.scrollLockY = window.scrollY || html.scrollTop || body.scrollTop || 0;
+    state.scrollLockStyles = {
+      htmlOverflow: html.style.overflow,
+      bodyPosition: body.style.position,
+      bodyTop: body.style.top,
+      bodyLeft: body.style.left,
+      bodyRight: body.style.right,
+      bodyWidth: body.style.width,
+      bodyOverflow: body.style.overflow
+    };
+
+    html.style.overflow = "hidden";
+    body.style.position = "fixed";
+    body.style.top = "-" + state.scrollLockY + "px";
+    body.style.left = "0";
+    body.style.right = "0";
+    body.style.width = "100%";
+    body.style.overflow = "hidden";
+
+    document.addEventListener("touchmove", preventBackgroundScroll, { passive: false });
+    document.addEventListener("wheel", preventBackgroundScroll, { passive: false });
+    state.scrollLocked = true;
+  }
+
+  function unlockPageScroll() {
+    if (!state.scrollLocked) return;
+
+    var body = document.body;
+    var html = document.documentElement;
+    var styles = state.scrollLockStyles || {};
+    document.removeEventListener("touchmove", preventBackgroundScroll);
+    document.removeEventListener("wheel", preventBackgroundScroll);
+
+    html.style.overflow = styles.htmlOverflow || "";
+    body.style.position = styles.bodyPosition || "";
+    body.style.top = styles.bodyTop || "";
+    body.style.left = styles.bodyLeft || "";
+    body.style.right = styles.bodyRight || "";
+    body.style.width = styles.bodyWidth || "";
+    body.style.overflow = styles.bodyOverflow || "";
+
+    window.scrollTo(0, state.scrollLockY || 0);
+    state.scrollLocked = false;
+    state.scrollLockStyles = null;
+  }
+
   function toggleCartPopup(show) {
     if (show === undefined) show = true;
 
@@ -687,6 +753,8 @@
 
     if (show) {
       if (!state.isOpen) trackAddToWishlist();
+      window.clearTimeout(state.scrollUnlockTimer);
+      lockPageScroll();
       popup.style.display = "flex";
       content.classList.remove("animate-slideup");
       void content.offsetWidth;
@@ -701,7 +769,11 @@
     } else {
       content.classList.remove("animate-slideup");
       popup.classList.add("hidden");
-      setTimeout(function () { popup.style.display = "none"; }, 300);
+      window.clearTimeout(state.scrollUnlockTimer);
+      state.scrollUnlockTimer = setTimeout(function () {
+        popup.style.display = "none";
+        unlockPageScroll();
+      }, 300);
       state.isOpen = false;
     }
   }
