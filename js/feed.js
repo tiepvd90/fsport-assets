@@ -309,7 +309,7 @@
       mediaHtml +
       // Like count + actions
       '<div class="fc-actions">' +
-        '<div class="fc-action-bar">' + likeBtn + '<a class="fc-action-btn fc-read-btn" href="' + _esc(postUrl) + '">Xem b\u00e0i</a>' + cartBtn + '</div>' +
+        '<div class="fc-action-bar">' + likeBtn + cartBtn + '</div>' +
       '</div>' +
     '</article>'
   }
