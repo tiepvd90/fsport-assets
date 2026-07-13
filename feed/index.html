@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" content="#000" />
+  <title>F-SPORT Feed</title>
+  <meta name="description" content="Feed F-SPORT: bài viết mới về pickleball, thể thao, sản phẩm và kinh nghiệm chọn dụng cụ chính hãng." />
+  <link rel="canonical" href="https://www.fun-sport.co/feed" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="F-SPORT" />
+  <meta property="og:title" content="F-SPORT Feed" />
+  <meta property="og:description" content="Bài viết mới từ F-SPORT về pickleball, thể thao và sản phẩm chính hãng." />
+  <meta property="og:url" content="https://www.fun-sport.co/feed" />
+  <meta property="og:image" content="https://www.fun-sport.co/favicon.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="icon" type="image/png" href="/favicon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/checkoutpopup.css" />
+
+  <style>
+  /* ============================================================
+   * RESET
+   * ============================================================ */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg:       #f0f2f5;
+    --surface:  #fff;
+    --border:   #e4e6eb;
+    --text:     #050505;
+    --muted:    #65676b;
+    --blue:     #1877f2;
+    --red:      #e0245e;
+    --ff:       'Be Vietnam Pro', -apple-system, sans-serif;
+    --nav-h:    54px;
+    --hdr-h:    52px;
+  }
+  html, body {
+    font-family: var(--ff);
+    background: var(--bg);
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
+    overscroll-behavior-y: none;
+  }
+  img { display: block; max-width: 100%; }
+  button { font-family: var(--ff); cursor: pointer; border: none; background: none; padding: 0; }
+  a { text-decoration: none; color: inherit; }
+
+  /* ============================================================
+   * PAGE
+   * ============================================================ */
+  .feed-page {
+    min-height: 100dvh;
+    padding-bottom: calc(var(--nav-h) + 12px + env(safe-area-inset-bottom));
+  }
+  /* Toàn bộ trang cùng max-width với homepage-footer */
+  .feed-wrap {
+    max-width: 1180px;
+    margin: 0 auto;
+  }
+  #feed-container {
+    width: 100%;
+  }
+
+  /* ============================================================
+   * SKELETON
+   * ============================================================ */
+  #feed-skeletons { padding: 10px 0 0; }
+  .skel {
+    background: var(--surface);
+    margin-bottom: 10px;
+    overflow: hidden;
+  }
+  @media (min-width:480px) { .skel { border-radius: 10px; margin: 0 12px 10px; } }
+  .skel-row { display: flex; align-items: center; gap: 10px; padding: 14px 14px 10px; }
+  .skel-av  { width:40px; height:40px; border-radius:50%; background:#e4e6eb; flex-shrink:0; animation: sp 1.4s ease-in-out infinite; }
+  .skel-lines { flex:1; display:flex; flex-direction:column; gap:7px; }
+  .skel-line { height:10px; border-radius:5px; background:#e4e6eb; animation: sp 1.4s ease-in-out infinite; }
+  .skel-img  { width:100%; aspect-ratio:1/1; background:#e4e6eb; animation: sp 1.4s ease-in-out infinite; }
+  .skel-acts { display:flex; gap:8px; padding:10px 14px; }
+  .skel-btn  { flex:1; height:30px; border-radius:6px; background:#e4e6eb; animation: sp 1.4s ease-in-out infinite; }
+  @keyframes sp { 0%,100%{opacity:1} 50%{opacity:.4} }
+
+  /* ============================================================
+   * FEED CARD
+   * ============================================================ */
+  .feed-card {
+    background: var(--surface);
+    margin-bottom: 10px;
+    overflow: visible;
+  }
+  @media (min-width:480px) {
+    .feed-card { border-radius: 10px; margin: 0 12px 10px; overflow: hidden; }
+  }
+
+  /* ── Header ── */
+  .fc-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 14px 6px;
+  }
+  .fc-avatar {
+    width: 42px; height: 42px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: #000;
+    flex-shrink: 0;
+    border: 2px solid #e4e6eb;
+    box-shadow: 0 1px 3px rgba(0,0,0,.12);
+  }
+  .fc-avatar img { width:100%; height:100%; object-fit:cover; }
+  .fc-meta { flex:1; min-width:0; }
+  .fc-brand {
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.3;
+  }
+  .fc-time {
+    font-size: 12px;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    margin-top: 1px;
+  }
+  .fc-time svg { width:11px; height:11px; flex-shrink:0; }
+  .fc-opts {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--muted);
+    transition: background .12s;
+    flex-shrink: 0;
+  }
+  .fc-opts:active { background: var(--bg); }
+  .fc-opts svg { width:20px; height:20px; }
+
+  /* ── Title ── */
+  .fc-title {
+    font-size: 14px;
+    font-weight: 700;
+    padding: 2px 14px 4px;
+    line-height: 1.4;
+  }
+
+  /* ── Body with truncate ── */
+  .fc-body-wrap { padding: 2px 14px 8px; }
+  .fc-body {
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--text);
+    white-space: normal;
+    word-break: break-word;
+  }
+  .fc-body p { margin: 0 0 10px; }
+  .fc-body p:last-child,
+  .fc-body ul:last-child,
+  .fc-body ol:last-child { margin-bottom: 0; }
+  .fc-body h3,
+  .fc-body h4 {
+    font-size: 1em;
+    line-height: 1.35;
+    margin: 12px 0 6px;
+    font-weight: 800;
+  }
+  .fc-body strong { font-weight: 800; }
+  .fc-body em { font-style: italic; }
+  .fc-body code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: .92em;
+    background: #f1f5f9;
+    border-radius: 4px;
+    padding: 1px 4px;
+  }
+  .fc-body ul,
+  .fc-body ol {
+    margin: 8px 0 10px 18px;
+    padding: 0;
+  }
+  .fc-body li { margin: 4px 0; }
+  .fc-body blockquote {
+    margin: 10px 0;
+    padding: 8px 10px;
+    border-left: 3px solid #cbd5e1;
+    background: #f8fafc;
+    color: #475569;
+  }
+  .fc-body hr {
+    border: 0;
+    border-top: 1px solid #e2e8f0;
+    margin: 12px 0;
+  }
+  .fc-table-wrap {
+    overflow-x: auto;
+    margin: 10px 0;
+  }
+  .fc-body table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: .92em;
+  }
+  .fc-body th,
+  .fc-body td {
+    border: 1px solid #e2e8f0;
+    padding: 6px 8px;
+    text-align: left;
+    vertical-align: top;
+  }
+  .fc-body th {
+    background: #f8fafc;
+    font-weight: 800;
+  }
+  .fc-body.is-clamped {
+    display: block;
+    max-height: calc(1.55em * 2);
+    overflow: hidden;
+    white-space: normal;
+  }
+  .fc-see-more {
+    font-size: 13px;
+    font-weight: 600;
+    color: #1877f2;
+    margin-top: 2px;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .fc-see-more:active { opacity: .7; }
+
+  @media (min-width: 768px) {
+    .fc-header {
+      gap: 15px;
+      padding: 18px 21px 9px;
+    }
+    .fc-avatar {
+      width: 63px;
+      height: 63px;
+    }
+    .fc-brand {
+      font-size: 21px;
+    }
+    .fc-brand svg {
+      width: 21px !important;
+      height: 21px !important;
+      margin-left: 4px !important;
+    }
+    .fc-time {
+      font-size: 18px;
+      margin-top: 2px;
+    }
+    .fc-title {
+      font-size: 21px;
+      padding: 3px 21px 6px;
+      line-height: 1.35;
+    }
+    .fc-body-wrap {
+      padding: 3px 21px 12px;
+    }
+    .fc-body {
+      font-size: 21px;
+      line-height: 1.5;
+    }
+    .fc-see-more {
+      font-size: 20px;
+      margin-top: 4px;
+    }
+  }
+
+  /* ============================================================
+   * MEDIA — BASE
+   * ============================================================ */
+  .fc-media {
+    position: relative;
+    overflow: hidden;
+    background: #111;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  /* ── Ảnh vuông 1:1 ── */
+  .fc-photo .fc-media-img {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    display: block;
+    -webkit-user-drag: none;
+  }
+
+  /* Caption overlay */
+  .fc-caption {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    background: linear-gradient(to top, rgba(0,0,0,.68) 0%, transparent 100%);
+    color: #fff;
+    font-size: 13px;
+    padding: 28px 14px 10px;
+    pointer-events: none;
+    line-height: 1.4;
+  }
+
+  /* (shop button removed) */
+
+  /* ============================================================
+   * CAROUSEL
+   * ============================================================ */
+  .fc-carousel {
+    background: var(--surface);
+    padding: 0 0 2px;
+  }
+
+  .car-viewport {
+    overflow: hidden;
+    touch-action: pan-y;
+  }
+
+  .car-track {
+    display: flex;
+    gap: 8px;
+    padding: 0 28px;
+    box-sizing: border-box;
+    will-change: transform;
+  }
+
+  .car-slide {
+    flex: 0 0 calc(100% - 56px);
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+    background: #f0f2f5;
+  }
+  .car-slide img {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    display: block;
+    -webkit-user-drag: none;
+  }
+
+  .car-cap {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    background: linear-gradient(to top, rgba(0,0,0,.65) 0%, transparent 100%);
+    color: #fff;
+    font-size: 13px;
+    padding: 28px 14px 10px;
+    pointer-events: none;
+  }
+
+  /* Counter badge */
+  .car-counter {
+    position: absolute;
+    top: 10px; right: 12px;
+    background: rgba(0,0,0,.58);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 14px;
+    pointer-events: none;
+    z-index: 5;
+  }
+
+  /* Prev / Next */
+  .car-nav {
+    position: absolute;
+    top: 50%; transform: translateY(-50%);
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.92);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 5;
+    transition: opacity .15s;
+    -webkit-tap-highlight-color: transparent;
+    box-shadow: 0 2px 8px rgba(0,0,0,.28);
+  }
+  .car-nav:active { background: #fff; }
+  .car-nav svg { width: 21px; height: 21px; }
+  .car-prev { left: 12px; }
+  .car-next { right: 12px; }
+
+  @media (min-width: 768px) {
+    .car-track {
+      padding: 0 34px;
+    }
+    .car-slide {
+      flex-basis: calc(100% - 68px);
+    }
+    .car-nav {
+      width: 46px;
+      height: 46px;
+    }
+    .car-nav svg {
+      width: 26px;
+      height: 26px;
+    }
+    .car-prev { left: 16px; }
+    .car-next { right: 16px; }
+  }
+
+  /* Dots */
+  .car-dots {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+    padding: 7px 0 5px;
+    background: var(--surface);
+    position: relative;
+    z-index: 2;
+  }
+  .car-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: #d0d0d0;
+    transition: background .15s, transform .15s;
+    cursor: pointer;
+  }
+  .car-dot.on { background: #000; transform: scale(1.3); }
+
+  /* ============================================================
+   * VIDEO
+   * ============================================================ */
+  .fc-video-thumb {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4/5;
+    height: auto;
+    margin: 0 auto;
+    background: #000;
+    overflow: hidden;
+  }
+  .fc-video-poster {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    transform: scale(1.43);
+  }
+  .fc-video-open {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    background: transparent;
+    cursor: pointer;
+  }
+  .fc-video-play {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 96px;
+    height: 96px;
+    transform: translate(-50%, -50%);
+    filter: drop-shadow(0 4px 14px rgba(0,0,0,.45));
+    transition: transform .15s, opacity .15s;
+  }
+  .fc-video-open:active .fc-video-play {
+    transform: translate(-50%, -50%) scale(.92);
+    opacity: .82;
+  }
+  .fc-video-play svg { width: 100%; height: 100%; }
+  .fc-video-play circle { fill: rgba(0,0,0,.68); stroke: #fff; stroke-width: 2.5; }
+  .fc-video-play path { fill: #fff; }
+  @media (max-width: 600px) {
+    .fc-video-play {
+      width: 88px;
+      height: 88px;
+    }
+  }
+  @media (max-width: 600px) {
+    .feed-card {
+      margin: 0 0 10px;
+      border-radius: 0;
+    }
+  }
+  .fc-play-btn {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    transition: opacity .15s;
+  }
+  .fc-play-btn:active { opacity: .75; }
+  .fc-play-btn svg { width: 60px; height: 60px; filter: drop-shadow(0 2px 8px rgba(0,0,0,.4)); }
+
+  /* ============================================================
+   * LIKE + ACTIONS
+   * ============================================================ */
+  .fc-actions {
+    padding: 6px 14px 2px;
+  }
+  .fc-action-bar {
+    display: flex;
+    border-top: 1px solid var(--border);
+    margin: 0 -4px;
+    padding: 2px 0 4px;
+  }
+  .fc-action-btn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 9px 6px;
+    border-radius: 6px;
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 600;
+    transition: background .12s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .fc-action-btn:active { background: var(--bg); }
+  /* Fix kích thước tất cả SVG trong action bar */
+  .fc-action-btn svg {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+  }
+  .fc-heart {
+    width: 18px; height: 18px;
+    flex-shrink: 0;
+    transition: transform .18s;
+  }
+  .fc-like-btn.is-liked { color: var(--blue); }
+  .fc-like-btn .fc-heart {
+    width: 18px;
+    height: 18px;
+  }
+  .fc-like-inline-count {
+    color: var(--muted);
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 18px;
+    min-height: 18px;
+    display: inline-flex;
+    align-items: center;
+    margin-left: -2px;
+  }
+  @media (min-width: 768px) {
+    .fc-action-btn {
+      font-size: 15px;
+      padding: 12px 8px;
+      gap: 8px;
+    }
+    .fc-action-btn svg,
+    .fc-heart {
+      width: 21px;
+      height: 21px;
+    }
+    .fc-like-btn .fc-heart {
+      width: 20px;
+      height: 20px;
+    }
+    .fc-like-inline-count {
+      font-size: 15px;
+      line-height: 20px;
+      min-height: 20px;
+    }
+  }
+  @keyframes heart-pop {
+    0%   { transform: scale(1); }
+    35%  { transform: scale(1.5); }
+    70%  { transform: scale(.88); }
+    100% { transform: scale(1); }
+  }
+  .fc-like-btn.is-liked .fc-heart { animation: heart-pop .32s ease; }
+
+  /* ============================================================
+   * EMPTY
+   * ============================================================ */
+  .feed-empty {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--muted);
+    font-size: 14px;
+  }
+
+  /* Load more */
+  #feed-load-more {
+    display: block;
+    width: calc(100% - 24px);
+    margin: 4px 12px 8px;
+    padding: 12px;
+    border-radius: 8px;
+    background: var(--surface);
+    color: var(--text);
+    font-size: 14px;
+    font-weight: 700;
+    box-shadow: 0 1px 3px rgba(0,0,0,.1);
+    -webkit-tap-highlight-color: transparent;
+  }
+  #feed-load-more:active { opacity: .8; }
+  #feed-sentinel { height: 40px; }
+
+  #feed-scroll-top {
+    position: fixed;
+    right: max(16px, env(safe-area-inset-right));
+    bottom: calc(var(--nav-h) + 18px + env(safe-area-inset-bottom));
+    z-index: 1500;
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    background: rgba(5, 5, 5, .86);
+    box-shadow: 0 5px 18px rgba(0, 0, 0, .24);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(12px);
+    pointer-events: none;
+    transition: opacity .2s, visibility .2s, transform .2s, background .15s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  #feed-scroll-top.is-visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+  #feed-scroll-top:active { background: #000; transform: scale(.94); }
+  #feed-scroll-top svg { width: 22px; height: 22px; }
+
+  /* ============================================================
+   * LIGHTBOX
+   * ============================================================ */
+  #feed-lightbox {
+    display: none;
+    position: fixed; inset: 0;
+    z-index: 20000;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity .22s;
+  }
+  #feed-lightbox.is-open { opacity: 1; }
+  body.feed-video-fullscreen #cartIcon,
+  body.feed-video-fullscreen #fsport-nav-footer,
+  body.feed-product-sheet-open #cartIcon,
+  body.feed-product-sheet-open #fsport-nav-footer {
+    display: none !important;
+  }
+
+  .lb-backdrop {
+    position: absolute; inset: 0;
+    background: rgba(0,0,0,.96);
+  }
+
+  .lb-header {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: max(env(safe-area-inset-top), 12px) 12px 12px;
+    background: linear-gradient(to bottom, rgba(0,0,0,.65) 0%, transparent 100%);
+  }
+  .lb-close {
+    width: 42px; height: 42px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.12);
+    display: flex; align-items: center; justify-content: center;
+    color: #fff;
+    transition: background .13s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .lb-close:active { background: rgba(255,255,255,.22); }
+  .lb-close svg { width: 20px; height: 20px; }
+  #feed-lightbox.is-video .lb-close svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  .lb-counter {
+    background: rgba(0,0,0,.45);
+    color: rgba(255,255,255,.85);
+    font-size: 13px; font-weight: 600;
+    padding: 4px 12px; border-radius: 12px;
+  }
+
+  .lb-dots {
+    display: flex; gap: 6px;
+  }
+  .lb-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.3);
+    transition: background .15s, transform .15s;
+  }
+  .lb-dot.on { background: #fff; transform: scale(1.2); }
+
+  .lb-img-wrap {
+    position: relative;
+    z-index: 5;
+    width: 100%; height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .lb-img {
+    max-width: 100%;
+    max-height: 100dvh;
+    object-fit: contain;
+    user-select: none;
+    -webkit-user-drag: none;
+    will-change: transform;
+    touch-action: none;
+    position: relative; z-index: 2;
+  }
+  .lb-video {
+    display: none;
+    width: min(100vw, 56.25dvh);
+    height: min(100dvh, 177.7778vw);
+    aspect-ratio: 9/16;
+    border: 0;
+    background: #000;
+  }
+  #feed-lightbox.is-video .lb-img { display: none; }
+  #feed-lightbox.is-video .lb-video { display: block; }
+  #feed-lightbox.is-video .lb-footer,
+  #feed-lightbox.is-video .lb-dots,
+  #feed-lightbox.is-video .lb-hint { display: none; }
+
+  .lb-prev, .lb-next {
+    position: absolute;
+    top: 50%; transform: translateY(-50%);
+    z-index: 20;
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.14);
+    display: flex; align-items: center; justify-content: center;
+    color: #fff;
+    transition: background .12s, opacity .15s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .lb-prev:active, .lb-next:active { background: rgba(255,255,255,.26); }
+  .lb-prev { left: 10px; }
+  .lb-next { right: 10px; }
+  .lb-prev svg, .lb-next svg { width: 20px; height: 20px; }
+
+  .lb-footer {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    z-index: 10;
+    padding: 12px 16px calc(14px + env(safe-area-inset-bottom));
+    background: linear-gradient(to top, rgba(0,0,0,.65) 0%, transparent 100%);
+    text-align: center;
+  }
+  .lb-caption {
+    color: rgba(255,255,255,.88);
+    font-size: 13px;
+    line-height: 1.4;
+  }
+  .lb-hint {
+    position: absolute;
+    bottom: 52px; left: 50%;
+    transform: translateX(-50%);
+    color: rgba(255,255,255,.38);
+    font-size: 11px;
+    pointer-events: none;
+    white-space: nowrap;
+    z-index: 10;
+    transition: opacity .5s;
+  }
+
+    /* (product sheet CSS removed) */
+
+  /* ============================================================
+   * TOAST
+   * ============================================================ */
+  #feed-toast {
+    position: fixed;
+    bottom: calc(var(--nav-h) + 14px + env(safe-area-inset-bottom));
+    left: 50%; transform: translateX(-50%) translateY(8px);
+    background: rgba(0,0,0,.82);
+    color: #fff;
+    font-size: 13px; font-weight: 500;
+    padding: 9px 18px;
+    border-radius: 22px;
+    z-index: 3000;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity .2s, transform .2s;
+    white-space: nowrap;
+  }
+  #feed-toast.on { opacity: 1; transform: translateX(-50%) translateY(0); }
+  </style>
+</head>
+<body>
+
+<div class="feed-page">
+  <div class="feed-wrap">
+    <main id="feed-container" style="padding-top:10px">
+
+      <!-- Skeletons -->
+      <div id="feed-skeletons">
+        <div class="skel">
+          <div class="skel-row"><div class="skel-av"></div><div class="skel-lines"><div class="skel-line" style="width:55%"></div><div class="skel-line" style="width:35%"></div></div></div>
+          <div class="skel-img"></div>
+          <div class="skel-acts"><div class="skel-btn"></div><div class="skel-btn"></div></div>
+        </div>
+        <div class="skel">
+          <div class="skel-row"><div class="skel-av"></div><div class="skel-lines"><div class="skel-line" style="width:60%"></div><div class="skel-line" style="width:40%"></div></div></div>
+          <div class="skel-img"></div>
+          <div class="skel-acts"><div class="skel-btn"></div><div class="skel-btn"></div></div>
+        </div>
+        <div class="skel">
+          <div class="skel-row"><div class="skel-av"></div><div class="skel-lines"><div class="skel-line" style="width:50%"></div><div class="skel-line" style="width:30%"></div></div></div>
+          <div class="skel-img"></div>
+          <div class="skel-acts"><div class="skel-btn"></div><div class="skel-btn"></div></div>
+        </div>
+      </div>
+
+      <!-- Posts -->
+      <div id="feed-list"></div>
+
+      <div id="feed-sentinel"></div>
+      <button id="feed-load-more" style="display:none">Xem thêm bài viết</button>
+
+    </main>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     LIGHTBOX
+     ══════════════════════════════════════════════════════════ -->
+<div id="feed-lightbox">
+  <div class="lb-backdrop"></div>
+
+  <div class="lb-header">
+    <button class="lb-close" aria-label="Quay lại">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>
+      </svg>
+    </button>
+    <span class="lb-counter"></span>
+    <div class="lb-dots"></div>
+  </div>
+
+  <div class="lb-img-wrap">
+    <img class="lb-img" src="" alt="" />
+    <iframe class="lb-video" src="" title="YouTube video" allow="autoplay; encrypted-media; fullscreen" allowfullscreen></iframe>
+  </div>
+
+  <button class="lb-prev" aria-label="Ảnh trước">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+  </button>
+  <button class="lb-next" aria-label="Ảnh sau">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+  </button>
+
+  <div class="lb-footer">
+    <p class="lb-caption"></p>
+  </div>
+  <div class="lb-hint" id="lb-hint">Vuốt bất kỳ hướng để đóng</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     TOAST
+     ══════════════════════════════════════════════════════════ -->
+<div id="feed-toast"></div>
+<button id="feed-scroll-top" type="button" aria-label="Cuộn lên đầu trang" title="Lên đầu trang">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <polyline points="18 15 12 9 6 15"></polyline>
+  </svg>
+</button>
+<div id="checkoutPopup-placeholder"></div>
+
+<!-- ══════════════════════════════════════════════════════════
+     CONFIG + SCRIPTS
+     ══════════════════════════════════════════════════════════ -->
+<script>
+  window.FSPORT_SUPABASE_URL  = "https://xcigbbcpwfzluqazadez.supabase.co";
+  window.FSPORT_SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhjaWdiYmNwd2Z6bHVxYXphZGV6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkzNTA1NjEsImV4cCI6MjA5NDkyNjU2MX0.8LGX0FkU5w9q26LynYetUY9rGN_oFnjvDFJ5tjG9QV4";
+
+  // Swipe hint: tự ẩn sau 2.5s khi lightbox mở lần đầu
+  var _hintShown = false;
+  var _lbObs = new MutationObserver(function () {
+    var lb   = document.getElementById('feed-lightbox');
+    var hint = document.getElementById('lb-hint');
+    if (!lb || !hint) return;
+    if (lb.classList.contains('is-open') && !_hintShown) {
+      _hintShown = true;
+      hint.style.opacity = '1';
+      setTimeout(function () { hint.style.opacity = '0'; }, 2500);
+    }
+  });
+  document.addEventListener('DOMContentLoaded', function () {
+    var lb = document.getElementById('feed-lightbox');
+    if (lb) _lbObs.observe(lb, { attributes: true, attributeFilter: ['class'] });
+    // Init hint opacity 0
+    var hint = document.getElementById('lb-hint');
+    if (hint) hint.style.opacity = '0';
+  });
+</script>
+
+<script src="/js/tracking.js"></script>
+<script>
+  (function () {
+    function loadScript(src) {
+      return new Promise(function (resolve) {
+        var s = document.createElement('script')
+        s.src = src
+        s.onload = resolve
+        s.onerror = resolve
+        document.body.appendChild(s)
+      })
+    }
+
+    fetch('/html/checkoutpopup.html')
+      .then(function (res) { return res.ok ? res.text() : '' })
+      .then(function (html) {
+        var el = document.getElementById('checkoutPopup-placeholder')
+        if (el && html) el.innerHTML = html
+      })
+      .finally(function () { loadScript('/js/checkoutpopup.js') })
+  })()
+</script>
+<script src="/js/analytics.js?v=20260613-1"></script>
+<script src="/js/feed.js?v=20260710-markdown-render-1" defer></script>
+<style>
+  #aic-container #aic-bar { display: none !important; }
+</style>
+<div id="aic-container"></div>
+<script src="/js/ai-chat.js?v=20260607-3"></script>
+<script>
+  if (window.AiChat && typeof window.AiChat.init === 'function') {
+    window.AiChat.init({ slug: 'global', productGroup: '' })
+  }
+</script>
+<script src="/js/homepage-footer.js" defer></script>
+
+</body>
+</html>
