@@ -276,13 +276,13 @@
       '<div class="cgrid-name">' + (item.title || "") + '</div>' +
       (price ? '<div class="cgrid-price-wrap"><div class="cgrid-price">' + price + '</div>' + (showOriginal ? '<div class="cgrid-original">' + original + '</div>' : '') + '</div>' : '');
     var image = div.querySelector(".cgrid-thumb img");
-    image.referrerPolicy = "no-referrer";
+    var imageSrc = normalizeImageUrl(item.image);
+    image.loading = "lazy";
+    image.decoding = "async";
     image.addEventListener("error", function () {
       image.classList.add("cgrid-img-error");
-      image.removeAttribute("src");
-      image.removeAttribute("data-src");
     }, { once: true });
-    lazyImages.observe(image, normalizeImageUrl(item.image) || "");
+    if (imageSrc) image.src = imageSrc;
     div.addEventListener("click", function () {
       if (item.link) window.location.href = item.link;
     });
