@@ -32,6 +32,7 @@
   var actions = custom.actions || defaults.actions;
   var timer = 0;
   var firstTimer = 0;
+  var suppressed = false;
 
   function randomItem(items) {
     return items[Math.floor(Math.random() * items.length)];
@@ -61,13 +62,46 @@
       (footerHeight ? footerHeight + config.footerGap : config.fallbackBottom) + "px";
   }
 
+  function isCartPopupOpen() {
+    var popup = document.getElementById("cartPopup");
+    if (!popup) return false;
+    var style = window.getComputedStyle(popup);
+    return style.display !== "none" && !popup.classList.contains("hidden");
+  }
+
+  function isAiChatOpen() {
+    var panel = document.getElementById("aic-panel");
+    var backdrop = document.getElementById("aic-backdrop");
+    return document.body.classList.contains("aic-panel-open") ||
+      (panel && window.getComputedStyle(panel).display !== "none") ||
+      (backdrop && window.getComputedStyle(backdrop).display !== "none");
+  }
+
+  function hideNotification() {
+    var notification = document.getElementById("fakeNotification");
+    if (notification) notification.style.left = config.hiddenLeft + "px";
+  }
+
+  function updateSuppressedState() {
+    var shouldSuppress = isCartPopupOpen() || isAiChatOpen();
+    if (shouldSuppress === suppressed) return;
+    suppressed = shouldSuppress;
+    if (suppressed) {
+      window.clearTimeout(timer);
+      window.clearTimeout(firstTimer);
+      hideNotification();
+    } else if (!document.hidden) {
+      start();
+    }
+  }
+
   var style = document.createElement("style");
   style.textContent = [
     "#fakeNotification{",
     "position:fixed;",
     "bottom:" + config.fallbackBottom + "px;",
     "left:" + config.hiddenLeft + "px;",
-    "z-index:10020;",
+    "z-index:9000;",
     "max-width:min(calc(100vw - 24px),360px);",
     "padding:8px 14px;",
     "overflow:hidden;",
@@ -99,6 +133,8 @@
   }
 
   function showOnce() {
+    updateSuppressedState();
+    if (suppressed || document.hidden) return;
     var notification = ensureNode();
     notification.textContent =
       randomItem(users) + " " + randomItem(actions) + " " + randomItem(products);
@@ -114,13 +150,33 @@
   function start() {
     window.clearTimeout(timer);
     window.clearTimeout(firstTimer);
+    updateSuppressedState();
+    if (suppressed || document.hidden) return;
     firstTimer = window.setTimeout(showOnce, config.firstDelay);
   }
 
-  var observer = new MutationObserver(updatePosition);
-  observer.observe(document.documentElement, { childList: true, subtree: true });
-  window.addEventListener("resize", updatePosition, { passive: true });
-  window.addEventListener("orientationchange", updatePosition, { passive: true });
+  window.FSPORT_FAKE_NOTIFY = {
+    hide: function () {
+      window.clearTimeout(timer);
+      window.clearTimeout(firstTimer);
+      hideNotification();
+    },
+    refresh: updateSuppressedState
+  };
+
+  var observer = new MutationObserver(function () {
+    updatePosition();
+    updateSuppressedState();
+  });
+  observer.observe(document.documentElement, { childList: true, subtree: true, attributes: true, attributeFilter: ["class", "style"] });
+  window.addEventListener("resize", function () {
+    updatePosition();
+    updateSuppressedState();
+  }, { passive: true });
+  window.addEventListener("orientationchange", function () {
+    updatePosition();
+    updateSuppressedState();
+  }, { passive: true });
   document.addEventListener("visibilitychange", function () {
     if (document.hidden) {
       window.clearTimeout(timer);

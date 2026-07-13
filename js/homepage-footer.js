@@ -124,6 +124,9 @@
   }
 
   function openCart() {
+    if (window.FSPORT_FAKE_NOTIFY && typeof window.FSPORT_FAKE_NOTIFY.hide === 'function') {
+      window.FSPORT_FAKE_NOTIFY.hide()
+    }
     if (typeof window.showCheckoutPopup === 'function') {
       window.showCheckoutPopup()
       return
@@ -133,6 +136,9 @@
   }
 
   function openChat() {
+    if (window.FSPORT_FAKE_NOTIFY && typeof window.FSPORT_FAKE_NOTIFY.hide === 'function') {
+      window.FSPORT_FAKE_NOTIFY.hide()
+    }
     if (window.FSPORT_AI_CHAT && typeof window.FSPORT_AI_CHAT.open === 'function') {
       window.FSPORT_AI_CHAT.open()
       return

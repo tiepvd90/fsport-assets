@@ -75,7 +75,7 @@ window.onpopstate = function () {
 
 // ✅ Load fake notify (gọi như script thật để tránh lỗi CORS/textContent)
 const fakenotifyScript = document.createElement("script");
-fakenotifyScript.src = "/js/fakenotify.js?v=20260701-footer-position-1";
+fakenotifyScript.src = "/js/fakenotify.js?v=20260714-hide-on-overlay-1";
 fakenotifyScript.defer = true;
 document.body.appendChild(fakenotifyScript);
 
@@ -90,7 +90,7 @@ document.body.appendChild(fakenotifyScript);
   window.__fakeNotifyInjected = true;
 
   const s = document.createElement('script');
-  s.src = '/js/fakenotify.js?v=20260701-footer-position-1';
+  s.src = '/js/fakenotify.js?v=20260714-hide-on-overlay-1';
   s.async = true;                                  // tải song song, thực thi khi tải xong
   s.onerror = (e) => console.warn('Không load được fakenotify.js', e);
   document.head.appendChild(s);

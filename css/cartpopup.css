@@ -45,67 +45,53 @@
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
   scrollbar-gutter: stable;
-  padding-right: 2px;
+  padding-right: 14px;
   scroll-padding-bottom: 12px;
+  scrollbar-width: thin;
+  scrollbar-color: #9ca3af #eef0f3;
 }
 
-.variant-scroll-hint {
+.variant-list-wrap.has-scroll #variantList::-webkit-scrollbar {
+  width: 7px;
+}
+
+.variant-list-wrap.has-scroll #variantList::-webkit-scrollbar-track {
+  background: #eef0f3;
+  border-radius: 999px;
+}
+
+.variant-list-wrap.has-scroll #variantList::-webkit-scrollbar-thumb {
+  background: #9ca3af;
+  border-radius: 999px;
+}
+
+.variant-scrollbar {
+  position: absolute;
+  top: 4px;
+  right: 3px;
+  bottom: 4px;
+  width: 5px;
+  border-radius: 999px;
+  background: #eef0f3;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.18s ease;
+}
+
+.variant-list-wrap.has-scroll .variant-scrollbar {
+  opacity: 1;
+}
+
+.variant-scrollbar-thumb {
   position: absolute;
   left: 0;
   right: 0;
-  bottom: 0;
-  height: 48px;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  padding-bottom: 8px;
-  pointer-events: none;
-  opacity: 0;
-  transform: translateY(4px);
-  transition: opacity 0.18s ease, transform 0.18s ease;
-  background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.92) 62%, #fff);
-}
-
-.variant-list-wrap.has-more .variant-scroll-hint {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.variant-scroll-hint-icon {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  background: rgba(17, 24, 39, 0.76);
-  box-shadow: 0 6px 16px rgba(17, 24, 39, 0.18);
-  position: relative;
-  animation: variantHintBounce 1.2s ease-in-out infinite;
-}
-
-.variant-scroll-hint-icon::before {
-  content: "";
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 8px;
-  height: 8px;
-  border-right: 2px solid #fff;
-  border-bottom: 2px solid #fff;
-  transform: translate(-50%, -62%) rotate(45deg);
-}
-
-@keyframes variantHintBounce {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(4px);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .variant-scroll-hint-icon {
-    animation: none;
-  }
+  top: 0;
+  min-height: 26px;
+  border-radius: 999px;
+  background: #6b7280;
+  box-shadow: 0 1px 4px rgba(17, 24, 39, 0.2);
+  transition: top 0.08s linear, height 0.08s linear;
 }
 
 .cart-popup-content.animate-slideup {

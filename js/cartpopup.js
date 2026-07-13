@@ -302,26 +302,39 @@
     });
   }
 
-  function updateVariantScrollHint() {
+  function updateVariantScrollbar() {
     var list = $("#variantList");
     var wrap = $("#variantListWrap");
+    var thumb = $("#variantScrollbarThumb");
     if (!list || !wrap) return;
 
-    var hasMore = list.scrollHeight - list.scrollTop - list.clientHeight > 8;
-    wrap.classList.toggle("has-more", hasMore);
+    var scrollHeight = list.scrollHeight || 0;
+    var clientHeight = list.clientHeight || 0;
+    var scrollable = scrollHeight - clientHeight > 8;
+    wrap.classList.toggle("has-scroll", scrollable);
+    if (!scrollable || !thumb) return;
+
+    var trackHeight = Math.max(0, wrap.clientHeight - 8);
+    var thumbHeight = Math.max(26, Math.round(trackHeight * clientHeight / scrollHeight));
+    var maxTop = Math.max(0, trackHeight - thumbHeight);
+    var maxScroll = Math.max(1, scrollHeight - clientHeight);
+    var top = Math.round(maxTop * list.scrollTop / maxScroll);
+    thumb.style.height = thumbHeight + "px";
+    thumb.style.top = top + "px";
   }
 
-  function bindVariantScrollHint() {
+  function bindVariantScrollbar() {
     var list = $("#variantList");
-    if (!list || list.dataset.scrollHintBound === "1") return;
-    list.dataset.scrollHintBound = "1";
-    list.addEventListener("scroll", updateVariantScrollHint, { passive: true });
+    if (!list || list.dataset.scrollbarBound === "1") return;
+    list.dataset.scrollbarBound = "1";
+    list.addEventListener("scroll", updateVariantScrollbar, { passive: true });
+    window.addEventListener("resize", updateVariantScrollbar, { passive: true });
   }
 
   function renderOptions() {
     var container = $("#variantList");
     if (!container) return;
-    bindVariantScrollHint();
+    bindVariantScrollbar();
     container.innerHTML = "";
 
     state.attributes.forEach(function (attr) {
@@ -365,7 +378,7 @@
             });
             thumb.classList.add("selected");
             updateSelectedVariant(false);
-            requestAnimationFrame(updateVariantScrollHint);
+            requestAnimationFrame(updateVariantScrollbar);
           });
 
           wrapper.appendChild(thumb);
@@ -378,7 +391,7 @@
     });
 
     updateSelectedVariant(true);
-    requestAnimationFrame(updateVariantScrollHint);
+    requestAnimationFrame(updateVariantScrollbar);
   }
 
   function getSizeNote(attr) {
@@ -466,7 +479,7 @@
     state.selections = cleanVisibleSelections(raw);
     var variant = buildVariant(state.selections);
     selectVariant(variant);
-    requestAnimationFrame(updateVariantScrollHint);
+    requestAnimationFrame(updateVariantScrollbar);
   }
 
   function buildVariant(selections) {
@@ -680,8 +693,11 @@
       content.classList.add("animate-slideup");
       popup.classList.remove("hidden");
       state.isOpen = true;
+      if (window.FSPORT_FAKE_NOTIFY && typeof window.FSPORT_FAKE_NOTIFY.hide === "function") {
+        window.FSPORT_FAKE_NOTIFY.hide();
+      }
       bindAddToCartButton();
-      requestAnimationFrame(updateVariantScrollHint);
+      requestAnimationFrame(updateVariantScrollbar);
     } else {
       content.classList.remove("animate-slideup");
       popup.classList.add("hidden");
