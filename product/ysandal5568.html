@@ -6,7 +6,7 @@
   <title>Dép Chạy Bộ Ysandal Chính Hãng B&M Đài Loan Mã BCU5568 Quai Hậu</title>
 
   <!-- ✅ CSS -->
-  <link rel="stylesheet" href="/css/frontend.css?v=20260702-review-fix-1" />
+  <link rel="stylesheet" href="/css/frontend.css?v=20260714-cart-scroll-hint-1" />
   <link rel="stylesheet" href="/css/collection-slider.css" />
   <link rel="icon" type="image/png" href="/favicon.png" />
 
@@ -194,7 +194,7 @@
         await injectHTML("/html/checkoutpopup.html", "checkoutPopup-placeholder");
         await injectHTML("/html/stickyfooter.html", "sticky-footer-placeholder");
         await loadScript("../js/voucherpopup.js");
-        await loadScript("/js/cartpopup.js");
+        await loadScript("/js/cartpopup.js?v=20260714-cart-scroll-hint-1");
         await loadScript("../js/checkoutpopup.js");
         setTimeout(async () => {
           const map = await fetchVoucherMap();

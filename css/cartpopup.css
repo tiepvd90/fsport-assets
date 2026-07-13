@@ -31,8 +31,13 @@
   box-sizing: border-box;
 }
 
-#variantList {
+.variant-list-wrap {
+  position: relative;
   flex: 0 1 auto;
+  min-height: 0;
+}
+
+#variantList {
   min-height: 0;
   max-height: calc(77vh - 260px);
   max-height: calc(77dvh - 260px);
@@ -42,6 +47,65 @@
   scrollbar-gutter: stable;
   padding-right: 2px;
   scroll-padding-bottom: 12px;
+}
+
+.variant-scroll-hint {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 48px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 8px;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.18s ease, transform 0.18s ease;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.92) 62%, #fff);
+}
+
+.variant-list-wrap.has-more .variant-scroll-hint {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.variant-scroll-hint-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(17, 24, 39, 0.76);
+  box-shadow: 0 6px 16px rgba(17, 24, 39, 0.18);
+  position: relative;
+  animation: variantHintBounce 1.2s ease-in-out infinite;
+}
+
+.variant-scroll-hint-icon::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 8px;
+  height: 8px;
+  border-right: 2px solid #fff;
+  border-bottom: 2px solid #fff;
+  transform: translate(-50%, -62%) rotate(45deg);
+}
+
+@keyframes variantHintBounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(4px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .variant-scroll-hint-icon {
+    animation: none;
+  }
 }
 
 .cart-popup-content.animate-slideup {

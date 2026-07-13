@@ -7,7 +7,7 @@
 
   <!-- ✅ CSS -->
   <link rel="stylesheet" href="/css/base.css" />
-  <link rel="stylesheet" href="/css/cartpopup.css?v=20260702-options-scroll-2" />
+  <link rel="stylesheet" href="/css/cartpopup.css?v=20260714-cart-scroll-hint-1" />
   <link rel="stylesheet" href="/css/checkoutpopup.css" />
   <link rel="stylesheet" href="/css/productdescription.css" />
   <link rel="stylesheet" href="../css/slideshow.css" />
@@ -150,7 +150,7 @@
       await injectHTML("/html/stickyfooter.html", "sticky-footer-placeholder");
 
       await loadScript("/js/voucherpopup.js");
-      await loadScript("/js/cartpopup.js");
+      await loadScript("/js/cartpopup.js?v=20260714-cart-scroll-hint-1");
       await loadScript("/js/checkoutpopup.js");
 
       setTimeout(async () => {
