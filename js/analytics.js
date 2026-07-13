@@ -387,7 +387,8 @@
 
   // ─── AUTO: view_product (sau 10 giây) ────────────────────────
   function autoTrackProduct() {
-    var productId   = global.productPage || global.productCategory || null
+    var pathSlug = (global.location && global.location.pathname ? global.location.pathname : '').split('/').pop().replace(/\.html$/i, '')
+    var productId   = global.productPage || pathSlug || global.productCategory || null
     var productName = global.productName || null
     if (!productId) return
     setTimeout(function () {

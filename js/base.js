@@ -121,7 +121,7 @@ setInterval(() => {
 
   function inject() {
     var s = document.createElement('script')
-    s.src = '/js/analytics.js?v=20260702-page-slug-1'
+    s.src = '/js/analytics.js?v=20260713-page-slug-path-1'
     s.async = true
     s.onerror = function() { console.warn('[Analytics] Không load được /js/analytics.js') }
     document.head.appendChild(s)
