@@ -78,6 +78,7 @@
   var container = document.getElementById("collectionContainer");
   if (!container) return;
   var catalogFallbackPromise = null;
+  var productImageLookupPromise = {};
 
   function formatPrice(v) {
     if (v == null || isNaN(v) || v <= 0) return "";
@@ -153,6 +154,20 @@
     return Object.assign({}, item, { image: image });
   }
 
+  function itemProductCode(item) {
+    return item && (item.productCode || item.product_code || item.product_code_override || item.id);
+  }
+
+  function collectionItems(collection) {
+    var items = getItemsFromData(collection);
+    if (isGroupStructure(items)) {
+      return items.reduce(function (all, group) {
+        return all.concat(Array.isArray(group.items) ? group.items : []);
+      }, []);
+    }
+    return items;
+  }
+
   function loadCatalogFallback() {
     if (catalogFallbackPromise) return catalogFallbackPromise;
     catalogFallbackPromise = fetch("/json/collection.json")
@@ -172,18 +187,64 @@
     return catalogFallbackPromise;
   }
 
+  async function loadProductImageLookup(codes) {
+    var uniqueCodes = (codes || [])
+      .map(function (code) { return String(code || "").trim(); })
+      .filter(Boolean)
+      .filter(function (code, index, arr) { return arr.indexOf(code) === index; });
+    if (!uniqueCodes.length) return {};
+
+    var cacheKey = uniqueCodes.slice().sort().join("|");
+    if (productImageLookupPromise[cacheKey]) return productImageLookupPromise[cacheKey];
+
+    productImageLookupPromise[cacheKey] = (async function () {
+      var map = {};
+      var productUrl = SUPABASE_URL +
+        "/rest/v1/products?select=product_code,image_url,image_urls&product_code=in.(" +
+        uniqueCodes.map(encodeURIComponent).join(",") + ")";
+      var products = await fetchJson(productUrl, { headers: supabaseHeaders() });
+      (products || []).forEach(function (product) {
+        var image = normalizeImageUrl(firstProductImage(product));
+        if (product.product_code && image) map[String(product.product_code)] = image;
+      });
+      return map;
+    })().catch(function (error) {
+      console.warn("[Collection] Product image REST fallback failed.", error);
+      return {};
+    });
+
+    return productImageLookupPromise[cacheKey];
+  }
+
   async function fillMissingProductImages(collections) {
     var needsFallback = (collections || []).some(function (collection) {
-      return getItemsFromData(collection).some(function (item) { return !item.image; });
+      return collectionItems(collection).some(function (item) { return !item.image; });
     });
     if (!needsFallback) return collections || [];
     var catalog = await loadCatalogFallback();
+    var missingCodes = [];
     (collections || []).forEach(function (collection) {
-      getItemsFromData(collection).forEach(function (item) {
-        if (item.image) return;
-        var key = item.productCode || item.product_code || item.id;
+      collectionItems(collection).forEach(function (item) {
+        if (item.image) {
+          item.image = normalizeImageUrl(item.image);
+          return;
+        }
+        var key = itemProductCode(item);
         var fallback = key ? catalog[String(key)] : null;
-        if (fallback && fallback.image) item.image = normalizeImageUrl(fallback.image);
+        if (fallback && fallback.image) {
+          item.image = normalizeImageUrl(fallback.image);
+          return;
+        }
+        if (key) missingCodes.push(key);
+      });
+    });
+
+    var productImages = await loadProductImageLookup(missingCodes);
+    (collections || []).forEach(function (collection) {
+      collectionItems(collection).forEach(function (item) {
+        if (item.image) return;
+        var key = itemProductCode(item);
+        if (key && productImages[String(key)]) item.image = productImages[String(key)];
       });
     });
     return collections || [];
