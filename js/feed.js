@@ -413,9 +413,10 @@
         var wasClamped = bodyEl.classList.contains('is-clamped')
         bodyEl.classList.remove('is-clamped')
         var fullHeight = bodyEl.getBoundingClientRect().height
-        var lineHeight = parseFloat(global.getComputedStyle(bodyEl).lineHeight) || 22
-        if (wasClamped) bodyEl.classList.add('is-clamped')
-        seeEl.style.display = fullHeight > lineHeight * BODY_LINES + 4 ? 'block' : 'none'
+        bodyEl.classList.add('is-clamped')
+        var clampedHeight = bodyEl.getBoundingClientRect().height
+        bodyEl.classList.toggle('is-clamped', wasClamped)
+        seeEl.style.display = fullHeight > clampedHeight + 4 ? 'block' : 'none'
       }
 
       requestAnimationFrame(function () {

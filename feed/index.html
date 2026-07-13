@@ -208,15 +208,19 @@
   }
   .fc-body.is-clamped {
     display: block;
-    max-height: calc(1.55em * 2);
+    max-height: calc(1.55em * 2 + 3px);
     overflow: hidden;
     white-space: normal;
   }
+  .fc-body.is-clamped > :first-child { margin-top: 0; }
+  .fc-body.is-clamped h3,
+  .fc-body.is-clamped h4 { margin: 0; }
   .fc-see-more {
     font-size: 13px;
     font-weight: 600;
     color: #1877f2;
-    margin-top: 2px;
+    margin-top: 7px;
+    line-height: 1.25;
     -webkit-tap-highlight-color: transparent;
   }
   .fc-see-more:active { opacity: .7; }
