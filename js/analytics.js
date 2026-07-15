@@ -319,6 +319,7 @@
       if (meta.traffic_source === undefined) meta.traffic_source = _sourceContext.utm_source || null
       if (meta.traffic_medium === undefined) meta.traffic_medium = _sourceContext.utm_medium || null
       if (meta.traffic_campaign === undefined) meta.traffic_campaign = _sourceContext.utm_campaign || null
+      if (meta.traffic_content === undefined) meta.traffic_content = _sourceContext.utm_content || null
       if (meta.referrer === undefined) meta.referrer = _sourceContext.referrer || null
     }
     if (eventType === 'purchase') {
