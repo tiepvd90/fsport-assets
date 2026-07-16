@@ -145,7 +145,11 @@
     var value = String(src || "").trim();
     if (!value) return "";
     if (value.indexOf("//") === 0) return "https:" + value;
-    if (value.indexOf("http://fun-sport.co") === 0) return value.replace("http://", "https://");
+    value = value.replace(/^http:\/\/(www\.)?fun-sport\.co/i, "https://fun-sport.co");
+    value = value.replace(/^https:\/\/www\.fun-sport\.co/i, "https://fun-sport.co");
+    if (value.indexOf("https://fun-sport.co/assets/") === 0) {
+      return value.replace("https://fun-sport.co", "");
+    }
     return value;
   }
 
@@ -216,6 +220,16 @@
     return productImageLookupPromise[cacheKey];
   }
 
+  async function loadSingleProductImage(item) {
+    var key = itemProductCode(item);
+    if (!key) return "";
+    var catalog = await loadCatalogFallback();
+    var fallback = catalog[String(key)];
+    if (fallback && fallback.image) return normalizeImageUrl(fallback.image);
+    var images = await loadProductImageLookup([key]);
+    return normalizeImageUrl(images[String(key)] || "");
+  }
+
   async function fillMissingProductImages(collections) {
     var needsFallback = (collections || []).some(function (collection) {
       return collectionItems(collection).some(function (item) { return !item.image; });
@@ -277,12 +291,36 @@
       (price ? '<div class="cgrid-price-wrap"><div class="cgrid-price">' + price + '</div>' + (showOriginal ? '<div class="cgrid-original">' + original + '</div>' : '') + '</div>' : '');
     var image = div.querySelector(".cgrid-thumb img");
     var imageSrc = normalizeImageUrl(item.image);
+    var retryingFallback = false;
     image.loading = "lazy";
     image.decoding = "async";
     image.addEventListener("error", function () {
-      image.classList.add("cgrid-img-error");
-    }, { once: true });
-    if (imageSrc) image.src = imageSrc;
+      if (retryingFallback) {
+        image.classList.add("cgrid-img-error");
+        return;
+      }
+      retryingFallback = true;
+      loadSingleProductImage(item).then(function (fallbackSrc) {
+        if (fallbackSrc && fallbackSrc !== image.src) {
+          image.classList.remove("cgrid-img-error");
+          image.src = fallbackSrc;
+        } else {
+          image.classList.add("cgrid-img-error");
+        }
+      }).catch(function () {
+        image.classList.add("cgrid-img-error");
+      });
+    });
+    if (imageSrc) {
+      image.src = imageSrc;
+    } else {
+      loadSingleProductImage(item).then(function (fallbackSrc) {
+        if (fallbackSrc) image.src = fallbackSrc;
+        else image.classList.add("cgrid-img-error");
+      }).catch(function () {
+        image.classList.add("cgrid-img-error");
+      });
+    }
     div.addEventListener("click", function () {
       if (item.link) window.location.href = item.link;
     });
