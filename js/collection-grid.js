@@ -115,6 +115,10 @@
     return [];
   }
 
+  function hasInlineCollectionItems(collection) {
+    return getItemsFromData(collection).length > 0;
+  }
+
   function supabaseHeaders() {
     return {
       Accept: "application/json",
@@ -518,7 +522,13 @@
     for (var i = 0; i < COLLECTIONS.length; i++) {
       var col = COLLECTIONS[i];
       try {
-        await loadAdminCollection(col);
+        if (hasInlineCollectionItems(col)) {
+          var inlineCollections = await fillMissingProductImages([col]);
+          var inlineCollection = inlineCollections[0] || col;
+          renderItems(getItemsFromData(inlineCollection), inlineCollection.title || col.title || "Collection", inlineCollection);
+        } else {
+          await loadAdminCollection(col);
+        }
       } catch (error) {
         console.warn("[Collection] Admin data unavailable, using JSON fallback.", col, error);
         try {

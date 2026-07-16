@@ -60,6 +60,48 @@
 </div>
 
 <!-- ICON GIỎ HÀNG -->
+<style>
+  #cartIcon {
+    position: fixed;
+    top: 12px;
+    right: max(12px, calc((100vw - 1168px) / 2));
+    width: 42px;
+    height: 42px;
+    padding: 6px;
+    box-sizing: border-box;
+    border-radius: 50%;
+    background: #fff;
+    color: #8a8a8a;
+    box-shadow: 0 0 6px rgba(0,0,0,.2);
+    z-index: 9998;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  #cartIcon .cart-icon-img {
+    width: 30px;
+    height: 30px;
+    display: block;
+    flex: 0 0 auto;
+  }
+  #cartItemCount {
+    position: absolute;
+    right: -6px;
+    bottom: -6px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: red;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1;
+    pointer-events: none;
+  }
+</style>
 <div id="cartIcon" onclick="showCheckoutPopup()">
   <svg class="cart-icon-img" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-label="Cart" role="img">
     <path d="M6.5 8.5h11l1 11h-13l1-11Z"></path>
