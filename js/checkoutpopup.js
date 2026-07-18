@@ -391,12 +391,16 @@ async function submitOrder() {
 
   async function trackPurchaseAfterERP(erpResult) {
     if (window.fsport && typeof window.fsport.identifyCustomer === 'function') {
-      await window.fsport.identifyCustomer({
-        phone: orderData.phone,
-        name: orderData.name,
-        customerId: erpResult && erpResult.customerId,
-        orderId: _orderId
-      })
+      try {
+        await window.fsport.identifyCustomer({
+          phone: orderData.phone,
+          name: orderData.name,
+          customerId: erpResult && erpResult.customerId,
+          orderId: _orderId
+        })
+      } catch (err) {
+        console.warn("Profile customer identify failed; purchase tracking will continue:", err && (err.message || err));
+      }
     }
     if (typeof window.fsport !== 'undefined') {
       var feedPostIds = Array.from(new Set((orderData.items || [])
