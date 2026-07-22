@@ -9,7 +9,7 @@
 });
 
 function renderSpecs(product) {
-  return product.specs.map(([label, value]) =>
+  return (product.specs || []).map(([label, value]) =>
     `<tr><td>${label}</td><td>${value}</td></tr>`
   ).join('');
 }
@@ -116,15 +116,56 @@ function setupFormHandler(product) {
   });
 }
 
-function initApp() {
-  if (typeof productSettings === 'undefined') {
-    console.error('[app.js] productSettings chưa được định nghĩa!');
+function pageFromRow(row) {
+  const specs = Array.isArray(row.specs) ? row.specs : [];
+  return {
+    id: row.slug,
+    slug: row.slug,
+    name: row.product_name,
+    title: row.title,
+    image: row.image_url,
+    specs: specs.map(item => Array.isArray(item) ? item : [item.label || '', item.value || '']),
+    description: row.description || '',
+    description2: row.description2 || '',
+    warrantyDays: row.warranty_days || 90
+  };
+}
+
+async function loadProductSettings() {
+  if (typeof productSettings !== 'undefined') return productSettings;
+
+  const params = new URLSearchParams(window.location.search);
+  const slug = params.get('slug') || params.get('s') || '';
+  if (!slug) throw new Error('Missing NFC slug');
+
+  const cfg = WarrantyConfig.supabase || {};
+  if (!cfg.url || !cfg.anonKey) throw new Error('Missing Supabase config');
+
+  const url = cfg.url + '/rest/v1/nfc_auth_pages?select=slug,product_name,title,image_url,specs,description,description2,warranty_days&slug=eq.' + encodeURIComponent(slug) + '&is_active=eq.true&limit=1';
+  const response = await fetch(url, {
+    headers: {
+      apikey: cfg.anonKey,
+      Authorization: 'Bearer ' + cfg.anonKey
+    }
+  });
+  const rows = await response.json().catch(() => []);
+  if (!response.ok || !Array.isArray(rows) || !rows.length) throw new Error('NFC page not found');
+  return pageFromRow(rows[0]);
+}
+
+async function initApp() {
+  let settings;
+  try {
+    settings = await loadProductSettings();
+  } catch (err) {
+    console.error('[app.js] Cannot load product settings:', err);
+    document.body.innerHTML = '<main style="padding:24px;font-family:Arial,sans-serif;text-align:center"><h2>Không tìm thấy trang xác thực</h2><p>Vui lòng kiểm tra lại link NFC hoặc liên hệ F-SPORT.</p></main>';
     return;
   }
 
-  renderTemplate(productSettings);
+  renderTemplate(settings);
   simulateVerification();
-  setupFormHandler(productSettings);
+  setupFormHandler(settings);
 }
 
 window.addEventListener('DOMContentLoaded', initApp);

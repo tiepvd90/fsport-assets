@@ -43,6 +43,11 @@ const UIConfig = {
 };
 
 const WarrantyConfig = {
+  supabase: {
+    url: 'https://xcigbbcpwfzluqazadez.supabase.co',
+    anonKey: window.FSPORT_SUPABASE_ANON || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhjaWdiYmNwd2Z6bHVxYXphZGV6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkzNTA1NjEsImV4cCI6MjA5NDkyNjU2MX0.8LGX0FkU5w9q26LynYetUY9rGN_oFnjvDFJ5tjG9QV4'
+  },
+
   webhook: {
     url: 'https://hook.eu2.make.com/dxl7ngaypediyxwb8g7jir704356vhjt',
     method: 'POST',

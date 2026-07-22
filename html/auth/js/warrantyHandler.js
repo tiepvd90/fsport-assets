@@ -22,8 +22,12 @@ class WarrantyHandler {
 }
 
 // Singleton với 3 handlers mặc định
+const submitHandler = typeof customerDatabaseHandler !== 'undefined'
+  ? customerDatabaseHandler
+  : webhookHandler;
+
 const warranty = new WarrantyHandler([
   validateHandler,
-  webhookHandler,
+  submitHandler,
   popupHandler
 ]);
