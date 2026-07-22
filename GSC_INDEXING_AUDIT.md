@@ -1,6 +1,6 @@
 # GSC Indexing Audit - F-SPORT
 
-Thoi diem audit: 2026-07-22 22:34 ICT. Cap nhat pre-deploy: 2026-07-22 23:35 ICT. Repo frontend: `D:\WEBSITE\Code\26\fsport-frontend`.
+Thoi diem audit: 2026-07-22 22:34 ICT. Cap nhat post-deploy: 2026-07-22 23:48 ICT. Repo frontend: `D:\WEBSITE\Code\26\fsport-frontend`.
 
 ## 1. Ket luan nhanh
 
@@ -79,7 +79,7 @@ Kiem tra local sau sua: 22/22 trang tinh trong sitemap co dung 1 canonical, dung
 
 ## 6. Sitemap audit
 
-- `https://www.fun-sport.co/google-sitemap.xml`: HTTP 200.
+- `https://www.fun-sport.co/google-sitemap.xml`: HTTP 200. Sau deploy, homepage loc la `https://www.fun-sport.co/`, khop canonical homepage.
 - Content-Type: `application/xml`.
 - Kich thuoc: 28,171 bytes.
 - Tong so URL: 221.
@@ -142,11 +142,23 @@ Khong co `Disallow: /`. Khong thay `X-Robots-Tag` tren cac URL mau. Feed detail 
 
 ## 10.1. Ket qua deploy production
 
-Dang cho deploy production va kiem tra public sau deploy.
+- Commit SEO chinh: `2c67da53 Fix GSC indexing metadata and 404 handling`.
+- Commit can chinh homepage trailing slash: `e505edce Align homepage canonical with trailing slash`.
+- `npx wrangler pages deploy . --project-name fsport-frontend --branch main --commit-dirty=false`: khong chay duoc vi moi truong khong co `CLOUDFLARE_API_TOKEN`.
+- Da deploy production bang cach push `main` len GitHub remote `origin`; Cloudflare Pages tu dong lay commit moi.
+- Public check sau deploy:
+  - `https://www.fun-sport.co/duong-dan-khong-ton-tai-audit-404`: `HTTP/1.1 404 Not Found`, co `meta name="robots" content="noindex, follow"`.
+  - `https://www.fun-sport.co/`: `HTTP/1.1 200 OK`, canonical `https://www.fun-sport.co/`.
+  - `https://www.fun-sport.co/pickleball/panther`: `HTTP/1.1 200 OK`, canonical `https://www.fun-sport.co/pickleball/panther`.
+  - `https://www.fun-sport.co/product/sportcap`: `HTTP/1.1 200 OK`, canonical `https://www.fun-sport.co/product/sportcap`.
+  - `https://www.fun-sport.co/robots.txt`: `HTTP/1.1 200 OK`.
+  - `https://www.fun-sport.co/google-sitemap.xml`: `HTTP/1.1 200 OK`, root loc `https://www.fun-sport.co/`.
+
+Ket luan post-deploy: cac dieu kien ky thuat can thiet de Googlebot crawl/index URL chinh da dat. Neu GSC van khong cap nhat sau 3-7 ngay, can xem lai GSC property/sitemap state va cau hinh DNS apex con tro Netlify.
 
 ## 11. Nhung viec chu website phai lam trong Google Search Console
 
-- Sau khi deploy frontend, submit lai `https://www.fun-sport.co/google-sitemap.xml`.
+- Submit lai `https://www.fun-sport.co/google-sitemap.xml` trong GSC.
 - Inspect va Request indexing cho: `https://www.fun-sport.co/`, `https://www.fun-sport.co/pickleball/panther`, `https://www.fun-sport.co/product/sportcap`, `https://www.fun-sport.co/feed/nghe-thuat-third-shot-trong-pickleball-quyet-inh-giua-drop-va-drive-20260713`.
 - Inspect mot URL sai bat ky sau deploy, vi du `https://www.fun-sport.co/duong-dan-khong-ton-tai-audit-404`, de xac nhan tra 404 that.
 - Khong can request indexing cho `https://fun-sport.co/`; URL nay redirect la dung.
