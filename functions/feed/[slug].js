@@ -1,5 +1,6 @@
 const FEED_SEO_FUNCTION =
   'https://xcigbbcpwfzluqazadez.supabase.co/functions/v1/feed-post-seo';
+const FEED_DETAIL_RENDER_VERSION = 'portrait-video-v1';
 
 function forwardedHeaders(request) {
   const url = new URL(request.url);
@@ -24,7 +25,9 @@ export async function onRequest(context) {
     return Response.redirect(requestUrl.toString(), 301);
   }
 
-  const upstreamUrl = `${FEED_SEO_FUNCTION}?slug=${encodeURIComponent(slug)}`;
+  const upstreamUrl =
+    `${FEED_SEO_FUNCTION}?slug=${encodeURIComponent(slug)}` +
+    `&render=${FEED_DETAIL_RENDER_VERSION}`;
   const upstream = await fetch(upstreamUrl, {
     method: 'GET',
     headers: forwardedHeaders(context.request)
