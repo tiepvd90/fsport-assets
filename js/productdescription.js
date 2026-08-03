@@ -2,10 +2,14 @@ document.addEventListener("DOMContentLoaded", function () {
   const container = document.getElementById("productdescription-placeholder");
   if (!container) return;
 
-  function getBackendDescription() {
+  function getDescriptionItem() {
     const page = window.FSPORT_PRODUCT_PAGE;
     const section = page && page.getSection ? page.getSection("product_description") : null;
-    const item = section && Array.isArray(section.items) ? section.items[0] : null;
+    return section && Array.isArray(section.items) ? section.items[0] : null;
+  }
+
+  function getBackendDescription() {
+    const item = getDescriptionItem();
     if (!item) return null;
 
     if (item.html_content) return { type: "html", value: item.html_content };
@@ -65,7 +69,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const expandLabel = toggleBtn.dataset.expandLabel || "XEM THÊM MÔ TẢ";
     const collapseLabel = toggleBtn.dataset.collapseLabel || "ẨN BỚT MÔ TẢ";
-    const previewImages = descMedia ? parseFloat(descMedia.dataset.previewImages || "") : NaN;
+    const description = getDescriptionItem() || {};
+    const configuredPreview = parseFloat(description.preview_images);
+    const previewImages = Number.isFinite(configuredPreview)
+      ? configuredPreview
+      : (descMedia ? parseFloat(descMedia.dataset.previewImages || "") : NaN);
     const useMediaPreview = descMedia && Number.isFinite(previewImages) && previewImages > 0;
     let mediaPreviewExpanded = false;
 
@@ -157,6 +165,47 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
+  function ensureDescriptionMedia() {
+    const description = getDescriptionItem() || {};
+    const previewImages = parseFloat(description.preview_images);
+    const toggle = container.querySelector("#toggleDesc");
+    if (toggle && description.expand_label) toggle.dataset.expandLabel = description.expand_label;
+    if (toggle && description.collapse_label) toggle.dataset.collapseLabel = description.collapse_label;
+    const existing = container.querySelector("#descContainer");
+    if (existing) {
+      if (Number.isFinite(previewImages) && previewImages > 0) {
+        existing.dataset.previewImages = String(previewImages);
+      }
+      return existing;
+    }
+
+    const leadingNodes = [];
+    let hasImage = false;
+    for (const node of Array.from(container.childNodes)) {
+      if (node.nodeType === Node.TEXT_NODE) {
+        if (node.textContent.trim()) break;
+        leadingNodes.push(node);
+        continue;
+      }
+      if (node.nodeType !== Node.ELEMENT_NODE) continue;
+      if (["descFull", "descFade", "toggleDesc"].includes(node.id)) break;
+      if (node.textContent.trim()) break;
+      if (node.matches("img") || node.querySelector("img")) hasImage = true;
+      leadingNodes.push(node);
+    }
+    if (!hasImage || !leadingNodes.length) return null;
+
+    const media = document.createElement("div");
+    media.id = "descContainer";
+    media.className = "desc-img-grid";
+    if (Number.isFinite(previewImages) && previewImages > 0) {
+      media.dataset.previewImages = String(previewImages);
+    }
+    container.insertBefore(media, leadingNodes[0]);
+    leadingNodes.forEach(node => media.appendChild(node));
+    return media;
+  }
+
   const ready = window.FSPORT_PRODUCT_PAGE_CONFIG_PROMISE || Promise.resolve(null);
   ready
     .catch(() => null)
@@ -164,6 +213,7 @@ document.addEventListener("DOMContentLoaded", function () {
     .then(html => {
       container.innerHTML = html;
       normalizeDescriptionMedia();
+      ensureDescriptionMedia();
       setupToggle();
     })
     .catch(err => {
