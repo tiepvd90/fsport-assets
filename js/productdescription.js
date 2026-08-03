@@ -142,12 +142,28 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
+  function normalizeDescriptionMedia() {
+    container.querySelectorAll("img").forEach(img => {
+      img.classList.add("desc-img");
+      img.removeAttribute("width");
+      img.removeAttribute("height");
+      img.loading = img.loading || "lazy";
+      img.decoding = "async";
+
+      const parent = img.parentElement;
+      if (parent && parent.children.length === 1 && !parent.textContent.trim()) {
+        parent.classList.add("desc-media-block");
+      }
+    });
+  }
+
   const ready = window.FSPORT_PRODUCT_PAGE_CONFIG_PROMISE || Promise.resolve(null);
   ready
     .catch(() => null)
     .then(loadHtml)
     .then(html => {
       container.innerHTML = html;
+      normalizeDescriptionMedia();
       setupToggle();
     })
     .catch(err => {

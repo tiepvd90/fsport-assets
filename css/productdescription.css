@@ -17,9 +17,38 @@
 
 .desc-img {
   width: 100%;
+  max-width: 100%;
+  height: auto;
   border-radius: 8px;
   display: block;
-  object-fit: cover;
+  object-fit: contain;
+  box-sizing: border-box;
+}
+
+/* Admin HTML may contain bare images without the legacy wrapper/classes. */
+#productdescription-placeholder {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  box-sizing: border-box;
+}
+
+#productdescription-placeholder img {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+  box-sizing: border-box;
+}
+
+#productdescription-placeholder .desc-media-block {
+  width: 100%;
+  max-width: 100%;
+  margin: 0 0 10px;
+  padding: 0;
+  line-height: 0;
 }
 
 /* ✅ Tiêu đề mô tả */
