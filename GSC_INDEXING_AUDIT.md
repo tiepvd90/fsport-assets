@@ -39,7 +39,7 @@ Khong thay bang chung sitemap XML bi hong. Viec GSC bao `https://fun-sport.co/` 
 3. Muc do: Medium
    URL/file lien quan: DNS `fun-sport.co`.
    Bang chung: `fun-sport.co` A record tro `52.74.6.109`, `13.215.239.219`; `www.fun-sport.co` CNAME tro `fsport-frontend.pages.dev`.
-   Anh huong den Google: Apex di qua Netlify/old origin de redirect, con www chay Cloudflare Pages. Hien khong tao loop, nhung day la cau hinh hosting khong gon.
+   Anh huong den Google: Apex di qua origin cu de redirect, con www chay Cloudflare Pages. Hien khong tao loop, nhung day la cau hinh hosting khong gon.
    Da sua: Chua. Khong sua DNS theo yeu cau.
 
 4. Muc do: Informational
@@ -154,7 +154,7 @@ Khong co `Disallow: /`. Khong thay `X-Robots-Tag` tren cac URL mau. Feed detail 
   - `https://www.fun-sport.co/robots.txt`: `HTTP/1.1 200 OK`.
   - `https://www.fun-sport.co/google-sitemap.xml`: `HTTP/1.1 200 OK`, root loc `https://www.fun-sport.co/`.
 
-Ket luan post-deploy: cac dieu kien ky thuat can thiet de Googlebot crawl/index URL chinh da dat. Neu GSC van khong cap nhat sau 3-7 ngay, can xem lai GSC property/sitemap state va cau hinh DNS apex con tro Netlify.
+Ket luan post-deploy: cac dieu kien ky thuat can thiet de Googlebot crawl/index URL chinh da dat. Neu GSC van khong cap nhat sau 3-7 ngay, can xem lai GSC property/sitemap state va cau hinh DNS apex con tro origin cu.
 
 ## 11. Nhung viec chu website phai lam trong Google Search Console
 
@@ -169,7 +169,7 @@ Ket luan post-deploy: cac dieu kien ky thuat can thiet de Googlebot crawl/index 
 - Anh chup GSC Sitemap detail cua `google-sitemap.xml`: Last read, Status, Discovered URLs.
 - Anh chup URL Inspection cua URL dich `https://www.fun-sport.co/`, khong phai apex.
 - Anh chup Pages report neu van hien `Processing data`.
-- Quyen xem Cloudflare Pages custom domain/DNS neu muon xu ly apex con tro Netlify.
+- Quyen xem Cloudflare Pages custom domain/DNS neu muon xu ly apex con tro origin cu.
 
 ## 13. Ket luan danh cho chuyen gia kiem tra tiep
 
