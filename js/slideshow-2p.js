@@ -40,14 +40,17 @@
 
   // Paint the known local first image immediately. Previously the slideshow
   // stayed completely empty until the remote admin config request completed.
-  const provisionalImage = window.FSPORT_DYNAMIC_PRODUCT_PAGE ? null : document.createElement("img");
+  const criticalSlide = window.FSPORT_CRITICAL_SLIDES && window.FSPORT_CRITICAL_SLIDES[PAGE];
+  const provisionalImage = criticalSlide
+    ? document.createElement("img")
+    : (window.FSPORT_DYNAMIC_PRODUCT_PAGE ? null : document.createElement("img"));
   if (provisionalImage) {
     provisionalImage.className = "slide show fsport-provisional-slide";
     provisionalImage.alt = `${PAGE} - 1`;
     provisionalImage.decoding = "async";
     provisionalImage.loading = "eager";
     provisionalImage.fetchPriority = "high";
-    provisionalImage.src = `${BASE_PATH}/1.${FORMAT}`;
+    provisionalImage.src = criticalSlide ? criticalSlide.local : `${BASE_PATH}/1.${FORMAT}`;
     provisionalImage.addEventListener("error", () => provisionalImage.remove(), { once: true });
     container.insertBefore(provisionalImage, counterEl);
   }
@@ -81,7 +84,12 @@
     ? (Array.isArray(runtimeSection.items) ? runtimeSection.items : [])
     : await loadConfiguredImages();
   const imageList = configuredImages.length
-    ? configuredImages.map((row) => ({ url: row.image_url, alt: row.alt_text || PAGE }))
+    ? configuredImages.map((row, index) => ({
+        url: index === 0 && criticalSlide && row.image_url === criticalSlide.source
+          ? criticalSlide.local
+          : row.image_url,
+        alt: row.alt_text || PAGE
+      }))
     : (runtimeConfig ? [] : Array.from({ length: config.count }, (_, index) => ({
         url: `${BASE_PATH}/${index + 1}.${FORMAT}`,
         alt: `${PAGE} - ${index + 1}`,

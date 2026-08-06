@@ -24,8 +24,10 @@
       host.hidden = true;
       return;
     }
+    var critical = window.FSPORT_HOMEPAGE_CRITICAL_SLIDE;
     host.innerHTML = '<div class="homepage-slides">' + slides.map(function(slide, index) {
       var url = String(slide.image_url || '').replace(/"/g, '&quot;');
+      if (index === 0 && critical && slide.image_url === critical.source) url = critical.local;
       var image = '<img class="homepage-slide' + (index === 0 ? ' is-active' : '') + '"' +
         (index === 0
           ? ' src="' + url + '" loading="eager" fetchpriority="high"'

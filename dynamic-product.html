@@ -14,6 +14,21 @@
       window.productCategory = window.loai;
       window.productPage = last.replace(/\.html?$/i, "").trim().toLowerCase();
       window.FSPORT_DYNAMIC_PRODUCT_PAGE = true;
+      window.FSPORT_CRITICAL_SLIDES = {
+        legacy: {
+          source: "https://pub-e9a87597962f48a39d9b80b93c33e46c.r2.dev/feed/2026/08/1785771423040-product-pages-legacy-vang-1000x1000.webp",
+          local: "/assets/images/critical/legacy-first-1785771423040.webp"
+        }
+      };
+      var criticalSlide = window.FSPORT_CRITICAL_SLIDES[window.productPage];
+      if (criticalSlide) {
+        var preload = document.createElement("link");
+        preload.rel = "preload";
+        preload.as = "image";
+        preload.href = criticalSlide.local;
+        preload.fetchPriority = "high";
+        document.head.appendChild(preload);
+      }
       window.FSPORT_CARTPOPUP_CONFIG_URL = "https://xcigbbcpwfzluqazadez.supabase.co/functions/v1/cart-popup-config";
       window.FSPORT_PRODUCT_PAGE_CONFIG_URL = "https://xcigbbcpwfzluqazadez.supabase.co/functions/v1/product-page-config";
     })();
@@ -39,7 +54,7 @@
         </div>
       </div>
       <script src="/js/slideshow-lazy-loader.js?v=20260701-1"></script>
-      <script src="/js/slideshow-2p.js?v=20260702-dynamic-page-1"></script>
+      <script src="/js/slideshow-2p.js?v=20260806-critical-first-1"></script>
 
       <div data-fsport-section="flash_banner"><div id="flashbanner-placeholder"></div></div>
 
@@ -122,6 +137,6 @@
     });
   </script>
   <script src="/js/base.js?v=20260701-centered-1"></script>
-  <script src="/js/photo-gallery.js?v=20260701-lazy-images-1"></script>
+  <script src="/js/photo-gallery.js?v=20260806-session-cache-1"></script>
 </body>
 </html>

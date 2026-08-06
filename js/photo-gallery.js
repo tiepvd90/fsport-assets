@@ -5,50 +5,18 @@
 (function() {
     'use strict';
 
-    const lazyImages = window.FSPORT_LAZY_IMAGES || (window.FSPORT_LAZY_IMAGES = (function() {
-        const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection || {};
-        const slow = connection.saveData || /(^|-)2g$|3g/.test(connection.effectiveType || '');
-        const maxConcurrent = slow ? 2 : 4;
-        let active = 0;
-        const queue = [];
-        function pump() {
-            while (active < maxConcurrent && queue.length) {
-                const image = queue.shift();
-                if (!image || image.dataset.lazyStarted === '1') continue;
-                image.dataset.lazyStarted = '1';
-                active++;
-                const done = function() {
-                    active = Math.max(0, active - 1);
-                    image.removeEventListener('load', done);
-                    image.removeEventListener('error', done);
-                    pump();
-                };
-                image.addEventListener('load', done);
-                image.addEventListener('error', done);
-                image.src = image.dataset.src || '';
-                image.removeAttribute('data-src');
-            }
+    // Native lazy-loading can reuse the browser cache immediately. The old
+    // four-request JavaScript queue made an already visited gallery look like
+    // it was downloading from scratch after every page navigation.
+    const galleryImages = {
+        load: function(image, src, index) {
+            if (!src) return;
+            image.src = src;
+            image.decoding = 'async';
+            image.loading = index < 8 ? 'eager' : 'lazy';
+            image.fetchPriority = index < 4 ? 'auto' : 'low';
         }
-        const observer = 'IntersectionObserver' in window ? new IntersectionObserver(function(entries) {
-            entries.forEach(function(entry) {
-                if (!entry.isIntersecting) return;
-                observer.unobserve(entry.target);
-                queue.push(entry.target);
-            });
-            pump();
-        }, { rootMargin: slow ? '120px 0px' : '400px 0px', threshold: 0.01 }) : null;
-        return {
-            observe: function(image, src) {
-                if (!src) return;
-                image.loading = 'lazy';
-                image.decoding = 'async';
-                image.fetchPriority = 'low';
-                image.dataset.src = src || '';
-                if (observer) observer.observe(image);
-                else { queue.push(image); pump(); }
-            }
-        };
-    })());
+    };
 
     const CONFIG = {
         containerId: 'photo-gallery-container',
@@ -57,13 +25,35 @@
         title: 'CUSTOMER REVIEW & CLUB',
         reviews: [],
         currentReview: null,
-        eventsBound: false
+        eventsBound: false,
+        signature: '',
+        cacheKey: 'fsport:photo-gallery:customer-review-club:v1'
     };
 
     function escapeHtml(value) {
         return String(value || '').replace(/[&<>"']/g, function(char) {
             return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char];
         });
+    }
+
+    function signatureOf(data) {
+        return JSON.stringify({
+            title: data.title || CONFIG.title,
+            reviews: (data.reviews || []).map(function(review) {
+                return [review.id, review.image, review.name, review.review, review.alt];
+            })
+        });
+    }
+
+    function readSessionCache() {
+        try {
+            const raw = sessionStorage.getItem(CONFIG.cacheKey);
+            return raw ? JSON.parse(raw) : null;
+        } catch (_) { return null; }
+    }
+
+    function writeSessionCache(data) {
+        try { sessionStorage.setItem(CONFIG.cacheKey, JSON.stringify(data)); } catch (_) {}
     }
 
     function createStructure() {
@@ -90,7 +80,7 @@
         const grid = document.getElementById('reviewGrid');
         if (!grid) return;
         grid.innerHTML = '';
-        CONFIG.reviews.forEach(function(review) {
+        CONFIG.reviews.forEach(function(review, index) {
             const item = document.createElement('div');
             item.className = 'review-item';
             item.dataset.id = review.id;
@@ -98,7 +88,7 @@
             const image = document.createElement('img');
             image.className = 'review-img';
             image.alt = review.alt || review.name || CONFIG.title;
-            lazyImages.observe(image, review.image);
+            galleryImages.load(image, review.image, index);
             item.appendChild(image);
             item.addEventListener('click', function(event) {
                 event.stopPropagation();
@@ -150,10 +140,14 @@
 
     function applyData(data) {
         if (!data || !Array.isArray(data.reviews)) throw new Error('Dữ liệu gallery không hợp lệ');
+        const nextSignature = signatureOf(data);
         CONFIG.title = data.title || CONFIG.title;
         CONFIG.reviews = data.reviews;
+        writeSessionCache({ title: CONFIG.title, reviews: CONFIG.reviews });
         const title = document.querySelector('#' + CONFIG.containerId + ' .brand-fsport');
         if (title) title.textContent = CONFIG.title;
+        if (CONFIG.signature === nextSignature && document.getElementById('reviewGrid')?.children.length) return;
+        CONFIG.signature = nextSignature;
         renderGrid();
         bindEvents();
     }
@@ -216,6 +210,16 @@
     async function init() {
         const container = document.getElementById(CONFIG.containerId);
         if (!container) return;
+        container.innerHTML = createStructure();
+        const cached = readSessionCache();
+        if (cached && Array.isArray(cached.reviews)) applyData(cached);
+        const earlyStatic = cached ? Promise.resolve(null) : fetch(CONFIG.jsonUrl)
+            .then(function(response) { return response.ok ? response.json() : null; })
+            .then(function(data) {
+                if (data && !CONFIG.reviews.length) applyData(data);
+                return data;
+            })
+            .catch(function() { return null; });
         const frontendConfig = await (window.FSPORT_FRONTEND_PAGE_CONFIG_PROMISE || Promise.resolve(null)).catch(function() { return null; });
         if (frontendConfig) {
             const enabled = !frontendConfig.settings || !frontendConfig.settings.photoGallery || frontendConfig.settings.photoGallery.enabled !== false;
@@ -223,7 +227,6 @@
                 container.innerHTML = '';
                 return;
             }
-            container.innerHTML = createStructure();
             if (frontendConfig.gallery) applyData(await fillMissingReviewDetails(frontendConfig.gallery));
             return;
         }
@@ -234,7 +237,6 @@
             container.innerHTML = '';
             return;
         }
-        container.innerHTML = createStructure();
         if (runtimeConfig) {
             if (section.content) {
                 applyData(await fillMissingReviewDetails(section.content));
@@ -244,6 +246,8 @@
             }
             return;
         }
+        await earlyStatic;
+        if (CONFIG.reviews.length) return;
         loadLegacyData();
     }
 
