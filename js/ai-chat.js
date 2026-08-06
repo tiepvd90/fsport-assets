@@ -157,6 +157,7 @@
   async function _fetchProducts() {
     var res = await _get(
       '/rest/v1/products?ai_enabled=eq.true' +
+      '&is_active=eq.true' +
       '&select=product_code,product_name,category,color,size,price,stock_qty,image_url,image_urls' +
       '&order=category.asc,color.asc,size.asc'
     )

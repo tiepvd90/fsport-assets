@@ -179,7 +179,7 @@ setInterval(() => {
   function loadAiChat () {
     if (window.AiChat) { injectWidget(); return }
     var s = document.createElement('script')
-    s.src = '/js/ai-chat.js?v=20260613-1'
+    s.src = '/js/ai-chat.js?v=20260806-active-products-only-1'
     s.onload = function () { injectWidget() }
     s.onerror = function () { console.warn('[AiChat] Không load được /js/ai-chat.js') }
     document.head.appendChild(s)
