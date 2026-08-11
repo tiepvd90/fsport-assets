@@ -33,7 +33,9 @@ export async function onRequest(context) {
   if (!await isManagedNfcPage(slug)) return staticResponse;
 
   const templateUrl = new URL(request.url);
-  templateUrl.pathname = '/html/auth/nfc.html';
+  // Use the clean asset path internally so Cloudflare does not return its
+  // automatic .html -> extensionless redirect to the public NFC URL.
+  templateUrl.pathname = '/html/auth/nfc';
   templateUrl.search = '';
   const templateResponse = await env.ASSETS.fetch(new Request(templateUrl, request));
 
