@@ -135,7 +135,15 @@ async function loadProductSettings() {
   if (typeof productSettings !== 'undefined') return productSettings;
 
   const params = new URLSearchParams(window.location.search);
-  const slug = params.get('slug') || params.get('s') || '';
+  const rawQuery = window.location.search.replace(/^\?/, '').split('&')[0];
+  let slug = params.get('slug') || params.get('s') || '';
+  if (!slug && rawQuery && !rawQuery.includes('=')) {
+    try {
+      slug = decodeURIComponent(rawQuery).replace(/\.html$/i, '');
+    } catch (_) {
+      slug = rawQuery.replace(/\.html$/i, '');
+    }
+  }
   if (!slug) throw new Error('Missing NFC slug');
 
   const cfg = WarrantyConfig.supabase || {};
