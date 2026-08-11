@@ -144,6 +144,16 @@ async function loadProductSettings() {
       slug = rawQuery.replace(/\.html$/i, '');
     }
   }
+  if (!slug) {
+    const pathMatch = window.location.pathname.match(/\/html\/auth\/([^/]+)\.html$/i);
+    if (pathMatch && pathMatch[1].toLowerCase() !== 'nfc') {
+      try {
+        slug = decodeURIComponent(pathMatch[1]);
+      } catch (_) {
+        slug = pathMatch[1];
+      }
+    }
+  }
   if (!slug) throw new Error('Missing NFC slug');
 
   const cfg = WarrantyConfig.supabase || {};
