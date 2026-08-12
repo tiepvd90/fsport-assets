@@ -145,7 +145,7 @@ async function loadProductSettings() {
     }
   }
   if (!slug) {
-    const pathMatch = window.location.pathname.match(/\/html\/auth\/([^/]+)\.html$/i);
+    const pathMatch = window.location.pathname.match(/\/html\/auth\/([^/]+?)(?:\.html)?\/?$/i);
     if (pathMatch && pathMatch[1].toLowerCase() !== 'nfc') {
       try {
         slug = decodeURIComponent(pathMatch[1]);
