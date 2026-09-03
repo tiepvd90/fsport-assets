@@ -1128,6 +1128,7 @@
 
   // ─── ANALYTICS ────────────────────────────────────────────
   function _trackEvent(type, meta) {
+    if (!global.FSPORT_TRACKING_CONSENT || !global.FSPORT_TRACKING_CONSENT.isGranted()) return
     if (global.fsport && typeof global.fsport.track === 'function') {
       global.fsport.track(type, meta); return
     }

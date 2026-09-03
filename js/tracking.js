@@ -1,3 +1,16 @@
+(function () {
+if (window.__fsportTrackingStarted) return;
+if (!window.FSPORT_TRACKING_CONSENT || !window.FSPORT_TRACKING_CONSENT.isGranted()) {
+  window.addEventListener("fsport:tracking-consent", function startWhenGranted(event) {
+    if (!event.detail || event.detail.status !== "granted") return;
+    window.removeEventListener("fsport:tracking-consent", startWhenGranted);
+    var script = document.createElement("script");
+    script.src = "/js/tracking.js?consent=granted";
+    document.head.appendChild(script);
+  });
+  return;
+}
+window.__fsportTrackingStarted = true;
 // tracking.js
 // ======= Meta Pixel chính (2551563688514905) =======
 !function(f,b,e,v,n,t,s)
@@ -204,3 +217,4 @@ function trackGA4EcommerceEvent(eventName, payload) {
 
 window.ga4TrackEvent = ga4TrackEvent;
 window.trackGA4EcommerceEvent = trackGA4EcommerceEvent;
+})();

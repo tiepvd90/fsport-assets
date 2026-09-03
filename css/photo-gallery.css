@@ -20,12 +20,19 @@
     margin-bottom: 0px;
 }
 .brand-fsport {
-    font-size: 1.6rem;
+    font-size: 1.25rem;
     font-weight: 800;
     background: linear-gradient(135deg, #00ffff, #0099ff);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
+    text-align: center;
+}
+.gallery-disclosure {
+    margin: 3px 0 2px;
+    color: #e5e7eb;
+    font-size: clamp(10px, 2.4vw, 12px);
+    line-height: 1.35;
     text-align: center;
 }
 
@@ -81,7 +88,7 @@
     max-height: 85vh;
     background: #111;
     border-radius: 12px;
-    overflow: auto;
+    overflow: hidden;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -92,27 +99,25 @@
     max-height: 70vh;
     object-fit: contain;
     display: block;
-    border-radius: 12px 12px 0 0;
+    border-radius: 12px;
 }
-.lightbox-details {
-    padding: 16px 20px 20px;
-    width: 100%;
-    background: #111;
-    color: white;
-    text-align: left;
-    border-top: 1px solid #333;
+.lightbox-nav {
+    position: absolute;
+    top: 50%;
+    width: 42px;
+    height: 52px;
+    border: 0;
+    border-radius: 8px;
+    background: rgba(0, 0, 0, .65);
+    color: #fff;
+    font-size: 34px;
+    line-height: 1;
+    cursor: pointer;
+    transform: translateY(-50%);
 }
-.lightbox-name {
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: #00ffff;
-    margin-bottom: 8px;
-}
-.lightbox-review {
-    font-size: 0.95rem;
-    line-height: 1.4;
-    color: #ddd;
-}
+.lightbox-prev { left: 10px; }
+.lightbox-next { right: 10px; }
+.lightbox-nav:hover, .lightbox-nav:focus-visible { background: rgba(0, 0, 0, .9); }
 
 /* Nút X - đặt trực tiếp trong .lightbox-content, góc trên cùng bên phải của ảnh */
 .close-lightbox {

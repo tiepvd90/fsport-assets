@@ -307,6 +307,38 @@
   cursor: pointer;
   margin-top: 16px;
 }
+#checkoutSubmitBtn:disabled { opacity: .65; cursor: wait; }
+.checkout-summary-note {
+  margin: 7px 0 0;
+  color: #555;
+  font-size: 12px;
+  font-style: italic;
+  font-weight: 400;
+  line-height: 1.45;
+}
+.checkout-summary-note strong { font-weight: 600; }
+.checkout-inspection-note { display: flex; align-items: center; gap: 5px; }
+.checkout-consent { margin-top: 14px; }
+.checkout-consent label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #444;
+  font-size: 13.5px;
+  line-height: 1.45;
+  cursor: pointer;
+}
+.checkout-consent label span { min-width: 0; }
+.checkout-consent input { width: 21px; height: 21px; margin: 0; flex: 0 0 auto; accent-color: #333; cursor: pointer; }
+.checkout-consent input:focus-visible { outline: 2px solid #555; outline-offset: 3px; }
+.checkout-consent a { color: inherit; font-weight: 600; text-decoration: underline; text-underline-offset: 2px; }
+.checkout-consent-error { margin: 5px 0 0 29px; color: #9f3030; font-size: 12px; line-height: 1.4; }
+.checkout-consent.has-error { padding: 7px 8px; border: 1px solid #d9a4a4; border-radius: 8px; background: #fffafa; }
+.checkout-consent + #checkoutSubmitBtn { margin-top: 10px; }
+@media (min-width: 769px) {
+  .checkout-content .checkout-consent label { font-size: 14px; }
+  .checkout-content .checkout-summary-note, .checkout-content .checkout-consent-error { font-size: 13px; }
+}
 
 /* === ICON GIỎ HÀNG FIXED === */
 #cartIcon {

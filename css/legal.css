@@ -1,0 +1,39 @@
+:root {
+  --legal-text: #172033;
+  --legal-muted: #5b6474;
+  --legal-line: #dfe3ea;
+  --legal-surface: #fff;
+  --legal-accent: #b91c1c;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  color: var(--legal-text);
+  background: #f6f7f9;
+  font-family: "Be Vietnam Pro", system-ui, -apple-system, sans-serif;
+}
+.legal-page {
+  width: min(920px, calc(100% - 32px));
+  margin: 24px auto 40px;
+  padding: clamp(22px, 5vw, 52px);
+  border: 1px solid var(--legal-line);
+  border-radius: 16px;
+  background: var(--legal-surface);
+  box-shadow: 0 10px 35px rgba(15, 23, 42, .06);
+}
+.legal-back { color: var(--legal-accent); font-weight: 700; text-decoration: none; }
+.legal-back:hover, .legal-back:focus-visible { text-decoration: underline; }
+.legal-page h1 { margin: 18px 0 8px; font-size: clamp(26px, 5vw, 40px); line-height: 1.2; }
+.legal-page h2 { margin: 30px 0 10px; font-size: clamp(19px, 3vw, 24px); }
+.legal-page h3 { margin: 22px 0 8px; font-size: 17px; }
+.legal-page p, .legal-page li { font-size: 16px; line-height: 1.75; }
+.legal-page ul, .legal-page ol { padding-left: 24px; }
+.legal-updated { margin: 0 0 24px; color: var(--legal-muted); font-size: 14px; }
+.legal-toc { margin: 24px 0; padding: 18px 22px; border-radius: 12px; background: #f8fafc; }
+.legal-toc a, .legal-page a { color: #9f1239; }
+.legal-contact { padding: 18px 20px; border-left: 4px solid var(--legal-accent); background: #fff7f7; }
+@media (max-width: 600px) {
+  .legal-page { width: 100%; margin: 0; padding: 22px 16px 32px; border: 0; border-radius: 0; }
+}

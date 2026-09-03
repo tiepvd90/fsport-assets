@@ -91,7 +91,7 @@
     }
     apply("home-link", footer.home_url, footer.home_label, footer.home_icon_url);
     apply("messenger-link", footer.messenger_url, footer.messenger_label, footer.messenger_icon_url);
-    apply("zalo-link", footer.zalo_url, footer.zalo_label, footer.zalo_icon_url);
+    apply("zalo-link", "https://zalo.me/0384735980", footer.zalo_label, footer.zalo_icon_url);
     apply("call-link", footer.phone ? "tel:" + String(footer.phone).replace(/\s+/g, "") : "", footer.phone_label, footer.phone_icon_url);
     var cart = document.getElementById("btn-atc");
     if (cart && footer.cart_label) cart.textContent = footer.cart_label;

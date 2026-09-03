@@ -22,7 +22,7 @@
         containerId: 'photo-gallery-container',
         jsonUrl: '/json/photo-gallery.json',
         apiUrl: 'https://xcigbbcpwfzluqazadez.supabase.co/functions/v1/photo-gallery-config?slug=customer-review-club',
-        title: 'CUSTOMER REVIEW & CLUB',
+        title: 'PRODUCT ILLUSTRATIONS',
         reviews: [],
         currentReview: null,
         eventsBound: false,
@@ -38,9 +38,9 @@
 
     function signatureOf(data) {
         return JSON.stringify({
-            title: data.title || CONFIG.title,
+            title: CONFIG.title,
             reviews: (data.reviews || []).map(function(review) {
-                return [review.id, review.image, review.name, review.review, review.alt];
+                return [review.id, review.image];
             })
         });
     }
@@ -61,16 +61,15 @@
             <div class="photo-gallery-wrapper">
                 <div class="gallery-header-fsport">
                     <div class="brand-fsport">${escapeHtml(CONFIG.title)}</div>
+                    <p class="gallery-disclosure">AI-generated images for illustrative purposes only.</p>
                 </div>
                 <div class="review-grid" id="reviewGrid"></div>
             </div>
             <div id="lightboxFsport" class="lightbox-fsport">
                 <div class="lightbox-content">
                     <img class="lightbox-img" id="lightboxImg" alt="">
-                    <div class="lightbox-details">
-                        <div class="lightbox-name" id="lightboxName"></div>
-                        <div class="lightbox-review" id="lightboxReview"></div>
-                    </div>
+                    <button type="button" class="lightbox-nav lightbox-prev" id="lightboxPrevBtn" aria-label="Ảnh trước">‹</button>
+                    <button type="button" class="lightbox-nav lightbox-next" id="lightboxNextBtn" aria-label="Ảnh sau">›</button>
                     <button type="button" class="close-lightbox" id="closeLightboxBtn" aria-label="Đóng">✕</button>
                 </div>
             </div>`;
@@ -87,7 +86,7 @@
 
             const image = document.createElement('img');
             image.className = 'review-img';
-            image.alt = review.alt || review.name || CONFIG.title;
+            image.alt = 'Hình ảnh minh họa sản phẩm F-SPORT';
             galleryImages.load(image, review.image, index);
             item.appendChild(image);
             item.addEventListener('click', function(event) {
@@ -100,22 +99,25 @@
 
     function openLightbox(review) {
         if (window.fsport && typeof window.fsport.track === 'function') {
-            window.fsport.track('club_post_view', { post_id: review.id, post_title: review.name });
+            window.fsport.track('illustration_view', { image_id: review.id });
         }
         CONFIG.currentReview = review;
         const lightbox = document.getElementById('lightboxFsport');
         const image = document.getElementById('lightboxImg');
-        const name = document.getElementById('lightboxName');
-        const text = document.getElementById('lightboxReview');
         if (!lightbox) return;
         if (image) {
             image.src = review.image;
-            image.alt = review.alt || review.name || CONFIG.title;
+            image.alt = 'Hình ảnh minh họa sản phẩm F-SPORT';
         }
-        if (name) name.innerHTML = '<strong>Tên:</strong> ' + escapeHtml(review.name);
-        if (text) text.innerHTML = '<strong>Review:</strong> ' + escapeHtml(review.review);
         lightbox.classList.add('active');
         document.body.style.overflow = 'hidden';
+    }
+
+    function moveLightbox(direction) {
+        const currentIndex = CONFIG.reviews.indexOf(CONFIG.currentReview);
+        if (currentIndex < 0 || !CONFIG.reviews.length) return;
+        const nextIndex = (currentIndex + direction + CONFIG.reviews.length) % CONFIG.reviews.length;
+        openLightbox(CONFIG.reviews[nextIndex]);
     }
 
     function closeLightbox() {
@@ -129,20 +131,31 @@
         CONFIG.eventsBound = true;
         const close = document.getElementById('closeLightboxBtn');
         const lightbox = document.getElementById('lightboxFsport');
+        const previous = document.getElementById('lightboxPrevBtn');
+        const next = document.getElementById('lightboxNextBtn');
         if (close) close.addEventListener('click', closeLightbox);
+        if (previous) previous.addEventListener('click', function() { moveLightbox(-1); });
+        if (next) next.addEventListener('click', function() { moveLightbox(1); });
         if (lightbox) lightbox.addEventListener('click', function(event) {
             if (event.target === lightbox) closeLightbox();
         });
         window.addEventListener('keydown', function(event) {
             if (event.key === 'Escape') closeLightbox();
+            if (event.key === 'ArrowLeft') moveLightbox(-1);
+            if (event.key === 'ArrowRight') moveLightbox(1);
         });
     }
 
     function applyData(data) {
         if (!data || !Array.isArray(data.reviews)) throw new Error('Dữ liệu gallery không hợp lệ');
-        const nextSignature = signatureOf(data);
-        CONFIG.title = data.title || CONFIG.title;
-        CONFIG.reviews = data.reviews;
+        const sanitizedData = {
+            title: CONFIG.title,
+            reviews: data.reviews.map(function(review) {
+                return { id: review.id, image: review.image };
+            })
+        };
+        const nextSignature = signatureOf(sanitizedData);
+        CONFIG.reviews = sanitizedData.reviews;
         writeSessionCache({ title: CONFIG.title, reviews: CONFIG.reviews });
         const title = document.querySelector('#' + CONFIG.containerId + ' .brand-fsport');
         if (title) title.textContent = CONFIG.title;
@@ -150,35 +163,6 @@
         CONFIG.signature = nextSignature;
         renderGrid();
         bindEvents();
-    }
-
-    function fillMissingReviewDetails(data) {
-        if (!data || !Array.isArray(data.reviews)) return Promise.resolve(data);
-        const hasMissingDetails = data.reviews.some(function(review) {
-            return !String(review.name || '').trim() || !String(review.review || '').trim();
-        });
-        if (!hasMissingDetails) return Promise.resolve(data);
-        return fetch(CONFIG.jsonUrl).then(function(response) {
-            if (!response.ok) throw new Error('Static gallery HTTP ' + response.status);
-            return response.json();
-        }).then(function(fallbackData) {
-            const fallbackReviews = Array.isArray(fallbackData.reviews) ? fallbackData.reviews : [];
-            const byImage = {};
-            fallbackReviews.forEach(function(review) {
-                if (review.image) byImage[String(review.image)] = review;
-            });
-            data.reviews = data.reviews.map(function(review, index) {
-                const fallback = byImage[String(review.image || '')] || fallbackReviews[index] || {};
-                return Object.assign({}, review, {
-                    name: String(review.name || '').trim() || fallback.name || '',
-                    review: String(review.review || '').trim() || fallback.review || ''
-                });
-            });
-            return data;
-        }).catch(function(error) {
-            console.warn('[PhotoGallery] Cannot fill missing review details.', error);
-            return data;
-        });
     }
 
     function loadStaticFallback() {
@@ -194,7 +178,6 @@
                 if (!response.ok) throw new Error('Gallery API HTTP ' + response.status);
                 return response.json();
             })
-            .then(fillMissingReviewDetails)
             .then(applyData)
             .catch(function(error) {
                 console.warn('[PhotoGallery] Backend unavailable, using static JSON.', error);
@@ -227,7 +210,7 @@
                 container.innerHTML = '';
                 return;
             }
-            if (frontendConfig.gallery) applyData(await fillMissingReviewDetails(frontendConfig.gallery));
+            if (frontendConfig.gallery) applyData(frontendConfig.gallery);
             return;
         }
         const runtimeConfig = await (window.FSPORT_PRODUCT_PAGE_CONFIG_PROMISE || Promise.resolve(null)).catch(function() { return null; });
@@ -239,7 +222,7 @@
         }
         if (runtimeConfig) {
             if (section.content) {
-                applyData(await fillMissingReviewDetails(section.content));
+                applyData(section.content);
             } else {
                 const grid = document.getElementById('reviewGrid');
                 if (grid) grid.innerHTML = '';

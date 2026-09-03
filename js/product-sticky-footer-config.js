@@ -33,7 +33,7 @@
     }
     apply('home-link', config.home_url, config.home_label, config.home_icon_url)
     apply('messenger-link', config.messenger_url, config.messenger_label, config.messenger_icon_url)
-    apply('zalo-link', config.zalo_url, config.zalo_label, config.zalo_icon_url)
+    apply('zalo-link', 'https://zalo.me/0384735980', config.zalo_label, config.zalo_icon_url)
     apply('call-link', config.phone ? 'tel:' + String(config.phone).replace(/\s+/g, '') : '', config.phone_label, config.phone_icon_url)
     var cart = document.getElementById('btn-atc')
     if (cart && config.cart_label) cart.textContent = config.cart_label

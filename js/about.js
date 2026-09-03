@@ -20,7 +20,7 @@
           <span class="fsport-about__icon" aria-hidden="true">+</span>
         </button>
         <div class="fsport-about__panel" id="fsport-panel-2" role="region" aria-labelledby="fsport-btn-2">
-          <p class="fsport-about__content">F-SPORT hỗ trợ giao hàng toàn quốc từ Hà Nội. Thời gian vận chuyển dự kiến từ 1–2 ngày đối với khu vực miền Bắc và khoảng 2–3 ngày đối với miền Trung và miền Nam. Khách hàng được kiểm tra sản phẩm trước khi thanh toán và hỗ trợ thanh toán khi nhận hàng (COD) trên toàn quốc.</p>
+          <p class="fsport-about__content">F-SPORT hỗ trợ giao hàng toàn quốc từ Hà Nội. Thời gian vận chuyển dự kiến 1–2 ngày đối với miền Bắc, 2–3 ngày đối với miền Trung và 3–4 ngày đối với miền Nam. Khách hàng được kiểm tra, thử sản phẩm theo điều kiện công bố và thanh toán khi nhận hàng (COD). <a href="/chinh-sach-van-chuyen">Xem chính sách chi tiết</a>.</p>
         </div>
       </div>
 
@@ -30,7 +30,7 @@
           <span class="fsport-about__icon" aria-hidden="true">+</span>
         </button>
         <div class="fsport-about__panel" id="fsport-panel-3" role="region" aria-labelledby="fsport-btn-3">
-          <p class="fsport-about__content">Các dòng vợt lõi tổ ong của F-SPORT được hỗ trợ bảo hành 30 ngày và các dòng vợt lõi foam được hỗ trợ bảo hành lên đến 90 ngày đối với lỗi sản xuất. Chính sách bảo hành không áp dụng cho các trường hợp hư hỏng do va đập mạnh, tác động ngoại lực hoặc sử dụng sai mục đích. Đội ngũ F-SPORT luôn sẵn sàng hỗ trợ khách hàng qua Hotline/Zalo: 0384 735 980.</p>
+          <p class="fsport-about__content">Các dòng vợt lõi tổ ong của F-SPORT được hỗ trợ bảo hành 30 ngày và các dòng vợt lõi foam được hỗ trợ bảo hành lên đến 90 ngày đối với lỗi sản xuất. Chính sách bảo hành không áp dụng cho hư hỏng do va đập mạnh, tác động ngoại lực hoặc sử dụng sai mục đích. Hỗ trợ qua Hotline/Zalo: 0384 735 980. <a href="/chinh-sach-bao-hanh">Xem chính sách bảo hành</a> và <a href="/chinh-sach-doi-tra-hoan-tien">chính sách đổi trả</a>.</p>
         </div>
       </div>
 

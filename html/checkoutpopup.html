@@ -34,11 +34,17 @@
         </div>
 
         <div class="row total-row">
-          <span>Tổng</span>
+          <span>Tổng thanh toán</span>
           <span id="totalText">0₫</span>
         </div>
 
-        <div class="note">
+        <p class="checkout-summary-note">Giá sản phẩm đã bao gồm các loại thuế áp dụng.</p>
+
+        <div class="checkout-summary-note">
+          <strong>Phương thức thanh toán:</strong> Thanh toán khi nhận hàng (COD)
+        </div>
+
+        <div class="checkout-summary-note checkout-inspection-note">
           <span class="red-dot-icon">💯</span>
           <em>kiểm tra hàng trước khi thanh toán</em>
         </div>
@@ -54,6 +60,13 @@
         <input type="text" id="checkoutAddress" placeholder="Địa chỉ nhận hàng" />
       </div>
 
+      <div class="checkout-consent">
+        <label for="checkoutPolicyConsent">
+          <input type="checkbox" id="checkoutPolicyConsent" />
+          <span>Tôi đồng ý với <a href="/dieu-khoan-giao-dich" target="_blank" rel="noopener">Điều khoản</a> và <a href="/chinh-sach-bao-mat" target="_blank" rel="noopener">Chính sách bảo mật</a></span>
+        </label>
+        <p id="checkoutConsentError" class="checkout-consent-error" role="alert" aria-live="polite" hidden>Vui lòng đồng ý điều khoản để tiếp tục.</p>
+      </div>
       <button id="checkoutSubmitBtn">ĐẶT HÀNG NGAY</button>
     </div>
   </div>

@@ -1,3 +1,16 @@
+(function () {
+if (window.__fsportInternalAnalyticsStarted) return;
+if (!window.FSPORT_TRACKING_CONSENT || !window.FSPORT_TRACKING_CONSENT.isGranted()) {
+  window.addEventListener("fsport:tracking-consent", function startAnalyticsWhenGranted(event) {
+    if (!event.detail || event.detail.status !== "granted") return;
+    window.removeEventListener("fsport:tracking-consent", startAnalyticsWhenGranted);
+    var script = document.createElement("script");
+    script.src = "/js/analytics.js?consent=granted";
+    document.head.appendChild(script);
+  });
+  return;
+}
+window.__fsportInternalAnalyticsStarted = true;
 // ================================================================
 // FSPORT ANALYTICS — tracking nội bộ
 // Load ở tất cả các trang sản phẩm, trước các script khác
@@ -417,3 +430,4 @@
   }
 
 })(window)
+})();

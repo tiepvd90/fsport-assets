@@ -73,28 +73,9 @@ window.onpopstate = function () {
   document.getElementById("slideForm")?.classList.add("hidden"); // nếu đang dùng popup trượt
 };
 
-// ✅ Load fake notify (gọi như script thật để tránh lỗi CORS/textContent)
-const fakenotifyScript = document.createElement("script");
-fakenotifyScript.src = "/js/fakenotify.js?v=20260714-hide-on-overlay-1";
-fakenotifyScript.defer = true;
-document.body.appendChild(fakenotifyScript);
-
-/* ===========================
-   ✅ FAKE NOTIFY LOADER (tách riêng)
-   – Không fetch text, không inline; load như script chuẩn
-   – fakenotify.js tự inject CSS/HTML và tự wait DOM
-   =========================== */
-(function loadFakeNotify() {
-  if (window.disableFakeNotify) return;           // Cho phép tắt qua global flag
-  if (window.__fakeNotifyInjected) return;
-  window.__fakeNotifyInjected = true;
-
-  const s = document.createElement('script');
-  s.src = '/js/fakenotify.js?v=20260714-hide-on-overlay-1';
-  s.async = true;                                  // tải song song, thực thi khi tải xong
-  s.onerror = (e) => console.warn('Không load được fakenotify.js', e);
-  document.head.appendChild(s);
-})();
+// Fake purchase/cart notifications are intentionally disabled.
+window.disableFakeNotify = true;
+document.getElementById("fakeNotification")?.remove();
 
 // ✅ KEEP TAB ALIVE – tránh Safari unload tab gây about:blank (tuỳ chọn)
 setInterval(() => {
@@ -136,6 +117,15 @@ setInterval(() => {
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', wait)
   else wait()
+})()
+
+// Hiển thị lựa chọn trước khi các công cụ đo lường không thiết yếu được kích hoạt.
+;(function loadTrackingConsent() {
+  if (window.FSPORT_TRACKING_CONSENT || document.querySelector('script[data-fsport-tracking-consent]')) return
+  var script = document.createElement('script')
+  script.src = '/js/tracking-consent.js?v=20260903-1'
+  script.dataset.fsportTrackingConsent = 'true'
+  document.head.appendChild(script)
 })()
 
 // ✅ Gọi supportchat nếu có
@@ -212,4 +202,33 @@ setInterval(() => {
   } else {
     waitForCredentials()
   }
+})()
+
+// Thông tin giao dịch dùng chung trên các trang sản phẩm.
+;(function applyCommercePolicyLinks() {
+  function apply() {
+    document.querySelectorAll('.shipping-info').forEach(function (box) {
+      var lines = box.querySelectorAll('.shipping-line')
+      if (lines[0]) lines[0].innerHTML = '<span class="icon">🚚</span>Giao toàn quốc từ Hà Nội: miền Bắc 1–2 ngày, miền Trung 2–3 ngày, miền Nam 3–4 ngày.'
+      if (lines[1]) lines[1].innerHTML = '<span class="icon">🔍</span>Được kiểm tra, thử sản phẩm theo điều kiện công bố và thanh toán COD.'
+      if (!box.querySelector('.fs-policy-inline-links')) {
+        var links = document.createElement('p')
+        links.className = 'fs-policy-inline-links'
+        links.innerHTML = '<a href="/chinh-sach-van-chuyen">Vận chuyển</a> · <a href="/chinh-sach-doi-tra-hoan-tien">Đổi trả</a> · <a href="/chinh-sach-bao-hanh">Bảo hành</a>'
+        box.appendChild(links)
+      }
+    })
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', apply)
+  else apply()
+})()
+
+// Một footer pháp lý dùng chung; sticky navigation hiện tại vẫn được giữ nguyên.
+;(function loadLegalFooter() {
+  if (document.querySelector('script[data-fsport-legal-footer]')) return
+  var script = document.createElement('script')
+  script.src = '/js/legal-footer.js?v=20260903-1'
+  script.defer = true
+  script.dataset.fsportLegalFooter = 'true'
+  document.head.appendChild(script)
 })()
