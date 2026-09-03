@@ -1,15 +1,5 @@
 const PRODUCT_PAGE_CONFIG =
   'https://xcigbbcpwfzluqazadez.supabase.co/functions/v1/product-page-config';
-const POLICY_PATHS = new Set([
-  '/thong-tin-phap-ly',
-  '/quy-trinh-mua-hang',
-  '/chinh-sach-van-chuyen',
-  '/chinh-sach-doi-tra-hoan-tien',
-  '/chinh-sach-bao-hanh',
-  '/chinh-sach-bao-mat',
-  '/dieu-khoan-giao-dich'
-]);
-
 function normalizePath(path) {
   const value = String(path || '').split('?')[0].split('#')[0];
   const withLeadingSlash = value.startsWith('/') ? value : `/${value}`;
@@ -26,21 +16,8 @@ export async function onRequest(context) {
     return env.ASSETS.fetch(request);
   }
 
-  // Serve the submitted policy URLs directly with HTTP 200, without forcing
-  // a trailing slash redirect from the static asset layer.
   const requestUrl = new URL(request.url);
   const normalizedRequestPath = normalizePath(requestUrl.pathname).toLowerCase();
-  if (POLICY_PATHS.has(normalizedRequestPath)) {
-    const policyUrl = new URL(request.url);
-    policyUrl.pathname = normalizedRequestPath + '/index.html';
-    const policyResponse = await env.ASSETS.fetch(new Request(policyUrl, request));
-    if (policyResponse.ok) {
-      return new Response(request.method === 'HEAD' ? null : policyResponse.body, {
-        status: 200,
-        headers: policyResponse.headers
-      });
-    }
-  }
 
   // Preserve every real static asset/page before trying Product Pages.
   const staticResponse = await env.ASSETS.fetch(request);
