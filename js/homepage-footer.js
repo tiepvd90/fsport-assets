@@ -74,34 +74,66 @@
     cart: function() {
       return '<span class="fs-cart-icon-wrap"><svg class="fs-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M6.5 8.5h11l1 11h-13l1-11Z"/><path d="M9 9V6.5a3 3 0 0 1 6 0V9"/></svg><span class="fs-cart-count" data-cart-count>0</span></span>'
     },
+    link: function() {
+      return '<svg class="fs-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M10 13a5 5 0 0 0 7.1.1l2-2A5 5 0 0 0 12 4l-1.1 1.1"/><path d="M14 11a5 5 0 0 0-7.1-.1l-2 2A5 5 0 0 0 12 20l1.1-1.1"/></svg>'
+    },
   }
 
-  function footerIcon(name, active) {
-    var custom = footerConfig[name + '_icon_url']
-    if (custom) return '<img class="fs-nav-icon" src="' + custom.replace(/"/g, '&quot;') + '" alt="">'
-    return ICONS[name](active)
+  function escapeAttr(value) {
+    return String(value || '').replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
   }
 
-  // ── Build tab ────────────────────────────────────────────────
-  function tab(href, iconName, label, active) {
+  function footerIcon(name, active, iconUrl) {
+    var custom = iconUrl || footerConfig[name + '_icon_url']
+    if (custom && name === 'cart') return '<span class="fs-cart-icon-wrap"><img class="fs-nav-icon" src="' + escapeAttr(custom) + '" alt=""><span class="fs-cart-count" data-cart-count>0</span></span>'
+    if (custom) return '<img class="fs-nav-icon" src="' + escapeAttr(custom) + '" alt="">'
+    return (ICONS[name] || ICONS.link)(active)
+  }
+
+  function configuredItems() {
+    if (Array.isArray(footerConfig.items) && footerConfig.items.length) {
+      return footerConfig.items.slice(0, 6).map(function(item, index) {
+        return {
+          id: String(item.id || ('item-' + index)),
+          action: item.action === 'chat' || item.action === 'cart' ? item.action : 'link',
+          label: String(item.label || 'ITEM'),
+          url: String(item.url || ''),
+          icon_url: String(item.icon_url || '')
+        }
+      })
+    }
+    return [
+      { id:'home', action:'link', label:footerConfig.home_label || 'HOME', url:footerConfig.home_url || HOME_URL, icon_url:footerConfig.home_icon_url || '' },
+      { id:'feed', action:'link', label:footerConfig.feed_label || 'FEED', url:footerConfig.feed_url || FEED_URL, icon_url:footerConfig.feed_icon_url || '' },
+      { id:'chat', action:'chat', label:footerConfig.chat_label || 'CHAT', icon_url:footerConfig.chat_icon_url || '' },
+      { id:'cart', action:'cart', label:footerConfig.cart_label || 'CART', icon_url:footerConfig.cart_icon_url || '' }
+    ]
+  }
+
+  function itemIsActive(item) {
+    if (item.action !== 'link' || !item.url) return false
+    try {
+      var targetPath = new URL(item.url, window.location.origin).pathname.replace(/\/$/, '') || '/'
+      var currentPath = path.replace(/\/$/, '') || '/'
+      if (targetPath === '/index.html') targetPath = '/'
+      if (currentPath === '/index.html') currentPath = '/'
+      return targetPath === currentPath || (targetPath === '/feed' && currentPath.indexOf('/feed') === 0)
+    } catch (_) { return false }
+  }
+
+  // ── Build item ───────────────────────────────────────────────
+  function linkTab(item, active) {
     var color = active ? '#050505' : '#8a8a8a'
-    return '<a href="' + href + '" style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;text-decoration:none;color:' + color + ';padding:10px 0 8px;-webkit-tap-highlight-color:transparent;transition:color .15s">' +
-      footerIcon(iconName, active) +
-      '<span style="font-size:10px;font-weight:' + (active ? '700' : '500') + ';letter-spacing:.03em;font-family:-apple-system,\'Be Vietnam Pro\',sans-serif">' + label + '</span>' +
+    return '<a class="fs-nav-tab' + (active ? ' is-active' : '') + '" href="' + escapeAttr(item.url || '#') + '"' + (active ? ' aria-current="page"' : '') + ' style="color:' + color + '">' +
+      '<span class="fs-nav-icon-shell">' + footerIcon(item.id, active, item.icon_url) + '</span>' +
+      '<span class="fs-nav-label">' + escapeAttr(item.label) + '</span>' +
     '</a>'
   }
 
-  function cartTab() {
-    return '<button type="button" id="fs-footer-cart" aria-label="Cart" style="flex:1;border:0;background:transparent;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:#8a8a8a;padding:10px 0 8px;cursor:pointer;-webkit-tap-highlight-color:transparent">' +
-      footerIcon('cart') +
-      '<span style="font-size:10px;font-weight:500;letter-spacing:.03em;font-family:-apple-system,\'Be Vietnam Pro\',sans-serif">' + (footerConfig.cart_label || 'CART') + '</span>' +
-    '</button>'
-  }
-
-  function chatTab() {
-    return '<button type="button" id="fs-footer-chat" aria-label="AI Chat" style="flex:1;border:0;background:transparent;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:#8a8a8a;padding:10px 0 8px;cursor:pointer;-webkit-tap-highlight-color:transparent">' +
-      footerIcon('chat') +
-      '<span style="font-size:10px;font-weight:500;letter-spacing:.03em;font-family:-apple-system,\'Be Vietnam Pro\',sans-serif">' + (footerConfig.chat_label || 'CHAT') + '</span>' +
+  function actionTab(item) {
+    return '<button type="button" class="fs-nav-tab" data-footer-action="' + item.action + '" aria-label="' + escapeAttr(item.label) + '">' +
+      '<span class="fs-nav-icon-shell">' + footerIcon(item.action, false, item.icon_url) + '</span>' +
+      '<span class="fs-nav-label">' + escapeAttr(item.label) + '</span>' +
     '</button>'
   }
 
@@ -188,41 +220,40 @@
   function buildFooter() {
     if (document.getElementById('fsport-nav-footer')) return
     ensureFooterStyle()
+    var items = configuredItems()
+    var rounded = footerConfig.footer_style === 'rounded'
 
     var el = document.createElement('div')
     el.id = 'fsport-nav-footer'
+    el.className = rounded ? 'is-rounded' : 'is-rectangle'
     el.style.cssText = [
-      'position:fixed', 'bottom:0',
+      'position:fixed', rounded ? 'bottom:max(8px, env(safe-area-inset-bottom))' : 'bottom:0',
       'left:50%', 'transform:translateX(-50%)',
-      'width:100%', 'max-width:1180px',
+      rounded ? 'width:calc(100% - 20px)' : 'width:100%', 'max-width:1180px',
       'background:#fff',
       'display:flex',
       'align-items:stretch',
       'z-index:9998',
-      'border-radius:0',
-      'border-top:1px solid #e5e7eb',
-      'box-shadow:0 -1px 12px rgba(0,0,0,0.06)',
-      'padding-bottom:env(safe-area-inset-bottom)',
+      rounded ? 'border-radius:22px' : 'border-radius:0',
+      rounded ? 'border:1px solid rgba(15,23,42,.10)' : 'border-top:1px solid #e5e7eb',
+      rounded ? 'box-shadow:0 8px 28px rgba(15,23,42,.14),0 2px 8px rgba(15,23,42,.08)' : 'box-shadow:0 -1px 12px rgba(0,0,0,0.06)',
+      rounded ? 'padding:4px 6px' : 'padding-bottom:env(safe-area-inset-bottom)',
       'box-sizing:border-box',
       (footerConfig.footer_height ? 'min-height:' + Number(footerConfig.footer_height) + 'px' : ''),
     ].join(';')
 
-    el.innerHTML =
-      tab(footerConfig.home_url || HOME_URL, 'home', footerConfig.home_label || 'HOME', isHomepage) +
-      tab(footerConfig.feed_url || FEED_URL, 'feed', footerConfig.feed_label || 'FEED', isFeed) +
-      chatTab() +
-      cartTab()
-    // Slot 3 và 4 thêm vào đây sau khi có ý tưởng
+    el.innerHTML = items.map(function(item) {
+      return item.action === 'link' ? linkTab(item, itemIsActive(item)) : actionTab(item)
+    }).join('')
 
     document.body.appendChild(el)
-    document.getElementById('fs-footer-chat').addEventListener('click', openChat)
-    document.getElementById('fs-footer-cart').addEventListener('click', openCart)
-    document.getElementById('fs-footer-cart').setAttribute('aria-label', 'Cart')
+    el.querySelectorAll('[data-footer-action="chat"]').forEach(function(button) { button.addEventListener('click', openChat) })
+    el.querySelectorAll('[data-footer-action="cart"]').forEach(function(button) { button.addEventListener('click', openCart) })
     updateFooterCartCount()
 
     // Padding body để nội dung không bị che
     var h = el.offsetHeight || 60
-    document.body.style.paddingBottom = (parseInt(document.body.style.paddingBottom || '0', 10) + h) + 'px'
+    document.body.style.paddingBottom = (parseInt(document.body.style.paddingBottom || '0', 10) + h + (rounded ? 16 : 0)) + 'px'
   }
 
   function removeFooter() {
@@ -234,7 +265,7 @@
     if (document.getElementById('fsport-nav-footer-style')) return
     var style = document.createElement('style')
     style.id = 'fsport-nav-footer-style'
-    style.textContent = '#fsport-nav-footer{--fs-nav-icon:30px}.fs-nav-icon{width:var(--fs-nav-icon);height:var(--fs-nav-icon);display:block;object-fit:contain}.fs-cart-icon-wrap{position:relative;display:block}.fs-cart-count{position:absolute;top:-7px;right:-10px;min-width:17px;height:17px;padding:0 4px;box-sizing:border-box;border-radius:9px;background:#e53935;color:#fff;font:700 10px/17px -apple-system,\"Be Vietnam Pro\",sans-serif;text-align:center;border:2px solid #fff}.fs-cart-count[hidden]{display:none}@media (min-width:768px){#fsport-nav-footer{--fs-nav-icon:36px}#fsport-nav-footer a,#fsport-nav-footer button{padding-top:10px!important;padding-bottom:8px!important}#fsport-nav-footer span:not(.fs-cart-count){font-size:15px!important}}'
+    style.textContent = '#fsport-nav-footer{--fs-nav-icon:30px}.fs-nav-tab{position:relative;flex:1;min-width:0;border:0;background:transparent;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:8px 2px 7px;text-decoration:none;color:#8a8a8a;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:color .15s ease,transform .12s ease}.fs-nav-tab:active{transform:scale(.96)}.fs-nav-tab:focus-visible{outline:2px solid #111;outline-offset:-3px;border-radius:16px}.fs-nav-icon-shell{width:48px;height:34px;display:flex;align-items:center;justify-content:center;border-radius:18px;transition:background-color .15s ease}.fs-nav-tab.is-active .fs-nav-icon-shell{background:#f0f1f3}.fs-nav-label{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font:500 10px/1.2 -apple-system,\"Be Vietnam Pro\",sans-serif;letter-spacing:.03em}.fs-nav-tab.is-active .fs-nav-label{font-weight:700}.fs-nav-icon{width:var(--fs-nav-icon);height:var(--fs-nav-icon);display:block;object-fit:contain}.fs-cart-icon-wrap{position:relative;display:block}.fs-cart-count{position:absolute;top:-7px;right:-10px;min-width:17px;height:17px;padding:0 4px;box-sizing:border-box;border-radius:9px;background:#e53935;color:#fff;font:700 10px/17px -apple-system,\"Be Vietnam Pro\",sans-serif;text-align:center;border:2px solid #fff}.fs-cart-count[hidden]{display:none}#fsport-nav-footer.is-rounded{overflow:visible}@media(max-width:374px){#fsport-nav-footer.is-rounded{width:calc(100% - 12px)!important;border-radius:19px!important;padding-left:2px!important;padding-right:2px!important}.fs-nav-icon-shell{width:42px}}@media (min-width:768px){#fsport-nav-footer{--fs-nav-icon:36px}.fs-nav-tab{padding-top:10px;padding-bottom:8px}.fs-nav-label{font-size:15px}#fsport-nav-footer.is-rounded{max-width:760px!important;border-radius:25px!important}.fs-nav-icon-shell{width:58px;height:40px;border-radius:20px}}'
     document.head.appendChild(style)
   }
 

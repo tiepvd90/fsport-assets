@@ -80,6 +80,10 @@
     var footer = config && config.stickyFooter && config.stickyFooter.config;
     if (!footer) return;
     window.__fsportStickyFooterConfig = footer;
+    if (window.FSPORT_PRODUCT_STICKY_FOOTER && typeof window.FSPORT_PRODUCT_STICKY_FOOTER.apply === "function") {
+      window.FSPORT_PRODUCT_STICKY_FOOTER.apply(footer);
+      return;
+    }
     function apply(id, href, label, icon) {
       var anchor = document.getElementById(id);
       if (!anchor) return;
