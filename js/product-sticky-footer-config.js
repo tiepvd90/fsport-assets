@@ -106,7 +106,7 @@
       } else {
         element = document.createElement('a')
         element.href = item.url || '#'
-        if (/^https?:/i.test(item.url || '')) { element.target = '_blank'; element.rel = 'noopener' }
+        if (item.id !== 'home' && /^https?:/i.test(item.url || '')) { element.target = '_blank'; element.rel = 'noopener' }
       }
       element.className = 'fs-product-footer-item'
       element.dataset.footerItemId = item.id
