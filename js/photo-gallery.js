@@ -25,6 +25,7 @@
         title: 'PRODUCT ILLUSTRATIONS',
         reviews: [],
         currentReview: null,
+        currentIndex: -1,
         eventsBound: false,
         signature: '',
         cacheKey: 'fsport:photo-gallery:customer-review-club:v1'
@@ -66,7 +67,7 @@
                 <div class="review-grid" id="reviewGrid"></div>
             </div>
             <div id="lightboxFsport" class="lightbox-fsport">
-                <div class="lightbox-content">
+                <div class="lightbox-content" style="touch-action:none;user-select:none;-webkit-user-select:none;">
                     <img class="lightbox-img" id="lightboxImg" alt="">
                     <button type="button" class="lightbox-nav lightbox-prev" id="lightboxPrevBtn" aria-label="Ảnh trước">‹</button>
                     <button type="button" class="lightbox-nav lightbox-next" id="lightboxNextBtn" aria-label="Ảnh sau">›</button>
@@ -98,15 +99,21 @@
     }
 
     function openLightbox(review) {
+        const matchedIndex = CONFIG.reviews.findIndex(function(item) {
+            return item === review || (String(item.id) === String(review.id) && item.image === review.image);
+        });
+        const activeIndex = matchedIndex >= 0 ? matchedIndex : 0;
+        const activeReview = CONFIG.reviews[activeIndex] || review;
         if (window.fsport && typeof window.fsport.track === 'function') {
-            window.fsport.track('illustration_view', { image_id: review.id });
+            window.fsport.track('illustration_view', { image_id: activeReview.id });
         }
-        CONFIG.currentReview = review;
+        CONFIG.currentReview = activeReview;
+        CONFIG.currentIndex = activeIndex;
         const lightbox = document.getElementById('lightboxFsport');
         const image = document.getElementById('lightboxImg');
         if (!lightbox) return;
         if (image) {
-            image.src = review.image;
+            image.src = activeReview.image;
             image.alt = 'Hình ảnh minh họa sản phẩm F-SPORT';
         }
         lightbox.classList.add('active');
@@ -114,7 +121,12 @@
     }
 
     function moveLightbox(direction) {
-        const currentIndex = CONFIG.reviews.indexOf(CONFIG.currentReview);
+        let currentIndex = CONFIG.currentIndex;
+        if (currentIndex < 0) {
+            currentIndex = CONFIG.reviews.findIndex(function(item) {
+                return CONFIG.currentReview && String(item.id) === String(CONFIG.currentReview.id) && item.image === CONFIG.currentReview.image;
+            });
+        }
         if (currentIndex < 0 || !CONFIG.reviews.length) return;
         const nextIndex = (currentIndex + direction + CONFIG.reviews.length) % CONFIG.reviews.length;
         openLightbox(CONFIG.reviews[nextIndex]);
@@ -123,7 +135,25 @@
     function closeLightbox() {
         const lightbox = document.getElementById('lightboxFsport');
         if (lightbox) lightbox.classList.remove('active');
+        CONFIG.currentIndex = -1;
         document.body.style.overflow = '';
+    }
+
+    function bindNavigationButton(button, direction) {
+        if (!button) return;
+        let handledByTouch = false;
+        button.addEventListener('touchend', function(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            handledByTouch = true;
+            moveLightbox(direction);
+            window.setTimeout(function() { handledByTouch = false; }, 400);
+        }, { passive: false });
+        button.addEventListener('click', function(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            if (!handledByTouch) moveLightbox(direction);
+        });
     }
 
     function bindEvents() {
@@ -134,11 +164,32 @@
         const previous = document.getElementById('lightboxPrevBtn');
         const next = document.getElementById('lightboxNextBtn');
         if (close) close.addEventListener('click', closeLightbox);
-        if (previous) previous.addEventListener('click', function() { moveLightbox(-1); });
-        if (next) next.addEventListener('click', function() { moveLightbox(1); });
+        bindNavigationButton(previous, -1);
+        bindNavigationButton(next, 1);
         if (lightbox) lightbox.addEventListener('click', function(event) {
             if (event.target === lightbox) closeLightbox();
         });
+        if (lightbox) {
+            let touchStartX = 0;
+            let touchStartY = 0;
+            let touchActive = false;
+            lightbox.addEventListener('touchstart', function(event) {
+                if (event.touches.length !== 1) return;
+                touchActive = true;
+                touchStartX = event.touches[0].clientX;
+                touchStartY = event.touches[0].clientY;
+            }, { passive: true });
+            lightbox.addEventListener('touchend', function(event) {
+                if (!touchActive || !event.changedTouches.length) return;
+                touchActive = false;
+                const deltaX = event.changedTouches[0].clientX - touchStartX;
+                const deltaY = event.changedTouches[0].clientY - touchStartY;
+                if (Math.abs(deltaX) < 40 || Math.abs(deltaX) <= Math.abs(deltaY)) return;
+                event.preventDefault();
+                moveLightbox(deltaX < 0 ? 1 : -1);
+            }, { passive: false });
+            lightbox.addEventListener('touchcancel', function() { touchActive = false; }, { passive: true });
+        }
         window.addEventListener('keydown', function(event) {
             if (event.key === 'Escape') closeLightbox();
             if (event.key === 'ArrowLeft') moveLightbox(-1);
