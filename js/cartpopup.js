@@ -1028,7 +1028,7 @@
 
   if (!document.querySelector('script[data-product-sticky-footer-config]')) {
     var stickyFooterConfigScript = document.createElement('script');
-    stickyFooterConfigScript.src = '/js/product-sticky-footer-config.js?v=20260904-configurable-items-1';
+    stickyFooterConfigScript.src = '/js/product-sticky-footer-config.js?v=20260904-configurable-items-2';
     stickyFooterConfigScript.dataset.productStickyFooterConfig = 'true';
     document.body.appendChild(stickyFooterConfigScript);
   }

@@ -6,17 +6,13 @@
 
   function legacyConfig() {
     var url = window.FSPORT_SUPABASE_URL || 'https://xcigbbcpwfzluqazadez.supabase.co'
-    var anon = window.FSPORT_SUPABASE_ANON || ''
-    if (!anon) return Promise.resolve(null)
-    return fetch(url + '/rest/v1/rpc/get_product_page_sticky_footer', {
-      method: 'POST',
-      headers: { apikey: anon, Authorization: 'Bearer ' + anon, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ p_slug: slug })
+    return fetch(url + '/functions/v1/product-page-config?footerOnly=1&slug=' + encodeURIComponent(slug), {
+      method: 'GET'
     }).then(function(response) {
       if (!response.ok) throw new Error('Sticky Footer HTTP ' + response.status)
       return response.json()
-    }).then(function(rows) {
-      return rows && rows[0] && rows[0].config
+    }).then(function(payload) {
+      return payload && payload.stickyFooter && payload.stickyFooter.config
     })
   }
 
