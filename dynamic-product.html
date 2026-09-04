@@ -116,7 +116,7 @@
         injectHTML("/html/stickyfooter.html", "sticky-footer-placeholder")
       ]);
       await loadScript("/js/voucherpopup.js");
-      await loadScript("/js/cartpopup.js?v=20260714-cart-scroll-lock-1");
+      await loadScript("/js/cartpopup.js?v=20260904-atc-reliable-1");
       await loadScript("/js/checkoutpopup.js?v=20260701-desktop-promo-off-1");
     }
     setupPage().catch(function (error) { console.error("[DynamicProduct] UI setup failed", error); });
@@ -129,7 +129,7 @@
 
   <script>window.collectionList = [];</script>
   <script src="/js/collection-grid.js?v=20260716-inline-collection-1" defer></script>
-  <script src="/js/tracking.js?v=20260904-always-on-1"></script>
+  <script src="/js/tracking.js?v=20260904-atc-reliable-1"></script>
   <div id="base-placeholder"></div>
   <script>
     fetch("/html/base.html").then(function (response) { return response.text(); }).then(function (html) {

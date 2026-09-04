@@ -102,7 +102,7 @@ setInterval(() => {
 
   function inject() {
     var s = document.createElement('script')
-    s.src = '/js/analytics.js?v=20260904-always-on-1'
+    s.src = '/js/analytics.js?v=20260904-atc-reliable-1'
     s.async = true
     s.onerror = function() { console.warn('[Analytics] Không load được /js/analytics.js') }
     document.head.appendChild(s)
@@ -123,7 +123,7 @@ setInterval(() => {
 ;(function loadTrackingConsent() {
   if (window.FSPORT_TRACKING_CONSENT || document.querySelector('script[data-fsport-tracking-consent]')) return
   var script = document.createElement('script')
-  script.src = '/js/tracking-consent.js?v=20260904-admin-message-1'
+  script.src = '/js/tracking-consent.js?v=20260904-atc-unblocked-1'
   script.dataset.fsportTrackingConsent = 'true'
   document.head.appendChild(script)
 })()

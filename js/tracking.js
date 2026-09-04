@@ -1,6 +1,10 @@
 (function () {
 if (window.__fsportTrackingStarted) return;
 window.__fsportTrackingStarted = true;
+window["ga-disable-G-RXC205951M"] = false;
+
+// Expose ngay từ đầu để các thao tác sản phẩm không phụ thuộc thứ tự tải script.
+window.trackBothPixels = trackBothPixels;
 // tracking.js
 // ======= Meta Pixel chính (2551563688514905) =======
 !function(f,b,e,v,n,t,s)
@@ -12,6 +16,7 @@ t.src=v;s=b.getElementsByTagName(e)[0];
 s.parentNode.insertBefore(t,s)}(window, document,'script',
 'https://connect.facebook.net/en_US/fbevents.js');
 
+fbq('consent', 'grant');
 fbq('init', '2551563688514905'); // Pixel chính
 fbq('track', 'PageView');
 
@@ -54,6 +59,7 @@ fbq('track', 'PageView'); // PageView vẫn gửi đến cả hai (giữ nguyên
   };
 
   ttq.load('CVPMFPRC77U7H4FD4TVG');
+  ttq.grantConsent();
   ttq.page();
 }(window, document, 'ttq');
 
@@ -74,8 +80,14 @@ function trackBothPixels(eventName, params = {}, options = {}) {
   }
 }
 
-// Các trang sản phẩm gọi hàm này trực tiếp từ inline script.
-window.trackBothPixels = trackBothPixels;
+// Gửi lại các sự kiện phát sinh trước khi tracking.js sẵn sàng.
+var pendingTrackingEvents = Array.isArray(window.__fsportPendingTrackingEvents)
+  ? window.__fsportPendingTrackingEvents.splice(0)
+  : [];
+pendingTrackingEvents.forEach(function (event) {
+  if (!event || !event.name) return;
+  trackBothPixels(event.name, event.params || {}, event.options || {});
+});
 
 function tiktokToNumber(value) {
   const n = Number(value);

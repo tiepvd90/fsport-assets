@@ -753,6 +753,11 @@
 
     if (show) {
       if (!state.isOpen) trackAddToWishlist();
+      // Không để thông báo cookie che nút mua hoặc các lựa chọn phân loại.
+      var trackingNotice = document.getElementById("fsTrackingConsent");
+      if (trackingNotice) trackingNotice.remove();
+      var trackingPreferences = document.getElementById("fsCookiePreferences");
+      if (trackingPreferences) trackingPreferences.remove();
       window.clearTimeout(state.scrollUnlockTimer);
       lockPageScroll();
       popup.style.display = "flex";
@@ -782,17 +787,28 @@
     var loai = window.productCategory || window.loai || state.category || "unknown";
     var productId = window.productPage || getProductPage();
 
-    if (typeof window.trackBothPixels === "function") {
-      window.trackBothPixels("AddToWishlist", {
-        content_name: "click_btn_atc_" + loai,
-        content_category: loai
-      });
-    }
+    trackPixelEvent("AddToWishlist", {
+      content_name: "click_btn_atc_" + loai,
+      content_category: loai
+    });
 
     trackInternalEvent("wishlist_add", {
       page_slug: productId,
       product_id: productId,
       product_name: window.productName || null
+    });
+  }
+
+  function trackPixelEvent(name, params, options) {
+    if (typeof window.trackBothPixels === "function") {
+      window.trackBothPixels(name, params || {}, options || {});
+      return;
+    }
+    window.__fsportPendingTrackingEvents = window.__fsportPendingTrackingEvents || [];
+    window.__fsportPendingTrackingEvents.push({
+      name: name,
+      params: params || {},
+      options: options || {}
     });
   }
 
@@ -897,24 +913,22 @@
   function trackAddToCart(product, phanLoaiText, quantity, loai) {
     var price = toNumber(product[KEY.price], 0);
 
-    if (typeof window.trackBothPixels === "function") {
-      window.trackBothPixels("AddToCart", {
+    trackPixelEvent("AddToCart", {
+      content_id: product.id,
+      content_name: phanLoaiText,
+      content_category: product.category || loai,
+      content_page: window.productPage || "unknown",
+      content_type: "product",
+      contents: [{
         content_id: product.id,
         content_name: phanLoaiText,
         content_category: product.category || loai,
-        content_page: window.productPage || "unknown",
-        content_type: "product",
-        contents: [{
-          content_id: product.id,
-          content_name: phanLoaiText,
-          content_category: product.category || loai,
-          quantity: quantity,
-          price: price
-        }],
-        value: price * quantity,
-        currency: "VND"
-      });
-    }
+        quantity: quantity,
+        price: price
+      }],
+      value: price * quantity,
+      currency: "VND"
+    });
 
     fetch("https://hook.eu2.make.com/31c0jdh2vkvkjcnaenbm3kyze8fp3us3", {
       method: "POST",

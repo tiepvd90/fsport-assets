@@ -53,7 +53,7 @@
         return;
       }
       var script = document.createElement("script");
-      script.src = "/js/tracking-consent.js?v=20260904-admin-message-1";
+      script.src = "/js/tracking-consent.js?v=20260904-atc-unblocked-1";
       script.onload = function () { window.FSPORT_TRACKING_CONSENT.open(); };
       document.head.appendChild(script);
     });
