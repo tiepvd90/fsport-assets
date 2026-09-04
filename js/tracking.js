@@ -1,15 +1,5 @@
 (function () {
 if (window.__fsportTrackingStarted) return;
-if (!window.FSPORT_TRACKING_CONSENT || !window.FSPORT_TRACKING_CONSENT.isGranted()) {
-  window.addEventListener("fsport:tracking-consent", function startWhenGranted(event) {
-    if (!event.detail || event.detail.status !== "granted") return;
-    window.removeEventListener("fsport:tracking-consent", startWhenGranted);
-    var script = document.createElement("script");
-    script.src = "/js/tracking.js?consent=granted";
-    document.head.appendChild(script);
-  });
-  return;
-}
 window.__fsportTrackingStarted = true;
 // tracking.js
 // ======= Meta Pixel chính (2551563688514905) =======
@@ -83,6 +73,9 @@ function trackBothPixels(eventName, params = {}, options = {}) {
     console.log(`[TikTok Pixel] Tracked: ${eventName}`, tiktokParams);
   }
 }
+
+// Các trang sản phẩm gọi hàm này trực tiếp từ inline script.
+window.trackBothPixels = trackBothPixels;
 
 function tiktokToNumber(value) {
   const n = Number(value);
