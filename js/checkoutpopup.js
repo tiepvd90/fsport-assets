@@ -136,6 +136,10 @@ function whenCheckoutInputsReady(run) {
 function showCheckoutPopup() {
   loadShippingFee();
   renderCheckoutCart();
+  const consent = document.getElementById("checkoutPolicyConsent");
+  const consentError = document.getElementById("checkoutConsentError");
+  if (checkoutPolicyConsentRequired && consent) consent.checked = true;
+  if (consentError) consentError.hidden = true;
   const popup = document.getElementById("checkoutPopup");
   if (popup) {
     popup.classList.remove("hidden");
