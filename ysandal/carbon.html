@@ -15,9 +15,8 @@
   <meta name="twitter:card" content="summary_large_image" />
 
   <!-- ✅ CSS -->
-  <link rel="stylesheet" href="/css/frontend.css?v=20260714-cart-scrollbar-1" />
+  <link rel="stylesheet" href="/css/frontend.css?v=20260905-desktop-cart-ui-1" />
   <link rel="icon" type="image/png" href="/favicon.png" />
-  <link rel="stylesheet" href="/css/collection-slider.css" />
   <!-- ✅ JS định nghĩa -->
   <script>
     window.loai = "ysandal";
@@ -25,7 +24,6 @@
     window.productPage = "carbon";
     window.imageCount = 8;
     window.imageFormat = "jpg";
-    window.FSPORT_DISABLE_COLLECTION_GRID = true;
     window.shopeeLink = "https://s.shopee.vn/6fZ6bQnTs2"; // ✅ Khai báo Shopee link tại đầu
     window.FSPORT_CARTPOPUP_CONFIG_URL = "https://xcigbbcpwfzluqazadez.supabase.co/functions/v1/cart-popup-config";
     (function () {
@@ -152,20 +150,9 @@
       </div>
       <div class="btn-note">Mua Tại Website Rẻ Hơn Mua Tại Shopee</div>
     </div>
-     <!-- ✅ COLLECTION Ysandal -->
-<div class="product-hero" style="margin-top: 12px;">
-  <div class="cps-container">
-    <h3 class="cps-subtitle">Bộ Sưu Tập Dép Chạy Bộ Ysandal</h3>
-    <div class="cps-slider-wrapper">
-      <div class="cps-slider" id="slider-ysandal"></div>
-      <div class="cps-fade-right"></div>
-    </div>
-  </div>
-</div>
-<script src="/js/collection-slider.js"></script>
-    <!-- ✅ FREEFLOW -->
-    <h2 class="freeflow-heading" style="font-size: 18px; margin: 24px 12px 12px;">CÓ THỂ BẠN SẼ THÍCH</h2>
-    <script src="/js/freeflow-loader.js"></script>
+    <!-- ✅ YSANDAL COLLECTION trước, PICKLEBALL COLLECTION sau -->
+    <div id="ysandalRelatedCollections"></div>
+    <script src="/js/ysandal-related-collections.js?v=20260905-1"></script>
   </div>
 
   <!-- ✅ Inject popup -->
@@ -204,7 +191,7 @@
       await injectHTML("/html/stickyfooter.html", "sticky-footer-placeholder");
 
       await loadScript("../js/voucherpopup.js");
-      await loadScript("/js/cartpopup.js?v=20260904-sticky-footer-source-3");
+      await loadScript("/js/cartpopup.js?v=20260905-desktop-cart-ui-1");
       await loadScript("../js/checkoutpopup.js");
 
       setTimeout(async () => {

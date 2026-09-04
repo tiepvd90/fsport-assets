@@ -15,7 +15,7 @@
   <meta name="twitter:card" content="summary_large_image" />
 
   <!-- ✅ CSS -->
-  <link rel="stylesheet" href="/css/frontend.css?v=20260714-cart-scrollbar-1" />
+  <link rel="stylesheet" href="/css/frontend.css?v=20260905-desktop-cart-ui-1" />
   <link rel="icon" type="image/png" href="/favicon.png" />
   <!-- ✅ JS định nghĩa -->
   <script>
@@ -165,28 +165,9 @@
     });
 </script>
  <!-- HẾT KHỐI 4: Mô tả sản phẩm -->
-    <!-- ✅ FreeFlow -->
-<h2 style="font-size: 18px; margin: 24px 12px 12px;">CÓ THỂ BẠN SẼ THÍCH</h2>
-<div id="freeflow-placeholder"></div>
-<script>
-  fetch("/html/freeflow.html")
-    .then(res => res.text())
-    .then(html => {
-      document.getElementById("freeflow-placeholder").innerHTML = html;
-
-      // ✅ Gắn lại sự kiện close popup vì DOM mới được thêm
-      const btn = document.getElementById("videoCloseBtn");
-      if (btn) btn.onclick = function () {
-        const frame = document.getElementById("videoFrame");
-        const popup = document.getElementById("videoOverlay");
-        if (frame) frame.src = "";
-        if (popup) popup.style.display = "none";
-      };
-    });
-</script>
-
-
-  <!-- END FreeFlow -->
+  <!-- ✅ YSANDAL COLLECTION trước, PICKLEBALL COLLECTION sau -->
+  <div id="ysandalRelatedCollections"></div>
+  <script src="/js/ysandal-related-collections.js?v=20260905-1"></script>
   <!-- ✅ Inject popup + footer -->
   <script>
     async function loadScript(src) {
@@ -227,7 +208,7 @@
       await injectHTML("/html/stickyfooter.html", "sticky-footer-placeholder");
 
       await loadScript("../js/voucherpopup.js");
-      await loadScript("/js/cartpopup.js?v=20260904-sticky-footer-source-3");
+      await loadScript("/js/cartpopup.js?v=20260905-desktop-cart-ui-1");
       await loadScript("../js/checkoutpopup.js");
 
       setTimeout(async () => {
@@ -260,23 +241,5 @@
       });
   </script>
 
-  <!-- ✅ Load FreeFlow -->
-  <script src="../js/freeflow.js"></script>
-  <script>
-    fetch("/html/freeflow.html")
-      .then(res => res.text())
-      .then(html => {
-        const container = document.getElementById("freeflow-placeholder");
-        const temp = document.createElement("div");
-        temp.innerHTML = html;
-        Array.from(temp.children).forEach(el => container.appendChild(el));
-
-        setTimeout(() => {
-          if (typeof fetchFreeFlowData === "function") {
-            fetchFreeFlowData("https://script.google.com/macros/s/AKfycbwuEh9sP65vyQL0XzU8gY1Os0QYV_K5egKJgm8OhImAPjvdyrQiU7XCY909N99TnltP/exec");
-          }
-        }, 200);
-      });
-  </script>
 </body>
 </html>

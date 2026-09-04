@@ -360,4 +360,24 @@
     width: 768px;
     border-radius: 12px 12px 0 0;
   }
+
+  /* Desktop: tăng 2px cho toàn bộ nội dung chữ trong popup sản phẩm. */
+  .cart-popup-content .product-name { font-size: 17px; }
+  .cart-popup-content .price-original { font-size: 15px; }
+  .cart-popup-content .price-sale { font-size: 19px; }
+  .cart-popup-content .product-variant-text { font-size: 15px; }
+  .cart-popup-content #productVariantText { font-size: 16px !important; }
+  .cart-popup-content #voucherLabel { font-size: 15px !important; }
+  .cart-popup-content #finalPriceLine { font-size: 23px !important; }
+  .cart-popup-content .variant-label { font-size: 15px; }
+  .cart-popup-content .variant-thumb { font-size: 16px; }
+  .cart-popup-content .variant-title { font-size: 14px; }
+  .cart-popup-content .sizenote { font-size: 14px; }
+  .cart-popup-content .voucher-tag { font-size: 11px; }
+  .cart-popup-content .variant-group input[type="text"] { font-size: 16px !important; }
+  .cart-popup-content .variant-group input[type="text"]::placeholder { font-size: 15px; }
+  .cart-popup-content .quantity-wrapper { font-size: 16px; }
+  .cart-popup-content .quantity-control button { font-size: 18px; }
+  .cart-popup-content .quantity-control input { font-size: 16px; }
+  .cart-popup-content .cart-submit-btn { font-size: 17px; }
 }
