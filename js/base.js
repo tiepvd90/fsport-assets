@@ -123,7 +123,7 @@ setInterval(() => {
 ;(function loadTrackingConsent() {
   if (window.FSPORT_TRACKING_CONSENT || document.querySelector('script[data-fsport-tracking-consent]')) return
   var script = document.createElement('script')
-  script.src = '/js/tracking-consent.js?v=20260904-atc-unblocked-1'
+  script.src = '/js/tracking-consent.js?v=20260905-once-delayed-1'
   script.dataset.fsportTrackingConsent = 'true'
   document.head.appendChild(script)
 })()
