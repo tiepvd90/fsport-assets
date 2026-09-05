@@ -28,8 +28,26 @@
     document.head.appendChild(style);
   }
 
+  function setupBackButton() {
+    var backButton = document.querySelector(".legal-back");
+    if (!backButton || backButton.dataset.backButtonReady === "true") return;
+    backButton.dataset.backButtonReady = "true";
+    backButton.setAttribute("aria-label", "Quay lại trang trước");
+    backButton.setAttribute("title", "Quay lại");
+    backButton.innerHTML = '<span class="legal-back__icon"><img src="/assets/images/icons/backbutton.png" alt="" draggable="false"><span class="legal-back__label">BACK</span></span>';
+    backButton.addEventListener("click", function (event) {
+      event.preventDefault();
+      if (document.referrer && window.history.length > 1) {
+        window.history.back();
+        return;
+      }
+      window.location.assign(backButton.getAttribute("href") || "/");
+    });
+  }
+
   function render() {
     ensureStyles();
+    setupBackButton();
     document.querySelectorAll(".site-footer[data-fsport-replace],#fs-legal-footer").forEach(function (node) { node.remove(); });
     var footer = document.createElement("footer");
     footer.id = "fs-legal-footer";

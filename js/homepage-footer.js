@@ -15,8 +15,19 @@
   var path       = window.location.pathname
   var isFeed     = path === '/feed' || path === '/feed.html' || path.startsWith('/feed/')
   var isHomepage = path === '/' || path === '/index.html'
+  var legalPaths = [
+    '/chinh-sach-bao-mat',
+    '/chinh-sach-van-chuyen',
+    '/chinh-sach-doi-tra-hoan-tien',
+    '/chinh-sach-bao-hanh',
+    '/dieu-khoan-giao-dich',
+    '/quy-trinh-mua-hang',
+    '/thong-tin-phap-ly'
+  ]
+  var normalizedPath = path.replace(/\.html$/, '').replace(/\/$/, '') || '/'
+  var isLegalPage = legalPaths.indexOf(normalizedPath) !== -1
 
-  if (!isHomepage && !isFeed) return
+  if (!isHomepage && !isFeed && !isLegalPage) return
   var footerConfig = {}
 
   function fetchFooterConfig(cb) {

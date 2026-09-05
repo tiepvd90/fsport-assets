@@ -15,16 +15,59 @@ body {
   font-family: "Be Vietnam Pro", system-ui, -apple-system, sans-serif;
 }
 .legal-page {
+  position: relative;
   width: min(920px, calc(100% - 32px));
   margin: 24px auto 40px;
-  padding: clamp(22px, 5vw, 52px);
+  padding: clamp(82px, 8vw, 94px) clamp(22px, 5vw, 52px) clamp(22px, 5vw, 52px);
   border: 1px solid var(--legal-line);
   border-radius: 16px;
   background: var(--legal-surface);
   box-shadow: 0 10px 35px rgba(15, 23, 42, .06);
 }
-.legal-back { color: var(--legal-accent); font-weight: 700; text-decoration: none; }
-.legal-back:hover, .legal-back:focus-visible { text-decoration: underline; }
+.legal-back {
+  position: fixed;
+  z-index: 10000;
+  top: 16px;
+  left: max(12px, calc((100vw - 920px) / 2 + 18px));
+  display: flex;
+  width: 48px;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--legal-text);
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.legal-back__icon {
+  display: inline-flex;
+  width: 42px;
+  height: 42px;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 0;
+  overflow: hidden;
+  border: 1px solid rgba(148, 163, 184, .24);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .45);
+  box-shadow: 0 5px 16px rgba(15, 23, 42, .10);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  transition: transform .15s ease, background-color .15s ease, box-shadow .15s ease;
+}
+.legal-back__icon img {
+  display: block;
+  width: 29px;
+  height: 25px;
+  object-fit: contain;
+  filter: brightness(0);
+  pointer-events: none;
+}
+.legal-back__label { color: #000; font-size: 7px; font-weight: 500; line-height: 1; letter-spacing: .03em; }
+.legal-back:hover .legal-back__icon { background: rgba(255, 255, 255, .72); box-shadow: 0 7px 20px rgba(15, 23, 42, .14); transform: translateX(-2px); }
+.legal-back:focus-visible { outline: 3px solid rgba(37, 99, 235, .35); outline-offset: 3px; }
 .legal-page h1 { margin: 18px 0 8px; font-size: clamp(26px, 5vw, 40px); line-height: 1.2; }
 .legal-page h2 { margin: 30px 0 10px; font-size: clamp(19px, 3vw, 24px); }
 .legal-page h3 { margin: 22px 0 8px; font-size: 17px; }
@@ -35,5 +78,8 @@ body {
 .legal-toc a, .legal-page a { color: #9f1239; }
 .legal-contact { padding: 18px 20px; border-left: 4px solid var(--legal-accent); background: #fff7f7; }
 @media (max-width: 600px) {
-  .legal-page { width: 100%; margin: 0; padding: 22px 16px 32px; border: 0; border-radius: 0; }
+  .legal-page { width: 100%; margin: 0; padding: 80px 16px 32px; border: 0; border-radius: 0; }
+  .legal-back { top: 12px; left: 12px; width: 44px; }
+  .legal-back__icon { width: 40px; height: 40px; }
+  .legal-back__icon img { width: 28px; height: 24px; }
 }
