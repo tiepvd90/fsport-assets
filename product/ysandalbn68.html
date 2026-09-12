@@ -24,7 +24,12 @@
   window.productPage = "ysandalbn68";      // Trang cụ thể
   window.cartpopupType = "cartpopup";
   window.shopeeLink = "https://s.shopee.vn/8zzyDultUF"; // ✅ Link Shopee Aff
+  window.FSPORT_CARTPOPUP_CONFIG_URL = window.FSPORT_CARTPOPUP_CONFIG_URL ||
+    "https://xcigbbcpwfzluqazadez.supabase.co/functions/v1/cart-popup-config";
+  window.FSPORT_PRODUCT_PAGE_CONFIG_URL = window.FSPORT_PRODUCT_PAGE_CONFIG_URL ||
+    "https://xcigbbcpwfzluqazadez.supabase.co/functions/v1/product-page-config";
 </script>
+  <script src="/js/product-page-runtime.js?v=20260913-managed-ysandal-1"></script>
   <style>
     body {
       background-color: #f9f9f9;
@@ -163,7 +168,7 @@
 
       // ✅ Gọi JS sau khi HTML có mặt
       const script = document.createElement("script");
-      script.src = "/js/productvideo.js";
+      script.src = "/js/productvideo.js?v=20260913-managed-ysandal-2";
       script.onload = () => {
         console.log("✅ Đã load JS, gọi init...");
         if (typeof initProductVideo === "function") {
@@ -205,29 +210,10 @@
     </div>
     <!-- ✅ KHỐI 4: Mô tả sản phẩm -->
 <div class="product-hero" style="margin-top: 12px;">
-  <div id="productdescription-placeholder"></div>
+  <div id="productdescription-placeholder" data-src="/html/productdescription/ysandalbn68.html"></div>
 </div>
 
-<script>
-  fetch("/html/productdescription/ysandalbn68.html")
-    .then(res => res.text())
-    .then(html => {
-      const container = document.getElementById("productdescription-placeholder");
-      container.innerHTML = html;
-
-      // ✅ Kích hoạt lại script thủ công
-      const scripts = container.querySelectorAll("script");
-      scripts.forEach(script => {
-        const s = document.createElement("script");
-        if (script.src) {
-          s.src = script.src;
-        } else {
-          s.textContent = script.textContent;
-        }
-        document.body.appendChild(s);
-      });
-    });
-</script>
+<script src="/js/productdescription.js?v=20260913-managed-ysandal-1"></script>
  <!-- HẾT KHỐI 4: Mô tả sản phẩm -->
   <!-- ✅ YSANDAL COLLECTION trước, PICKLEBALL COLLECTION sau -->
   <div id="ysandalRelatedCollections"></div>
@@ -273,7 +259,7 @@
 
       await loadScript("../js/voucherpopup.js");
       await loadScript("/js/cartpopup.js?v=20260910-height-swipe-6");
-      await loadScript("../js/checkoutpopup.js");
+      await loadScript("../js/checkoutpopup.js?v=20260913-atomic-purchase-1");
 
       setTimeout(async () => {
         const map = await fetchVoucherMap();

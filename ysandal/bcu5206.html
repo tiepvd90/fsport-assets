@@ -23,7 +23,12 @@
     window.loai = "ysandal";
     window.productCategory = "ysandal";
     window.productPage = "bcu5206";
+    window.FSPORT_CARTPOPUP_CONFIG_URL = window.FSPORT_CARTPOPUP_CONFIG_URL ||
+      "https://xcigbbcpwfzluqazadez.supabase.co/functions/v1/cart-popup-config";
+    window.FSPORT_PRODUCT_PAGE_CONFIG_URL = window.FSPORT_PRODUCT_PAGE_CONFIG_URL ||
+      "https://xcigbbcpwfzluqazadez.supabase.co/functions/v1/product-page-config";
   </script>
+  <script src="/js/product-page-runtime.js?v=20260913-managed-ysandal-1"></script>
 </head>
 <body>
 
@@ -83,7 +88,7 @@
 
       // ✅ Gọi JS sau khi HTML có mặt
       const script = document.createElement("script");
-      script.src = "/js/productvideo.js";
+      script.src = "/js/productvideo.js?v=20260913-managed-ysandal-2";
       script.onload = () => {
         console.log("✅ Đã load JS, gọi init...");
         if (typeof initProductVideo === "function") {
@@ -161,7 +166,7 @@
 
       await loadScript("../js/voucherpopup.js");
       await loadScript("/js/cartpopup.js?v=20260910-height-swipe-6");
-      await loadScript("../js/checkoutpopup.js");
+      await loadScript("../js/checkoutpopup.js?v=20260913-atomic-purchase-1");
 
       setTimeout(async () => {
         const map = await fetchVoucherMap();

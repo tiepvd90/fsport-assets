@@ -109,10 +109,28 @@ window.initProductVideo = function () {
   const jsonUrl = "/json/productvideo.json";
   console.log("📦 Bắt đầu tải video cho:", productPage);
 
-  fetch(jsonUrl)
-    .then((res) => res.json())
-    .then((data) => {
-      const productData = data[productPage];
+  const backendReady = window.FSPORT_PRODUCT_PAGE_CONFIG_PROMISE || Promise.resolve(null);
+
+  backendReady
+    .catch(() => null)
+    .then((config) => {
+      const page = window.FSPORT_PRODUCT_PAGE;
+      const section = page && page.getSection ? page.getSection("product_video") : null;
+
+      if (config) {
+        if (!section || section.active === false) return [];
+        // The legacy renderer intentionally receives URLs only. Product Page
+        // library titles are admin metadata and must not alter the live layout.
+        return Array.isArray(section.items)
+          ? section.items.map((video) => video && video.url).filter(Boolean)
+          : [];
+      }
+
+      return fetch(jsonUrl)
+        .then((res) => res.json())
+        .then((data) => data[productPage]);
+    })
+    .then((productData) => {
       if (!Array.isArray(productData)) {
         console.warn("⚠️ Không có video cho:", productPage);
         return;

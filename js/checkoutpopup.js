@@ -80,6 +80,93 @@ loadWebsiteCheckoutSettings();
 window.promoCodeDiscount = 0;
 const trackedPurchaseOrderIds = new Set();
 const GA4_PURCHASED_ORDERS_KEY = "fsport_ga4_purchased_orders";
+const PURCHASED_ORDERS_KEY = "fsport_purchased_orders";
+const CHECKOUT_ATTEMPT_KEY = "fsport_pending_checkout";
+
+function readStoredOrderIds(key) {
+  try {
+    const ids = JSON.parse(localStorage.getItem(key) || "[]");
+    return Array.isArray(ids) ? ids.filter(Boolean) : [];
+  } catch (e) {
+    return [];
+  }
+}
+
+function hasTrackedPurchase(orderId) {
+  return !orderId || trackedPurchaseOrderIds.has(orderId) || readStoredOrderIds(PURCHASED_ORDERS_KEY).includes(orderId);
+}
+
+function markPurchaseTracked(orderId) {
+  if (!orderId) return;
+  trackedPurchaseOrderIds.add(orderId);
+  const ids = readStoredOrderIds(PURCHASED_ORDERS_KEY);
+  if (!ids.includes(orderId)) ids.push(orderId);
+  try {
+    localStorage.setItem(PURCHASED_ORDERS_KEY, JSON.stringify(ids.slice(-100)));
+  } catch (e) {}
+}
+
+function newCheckoutUuid() {
+  if (window.crypto && typeof window.crypto.randomUUID === "function") return window.crypto.randomUUID();
+  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function(c) {
+    const r = Math.random() * 16 | 0;
+    return (c === "x" ? r : (r & 0x3 | 0x8)).toString(16);
+  });
+}
+
+function newCheckoutCode() {
+  const now = new Date(Date.now() + 7 * 3600 * 1000);
+  const date = String(now.getUTCMonth() + 1).padStart(2, "0") +
+    String(now.getUTCDate()).padStart(2, "0") +
+    String(now.getUTCFullYear()).slice(-2);
+  const suffix = String(Date.now()).slice(-4) + String(Math.floor(Math.random() * 10000)).padStart(4, "0");
+  return "#" + date + "-" + suffix;
+}
+
+function checkoutFingerprint(orderData) {
+  const source = JSON.stringify({
+    name: orderData.name,
+    phone: orderData.phone,
+    address: orderData.address,
+    total: orderData.total,
+    items: (orderData.items || []).map(function(item) {
+      return [item.inventory_product_id, item.product_code, item.quantity, cartItemPrice(item)];
+    })
+  });
+  let hash = 2166136261;
+  for (let i = 0; i < source.length; i += 1) {
+    hash ^= source.charCodeAt(i);
+    hash = Math.imul(hash, 16777619);
+  }
+  return (hash >>> 0).toString(16);
+}
+
+function getCheckoutAttempt(orderData) {
+  const fingerprint = checkoutFingerprint(orderData);
+  try {
+    const saved = JSON.parse(localStorage.getItem(CHECKOUT_ATTEMPT_KEY) || "null");
+    // Keep the same idempotency key until the server-confirmed success path
+    // clears it. Expiring an uncertain request could create a second order.
+    if (saved && saved.fingerprint === fingerprint && saved.orderId && saved.orderCode) {
+      return saved;
+    }
+  } catch (e) {}
+  const attempt = {
+    fingerprint,
+    orderId: newCheckoutUuid(),
+    orderCode: newCheckoutCode(),
+    createdAt: Date.now()
+  };
+  try { localStorage.setItem(CHECKOUT_ATTEMPT_KEY, JSON.stringify(attempt)); } catch (e) {}
+  return attempt;
+}
+
+function clearCheckoutAttempt(orderId) {
+  try {
+    const saved = JSON.parse(localStorage.getItem(CHECKOUT_ATTEMPT_KEY) || "null");
+    if (saved && saved.orderId === orderId) localStorage.removeItem(CHECKOUT_ATTEMPT_KEY);
+  } catch (e) {}
+}
 // ------------------------
 // 🔹 AUTOSAVE – THÔNG TIN NGƯỜI NHẬN
 // ------------------------
@@ -436,6 +523,8 @@ async function submitOrder() {
         product_name: cartItemName(item),
         variant: item["Ph\u00e2n lo\u1ea1i"] || item["Ph\u00c3\u00a2n lo\u00e1\u00ba\u00a1i"] || cartItemName(item),
         product_image_url: cartItemImage(item),
+        color: item.color || item["M\u00e0u S\u1eafc"] || null,
+        size: item.size || item.Size || null,
         feed_source: item.feed_source || null,
         feed_post_id: item.feed_post_id || null,
         feed_product_code: item.feed_product_code || null,
@@ -460,17 +549,11 @@ async function submitOrder() {
        - voucherValue
        - (window.promoCodeDiscount || 0)
   };
-  // 🔵 Tạo orderId + orderCode TRƯỚC — dùng chung cho ERP và chatbox
-  var _orderId = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function(c) {
-    var r = Math.random() * 16 | 0, v = c === "x" ? r : (r & 0x3 | 0x8);
-    return v.toString(16);
-  });
-  var _now = new Date(Date.now() + 7 * 3600 * 1000);
-  var _mm  = String(_now.getUTCMonth() + 1).padStart(2, "0");
-  var _dd  = String(_now.getUTCDate()).padStart(2, "0");
-  var _yy  = String(_now.getUTCFullYear()).slice(-2);
-  var _seq = String(Date.now()).slice(-4) + String(Math.floor(Math.random() * 10000)).padStart(4, "0");
-  var _orderCode = "#" + _mm + _dd + _yy + "-" + _seq;
+  // Persist one checkout ID across network retries/reloads. The backend uses
+  // this UUID as the idempotency key for both the order and its item rows.
+  var checkoutAttempt = getCheckoutAttempt(orderData);
+  var _orderId = checkoutAttempt.orderId;
+  var _orderCode = checkoutAttempt.orderCode;
 
   console.log("📦 Sending orderData:", orderData, "orderId:", _orderId, "orderCode:", _orderCode);
 
@@ -479,25 +562,30 @@ async function submitOrder() {
     : Promise.reject(new Error("ERP sender is unavailable"));
 
   async function trackPurchaseAfterERP(erpResult) {
+    var confirmedOrderId = erpResult && erpResult.orderId || _orderId;
+    var confirmedOrderCode = erpResult && erpResult.orderCode || _orderCode;
+    var confirmedTotal = Number(erpResult && erpResult.total != null ? erpResult.total : orderData.total);
+    if (!confirmedOrderId || confirmedTotal <= 0 || hasTrackedPurchase(confirmedOrderId)) return;
+    orderData.total = confirmedTotal;
+
+    var identifyPromise = Promise.resolve();
     if (window.fsport && typeof window.fsport.identifyCustomer === 'function') {
-      try {
-        await window.fsport.identifyCustomer({
+      identifyPromise = Promise.resolve(window.fsport.identifyCustomer({
           phone: orderData.phone,
           name: orderData.name,
           customerId: erpResult && erpResult.customerId,
-          orderId: _orderId
-        })
-      } catch (err) {
+          orderId: confirmedOrderId
+        })).catch(function(err) {
         console.warn("Profile customer identify failed; purchase tracking will continue:", err && (err.message || err));
-      }
+      });
     }
-    if (typeof window.fsport !== 'undefined') {
+    if (window.fsport && typeof window.fsport.track === "function") {
       var feedPostIds = Array.from(new Set((orderData.items || [])
         .map(function(i) { return i.feed_post_id || null })
         .filter(Boolean)))
       window.fsport.track('purchase', {
-        order_id:   _orderId,
-        order_code: _orderCode,
+        order_id:   confirmedOrderId,
+        order_code: confirmedOrderCode,
         customer_phone: orderData.phone,
         customer_name:  orderData.name,
         total:      orderData.total,
@@ -508,41 +596,49 @@ async function submitOrder() {
         })
       })
     }
-    trackGA4PurchaseOnce(orderData, _orderId);
+    trackGA4PurchaseOnce(orderData, confirmedOrderId);
+
+    if (typeof trackBothPixels === "function") {
+      trackBothPixels("Purchase", {
+        content_ids: (orderData.items || []).map(function(item) {
+          return item.product_code || item.id;
+        }).filter(Boolean),
+        contents: (orderData.items || []).map(function(item) {
+          return {
+            id: item.product_code || item.id || "",
+            quantity: item.quantity || 1,
+            item_price: cartItemPrice(item)
+          };
+        }),
+        content_type: "product",
+        value: confirmedTotal,
+        currency: "VND"
+      }, {
+        eventID: confirmedOrderId
+      });
+    }
+
+    markPurchaseTracked(confirmedOrderId);
+    await identifyPromise;
   }
 
   // Purchase chỉ được ghi khi ERP đã tạo đơn; không phụ thuộc Make webhook.
-  erpPromise.then(trackPurchaseAfterERP).catch(function() {});
+  var purchasePromise = erpPromise.then(trackPurchaseAfterERP).catch(function(error) {
+    console.warn("Purchase tracking failed after confirmed ERP order:", error);
+  });
 
-  if (!trackedPurchaseOrderIds.has(_orderId) && typeof trackBothPixels === "function" && orderData.total > 0) {
-    trackedPurchaseOrderIds.add(_orderId);
-    trackBothPixels("Purchase", {
-      content_ids: window.cart.map(i => i.id).filter(Boolean),
-      contents: window.cart.map(i => ({
-        id: i.id || "",
-        quantity: i.quantity || 1,
-        item_price: cartItemPrice(i)
-      })),
-      content_type: "product",
-      value: orderData.total,
-      currency: "VND"
-    }, {
-      eventID: _orderId
+  var makePromise = erpPromise.then(function() {
+    return fetch("https://hook.eu1.make.com/e4orsidpvfuofls24k4a78msst7qgr2r", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(Object.assign({}, orderData, { orderId: _orderId, orderCode: _orderCode }))
     });
-    console.log("✅ Purchase tracked before Make.com");
-  }
-
-  var makePromise = fetch("https://hook.eu1.make.com/e4orsidpvfuofls24k4a78msst7qgr2r", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(orderData)
-  })
-    .then(res => {
+  }).then(res => {
       if (!res.ok) throw new Error("Gửi đơn hàng thất bại");
       return res.text();
     });
 
-  Promise.allSettled([makePromise, erpPromise])
+  Promise.allSettled([makePromise, erpPromise, purchasePromise])
     .then(results => {
       var makeResult = results[0];
       var erpResult = results[1];
@@ -550,6 +646,11 @@ async function submitOrder() {
       if (makeResult.status === "rejected") {
         console.warn("⚠ Make webhook thất bại nhưng ERP đã tạo đơn:", makeResult.reason);
       }
+      var confirmedOrder = erpResult.value || {};
+      _orderId = confirmedOrder.orderId || _orderId;
+      _orderCode = confirmedOrder.orderCode || _orderCode;
+      orderData.total = Number(confirmedOrder.total != null ? confirmedOrder.total : orderData.total);
+      clearCheckoutAttempt(_orderId);
       window.cart = [];
       saveCart();
       if (consent) consent.checked = false;
@@ -876,71 +977,80 @@ async function sendOrderToERP(orderData, orderId, orderCode) {
     // orderId và orderCode nhận từ submitOrder() — không tạo lại ở đây
     // (giữ nguyên định dạng: #MMDDYY-XXXX)
 
-    // 1. INSERT order — chỉ gửi các cột thực sự có trong schema
-    var orderRes = await _erpPostWithRetry(_url + "/rest/v1/orders", _anon, {
-      id:               orderId,
-      order_code:       orderCode,
-      customer_name:    orderData.name,
-      customer_phone:   orderData.phone,
-      customer_address: orderData.address,
-      customer_note:    orderData.note || null,
-      category:         orderData.category || null,
-      subtotal:         subtotal,
-      shipping_fee:     orderData.shippingFee || 0,
-      voucher_value:    orderData.voucherValue || 0,
-      promo_discount:   orderData.promoDiscount || 0,
-      total:            orderData.total || subtotal,
-      carrier_fee:      null,
-      accessory_fee:    null,
-      payment_method:   "cod",
-      source:           "website",
-      status:           "new"
-    }, "return=minimal", 3);
-    if (!orderRes.ok) {
-      console.error("🔴 ERP: INSERT order thất bại", orderRes.text);
-      throw new Error("ERP order insert failed (" + orderRes.status + "): " + orderRes.text);
-    }
-    console.log("✅ ERP: tạo đơn", orderCode, orderId);
-
-    // 2. INSERT order_items
-    var itemsPayload = (orderData.items || []).map(function(item) {
+    var rpcItems = (orderData.items || []).map(function(item) {
       return {
-        order_id:       orderId,
-        product_id:     item.product_code || item.id || item.feed_product_code || null,
-        product_name:   item.product_name || cartItemName(item),
-        product_image:  cartItemImage(item),
+        page_slug: item.page_slug || null,
+        product_id: item.product_code || item.id || item.feed_product_code || null,
+        product_code: item.product_code || item.id || item.feed_product_code || null,
         inventory_product_id: item.inventory_product_id || null,
-        category:       item.category || orderData.category || "",
-        unit_price:     cartItemPrice(item),
+        product_name: item.product_name || cartItemName(item),
+        product_image: cartItemImage(item),
+        category: item.category || orderData.category || "",
+        color: item.color || null,
+        size: item.size || null,
+        unit_price: cartItemPrice(item),
         voucher_amount: Number(item.voucher && item.voucher.amount || 0),
-        voucher_label:  item.voucher && item.voucher.label || null,
-        quantity:       Number(item.quantity || 1)
+        voucher_label: item.voucher && item.voucher.label || null,
+        quantity: Number(item.quantity || 1)
       };
     });
-    if (itemsPayload.length) {
-      var itemsRes = await _erpPost(_url + "/rest/v1/order_items", _anon, itemsPayload);
-      if (!itemsRes.ok) {
-        console.error("🔴 ERP: INSERT order_items thất bại", itemsRes.text);
-      } else {
-        console.log("✅ ERP: lưu", itemsPayload.length, "sản phẩm");
+
+    // One database transaction owns the order header and every item. Retrying
+    // this RPC with the same orderId is safe and returns the original order.
+    var orderRes = await _erpPostWithRetry(_url + "/rest/v1/rpc/create_website_order", _anon, {
+      p_order: {
+        id: orderId,
+        order_code: orderCode,
+        customer_name: orderData.name,
+        customer_phone: orderData.phone,
+        customer_address: orderData.address,
+        customer_note: orderData.note || null,
+        category: orderData.category || null,
+        shipping_fee: orderData.shippingFee || 0,
+        voucher_value: orderData.voucherValue || 0,
+        promo_discount: orderData.promoDiscount || 0,
+        items: rpcItems
       }
+    }, "return=representation", 3);
+    if (!orderRes.ok) {
+      console.error("🔴 ERP: create_website_order thất bại", orderRes.text);
+      throw new Error("ERP atomic order failed (" + orderRes.status + "): " + orderRes.text);
     }
+    var rpcResult;
+    try {
+      rpcResult = JSON.parse(orderRes.text || "{}");
+    } catch (parseError) {
+      throw new Error("ERP returned an invalid order confirmation");
+    }
+    if (!rpcResult || rpcResult.order_id !== orderId || Number(rpcResult.item_count || 0) !== rpcItems.length) {
+      throw new Error("ERP order confirmation does not match the submitted checkout");
+    }
+    console.log("✅ ERP: đơn và SKU đã được xác nhận", rpcResult.order_code, rpcResult.order_id);
 
     // 3. Upsert customer (non-critical, không block)
     var customerId = null;
-    try {
-      customerId = await _erpUpsertCustomer(_url, _anon, {
-        phone:       orderData.phone,
-        name:        orderData.name,
-        address:     orderData.address,
-        order_total: orderData.total || subtotal,
-        order_id:    orderId
-      });
-    } catch (custErr) {
-      console.warn("⚠ ERP customer upsert failed (non-critical):", custErr.message);
+    if (rpcResult.created === true) {
+      try {
+        customerId = await _erpUpsertCustomer(_url, _anon, {
+          phone:       orderData.phone,
+          name:        orderData.name,
+          address:     orderData.address,
+          order_total: Number(rpcResult.total || orderData.total || subtotal),
+          order_id:    orderId
+        });
+      } catch (custErr) {
+        console.warn("⚠ ERP customer upsert failed (non-critical):", custErr.message);
+      }
     }
 
-    return { created: true, orderId: orderId, orderCode: orderCode, customerId: customerId };
+    return {
+      created: rpcResult.created === true,
+      orderId: rpcResult.order_id,
+      orderCode: rpcResult.order_code,
+      total: Number(rpcResult.total || 0),
+      itemCount: Number(rpcResult.item_count || 0),
+      customerId: customerId
+    };
   } catch (err) {
     console.warn("⚠ ERP sendOrderToERP error:", err.message || err);
     throw err;

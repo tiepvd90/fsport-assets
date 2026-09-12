@@ -25,7 +25,12 @@
     window.productPage = "ysandal5568";
     window.cartpopupType = "cartpopup";
     window.shopeeLink = "https://s.shopee.vn/5VQ63Pip4e"; // ✅ Link Shopee có Aff
+    window.FSPORT_CARTPOPUP_CONFIG_URL = window.FSPORT_CARTPOPUP_CONFIG_URL ||
+      "https://xcigbbcpwfzluqazadez.supabase.co/functions/v1/cart-popup-config";
+    window.FSPORT_PRODUCT_PAGE_CONFIG_URL = window.FSPORT_PRODUCT_PAGE_CONFIG_URL ||
+      "https://xcigbbcpwfzluqazadez.supabase.co/functions/v1/product-page-config";
   </script>
+  <script src="/js/product-page-runtime.js?v=20260913-managed-ysandal-1"></script>
 
   <style>
     body { background-color: #f9f9f9; }
@@ -104,7 +109,7 @@
         .then(html => {
           document.getElementById("video-placeholder").innerHTML = html;
           const s = document.createElement("script");
-          s.src = "/js/productvideo.js";
+          s.src = "/js/productvideo.js?v=20260913-managed-ysandal-2";
           s.onload = () => typeof initProductVideo === "function" && initProductVideo();
           document.body.appendChild(s);
         });
@@ -146,22 +151,9 @@
 
     <!-- ✅ Mô tả -->
     <div class="product-hero" style="margin-top:12px;">
-      <div id="productdescription-placeholder"></div>
+      <div id="productdescription-placeholder" data-src="/html/productdescription/ysandal5568.html"></div>
     </div>
-    <script>
-      fetch("/html/productdescription/ysandal5568.html")
-        .then(res => res.text())
-        .then(html => {
-          const c = document.getElementById("productdescription-placeholder");
-          c.innerHTML = html;
-          c.querySelectorAll("script").forEach(old => {
-            const s = document.createElement("script");
-            if (old.src) s.src = old.src;
-            else s.textContent = old.textContent;
-            document.body.appendChild(s);
-          });
-        });
-    </script>
+    <script src="/js/productdescription.js?v=20260913-managed-ysandal-1"></script>
     <!-- ✅ YSANDAL COLLECTION trước, PICKLEBALL COLLECTION sau -->
     <div id="ysandalRelatedCollections"></div>
     <script src="/js/ysandal-related-collections.js?v=20260905-1"></script>
@@ -192,7 +184,7 @@
         await injectHTML("/html/stickyfooter.html", "sticky-footer-placeholder");
         await loadScript("../js/voucherpopup.js");
         await loadScript("/js/cartpopup.js?v=20260910-height-swipe-6");
-        await loadScript("../js/checkoutpopup.js");
+        await loadScript("../js/checkoutpopup.js?v=20260913-atomic-purchase-1");
         setTimeout(async () => {
           const map = await fetchVoucherMap();
           window.__vouchersRaw = map[window.loai] || {};

@@ -25,24 +25,12 @@
     window.imageCount = 8;
     window.imageFormat = "jpg";
     window.shopeeLink = "https://s.shopee.vn/6fZ6bQnTs2"; // ✅ Khai báo Shopee link tại đầu
-    window.FSPORT_CARTPOPUP_CONFIG_URL = "https://xcigbbcpwfzluqazadez.supabase.co/functions/v1/cart-popup-config";
-    (function () {
-      var slug = window.productPage || "carbon";
-      fetch(window.FSPORT_CARTPOPUP_CONFIG_URL + "?slug=" + encodeURIComponent(slug))
-        .then(function (res) {
-          if (!res.ok) throw new Error("cart config " + res.status);
-          return res.json();
-        })
-        .then(function (config) {
-          if (!config || config.cartSchema !== "fsport-product-v1") return;
-          window.__fsportProductPageConfig = config;
-          if (config.title) document.title = config.title;
-        })
-        .catch(function () {
-          window.__fsportProductPageConfig = null;
-        });
-    })();
+    window.FSPORT_CARTPOPUP_CONFIG_URL = window.FSPORT_CARTPOPUP_CONFIG_URL ||
+      "https://xcigbbcpwfzluqazadez.supabase.co/functions/v1/cart-popup-config";
+    window.FSPORT_PRODUCT_PAGE_CONFIG_URL = window.FSPORT_PRODUCT_PAGE_CONFIG_URL ||
+      "https://xcigbbcpwfzluqazadez.supabase.co/functions/v1/product-page-config";
   </script>
+  <script src="/js/product-page-runtime.js?v=20260913-managed-ysandal-1"></script>
 </head>
 
 <body>
@@ -102,7 +90,7 @@
         .then(html => {
           document.getElementById("video-placeholder").innerHTML = html;
           const script = document.createElement("script");
-          script.src = "/js/productvideo.js";
+          script.src = "/js/productvideo.js?v=20260913-managed-ysandal-2";
           script.onload = () => {
             if (typeof initProductVideo === "function") initProductVideo();
           };
@@ -192,7 +180,7 @@
 
       await loadScript("../js/voucherpopup.js");
       await loadScript("/js/cartpopup.js?v=20260910-height-swipe-6");
-      await loadScript("../js/checkoutpopup.js");
+      await loadScript("../js/checkoutpopup.js?v=20260913-atomic-purchase-1");
 
       setTimeout(async () => {
         const map = await fetchVoucherMap();
