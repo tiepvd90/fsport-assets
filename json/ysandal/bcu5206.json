@@ -75,6 +75,18 @@
     ],
     "normalize": "vn-ascii-uppercase"
   },
+  "availability": {
+    "mode": "out-of-stock-matrix",
+    "options": ["Màu Sắc", "Size"],
+    "outOfStock": {
+      "Vàng Chanh": ["36", "37", "39"],
+      "Trắng": ["36", "38", "39", "40"],
+      "Xám": ["37"],
+      "Đen": ["37", "39"],
+      "Be": ["38", "39", "40"],
+      "Hồng": ["37", "39", "40"]
+    }
+  },
   "thuộc_tính": [
     {
       "label": "Màu Sắc",

@@ -10,6 +10,15 @@ function pageSlug(value) {
   return String(value || '').replace(/\.html?$/i, '').trim().toLowerCase();
 }
 
+function escapeHtml(value) {
+  return String(value == null ? '' : value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 export async function onRequest(context) {
   const { request, env, params } = context;
   if (request.method !== 'GET' && request.method !== 'HEAD') {
@@ -44,9 +53,28 @@ export async function onRequest(context) {
   dynamicUrl.search = '';
   const dynamicResponse = await env.ASSETS.fetch(new Request(dynamicUrl, request));
 
-  if (request.method !== 'HEAD') return dynamicResponse;
-  return new Response(null, {
+  if (request.method === 'HEAD') {
+    return new Response(null, {
+      status: dynamicResponse.status,
+      headers: dynamicResponse.headers
+    });
+  }
+
+  const pageTitle = String(config.title || '').trim();
+  if (!pageTitle || !dynamicResponse.ok) return dynamicResponse;
+
+  const html = (await dynamicResponse.text()).replace(
+    /<title>[\s\S]*?<\/title>/i,
+    `<title>${escapeHtml(pageTitle)}</title>`
+  );
+  const headers = new Headers(dynamicResponse.headers);
+  headers.delete('content-length');
+  headers.delete('content-encoding');
+  headers.delete('etag');
+  headers.set('content-type', 'text/html; charset=UTF-8');
+  return new Response(html, {
     status: dynamicResponse.status,
-    headers: dynamicResponse.headers
+    statusText: dynamicResponse.statusText,
+    headers
   });
 }

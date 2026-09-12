@@ -275,9 +275,12 @@
       if (!container) return;
 
       try {
-        const res = await fetch("/json/pickleball-collection.json");
+        const res = await fetch("https://xcigbbcpwfzluqazadez.supabase.co/functions/v1/product-collection-config?slug=pickleball-collection", {
+          headers: { "Accept": "application/json" }
+        });
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const data = await res.json();
+        const payload = await res.json();
+        const data = Array.isArray(payload.items) ? payload.items : [];
 
         // Kiểm tra cấu trúc: nếu data là mảng và phần tử đầu có groupName -> dạng nhóm
         const isGroupStructure = Array.isArray(data) && data.length > 0 && data[0].hasOwnProperty("groupName") && data[0].hasOwnProperty("items");
@@ -287,9 +290,6 @@
           for (const group of data) {
             // Lọc sản phẩm theo category (nếu cần). Ở đây lọc theo window.productCategory
             let items = group.items || [];
-            if (window.productCategory) {
-              items = items.filter(item => item.category === window.productCategory);
-            }
             if (items.length === 0) continue;
 
             // Thêm tiêu đề nhóm
@@ -306,9 +306,6 @@
         } else {
           // Dạng cũ: mảng sản phẩm phẳng
           let products = Array.isArray(data) ? data : [];
-          if (window.productCategory) {
-            products = products.filter(item => item.category === window.productCategory);
-          }
           products.forEach(item => {
             container.insertAdjacentHTML("beforeend", renderProductCard(item));
           });

@@ -28,7 +28,8 @@
 
   function applySeo(config) {
     if (!config || typeof config !== "object") return;
-    if (config.title) document.title = config.title;
+    var pageTitle = String(config.title || "").trim();
+    if (pageTitle) document.title = pageTitle;
 
     var description = config.seo && config.seo.description;
     if (description) {
@@ -41,10 +42,11 @@
       meta.content = description;
     }
 
-    window.productName = config.productName || config.title || config.slug;
+    window.productName = config.productName || pageTitle || config.slug;
+    window.productPageTitle = pageTitle || window.productName;
     function applyVisibleTitle() {
       var dynamicTitle = document.getElementById("dynamicProductTitle");
-      if (dynamicTitle) dynamicTitle.textContent = window.productName;
+      if (dynamicTitle) dynamicTitle.textContent = window.productPageTitle;
     }
     if (document.readyState === "loading") {
       document.addEventListener("DOMContentLoaded", applyVisibleTitle, { once: true });

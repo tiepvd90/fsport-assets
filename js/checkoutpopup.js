@@ -344,6 +344,29 @@ function loadShippingFee() {
 // ------------------------
 // 🔹 GỬI ĐƠN HÀNG
 // ------------------------
+async function validateManagedCartInventory() {
+  const managed = (window.cart || []).filter(item => item && item.inventory_product_id);
+  if (!managed.length) return;
+  const ids = [...new Set(managed.map(item => String(item.inventory_product_id)))];
+  const url = (window.FSPORT_SUPABASE_URL || "https://xcigbbcpwfzluqazadez.supabase.co") +
+    "/functions/v1/product-availability?ids=" + encodeURIComponent(ids.join(","));
+  const response = await fetch(url, {
+    headers: { Accept: "application/json" },
+    cache: "no-store"
+  });
+  if (!response.ok) throw new Error("Không thể kiểm tra trạng thái sản phẩm. Vui lòng thử lại.");
+  const payload = await response.json();
+  const rows = payload && Array.isArray(payload.products) ? payload.products : [];
+  const byId = Object.fromEntries((rows || []).map(product => [String(product.id), product]));
+  for (const item of managed) {
+    const product = byId[String(item.inventory_product_id)];
+    if (!product || product.is_active === false) throw new Error("Một sản phẩm trong giỏ không còn kinh doanh. Vui lòng xóa sản phẩm đó khỏi giỏ.");
+    const stock = Number(product.stock_qty || 0);
+    if (stock <= 0) throw new Error((item.product_name || product.product_code) + " đang tạm hết hàng.");
+    if (Number(item.quantity || 1) > stock) throw new Error((item.product_name || product.product_code) + " chỉ còn " + stock + " sản phẩm.");
+  }
+}
+
 async function submitOrder() {
   const btn = document.getElementById("checkoutSubmitBtn");
   if (!btn) return;
@@ -379,6 +402,14 @@ async function submitOrder() {
   }
   if (!window.cart.length) {
     alert("Gi\u1ecf h\u00e0ng c\u1ee7a b\u1ea1n \u0111ang tr\u1ed1ng.");
+    btn.disabled = false;
+    btn.textContent = originalText;
+    return;
+  }
+  try {
+    await validateManagedCartInventory();
+  } catch (inventoryError) {
+    alert(inventoryError && inventoryError.message ? inventoryError.message : "Sản phẩm không còn khả dụng.");
     btn.disabled = false;
     btn.textContent = originalText;
     return;

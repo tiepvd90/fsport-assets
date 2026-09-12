@@ -1,0 +1,12 @@
+# Local development and browser-test artifacts
+.codex-*/
+.wrangler/
+
+# Local deployment and DNS snapshots
+cloudflare-migration-log.md
+dns-backup-before-cloudflare.*
+dns-cloudflare-target.json
+dns-migration-diff.txt
+
+# One-off local media extraction helper
+scripts/extract_seal_components.py

@@ -9,18 +9,16 @@
   window.collectionList = [
     {
       title: "YSANDAL COLLECTION",
-      slug: "ysandal-collection",
-      json: "/json/ysandal-collection.json"
+      slug: "ysandal-collection"
     },
     {
       title: "PICKLEBALL COLLECTION",
-      slug: "pickleball-collection",
-      json: "/json/pickleball-collection.json"
+      slug: "pickleball-collection"
     }
   ];
 
   var script = document.createElement("script");
-  script.src = "/js/collection-grid.js?v=20260716-inline-collection-1";
+  script.src = "/js/collection-grid.js?v=20260909-canonical-api";
   script.defer = true;
   document.body.appendChild(script);
 })();

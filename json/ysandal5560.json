@@ -87,6 +87,18 @@
     ],
     "normalize": "vn-ascii-uppercase"
   },
+  "availability": {
+    "mode": "out-of-stock-matrix",
+    "options": ["Màu Sắc", "Size"],
+    "outOfStock": {
+      "Hồng": ["34", "35", "38", "40", "41", "42"],
+      "Vàng Chanh": ["34", "36", "37", "38", "40", "41", "42"],
+      "Đen": ["34", "41", "42"],
+      "Rêu": ["34", "36", "37", "38", "39", "40", "41", "42"],
+      "Trắng Xám": ["34", "40", "42"],
+      "Xanh": ["34", "38", "40", "41", "42"]
+    }
+  },
   "thuộc_tính": [
     {
       "label": "Màu Sắc",

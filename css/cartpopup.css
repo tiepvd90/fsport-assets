@@ -13,6 +13,8 @@
   position: absolute;
   inset: 0;
   background: rgba(0, 0, 0, 0.5);
+  transition: opacity 280ms cubic-bezier(0.32, 0.72, 0, 1);
+  will-change: opacity;
 }
 
 .cart-popup-content {
@@ -20,32 +22,80 @@
   bottom: 0;
   left: 0;
   width: 100%;
-  max-height: 77vh;
-  max-height: 77dvh;
+  height: auto;
+  max-height: 84vh;
+  max-height: 84dvh;
   overflow: hidden;
   background: #fff;
-  padding: 16px;
+  padding: 22px 16px 16px;
   padding-bottom: 80px;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
+  border-radius: 14px 14px 0 0;
+  box-shadow: 0 -4px 18px rgba(0, 0, 0, 0.12);
+  will-change: transform;
+}
+
+/* Long option catalogs use the taller sheet; short catalogs still hug content. */
+.cart-popup-content.has-long-options {
+  height: 84vh;
+  height: 84dvh;
+}
+
+.cart-popup-content.has-long-options .variant-list-wrap {
+  flex: 1 1 auto;
+  max-height: none;
+}
+
+.cart-popup-content.has-long-options #variantList {
+  height: 100%;
+  max-height: none;
+}
+
+.cart-popup-drag-handle {
+  position: absolute;
+  top: 6px;
+  left: 50%;
+  z-index: 3;
+  width: 42px;
+  height: 10px;
+  transform: translateX(-50%);
+  cursor: grab;
+  touch-action: none;
+}
+
+.cart-popup-drag-handle::before {
+  content: "";
+  display: block;
+  width: 36px;
+  height: 4px;
+  margin: 0 auto;
+  border-radius: 999px;
+  background: #c7c9cc;
 }
 
 .variant-list-wrap {
   position: relative;
-  flex: 0 1 auto;
+  flex: 0 0 auto;
   min-height: 0;
+  max-height: calc(84vh - 302px);
+  max-height: calc(84dvh - 302px);
+  overflow: hidden;
 }
 
 #variantList {
+  position: relative;
   min-height: 0;
-  max-height: calc(77vh - 260px);
-  max-height: calc(77dvh - 260px);
+  max-height: calc(84vh - 302px);
+  max-height: calc(84dvh - 302px);
   overflow-y: auto;
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
   scrollbar-gutter: stable;
   padding-right: 14px;
+  padding-bottom: 12px;
+  box-sizing: border-box;
   scroll-padding-bottom: 12px;
   scrollbar-width: thin;
   scrollbar-color: #9ca3af #eef0f3;
@@ -190,6 +240,50 @@
 /* ========== PHÂN LOẠI CHUNG ========== */
 .variant-group {
   margin-bottom: 16px;
+  border-radius: 9px;
+  transition: background-color 180ms ease, box-shadow 180ms ease;
+}
+
+.variant-group.selection-required {
+  background: #fff7f7;
+  box-shadow: 0 0 0 2px rgba(238, 45, 45, 0.72);
+  animation: selectionRequiredPulse 900ms ease 2;
+}
+
+.variant-group.selection-required .variant-label {
+  color: #e1251b;
+  font-weight: 700;
+}
+
+@keyframes selectionRequiredPulse {
+  0%, 100% { box-shadow: 0 0 0 2px rgba(238, 45, 45, 0.62); }
+  50% { box-shadow: 0 0 0 5px rgba(238, 45, 45, 0.14); }
+}
+
+.cart-option-toast {
+  position: absolute;
+  left: 50%;
+  bottom: 124px;
+  z-index: 100000;
+  max-width: calc(100% - 40px);
+  padding: 9px 14px;
+  border-radius: 999px;
+  color: #fff;
+  background: rgba(24, 24, 24, 0.92);
+  box-shadow: 0 5px 18px rgba(0, 0, 0, 0.2);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.35;
+  text-align: center;
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(-50%, 8px);
+  transition: opacity 180ms ease, transform 180ms ease;
+}
+
+.cart-option-toast.is-visible {
+  opacity: 1;
+  transform: translate(-50%, 0);
 }
 
 .variant-label {
@@ -225,6 +319,47 @@
   border: 2px solid #e53935;
 }
 
+.variant-thumb.is-disabled {
+  position: relative;
+  color: #9ca3af;
+  background: #f3f4f6;
+  border-color: #d1d5db;
+  cursor: not-allowed;
+  opacity: .62;
+  filter: grayscale(1);
+}
+
+.variant-thumb.is-disabled::after {
+  content: "";
+  position: absolute;
+  left: 5%;
+  right: 5%;
+  top: 50%;
+  height: 1px;
+  background: #9ca3af;
+  transform: rotate(-12deg);
+  pointer-events: none;
+}
+
+.variant-thumb.is-disabled::before {
+  content: attr(data-stock-label);
+  position: absolute;
+  right: 2px;
+  top: 1px;
+  padding: 1px 3px;
+  border-radius: 3px;
+  color: #6b7280;
+  background: rgba(255,255,255,.9);
+  font-size: 8px;
+  line-height: 1.15;
+  pointer-events: none;
+}
+
+.variant-thumb.is-disabled.selected {
+  border-width: 1px;
+  border-color: #d1d5db;
+}
+
 /* ========== RIÊNG THUMBNAIL ========== */
 .variant-thumbnails .variant-thumb {
   gap: 6px;
@@ -249,11 +384,14 @@
 /* ========== SỐ LƯỢNG ========== */
 .quantity-wrapper {
   flex: 0 0 auto;
+  position: relative;
+  z-index: 2;
   display: flex !important;
   justify-content: space-between;
   align-items: center;
-  padding: 0 8px;
-  margin-top: 12px;
+  padding: 12px 8px 0;
+  margin-top: 0;
+  background: #fff;
   font-size: 14px;
   flex-wrap: nowrap;
 }
@@ -348,6 +486,12 @@
   margin-left: 4px;
 }
 
+.cart-option-note {
+  display: block;
+  margin: 2px 4px 8px;
+  line-height: 1.4;
+}
+
 .variant-group input[type="text"]::placeholder {
   color: #888;        /* nhạt hơn một chút */
   font-size: 13px;    /* nhỏ hơn */
@@ -358,6 +502,8 @@
     left: 50%;
     transform: translateX(-50%);
     width: 768px;
+    max-height: 84vh;
+    max-height: 84dvh;
     border-radius: 12px 12px 0 0;
   }
 

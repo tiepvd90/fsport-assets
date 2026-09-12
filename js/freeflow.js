@@ -409,7 +409,7 @@ function bootstrapFreeflow() {
     ensureCollectionContainer();
 
     const script = document.createElement("script");
-    script.src = "/js/collection-grid.js?v=20260716-inline-collection-1";
+    script.src = "/js/collection-grid.js?v=20260909-canonical-api";
     script.async = true;
     document.body.appendChild(script);
   });

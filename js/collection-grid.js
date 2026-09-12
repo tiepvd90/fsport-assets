@@ -1,9 +1,9 @@
 /* ==========================================================
    COLLECTION GRID
    ----------------------------------------------------------
-   - Supports flat JSON arrays and grouped arrays: { groupName, items }
-   - Each page declares window.collectionList entries.
-   - Each entry can call Admin/Supabase by slug and fallback to its own JSON.
+   - Every page supplies only a collection slug.
+   - product-collection-config is the single storefront read path.
+   - Embedded page snapshots and static JSON never override Admin data.
    ========================================================== */
 
 (function () {
@@ -65,8 +65,8 @@
   })();
 
   var DEFAULT_COLLECTIONS = [
-    { title: "PICKLEBALL", slug: "pickleball-collection", json: "/json/pickleball-collection.json" },
-    { title: "YSANDAL", slug: "ysandal-collection", json: "/json/ysandal-collection.json" }
+    { title: "PICKLEBALL", slug: "pickleball-collection" },
+    { title: "YSANDAL", slug: "ysandal-collection" }
   ];
   var COLLECTIONS = Array.isArray(window.collectionList) && window.collectionList.length
     ? window.collectionList
@@ -274,8 +274,6 @@
 
   function slugFromCollection(col) {
     if (col.slug) return col.slug;
-    if (col.json && col.json.indexOf("pickleball-collection") >= 0) return "pickleball-collection";
-    if (col.json && col.json.indexOf("ysandal-collection") >= 0) return "ysandal-collection";
     return "main-product-collection";
   }
 
@@ -390,90 +388,33 @@
     });
   }
 
-  async function fetchAdminCollectionViaRest(slug) {
-    var collectionUrl = SUPABASE_URL +
-      "/rest/v1/product_collections?select=id,slug,title&slug=eq." +
-      encodeURIComponent(slug) + "&is_active=eq.true&limit=1";
-    var collections = await fetchJson(collectionUrl, { headers: supabaseHeaders() });
-    var collection = collections && collections[0];
-    if (!collection || !collection.id) throw new Error("Admin collection not found");
-
-    var itemUrl = SUPABASE_URL +
-      "/rest/v1/product_collection_items?select=product_code,group_name,title_override,price_override,original_price,image_override,link_override,display_order&collection_id=eq." +
-      encodeURIComponent(collection.id) + "&is_active=eq.true&order=display_order.asc";
-    var rows = await fetchJson(itemUrl, { headers: supabaseHeaders() });
-    if (!Array.isArray(rows) || !rows.length) throw new Error("Admin collection is empty");
-
-    var codes = rows.map(function (row) { return row.product_code; }).filter(Boolean);
-    var productMap = {};
-    if (codes.length) {
-      var uniqueCodes = codes.filter(function (code, index, arr) { return arr.indexOf(code) === index; });
-      var productUrl = SUPABASE_URL +
-        "/rest/v1/products?select=product_code,product_name,image_url,image_urls,price,original_price,compare_at_price,category&product_code=in.(" +
-        uniqueCodes.map(encodeURIComponent).join(",") + ")";
-      var products = await fetchJson(productUrl, { headers: supabaseHeaders() });
-      (products || []).forEach(function (product) {
-        productMap[product.product_code] = product;
-      });
-    }
-
-    var items = rows.map(function (row) {
-      var product = productMap[row.product_code] || {};
-      var price = row.price_override != null ? row.price_override : product.price;
-      var originalPrice = row.original_price != null ? row.original_price : (product.original_price || product.compare_at_price);
-      return cleanCollectionItem({
-        id: row.product_code,
-        productCode: row.product_code,
-        title: row.title_override || product.product_name || row.product_code,
-        price: price,
-        originalPrice: originalPrice,
-        image: row.image_override || firstProductImage(product),
-        link: row.link_override || (row.product_code ? "/product/" + row.product_code + ".html" : ""),
-        groupName: row.group_name || ""
-      });
-    });
-
-    if (items.some(function (item) { return item.groupName; })) {
-      var groups = [];
-      var groupMap = {};
-      items.forEach(function (item) {
-        var groupName = item.groupName || collection.title || "Collection";
-        if (!groupMap[groupName]) {
-          groupMap[groupName] = { groupName: groupName, items: [] };
-          groups.push(groupMap[groupName]);
-        }
-        groupMap[groupName].items.push(item);
-      });
-      return { slug: collection.slug, title: collection.title, items: groups };
-    }
-
-    return { slug: collection.slug, title: collection.title, items: items };
-  }
-
-  async function loadJsonCollection(col) {
-    var res = await fetch(col.json);
-    if (!res.ok) throw new Error("HTTP " + res.status);
-    var data = await res.json();
-    var rawItems = getItemsFromData(data);
-    if (!rawItems.length) throw new Error("JSON collection is empty");
-    renderItems(rawItems, col.title, col);
-  }
-
   async function loadAdminCollection(col) {
     var slug = slugFromCollection(col);
-    var collection;
-    try {
-      collection = await fetchAdminCollectionViaFunction(slug);
-    } catch (functionError) {
-      console.warn("[Collection] Edge Function unavailable, trying Supabase REST fallback.", slug, functionError);
-      collection = await fetchAdminCollectionViaRest(slug);
-    }
+    var collection = await fetchAdminCollectionViaFunction(slug);
     var apiItems = getItemsFromData(collection);
     if (!apiItems.length) throw new Error("Admin collection is empty");
     renderItems(apiItems, collection.title || col.title || "Collection", {
       slug: slug,
       title: collection.title || col.title
     });
+  }
+
+  async function renderCanonicalCollections(collectionRefs) {
+    var refs = Array.isArray(collectionRefs) ? collectionRefs : [];
+    for (var index = 0; index < refs.length; index++) {
+      var ref = refs[index] || {};
+      try {
+        await loadAdminCollection(ref);
+      } catch (error) {
+        console.error("[Collection] Canonical collection unavailable.", slugFromCollection(ref), error);
+        continue;
+      }
+      if (index < refs.length - 1) {
+        var divider = document.createElement("div");
+        divider.className = "cgrid-divider";
+        container.appendChild(divider);
+      }
+    }
   }
 
   async function renderCollections() {
@@ -484,15 +425,7 @@
         return;
       }
       var homepageCollections = Array.isArray(frontendConfig.collections) ? frontendConfig.collections : [];
-      homepageCollections = await fillMissingProductImages(homepageCollections);
-      homepageCollections.forEach(function (collection, index) {
-        renderItems(getItemsFromData(collection), collection.title || "Collection", collection);
-        if (index < homepageCollections.length - 1) {
-          var homepageDivider = document.createElement("div");
-          homepageDivider.className = "cgrid-divider";
-          container.appendChild(homepageDivider);
-        }
-      });
+      await renderCanonicalCollections(homepageCollections);
       return;
     }
     var runtimeConfig = await (window.FSPORT_PRODUCT_PAGE_CONFIG_PROMISE || Promise.resolve(null)).catch(function () { return null; });
@@ -504,43 +437,14 @@
         return;
       }
       var configuredCollections = Array.isArray(runtimeSection.content) ? runtimeSection.content : [];
-      configuredCollections = await fillMissingProductImages(configuredCollections);
-      configuredCollections.forEach(function (collection, index) {
-        renderItems(getItemsFromData(collection), collection.title || "Collection", collection);
-        if (index < configuredCollections.length - 1) {
-          var configuredDivider = document.createElement("div");
-          configuredDivider.className = "cgrid-divider";
-          container.appendChild(configuredDivider);
-        }
-      });
+      await renderCanonicalCollections(configuredCollections);
       return;
     }
     if (!Array.isArray(COLLECTIONS) || COLLECTIONS.length === 0) {
       console.warn("No collection configured.");
       return;
     }
-    for (var i = 0; i < COLLECTIONS.length; i++) {
-      var col = COLLECTIONS[i];
-      try {
-        if (hasInlineCollectionItems(col)) {
-          var inlineCollections = await fillMissingProductImages([col]);
-          var inlineCollection = inlineCollections[0] || col;
-          renderItems(getItemsFromData(inlineCollection), inlineCollection.title || col.title || "Collection", inlineCollection);
-        } else {
-          await loadAdminCollection(col);
-        }
-      } catch (error) {
-        console.warn("[Collection] Admin data unavailable, using JSON fallback.", col, error);
-        try {
-          await loadJsonCollection(col);
-        } catch (fallbackError) {
-          console.error("[Collection] JSON fallback failed:", col, fallbackError);
-        }
-      }
-      var divider = document.createElement("div");
-      divider.className = "cgrid-divider";
-      container.appendChild(divider);
-    }
+    await renderCanonicalCollections(COLLECTIONS);
   }
 
   renderCollections();
