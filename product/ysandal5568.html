@@ -99,21 +99,10 @@
         </div>
       </div>
     </div>
-    <!-- ✅ Video sản phẩm -->
-    <div class="product-hero" style="margin-top:12px;">
-      <div id="video-placeholder">Đang tải video...</div>
-    </div>
-    <script>
-      fetch("/html/productvideo.html")
-        .then(res => res.text())
-        .then(html => {
-          document.getElementById("video-placeholder").innerHTML = html;
-          const s = document.createElement("script");
-          s.src = "/js/productvideo.js?v=20260913-managed-ysandal-2";
-          s.onload = () => typeof initProductVideo === "function" && initProductVideo();
-          document.body.appendChild(s);
-        });
-    </script>
+    <!-- ✅ Video sản phẩm — renderer chuẩn Product Pages -->
+    <div data-fsport-section="product_video"><div id="video-placeholder"></div></div>
+    <script src="/js/productvideo-v3.js?v=20260914-standard-product-video-1"></script>
+    <script>initProductVideo();</script>
 
     <!-- ✅ Reviews -->
     <div class="product-hero" style="margin-top:12px;">

@@ -74,33 +74,10 @@
       </div>
     </div>
 
-  <!-- ✅ KHỐI 3: Video sản phẩm -->
-<div class="product-hero" style="margin-top: 12px;">
-  <div id="video-placeholder">Đang tải video...</div>
-</div>
-
-<script>
-  // ✅ Gọi file HTML video (gồm khung & ID #videoSlider)
-  fetch("/html/productvideo.html")
-    .then(res => res.text())
-    .then(html => {
-      document.getElementById("video-placeholder").innerHTML = html;
-
-      // ✅ Gọi JS sau khi HTML có mặt
-      const script = document.createElement("script");
-      script.src = "/js/productvideo.js?v=20260913-managed-ysandal-2";
-      script.onload = () => {
-        console.log("✅ Đã load JS, gọi init...");
-        if (typeof initProductVideo === "function") {
-          initProductVideo();
-        } else {
-          console.warn("❌ Không tìm thấy initProductVideo()");
-        }
-      };
-      document.body.appendChild(script);
-    })
-    .catch(err => console.warn("❌ Lỗi khi chèn productvideo.html:", err));
-</script>
+  <!-- ✅ KHỐI 3: Video sản phẩm — renderer chuẩn Product Pages -->
+  <div data-fsport-section="product_video"><div id="video-placeholder"></div></div>
+  <script src="/js/productvideo-v3.js?v=20260914-standard-product-video-1"></script>
+  <script>initProductVideo();</script>
 
   <!-- 🔚 Hết KHỐI 3 -->
     <!-- ✅ KHỐI 2: Reviews -->
