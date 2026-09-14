@@ -251,6 +251,14 @@ window.__fsportInternalAnalyticsStarted = true;
     _sessionStart = Date.now()
     _resetIdleTimer()
 
+    // Record the landing immediately. Traffic Source is event-backed in the
+    // admin dashboard, so resolving a profile alone is not enough for a visit
+    // to appear there (notably QR visits that stop on the homepage).
+    _track('page_view', {
+      page_path: global.location.pathname || '/',
+      page_title: document.title || null
+    })
+
     // Flush queue
     _queue.forEach(function (item) { _track(item.type, item.meta) })
     _queue = []
