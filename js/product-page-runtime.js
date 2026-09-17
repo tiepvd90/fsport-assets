@@ -46,7 +46,19 @@
     window.productPageTitle = pageTitle || window.productName;
     function applyVisibleTitle() {
       var dynamicTitle = document.getElementById("dynamicProductTitle");
-      if (dynamicTitle) dynamicTitle.textContent = window.productPageTitle;
+      if (dynamicTitle) {
+        dynamicTitle.textContent = window.productPageTitle;
+        return;
+      }
+      // Older pages put the title directly after the Mall/official badges.
+      // Keep those badges, but let the Page title setting own the visible text.
+      var heading = document.querySelector(".page-container .product-hero h1");
+      if (!heading) return;
+      var titleText = Array.prototype.filter.call(heading.childNodes, function(node) {
+        return node.nodeType === 3 && node.textContent.trim();
+      }).pop();
+      if (titleText) titleText.textContent = " " + window.productPageTitle;
+      else heading.appendChild(document.createTextNode(" " + window.productPageTitle));
     }
     if (document.readyState === "loading") {
       document.addEventListener("DOMContentLoaded", applyVisibleTitle, { once: true });
@@ -126,10 +138,76 @@
       '</div>';
   }
 
+  function applyLegacyLayout(config) {
+    var root = document.querySelector(".page-container");
+    if (!root) return;
+    var description = document.getElementById("productdescription-placeholder");
+    var collection = document.getElementById("ysandalRelatedCollections");
+    var sections = config.sections.slice().sort(function(a, b) {
+      return Number(a.order || 0) - Number(b.order || 0);
+    });
+    var aiSection = sections.find(function(section) { return section.type === "ai_chat"; });
+    if (aiSection && aiSection.active !== false && !document.getElementById("aic-container")) {
+      var ai = document.createElement("div");
+      ai.setAttribute("data-fsport-section", "ai_chat");
+      ai.innerHTML = '<div id="aic-container"></div>';
+      var descriptionWrapper = description && (description.closest(".product-hero") || description);
+      root.insertBefore(ai, collection || (descriptionWrapper && descriptionWrapper.nextSibling) || null);
+    }
+    var gallerySection = sections.find(function(section) { return section.type === "photo_gallery"; });
+    if (gallerySection && gallerySection.active !== false && !document.getElementById("photo-gallery-container")) {
+      var gallery = document.createElement("div");
+      gallery.setAttribute("data-fsport-section", "photo_gallery");
+      gallery.className = "product-hero";
+      gallery.innerHTML = '<div id="photo-gallery-container"></div>';
+      root.insertBefore(gallery, collection || null);
+      if (!document.querySelector('script[src*="/js/photo-gallery.js"]')) {
+        var galleryScript = document.createElement("script");
+        galleryScript.src = "/js/photo-gallery.js?v=20260904-lightbox-navigation-1";
+        document.body.appendChild(galleryScript);
+      }
+    }
+    var nodes = {
+      slideshow: document.getElementById("lazySlideshow"),
+      flash_banner: document.getElementById("flashbanner-placeholder"),
+      product_video: root.querySelector('[data-fsport-section="product_video"]'),
+      product_description: description && (description.closest(".product-hero") || description),
+      ai_chat: root.querySelector('[data-fsport-section="ai_chat"]'),
+      photo_gallery: root.querySelector('[data-fsport-section="photo_gallery"]'),
+      collection_grid: collection
+    };
+    sections.forEach(function(section) {
+      var node = nodes[section.type];
+      if (!node) return;
+      node.hidden = section.active === false;
+      node.style.display = section.active === false ? "none" : "";
+      if (section.type === "slideshow") {
+        var zoom = document.getElementById("fullscreenZoom");
+        if (zoom) zoom.hidden = section.active === false;
+      }
+    });
+    // Keep legacy review/CTA blocks in place. Only move managed sections when
+    // an administrator actually changes their relative order in the template.
+    var orderedNodes = sections.map(function(section) { return nodes[section.type]; })
+      .filter(function(node) { return node && node.parentNode === root; });
+    for (var i = orderedNodes.length - 2; i >= 0; i--) {
+      var node = orderedNodes[i];
+      var next = orderedNodes[i + 1];
+      if (node.compareDocumentPosition(next) & Node.DOCUMENT_POSITION_PRECEDING) {
+        root.insertBefore(node, next);
+      }
+    }
+  }
+
   function applyLayout(config) {
     if (!config || !Array.isArray(config.sections)) return;
     var host = document.getElementById("productPageSections");
-    if (!host) return;
+    if (!host) {
+      applyLegacyLayout(config);
+      renderFlashBanner(config);
+      applyStickyFooter(config);
+      return;
+    }
     config.sections
       .slice()
       .sort(function(a, b) { return Number(a.order || 0) - Number(b.order || 0); })

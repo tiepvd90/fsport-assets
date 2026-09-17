@@ -30,7 +30,7 @@
     window.FSPORT_PRODUCT_PAGE_CONFIG_URL = window.FSPORT_PRODUCT_PAGE_CONFIG_URL ||
       "https://xcigbbcpwfzluqazadez.supabase.co/functions/v1/product-page-config";
   </script>
-  <script src="/js/product-page-runtime.js?v=20260913-managed-ysandal-1"></script>
+  <script src="/js/product-page-runtime.js?v=20260917-template-compliance-1"></script>
 
   <style>
     body { background-color: #f9f9f9; }
@@ -80,9 +80,12 @@
     <!-- ✅ Flash Banner -->
     <div id="flashbanner-placeholder"></div>
     <script>
-      fetch("/html/flashsalebanner/ysandal5568.html")
-        .then(res => res.text())
-        .then(html => (document.getElementById("flashbanner-placeholder").innerHTML = html));
+      Promise.resolve(window.FSPORT_PRODUCT_PAGE_CONFIG_PROMISE || null).then(config => {
+        if (config) return;
+        return fetch("/html/flashsalebanner/ysandal5568.html")
+          .then(res => res.text())
+          .then(html => { document.getElementById("flashbanner-placeholder").innerHTML = html; });
+      });
     </script>
 
     <!-- ✅ Tiêu đề + Shipping -->
@@ -222,7 +225,7 @@
       });
     </script>
 
-    <script src="/js/base.js"></script>
+    <script src="/js/base.js?v=20260917-template-compliance-1"></script>
   </div>
 </body>
 </html>

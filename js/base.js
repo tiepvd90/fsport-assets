@@ -141,7 +141,7 @@ setInterval(() => {
   var slug = window.location.pathname.replace(/^.*\//, '') // 'panther.html'
   // Nếu không có slug .html, vẫn tiếp tục nếu #aic-container đã được đặt sẵn trong HTML
   var hasPrePlaced = !!document.getElementById('aic-container')
-  if ((!slug || slug.indexOf('.html') < 0) && !hasPrePlaced) return
+  if ((!slug || slug.indexOf('.html') < 0) && !hasPrePlaced && !window.FSPORT_PRODUCT_PAGE_CONFIG_PROMISE) return
   if (!slug) slug = 'index.html' // trường hợp truy cập qua /
 
   function injectWidget () {
