@@ -406,6 +406,11 @@
   function choiceIsInStock(attr, value, selections) {
     var candidate = Object.assign({}, selections);
     candidate[attr.key] = value.text;
+    if (getProductPage() === "carbon2" && attr.key === "color") {
+      // Let customers switch models even when their previous size is sold out
+      // in the new model. The size selection is cleared on color change.
+      delete candidate.size;
+    }
     if (!hasAvailableCompletion(candidate)) return false;
     if (!usesLiveInventory()) return true;
     return state.variants.some(function (variant) {
@@ -523,6 +528,15 @@
 
           thumb.addEventListener("click", function () {
             if (thumb.classList.contains("is-disabled") || thumb.getAttribute("aria-disabled") === "true") return;
+            // Carbon 1 and Carbon 2 share sizes but have separate inventory.
+            // A size selected for the previous color must be chosen again.
+            if (getProductPage() === "carbon2" && attr.key === "color" &&
+                state.selections.color !== value.text) {
+              $$('.variant-thumb[data-key="size"].selected').forEach(function (el) {
+                el.classList.remove("selected");
+              });
+              delete state.selections.size;
+            }
             $$('.variant-thumb[data-key="' + cssEscape(attr.key) + '"]').forEach(function (el) {
               el.classList.remove("selected");
             });
@@ -1279,7 +1293,9 @@
       quantity: quantity,
       loai: loai,
       page_slug: window.productPage || getProductPage(),
-      product_name: window.productName || document.title || window.productPage || product.id,
+      product_name: getProductPage() === "carbon2"
+        ? (product.product_name || window.productName || document.title || product.id)
+        : (window.productName || document.title || window.productPage || product.id),
       voucher: voucherAmount > 0 ? { amount: voucherAmount } : undefined
     });
 
