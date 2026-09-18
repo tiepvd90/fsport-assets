@@ -249,7 +249,7 @@
 
     if (value.image) out.image = value.image;
     if (value.id) out.id = value.id;
-    ["product_code", "inventory_product_id", "product_name", "category", "color", "size", "stock_qty", "is_active", "image_urls"].forEach(function (key) {
+    ["product_code", "inventory_product_id", "product_name", "model_code", "category", "color", "size", "stock_qty", "is_active", "image_urls"].forEach(function (key) {
       if (value[key] !== undefined) out[key] = value[key];
     });
 
@@ -819,6 +819,12 @@
     var oldFinal = $("#finalPriceLine");
 
     if (mainImage) mainImage.src = data[KEY.image] || "";
+    var carbonOneBadge = $("#carbon1MainSaleBadge");
+    if (carbonOneBadge) {
+      carbonOneBadge.parentElement.classList.toggle("is-carbon2-image", getProductPage() === "carbon2");
+      carbonOneBadge.classList.toggle("is-visible",
+        getProductPage() === "carbon2" && data.model_code === "BAL5617");
+    }
     if (oldFinal) oldFinal.remove();
 
     if (voucherAmount > 0) {

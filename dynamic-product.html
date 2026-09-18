@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>F-Sport</title>
   <link rel="icon" type="image/png" href="/favicon.png">
-  <link rel="stylesheet" href="/css/frontend.css?v=20260910-height-swipe-6">
+  <link rel="stylesheet" href="/css/frontend.css?v=20260919-carbon1-discount-3">
   <script>
     (function () {
       var parts = location.pathname.split("/").filter(Boolean);
@@ -111,12 +111,12 @@
     }
     async function setupPage() {
       await Promise.all([
-        injectHTML("/html/cartpopup.html", "cartPopup-placeholder"),
+        injectHTML("/html/cartpopup.html?v=20260919-carbon1-discount-3", "cartPopup-placeholder"),
         injectHTML("/html/checkoutpopup.html", "checkoutPopup-placeholder"),
         injectHTML("/html/stickyfooter.html", "sticky-footer-placeholder")
       ]);
       await loadScript("/js/voucherpopup.js");
-      await loadScript("/js/cartpopup.js?v=20260917-carbon2-dual-model-1");
+      await loadScript("/js/cartpopup.js?v=20260919-carbon1-discount-3");
       await loadScript("/js/checkoutpopup.js?v=20260913-atomic-purchase-1");
     }
     setupPage().catch(function (error) { console.error("[DynamicProduct] UI setup failed", error); });

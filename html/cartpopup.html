@@ -27,7 +27,10 @@ html
     <button class="cart-popup-close" onclick="toggleCartPopup(false)">&times;</button>
 
     <div class="product-header" style="display: flex; gap: 12px;">
-      <img id="mainImage" src="" alt="Ảnh sản phẩm" />
+      <span class="cart-main-image-wrap">
+        <img id="mainImage" src="" alt="Ảnh sản phẩm" />
+        <span id="carbon1MainSaleBadge" class="cart-main-image-sale" aria-hidden="true">GIẢM 100K</span>
+      </span>
       <div class="product-info" style="display: flex; flex-direction: column; flex: 1;">
         <div>
           <div class="product-price">          
