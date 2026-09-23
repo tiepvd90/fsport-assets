@@ -28,6 +28,11 @@ export async function onRequest(context) {
   const requestUrl = new URL(request.url);
   const normalizedRequestPath = normalizePath(requestUrl.pathname).toLowerCase();
 
+  if (normalizedRequestPath === '/pickleball/collection') {
+    requestUrl.pathname = '/pickleball/bag';
+    return Response.redirect(requestUrl, 301);
+  }
+
   // Preserve every real static asset/page before trying Product Pages.
   const staticResponse = await env.ASSETS.fetch(request);
   if (staticResponse.status !== 404) return staticResponse;
