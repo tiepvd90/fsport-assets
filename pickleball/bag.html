@@ -170,28 +170,10 @@
 
   <!-- 🔚 HẾT KHỐI 4 -->
 
-    <!-- ✅ FreeFlow -->
-<h2 style="font-size: 18px; margin: 24px 12px 12px;">CÓ THỂ BẠN SẼ THÍCH</h2>
-<div id="freeflow-placeholder"></div>
-<script>
-  fetch("/html/freeflow.html")
-    .then(res => res.text())
-    .then(html => {
-      document.getElementById("freeflow-placeholder").innerHTML = html;
-
-      // ✅ Gắn lại sự kiện close popup vì DOM mới được thêm
-      const btn = document.getElementById("videoCloseBtn");
-      if (btn) btn.onclick = function () {
-        const frame = document.getElementById("videoFrame");
-        const popup = document.getElementById("videoOverlay");
-        if (frame) frame.src = "";
-        if (popup) popup.style.display = "none";
-      };
-    });
-</script>
-
-
-  <!-- END FreeFlow -->
+  <!-- Collection Grid - Pickleball -->
+  <div data-fsport-section="collection_grid">
+    <div id="collectionContainer"></div>
+  </div>
   <!-- ✅ Inject popup + footer -->
   <script>
     async function loadScript(src) {
@@ -266,24 +248,16 @@
       });
   </script>
 
-  <!-- ✅ Load FreeFlow -->
-  <script src="../js/freeflow.js"></script>
+  <!-- Collection Grid Script (Pickleball only) -->
   <script>
-    fetch("/html/freeflow.html")
-      .then(res => res.text())
-      .then(html => {
-        const container = document.getElementById("freeflow-placeholder");
-        const temp = document.createElement("div");
-        temp.innerHTML = html;
-        Array.from(temp.children).forEach(el => container.appendChild(el));
-
-        setTimeout(() => {
-          if (typeof fetchFreeFlowData === "function") {
-            fetchFreeFlowData("https://script.google.com/macros/s/AKfycbwuEh9sP65vyQL0XzU8gY1Os0QYV_K5egKJgm8OhImAPjvdyrQiU7XCY909N99TnltP/exec");
-          }
-        }, 200);
-      });
+    window.collectionList = [
+      {
+        title: "PICKLEBALL COLLECTION",
+        slug: "pickleball-collection"
+      }
+    ];
   </script>
+  <script src="/js/collection-grid.js?v=20260909-canonical-api" defer></script>
     <script src="/js/base.js"></script>
 </body>
 </html>
