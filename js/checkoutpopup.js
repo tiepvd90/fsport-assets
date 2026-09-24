@@ -43,8 +43,9 @@ function loadCart() {
 loadCart();
 updateCartItemCount();
 let shippingFee = 0;
-let shippingFeeOriginal = 0;
 let voucherValue = 0;
+let checkoutQuote = null;
+let checkoutQuoteRequestId = 0;
 let checkoutPolicyConsentRequired = true;
 const WEBSITE_SETTINGS_URL =
   "https://xcigbbcpwfzluqazadez.supabase.co/functions/v1/website-settings";
@@ -221,8 +222,10 @@ function whenCheckoutInputsReady(run) {
 // 🔹 POPUP CHECKOUT HIỂN/ẨN
 // ------------------------
 function showCheckoutPopup() {
-  loadShippingFee();
+  checkoutQuote = null;
+  shippingFee = 0;
   renderCheckoutCart();
+  loadShippingFee();
   const consent = document.getElementById("checkoutPolicyConsent");
   const consentError = document.getElementById("checkoutConsentError");
   if (checkoutPolicyConsentRequired && consent) consent.checked = true;
@@ -346,30 +349,19 @@ function renderCheckoutCart() {
   updateCheckoutSummary();
 }
 function updateCheckoutSummary() {
-  const subtotal = window.cart.reduce((sum, item) => sum + cartItemPrice(item) * (item.quantity || 1), 0);
+  const localSubtotal = window.cart.reduce((sum, item) => sum + cartItemPrice(item) * (item.quantity || 1), 0);
   const totalQty = window.cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
-  voucherValue = window.cart.reduce((sum, item) => sum + (item.voucher?.amount || 0) * (item.quantity || 1), 0);
+  const localVoucherValue = window.cart.reduce((sum, item) => sum + (item.voucher?.amount || 0) * (item.quantity || 1), 0);
+  const subtotal = checkoutQuote ? Number(checkoutQuote.subtotal || 0) : localSubtotal;
+  voucherValue = checkoutQuote ? Number(checkoutQuote.voucherValue || 0) : localVoucherValue;
   const shipping = shippingFee;
-  const total = subtotal + shipping - voucherValue;
+  const total = checkoutQuote ? Number(checkoutQuote.total || 0) : subtotal + shipping - voucherValue;
   const qtyEl = document.getElementById("itemQuantityText");
   const subtotalEl = document.getElementById("subtotalText");
   if (qtyEl) qtyEl.textContent = `${totalQty} s\u1ea3n ph\u1ea9m`;
   if (subtotalEl) subtotalEl.textContent = `${subtotal.toLocaleString("vi-VN")}\u0111`;
   const shippingEl = document.getElementById("shippingFeeText");
-  if (shippingEl) {
-    if (shippingFeeOriginal > shippingFee) {
-      shippingEl.innerHTML = `
-        <span style="text-decoration: line-through; color: gray; margin-right: 6px;">
-          ${shippingFeeOriginal.toLocaleString("vi-VN")}\u0111
-        </span>
-        <span style="color: red; font-weight: bold;">
-          ${shippingFee.toLocaleString("vi-VN")}\u0111
-        </span>
-      `;
-    } else {
-      shippingEl.textContent = `${shippingFee.toLocaleString("vi-VN")}\u0111`;
-    }
-  }
+  if (shippingEl) shippingEl.textContent = `${shippingFee.toLocaleString("vi-VN")}\u0111`;
   const voucherTextEl = document.getElementById("voucherText");
   if (voucherTextEl) {
     if (voucherValue > 0) {
@@ -389,12 +381,16 @@ function changeItemQty(index, delta) {
   const item = window.cart[index];
   item.quantity = Math.max(1, (item.quantity || 1) + delta);
   saveCart();
+  checkoutQuote = null;
   renderCheckoutCart();
+  loadShippingFee();
 }
 function removeItem(index) {
   window.cart.splice(index, 1);
   saveCart();
+  checkoutQuote = null;
   renderCheckoutCart();
+  loadShippingFee();
 }
 function saveCart() {
   localStorage.setItem("cart", JSON.stringify(window.cart));
@@ -403,30 +399,51 @@ function saveCart() {
 // ------------------------
 // 🔹 PHÍ VẬN CHUYỂN
 // ------------------------
-function loadShippingFee() {
-  fetch("/json/shippingfee.json")
-    .then(res => res.json())
-    .then(data => {
-      const fees = window.cart.map(i => {
-        if (i.id && data.byId && data.byId.hasOwnProperty(i.id)) {
-          return data.byId[i.id];
-        }
-        if (i.category && data.byCategory && data.byCategory.hasOwnProperty(i.category)) {
-          return data.byCategory[i.category];
-        }
-        return 0;
-      });
-      const maxFee = Math.max(...fees, 0);
-      shippingFeeOriginal = maxFee;
-      shippingFee = Math.round(maxFee * 0.4);
-      updateCheckoutSummary();
-    })
-    .catch(err => {
-      console.warn("Không thể tải shippingfee.json:", err);
-      shippingFeeOriginal = 0;
-      shippingFee = 0;
-      updateCheckoutSummary();
+async function loadShippingFee() {
+  const requestId = ++checkoutQuoteRequestId;
+  if (!window.cart.length) {
+    checkoutQuote = null;
+    shippingFee = 0;
+    updateCheckoutSummary();
+    return null;
+  }
+  const baseUrl = window.FSPORT_SUPABASE_URL || "https://xcigbbcpwfzluqazadez.supabase.co";
+  const anonKey = window.FSPORT_SUPABASE_ANON || "";
+  try {
+    const response = await fetch(baseUrl + "/functions/v1/checkout-quote", {
+      method: "POST",
+      cache: "no-store",
+      headers: {
+        "content-type": "application/json",
+        "apikey": anonKey,
+        "authorization": "Bearer " + anonKey
+      },
+      body: JSON.stringify({
+        items: window.cart.map(item => ({
+          inventory_product_id: item.inventory_product_id || null,
+          product_code: item.product_code || item.id || item.feed_product_code || null,
+          unit_price: cartItemPrice(item),
+          voucher_amount: Number(item.voucher && item.voucher.amount || 0),
+          quantity: Number(item.quantity || 1)
+        })),
+        promo_discount: Number(window.promoCodeDiscount || 0)
+      })
     });
+    if (!response.ok) throw new Error("Checkout quote HTTP " + response.status);
+    const quote = await response.json();
+    if (requestId !== checkoutQuoteRequestId) return null;
+    checkoutQuote = quote;
+    shippingFee = Math.max(0, Number(quote.shippingFee || 0));
+    updateCheckoutSummary();
+    return quote;
+  } catch (error) {
+    if (requestId !== checkoutQuoteRequestId) return null;
+    console.warn("Không thể tải báo giá checkout từ backend:", error);
+    checkoutQuote = null;
+    shippingFee = 0;
+    updateCheckoutSummary();
+    return null;
+  }
 }
 // ------------------------
 // 🔹 GỬI ĐƠN HÀNG
@@ -501,6 +518,7 @@ async function submitOrder() {
     btn.textContent = originalText;
     return;
   }
+  await loadShippingFee();
   const firstItem = window.cart[0] || {};
   const category = firstItem.category || "unknown";
   const orderData = {
@@ -650,6 +668,7 @@ async function submitOrder() {
       _orderId = confirmedOrder.orderId || _orderId;
       _orderCode = confirmedOrder.orderCode || _orderCode;
       orderData.total = Number(confirmedOrder.total != null ? confirmedOrder.total : orderData.total);
+      orderData.shippingFee = Number(confirmedOrder.shippingFee != null ? confirmedOrder.shippingFee : orderData.shippingFee);
       clearCheckoutAttempt(_orderId);
       window.cart = [];
       saveCart();
@@ -1048,6 +1067,7 @@ async function sendOrderToERP(orderData, orderId, orderCode) {
       orderId: rpcResult.order_id,
       orderCode: rpcResult.order_code,
       total: Number(rpcResult.total || 0),
+      shippingFee: Number(rpcResult.shipping_fee || 0),
       itemCount: Number(rpcResult.item_count || 0),
       customerId: customerId
     };
