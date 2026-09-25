@@ -1059,7 +1059,12 @@
     if (!popup || !content) return;
 
     if (show) {
-      if (!state.isOpen) trackAddToWishlist();
+      if (!state.isOpen) {
+        trackAddToWishlist();
+        if (typeof window.trackOpenAIProductOptionsViewed === "function") {
+          window.trackOpenAIProductOptionsViewed();
+        }
+      }
       // Không để thông báo cookie che nút mua hoặc các lựa chọn phân loại.
       var trackingNotice = document.getElementById("fsTrackingConsent");
       if (trackingNotice) trackingNotice.remove();
@@ -1308,6 +1313,9 @@
     window.cart.push(cartItem);
     saveCart();
     trackAddToCart(product, phanLoaiText, quantity, loai);
+    if (typeof window.trackOpenAIAddToCart === "function") {
+      window.trackOpenAIAddToCart();
+    }
 
     toggleCartPopup(false);
     if (typeof window.showCheckoutPopup === "function") window.showCheckoutPopup();
@@ -1401,6 +1409,9 @@
         window.baseVariant = state.base;
         window.allVariants = state.variants;
         window.mainImageKey = state.mainImageKey;
+        if (typeof window.trackOpenAIViewContent === "function") {
+          window.trackOpenAIViewContent();
+        }
         trackGA4ViewItem();
         renderOptions();
         bindAddToCartButton();

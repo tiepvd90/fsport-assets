@@ -5,6 +5,71 @@ window["ga-disable-G-RXC205951M"] = false;
 
 // Expose ngay từ đầu để các thao tác sản phẩm không phụ thuộc thứ tự tải script.
 window.trackBothPixels = trackBothPixels;
+window.trackOpenAIViewContent = trackOpenAIViewContent;
+window.trackOpenAIProductOptionsViewed = trackOpenAIProductOptionsViewed;
+window.trackOpenAIAddToCart = trackOpenAIAddToCart;
+window.trackOpenAIPurchase = trackOpenAIPurchase;
+
+// ======= OpenAI Ads Measurement Pixel (1iAGkYKdSSarmsdcBG351J) =======
+// Keep this queue available even when the CDN is delayed or blocked. Tracking
+// must never become a dependency of the product or checkout flows.
+!function(w,d,s,u){if(w.oaiq)return;var q=function(){q.q.push(arguments)};q.q=[];w.oaiq=q;var j=d.createElement(s);j.async=1;j.src=u;var f=d.getElementsByTagName(s)[0];f.parentNode.insertBefore(j,f)}(window,document,"script","https://bzrcdn.openai.com/sdk/oaiq.min.js");
+
+if (!window.__fsportOpenAIAdsInitialized) {
+  window.__fsportOpenAIAdsInitialized = true;
+  try {
+    window.oaiq("init", { pixelId: "1iAGkYKdSSarmsdcBG351J", debug: true });
+  } catch (error) {
+    console.warn("[OpenAI Ads] Pixel initialization was skipped", error);
+  }
+}
+
+var openAITrackedProductViews = new Set();
+var openAITrackedOptionsViews = new Set();
+
+function getOpenAIProductPageKey() {
+  return String(window.location.pathname || "") + String(window.location.search || "");
+}
+
+function measureOpenAI(eventName, data, options) {
+  try {
+    if (typeof window.oaiq !== "function") return false;
+    if (options) window.oaiq("measure", eventName, data, options);
+    else window.oaiq("measure", eventName, data);
+    return true;
+  } catch (error) {
+    console.warn("[OpenAI Ads] Event was skipped:", eventName, error);
+    return false;
+  }
+}
+
+function trackOpenAIViewContent() {
+  var key = getOpenAIProductPageKey();
+  if (openAITrackedProductViews.has(key)) return false;
+  if (!measureOpenAI("page_viewed", { type: "contents" })) return false;
+  openAITrackedProductViews.add(key);
+  return true;
+}
+
+function trackOpenAIProductOptionsViewed() {
+  var key = getOpenAIProductPageKey();
+  if (openAITrackedOptionsViews.has(key)) return false;
+  if (!measureOpenAI(
+    "custom",
+    { type: "custom" },
+    { custom_event_name: "product-options-viewed" }
+  )) return false;
+  openAITrackedOptionsViews.add(key);
+  return true;
+}
+
+function trackOpenAIAddToCart() {
+  return measureOpenAI("items_added", { type: "contents" });
+}
+
+function trackOpenAIPurchase() {
+  return measureOpenAI("order_created", { type: "contents" });
+}
 // tracking.js
 // ======= Meta Pixel chính (2551563688514905) =======
 !function(f,b,e,v,n,t,s)

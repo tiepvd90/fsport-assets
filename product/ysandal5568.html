@@ -54,7 +54,7 @@
 
 <body>
   <!-- ✅ Tracking -->
-  <script src="../js/tracking.js?v=20260904-atc-reliable-1"></script>
+  <script src="../js/tracking.js?v=20260925-openai-ads-1"></script>
   <script>
     trackBothPixels("ViewContent", {
       content_id: window.productPage,
@@ -175,8 +175,8 @@
         await injectHTML("/html/checkoutpopup.html", "checkoutPopup-placeholder");
         await injectHTML("/html/stickyfooter.html", "sticky-footer-placeholder");
         await loadScript("../js/voucherpopup.js");
-        await loadScript("/js/cartpopup.js?v=20260910-height-swipe-6");
-        await loadScript("../js/checkoutpopup.js?v=20260924-backend-shipping-1");
+        await loadScript("/js/cartpopup.js?v=20260925-openai-ads-1");
+        await loadScript("../js/checkoutpopup.js?v=20260925-openai-ads-1");
         setTimeout(async () => {
           const map = await fetchVoucherMap();
           window.__vouchersRaw = map[window.loai] || {};

@@ -116,8 +116,8 @@
         injectHTML("/html/stickyfooter.html", "sticky-footer-placeholder")
       ]);
       await loadScript("/js/voucherpopup.js");
-      await loadScript("/js/cartpopup.js?v=20260919-carbon1-discount-3");
-      await loadScript("/js/checkoutpopup.js?v=20260924-backend-shipping-1");
+      await loadScript("/js/cartpopup.js?v=20260925-openai-ads-1");
+      await loadScript("/js/checkoutpopup.js?v=20260925-openai-ads-1");
     }
     setupPage().catch(function (error) { console.error("[DynamicProduct] UI setup failed", error); });
     window.FSPORT_PRODUCT_PAGE_CONFIG_PROMISE.then(function (config) {
@@ -129,7 +129,7 @@
 
   <script>window.collectionList = [];</script>
   <script src="/js/collection-grid.js?v=20260909-canonical-api" defer></script>
-  <script src="/js/tracking.js?v=20260904-atc-reliable-1"></script>
+  <script src="/js/tracking.js?v=20260925-openai-ads-1"></script>
   <div id="base-placeholder"></div>
   <script>
     fetch("/html/base.html").then(function (response) { return response.text(); }).then(function (html) {

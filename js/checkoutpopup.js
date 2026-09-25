@@ -636,6 +636,10 @@ async function submitOrder() {
       });
     }
 
+    if (typeof window.trackOpenAIPurchase === "function") {
+      window.trackOpenAIPurchase();
+    }
+
     markPurchaseTracked(confirmedOrderId);
     await identifyPromise;
   }
