@@ -83,6 +83,8 @@ const trackedPurchaseOrderIds = new Set();
 const GA4_PURCHASED_ORDERS_KEY = "fsport_ga4_purchased_orders";
 const PURCHASED_ORDERS_KEY = "fsport_purchased_orders";
 const CHECKOUT_ATTEMPT_KEY = "fsport_pending_checkout";
+const SPECIFIC_PHONE_CORRECTION_KEY = "fsport_phone_correction_092926_14961584";
+const SPECIFIC_PHONE_CORRECTION_OLD_PHONE = "035323889";
 
 function readStoredOrderIds(key) {
   try {
@@ -171,6 +173,374 @@ function clearCheckoutAttempt(orderId) {
 // ------------------------
 // 🔹 AUTOSAVE – THÔNG TIN NGƯỜI NHẬN
 // ------------------------
+function parseVietnamCheckoutPhone(rawPhone) {
+  const raw = String(rawPhone || "").trim();
+  if (!raw) {
+    return { normalized: null, message: "Vui lòng nhập số điện thoại." };
+  }
+
+  // Customers may use spaces, dots, hyphens or parentheses for readability.
+  const compact = raw.replace(/[\s.()\-]/g, "");
+  if (!/^\+?\d+$/.test(compact)) {
+    return { normalized: null, message: "Số điện thoại chứa ký tự không hợp lệ." };
+  }
+
+  let nationalNumber;
+  if (compact.startsWith("+84")) {
+    nationalNumber = compact.slice(3);
+  } else if (compact.startsWith("84")) {
+    nationalNumber = compact.slice(2);
+  } else if (compact.startsWith("0")) {
+    nationalNumber = compact.slice(1);
+  } else {
+    return {
+      normalized: null,
+      message: "Số điện thoại phải bắt đầu bằng 0, 84 hoặc +84."
+    };
+  }
+
+  if (nationalNumber.length < 9) {
+    const missing = 9 - nationalNumber.length;
+    return {
+      normalized: null,
+      message: `Số điện thoại đang thiếu ${missing} chữ số.`
+    };
+  }
+  if (nationalNumber.length > 9) {
+    const extra = nationalNumber.length - 9;
+    return {
+      normalized: null,
+      message: `Số điện thoại đang thừa ${extra} chữ số.`
+    };
+  }
+
+  return { normalized: "0" + nationalNumber, message: "" };
+}
+
+function formatVietnamCheckoutPhone(normalizedPhone) {
+  return String(normalizedPhone || "").replace(/^(\d{4})(\d{3})(\d{3})$/, "$1 $2 $3");
+}
+
+function setCheckoutPhoneError(message) {
+  const input = document.getElementById("checkoutPhone");
+  const error = document.getElementById("checkoutPhoneError");
+  if (input) {
+    input.classList.toggle("has-error", Boolean(message));
+    input.setAttribute("aria-invalid", message ? "true" : "false");
+  }
+  if (error) {
+    error.textContent = message || "";
+    error.hidden = !message;
+  }
+}
+
+function validateAndFormatCheckoutPhone(showError) {
+  const input = document.getElementById("checkoutPhone");
+  if (!input) return { normalized: null, message: "Vui lòng nhập số điện thoại." };
+  const result = parseVietnamCheckoutPhone(input.value);
+  if (result.normalized) input.value = formatVietnamCheckoutPhone(result.normalized);
+  if (showError || result.normalized) setCheckoutPhoneError(result.message);
+  return result;
+}
+
+function readSpecificPhoneCorrectionState() {
+  try {
+    const state = JSON.parse(localStorage.getItem(SPECIFIC_PHONE_CORRECTION_KEY) || "null");
+    return state && typeof state === "object" ? state : null;
+  } catch (e) {
+    return null;
+  }
+}
+
+function cachedPhoneForSpecificCorrection(rawPhone) {
+  const compact = String(rawPhone || "").replace(/[^0-9+]/g, "");
+  if (compact.startsWith("+84")) return "0" + compact.slice(3);
+  if (compact.startsWith("84")) return "0" + compact.slice(2);
+  return compact;
+}
+
+function shouldShowSpecificPhoneCorrection() {
+  const state = readSpecificPhoneCorrectionState();
+  if (state && state.status === "completed") return false;
+  try {
+    const checkoutInfo = JSON.parse(localStorage.getItem("checkoutInfo") || "{}");
+    return cachedPhoneForSpecificCorrection(checkoutInfo.phone) === SPECIFIC_PHONE_CORRECTION_OLD_PHONE;
+  } catch (e) {
+    return false;
+  }
+}
+
+function setSpecificPhoneCorrectionError(message) {
+  const input = document.getElementById("specificPhoneCorrectionInput");
+  const error = document.getElementById("specificPhoneCorrectionError");
+  if (input) {
+    input.classList.toggle("has-error", Boolean(message));
+    input.setAttribute("aria-invalid", message ? "true" : "false");
+  }
+  if (error) {
+    error.textContent = message || "";
+    error.hidden = !message;
+  }
+}
+
+function closeSpecificPhoneCorrection() {
+  const notice = document.getElementById("specificPhoneCorrection");
+  if (notice) notice.hidden = true;
+  document.body.style.overflow = "auto";
+}
+
+async function findEligibleSpecificPhoneCorrectionOrder() {
+  const baseUrl = window.FSPORT_SUPABASE_URL || "https://xcigbbcpwfzluqazadez.supabase.co";
+  const anonKey = window.FSPORT_SUPABASE_ANON || "";
+  const state = readSpecificPhoneCorrectionState();
+  const cachedOrderIds = readStoredOrderIds(PURCHASED_ORDERS_KEY).slice().reverse();
+  if (state && state.originalOrderId && !cachedOrderIds.includes(state.originalOrderId)) {
+    cachedOrderIds.unshift(state.originalOrderId);
+  }
+
+  for (const originalOrderId of cachedOrderIds) {
+    try {
+      const response = await fetch(
+        baseUrl + "/rest/v1/rpc/get_specific_checkout_phone_recovery_context",
+        {
+          method: "POST",
+          cache: "no-store",
+          headers: {
+            "content-type": "application/json",
+            "apikey": anonKey,
+            "authorization": "Bearer " + anonKey
+          },
+          body: JSON.stringify({ p_original_order_id: originalOrderId })
+        }
+      );
+      if (!response.ok) continue;
+      const context = await response.json();
+      if (context && context.eligible === true) {
+        return { originalOrderId, context };
+      }
+    } catch (error) {
+      console.warn("Specific phone correction eligibility check failed:", error);
+      return null;
+    }
+  }
+  return null;
+}
+
+function formatSpecificCorrectionOldPhone(rawPhone) {
+  const digits = String(rawPhone || "").replace(/\D/g, "");
+  if (digits.length === 9) return digits.replace(/^(\d{3})(\d{3})(\d{3})$/, "$1 $2 $3");
+  return rawPhone || "—";
+}
+
+function renderSpecificPhoneCorrectionContext(context) {
+  const itemsEl = document.getElementById("specificPhoneCorrectionItems");
+  const phoneEl = document.getElementById("specificPhoneCorrectionOldPhone");
+  const addressEl = document.getElementById("specificPhoneCorrectionAddress");
+  if (phoneEl) phoneEl.textContent = formatSpecificCorrectionOldPhone(context.customer_phone);
+  if (addressEl) addressEl.textContent = context.customer_address || "Chưa có địa chỉ";
+  if (!itemsEl) return;
+
+  itemsEl.replaceChildren();
+  const items = Array.isArray(context.items) ? context.items : [];
+  items.forEach(function (item) {
+    const row = document.createElement("div");
+    row.className = "phone-correction-item";
+
+    const media = document.createElement("div");
+    if (item.product_image) {
+      const image = document.createElement("img");
+      image.className = "phone-correction-item-image";
+      image.src = item.product_image;
+      image.alt = item.product_name || "Sản phẩm đã đặt";
+      image.loading = "lazy";
+      image.addEventListener("error", function () {
+        media.className = "phone-correction-item-image-placeholder";
+        media.textContent = "Ảnh sản phẩm";
+        media.replaceChildren(document.createTextNode("Ảnh sản phẩm"));
+      }, { once: true });
+      media.appendChild(image);
+    } else {
+      media.className = "phone-correction-item-image-placeholder";
+      media.textContent = "Ảnh sản phẩm";
+    }
+
+    const details = document.createElement("div");
+    details.className = "phone-correction-item-details";
+    const name = document.createElement("div");
+    name.className = "phone-correction-item-name";
+    name.textContent = item.product_name || "Sản phẩm đã đặt";
+    const meta = document.createElement("div");
+    meta.className = "phone-correction-item-meta";
+    const classification = [item.color, item.size].filter(Boolean).join(" / ");
+    const metaParts = [];
+    if (classification) metaParts.push("Phân loại: " + classification);
+    metaParts.push("Số lượng: " + Number(item.quantity || 1));
+    meta.textContent = metaParts.join(" · ");
+    details.append(name, meta);
+    row.append(media, details);
+    itemsEl.appendChild(row);
+  });
+}
+
+async function requestSpecificPhoneCorrection(originalOrderId, state, correctedPhone) {
+  const baseUrl = window.FSPORT_SUPABASE_URL || "https://xcigbbcpwfzluqazadez.supabase.co";
+  const anonKey = window.FSPORT_SUPABASE_ANON || "";
+  const response = await fetch(baseUrl + "/rest/v1/rpc/recover_specific_checkout_phone", {
+    method: "POST",
+    cache: "no-store",
+    headers: {
+      "content-type": "application/json",
+      "apikey": anonKey,
+      "authorization": "Bearer " + anonKey
+    },
+    body: JSON.stringify({
+      p_original_order_id: originalOrderId,
+      p_replacement_order_id: state.replacementOrderId,
+      p_replacement_order_code: state.replacementOrderCode,
+      p_new_phone: correctedPhone
+    })
+  });
+  const text = await response.text();
+  let payload = null;
+  try { payload = JSON.parse(text || "null"); } catch (e) {}
+  if (!response.ok) {
+    const error = new Error(payload && (payload.message || payload.error) || text || "Không thể tạo đơn thay thế.");
+    error.status = response.status;
+    throw error;
+  }
+  return payload || {};
+}
+
+async function submitSpecificPhoneCorrection() {
+  const input = document.getElementById("specificPhoneCorrectionInput");
+  const button = document.getElementById("specificPhoneCorrectionSubmit");
+  const status = document.getElementById("specificPhoneCorrectionStatus");
+  if (!input || !button) return;
+
+  const phoneResult = parseVietnamCheckoutPhone(input.value);
+  if (!phoneResult.normalized) {
+    setSpecificPhoneCorrectionError(phoneResult.message);
+    input.focus();
+    return;
+  }
+
+  input.value = formatVietnamCheckoutPhone(phoneResult.normalized);
+  setSpecificPhoneCorrectionError("");
+  if (status) status.hidden = true;
+  button.disabled = true;
+  button.textContent = "ĐANG TẠO LẠI ĐƠN...";
+
+  let state = readSpecificPhoneCorrectionState();
+  if (!state || state.status === "completed") state = {};
+  state.status = "pending";
+  if (!state.replacementOrderId) state.replacementOrderId = newCheckoutUuid();
+  if (!state.replacementOrderCode) state.replacementOrderCode = newCheckoutCode();
+  if (!state.createdAt) state.createdAt = Date.now();
+  state.correctedPhone = phoneResult.normalized;
+  localStorage.setItem(SPECIFIC_PHONE_CORRECTION_KEY, JSON.stringify(state));
+
+  const cachedOrderIds = readStoredOrderIds(PURCHASED_ORDERS_KEY).slice().reverse();
+  if (state.originalOrderId && !cachedOrderIds.includes(state.originalOrderId)) {
+    cachedOrderIds.unshift(state.originalOrderId);
+  }
+
+  if (!cachedOrderIds.length) {
+    setSpecificPhoneCorrectionError("Không tìm thấy dữ liệu đơn hàng trên trình duyệt này.");
+    button.disabled = false;
+    button.textContent = "CẬP NHẬT SỐ ĐIỆN THOẠI";
+    return;
+  }
+
+  let result = null;
+  let lastError = null;
+  for (const originalOrderId of cachedOrderIds) {
+    try {
+      result = await requestSpecificPhoneCorrection(originalOrderId, state, phoneResult.normalized);
+      state.originalOrderId = originalOrderId;
+      break;
+    } catch (error) {
+      lastError = error;
+    }
+  }
+
+  if (!result || !result.replacement_order_id) {
+    console.warn("Specific phone correction failed:", lastError);
+    setSpecificPhoneCorrectionError("Chưa thể cập nhật đơn hàng. Vui lòng thử lại sau.");
+    button.disabled = false;
+    button.textContent = "CẬP NHẬT SỐ ĐIỆN THOẠI";
+    return;
+  }
+
+  state.status = "completed";
+  state.completedAt = Date.now();
+  state.correctedPhone = result.customer_phone || phoneResult.normalized;
+  state.replacementOrderId = result.replacement_order_id;
+  state.replacementOrderCode = result.replacement_order_code;
+  localStorage.setItem(SPECIFIC_PHONE_CORRECTION_KEY, JSON.stringify(state));
+
+  try {
+    const checkoutInfo = JSON.parse(localStorage.getItem("checkoutInfo") || "{}");
+    checkoutInfo.phone = state.correctedPhone;
+    localStorage.setItem("checkoutInfo", JSON.stringify(checkoutInfo));
+  } catch (e) {}
+
+  const checkoutPhone = document.getElementById("checkoutPhone");
+  if (checkoutPhone) checkoutPhone.value = formatVietnamCheckoutPhone(state.correctedPhone);
+  input.value = formatVietnamCheckoutPhone(state.correctedPhone);
+  markPurchaseTracked(state.replacementOrderId);
+  button.textContent = "ĐÃ CẬP NHẬT";
+  if (status) {
+    status.textContent = "Đã cập nhật số điện thoại và tạo lại đơn hàng. Shop sẽ liên hệ theo số mới.";
+    status.hidden = false;
+  }
+}
+
+async function maybeShowSpecificPhoneCorrection() {
+  const notice = document.getElementById("specificPhoneCorrection");
+  const input = document.getElementById("specificPhoneCorrectionInput");
+  const button = document.getElementById("specificPhoneCorrectionSubmit");
+  const close = document.getElementById("specificPhoneCorrectionClose");
+  if (!notice || !input || !button || !close || !shouldShowSpecificPhoneCorrection()) return;
+  if (notice.dataset.eligibilityChecking === "true" || notice.dataset.eligibilityChecked === "true") return;
+
+  notice.dataset.eligibilityChecking = "true";
+  const eligibility = await findEligibleSpecificPhoneCorrectionOrder();
+  notice.dataset.eligibilityChecking = "false";
+  notice.dataset.eligibilityChecked = "true";
+  if (!eligibility || !shouldShowSpecificPhoneCorrection()) return;
+
+  const currentState = readSpecificPhoneCorrectionState() || {};
+  currentState.status = "eligible";
+  currentState.originalOrderId = eligibility.originalOrderId;
+  localStorage.setItem(SPECIFIC_PHONE_CORRECTION_KEY, JSON.stringify(currentState));
+  renderSpecificPhoneCorrectionContext(eligibility.context);
+
+  if (!notice.dataset.bound) {
+    input.addEventListener("input", function () {
+      setSpecificPhoneCorrectionError("");
+    });
+    input.addEventListener("blur", function () {
+      const result = parseVietnamCheckoutPhone(input.value);
+      if (result.normalized) input.value = formatVietnamCheckoutPhone(result.normalized);
+      setSpecificPhoneCorrectionError(result.message);
+    });
+    input.addEventListener("keydown", function (event) {
+      if (event.key === "Enter") submitSpecificPhoneCorrection();
+    });
+    button.addEventListener("click", submitSpecificPhoneCorrection);
+    close.addEventListener("click", closeSpecificPhoneCorrection);
+    notice.dataset.bound = "true";
+  }
+
+  const state = readSpecificPhoneCorrectionState();
+  if (state && state.correctedPhone) {
+    input.value = formatVietnamCheckoutPhone(state.correctedPhone);
+  }
+  notice.hidden = false;
+  document.body.style.overflow = "hidden";
+  window.setTimeout(function () { input.focus(); }, 0);
+}
+
 function hydrateCheckoutInfo() {
   try {
     const saved = JSON.parse(localStorage.getItem("checkoutInfo") || "{}");
@@ -178,7 +548,16 @@ function hydrateCheckoutInfo() {
     const phoneEl = document.getElementById("checkoutPhone");
     const addressEl = document.getElementById("checkoutAddress");
     if (nameEl && typeof saved.name === "string") nameEl.value = saved.name;
-    if (phoneEl && typeof saved.phone === "string") phoneEl.value = saved.phone;
+    if (phoneEl && typeof saved.phone === "string") {
+      const parsedPhone = parseVietnamCheckoutPhone(saved.phone);
+      phoneEl.value = parsedPhone.normalized
+        ? formatVietnamCheckoutPhone(parsedPhone.normalized)
+        : saved.phone;
+      if (parsedPhone.normalized && saved.phone !== parsedPhone.normalized) {
+        saved.phone = parsedPhone.normalized;
+        localStorage.setItem("checkoutInfo", JSON.stringify(saved));
+      }
+    }
     if (addressEl && typeof saved.address === "string") addressEl.value = saved.address;
   } catch (e) {
     console.warn("Không parse được checkoutInfo:", e);
@@ -191,9 +570,11 @@ function setupLiveSaveCheckoutInfo() {
   [nameEl, phoneEl, addressEl].forEach((el) => {
     if (el && !el.dataset.autosaveBound) {
       const handler = () => {
+        const phoneValue = document.getElementById("checkoutPhone")?.value || "";
+        const parsedPhone = parseVietnamCheckoutPhone(phoneValue);
         const newInfo = {
           name: (document.getElementById("checkoutName")?.value || "").trim(),
-          phone: (document.getElementById("checkoutPhone")?.value || "").trim(),
+          phone: parsedPhone.normalized || "",
           address: (document.getElementById("checkoutAddress")?.value || "").trim(),
         };
         localStorage.setItem("checkoutInfo", JSON.stringify(newInfo));
@@ -496,9 +877,17 @@ async function submitOrder() {
   btn.disabled = true;
   btn.textContent = "\u0110ang g\u1eedi...";
   const name = document.getElementById("checkoutName")?.value.trim();
-  const phone = document.getElementById("checkoutPhone")?.value.trim();
+  const phoneInput = document.getElementById("checkoutPhone");
+  const phoneResult = validateAndFormatCheckoutPhone(true);
+  const phone = phoneResult.normalized;
   const address = document.getElementById("checkoutAddress")?.value.trim();
-  if (!name || !phone || !address) {
+  if (!phone) {
+    if (phoneInput) phoneInput.focus();
+    btn.disabled = false;
+    btn.textContent = originalText;
+    return;
+  }
+  if (!name || !address) {
     alert("Vui l\u00f2ng nh\u1eadp \u0111\u1ea7y \u0111\u1ee7 th\u00f4ng tin.");
     btn.disabled = false;
     btn.textContent = originalText;
@@ -731,6 +1120,16 @@ function bindCheckoutEvents() {
     });
     consent.dataset.bound = "true";
   }
+  const phone = document.getElementById("checkoutPhone");
+  if (phone && !phone.dataset.phoneValidationBound) {
+    phone.addEventListener("input", function () {
+      setCheckoutPhoneError("");
+    });
+    phone.addEventListener("blur", function () {
+      validateAndFormatCheckoutPhone(true);
+    });
+    phone.dataset.phoneValidationBound = "true";
+  }
 }
 // ------------------------
 // 🔹 THANK YOU POPUP
@@ -778,8 +1177,10 @@ window.addEventListener("DOMContentLoaded", () => {
   whenCheckoutInputsReady(() => {
     hydrateCheckoutInfo();
     setupLiveSaveCheckoutInfo();
+    maybeShowSpecificPhoneCorrection();
   });
 });
+
 // ✅ Inject HTML thankyouPopup
 fetch("/html/thanks-afterpurchase.html")
   .then(res => {
@@ -1080,3 +1481,7 @@ async function sendOrderToERP(orderData, orderId, orderCode) {
     throw err;
   }
 }
+
+// Most product pages inject checkoutpopup.html and this script after
+// DOMContentLoaded. Run this after the Supabase configuration above exists.
+whenCheckoutInputsReady(maybeShowSpecificPhoneCorrection);

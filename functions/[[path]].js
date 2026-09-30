@@ -19,6 +19,20 @@ function escapeHtml(value) {
     .replace(/'/g, '&#39;');
 }
 
+function upsertHeadLink(html, rel, href) {
+  const tag = `<link rel="${rel}" href="${escapeHtml(href)}">`;
+  const pattern = new RegExp(`<link\\s+[^>]*rel=["']${rel}["'][^>]*>`, 'i');
+  if (pattern.test(html)) return html.replace(pattern, tag);
+  return html.replace(/<\/head>/i, `  ${tag}\n</head>`);
+}
+
+function upsertHeadMeta(html, property, content) {
+  const tag = `<meta property="${property}" content="${escapeHtml(content)}">`;
+  const pattern = new RegExp(`<meta\\s+[^>]*property=["']${property}["'][^>]*>`, 'i');
+  if (pattern.test(html)) return html.replace(pattern, tag);
+  return html.replace(/<\/head>/i, `  ${tag}\n</head>`);
+}
+
 export async function onRequest(context) {
   const { request, env, params } = context;
   if (request.method !== 'GET' && request.method !== 'HEAD') {
@@ -68,10 +82,15 @@ export async function onRequest(context) {
   const pageTitle = String(config.title || '').trim();
   if (!pageTitle || !dynamicResponse.ok) return dynamicResponse;
 
-  const html = (await dynamicResponse.text()).replace(
+  const canonicalUrl = `${requestUrl.origin}${requestUrl.pathname}`;
+  let html = (await dynamicResponse.text()).replace(
     /<title>[\s\S]*?<\/title>/i,
     `<title>${escapeHtml(pageTitle)}</title>`
   );
+  // Product Pages must keep the host the customer requested. In particular,
+  // an apex request must never acquire a www URL through rendered metadata.
+  html = upsertHeadLink(html, 'canonical', canonicalUrl);
+  html = upsertHeadMeta(html, 'og:url', canonicalUrl);
   const headers = new Headers(dynamicResponse.headers);
   headers.delete('content-length');
   headers.delete('content-encoding');

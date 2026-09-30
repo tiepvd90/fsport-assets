@@ -62,8 +62,20 @@
 
       <div class="checkout-form">
         <div class="form-row">
-          <input type="text" id="checkoutName" placeholder="Họ và Tên" />
-          <input type="tel" id="checkoutPhone" placeholder="Số điện thoại" />
+          <div class="checkout-field">
+            <input type="text" id="checkoutName" placeholder="Họ và Tên" />
+          </div>
+          <div class="checkout-field">
+            <input
+              type="tel"
+              id="checkoutPhone"
+              placeholder="Số điện thoại"
+              inputmode="tel"
+              aria-describedby="checkoutPhoneError"
+              aria-invalid="false"
+            />
+            <p id="checkoutPhoneError" class="checkout-field-error" role="alert" aria-live="polite" hidden></p>
+          </div>
         </div>
         <input type="text" id="checkoutAddress" placeholder="Địa chỉ nhận hàng" />
       </div>
@@ -71,6 +83,47 @@
       <button id="checkoutSubmitBtn">ĐẶT HÀNG NGAY</button>
     </div>
   </div>
+</div>
+
+<!-- One-time phone correction for order #092926-14961584 -->
+<div id="specificPhoneCorrection" class="phone-correction" hidden>
+  <div class="phone-correction-overlay"></div>
+  <section class="phone-correction-card" role="dialog" aria-modal="true" aria-labelledby="specificPhoneCorrectionTitle">
+    <button type="button" id="specificPhoneCorrectionClose" class="phone-correction-close" aria-label="Đóng">&times;</button>
+    <div class="phone-correction-icon" aria-hidden="true">!</div>
+    <h2 id="specificPhoneCorrectionTitle">Số điện thoại chưa chính xác</h2>
+    <p>
+      Thông tin liên hệ của đơn hàng dưới đây đang bị thiếu số.
+      Vui lòng kiểm tra và nhập lại số điện thoại đúng.
+    </p>
+    <div class="phone-correction-order-summary">
+      <div id="specificPhoneCorrectionItems" class="phone-correction-items"></div>
+      <div class="phone-correction-old-info">
+        <div class="phone-correction-info-row">
+          <span>Số điện thoại cũ</span>
+          <strong id="specificPhoneCorrectionOldPhone">—</strong>
+        </div>
+        <div class="phone-correction-info-row phone-correction-address-row">
+          <span>Địa chỉ nhận</span>
+          <strong id="specificPhoneCorrectionAddress">—</strong>
+        </div>
+      </div>
+    </div>
+    <label class="phone-correction-input-label" for="specificPhoneCorrectionInput">Nhập lại số điện thoại đúng</label>
+    <input
+      type="tel"
+      id="specificPhoneCorrectionInput"
+      placeholder="Nhập lại số điện thoại"
+      inputmode="tel"
+      aria-describedby="specificPhoneCorrectionError"
+      aria-invalid="false"
+    />
+    <p id="specificPhoneCorrectionError" class="phone-correction-error" role="alert" aria-live="polite" hidden></p>
+    <button type="button" id="specificPhoneCorrectionSubmit" class="phone-correction-submit">
+      CẬP NHẬT SỐ ĐIỆN THOẠI
+    </button>
+    <p id="specificPhoneCorrectionStatus" class="phone-correction-status" aria-live="polite" hidden></p>
+  </section>
 </div>
 
 <!-- ICON GIỎ HÀNG -->
