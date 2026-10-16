@@ -188,7 +188,6 @@
       var buttonKey = String(button.key || button.marketplace || "button").toLowerCase();
       if (button.action === "cart") {
         element.addEventListener("click", function() {
-          trackClick(button, buttonKey);
           if (typeof window.toggleCartPopup === "function") {
             window.toggleCartPopup(true);
             return;

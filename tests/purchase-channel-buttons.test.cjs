@@ -12,7 +12,9 @@ const migration = fs.readFileSync(path.join(backendRoot, 'supabase', 'migrations
 
 assert.match(runtime, /config\.buttons\.slice\(0, 3\)/, 'runtime must cap storefront buttons at three');
 assert.match(runtime, /description\.insertAdjacentElement\("afterend", host\)/, 'buttons must render after product description');
-assert.match(runtime, /track\("purchase_button_click", metadata\)/, 'every purchase button click must be tracked');
+assert.match(runtime, /track\("purchase_button_click", metadata\)/, 'Marketplace Link clicks must be tracked');
+const cartBranch = runtime.slice(runtime.indexOf('if (button.action === "cart")'), runtime.indexOf('} else {', runtime.indexOf('if (button.action === "cart")')));
+assert.doesNotMatch(cartBranch, /trackClick\(/, 'Website Cart clicks must not be written to the Marketplace report');
 assert.match(css, /\.fs-purchase-channel-buttons \.btn-block[\s\S]*?flex-wrap:\s*nowrap/, 'buttons must stay on one row');
 
 const flashIndex = manager.indexOf('flashBannerContentCard() +');
