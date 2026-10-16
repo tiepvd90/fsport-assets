@@ -149,3 +149,46 @@ body { margin: 0; background: var(--fs-bg); color: var(--fs-text); }
   #homepageBanner { margin-top: 0; }
   .homepage-slides { border-radius: 0; }
 }
+/* Purchase Channel Buttons: always keep 1-3 actions on one row. */
+.fs-purchase-channel-buttons {
+  margin-top: 12px;
+  padding: 0;
+}
+.fs-purchase-channel-buttons .btn-block {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 8px;
+  width: 100%;
+  margin-top: 8px;
+  font-family: 'Be Vietnam Pro', sans-serif;
+}
+.fs-purchase-channel-buttons .footer-btn {
+  flex: 1 1 0;
+  width: 0;
+  min-width: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+  padding: 10px 4px;
+  border: 0;
+  border-radius: 6px;
+  font-size: clamp(10px, 3.1vw, 14px);
+  font-weight: 600;
+  line-height: 1.25;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: opacity .2s ease;
+}
+.fs-purchase-channel-buttons .footer-btn:hover { opacity: .85; }
+.fs-purchase-channel-buttons .btn-block[data-button-count="3"] .footer-btn {
+  padding-right: 2px;
+  padding-left: 2px;
+  font-size: clamp(9px, 2.6vw, 13px);
+}
+.fs-purchase-channel-buttons .btn-note {
+  margin-top: 6px;
+  color: #333;
+  font: 400 12px/1.4 'Be Vietnam Pro', sans-serif;
+  text-align: center;
+}

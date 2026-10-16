@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Purchase Channel Buttons Browser Test</title>
+  <link rel="stylesheet" href="/css/frontend.css?v=20261016-purchase-buttons-1">
+  <style>
+    body { padding: 0; }
+    .test-label { margin: 12px 0; color: #64748b; font-size: 12px; font-weight: 700; }
+    #productdescription-placeholder { min-height: 140px; padding: 14px; border-radius: 10px; background: #f1f5f9; }
+  </style>
+  <script>
+    window.productPage = 'browser-test';
+    window.toggleCartPopup = function (show) { document.body.dataset.cartOpened = String(show === true); };
+    window.fetch = function () {
+      return Promise.resolve(new Response(JSON.stringify({
+        slug: 'browser-test',
+        title: 'Browser Test',
+        productName: 'Browser Test',
+        seo: {},
+        sections: [],
+        purchaseButtons: {
+          enabled: true,
+          preset: {
+            config: {
+              buttons: [
+                { key:'website', action:'cart', text:'MUA TẠI WEBSITE', backgroundColor:'#e53935', textColor:'#ffffff' },
+                { key:'shopee', action:'marketplace', text:'MUA TẠI SHOPEE', backgroundColor:'#ff6600', textColor:'#ffffff' },
+                { key:'lazada', action:'marketplace', text:'MUA TẠI LAZADA', backgroundColor:'#0f146d', textColor:'#ffffff' }
+              ],
+              note: 'Mua Tại Website Rẻ Hơn Mua Tại Shopee'
+            }
+          },
+          links: {
+            shopee: 'https://shopee.vn/example',
+            lazada: 'https://lazada.vn/example'
+          }
+        }
+      }), { status:200, headers:{ 'content-type':'application/json' } }));
+    };
+  </script>
+  <script src="/js/product-page-runtime.js?v=20261016-purchase-buttons-5"></script>
+</head>
+<body>
+  <main class="page-container">
+    <div class="test-label">Runtime creates the managed purchase buttons below the description.</div>
+    <section class="product-hero" data-fsport-section="product_description">
+      <div id="productdescription-placeholder">
+        <h2>Mô tả sản phẩm</h2>
+        <p>Nội dung mô tả dùng để xác nhận vị trí của cụm nút mua hàng.</p>
+      </div>
+    </section>
+  </main>
+  <pre id="layoutDiagnostics" hidden></pre>
+  <script>
+    setTimeout(function () {
+      var host = document.getElementById('fsPurchaseChannelButtons');
+      var row = host && host.querySelector('.btn-block');
+      var buttons = row ? Array.from(row.children) : [];
+      document.getElementById('layoutDiagnostics').textContent = JSON.stringify({
+        viewport: document.documentElement.clientWidth,
+        body: [document.body.clientWidth, document.body.scrollWidth],
+        host: host && [host.clientWidth, host.scrollWidth],
+        row: row && [row.clientWidth, row.scrollWidth, getComputedStyle(row).display, getComputedStyle(row).flexWrap],
+        buttons: buttons.map(function (button) { return [button.clientWidth, button.scrollWidth, getComputedStyle(button).width, getComputedStyle(button).flex]; })
+      });
+    }, 100);
+  </script>
+</body>
+</html>

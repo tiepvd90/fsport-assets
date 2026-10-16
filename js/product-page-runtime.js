@@ -138,6 +138,108 @@
       '</div>';
   }
 
+  function renderPurchaseButtons(config) {
+    var purchase = config && config.purchaseButtons;
+    if (!purchase) return;
+
+    var host = document.getElementById("fsPurchaseChannelButtons");
+
+    if (!purchase.enabled || !purchase.preset || !purchase.preset.config) {
+      if (host) host.hidden = true;
+      return;
+    }
+
+    if (!host) {
+      host = document.createElement("div");
+      host.className = "product-hero fs-purchase-channel-buttons";
+    }
+    host.id = "fsPurchaseChannelButtons";
+    host.classList.add("fs-purchase-channel-buttons");
+    host.hidden = false;
+    host.innerHTML = "";
+
+    var buttonRow = document.createElement("div");
+    buttonRow.className = "btn-block";
+    var buttons = Array.isArray(purchase.preset.config.buttons)
+      ? purchase.preset.config.buttons.slice(0, 3)
+      : [];
+
+    function trackClick(button, buttonKey) {
+      var metadata = {
+        page_slug: String(config.slug || window.productPage || window.location.pathname.split("/").pop().replace(/\.html?$/i, "")),
+        page_title: String(config.title || window.productName || document.title || ""),
+        button_key: buttonKey,
+        button_text: String(button.text || "PURCHASE"),
+        action: button.action === "cart" ? "cart" : "marketplace"
+      };
+      if (window.fsport && typeof window.fsport.track === "function") {
+        window.fsport.track("purchase_button_click", metadata);
+      }
+      window.dispatchEvent(new CustomEvent("fsport:purchase-button-click", { detail:metadata }));
+    }
+
+    buttons.forEach(function(button) {
+      var element = document.createElement("button");
+      element.type = "button";
+      element.className = "footer-btn " + (button.action === "cart" ? "atc-btn" : "marketplace-btn");
+      element.textContent = String(button.text || "PURCHASE");
+      element.style.backgroundColor = String(button.backgroundColor || "#111111");
+      element.style.color = String(button.textColor || "#ffffff");
+      var buttonKey = String(button.key || button.marketplace || "button").toLowerCase();
+      if (button.action === "cart") {
+        element.addEventListener("click", function() {
+          trackClick(button, buttonKey);
+          if (typeof window.toggleCartPopup === "function") {
+            window.toggleCartPopup(true);
+            return;
+          }
+          var stickyCartButton = document.getElementById("btn-atc");
+          if (stickyCartButton) stickyCartButton.click();
+          else console.warn("[PurchaseButtons] CartPopup is not ready");
+        });
+      } else {
+        var destination = String((purchase.links || {})[buttonKey] || "").trim();
+        if (!destination) return;
+        try {
+          if (new URL(destination).protocol !== "https:") return;
+        } catch (_) {
+          return;
+        }
+        element.dataset.purchaseButtonKey = buttonKey;
+        element.addEventListener("click", function() {
+          trackClick(button, buttonKey);
+          window.dispatchEvent(new CustomEvent("fsport:outbound-purchase", {
+            detail: { buttonKey:buttonKey, buttonText:button.text, url:destination, product:config.slug }
+          }));
+          var outboundTab = window.open(destination, "_blank", "noopener,noreferrer");
+          if (outboundTab) outboundTab.opener = null;
+        });
+      }
+      buttonRow.appendChild(element);
+    });
+    buttonRow.dataset.buttonCount = String(buttonRow.children.length);
+
+    if (!buttonRow.children.length) {
+      host.hidden = true;
+      return;
+    }
+    host.appendChild(buttonRow);
+    var note = String(purchase.preset.config.note || "").trim();
+    if (note) {
+      var noteElement = document.createElement("div");
+      noteElement.className = "btn-note";
+      noteElement.textContent = note;
+      host.appendChild(noteElement);
+    }
+
+    var description = document.querySelector('[data-fsport-section="product_description"]');
+    if (!description) {
+      var placeholder = document.getElementById("productdescription-placeholder");
+      description = placeholder && (placeholder.closest(".product-hero") || placeholder);
+    }
+    if (description && description.parentNode) description.insertAdjacentElement("afterend", host);
+  }
+
   function applyLegacyLayout(config) {
     var root = document.querySelector(".page-container");
     if (!root) return;
@@ -206,6 +308,7 @@
       applyLegacyLayout(config);
       renderFlashBanner(config);
       applyStickyFooter(config);
+      renderPurchaseButtons(config);
       return;
     }
     config.sections
@@ -226,6 +329,7 @@
     if (hero && (flashBanner || slideshow)) (flashBanner || slideshow).insertAdjacentElement("afterend", hero);
     renderFlashBanner(config);
     applyStickyFooter(config);
+    renderPurchaseButtons(config);
   }
 
   function applyWhenDomReady(config) {
