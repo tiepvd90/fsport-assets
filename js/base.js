@@ -214,7 +214,7 @@ setInterval(() => {
       if (!box.querySelector('.fs-policy-inline-links')) {
         var links = document.createElement('p')
         links.className = 'fs-policy-inline-links'
-        links.innerHTML = '<a href="/chinh-sach-van-chuyen">Vận chuyển</a> · <a href="/chinh-sach-doi-tra-hoan-tien">Đổi trả</a> · <a href="/chinh-sach-bao-hanh">Bảo hành</a>'
+        links.innerHTML = '<a href="/chinh-sach-van-chuyen">Vận chuyển</a> · <a href="/chinh-sach-doi-tra-hoan-tien">Đổi trả</a> · <a href="/chinh-sach-bao-hanh">Bảo hành</a> · <a href="/quyen-va-nghia-vu-cua-cac-ben">Quyền &amp; nghĩa vụ</a>'
         box.appendChild(links)
       }
     })
@@ -227,7 +227,7 @@ setInterval(() => {
 ;(function loadLegalFooter() {
   if (document.querySelector('script[data-fsport-legal-footer]')) return
   var script = document.createElement('script')
-  script.src = '/js/legal-footer.js?v=20260903-1'
+  script.src = '/js/legal-footer.js?v=20261019-nd248-1'
   script.defer = true
   script.dataset.fsportLegalFooter = 'true'
   document.head.appendChild(script)

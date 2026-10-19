@@ -4,12 +4,19 @@
   window.__fsportLegalFooterLoaded = true;
 
   var links = [
+    ["Công khai thông tin TMĐT", "/cong-khai-thong-tin-thuong-mai-dien-tu"],
     ["Thông tin pháp lý", "/thong-tin-phap-ly"],
+    ["Quyền và nghĩa vụ của các bên", "/quyen-va-nghia-vu-cua-cac-ben"],
     ["Quy trình mua hàng", "/quy-trinh-mua-hang"],
+    ["Tiếp nhận và giải quyết khiếu nại", "/tiep-nhan-giai-quyet-khieu-nai"],
+    ["Chính sách giá", "/chinh-sach-gia"],
+    ["Chính sách thanh toán", "/chinh-sach-thanh-toan"],
+    ["Điều kiện và hạn chế cung cấp", "/dieu-kien-han-che-cung-cap"],
     ["Vận chuyển và giao nhận", "/chinh-sach-van-chuyen"],
     ["Đổi trả và hoàn tiền", "/chinh-sach-doi-tra-hoan-tien"],
     ["Chính sách bảo hành", "/chinh-sach-bao-hanh"],
     ["Chính sách bảo mật", "/chinh-sach-bao-mat"],
+    ["Nguyên tắc hiển thị sản phẩm", "/chinh-sach-uu-tien-hien-thi"],
     ["Điều khoản giao dịch", "/dieu-khoan-giao-dich"]
   ];
 
@@ -23,8 +30,8 @@
       ".fs-legal-footer h2{margin:0 0 10px;color:#fff;font-size:17px}.fs-legal-footer p{margin:3px 0}" +
       ".fs-legal-footer a{color:#f9fafb;text-decoration:none}.fs-legal-footer a:hover,.fs-legal-footer a:focus-visible{text-decoration:underline;outline-offset:3px}" +
       ".fs-legal-footer__cookie{padding:0;border:0;background:transparent;color:#f9fafb;font:inherit;text-decoration:underline;cursor:pointer}" +
-      ".fs-legal-footer__links{display:grid;gap:7px}.fs-legal-footer__notice{display:none;margin-top:16px}" +
-      "@media(max-width:700px){.fs-legal-footer__inner{grid-template-columns:1fr}.fs-legal-footer{padding-bottom:calc(104px + env(safe-area-inset-bottom,0px))}}";
+      ".fs-legal-footer__links{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px 18px}.fs-legal-footer__links a:first-child,.fs-legal-footer__links a:nth-child(3){font-weight:800;text-decoration:underline;text-underline-offset:3px}.fs-legal-footer__notice{display:none;margin-top:16px}" +
+      "@media(max-width:700px){.fs-legal-footer__inner{grid-template-columns:1fr}.fs-legal-footer__links{grid-template-columns:1fr}.fs-legal-footer{padding-bottom:calc(104px + env(safe-area-inset-bottom,0px))}}";
     document.head.appendChild(style);
   }
 

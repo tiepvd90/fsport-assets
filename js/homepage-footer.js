@@ -22,7 +22,14 @@
     '/chinh-sach-bao-hanh',
     '/dieu-khoan-giao-dich',
     '/quy-trinh-mua-hang',
-    '/thong-tin-phap-ly'
+    '/thong-tin-phap-ly',
+    '/cong-khai-thong-tin-thuong-mai-dien-tu',
+    '/quyen-va-nghia-vu-cua-cac-ben',
+    '/tiep-nhan-giai-quyet-khieu-nai',
+    '/chinh-sach-gia',
+    '/chinh-sach-thanh-toan',
+    '/dieu-kien-han-che-cung-cap',
+    '/chinh-sach-uu-tien-hien-thi'
   ]
   var normalizedPath = path.replace(/\.html$/, '').replace(/\/$/, '') || '/'
   var isLegalPage = legalPaths.indexOf(normalizedPath) !== -1

@@ -34,6 +34,16 @@
         </div>
       </div>
 
+      <div class="fsport-about__item">
+        <button class="fsport-about__trigger" aria-expanded="false" aria-controls="fsport-panel-4" id="fsport-btn-4">
+          <span class="fsport-about__trigger-text">Công khai thông tin thương mại điện tử</span>
+          <span class="fsport-about__icon" aria-hidden="true">+</span>
+        </button>
+        <div class="fsport-about__panel" id="fsport-panel-4" role="region" aria-labelledby="fsport-btn-4">
+          <p class="fsport-about__content">fun-sport.co là website bán hàng trực tiếp của HỘ KINH DOANH HUYỀN 1191. <a href="/cong-khai-thong-tin-thuong-mai-dien-tu"><strong>Xem đầy đủ thông tin pháp lý và các chính sách công khai</strong></a>, bao gồm <a href="/quyen-va-nghia-vu-cua-cac-ben">quyền và nghĩa vụ của chủ quản nền tảng, người bán và người mua</a>.</p>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>`;
