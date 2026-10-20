@@ -15,7 +15,7 @@
   <meta name="twitter:card" content="summary_large_image" />
 
   <!-- ✅ CSS -->
-  <link rel="stylesheet" href="/css/frontend.css?v=20260910-height-swipe-6" />
+  <link rel="stylesheet" href="/css/frontend.css?v=20261021-description-reading-1" />
   <link rel="icon" type="image/png" href="/favicon.png" />
   <!-- ✅ JS định nghĩa -->
   <script>
@@ -141,29 +141,10 @@
 
     <!-- ✅ KHỐI 4: Mô tả sản phẩm -->
 <div class="product-hero" style="margin-top: 12px;">
-  <div id="productdescription-placeholder"></div>
+  <div id="productdescription-placeholder" data-src="/html/productdescription/gaiter.html"></div>
 </div>
 
-<script>
-  fetch("/html/productdescription/gaiter.html")
-    .then(res => res.text())
-    .then(html => {
-      const container = document.getElementById("productdescription-placeholder");
-      container.innerHTML = html;
-
-      // ✅ Kích hoạt lại script thủ công
-      const scripts = container.querySelectorAll("script");
-      scripts.forEach(script => {
-        const s = document.createElement("script");
-        if (script.src) {
-          s.src = script.src;
-        } else {
-          s.textContent = script.textContent;
-        }
-        document.body.appendChild(s);
-      });
-    });
-</script>
+<script src="/js/productdescription.js?v=20261021-reading-anchor-1"></script>
  <!-- HẾT KHỐI 4: Mô tả sản phẩm -->
   <!-- ✅ YSANDAL COLLECTION trước, PICKLEBALL COLLECTION sau -->
   <div id="ysandalRelatedCollections"></div>

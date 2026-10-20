@@ -77,6 +77,26 @@ document.addEventListener("DOMContentLoaded", function () {
     const useMediaPreview = descMedia && Number.isFinite(previewImages) && previewImages > 0;
     let mediaPreviewExpanded = false;
 
+    function scrollToDocumentPoint(documentTop, behavior) {
+      const top = Math.max(0, Math.round(documentTop - 12));
+      window.scrollTo({
+        top,
+        behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : behavior
+      });
+    }
+
+    function keepElementAtViewportPosition(element, viewportTop) {
+      // Wait for the browser to finish the display/max-height reflow. Keeping
+      // the control at the same visual position prevents a collapsed mobile
+      // page from dropping the reader onto the sticky footer.
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          const delta = element.getBoundingClientRect().top - viewportTop;
+          if (Math.abs(delta) > 1) window.scrollBy(0, delta);
+        });
+      });
+    }
+
     function applyMediaPreview() {
       if (!useMediaPreview || mediaPreviewExpanded) return;
 
@@ -135,19 +155,33 @@ document.addEventListener("DOMContentLoaded", function () {
       const isHidden = descFull.classList.contains("hidden");
 
       if (isHidden) {
+        const mediaRect = useMediaPreview ? descMedia.getBoundingClientRect() : null;
+        const collapsedMediaHeight = mediaRect ? descMedia.getBoundingClientRect().height : 0;
+        const revealDocumentTop = mediaRect && descMedia.scrollHeight > collapsedMediaHeight + 1
+          ? window.scrollY + mediaRect.top + collapsedMediaHeight
+          : window.scrollY + toggleBtn.getBoundingClientRect().top;
+
         descFull.classList.remove("hidden");
         expandMediaPreview();
         descFade.style.display = "none";
         toggleBtn.innerHTML = `${collapseLabel} <span class="arrow">&#x25B2;</span>`;
+        toggleBtn.setAttribute("aria-expanded", "true");
+        requestAnimationFrame(() => scrollToDocumentPoint(revealDocumentTop, "smooth"));
         trackDescExpand();
       } else {
+        const toggleViewportTop = toggleBtn.getBoundingClientRect().top;
         descFull.classList.add("hidden");
         mediaPreviewExpanded = false;
         applyMediaPreview();
         descFade.style.display = "block";
         toggleBtn.innerHTML = `${expandLabel} <span class="arrow">&#x25BC;</span>`;
+        toggleBtn.setAttribute("aria-expanded", "false");
+        keepElementAtViewportPosition(toggleBtn, toggleViewportTop);
       }
     });
+
+    toggleBtn.setAttribute("aria-expanded", String(!descFull.classList.contains("hidden")));
+    toggleBtn.setAttribute("aria-controls", descFull.id);
   }
 
   function normalizeDescriptionMedia() {
