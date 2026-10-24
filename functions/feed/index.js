@@ -41,19 +41,33 @@ function storyHtml(post, side) {
 }
 
 async function fetchLead() {
-  const params = new URLSearchParams({
+  const baseParams = {
     status: 'eq.published',
-    select: 'id,slug,title,content_type,category,images,video_id,published_at,feed_order_at',
+    select: 'id,slug,title,content_type,category,images,video_id,tags,published_at,feed_order_at',
     order: 'feed_order_at.desc.nullslast,published_at.desc.nullslast,id.desc',
-    limit: '32'
-  });
-  const response = await fetch(`${SUPABASE_URL}/rest/v1/feed_posts?${params}`, {
-    headers: { apikey: SUPABASE_ANON, Authorization: `Bearer ${SUPABASE_ANON}`, Accept: 'application/json' }
-  });
-  if (!response.ok) return [];
-  const rows = await response.json();
-  const eligible = (Array.isArray(rows) ? rows : []).filter(post => post.slug && post.title && (parseImages(post.images)[0] || post.video_id));
-  return eligible.filter(post => !post.video_id).concat(eligible.filter(post => !!post.video_id)).slice(0, 5);
+  };
+  const headers = { apikey: SUPABASE_ANON, Authorization: `Bearer ${SUPABASE_ANON}`, Accept: 'application/json' };
+  const load = async extra => {
+    const params = new URLSearchParams({ ...baseParams, ...extra });
+    const response = await fetch(`${SUPABASE_URL}/rest/v1/feed_posts?${params}`, { headers });
+    if (!response.ok) return [];
+    const rows = await response.json();
+    return (Array.isArray(rows) ? rows : []).filter(post => post.slug && post.title && (parseImages(post.images)[0] || post.video_id));
+  };
+  const [selectedRows, newestRows] = await Promise.all([
+    load({ tags: 'cs.["home-hot"]', limit: '5' }),
+    load({ limit: '32' })
+  ]);
+  const position = post => {
+    const tags = Array.isArray(post.tags) ? post.tags : [];
+    for (let index = 1; index <= 5; index += 1) if (tags.includes(`home-hot-${index}`)) return index;
+    return 99;
+  };
+  const selected = selectedRows.slice().sort((a, b) => position(a) - position(b));
+  const selectedIds = new Set(selected.map(post => post.id));
+  const fallbackRows = newestRows.filter(post => !selectedIds.has(post.id));
+  const fallback = fallbackRows.filter(post => !post.video_id).concat(fallbackRows.filter(post => !!post.video_id));
+  return selected.concat(fallback).slice(0, 5);
 }
 
 export async function onRequest(context) {

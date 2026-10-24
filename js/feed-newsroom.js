@@ -69,13 +69,13 @@
       if (link.dataset.nav === section) link.setAttribute('aria-current', 'page')
       else link.removeAttribute('aria-current')
     })
-    var visible = section === 'home' ? ['latest', 'running', 'pickleball', 'sport'] : ['latest']
+    var visible = section === 'home' ? ['running', 'pickleball', 'video', 'sport'] : ['latest']
     document.querySelectorAll('.fn-lazy-section[data-loader]').forEach(function (el) {
       if (el.dataset.loader === 'commerce') return
       el.hidden = !visible.includes(el.dataset.loader)
     })
     var latestTitle = document.getElementById('fn-latest-title')
-    if (latestTitle) latestTitle.textContent = section === 'home' ? 'Mới cập nhật' : 'Bài mới về ' + SPORT_CONFIG[section].label
+    if (latestTitle && SPORT_CONFIG[section]) latestTitle.textContent = 'Bài mới về ' + SPORT_CONFIG[section].label
   }
 
   function setupMenu() {
@@ -107,8 +107,8 @@
     section.dataset.sport = key
     section.setAttribute('aria-labelledby', section.id + '-title')
     section.innerHTML = '<div class="fn-section-heading"><h2 id="' + section.id + '-title">' + esc(sport.label) + '</h2><a href="/feed/' + esc(key) + '">Xem tất cả</a></div><div class="fn-section-placeholder">Nội dung ' + esc(sport.label) + ' sẽ tải khi cần</div>'
-    var latest = document.getElementById('fn-latest')
-    latest.parentNode.insertBefore(section, null)
+    var video = document.getElementById('fn-video')
+    video.parentNode.insertBefore(section, video)
   }
 
   function discoverFutureSports() {
@@ -139,6 +139,7 @@
     params.set('limit', String(options.limit || 8))
     if (options.category) params.set('category', 'eq.' + options.category)
     if (options.contentType) params.set('content_type', 'eq.' + options.contentType)
+    if (options.tag) params.set('tags', 'cs.' + JSON.stringify([options.tag]))
     if (options.cursor && options.cursor.time) params.set('feed_order_at', 'lt.' + options.cursor.time)
     return API + '/rest/v1/feed_posts?' + params.toString()
   }
@@ -246,7 +247,7 @@
   function renderLead(posts, section) {
     var container = document.getElementById('fn-lead')
     var eligible = posts.filter(function (post) { return post.title && post.slug && post.image })
-    if (section !== 'video') {
+    if (section !== 'home' && section !== 'video') {
       eligible = eligible.filter(function (post) { return !post.videoId }).concat(eligible.filter(function (post) { return !!post.videoId }))
     }
     if (!eligible.length) {
@@ -294,6 +295,16 @@
     bindStoryTracking(el)
   }
 
+  function renderVideoSection(el, posts) {
+    var picked = uniqueUnused(posts.filter(function (post) { return !!post.videoId }), 5)
+    if (!picked.length) { renderEmpty(el); return }
+    el.querySelector('.fn-section-placeholder')?.remove()
+    el.insertAdjacentHTML('beforeend', '<div class="fn-video-grid">' + picked.map(function (post) {
+      return storyCardHtml(post, { section: 'video' })
+    }).join('') + '</div>')
+    bindStoryTracking(el)
+  }
+
   function renderEmpty(el) {
     var placeholder = el.querySelector('.fn-section-placeholder')
     if (placeholder) placeholder.outerHTML = '<div class="fn-empty">Chưa có nội dung phù hợp trong chuyên mục này.</div>'
@@ -311,6 +322,7 @@
     el.dataset.loaded = '1'
     if (name === 'running') return queryPosts({ category: 'ysandal', limit: 12 }).then(function (posts) { renderEditorialSection(el, posts, 'running'); renderCommerce() })
     if (name === 'pickleball') return queryPosts({ category: 'pickleball', limit: 12 }).then(function (posts) { renderEditorialSection(el, posts, 'pickleball'); renderCommerce() })
+    if (name === 'video') return queryPosts({ contentType: 'video', limit: 12 }).then(function (posts) { renderVideoSection(el, posts); renderCommerce() })
     if (name === 'sport') return queryPosts({ category: el.dataset.category, limit: 12 }).then(function (posts) { renderEditorialSection(el, posts, el.dataset.sport) })
     if (name === 'latest') return loadLatest(el, false)
     return Promise.resolve()
@@ -472,12 +484,34 @@
     return { limit: 32 }
   }
 
+  function homeHotPosition(post) {
+    var tags = Array.isArray(post.tags) ? post.tags : []
+    for (var index = 1; index <= 5; index += 1) {
+      if (tags.includes('home-hot-' + index)) return index
+    }
+    return 99
+  }
+
+  function queryLeadPosts(section) {
+    if (section !== 'home') return queryPosts(initialOptions(section))
+    return Promise.all([
+      queryPosts({ tag: 'home-hot', limit: 5 }).catch(function () { return [] }),
+      queryPosts({ limit: 32 })
+    ]).then(function (results) {
+      var selected = results[0].slice().sort(function (a, b) { return homeHotPosition(a) - homeHotPosition(b) })
+      var selectedIds = new Set(selected.map(function (post) { return post.id }))
+      var fallback = results[1].filter(function (post) { return !selectedIds.has(post.id) })
+      fallback = fallback.filter(function (post) { return !post.videoId }).concat(fallback.filter(function (post) { return !!post.videoId }))
+      return selected.concat(fallback)
+    })
+  }
+
   function init() {
     var section = detectSection()
     configurePage(section)
     setupMenu()
     track('feed_enter', { section: section, page_path: global.location.pathname })
-    queryPosts(initialOptions(section)).then(function (posts) {
+    queryLeadPosts(section).then(function (posts) {
       renderLead(posts, section)
       renderCommerce()
       return discoverFutureSports()

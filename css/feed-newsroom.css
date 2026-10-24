@@ -15,8 +15,6 @@ body.feed-newsroom{margin:0;background:var(--fn-paper);color:var(--fn-ink);font-
 .fn-masthead{min-height:82px;display:flex;align-items:center;justify-content:space-between}
 .fn-brand{display:inline-flex;align-items:center;gap:11px;font-size:24px;font-weight:800;letter-spacing:-.045em}
 .fn-brand b{color:var(--fn-red)}
-.fn-brand-logo-shell{display:grid;place-items:center;width:48px;height:48px;flex:0 0 48px;border-radius:8px;background:var(--fn-ink);overflow:hidden}
-.fn-brand-logo{display:block;width:38px;height:38px;object-fit:contain}
 .fn-menu-button{display:none;width:44px;height:44px;border:1px solid var(--fn-line);border-radius:50%;background:transparent;padding:11px;cursor:pointer}
 .fn-menu-button>span:not(.fn-sr-only){display:block;height:2px;background:var(--fn-ink);margin:5px 0;transition:transform .2s,opacity .2s}
 .fn-menu-button[aria-expanded="true"]>span:nth-child(1){transform:translateY(7px) rotate(45deg)}
@@ -102,7 +100,7 @@ body[data-feed-section="home"] .fn-page-heading>p:last-child{max-width:720px;mar
 .fn-media-row:first-child{border-top:0;padding-top:0}
 .fn-media-row .fn-card-media{aspect-ratio:16/9}.fn-media-row .fn-card-body{padding:0}.fn-media-row .fn-card-body h3{font-size:14px;-webkit-line-clamp:3}
 .fn-video-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;background:var(--fn-ink);padding:10px}
-.fn-video-grid .fn-card-media{aspect-ratio:9/16;background:#090909}.fn-video-grid .fn-card-media img{object-fit:cover}
+.fn-video-grid .fn-card-media{aspect-ratio:16/9;background:#090909}.fn-video-grid .fn-card-media img{object-fit:cover}
 .fn-video-grid .fn-card-body{padding:10px;color:#fff}.fn-video-grid .fn-card-meta{color:#aaa}
 
 .fn-commerce{background:var(--fn-soft);border-top:4px solid var(--fn-red);padding:18px;margin:-12px 0 54px}
@@ -161,7 +159,7 @@ body.fn-dialog-open{overflow:hidden}
 
 @media (max-width:767px){
   .fn-container{width:min(calc(100% - 24px),var(--fn-width))}
-  .fn-masthead{min-height:64px}.fn-brand{font-size:20px}.fn-brand-logo-shell{width:40px;height:40px;flex-basis:40px;border-radius:7px}.fn-brand-logo{width:32px;height:32px}
+  .fn-masthead{min-height:64px}.fn-brand{font-size:20px}
   .fn-menu-button{display:block}.fn-primary-nav{display:none}
   .fn-mobile-menu{position:absolute;left:12px;right:12px;top:64px;z-index:30;display:grid;background:#fff;border:1px solid var(--fn-line);box-shadow:var(--fn-shadow);padding:8px}
   .fn-mobile-menu[hidden]{display:none}.fn-mobile-menu a{padding:13px 12px;border-bottom:1px solid var(--fn-line);font-size:14px;font-weight:700}.fn-mobile-menu a:last-child{border:0;background:var(--fn-red);color:#fff;margin-top:8px;text-align:center}
