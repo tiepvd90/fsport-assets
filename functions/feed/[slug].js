@@ -2,7 +2,7 @@ const FEED_SEO_FUNCTION =
   'https://xcigbbcpwfzluqazadez.supabase.co/functions/v1/feed-post-seo';
 const SUPABASE_REST = 'https://xcigbbcpwfzluqazadez.supabase.co/rest/v1';
 const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhjaWdiYmNwd2Z6bHVxYXphZGV6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkzNTA1NjEsImV4cCI6MjA5NDkyNjU2MX0.8LGX0FkU5w9q26LynYetUY9rGN_oFnjvDFJ5tjG9QV4';
-const FEED_DETAIL_RENDER_VERSION = 'newsroom-mvp-v1';
+const FEED_DETAIL_RENDER_VERSION = 'newsroom-mvp-v2-text-brand';
 
 const HUBS = {
   'running': {
@@ -154,7 +154,7 @@ function articleHeaderHtml(hub) {
   const active = hub.section;
   const current = name => name === active ? ' aria-current="page"' : '';
   const sportLinks = Object.values(HUBS).map(item => `<a href="${item.canonical}"${current(item.section)}>${escapeHtml(item.label)}</a>`).join('');
-  return `<a class="fn-skip" href="#main-content">Đi tới nội dung</a><header class="fn-header fn-article-site-header"><div class="fn-container fn-masthead"><a class="fn-brand" href="/feed" aria-label="F-SPORT Feed - Trang nhất"><span class="fn-brand-logo-shell" aria-hidden="true"><img class="fn-brand-logo" src="/assets/branding/fsport-feed-logo-white.webp" alt="" width="700" height="700" decoding="async"></span><span>F-SPORT <b>FEED</b></span></a></div><nav class="fn-primary-nav" aria-label="Môn thể thao"><div class="fn-container fn-nav-inner"><a href="/feed">Trang nhất</a>${sportLinks}<a class="fn-shop-link" href="/">Cửa hàng</a></div></nav><nav class="fn-topic-bar" aria-label="Môn thể thao trên di động"><div class="fn-container fn-topic-scroll"><a href="/feed">Tất cả</a>${sportLinks}</div></nav></header>`;
+  return `<a class="fn-skip" href="#main-content">Đi tới nội dung</a><header class="fn-header fn-article-site-header"><div class="fn-container fn-masthead"><a class="fn-brand" href="/feed" aria-label="F-SPORT Feed - Trang nhất"><span>F-SPORT <b>FEED</b></span></a></div><nav class="fn-primary-nav" aria-label="Môn thể thao"><div class="fn-container fn-nav-inner"><a href="/feed">Trang nhất</a>${sportLinks}<a class="fn-shop-link" href="/">Cửa hàng</a></div></nav><nav class="fn-topic-bar" aria-label="Môn thể thao trên di động"><div class="fn-container fn-topic-scroll"><a href="/feed">Tất cả</a>${sportLinks}</div></nav></header>`;
 }
 
 function inlineRelatedHtml(data) {
@@ -258,7 +258,7 @@ async function renderDetail(context, slug) {
     const relatedBlock = relatedHtml(related);
     const continuation = `${pagerHtml(related)}${relatedBlock}${latestHtml(related)}<nav class="fn-article-return" aria-label="Quay lại chuyên mục"><a href="${hub.url}">← Trở lại ${escapeHtml(hub.label)}</a><a href="/feed">Trang nhất F-SPORT Feed →</a></nav>`;
     html = html.replace(/<a class="back"[^>]*>[\s\S]*?<\/a>/i, continuation);
-    html = html.replace('</head>', '  <link rel="preconnect" href="https://fonts.googleapis.com">\n  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">\n  <link rel="stylesheet" href="/css/feed-newsroom.css?v=20261024-feed-brand-4">\n  <link rel="stylesheet" href="/css/feed-article.css?v=20261024-feed-brand-4">\n</head>');
+    html = html.replace('</head>', '  <link rel="preconnect" href="https://fonts.googleapis.com">\n  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">\n  <link rel="stylesheet" href="/css/feed-newsroom.css?v=20261024-home-sections-1">\n  <link rel="stylesheet" href="/css/feed-article.css?v=20261024-detail-text-brand-1">\n</head>');
     html = html.replace('</body>', `  <script src="/js/tracking-consent.js?v=20260905-once-delayed-1"></script>\n  <script src="/js/tracking.js?v=20260925-openai-ads-1"></script>\n  <script src="/js/analytics.js?v=20260914-page-view-1"></script>\n  <script src="/js/feed-article.js?v=20261022-mvp-2" defer></script>\n  <script src="/js/homepage-footer.js?v=20261024-feed-sync-1" defer></script>\n  <script src="/js/legal-footer.js?v=20261024-feed-sync-1" defer></script>\n</body>`);
   }
   const headers = new Headers(upstream.headers);
