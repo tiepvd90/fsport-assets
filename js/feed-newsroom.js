@@ -10,8 +10,10 @@
   var requestCache = new Map()
   var activeControllers = new Set()
   var loadQueue = Promise.resolve()
-  var latestCursor = null
+  var latestOffset = 0
   var latestDone = false
+  var latestLoading = false
+  var latestObserver = null
   var checkoutPromise = null
   var activeSection = 'home'
 
@@ -140,7 +142,7 @@
     if (options.category) params.set('category', 'eq.' + options.category)
     if (options.contentType) params.set('content_type', 'eq.' + options.contentType)
     if (options.tag) params.set('tags', 'cs.' + JSON.stringify([options.tag]))
-    if (options.cursor && options.cursor.time) params.set('feed_order_at', 'lt.' + options.cursor.time)
+    if (Number.isFinite(options.offset) && options.offset > 0) params.set('offset', String(options.offset))
     return API + '/rest/v1/feed_posts?' + params.toString()
   }
 
@@ -364,41 +366,56 @@
     return '<article class="fn-latest-item' + videoClass + '"><a href="' + esc(post.url) + '" data-story-id="' + esc(post.id) + '" data-slug="' + esc(post.slug) + '" data-section="latest">' + imageHtml(post, false, '', dimensions[0], dimensions[1]) + play + '</a><div><div class="fn-card-meta">' + esc(categoryLabel(post)) + ' · ' + esc(formatDate(post.publishedAt)) + '</div><a href="' + esc(post.url) + '" data-story-id="' + esc(post.id) + '" data-slug="' + esc(post.slug) + '" data-section="latest"><h3>' + esc(post.title) + '</h3></a></div></article>'
   }
 
+  function finishLatestStream(el) {
+    var sentinel = el.querySelector('.fn-infinite-sentinel')
+    if (!sentinel) return
+    sentinel.classList.remove('is-loading')
+    sentinel.classList.add('is-finished')
+    var status = sentinel.querySelector('small')
+    if (status) status.textContent = 'Đã xem hết bài trong chuyên mục.'
+    if (latestObserver) { latestObserver.disconnect(); latestObserver = null }
+  }
+
+  function armLatestStream(el) {
+    var sentinel = el.querySelector('.fn-infinite-sentinel')
+    if (!sentinel) return
+    if (latestDone) { finishLatestStream(el); return }
+    if (!('IntersectionObserver' in global)) return
+    if (latestObserver) latestObserver.disconnect()
+    latestObserver = new IntersectionObserver(function(entries) {
+      if (!entries.some(function(entry) { return entry.isIntersecting })) return
+      latestObserver.unobserve(sentinel)
+      loadLatest(el, true).catch(function(error) {
+        var status = sentinel.querySelector('small')
+        if (status) status.textContent = 'Kết nối gián đoạn, hệ thống sẽ thử lại…'
+        global.setTimeout(function() { if (!latestDone) armLatestStream(el) }, 5000)
+        console.warn('[Feed] Infinite category load failed', error)
+      })
+    }, { rootMargin: '900px 0px', threshold: 0.01 })
+    latestObserver.observe(sentinel)
+  }
+
   function loadLatest(el, append) {
-    var options = { limit: 40 }
+    if (latestLoading) return Promise.resolve()
+    latestLoading = true
+    var options = { limit: PAGE_SIZE, offset: latestOffset }
     if (SPORT_CONFIG[activeSection]) options.category = SPORT_CONFIG[activeSection].category
-    if (append && latestCursor) options.cursor = latestCursor
     return queryPosts(options).then(function (posts) {
       var picked = uniqueUnused(posts, PAGE_SIZE)
-      if (picked.length) {
-        var last = picked[picked.length - 1]
-        latestCursor = { time: last.orderAt, id: last.id }
-      } else if (posts.length) {
-        var fallbackLast = posts[posts.length - 1]
-        latestCursor = { time: fallbackLast.orderAt, id: fallbackLast.id }
-      }
-      if (posts.length < options.limit || !picked.length) latestDone = true
+      latestOffset += posts.length
+      if (posts.length < options.limit) latestDone = true
       var list = el.querySelector('.fn-latest-list')
       if (!list) {
         el.querySelector('.fn-section-placeholder')?.remove()
-        el.insertAdjacentHTML('beforeend', '<div class="fn-latest-list"></div><button class="fn-load-more" type="button">Xem thêm bài</button>')
+        el.insertAdjacentHTML('beforeend', '<div class="fn-latest-list"></div><div class="fn-infinite-sentinel" role="status" aria-live="polite"><span></span><small>Cuộn xuống để tải thêm bài…</small></div>')
         list = el.querySelector('.fn-latest-list')
-        el.querySelector('.fn-load-more').addEventListener('click', function () {
-          var button = this
-          button.disabled = true
-          button.textContent = 'Đang tải…'
-          loadLatest(el, true).catch(function (error) { renderError(el, error) }).finally(function () {
-            button.disabled = false
-            button.textContent = 'Xem thêm bài'
-          })
-        })
       }
       if (picked.length) list.insertAdjacentHTML('beforeend', picked.map(latestItemHtml).join(''))
       bindStoryTracking(list)
-      var button = el.querySelector('.fn-load-more')
-      if (button) button.hidden = latestDone
       if (!list.children.length) renderEmpty(el)
-    })
+      if (latestDone) finishLatestStream(el)
+      else armLatestStream(el)
+    }).finally(function() { latestLoading = false })
   }
 
   function renderCommerce() {

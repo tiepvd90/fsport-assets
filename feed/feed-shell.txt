@@ -18,12 +18,13 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/css/feed-newsroom.css?v=20261024-home-sections-1">
+  <link rel="stylesheet" href="/css/feed-newsroom.css?v=20261025-feed-flow-1">
 </head>
 <body class="feed-newsroom" data-feed-section="home">
   <a class="fn-skip" href="#main-content">Đi tới nội dung</a>
   <header class="fn-header">
     <div class="fn-container fn-masthead">
+      <button class="fn-back-button" type="button" data-feed-back aria-label="Quay lại"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button>
       <a class="fn-brand" href="/feed" aria-label="F-SPORT Feed - Trang nhất"><span>F-SPORT <b>FEED</b></span></a>
     </div>
     <nav class="fn-primary-nav" aria-label="Môn thể thao"><div class="fn-container fn-nav-inner">
@@ -55,8 +56,8 @@
   <script src="/js/tracking-consent.js?v=20260905-once-delayed-1"></script>
   <script src="/js/tracking.js?v=20260925-openai-ads-1"></script>
   <script src="/js/analytics.js?v=20260914-page-view-1"></script>
-  <script src="/js/feed-newsroom.js?v=20261024-home-sections-1" defer></script>
-  <script src="/js/homepage-footer.js?v=20261024-feed-cart-lazy-1" defer></script>
+  <script src="/js/feed-newsroom.js?v=20261025-feed-flow-1" defer></script>
+  <script src="/js/homepage-footer.js?v=20261025-feed-flow-1" defer></script>
   <script src="/js/legal-footer.js?v=20261024-feed-sync-1" defer></script>
 </body>
 </html>

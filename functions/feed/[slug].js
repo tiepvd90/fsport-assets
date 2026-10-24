@@ -2,7 +2,7 @@ const FEED_SEO_FUNCTION =
   'https://xcigbbcpwfzluqazadez.supabase.co/functions/v1/feed-post-seo';
 const SUPABASE_REST = 'https://xcigbbcpwfzluqazadez.supabase.co/rest/v1';
 const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhjaWdiYmNwd2Z6bHVxYXphZGV6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkzNTA1NjEsImV4cCI6MjA5NDkyNjU2MX0.8LGX0FkU5w9q26LynYetUY9rGN_oFnjvDFJ5tjG9QV4';
-const FEED_DETAIL_RENDER_VERSION = 'newsroom-mvp-v2-text-brand';
+const FEED_DETAIL_RENDER_VERSION = 'newsroom-mvp-v3-video-stream';
 
 const HUBS = {
   'running': {
@@ -126,12 +126,12 @@ async function relatedFor(slug) {
   const select = 'id,slug,title,category,tags,images,video_id,published_at,feed_order_at';
   const [categoryRows, latestRows] = await Promise.all([
     restRows(`feed_posts?status=eq.published&category=eq.${encodeURIComponent(category)}&select=${select}&order=feed_order_at.desc.nullslast,published_at.desc.nullslast,id.desc&limit=60`),
-    restRows(`feed_posts?status=eq.published&select=${select}&order=feed_order_at.desc.nullslast,published_at.desc.nullslast,id.desc&limit=24`)
+    restRows(`feed_posts?status=eq.published&select=${select}&order=feed_order_at.desc.nullslast,published_at.desc.nullslast,id.desc&limit=60`)
   ]);
   const currentIndex = categoryRows.findIndex(item => item.slug === slug);
   const items = categoryRows.filter(item => item.slug !== slug).slice(0, 6);
-  const usedIds = new Set(items.map(item => item.id));
-  const latest = latestRows.filter(item => item.slug !== slug && !usedIds.has(item.id)).slice(0, 6);
+  const usedIds = new Set(categoryRows.map(item => item.id));
+  const latest = latestRows.filter(item => item.slug !== slug && !usedIds.has(item.id)).slice(0, 10);
   return {
     current: { ...current, category }, items, latest,
     previous: currentIndex >= 0 ? categoryRows[currentIndex + 1] || null : null,
@@ -154,14 +154,7 @@ function articleHeaderHtml(hub) {
   const active = hub.section;
   const current = name => name === active ? ' aria-current="page"' : '';
   const sportLinks = Object.values(HUBS).map(item => `<a href="${item.canonical}"${current(item.section)}>${escapeHtml(item.label)}</a>`).join('');
-  return `<a class="fn-skip" href="#main-content">Đi tới nội dung</a><header class="fn-header fn-article-site-header"><div class="fn-container fn-masthead"><a class="fn-brand" href="/feed" aria-label="F-SPORT Feed - Trang nhất"><span>F-SPORT <b>FEED</b></span></a></div><nav class="fn-primary-nav" aria-label="Môn thể thao"><div class="fn-container fn-nav-inner"><a href="/feed">Trang nhất</a>${sportLinks}<a class="fn-shop-link" href="/">Cửa hàng</a></div></nav><nav class="fn-topic-bar" aria-label="Môn thể thao trên di động"><div class="fn-container fn-topic-scroll"><a href="/feed">Tất cả</a>${sportLinks}</div></nav></header>`;
-}
-
-function inlineRelatedHtml(data) {
-  if (!data.current || !data.items.length) return '';
-  const hub = hubForCategory(data.current.category);
-  const links = data.items.slice(0, 2).map(item => `<a href="/feed/${encodeURIComponent(item.slug)}">${escapeHtml(item.title)}</a>`).join('');
-  return `<aside class="fn-inline-related" aria-label="Bài liên quan"><strong>Cùng chủ đề ${escapeHtml(hub.label)}</strong>${links}</aside>`;
+  return `<a class="fn-skip" href="#main-content">Đi tới nội dung</a><header class="fn-header fn-article-site-header"><div class="fn-container fn-masthead"><button class="fn-back-button" type="button" data-feed-back aria-label="Quay lại"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button><a class="fn-brand" href="/feed" aria-label="F-SPORT Feed - Trang nhất"><span>F-SPORT <b>FEED</b></span></a></div><nav class="fn-primary-nav" aria-label="Môn thể thao"><div class="fn-container fn-nav-inner"><a href="/feed">Trang nhất</a>${sportLinks}<a class="fn-shop-link" href="/">Cửa hàng</a></div></nav><nav class="fn-topic-bar" aria-label="Môn thể thao trên di động"><div class="fn-container fn-topic-scroll"><a href="/feed">Tất cả</a>${sportLinks}</div></nav></header>`;
 }
 
 function detailRailHtml(data) {
@@ -196,14 +189,14 @@ function relatedHtml(data) {
     const image = itemImage(item);
     const videoClass = item.video_id ? ' fn-related-video' : '';
     const dimensions = 'width="360" height="203"';
-    return `<article class="fn-related-card${videoClass}"><a href="/feed/${encodeURIComponent(item.slug)}">${image ? `<span class="fn-related-media"><img src="${escapeHtml(image)}" alt="${escapeHtml(item.title)}" ${dimensions} loading="lazy" decoding="async">${item.video_id ? '<i aria-hidden="true">▶</i>' : ''}</span>` : ''}<strong>${escapeHtml(item.title)}</strong></a></article>`;
+    return `<article class="fn-related-card${videoClass}" data-post-id="${escapeHtml(item.id)}"><a href="/feed/${encodeURIComponent(item.slug)}">${image ? `<span class="fn-related-media"><img src="${escapeHtml(image)}" alt="${escapeHtml(item.title)}" ${dimensions} loading="lazy" decoding="async">${item.video_id ? '<i aria-hidden="true">▶</i>' : ''}</span>` : ''}<strong>${escapeHtml(item.title)}</strong></a></article>`;
   }).join('');
-  return `<section class="fn-article-related" aria-labelledby="fn-related-title"><div class="fn-related-head"><h2 id="fn-related-title">Đọc tiếp trong ${escapeHtml(hub.label)}</h2><a href="${hub.url}">Xem chuyên mục →</a></div><div class="fn-related-grid">${cards}</div></section>`;
+  return `<section id="fn-article-category-stream" class="fn-article-related" aria-labelledby="fn-related-title" data-category="${escapeHtml(data.current.category)}" data-current-id="${escapeHtml(data.current.id)}" data-current-slug="${escapeHtml(data.current.slug)}"><div class="fn-related-head"><h2 id="fn-related-title">Bài mới về ${escapeHtml(hub.label)}</h2><a href="${hub.url}">Xem chuyên mục →</a></div><div class="fn-related-grid">${cards}</div><div class="fn-infinite-sentinel" role="status" aria-live="polite"><span></span><small>Đang chờ tải thêm bài…</small></div></section>`;
 }
 
 function transformVideo(html) {
   return html.replace(/<iframe\s+src="https:\/\/(?:www\.)?youtube(?:-nocookie)?\.com\/embed\/([a-zA-Z0-9_-]{11})"[^>]*title="([^"]*)"[^>]*><\/iframe>/gi,
-    (_, id, title) => `<button class="fn-article-video" type="button" data-video-id="${escapeHtml(id)}" data-video-title="${escapeHtml(title)}" aria-label="Phát video: ${escapeHtml(title)}"><img src="https://img.youtube.com/vi/${escapeHtml(id)}/hqdefault.jpg" alt="" width="720" height="1280" loading="lazy" decoding="async"><span aria-hidden="true">▶</span></button>`);
+    (_, id, title) => `<button class="fn-article-video" type="button" data-video-id="${escapeHtml(id)}" data-video-title="${escapeHtml(title)}" aria-label="Mở video: ${escapeHtml(title)}"><img src="https://img.youtube.com/vi/${escapeHtml(id)}/hqdefault.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async"><span aria-hidden="true">▶</span></button>`);
 }
 
 function removeEagerExtras(html) {
@@ -253,13 +246,11 @@ async function renderDetail(context, slug) {
     html = html.replace('<div class="brand">F-SPORT</div>', `<nav class="fn-article-breadcrumb" aria-label="Breadcrumb"><a href="/feed">F-SPORT Feed</a><span>›</span><a href="${hub.url}">${hub.label}</a></nav>`);
     const detailRail = detailRailHtml(related);
     if (detailRail) html = html.replace(/(<article[^>]*>[\s\S]*?<\/header>)/i, `$1${detailRail}`);
-    const inlineBlock = inlineRelatedHtml(related);
-    if (inlineBlock) html = html.replace(/(<div class="body"[^>]*>[\s\S]*?<\/p>)/i, `$1${inlineBlock}`);
     const relatedBlock = relatedHtml(related);
-    const continuation = `${pagerHtml(related)}${relatedBlock}${latestHtml(related)}<nav class="fn-article-return" aria-label="Quay lại chuyên mục"><a href="${hub.url}">← Trở lại ${escapeHtml(hub.label)}</a><a href="/feed">Trang nhất F-SPORT Feed →</a></nav>`;
+    const continuation = `${pagerHtml(related)}${relatedBlock}<div id="fn-article-after-category" hidden>${latestHtml(related)}<nav class="fn-article-return" aria-label="Quay lại chuyên mục"><a href="${hub.url}">← Trở lại ${escapeHtml(hub.label)}</a><a href="/feed">Trang nhất F-SPORT Feed →</a></nav></div>`;
     html = html.replace(/<a class="back"[^>]*>[\s\S]*?<\/a>/i, continuation);
-    html = html.replace('</head>', '  <link rel="preconnect" href="https://fonts.googleapis.com">\n  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">\n  <link rel="stylesheet" href="/css/feed-newsroom.css?v=20261024-home-sections-1">\n  <link rel="stylesheet" href="/css/feed-article.css?v=20261024-detail-cart-fix-1">\n</head>');
-    html = html.replace('</body>', `  <script src="/js/tracking-consent.js?v=20260905-once-delayed-1"></script>\n  <script src="/js/tracking.js?v=20260925-openai-ads-1"></script>\n  <script src="/js/analytics.js?v=20260914-page-view-1"></script>\n  <script src="/js/feed-article.js?v=20261022-mvp-2" defer></script>\n  <script src="/js/homepage-footer.js?v=20261024-feed-cart-lazy-1" defer></script>\n  <script src="/js/legal-footer.js?v=20261024-feed-sync-1" defer></script>\n</body>`);
+    html = html.replace('</head>', '  <link rel="preconnect" href="https://fonts.googleapis.com">\n  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">\n  <link rel="stylesheet" href="/css/feed-newsroom.css?v=20261025-feed-flow-1">\n  <link rel="stylesheet" href="/css/feed-article.css?v=20261025-feed-flow-1">\n</head>');
+    html = html.replace('</body>', `  <script src="/js/tracking-consent.js?v=20260905-once-delayed-1"></script>\n  <script src="/js/tracking.js?v=20260925-openai-ads-1"></script>\n  <script src="/js/analytics.js?v=20260914-page-view-1"></script>\n  <script src="/js/feed-article.js?v=20261025-feed-flow-1" defer></script>\n  <script src="/js/homepage-footer.js?v=20261025-feed-flow-1" defer></script>\n  <script src="/js/legal-footer.js?v=20261024-feed-sync-1" defer></script>\n</body>`);
   }
   const headers = new Headers(upstream.headers);
   headers.delete('content-length'); headers.delete('content-encoding'); headers.delete('etag');

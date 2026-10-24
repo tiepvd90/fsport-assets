@@ -343,8 +343,42 @@
     document.head.appendChild(style)
   }
 
+  function initFeedUtilities() {
+    if (!isFeed) return
+    document.querySelectorAll('[data-feed-back]').forEach(function(button) {
+      if (button.dataset.feedBackReady === '1') return
+      button.dataset.feedBackReady = '1'
+      button.addEventListener('click', function() {
+        var sameOriginReferrer = false
+        try { sameOriginReferrer = !!document.referrer && new URL(document.referrer).origin === window.location.origin } catch (_) {}
+        if (sameOriginReferrer && window.history.length > 1) {
+          window.history.back()
+          return
+        }
+        window.location.href = path === '/feed' || path === '/feed.html' ? HOME_URL : FEED_URL
+      })
+    })
+
+    if (document.getElementById('fn-scroll-top')) return
+    var button = document.createElement('button')
+    button.id = 'fn-scroll-top'
+    button.className = 'fn-scroll-top'
+    button.type = 'button'
+    button.setAttribute('aria-label', 'Lên đầu trang')
+    button.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 14 6-6 6 6"/></svg>'
+    document.body.appendChild(button)
+    var update = function() { button.classList.toggle('is-visible', window.scrollY > Math.max(600, window.innerHeight * .8)) }
+    button.addEventListener('click', function() {
+      var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      window.scrollTo({ top: 0, behavior: reduced ? 'auto' : 'smooth' })
+    })
+    window.addEventListener('scroll', update, { passive: true })
+    update()
+  }
+
   // ── Init ─────────────────────────────────────────────────────
   function init() {
+    initFeedUtilities()
     var frontendReady = window.FSPORT_FRONTEND_PAGE_CONFIG_PROMISE || Promise.resolve(null)
     frontendReady.catch(function() { return null }).then(function(pageConfig) {
       if (pageConfig && pageConfig.settings && pageConfig.settings.stickyFooter && pageConfig.settings.stickyFooter.enabled === false) {
