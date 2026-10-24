@@ -173,12 +173,68 @@
     })
   }
 
-  function openCart() {
+  function ensureFeedCheckout() {
+    if (typeof window.showCheckoutPopup === 'function') return Promise.resolve()
+    if (window.FSPORT_CHECKOUT_LOADING) return window.FSPORT_CHECKOUT_LOADING
+
+    if (!document.querySelector('link[href^="/css/checkoutpopup.css"]')) {
+      var link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = '/css/checkoutpopup.css'
+      document.head.appendChild(link)
+    }
+
+    var target = document.getElementById('checkoutPopup-placeholder')
+    if (!target) {
+      target = document.createElement('div')
+      target.id = 'checkoutPopup-placeholder'
+      document.body.appendChild(target)
+    }
+
+    window.FSPORT_CHECKOUT_LOADING = fetch('/html/checkoutpopup.html').then(function(response) {
+      if (!response.ok) throw new Error('Checkout HTML ' + response.status)
+      return response.text()
+    }).then(function(html) {
+      if (!document.getElementById('checkoutPopup')) target.innerHTML = html
+      if (typeof window.showCheckoutPopup === 'function') return
+      return new Promise(function(resolve, reject) {
+        var script = document.createElement('script')
+        script.src = '/js/checkoutpopup.js?v=20260930-phone-fix-1'
+        script.onload = resolve
+        script.onerror = function() { reject(new Error('Không tải được checkout')) }
+        document.body.appendChild(script)
+      })
+    }).then(function() {
+      var legacyCartIcon = document.getElementById('cartIcon')
+      if (legacyCartIcon) legacyCartIcon.style.display = 'none'
+      if (typeof window.showCheckoutPopup !== 'function') throw new Error('Checkout chưa sẵn sàng')
+    }).catch(function(error) {
+      window.FSPORT_CHECKOUT_LOADING = null
+      throw error
+    })
+    return window.FSPORT_CHECKOUT_LOADING
+  }
+
+  if (isFeed) window.FSPORT_ENSURE_CHECKOUT = ensureFeedCheckout
+
+  function openCart(event) {
     if (window.FSPORT_FAKE_NOTIFY && typeof window.FSPORT_FAKE_NOTIFY.hide === 'function') {
       window.FSPORT_FAKE_NOTIFY.hide()
     }
     if (typeof window.showCheckoutPopup === 'function') {
       window.showCheckoutPopup()
+      return
+    }
+    if (isFeed) {
+      var button = event && event.currentTarget
+      if (button) { button.disabled = true; button.setAttribute('aria-busy', 'true') }
+      ensureFeedCheckout().then(function() {
+        window.showCheckoutPopup()
+      }).catch(function(error) {
+        console.warn('[Footer] Checkout load failed', error)
+      }).finally(function() {
+        if (button) { button.disabled = false; button.removeAttribute('aria-busy') }
+      })
       return
     }
     var existingCart = document.getElementById('cartIcon')

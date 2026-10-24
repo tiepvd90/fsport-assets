@@ -441,6 +441,7 @@
   }
 
   function ensureCheckout() {
+    if (typeof global.FSPORT_ENSURE_CHECKOUT === 'function') return global.FSPORT_ENSURE_CHECKOUT()
     if (checkoutPromise) return checkoutPromise
     loadStyle('/css/checkoutpopup.css')
     checkoutPromise = fetch('/html/checkoutpopup.html').then(function (response) { return response.ok ? response.text() : '' }).then(function (html) {

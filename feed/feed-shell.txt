@@ -56,7 +56,7 @@
   <script src="/js/tracking.js?v=20260925-openai-ads-1"></script>
   <script src="/js/analytics.js?v=20260914-page-view-1"></script>
   <script src="/js/feed-newsroom.js?v=20261024-home-sections-1" defer></script>
-  <script src="/js/homepage-footer.js?v=20261024-feed-sync-1" defer></script>
+  <script src="/js/homepage-footer.js?v=20261024-feed-cart-lazy-1" defer></script>
   <script src="/js/legal-footer.js?v=20261024-feed-sync-1" defer></script>
 </body>
 </html>
