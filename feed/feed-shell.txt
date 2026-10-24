@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#f7f5ef">
+  <title>F-SPORT Feed | Tin thể thao theo từng môn</title>
+  <meta name="description" content="F-SPORT Feed: nội dung thể thao chọn lọc theo từng môn, bắt đầu với Chạy bộ và Pickleball.">
+  <link rel="canonical" href="https://www.fun-sport.co/feed">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="F-SPORT">
+  <meta property="og:title" content="F-SPORT Feed | Tin thể thao theo từng môn">
+  <meta property="og:description" content="Mini báo thể thao đa môn từ F-SPORT.">
+  <meta property="og:url" content="https://www.fun-sport.co/feed">
+  <meta property="og:image" content="https://www.fun-sport.co/favicon.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/feed-newsroom.css?v=20261024-feed-brand-4">
+</head>
+<body class="feed-newsroom" data-feed-section="home">
+  <a class="fn-skip" href="#main-content">Đi tới nội dung</a>
+  <header class="fn-header">
+    <div class="fn-container fn-masthead">
+      <a class="fn-brand" href="/feed" aria-label="F-SPORT Feed - Trang nhất"><span class="fn-brand-logo-shell" aria-hidden="true"><img class="fn-brand-logo" src="/assets/branding/fsport-feed-logo-white.webp" alt="" width="700" height="700" decoding="async"></span><span>F-SPORT <b>FEED</b></span></a>
+    </div>
+    <nav class="fn-primary-nav" aria-label="Môn thể thao"><div class="fn-container fn-nav-inner">
+      <a data-nav="home" href="/feed">Trang nhất</a><a data-nav="running" href="/feed/running">Chạy bộ</a><a data-nav="pickleball" href="/feed/pickleball">Pickleball</a><a data-nav="badminton" data-sport-category="badminton" href="/feed/badminton">Cầu lông</a><a data-nav="football" data-sport-category="football" href="/feed/football">Bóng đá</a><a data-nav="tennis" data-sport-category="tennis" href="/feed/tennis">Tennis</a><a data-nav="basketball" data-sport-category="basketball" href="/feed/basketball">Bóng rổ</a><a data-nav="fitness" data-sport-category="fitness" href="/feed/fitness">Fitness</a><a data-nav="other-sports" data-sport-category="other-sports" href="/feed/other-sports">Thể thao khác</a><a class="fn-shop-link" href="/">Cửa hàng</a>
+    </div></nav>
+    <nav class="fn-topic-bar" aria-label="Môn thể thao trên di động"><div class="fn-container fn-topic-scroll"><a data-nav="home" href="/feed">Tất cả</a><a data-nav="running" href="/feed/running">Chạy bộ</a><a data-nav="pickleball" href="/feed/pickleball">Pickleball</a><a data-nav="badminton" data-sport-category="badminton" href="/feed/badminton">Cầu lông</a><a data-nav="football" data-sport-category="football" href="/feed/football">Bóng đá</a><a data-nav="tennis" data-sport-category="tennis" href="/feed/tennis">Tennis</a><a data-nav="basketball" data-sport-category="basketball" href="/feed/basketball">Bóng rổ</a><a data-nav="fitness" data-sport-category="fitness" href="/feed/fitness">Fitness</a><a data-nav="other-sports" data-sport-category="other-sports" href="/feed/other-sports">Thể thao khác</a></div></nav>
+  </header>
+
+  <main id="main-content" class="fn-container fn-main">
+    <header class="fn-page-heading">
+      <p class="fn-kicker" id="fn-page-kicker">F-SPORT FEED</p>
+      <h1 id="fn-page-title" hidden></h1>
+      <p id="fn-page-deck">Bắt đầu với Chạy bộ và Pickleball, sau đó mở rộng từng môn khi có đủ nội dung chất lượng.</p>
+    </header>
+    <section id="fn-lead" class="fn-lead-grid" aria-label="Bài nổi bật" aria-busy="true"><div class="fn-skeleton fn-skeleton-hero"></div><div class="fn-lead-side"><div class="fn-skeleton"></div><div class="fn-skeleton"></div></div></section>
+    <section id="fn-latest" class="fn-section fn-lazy-section" data-loader="latest" aria-labelledby="fn-latest-title"><div class="fn-section-heading"><h2 id="fn-latest-title">Mới cập nhật</h2></div><div class="fn-section-placeholder">Danh sách mới nhất sẽ tải khi cần</div></section>
+    <section id="fn-commerce" class="fn-commerce fn-lazy-section" data-loader="commerce" aria-labelledby="fn-commerce-title" hidden><div class="fn-commerce-heading"><div><span>SẢN PHẨM THEO NỘI DUNG</span><h2 id="fn-commerce-title">Dụng cụ được nhắc trong bài</h2></div><small>Sản phẩm do F-SPORT phân phối</small></div><div class="fn-product-grid"></div></section>
+    <section id="fn-running" class="fn-section fn-lazy-section" data-loader="running" aria-labelledby="fn-running-title"><div class="fn-section-heading"><h2 id="fn-running-title">Chạy bộ</h2><a href="/feed/running">Xem tất cả</a></div><div class="fn-section-placeholder">Nội dung Chạy bộ sẽ tải khi cần</div></section>
+    <section id="fn-pickleball" class="fn-section fn-lazy-section" data-loader="pickleball" aria-labelledby="fn-pickleball-title"><div class="fn-section-heading"><h2 id="fn-pickleball-title">Pickleball</h2><a href="/feed/pickleball">Xem tất cả</a></div><div class="fn-section-placeholder">Nội dung Pickleball sẽ tải khi cần</div></section>
+  </main>
+
+  <div id="checkoutPopup-placeholder"></div>
+
+  <script>
+    window.FSPORT_SUPABASE_URL = "https://xcigbbcpwfzluqazadez.supabase.co";
+    window.FSPORT_SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhjaWdiYmNwd2Z6bHVxYXphZGV6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkzNTA1NjEsImV4cCI6MjA5NDkyNjU2MX0.8LGX0FkU5w9q26LynYetUY9rGN_oFnjvDFJ5tjG9QV4";
+  </script>
+  <script src="/js/tracking-consent.js?v=20260905-once-delayed-1"></script>
+  <script src="/js/tracking.js?v=20260925-openai-ads-1"></script>
+  <script src="/js/analytics.js?v=20260914-page-view-1"></script>
+  <script src="/js/feed-newsroom.js?v=20261024-feed-brand-4" defer></script>
+  <script src="/js/homepage-footer.js?v=20261024-feed-sync-1" defer></script>
+  <script src="/js/legal-footer.js?v=20261024-feed-sync-1" defer></script>
+</body>
+</html>
