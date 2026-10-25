@@ -3,6 +3,7 @@ const FEED_SEO_FUNCTION =
 const SUPABASE_REST = 'https://xcigbbcpwfzluqazadez.supabase.co/rest/v1';
 const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhjaWdiYmNwd2Z6bHVxYXphZGV6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkzNTA1NjEsImV4cCI6MjA5NDkyNjU2MX0.8LGX0FkU5w9q26LynYetUY9rGN_oFnjvDFJ5tjG9QV4';
 const FEED_DETAIL_RENDER_VERSION = 'newsroom-mvp-v3-video-stream';
+const SITE_URL = 'https://fun-sport.co';
 
 const HUBS = {
   'running': {
@@ -74,7 +75,7 @@ async function renderHub(context, hub) {
   }
   if (!asset.ok) return asset;
   let html = await asset.text();
-  const canonical = `${requestUrl.origin}${hub.canonical}`;
+  const canonical = `${SITE_URL}${hub.canonical}`;
   html = html
     .replace(/<title>[\s\S]*?<\/title>/i, `<title>${escapeHtml(hub.title)}</title>`)
     .replace('data-feed-section="home"', `data-feed-section="${hub.section}"`);
@@ -125,8 +126,8 @@ async function relatedFor(slug) {
   const category = inferredCategory(current);
   const select = 'id,slug,title,category,tags,images,video_id,published_at,feed_order_at';
   const [categoryRows, latestRows] = await Promise.all([
-    restRows(`feed_posts?status=eq.published&category=eq.${encodeURIComponent(category)}&select=${select}&order=feed_order_at.desc.nullslast,published_at.desc.nullslast,id.desc&limit=60`),
-    restRows(`feed_posts?status=eq.published&select=${select}&order=feed_order_at.desc.nullslast,published_at.desc.nullslast,id.desc&limit=60`)
+    restRows(`feed_posts?status=eq.published&is_feed_visible=eq.true&category=eq.${encodeURIComponent(category)}&select=${select}&order=feed_order_at.desc.nullslast,published_at.desc.nullslast,id.desc&limit=60`),
+    restRows(`feed_posts?status=eq.published&is_feed_visible=eq.true&select=${select}&order=feed_order_at.desc.nullslast,published_at.desc.nullslast,id.desc&limit=60`)
   ]);
   const currentIndex = categoryRows.findIndex(item => item.slug === slug);
   const items = categoryRows.filter(item => item.slug !== slug).slice(0, 6);
@@ -238,6 +239,7 @@ async function renderDetail(context, slug) {
   }
   let html = await upstream.text();
   if (upstream.ok) {
+    html = html.replace(/https:\/\/www\.fun-sport\.co/g, SITE_URL);
     html = removeCollectionSchema(removeEagerExtras(transformVideo(html)));
     html = html.replace(/<title>([\s\S]*?)(?:\s*\|\s*F-SPORT(?:\s+Play|\s+Feed)?)?<\/title>/i, '<title>$1 | F-SPORT Feed</title>');
     const hub = hubForCategory(related.current && related.current.category);

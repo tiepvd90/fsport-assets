@@ -6,13 +6,13 @@
   <meta name="theme-color" content="#f7f5ef">
   <title>F-SPORT Feed | Tin thể thao theo từng môn</title>
   <meta name="description" content="F-SPORT Feed: nội dung thể thao chọn lọc theo từng môn, bắt đầu với Chạy bộ và Pickleball.">
-  <link rel="canonical" href="https://www.fun-sport.co/feed">
+  <link rel="canonical" href="https://fun-sport.co/feed">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="F-SPORT">
   <meta property="og:title" content="F-SPORT Feed | Tin thể thao theo từng môn">
   <meta property="og:description" content="Mini báo thể thao đa môn từ F-SPORT.">
-  <meta property="og:url" content="https://www.fun-sport.co/feed">
-  <meta property="og:image" content="https://www.fun-sport.co/favicon.png">
+  <meta property="og:url" content="https://fun-sport.co/feed">
+  <meta property="og:image" content="https://fun-sport.co/favicon.png">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" type="image/png" href="/favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">

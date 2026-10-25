@@ -92,6 +92,7 @@
       .map(function (key) { return SPORT_CONFIG[key].category })
     var params = new URLSearchParams()
     params.set('status', 'eq.published')
+    params.set('is_feed_visible', 'eq.true')
     params.set('select', 'category')
     params.set('category', 'in.(' + categories.join(',') + ')')
     params.set('limit', '1000')
@@ -136,6 +137,7 @@
     options = options || {}
     var params = new URLSearchParams()
     params.set('status', 'eq.published')
+    params.set('is_feed_visible', 'eq.true')
     params.set('select', SELECT)
     params.set('order', 'feed_order_at.desc.nullslast,published_at.desc.nullslast,id.desc')
     params.set('limit', String(options.limit || 8))

@@ -1,5 +1,6 @@
 const PRODUCT_PAGE_CONFIG =
   'https://xcigbbcpwfzluqazadez.supabase.co/functions/v1/product-page-config';
+const SITE_URL = 'https://fun-sport.co';
 function normalizePath(path) {
   const value = String(path || '').split('?')[0].split('#')[0];
   const withLeadingSlash = value.startsWith('/') ? value : `/${value}`;
@@ -82,13 +83,12 @@ export async function onRequest(context) {
   const pageTitle = String(config.title || '').trim();
   if (!pageTitle || !dynamicResponse.ok) return dynamicResponse;
 
-  const canonicalUrl = `${requestUrl.origin}${requestUrl.pathname}`;
+  const canonicalUrl = `${SITE_URL}${requestUrl.pathname}`;
   let html = (await dynamicResponse.text()).replace(
     /<title>[\s\S]*?<\/title>/i,
     `<title>${escapeHtml(pageTitle)}</title>`
   );
-  // Product Pages must keep the host the customer requested. In particular,
-  // an apex request must never acquire a www URL through rendered metadata.
+  // All public metadata uses the canonical apex domain.
   html = upsertHeadLink(html, 'canonical', canonicalUrl);
   html = upsertHeadMeta(html, 'og:url', canonicalUrl);
   const headers = new Headers(dynamicResponse.headers);

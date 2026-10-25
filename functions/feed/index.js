@@ -43,6 +43,7 @@ function storyHtml(post, side) {
 async function fetchLead() {
   const baseParams = {
     status: 'eq.published',
+    is_feed_visible: 'eq.true',
     select: 'id,slug,title,content_type,category,images,video_id,tags,published_at,feed_order_at',
     order: 'feed_order_at.desc.nullslast,published_at.desc.nullslast,id.desc',
   };

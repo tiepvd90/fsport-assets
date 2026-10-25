@@ -66,6 +66,7 @@
       if (status) status.textContent = 'Đang tải thêm bài…'
       var params = new URLSearchParams()
       params.set('status', 'eq.published')
+      params.set('is_feed_visible', 'eq.true')
       params.set('category', 'eq.' + section.dataset.category)
       params.set('select', 'id,slug,title,images,video_id,published_at,feed_order_at')
       params.set('order', 'feed_order_at.desc.nullslast,published_at.desc.nullslast,id.desc')

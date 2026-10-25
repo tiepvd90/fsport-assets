@@ -187,6 +187,7 @@
     var orderField = _publishOrderSupported ? 'feed_order_at' : 'created_at'
     var q = url + '/rest/v1/feed_posts'
       + '?status=eq.published'
+      + '&is_feed_visible=eq.true'
       + '&order=' + orderField + '.desc,id.desc'
       + '&offset=' + _offset
       + '&limit=' + limit
@@ -1155,7 +1156,7 @@
   // ─── UTILS ────────────────────────────────────────────────
   function _esc(s) { return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;') }
   function _postUrl(p) { return '/feed/' + encodeURIComponent((p && p.slug) || '') }
-  function _absolutePostUrl(p) { return 'https://www.fun-sport.co' + _postUrl(p) }
+  function _absolutePostUrl(p) { return 'https://fun-sport.co' + _postUrl(p) }
   function _nl2br(s) { return s.replace(/\n/g, '<br>') }
   function _renderInlineMarkdown(s) {
     return _esc(s)
