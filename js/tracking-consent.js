@@ -13,8 +13,6 @@
     value = localStorage.getItem(key) || "";
     noticeSeen = localStorage.getItem(noticeSeenKey) === "1";
     knownProfileAtEntry = Boolean(
-      localStorage.getItem("fsport_profile_token") ||
-      localStorage.getItem("fsport_profile_id") ||
       localStorage.getItem("fsport_uid")
     );
   } catch (_) {}

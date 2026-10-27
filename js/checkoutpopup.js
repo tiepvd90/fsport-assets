@@ -975,17 +975,6 @@ async function submitOrder() {
     if (!confirmedOrderId || confirmedTotal <= 0 || hasTrackedPurchase(confirmedOrderId)) return;
     orderData.total = confirmedTotal;
 
-    var identifyPromise = Promise.resolve();
-    if (window.fsport && typeof window.fsport.identifyCustomer === 'function') {
-      identifyPromise = Promise.resolve(window.fsport.identifyCustomer({
-          phone: orderData.phone,
-          name: orderData.name,
-          customerId: erpResult && erpResult.customerId,
-          orderId: confirmedOrderId
-        })).catch(function(err) {
-        console.warn("Profile customer identify failed; purchase tracking will continue:", err && (err.message || err));
-      });
-    }
     if (window.fsport && typeof window.fsport.track === "function") {
       var feedPostIds = Array.from(new Set((orderData.items || [])
         .map(function(i) { return i.feed_post_id || null })
@@ -1030,7 +1019,6 @@ async function submitOrder() {
     }
 
     markPurchaseTracked(confirmedOrderId);
-    await identifyPromise;
   }
 
   // Purchase chỉ được ghi khi ERP đã tạo đơn; không phụ thuộc Make webhook.
