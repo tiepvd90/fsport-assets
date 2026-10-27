@@ -216,6 +216,13 @@
   }
 
   function init() {
+    document.querySelectorAll('.body img, .media img').forEach(function (image) {
+      image.draggable = false
+      image.setAttribute('draggable', 'false')
+    })
+    document.addEventListener('dragstart', function (event) {
+      if (event.target && event.target.matches && event.target.matches('.body img, .media img')) event.preventDefault()
+    })
     initMenu()
     initVideos()
     initRelatedTracking()
