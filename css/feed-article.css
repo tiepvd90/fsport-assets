@@ -61,3 +61,4 @@ html.fn-video-modal-open,html.fn-video-modal-open body{overflow:hidden!important
   .fn-article-pager,.fn-article-related,.fn-article-latest,.fn-article-return{grid-column:1}
 }
 @media (prefers-reduced-motion:reduce){.fn-article-video img{transition:none}}
+.fn-article-body-media{margin:24px 0}.fn-article-body-media img{display:block;width:100%;height:auto;border-radius:14px}.fn-article-body-media figcaption{margin-top:8px;color:#64748b;font-size:13px;line-height:1.5;text-align:center}

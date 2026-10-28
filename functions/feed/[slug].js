@@ -200,6 +200,21 @@ function transformVideo(html) {
     (_, id, title) => `<button class="fn-article-video" type="button" data-video-id="${escapeHtml(id)}" data-video-title="${escapeHtml(title)}" aria-label="Mở video: ${escapeHtml(title)}"><img src="https://img.youtube.com/vi/${escapeHtml(id)}/hqdefault.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async"><span aria-hidden="true">▶</span></button>`);
 }
 
+export function transformBodyMarkdownMedia(html) {
+  return String(html || '').replace(
+    /<p>\s*!\[([^\]]*)\]\((https:\/\/[^\s<>"]+)\)\s*<\/p>/gi,
+    (_, alt, encodedUrl) => {
+      const url = String(encodedUrl || '').replace(/&amp;/g, '&');
+      try {
+        const parsed = new URL(url);
+        if (parsed.protocol !== 'https:') return _;
+      } catch { return _; }
+      const caption = String(alt || '').trim();
+      return `<figure class="fn-article-body-media"><img src="${escapeHtml(url)}" alt="${escapeHtml(caption)}" loading="lazy" decoding="async">${caption ? `<figcaption>${escapeHtml(caption)}</figcaption>` : ''}</figure>`;
+    }
+  );
+}
+
 function removeEagerExtras(html) {
   html = html.replace(/\s*<link[^>]+href=["']\/css\/checkoutpopup\.css[^"']*["'][^>]*>/i, '');
   html = html.replace(/\s*<script[^>]+src=["']\/js\/homepage-footer\.js[^"']*["'][^>]*><\/script>/i, '');
@@ -240,7 +255,7 @@ async function renderDetail(context, slug) {
   let html = await upstream.text();
   if (upstream.ok) {
     html = html.replace(/https:\/\/www\.fun-sport\.co/g, SITE_URL);
-    html = removeCollectionSchema(removeEagerExtras(transformVideo(html)));
+    html = transformBodyMarkdownMedia(removeCollectionSchema(removeEagerExtras(transformVideo(html))));
     html = html.replace(/<title>([\s\S]*?)(?:\s*\|\s*F-SPORT(?:\s+Play|\s+Feed)?)?<\/title>/i, '<title>$1 | F-SPORT Feed</title>');
     const hub = hubForCategory(related.current && related.current.category);
     html = html.replace(/(<body[^>]*>)/i, `$1${articleHeaderHtml(hub)}`);
@@ -251,7 +266,7 @@ async function renderDetail(context, slug) {
     const relatedBlock = relatedHtml(related);
     const continuation = `${pagerHtml(related)}${relatedBlock}<div id="fn-article-after-category" hidden>${latestHtml(related)}<nav class="fn-article-return" aria-label="Quay lại chuyên mục"><a href="${hub.url}">← Trở lại ${escapeHtml(hub.label)}</a><a href="/feed">Trang nhất F-SPORT Feed →</a></nav></div>`;
     html = html.replace(/<a class="back"[^>]*>[\s\S]*?<\/a>/i, continuation);
-    html = html.replace('</head>', '  <link rel="preconnect" href="https://fonts.googleapis.com">\n  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">\n  <link rel="stylesheet" href="/css/feed-newsroom.css?v=20261025-feed-flow-1">\n  <link rel="stylesheet" href="/css/feed-article.css?v=20261028-feed-content-1">\n</head>');
+    html = html.replace('</head>', '  <link rel="preconnect" href="https://fonts.googleapis.com">\n  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">\n  <link rel="stylesheet" href="/css/feed-newsroom.css?v=20261025-feed-flow-1">\n  <link rel="stylesheet" href="/css/feed-article.css?v=20261028-body-media-2">\n</head>');
     html = html.replace('</body>', `  <script src="/js/tracking-consent.js?v=20260905-once-delayed-1"></script>\n  <script src="/js/tracking.js?v=20260925-openai-ads-1"></script>\n  <script src="/js/analytics.js?v=20261028-feed-session-2"></script>\n  <script src="/js/feed-article.js?v=20261028-feed-content-1" defer></script>\n  <script src="/js/homepage-footer.js?v=20261025-feed-flow-1" defer></script>\n  <script src="/js/legal-footer.js?v=20261024-feed-sync-1" defer></script>\n</body>`);
   }
   const headers = new Headers(upstream.headers);
