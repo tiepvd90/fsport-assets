@@ -139,6 +139,8 @@ window.__fsportInternalAnalyticsStarted = true;
   var _ready        = false
   var _queue        = []
   var _sessionStart = null
+  var _sessionId = null
+  var _sessionLandingPath = null
   var _sourceContext = null
 
   function init() {
@@ -189,7 +191,7 @@ window.__fsportInternalAnalyticsStarted = true;
     }
 
     _ready = true
-    _sessionStart = Date.now()
+    _startSession()
     _resetIdleTimer()
 
     // Record the landing immediately. Traffic Source is event-backed in the
@@ -202,6 +204,12 @@ window.__fsportInternalAnalyticsStarted = true;
     // Flush queue
     _queue.forEach(function (item) { _track(item.type, item.meta) })
     _queue = []
+  }
+
+  function _startSession() {
+    _sessionStart = Date.now()
+    _sessionId = uuid()
+    _sessionLandingPath = global.location.pathname || '/'
   }
 
   // ─── SESSION DURATION ────────────────────────────────────────
@@ -221,7 +229,7 @@ window.__fsportInternalAnalyticsStarted = true;
     var body = {
       user_id:    _userId,
       event_type: 'session_end',
-      metadata:   { duration_sec: durationSec },
+      metadata:   { duration_sec: durationSec, session_id: _sessionId, session_landing_path: _sessionLandingPath },
       created_at: new Date().toISOString()
     }
     if (navigator.sendBeacon && supaUrl() && supaAnon()) {
@@ -243,7 +251,7 @@ window.__fsportInternalAnalyticsStarted = true;
   // Bất kỳ thao tác nào → reset idle timer, resume session nếu đang trống
   ;['mousedown', 'keydown', 'scroll', 'touchstart'].forEach(function (ev) {
     document.addEventListener(ev, function () {
-      if (!_sessionStart) _sessionStart = Date.now()  // phiên mới sau khi idle cắt
+      if (!_sessionStart) _startSession()  // phiên mới sau khi idle cắt
       _resetIdleTimer()
     }, { passive: true })
   })
@@ -253,7 +261,7 @@ window.__fsportInternalAnalyticsStarted = true;
     if (document.hidden) {
       _trackSessionEnd()
     } else {
-      _sessionStart = Date.now()
+      _startSession()
       _resetIdleTimer()
     }
   })
@@ -266,6 +274,8 @@ window.__fsportInternalAnalyticsStarted = true;
     if (!_userId) return
     var meta = {}
     Object.keys(metadata || {}).forEach(function (k) { meta[k] = metadata[k] })
+    if (meta.session_id === undefined) meta.session_id = _sessionId
+    if (meta.session_landing_path === undefined) meta.session_landing_path = _sessionLandingPath
     if (_sourceContext) {
       if (meta.traffic_source === undefined) meta.traffic_source = _sourceContext.utm_source || null
       if (meta.traffic_medium === undefined) meta.traffic_medium = _sourceContext.utm_medium || null

@@ -55,7 +55,7 @@
   </script>
   <script src="/js/tracking-consent.js?v=20260905-once-delayed-1"></script>
   <script src="/js/tracking.js?v=20260925-openai-ads-1"></script>
-  <script src="/js/analytics.js?v=20260914-page-view-1"></script>
+  <script src="/js/analytics.js?v=20261028-feed-session-2"></script>
   <script src="/js/feed-newsroom.js?v=20261025-feed-flow-1" defer></script>
   <script src="/js/homepage-footer.js?v=20261025-feed-flow-1" defer></script>
   <script src="/js/legal-footer.js?v=20261024-feed-sync-1" defer></script>
