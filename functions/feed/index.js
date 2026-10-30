@@ -56,7 +56,7 @@ async function fetchLead() {
     return (Array.isArray(rows) ? rows : []).filter(post => post.slug && post.title && (parseImages(post.images)[0] || post.video_id));
   };
   const [selectedRows, newestRows] = await Promise.all([
-    load({ tags: 'cs.["home-hot"]', limit: '5' }),
+    load({ tags: 'cs.{home-hot}', limit: '5' }),
     load({ limit: '32' })
   ]);
   const position = post => {

@@ -18,13 +18,13 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/css/feed-newsroom.css?v=20261025-feed-flow-1">
+  <link rel="stylesheet" href="/css/feed-newsroom.css?v=20261031-feed-commerce-1">
+  <link rel="stylesheet" href="/css/feed-commerce.css?v=20261031-lazy-products-4">
 </head>
 <body class="feed-newsroom" data-feed-section="home">
   <a class="fn-skip" href="#main-content">Đi tới nội dung</a>
   <header class="fn-header">
     <div class="fn-container fn-masthead">
-      <button class="fn-back-button" type="button" data-feed-back aria-label="Quay lại"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button>
       <a class="fn-brand" href="/feed" aria-label="F-SPORT Feed - Trang nhất"><span>F-SPORT <b>FEED</b></span></a>
     </div>
     <nav class="fn-primary-nav" aria-label="Môn thể thao"><div class="fn-container fn-nav-inner">
@@ -32,6 +32,7 @@
     </div></nav>
     <nav class="fn-topic-bar" aria-label="Môn thể thao trên di động"><div class="fn-container fn-topic-scroll"><a data-nav="home" href="/feed">Tất cả</a><a data-nav="running" href="/feed/running">Chạy bộ</a><a data-nav="pickleball" href="/feed/pickleball">Pickleball</a><a data-nav="badminton" data-sport-category="badminton" href="/feed/badminton">Cầu lông</a><a data-nav="football" data-sport-category="football" href="/feed/football">Bóng đá</a><a data-nav="tennis" data-sport-category="tennis" href="/feed/tennis">Tennis</a><a data-nav="basketball" data-sport-category="basketball" href="/feed/basketball">Bóng rổ</a><a data-nav="fitness" data-sport-category="fitness" href="/feed/fitness">Fitness</a><a data-nav="other-sports" data-sport-category="other-sports" href="/feed/other-sports">Thể thao khác</a></div></nav>
   </header>
+  <div class="fn-back-sticky"><button class="fn-back-button" type="button" data-feed-back aria-label="Quay lại"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button></div>
 
   <main id="main-content" class="fn-container fn-main">
     <header class="fn-page-heading">
@@ -40,11 +41,12 @@
       <p id="fn-page-deck">Bắt đầu với Chạy bộ và Pickleball, sau đó mở rộng từng môn khi có đủ nội dung chất lượng.</p>
     </header>
     <section id="fn-lead" class="fn-lead-grid" aria-label="Bài nổi bật" aria-busy="true"><div class="fn-skeleton fn-skeleton-hero"></div><div class="fn-lead-side"><div class="fn-skeleton"></div><div class="fn-skeleton"></div></div></section>
+    <section id="fn-commerce" class="fn-feed-commerce" aria-label="Sản phẩm chạy bộ F-SPORT" hidden></section>
     <section id="fn-running" class="fn-section fn-lazy-section" data-loader="running" aria-labelledby="fn-running-title"><div class="fn-section-heading"><h2 id="fn-running-title">Chạy bộ</h2><a href="/feed/running">Xem tất cả</a></div><div class="fn-section-placeholder">Nội dung Chạy bộ sẽ tải khi cần</div></section>
     <section id="fn-pickleball" class="fn-section fn-lazy-section" data-loader="pickleball" aria-labelledby="fn-pickleball-title"><div class="fn-section-heading"><h2 id="fn-pickleball-title">Pickleball</h2><a href="/feed/pickleball">Xem tất cả</a></div><div class="fn-section-placeholder">Nội dung Pickleball sẽ tải khi cần</div></section>
+    <section id="fn-commerce-pickleball" class="fn-feed-commerce" aria-label="Sản phẩm Pickleball F-SPORT" hidden></section>
     <section id="fn-video" class="fn-section fn-lazy-section" data-loader="video" aria-labelledby="fn-video-title"><div class="fn-section-heading"><h2 id="fn-video-title">Video</h2></div><div class="fn-section-placeholder">Video mới sẽ tải khi cần</div></section>
     <section id="fn-latest" class="fn-section fn-lazy-section" data-loader="latest" aria-labelledby="fn-latest-title"><div class="fn-section-heading"><h2 id="fn-latest-title">Bài mới</h2></div><div class="fn-section-placeholder">Danh sách mới nhất sẽ tải khi cần</div></section>
-    <section id="fn-commerce" class="fn-commerce fn-lazy-section" data-loader="commerce" aria-labelledby="fn-commerce-title" hidden><div class="fn-commerce-heading"><div><span>SẢN PHẨM THEO NỘI DUNG</span><h2 id="fn-commerce-title">Dụng cụ được nhắc trong bài</h2></div><small>Sản phẩm do F-SPORT phân phối</small></div><div class="fn-product-grid"></div></section>
   </main>
 
   <div id="checkoutPopup-placeholder"></div>
@@ -56,7 +58,8 @@
   <script src="/js/tracking-consent.js?v=20260905-once-delayed-1"></script>
   <script src="/js/tracking.js?v=20260925-openai-ads-1"></script>
   <script src="/js/analytics.js?v=20261028-feed-session-2"></script>
-  <script src="/js/feed-newsroom.js?v=20261025-feed-flow-1" defer></script>
+  <script src="/js/feed-commerce.js?v=20261031-lazy-products-4" defer></script>
+  <script src="/js/feed-newsroom.js?v=20261031-lazy-products-4" defer></script>
   <script src="/js/homepage-footer.js?v=20261025-feed-flow-1" defer></script>
   <script src="/js/legal-footer.js?v=20261024-feed-sync-1" defer></script>
 </body>

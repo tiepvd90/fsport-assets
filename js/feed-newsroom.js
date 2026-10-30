@@ -4,7 +4,7 @@
   var API = global.FSPORT_SUPABASE_URL || ''
   var KEY = global.FSPORT_SUPABASE_ANON || ''
   var PAGE_SIZE = 10
-  var SELECT = 'id,slug,title,content_type,category,images,video_url,video_id,tags,published_at,created_at,feed_order_at,feed_post_products(product_code,product_name,product_image_url,product_price,product_category,product_color,product_size,display_order)'
+  var SELECT = 'id,slug,title,content_type,category,images,video_url,video_id,tags,published_at,created_at,feed_order_at'
   var usedPostIds = new Set()
   var loadedPosts = []
   var requestCache = new Map()
@@ -18,7 +18,7 @@
   var activeSection = 'home'
 
   var SPORT_CONFIG = {
-    running: { label: 'Chạy bộ', category: 'ysandal', title: 'Chạy bộ: tập đúng, tiến bộ bền vững', deck: 'Bài viết, hình ảnh và video về chạy bộ dành cho runner ở mọi trình độ.' },
+    running: { label: 'Chạy bộ', category: 'running', title: 'Chạy bộ: tập đúng, tiến bộ bền vững', deck: 'Bài viết, hình ảnh và video về chạy bộ dành cho runner ở mọi trình độ.' },
     pickleball: { label: 'Pickleball', category: 'pickleball', title: 'Pickleball: từ nhập môn đến thi đấu', deck: 'Bài viết, hình ảnh và video Pickleball được biên tập theo một chuyên mục thống nhất.' },
     badminton: { label: 'Cầu lông', category: 'badminton', title: 'Cầu lông', deck: 'Tin tức, hướng dẫn và câu chuyện về Cầu lông.' },
     football: { label: 'Bóng đá', category: 'football', title: 'Bóng đá', deck: 'Tin tức và câu chuyện đáng chú ý về Bóng đá.' },
@@ -141,9 +141,11 @@
     params.set('select', SELECT)
     params.set('order', 'feed_order_at.desc.nullslast,published_at.desc.nullslast,id.desc')
     params.set('limit', String(options.limit || 8))
-    if (options.category) params.set('category', 'eq.' + options.category)
+    if (options.categories && options.categories.length) params.set('category', 'in.(' + options.categories.join(',') + ')')
+    else if (options.category === 'running') params.set('category', 'in.(running,ysandal)')
+    else if (options.category) params.set('category', 'eq.' + options.category)
     if (options.contentType) params.set('content_type', 'eq.' + options.contentType)
-    if (options.tag) params.set('tags', 'cs.' + JSON.stringify([options.tag]))
+    if (options.tag) params.set('tags', 'cs.{"' + String(options.tag).replace(/\\/g, '\\\\').replace(/"/g, '\\"') + '"}')
     if (Number.isFinite(options.offset) && options.offset > 0) params.set('offset', String(options.offset))
     return API + '/rest/v1/feed_posts?' + params.toString()
   }
@@ -178,15 +180,11 @@
       if (typeof image === 'string') return { url: image, caption: '' }
       return { url: image && image.url || '', caption: image && image.caption || '' }
     }).filter(function (image) { return /^https?:\/\//i.test(image.url) || image.url.indexOf('/') === 0 })
-    var products = (row.feed_post_products || []).slice().sort(function (a, b) {
-      return Number(a.display_order || 0) - Number(b.display_order || 0)
-    })
     var post = {
       id: String(row.id || ''), slug: String(row.slug || ''), title: String(row.title || '').trim(),
       contentType: row.content_type || 'photo', rawCategory: row.category || '', images: normalizedImages,
       videoId: youtubeId(row.video_id || row.video_url), tags: Array.isArray(row.tags) ? row.tags : [],
-      publishedAt: row.published_at || row.created_at || '', orderAt: row.feed_order_at || row.published_at || row.created_at || '',
-      products: products
+      publishedAt: row.published_at || row.created_at || '', orderAt: row.feed_order_at || row.published_at || row.created_at || ''
     }
     post.category = categoryFor(post)
     post.image = normalizedImages[0] ? normalizedImages[0].url : (post.videoId ? youtubePoster(post.videoId) : '')
@@ -206,6 +204,7 @@
   function searchable(post) { return (post.title + ' ' + post.tags.join(' ')).toLowerCase() }
 
   function categoryFor(post) {
+    if (post.rawCategory === 'ysandal') return 'running'
     var matched = Object.keys(SPORT_CONFIG).find(function (key) { return SPORT_CONFIG[key].category === post.rawCategory })
     if (matched) return matched
     var text = searchable(post)
@@ -324,7 +323,7 @@
   function loadSection(name, el) {
     if (el.dataset.loaded === '1') return Promise.resolve()
     el.dataset.loaded = '1'
-    if (name === 'running') return queryPosts({ category: 'ysandal', limit: 12 }).then(function (posts) { renderEditorialSection(el, posts, 'running'); renderCommerce() })
+    if (name === 'running') return queryPosts({ categories: ['running', 'ysandal'], limit: 12 }).then(function (posts) { renderEditorialSection(el, posts, 'running'); renderCommerce() })
     if (name === 'pickleball') return queryPosts({ category: 'pickleball', limit: 12 }).then(function (posts) { renderEditorialSection(el, posts, 'pickleball'); renderCommerce() })
     if (name === 'video') return queryPosts({ contentType: 'video', limit: 12 }).then(function (posts) { renderVideoSection(el, posts); renderCommerce() })
     if (name === 'sport') return queryPosts({ category: el.dataset.category, limit: 12 }).then(function (posts) { renderEditorialSection(el, posts, el.dataset.sport) })
@@ -422,30 +421,17 @@
 
   function renderCommerce() {
     var section = document.getElementById('fn-commerce')
-    if (!section || section.dataset.loaded === '1') return
-    var seen = new Set()
-    var products = []
-    loadedPosts.forEach(function (post) {
-      post.products.forEach(function (product) {
-        var code = String(product.product_code || '').trim()
-        if (!code || seen.has(code) || !product.product_image_url || products.length >= 3) return
-        seen.add(code)
-        products.push({ post: post, data: product })
-      })
-    })
-    if (!products.length) return
-    section.dataset.loaded = '1'
-    section.hidden = false
-    var grid = section.querySelector('.fn-product-grid')
-    grid.innerHTML = products.map(function (item) {
-      return '<button class="fn-product-card" type="button" data-code="' + esc(item.data.product_code) + '" data-post="' + esc(item.post.id) + '"><img src="' + esc(item.data.product_image_url) + '" alt="' + esc(item.data.product_name || item.data.product_code) + '" width="84" height="84" loading="lazy" decoding="async"><span><strong>' + esc(item.data.product_name || item.data.product_code) + '</strong><span>Chọn sản phẩm →</span></span></button>'
-    }).join('')
-    grid.querySelectorAll('.fn-product-card').forEach(function (button) {
-      button.addEventListener('click', function () {
-        var item = products.find(function (entry) { return entry.data.product_code === button.dataset.code && entry.post.id === button.dataset.post })
-        if (item) addProductFromFeed(item.post, item.data, button)
-      })
-    })
+    if (!global.FSportFeedCommerce || typeof global.FSportFeedCommerce.lazyMount !== 'function') return
+    if (activeSection === 'home') {
+      if (section && section.dataset.fcMounted !== '1') global.FSportFeedCommerce.lazyMount(section, 'running', 'banner')
+      var pickleballSection = document.getElementById('fn-commerce-pickleball')
+      if (pickleballSection && pickleballSection.dataset.fcMounted !== '1') global.FSportFeedCommerce.lazyMount(pickleballSection, 'pickleball', 'banner')
+      return
+    }
+    var secondary = document.getElementById('fn-commerce-pickleball')
+    if (secondary) secondary.hidden = true
+    if (!section || section.dataset.fcMounted === '1') return
+    global.FSportFeedCommerce.lazyMount(section, activeSection, 'banner')
   }
 
   function loadStyle(href) {

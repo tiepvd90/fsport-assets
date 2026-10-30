@@ -15,6 +15,8 @@ body.feed-newsroom{margin:0;background:var(--fn-paper);color:var(--fn-ink);font-
 .fn-masthead{min-height:82px;display:flex;align-items:center;justify-content:flex-start;gap:10px}
 .fn-back-button{display:grid;place-items:center;width:40px;height:40px;flex:0 0 40px;padding:0;border:1px solid var(--fn-line);border-radius:50%;background:transparent;color:var(--fn-ink);cursor:pointer;transition:background .18s,border-color .18s,transform .12s}
 .fn-back-button:hover{background:var(--fn-white);border-color:#aaa69f}.fn-back-button:active{transform:scale(.94)}.fn-back-button:focus-visible{outline:2px solid var(--fn-ink);outline-offset:2px}.fn-back-button svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.fn-back-sticky{position:sticky;z-index:45;top:12px;width:min(calc(100% - 24px),var(--fn-width));height:0;margin:0 auto;pointer-events:none}
+.fn-back-sticky .fn-back-button{position:absolute;left:0;top:12px;pointer-events:auto;background:rgba(255,255,255,.2);border-color:rgba(204,199,190,.35);box-shadow:0 8px 24px rgba(17,18,20,.08);backdrop-filter:blur(8px)}
 .fn-brand{display:inline-flex;align-items:center;gap:11px;font-size:24px;font-weight:800;letter-spacing:-.045em}
 .fn-brand b{color:var(--fn-red)}
 .fn-menu-button{display:none;width:44px;height:44px;border:1px solid var(--fn-line);border-radius:50%;background:transparent;padding:11px;cursor:pointer}
@@ -166,6 +168,7 @@ html.fn-video-modal-open .fn-scroll-top{display:none!important}
 @media (max-width:767px){
   .fn-container{width:min(calc(100% - 24px),var(--fn-width))}
   .fn-masthead{min-height:64px;gap:8px}.fn-brand{font-size:20px}.fn-back-button{width:38px;height:38px;flex-basis:38px}.fn-back-button svg{width:22px;height:22px}
+  .fn-back-sticky{top:8px}.fn-back-sticky .fn-back-button{left:0;right:auto;top:8px}
   .fn-menu-button{display:block}.fn-primary-nav{display:none}
   .fn-mobile-menu{position:absolute;left:12px;right:12px;top:64px;z-index:30;display:grid;background:#fff;border:1px solid var(--fn-line);box-shadow:var(--fn-shadow);padding:8px}
   .fn-mobile-menu[hidden]{display:none}.fn-mobile-menu a{padding:13px 12px;border-bottom:1px solid var(--fn-line);font-size:14px;font-weight:700}.fn-mobile-menu a:last-child{border:0;background:var(--fn-red);color:#fff;margin-top:8px;text-align:center}
