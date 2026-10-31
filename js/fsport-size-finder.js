@@ -457,6 +457,18 @@
     window.cart = cart
     localStorage.setItem('cart',JSON.stringify(cart))
     window.dispatchEvent(new Event('storage'))
+    if (window.fsport && typeof window.fsport.track === 'function') {
+      window.fsport.track('add_to_cart', {
+        source:'size-finder',
+        page_path:window.location.pathname,
+        product_id:product.code,
+        product_name:variant.product_name || product.name,
+        product_code:variant.product_code,
+        variant:item.variant,
+        quantity:quantity,
+        value:Number(variant.price || 0) * quantity
+      })
+    }
     closePurchasePopup()
     if (typeof window.FSPORT_ENSURE_CHECKOUT === 'function') {
       window.FSPORT_ENSURE_CHECKOUT().then(function () { if (typeof window.showCheckoutPopup === 'function') window.showCheckoutPopup() })

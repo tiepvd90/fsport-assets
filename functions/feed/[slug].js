@@ -327,7 +327,7 @@ function enhanceSizeFinderArticle(html) {
   html = html.replace(/(<article[^>]*>[\s\S]*?<\/header>)/i, `$1${sizeFinderMarkup()}`);
   html = replaceArticleBody(html, sizeFinderEditorialHtml());
   html = html.replace('</head>', '  <link rel="stylesheet" href="/css/fsport-size-finder.css?v=20261030-product-cart-label-11">\n</head>');
-  return html.replace('</body>', '  <script src="/js/fsport-size-finder.js?v=20261030-product-cart-label-11" defer></script>\n</body>');
+  return html.replace('</body>', '  <script src="/js/fsport-size-finder.js?v=20261031-sizefinder-report-12" defer></script>\n</body>');
 }
 
 async function renderDetail(context, slug) {
