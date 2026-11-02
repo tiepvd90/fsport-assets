@@ -102,7 +102,7 @@ setInterval(() => {
 
   function inject() {
     var s = document.createElement('script')
-    s.src = '/js/analytics.js?v=20261028-feed-session-2'
+    s.src = '/js/analytics.js?v=20261103-pick-game-1'
     s.async = true
     s.onerror = function() { console.warn('[Analytics] Không load được /js/analytics.js') }
     document.head.appendChild(s)
