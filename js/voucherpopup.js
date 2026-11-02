@@ -1,3 +1,6 @@
+// Wrapped in a function: the page can load this file twice (base.html injected twice), and
+// top-level const declarations would then throw "already been declared" and stop the script.
+(function () {
 // 🛡️ Fallback nếu file cũ còn gọi fetchVoucherMap
 if (typeof fetchVoucherMap !== "function") {
   window.fetchVoucherMap = () => Promise.resolve({});
@@ -218,6 +221,8 @@ if (document.readyState === "loading") {
 // - Lưu riêng ở localStorage "gameVoucher" (không đụng voucher 30k), giữ mức cao nhất, không hết hạn.
 // - Chỉ áp dụng trên trang Panther (SKU Panther), thêm vào giỏ là tự trừ.
 (function setupGameVoucher() {
+  if (window.__fsGameVoucherRan) return; // base.html can be injected twice
+  window.__fsGameVoucherRan = true;
   const GAME_VOUCHERS = { pb100k: 100000, pb150k: 150000, pb200k: 200000 };
   const GAME_PAGES = ["panther"];
   const KEY = "gameVoucher";
@@ -318,4 +323,5 @@ if (document.readyState === "loading") {
   } else {
     run();
   }
+})();
 })();
