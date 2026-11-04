@@ -1,0 +1,180 @@
+/* =========================================================================
+ * F-SPORT — DESKTOP LAYOUT LAYER (local test, 2026-11-04)
+ * -------------------------------------------------------------------------
+ * Chỉ áp dụng từ 1024px trở lên → mobile & tablet KHÔNG bị ảnh hưởng.
+ * Mục tiêu: cân lại tỷ lệ chữ / độ rộng trên desktop, không đổi bố cục,
+ * không đổi màu, KHÔNG đụng slideshow.
+ *
+ * Vì sao dùng "html body ..." + !important ở vài chỗ:
+ *  - collection-grid.css được JS chèn vào SAU frontend.css,
+ *  - ai/nav footer chèn <style> bằng JS,
+ *  - base.css đang ép popup/sticky footer 1180px bằng !important.
+ *  → selector ở đây phải mạnh hơn để chắc chắn thắng, bất kể thứ tự nạp.
+ * ========================================================================= */
+
+@media (min-width: 1024px) {
+
+  :root {
+    --fsd-read-max: 800px;   /* độ rộng khối đọc (mô tả sản phẩm) */
+    --fsd-sheet-max: 760px;  /* popup giỏ hàng + thanh mua hàng dưới cùng */
+  }
+
+  /* ---------------------------------------------------------------------
+   * 1. TRANG SẢN PHẨM — Tiêu đề
+   * ------------------------------------------------------------------- */
+  html body .product-hero h1.fs-product-title {
+    font-size: 22px !important;
+    line-height: 1.45 !important;
+    margin-top: 12px;
+    margin-bottom: 4px;
+  }
+  html body .fs-product-title .fs-product-badge {
+    font-size: 13px;
+    vertical-align: 3px;
+  }
+
+  /* ---------------------------------------------------------------------
+   * 2. TRANG SẢN PHẨM — Mô tả: thu hẹp khối đọc, chữ to hơn
+   * ------------------------------------------------------------------- */
+  html body #productdescription-placeholder {
+    max-width: var(--fsd-read-max);
+    margin-left: auto;
+    margin-right: auto;
+  }
+  html body #productdescription-placeholder .desc-container {
+    max-width: 100%;
+    padding-left: 0;
+    padding-right: 0;
+  }
+  html body #productdescription-placeholder .desc-title {
+    font-size: 22px;
+    line-height: 1.4;
+    margin: 20px 0 12px;
+  }
+  html body #productdescription-placeholder .desc-text,
+  html body #productdescription-placeholder .desc-text > div,
+  html body #productdescription-placeholder .desc-text p,
+  html body #productdescription-placeholder .desc-text li,
+  html body #productdescription-placeholder > p,
+  html body #productdescription-placeholder > div:not(.desc-img-grid):not(.desc-fade) {
+    font-size: 16px;
+    line-height: 1.7;
+  }
+  html body #productdescription-placeholder .desc-text p,
+  html body #productdescription-placeholder > p {
+    margin: 0 0 14px;
+  }
+  html body #productdescription-placeholder .desc-text li {
+    margin-bottom: 6px;
+  }
+  html body #productdescription-placeholder .desc-toggle-btn {
+    font-size: 16px;
+  }
+
+  /* Nút "Mua tại Website / Shopee" ngay dưới mô tả: cùng độ rộng khối đọc */
+  html body .fs-purchase-channel-buttons {
+    max-width: var(--fsd-read-max);
+    margin-left: auto;
+    margin-right: auto;
+  }
+  html body .fs-purchase-channel-buttons .footer-btn {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    font-size: 15px;
+  }
+  html body .fs-purchase-channel-buttons .btn-note {
+    font-size: 13px;
+  }
+
+  /* ---------------------------------------------------------------------
+   * 3. THANH MUA HÀNG DƯỚI CÙNG (trang sản phẩm) + POPUP GIỎ HÀNG
+   *    Cùng 760px → khớp nhau và khớp thanh Shop/Feed của trang chủ.
+   * ------------------------------------------------------------------- */
+  html body .sticky-footer,
+  html body .sticky-footer.is-rounded,
+  html body .sticky-footer.is-rectangle {
+    max-width: var(--fsd-sheet-max) !important;
+  }
+
+  html body .cart-popup-content {
+    width: var(--fsd-sheet-max) !important;
+    max-width: var(--fsd-sheet-max) !important;
+  }
+  html body .cart-popup-content .quantity-control {
+    height: 32px;
+    border-radius: 8px;
+  }
+  html body .cart-popup-content .quantity-control button {
+    width: 34px;
+    font-size: 18px;
+  }
+  html body .cart-popup-content .quantity-control input {
+    width: 44px;
+    font-size: 16px;
+  }
+
+  /* ---------------------------------------------------------------------
+   * 4. LƯỚI SẢN PHẨM (trang chủ + cuối trang sản phẩm)
+   *    Tên / giá to hơn một chút để cân với tiêu đề nhóm.
+   * ------------------------------------------------------------------- */
+  html body .cgrid-group-title {
+    font-size: 22px;
+    margin: 36px 0 18px;
+  }
+  html body .cgrid-name {
+    font-size: 15px;
+    line-height: 1.35;
+    min-height: 41px;
+    margin: 12px 10px 4px;
+  }
+  html body .cgrid-price-wrap {
+    margin: 4px 10px 14px;
+    gap: 8px;
+  }
+  html body .cgrid-price {
+    font-size: 17px;
+  }
+  html body .cgrid-original {
+    font-size: 14px;
+  }
+  html body .cgrid-discount-badge {
+    font-size: 12px;
+    padding: 5px 8px;
+  }
+
+  /* ---------------------------------------------------------------------
+   * 5. KHỐI GIỚI THIỆU (accordion cuối trang chủ) — hạ cỡ chữ cho cân
+   * ------------------------------------------------------------------- */
+  html body .fsport-about__trigger {
+    padding: 20px 28px;
+  }
+  html body .fsport-about__trigger-text {
+    font-size: 20px;
+  }
+  html body .fsport-about__icon {
+    font-size: 24px;
+  }
+  html body .fsport-about__content {
+    font-size: 16px;
+    line-height: 1.7;
+    padding: 0 28px 24px;
+  }
+
+  /* ---------------------------------------------------------------------
+   * 6. THANH SHOP / FEED / CHAT / CART (trang chủ) — gọn hơn trên desktop
+   * ------------------------------------------------------------------- */
+  html body #fsport-nav-footer {
+    --fs-nav-icon: 28px;
+  }
+  html body #fsport-nav-footer .fs-nav-tab {
+    padding-top: 7px;
+    padding-bottom: 6px;
+  }
+  html body #fsport-nav-footer .fs-nav-icon-shell {
+    width: 52px;
+    height: 34px;
+  }
+  html body #fsport-nav-footer .fs-nav-label {
+    font-size: 13px;
+  }
+}
