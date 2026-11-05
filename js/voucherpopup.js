@@ -1,3 +1,6 @@
+// Wrapped in a function: the page can load this file twice (base.html injected twice), and
+// top-level const declarations would then throw "already been declared" and stop the script.
+(function () {
 // 🛡️ Fallback nếu file cũ còn gọi fetchVoucherMap
 if (typeof fetchVoucherMap !== "function") {
   window.fetchVoucherMap = () => Promise.resolve({});
@@ -212,3 +215,113 @@ if (document.readyState === "loading") {
   }
 })();
 
+
+// 🎮 Voucher từ game Pickleball (pick.fun-sport.co)
+// Link từ game: /pickleball/panther?ref=pb100k | pb150k | pb200k
+// - Lưu riêng ở localStorage "gameVoucher" (không đụng voucher 30k), giữ mức cao nhất, không hết hạn.
+// - Chỉ áp dụng trên trang Panther (SKU Panther), thêm vào giỏ là tự trừ.
+(function setupGameVoucher() {
+  if (window.__fsGameVoucherRan) return; // base.html can be injected twice
+  window.__fsGameVoucherRan = true;
+  const GAME_VOUCHERS = { pb100k: 100000, pb150k: 150000, pb200k: 200000 };
+  const GAME_PAGES = ["panther"];
+  const KEY = "gameVoucher";
+
+  function readSaved() {
+    try {
+      const v = JSON.parse(localStorage.getItem(KEY) || "{}");
+      return v && GAME_VOUCHERS[v.code] ? v : null;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function showGameVoucherPopup(amount) {
+    if (document.getElementById("gameVoucherPopup")) return;
+    const popup = document.createElement("div");
+    popup.className = "voucher-popup";
+    popup.id = "gameVoucherPopup";
+    popup.style.zIndex = "30001"; // above the cookie banner (z 30000) on a first visit
+    popup.innerHTML = `
+      <div class="voucher-close" id="closeGameVoucherBtn">×</div>
+      <h2>🏆 Phần thưởng từ game!</h2>
+      <p>Bạn có <strong>voucher giảm ${amount.toLocaleString("vi-VN")}₫</strong> khi mua vợt Pickleball <strong>Panther</strong>. Voucher tự trừ khi bạn thêm vợt vào giỏ hàng.</p>
+      <button id="applyGameVoucherBtn">MUA NGAY</button>
+    `;
+    document.body.appendChild(popup);
+    document.getElementById("closeGameVoucherBtn")?.addEventListener("click", () => popup.remove());
+    document.getElementById("applyGameVoucherBtn")?.addEventListener("click", () => {
+      popup.remove();
+      document.querySelector("#btn-atc")?.click();
+    });
+  }
+
+  function showGameVoucherBadge(amount) {
+    if (document.getElementById("gameVoucherBadge")) return;
+    const badge = document.createElement("div");
+    badge.id = "gameVoucherBadge";
+    badge.textContent = `🎁 Voucher -${Math.round(amount / 1000)}K`;
+    badge.style.cssText =
+      "position:fixed;right:12px;bottom:96px;z-index:9998;background:#ffd23f;color:#111;font:800 13px/1 'Be Vietnam Pro',sans-serif;padding:10px 12px;border-radius:999px;box-shadow:0 4px 14px rgba(0,0,0,.25);cursor:pointer";
+    badge.addEventListener("click", () => showGameVoucherPopup(amount));
+    document.body.appendChild(badge);
+  }
+
+  function run() {
+    const ref = (new URLSearchParams(window.location.search).get("ref") || "").toLowerCase();
+    let saved = readSaved();
+    let fresh = false;
+    // Only the highest voucher is kept.
+    if (GAME_VOUCHERS[ref] && GAME_VOUCHERS[ref] > (saved ? saved.amount : 0)) {
+      saved = { code: ref, amount: GAME_VOUCHERS[ref] };
+      try {
+        localStorage.setItem(KEY, JSON.stringify(saved));
+      } catch (e) {}
+      fresh = true;
+    }
+    if (!saved || !GAME_PAGES.includes(getProductPageFromUrl())) return;
+
+    const amount = saved.amount;
+    const isPanther = (id) => /^panther/i.test(String(id || ""));
+    window.voucherByProduct = window.voucherByProduct || {};
+    // Only Panther SKUs (the page also sells Legacy): give the voucher only when the selected
+    // variant is a Panther. cartpopup.js sets window.selectedVariant before it reads this.
+    let otherWaiting = window.__voucherWaiting || null;
+    Object.defineProperty(window, "__voucherWaiting", {
+      configurable: true,
+      get() {
+        const id = window.selectedVariant && window.selectedVariant.id;
+        return isPanther(id) ? { amount } : otherWaiting;
+      },
+      set(v) {
+        otherWaiting = v;
+      },
+    });
+    for (const id of ["panther-cam", "panther-matcha", "panther-do"]) {
+      if (!window.voucherByProduct[id]) window.voucherByProduct[id] = amount;
+    }
+    // A variant may already be selected before this script ran.
+    if (window.selectedVariant && isPanther(window.selectedVariant.id) && !window.voucherByProduct[window.selectedVariant.id]) {
+      window.voucherByProduct[window.selectedVariant.id] = amount;
+    }
+    // Re-select the current variant when the cart popup opens, so its price shows the voucher.
+    document.addEventListener(
+      "click",
+      (e) => {
+        if (!e.target.closest || !e.target.closest("#btn-atc")) return;
+        setTimeout(() => document.querySelector(".variant-thumb.selected")?.click(), 250);
+      },
+      true
+    );
+    console.log("🎮 Game voucher:", saved);
+    showGameVoucherBadge(amount);
+    if (fresh || GAME_VOUCHERS[ref]) showGameVoucherPopup(amount);
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", run);
+  } else {
+    run();
+  }
+})();
+})();

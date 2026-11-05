@@ -89,7 +89,11 @@ window.__fsportInternalAnalyticsStarted = true;
     detectedSource = normalizeSource(detectedSource, detectedMedium)
     if (!detectedSource && document.referrer) {
       var host = refHost()
-      if (/google\./i.test(host)) {
+      if (/^pick\.fun-sport\.co$|(^|\.)fsport-pickleball\.pages\.dev$/i.test(host)) {
+        // Visitors coming from the pickleball mini game
+        detectedSource = 'pick_game'
+        detectedMedium = 'game'
+      } else if (/google\./i.test(host)) {
         detectedSource = 'google'
         detectedMedium = 'organic'
       } else if (/bing\./i.test(host)) {

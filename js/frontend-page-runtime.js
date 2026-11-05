@@ -77,8 +77,11 @@
     var image = '<img src="' + String(banner.image_url).replace(/"/g, '&quot;') +
       '" alt="' + String(banner.alt_text || "Fun Sport Cover").replace(/"/g, '&quot;') +
       '" class="cover-img">';
-    host.innerHTML = banner.link_url
-      ? '<a href="' + String(banner.link_url).replace(/"/g, '&quot;') + '">' + image + '</a>'
+    var link = String(banner.link_url || "");
+    // Links to another site (e.g. the pickleball game) open in a new tab so the shop stays open.
+    var external = /^https?:\/\//i.test(link) && link.indexOf(location.origin) !== 0;
+    host.innerHTML = link
+      ? '<a href="' + link.replace(/"/g, '&quot;') + '"' + (external ? ' target="_blank" rel="noopener"' : '') + '>' + image + '</a>'
       : image;
   }
 
