@@ -146,10 +146,88 @@
     return hasYsandal ? settings.template_ysandal : settings.template_pickleball
   }
 
+  // ─── SKU RESOLVE — nguồn dữ liệu sản phẩm DUY NHẤT là backend ──
+  // Tên mẫu, mã mẫu, danh mục, màu, size đều lấy từ SKU catalog
+  // (edge function product-availability). Sửa sản phẩm trong ERP là
+  // tin nhắn mở đầu + dữ liệu AI tự cập nhật theo.
+  // Không đổi RLS: function này anon gọi được và chỉ trả dữ liệu catalog.
+  function _fetchSkuRows(param, values) {
+    var url = SUPABASE_URL(), anon = SUPABASE_ANON()
+    return new Promise(function(resolve) {
+      if (!values.length) { resolve([]); return }
+      try {
+        var xhr = new XMLHttpRequest()
+        xhr.open('GET', url + '/functions/v1/product-availability?' + param + '=' + encodeURIComponent(values.join(',')), true)
+        xhr.setRequestHeader('apikey', anon)
+        xhr.setRequestHeader('Authorization', 'Bearer ' + anon)
+        xhr.setRequestHeader('Accept', 'application/json')
+        xhr.timeout = 5000
+        xhr.onload = function() {
+          try {
+            var data = JSON.parse(xhr.responseText || 'null')
+            resolve(xhr.status < 300 && data && Array.isArray(data.products) ? data.products : [])
+          } catch (e) { resolve([]) }
+        }
+        xhr.onerror = function() { resolve([]) }
+        xhr.ontimeout = function() { resolve([]) }
+        xhr.send()
+      } catch (e) { resolve([]) }
+    })
+  }
+
+  function _uniq(list) {
+    var seen = {}
+    return list.filter(function(v) {
+      v = String(v || '').trim()
+      if (!v || seen[v]) return false
+      seen[v] = true
+      return true
+    })
+  }
+
+  // Trả về danh sách item đã chuẩn hoá theo SKU backend:
+  // { product_name, model_code, product_code, category, color, size, variant, quantity, unit_price, from_sku }
+  async function resolveSkuItems(items) {
+    items = items || []
+    var byCode = {}, byId = {}
+    try {
+      var codes = _uniq(items.map(function(i) { return i.product_code || i.feed_product_code }))
+      var ids = _uniq(items.filter(function(i) { return !(i.product_code || i.feed_product_code) })
+        .map(function(i) { return i.inventory_product_id }))
+      var results = await Promise.all([_fetchSkuRows('codes', codes), _fetchSkuRows('ids', ids)])
+      results[0].forEach(function(r) { if (r.product_code) byCode[String(r.product_code)] = r })
+      results[1].forEach(function(r) { if (r.id) byId[String(r.id)] = r })
+    } catch (e) {
+      console.warn('[OC_CHAT] SKU resolve failed, dùng dữ liệu giỏ hàng:', e)
+    }
+
+    return items.map(function(i) {
+      var sku = byCode[String(i.product_code || i.feed_product_code || '')] ||
+        byId[String(i.inventory_product_id || '')] || null
+      var variant = i['Phân loại'] || i.variant || ''
+      var clientName = (i.product_name && i.product_name !== variant) ? i.product_name : ''
+      return {
+        product_name: (sku && (sku.model_name || sku.product_name)) || i.sku_model_name || clientName || variant || i.id || '',
+        model_code:   (sku && sku.model_code) || i.model_code || '',
+        product_code: (sku && sku.product_code) || i.product_code || '',
+        category:     (sku && sku.category) || i.category || '',
+        color:        (sku && sku.color) || i.color || '',
+        size:         (sku && sku.size) || i.size || '',
+        variant:      variant,
+        quantity:     i.quantity || 1,
+        unit_price:   i['Giá'] || i.unit_price || i.price || 0,
+        from_sku:     !!sku
+      }
+    })
+  }
+
+  // "YSandal BCU5568 - Trắng - 38"
   function buildProductList(items) {
     return (items || []).map(function(i) {
-      var name = i['Phân loại'] || i.product_name || i.id || ''
-      return name
+      var detail = [i.color, i.size].filter(Boolean)
+      var name = i.product_name || ''
+      if (detail.length) return [name].concat(detail).filter(Boolean).join(' - ')
+      return [name, (i.variant && i.variant !== name) ? i.variant : ''].filter(Boolean).join(' - ')
     }).filter(Boolean).join(', ')
   }
 
@@ -179,6 +257,10 @@
       return
     }
 
+    // 2a. Chuẩn hoá sản phẩm theo SKU backend (1 lần, dùng cho starter + AI)
+    var skuItems = await resolveSkuItems(opts.items)
+    console.log('[OC_CHAT] SKU items:', skuItems)
+
     // 2. Tìm conversation theo order_id — KHÔNG tạo mới nếu đã tồn tại
     //    Đảm bảo admin và khách luôn ở cùng 1 conversation cho mỗi đơn hàng
     console.log('[OC_CHAT] looking up conversation for order:', opts.orderId)
@@ -195,8 +277,8 @@
         updated_at: new Date().toISOString()
       })
       // Lấy starter text để hiển thị trong chatbox (không insert lại)
-      var productList = buildProductList(opts.items)
-      var tpl = pickTemplate(settings, opts.items)
+      var productList = buildProductList(skuItems)
+      var tpl = pickTemplate(settings, skuItems)
       starterText = renderTemplate(tpl, {
         customer_name: opts.customerName || '',
         phone:         opts.customerPhone || '',
@@ -225,8 +307,8 @@
       _conversationId = convRes.data[0].id
 
       // 3. Tạo starter message (chỉ khi conversation MỚI)
-      var productList = buildProductList(opts.items)
-      var tpl = pickTemplate(settings, opts.items)
+      var productList = buildProductList(skuItems)
+      var tpl = pickTemplate(settings, skuItems)
       starterText = renderTemplate(tpl, {
         customer_name: opts.customerName || '',
         phone:         opts.customerPhone || '',
@@ -260,16 +342,14 @@
         customer_phone:   opts.customerPhone || '',
         customer_address: opts.customerAddress || '',
         total:            opts.total || 0,
-        order_items:      (opts.items || []).map(function(i) {
-          return {
-            product_name: i['Phân loại'] || i.product_name || '',
-            color:        i.color || null,
-            size:         i.size || null,
-            quantity:     i.quantity || 1,
-            unit_price:   i.Giá || i.unit_price || 0
-          }
-        })
+        order_items:      []
       }
+    }
+    // Sản phẩm cho AI: ưu tiên bản đã resolve từ SKU backend (có mã mẫu,
+    // danh mục); chỉ giữ order_items của DB khi không resolve được SKU nào.
+    var anySku = skuItems.some(function(i) { return i.from_sku })
+    if (anySku || !(_orderData.order_items && _orderData.order_items.length)) {
+      _orderData.order_items = skuItems
     }
 
     // 4. Lấy avatar — ưu tiên settings.shop_avatar_url, fallback về erp_settings.iconUrl
@@ -657,8 +737,11 @@
       var o = _orderData
       var itemLines = (o.order_items || []).map(function(i) {
         var line = '  - ' + (i.product_name || '(không tên)')
+        if (i.model_code) line += ' | Mã mẫu: ' + i.model_code
+        if (i.category)   line += ' | Danh mục: ' + i.category
         if (i.color) line += ' | Màu: ' + i.color
-        if (i.size)  line += ' | Size: ' + i.size
+        if (i.size)  line += ' | Size sản phẩm đã đặt: ' + i.size
+        if (!i.color && !i.size && i.variant && i.variant !== i.product_name) line += ' | Phân loại: ' + i.variant
         line += ' | SL: ' + (i.quantity || 1)
         line += ' | ' + Number(i.unit_price || 0).toLocaleString('vi-VN') + 'đ'
         return line
@@ -685,7 +768,9 @@
     var baseContext = (_settings.ai_context || '').trim()
     var systemText =
       baseContext +
-      '\n\n=== THÔNG TIN ĐƠN HÀNG ===\n' + orderInfo +
+      '\n\n=== THÔNG TIN ĐƠN HÀNG (dữ liệu SKU chính thức từ hệ thống) ===\n' + orderInfo +
+      '\nLưu ý: "Mã mẫu" dùng để đối chiếu với thông tin sản phẩm ở trên (vd. quy tắc giảm size). ' +
+      '"Size sản phẩm đã đặt" là size của chính sản phẩm trong đơn (với dép là size dép), KHÔNG phải size giày khách đang đi.' +
       '\n\n=== TOÀN BỘ LỊCH SỬ HỘI THOẠI (từ đầu đến hiện tại) ===\n' + historyText +
       '\n\nDựa trên lịch sử hội thoại trên, hãy trả lời tin nhắn cuối cùng của KHÁCH. ' +
       'Chỉ trả lời đúng trọng tâm. Không bịa thông tin. ' +

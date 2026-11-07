@@ -1264,7 +1264,7 @@
           product_code: liveProduct.product_code,
           stock_qty: toNumber(liveProduct.stock_qty, 0),
           is_active: true
-        }), quantity, requiredAttrs);
+        }, skuIdentity(liveProduct)), quantity, requiredAttrs);
       }).catch(function (error) {
         showCartNotice(error && error.message ? error.message : MSG.unavailable);
       });
@@ -1294,19 +1294,35 @@
     });
   }
 
+  // Product identity straight from the backend SKU catalog (product-availability).
+  // Stored as sku_* fields so downstream consumers (checkout, order-confirm
+  // chat/AI) never have to guess the model from page titles or variant labels.
+  function skuIdentity(liveProduct) {
+    var out = {};
+    if (!liveProduct) return out;
+    if (liveProduct.model_code) out.model_code = liveProduct.model_code;
+    if (liveProduct.model_name) out.sku_model_name = liveProduct.model_name;
+    if (liveProduct.product_name) out.sku_product_name = liveProduct.product_name;
+    if (liveProduct.category) out.sku_category = liveProduct.category;
+    if (liveProduct.color) out.sku_color = liveProduct.color;
+    if (liveProduct.size) out.sku_size = liveProduct.size;
+    return out;
+  }
+
   function completeAddToCart(product, quantity, requiredAttrs) {
     var phanLoaiText = getVariantText(product, requiredAttrs).join(" - ");
     product[KEY.variantText] = phanLoaiText;
 
     var loai = window.productCategory || window.loai || product.category || "unknown";
     var voucherAmount = window.voucherByProduct && product.id ? (window.voucherByProduct[product.id] || 0) : 0;
+    var skuName = product.sku_model_name || product.sku_product_name || "";
     var cartItem = Object.assign({}, product, {
       quantity: quantity,
       loai: loai,
       page_slug: window.productPage || getProductPage(),
-      product_name: getProductPage() === "carbon2"
+      product_name: skuName || (getProductPage() === "carbon2"
         ? (product.product_name || window.productName || document.title || product.id)
-        : (window.productName || document.title || window.productPage || product.id),
+        : (window.productName || document.title || window.productPage || product.id)),
       voucher: voucherAmount > 0 ? { amount: voucherAmount } : undefined
     });
 

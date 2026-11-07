@@ -926,6 +926,7 @@ async function submitOrder() {
         id: item.id || null,
         product_code: item.product_code || item.id || item.feed_product_code || null,
         inventory_product_id: item.inventory_product_id || null,
+        model_code: item.model_code || null,
         category: item.category || "unknown",
         product_name: cartItemName(item),
         variant: item["Ph\u00e2n lo\u1ea1i"] || item["Ph\u00c3\u00a2n lo\u00e1\u00ba\u00a1i"] || cartItemName(item),
